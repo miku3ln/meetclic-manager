@@ -1,0 +1,66 @@
+services:
+  db:
+    build:
+      context: .                    # Carpeta con el Dockerfile (para construir la imagen MySQL)
+      dockerfile: Dockerfile        # Dockerfile que extiende/usa mysql:8.0
+    container_name: db_mysql        # Nombre fijo del contenedor MySQL
+    restart: unless-stopped         # Reinicia salvo que lo detengas manualmente
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Password del usuario root
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}          # Host permitido para root (en dev: % = cualquiera)
+      MYSQL_DATABASE: ${MYSQL_DATABASE}            # DB inicial que se creará si no existe
+      TZ: ${TZ}                                    # Zona horaria del contenedor
+    command:
+      - "--default-authentication-plugin=mysql_native_password" # Mantiene plugin de auth compatible
+      - "--max_allowed_packet=256M"            # (NUEVO) Permite paquetes grandes (dumps grandes)
+      - "--character-set-server=utf8mb4"       # (NUEVO) Charset por defecto del servidor
+      - "--collation-server=utf8mb4_general_ci"# (NUEVO) Collation por defecto del servidor
+    ports:
+      - "${MYSQL_DIRECT_PUBLISH}"              # Publica MySQL directo al host (p.ej. 3307:3306) para debug/CLI
+    volumes:
+      - db_data:/var/lib/mysql                 # Volumen persistente para los datos
+      # - ./init/:/docker-entrypoint-initdb.d/:ro  # (Opcional) Scripts .sql de inicialización
+    healthcheck:
+      # Comprueba que MySQL responde antes de habilitar dependientes
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+  phpmyadmin:
+    image: phpmyadmin:5              # Imagen oficial phpMyAdmin
+    container_name: phpmyadmin       # Nombre del contenedor phpMyAdmin
+    restart: unless-stopped          # Reinicio automático salvo parada manual
+    environment:
+      PMA_HOST: db                   # Servicio MySQL al que conectarse (resuelve por nombre en la network)
+      PMA_PORT: 3306                 # Puerto interno de MySQL
+      PMA_USER: ${PMA_USER}          # Usuario sugerido en el login (p.ej. root)
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Password sugerido en el login
+      UPLOAD_LIMIT: ${PMA_UPLOAD_LIMIT}     # Límite de subida (debe coincidir con Nginx y PHP)
+      # PMA_ABSOLUTE_URI: "http://localhost:8081/pma/"  # (Opcional) Útil si hay problemas con la subruta /pma
+    depends_on:
+      db:
+        condition: service_healthy   # Espera a que MySQL esté healthy
+    volumes:
+      # (NUEVO) Ajustes PHP para imports largos: tiempos y tamaños (coherentes con Nginx)
+      - ./phpmyadmin/php-custom.ini:/usr/local/etc/php/conf.d/zzz-custom.ini:ro
+
+  nginx:
+    image: nginx:latest              # Imagen oficial Nginx
+    container_name: nginx_gateway    # Nombre del contenedor Nginx (gateway/proxy)
+    restart: unless-stopped          # Reinicio automático salvo parada manual
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Monta la config (incluye /pma y stream 3308)
+    depends_on:
+      - db                           # Asegura orden de arranque
+      - phpmyadmin                   # Asegura que phpMyAdmin esté disponible
+    ports:
+      - "${NGINX_HTTP_PUBLISH}"      # Publica HTTP (p.ej. 8081:80) para acceder a /pma
+      - "${NGINX_MYSQL_PUBLISH}"     # Publica TCP (p.ej. 3308:3308) para proxy MySQL vía Nginx
+
+networks:
+  default:
+    name: mysql_stack_net            # Red interna para que los servicios se vean por nombre
+
+volumes:
+  db_data:                           # Volumen para persistir datos de MySQL

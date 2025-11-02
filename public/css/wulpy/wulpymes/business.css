@@ -1,0 +1,12 @@
+.preview-demo.active-search {
+    -webkit-box-shadow: -5px 0 10px rgba(0, 0, 0, .1);
+    box-shadow: -5px 0 10px rgba(0, 0, 0, .1);
+    left: 0px !important;
+    display: block !important;
+
+}
+
+.pagination > li.active>a {
+    border-color: #ddd;
+    color: #181515 !important;
+}

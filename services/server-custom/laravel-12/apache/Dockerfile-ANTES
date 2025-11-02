@@ -1,0 +1,29 @@
+FROM php:8.2-apache
+
+# Instalador extensiones
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+# PHP extensions para Laravel y DBs
+RUN install-php-extensions \
+    mbstring bcmath exif gd opcache \
+    pdo_mysql \
+    pdo_firebird
+
+# Activar módulos Apache
+RUN a2enmod rewrite ssl
+
+# Vhosts: solo nuestros dos sitios
+COPY http.conf  /etc/apache2/sites-available/projects-http.conf
+COPY ssl.conf   /etc/apache2/sites-available/projects-ssl.conf
+RUN a2dissite 000-default default-ssl || true \
+ && a2ensite projects-http projects-ssl
+
+# Cert self-signed de dev (asegura que EXISTE antes de iniciar)
+RUN mkdir -p /etc/apache2/ssl && \
+    openssl req -x509 -nodes -days 365 \
+      -subj "/C=EC/ST=Imbabura/L=Otavalo/O=Projects/OU=Dev/CN=localhost" \
+      -newkey rsa:2048 \
+      -keyout /etc/apache2/ssl/projects.key \
+      -out /etc/apache2/ssl/projects.crt
+
+EXPOSE 80 443

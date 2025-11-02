@@ -1,0 +1,47 @@
+<div class="content-manager-send">
+    <h1>Informacion Enviada</h1>
+    <table>
+        <tbody>
+        <tr>
+            <th>
+                Asunto
+            </th>
+            <th>
+                {{$data['contactSubject']}}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Pagina de Envio
+            </th>
+            <th>
+                {{$data['customerPage']}}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Nombres
+            </th>
+            <th>
+                {{$data['customerName']}}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Email
+            </th>
+            <th>
+                {{$data['customerEmail']}}
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Mensaje
+            </th>
+            <th>
+                {{$data['contactMessage']}}
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

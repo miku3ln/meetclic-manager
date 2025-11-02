@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Stage Designer (Local)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<h2>1) Subir imagen → 2) Dibujar zonas → 3) Generar JSON (local)</h2>
+
+<div class="row">
+    <input type="file" id="imgFile" accept="image/*" />
+    <button id="btnLoad">Cargar imagen</button>
+    <span id="imgInfo"></span>
+</div>
+
+<div class="toolbar" id="tools" style="display:none;">
+    <strong>Herramientas:</strong>
+    <button data-tool="select" class="active">Seleccionar</button>
+    <button id="btnView" class="right">Visualizar</button>  <!-- NUEVO -->
+
+    <button data-tool="rect">Rectángulo</button>
+    <button data-tool="circle">Círculo</button>
+    <button data-tool="poly">Polígono</button>
+
+    <button id="btnEndPoly" title="Terminar polígono (doble click también)">Terminar polígono</button>
+    <span class="sep"></span>
+    <button id="btnScalePlus">Expandir +</button>
+    <button id="btnScaleMinus">Reducir −</button>
+    <button id="btnEditVertices">Editar vértices</button>
+
+    <span class="sep"></span>
+    <button id="btnDelete">Eliminar seleccionado</button>
+    <button id="btnGenerate" class="right">Generar JSON</button>
+</div>
+
+<div id="stageWrap"><div id="canvas"></div></div>
+
+<div class="panel">
+    <div class="card">
+        <h4>Click en figura → Ubicación y Sección</h4>
+        <pre id="clickInfo">—</pre>
+        <p class="hint">Con “Polígono”: clic para puntos, “Terminar polígono” o doble clic para cerrar. Clic derecho en una figura para editar título/descr.</p>
+    </div>
+    <div class="card">
+        <h4>JSON a guardar</h4>
+        <textarea id="jsonOut" rows="12" readonly></textarea>
+    </div>
+</div>
+
+<!-- Diálogo de metadatos -->
+<dialog id="metaDialog">
+    <form method="dialog" id="metaForm">
+        <h3>Editar zona</h3>
+
+        <label for="metaTitle">Título</label>
+        <input type="text" id="metaTitle" placeholder="Ej. Zona A1">
+
+        <label for="metaDesc">Descripción</label>
+        <textarea id="metaDesc" rows="4" placeholder="Notas opcionales"></textarea>
+
+        <div class="events">
+            <h4>Eventos (código JS a ejecutar)</h4>
+
+            <div class="ev-row">
+                <label><input type="checkbox" id="evClickChk"> <strong>click</strong></label>
+                <textarea id="evClickCode" class="code" rows="3" placeholder="console.log('click', node.getAttr('zoneId'))"></textarea>
+            </div>
+
+            <div class="ev-row">
+                <label><input type="checkbox" id="evDblClickChk"> <strong>dblclick</strong></label>
+                <textarea id="evDblClickCode" class="code" rows="3" placeholder="alert('Doble click en ' + node.getAttr('zoneLabel'))"></textarea>
+            </div>
+
+            <div class="ev-row">
+                <label><input type="checkbox" id="evOverChk"> <strong>over (mouseenter)</strong></label>
+                <textarea id="evOverCode" class="code" rows="3" placeholder="node.opacity(0.8); layerZones.draw();"></textarea>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" id="metaDelete" class="danger">Eliminar zona</button>
+            <span class="spacer"></span>
+            <button type="reset" id="metaCancel">Cancelar</button>
+            <button id="metaSave">Guardar</button>
+        </div>
+    </form>
+</dialog>
+
+<!-- Libs -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/konva@9/konva.min.js"></script>
+
+<!-- Estado + utils -->
+<script src="assets/js/state/globals.js"></script>
+<script src="assets/js/state/ids.js"></script>
+<script src="assets/js/utils/numbers.js"></script>
+
+<!-- Core -->
+<script src="assets/js/core/serialize.js"></script>
+<script src="assets/js/core/interaction.js"></script>
+<script src="assets/js/core/stage.js"></script>
+
+<!-- Shapes -->
+<script src="assets/js/shapes/factories.js"></script>
+<script src="assets/js/shapes/presets.js"></script>
+
+<!-- Tools -->
+<script src="assets/js/tools/tool-manager.js"></script>
+<script src="assets/js/tools/tool-scale.js"></script>
+<script src="assets/js/tools/tool-vertices.js"></script>
+<script src="assets/js/tools/tool-events.js"></script>
+<script src="assets/js/tools/tool-metadata.js"></script>
+<script src="assets/js/tools/tool-view.js"></script>
+
+<!-- Entrypoint -->
+<script src="assets/js/app/designer.js"></script>
+</body>
+</html>

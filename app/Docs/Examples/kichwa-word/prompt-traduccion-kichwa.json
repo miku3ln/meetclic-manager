@@ -1,0 +1,629 @@
+🌿 KICHWA TRADUCTOR INTELIGENTE – PROMPT VERSIÓN FINAL ENRIQUECIDA Y EXPANDIDA (2025)
+
+
+📘 INSTRUCCIONES PARA IA  PARA EXTRACCION DE INFORMACION Y GENERACION DEL JSON COMPLETA POR CADA PALABRA
+{
+"field_rules": {
+"word": {
+"type": "string",
+"required": true,
+"description": "Palabra tal como se escribe en kichwa. Ej: 'yakuta'",
+"validations": {
+"not_empty": true,
+"no_numbers": true,
+"no_special_chars": ["@", "#", "$", "%"]
+}
+},
+"description": {
+"type": "string",
+"required": true,
+"description": "Significado cultural y funcional desde la perspectiva kichwa. No debe tener saltos de línea, ni usar frases como 'uso de'. TU GENERAS ACORDE AL CONTEXTO",
+"validations": {
+"no_line_breaks": true,
+"no_abbreviations": [";", "\\n", "uso de"],
+"must_include_context": ["cultural", "funcional", "emocional"]
+}
+},
+"gloss": {
+"type": "string",
+"required": true,
+"description": "Traducción literal simple, de una sola palabra en español. Ej: 'rumi' → 'piedra'",
+"validations": {
+"single_word": true
+}
+},
+"letters_of_the_alphabet": {
+"type": "string",
+"required": true,
+"description": "Letra inicial de la palabra en mayúscula. Ej: 'Y'",
+"validations": {
+"length": 1,
+"is_uppercase": true
+}
+},
+"translation_value": {
+"type": "string",
+"required": true,
+"description": "Traducción principal derivada del campo 'description', hasta el primer punto."
+},
+"etymology": {
+"type": "string",
+"required": false,
+"description": "Origen lingüístico de la palabra si es reconocida. Ej: 'yachana' proviene de 'yacha' (saber) + 'na' (nominalizador)."
+},
+"geographic_usage": {
+"type": "string",
+"required": true,
+"description": "Región geográfica donde se usa la palabra. Ej: 'Otavalo, Imbabura'"
+},
+"language_variant": {
+"type": "string",
+"required": true,
+"enum": ["Otavalo", "Saraguro", "Pastaza", "Imbabura central", "Panandino", "Otro"],
+"description": "Variante dialectal regional del kichwa."
+},
+"semantic_type": {
+"type": "string",
+"required": true,
+"enum": ["persona", "objeto", "lugar", "concepto", "animal", "planta"],
+"description": "Tipo semántico al que pertenece la palabra."
+},
+"dictionary_word_by_class": {
+"type": "array",
+"items": {
+"type": "string",
+"enum": ["Verbo", "Sustantivo", "Adjetivo", "Adverbio", "Interjección"]
+},
+"minItems": 1,
+"uniqueItems": true,
+"required": true,
+"description": "Una o más clases gramaticales asignadas a la palabra. Derivadas de abreviaturas como: 'v.' = Verbo, 's.' = Sustantivo, 'adj.' = Adjetivo, etc."
+},
+"verb_form": {
+"type": "string",
+"required_if": "dictionary_word_by_class == 'Verbo'",
+"description": "Forma verbal si es aplicable. Ej: y → infinitivo, na → nominalización, sha → participio"
+},
+"dictionary_words_by_pronunciation": {
+"type": "array",
+"required": false,
+"description": "Incluye múltiples formas fonéticas derivadas de cada forma escrita. Se generan versiones adaptadas para distintos públicos: lingüistas (IPA), comunidad (simplificada) y educación básica (silabeada).",
+"generate": true,
+"generation_logic": "Para cada forma escrita listada en 'variant_forms', generar tres entradas: una con notación IPA internacional ('lingüista'), otra con IPA simplificada para comunidad ('comunidad kichwa'), y una tercera en formato silábico visual para estudiantes ('educación básica'). Aplicar reglas fonológicas del kichwa según tabla oficial de correspondencias.",
+"constraints": {
+"min_items": 1
+},
+"example": [
+{
+"value_written_form": "markakyaya",
+"notation_type_write_form": "forma escrita kichwa",
+"notation_type": "ipa-international",
+"phonetic_value": "ˈmaɾ.ka.kja.ja",
+"audience": "lingüista"
+},
+{
+"value_written_form": "markakyaya",
+"notation_type_write_form": "forma escrita kichwa",
+"notation_type": "ipa-simplificada",
+"phonetic_value": "mar-ka-kya-ya",
+"audience": "comunidad kichwa"
+},
+{
+"value_written_form": "markakyaya",
+"notation_type_write_form": "forma escrita kichwa",
+"notation_type": "silábico-visual",
+"phonetic_value": "MAR-KA-KYA-YA",
+"audience": "educación básica"
+}
+]
+},
+"dictionary_words_by_examples": {
+"type": "array",
+"required": true,
+"description": "Lista de oraciones kichwa generadas para ilustrar el uso de la palabra de forma gramatical, cultural y emocionalmente coherente. Mínimo 3, máximo 5 oraciones, cada una con su traducción, tipo de uso y estructura gramatical.",
+"generate": true,
+"generation_logic": "Generar ejemplos válidos gramaticalmente basados en las estructuras sintácticas del kichwa. Usar las 14 categorías reconocidas por la gramática kichwa, divididas en: estructura verbal (transitiva, intransitiva, copulativa), modalidad (afirmativa, negativa, prohibitiva, dubitativa, interrogativa con -chu o -tak, interrogativo-negativa, imperativa), y complejidad (simple, compleja). Cada oración debe tener estructura SOV (sujeto-objeto-verbo), y destacar la palabra objetivo con asteriscos.",
+"constraints": {
+"min_items": 3,
+"max_items": 5
+},
+"fields_per_item": {
+"value": "Oración kichwa válida, con estructura gramatical correcta",
+"description": "Traducción clara y contextual al español",
+"example_type": "cotidiano | afectivo | ritual | educativo | emocional | interrogativo | etc.",
+"example_structure": "transitiva | intransitiva | copulativa | afirmativa | negativa | prohibitiva | dubitativa | interrogativa-chu | interrogativa-tak | interrogativo-negativa | imperativa | simple | compleja"
+},
+"reference_grammar": {
+"3.1 Estructura verbal": {
+"transitiva": "Oración con verbo que requiere objeto directo. Ej: 'Ukata mikunki.'",
+"intransitiva": "Oración sin objeto directo, solo con sujeto y acción. Ej: 'Kushillami kawsanchik.'",
+"copulativa": "Oración con verbo como 'kay', 'tukuy', 'rikchay'. Ej: 'Allimi kanchik.'"
+},
+"3.2 Modalidad": {
+"afirmativa": "Presente marca -mi. Ej: 'Yachachikmi kanchik.'",
+"negativa": "Usa 'mana' + -chu. Ej: 'Manami yachachikchu kanchik.'",
+"prohibitiva": "Usa 'ama' + -chu. Ej: 'Ama wakaychu.'",
+"dubitativa": "Usa 'ichapash' o sufijo -cha. Ej: 'Pay shamunkacha.'",
+"interrogativa-chu": "Usa -chu ligado. Ej: '¿Yachachikchu kanki?'",
+"interrogativa-tak": "Usa -tak ligado a pronombres. Ej: '¿Pitak shamushka?'",
+"interrogativo-negativa": "Combina 'mana' + -chu. Ej: '¿Manachu shamunki?'",
+"imperativa": "Segundas personas (-y, -ychik). Ej: 'Shamuy!', 'Shamuychik!'"
+},
+"3.3 Complejidad": {
+"simple": "Una acción simple. Ej: 'Wawakuna kanchapimi pukllan.'",
+"compleja": {
+"conjugada": "Múltiples acciones. Ej: 'Wawaka pukllan, yayaka awanmi.'",
+"subordinada": "Complementos subordinados. Ej: 'Wawa shamukpi mamaka rirka.'"
+}
+}
+},
+"example": [
+{
+"value": "Ñukaka *yakuta* mikuni.",
+"description": "Yo bebo el agua.",
+"example_type": "cotidiano",
+"example_structure": "transitiva"
+},
+{
+"value": "Ñukaka *wasipi* kawsani.",
+"description": "Yo vivo en la casa.",
+"example_type": "cotidiano",
+"example_structure": "intransitiva"
+},
+{
+"value": "Pay *yachachikmi* kan.",
+"description": "Él es profesor.",
+"example_type": "educativo",
+"example_structure": "copulativa"
+},
+{
+"value": "Ñukaka *alli mikuni*.",
+"description": "Yo como bien.",
+"example_type": "afirmativa",
+"example_structure": "afirmativa"
+},
+{
+"value": "Mana *yakuta* mikunchu.",
+"description": "No bebe el agua.",
+"example_type": "negativa",
+"example_structure": "negativa"
+},
+{
+"value": "Ama *wakaychu*!",
+"description": "¡No llores!",
+"example_type": "afectivo",
+"example_structure": "prohibitiva"
+},
+{
+"value": "Ichapash *wakashka-cha* kani.",
+"description": "Quizás estuve llorando.",
+"example_type": "dubitativa",
+"example_structure": "dubitativa"
+},
+{
+"value": "¿Kikin *yakuta* mikunki chu?",
+"description": "¿Tú bebes el agua?",
+"example_type": "interrogativo",
+"example_structure": "interrogativa-chu"
+},
+{
+"value": "¿Pitak *yakuta* apanki?",
+"description": "¿A quién traes el agua?",
+"example_type": "interrogativo",
+"example_structure": "interrogativa-tak"
+},
+{
+"value": "¿Manachu *yakuta* mikunki?",
+"description": "¿No estás bebiendo agua?",
+"example_type": "interrogativo",
+"example_structure": "interrogativo-negativa"
+},
+{
+"value": "*Apamuy* yakuta!",
+"description": "¡Trae el agua!",
+"example_type": "comunitario",
+"example_structure": "imperativa"
+},
+{
+"value": "Ñukaka *yakuta* apani.",
+"description": "Yo traigo agua.",
+"example_type": "cotidiano",
+"example_structure": "simple"
+},
+{
+"value": "Ñukaka *yakuta* apani, chaymanta *warmikunata* tikrini.",
+"description": "Yo traigo agua y luego visito a las mujeres.",
+"example_type": "cotidiano",
+"example_structure": "compleja"
+},
+{
+"value": "Wawaka *pukllan*, mamaka *awaymi* ruran.",
+"description": "El niño juega, la madre teje.",
+"example_type": "familiar",
+"example_structure": "compleja"
+}
+]
+
+},
+"synonyms": {
+"type": "array",
+"required": false,
+"description": "Palabras con significado aproximado, pero no siempre intercambiables.",
+"note": "Nunca usar sinónimos como sustitutos directos en el campo 'gloss'."
+},
+"cultural_category": {
+"type": "string",
+"required": false,
+"enum": ["cosmovisión", "agricultura", "ritual", "familiar", "educativo", "emocional", "alimenticio"],
+"description": "Categoría cultural a la que pertenece el significado principal."
+},
+"is_entry_culturally_valid": {
+"type": "boolean",
+"description": "Campo booleano para marcar si la entrada cumple criterios culturales, lingüísticos y comunitarios."
+},
+
+"case_usage": {
+"type": "string",
+"required": false,
+"description": "Caso gramatical relacionado si aplica. Ej: acusativo, dativo, locativo, genitivo, instrumental."
+},
+"usage_context": {
+"type": "string",
+"required": true,
+"description": "Explicación sobre cómo se usa la palabra en contextos emocionales, culturales, comunitarios o ancestrales."
+},
+"usage_frequency": {
+"type": "string",
+"required": false,
+"enum": ["común", "poco común", "arcaico"],
+"description": "Frecuencia de uso en la actualidad según la comunidad."
+},
+"emotional_charge": {
+"type": "string",
+"required": false,
+"enum": ["alta", "media", "baja"],
+"description": "Carga emocional de la palabra para el hablante o la comunidad."
+},
+"symbolic_value": {
+"type": "string",
+"required": false,
+"description": "Valor simbólico asociado: sabiduría, fertilidad, espiritualidad, etc.",
+"examples": ["resistencia", "sabiduría", "pureza", "protección"]
+},
+"cultural_reference": {
+"type": "string",
+"required": false,
+"description": "Referencia cultural o personaje asociado a la palabra. Ej: Dolores Cacuango, Inti Raymi."
+},
+"source_type": {
+"type": "string",
+"required": false,
+"enum": ["oral", "literaria", "cotidiana"],
+"description": "Origen del conocimiento o uso de la palabra: tradición oral, texto escrito, o uso diario."
+},
+"prekichwa_variant": {
+"type": "string",
+"required": false,
+"description": "Variante antigua o pre-kichwa si es conocida. Ej: 'čukulpuy'."
+}
+}
+}
+
+
+📦 ESTRUCTURA JSON DE SALIDA ESPERADA JSON avanzada para uso educativo, lingüístico, cultural y tecnológico. Ideal para diccionario digital, IA lingüística o asistente educativo en kichwa.
+
+{
+"word": "Palabra en kichwa",
+"description": "Significado cultural y funcional basado en cómo se vive, expresa o piensa esta palabra en la comunidad kichwa. Debe ser clara, no técnica, ni vaga.",
+"gloss": "Traducción literal simple (una palabra en español).",
+"letters_of_the_alphabet": "Letra inicial en mayúscula",
+"translation_value": "Traducción principal al español hasta el primer punto(Documento).",
+"etymology": "Raíz lingüística si es reconocida (opcional).",
+"geographic_usage": "Región donde se usa",
+"language_variant": "Otavalo, Saraguro, Pastaza, Imbabura central, Panandino, Otro",
+"semantic_type": "persona, objeto, lugar, concepto, animal, planta",
+"dictionary_word_by_class": "Clase gramatical",
+"verb_form": "Forma verbal",
+"case_usage": "Caso gramatical relacionado",
+"usage_context": "Explicación cultural, emocional, ancestral o comunitaria de uso",
+"usage_frequency": "común, poco común, arcaico",
+"emotional_charge": "alta, media, baja",
+"symbolic_value": "valor espiritual, resistencia, fertilidad, sabiduría, etc.",
+"is_neologism": true,
+"is_generic": true,
+"generic_for": "planta, animal, objeto, lugar, etc.",
+"morphemic_structure": ["raíz", "sufijo1", "sufijo2"],
+"variant_forms": ["forma1", "forma2"],
+"dictionary_words_by_examples": {
+"type": "array",
+"required": true,
+"description": "Lista de oraciones que usan la palabra en contexto real (mínimo 3, máximo 5).",
+"generate": true,
+"generation_logic": "Crear entre 3 y 5 ejemplos completos en kichwa, usando la palabra correctamente en estructura SOV. Cada oración debe tener traducción al español y tipo de uso (cotidiano, afectivo, interrogativo, etc.). La palabra debe estar visiblemente destacada en cada oración.",
+"constraints": {
+"min_items": 3,
+"max_items": 5
+},
+"fields_per_item": {
+"value": "Oración en kichwa válida y gramaticalmente correcta, con la palabra clave destacada con asteriscos o resaltado.",
+"description": "Traducción precisa y contextual al español.",
+"example_type": "cotidiano | afectivo | interrogativo | emocional | educativo | prohibitivo | ritual | comunitario | etc.",
+"example_structure": "transitiva | intransitiva | copulativa | afirmativa | negativa | prohibitiva | dubitativa | interrogativa-chu | interrogativa-tak | interrogativo-negativa | imperativa | simple | compleja"
+},
+"reference_grammar": {
+"3.1 Estructura verbal": {
+"transitiva": "Verbo con objeto directo. Ej: 'Ukata mikunki.'",
+"intransitiva": "Verbo sin objeto directo. Ej: 'Ñukaka purini.'",
+"copulativa": "Verbo copulativo como 'kan'. Ej: 'Warmimi kan.'"
+},
+"3.2 Modalidad": {
+"afirmativa": "Presente afirmativo. Ej: 'Ñukaka mikuni.'",
+"negativa": "Con 'mana' + '-chu'. Ej: 'Manami mikunchu.'",
+"prohibitiva": "Con 'ama' + '-chu'. Ej: 'Ama shamuychu.'",
+"dubitativa": "Con 'ichapash' o sufijo '-cha'. Ej: 'Pay shamunkacha.'",
+"interrogativa-chu": "Usa sufijo '-chu'. Ej: '¿Mikunchu?'",
+"interrogativa-tak": "Usa sufijo '-tak'. Ej: '¿Pitak shamunki?'",
+"interrogativo-negativa": "Con 'mana' y '-chu'. Ej: '¿Manachu mikunki?'",
+"imperativa": "Imperativo directo. Ej: 'Shamuy!'"
+},
+"3.3 Complejidad": {
+"simple": "Una sola acción. Ej: 'Ñukaka purini.'",
+"compleja": {
+"conjugada": "Varias acciones. Ej: 'Ñukaka mikuni, chaymanta purini.'",
+"subordinada": "Uso de conectores o complementos. Ej: 'Ñukaka mikushpa rurani.'"
+}
+}
+},
+"example": [
+{
+"value": "Ñukaka *mapata* rikuni.",
+"description": "Yo veo la suciedad.",
+"example_type": "cotidiano",
+"example_structure": "transitiva"
+},
+{
+"value": "Pay *mapawan* pukllan.",
+"description": "Ella juega con la suciedad.",
+"example_type": "afectivo",
+"example_structure": "intransitiva"
+},
+{
+"value": "¿Kikin *mapata* rikunki chu?",
+"description": "¿Tú ves la suciedad?",
+"example_type": "interrogativo",
+"example_structure": "interrogativa-chu"
+}
+]
+},
+"dictionary_words_by_pronunciation": [
+{
+"value_written_form": "yakuta",
+"notation_type_write_form": "forma escrita kichwa",
+"notation_type": "ipa-international",
+"phonetic_value": "ˈja.ku.ta"
+}
+],
+"syllables": ["ya", "ku", "ta"],
+"synonyms": ["umay", "yachay"],
+"cultural_reference": "Dolores Cacuango",
+"source_type": "oral, literaria, cotidiana",
+"prekichwa_variant": "čukulpuy"
+}
+
+
+
+
+📏 REGLAS DE APLICACIÓN: Nunca usar frases genéricas: “yo veo palabra”, “yo uso palabra”.
+
+Evitar el uso de “el uso de” en descripción o ejemplos, especialmente si la palabra es una persona o concepto.
+
+Cada entrada debe ser original, sin copiar estructuras entre palabras.
+
+Separar acepciones si hay polisemia (Ej. “maskana” = investigar o buscar sustento). Usar: entrada I, entrada II.
+
+El campo description no debe tener saltos de línea ni abreviaturas como “;” o "\n".
+
+El campo usage_context debe incluir sentido espiritual, relacional o emocional cuando sea aplicable.
+
+Usar siempre el orden gramatical SOV y sufijos del kichwa para ejemplos. Ej: Ñukaka yakuta mikun.
+
+Las traducciones deben partir del campo description y no solo del value.
+
+Los ejemplos deben destacar la palabra clave (entre asteriscos o comillas si es digital).
+
+Incluir uso de género si aplica: ejemplos con kari (hombre) o warmi (mujer).
+
+Incluir ejemplos que reflejen: Relaciones afectivas o comunitarias
+
+Contextos de aprendizaje ancestral
+
+Emociones o espiritualidad indígena
+
+📚 SUFIJOS ADICIONALES A UTILIZAR (CON EJEMPLOS): -kama (hasta) → wawakama: hasta el niño
+
+-manta (desde) → Otavalomanta: desde Otavalo
+
+-rayku (por causa de) → yachayrayku: por aprender
+
+-paq (para, con fin de) → allipaq: para el bien
+
+-pura (entre) → warmikuna pura: entre mujeres
+
+-man (hacia) → wasiman: hacia la casa
+
+🧠 FONOLOGÍA (CON REGLAS Y EJEMPLOS): El kichwa se basa en 3 vocales principales: a, i, u.
+
+Las sílabas típicas siguen patrones CV (consonante + vocal) o CVC (consonante + vocal + consonante).
+
+Cambios fonéticos reconocidos: ch → ʧ  (ej. chaki → ʧaki)
+
+ll → ʎ  (ej. llakta → ʎakta)
+
+sh → ʃ  (ej. shimi → ʃimi)
+
+ts → ʦ
+
+ñ → ɲ
+
+r → ɾ
+
+y → j
+
+Ejemplo fonético completo: yakuta → [ˈja.ku.ta]
+
+🧩 GRAMÁTICA (CON EXPLICACIONES): El orden sintáctico típico es Sujeto – Objeto – Verbo (SOV). Ej: Ñukaka yakuta mikun.
+
+Uso de sufijos gramaticales: -ta (objeto directo) → yakuta (el agua)
+
+-wan (instrumento) → killkawan (con lápiz)
+
+-pi (lugar) → wasipi (en la casa)
+
+🛑 Validaciones culturales clave: - No se deben usar artículos definidos en kichwa (el, la, los).
+- Si la palabra tiene múltiples significados, separar como entrada I, entrada II.
+- Si la palabra representa una emoción, acción espiritual o rol social, debe usarse en ejemplos relacionados.
+
+Este será el prompt que regirá todas las palabras, todas las generaciones, sin excepción.
+“Actúa como validador y generador con cumplimiento estricto de cada regla, sin resumir, sin suponer. Solo generar si TODAS las validaciones se cumplen exactamente como en el prompt enriquecido Kichwa 2025.”
+“Antes de generar el JSON, valida si la palabra cumple todas las reglas y explícame si no lo hace. Solo genera si es completamente válido.”
+
+
+ASI STAN LOS TEXTOS PROBEIDOS
+
+Abreviaturas
+1. Topónimos
+amz. Amazonía
+az. Azuay
+bo. Bolívar
+Bol. Bolivia
+ca. Cañar
+chi. Chimborazo
+co. Cotopaxi
+gua. Guayas
+im. Imbabura
+lo. Loja
+na. Napo
+or. El Oro
+ore. Orellana
+pa. Pastaza
+Pe. Perú
+pi. Pichincha
+S. Sierra
+sc. Sierra centro (Cotopaxi, Tungurahua, Chimborazo, Bolívar)
+sn. Sierra norte (Pichincha, Imbabura)
+ss. Sierra sur (Cañar, Azuay, Loja)
+suc. Sucumbíos
+tu. Tungurahua
+za. Zamora
+
+2. Gramaticales
+adj. adjetivo (puka, alli, sumak)
+adv. adverbio (kunan, karu, allimanta)
+C. complemento
+C. consonante
+cant. cantidad
+CC. complemento circunstancial
+CD. complemento directo
+CI. complemento Indirecto
+con. conector (chaymanta, shinaka, shina kaspaka)
+CV. consonante y vocal
+CVC. Consonante- vocal-consonante
+dem. demostrativo
+det. determinante (wakin, ñukapa, pi)
+excl. exclamación (añañaw, alalay, imanash)
+gen. Genitivo (-pa: ñuqapa, paypa)
+indef. Indefinido
+Interj. Interjección
+int. Interrogativo, interrogación
+N. núcleo
+num. numeral, número (shuk, ishkay, pichka)
+onom. onomatopeya (kulun, tulun, tuntún)
+ord. ordinal (ñawpaniki, shukniki, ishkayniki)
+preg. pregunta
+pron. pronombre (ñuka, kan, pay, kay, chay)
+s. sustantivo, nombre (urku, wayku, inti, killa)
+S. sujeto
+SCV. sujeto, complemento y verbo
+sin. Sinónimo (kucha, walun)
+v. verbo (kawsay, puriy, wañuy)
+var. variante, alternancia (chimpalu, tsimpalu, simpalu)
+V. vocal (a, i, u)
+VC. Vocal-consonante
+
+3. Siglas
+ALKI Academia de la Lengua Kichwa (ver KAMAK)
+ANAZPPA Asociación Nacional Zápara de la Provincia de Pastaza
+CEE Conferencia Episcopal Ecuatoriana
+CIEI Centro de Investigaciones Educativas Indígenas
+CNV-Q Campamento Nueva Vida - Quito
+CONAIE Confederación de Nacionalidades Indígenas del Ecuador
+CONPLADEIN Consejo de Planificación y Desarrollo de los Pueblos Indígenas
+DINEIB Dirección Nacional de Educación Intercultural Bilingüe
+DINSE Dirección Nacional de Servicios Educativos
+DIPEIB Dirección Provincial de Educación Intercultural Bilingüe
+EBI Educación Bilingüe Intercultural
+EIB Educación Intercultural Bilingüe
+ECUARUNARI Ecuador runakunapak rikcharimuy
+EIBAMAZ Educación Intercultural Bilingüe para la Amazonía
+FEINE Federación de Evangélicos Indígenas del Ecuador.
+FENOCIN-E Federación Nacional de Organizaciones Campesinas, Indígenas y Negras del Ecuador.
+GTZ Agencia Técnica de Cooperación Alemana
+IEQ Instituto de Estudios Qichwas
+ILL/PUCE Instituto de Lenguas y Lingüística-P
+INCC Instituto Nacional de Capacitación Campesina
+KAMAK Kichwa Amawta Kamachik (Academia de la lengua kichwa)
+LAEB-UC. Lingüística Andina y Educación Bilingüe/Universidad de Cuenca
+ME Ministerio de Educación
+ONGs Organizaciones no Gubernamentales
+PLEIB Programa de Licenciatura en Educación Intercultural Bilingüe
+PRODEPINE Proyecto de Desarrollo de los Pueblos Indígenas y Negros del Ecuador
+PUCE Pontificia Universidad Católica del Ecuador
+SEPDI Subsecretaría de Educación para el Diálogo Intercultural / ME
+SEIC Sistema de Escuelas Indígenas de Cotopaxi
+
+4. Simbología lingüística
+[ ] indica representación fonética.
+/ / indica representación fonológica.
+< > indica representación ortográfica.
+( ) indica formas opcionales.
+> indica que lo que precede da lugar a lo que sigue: *uspun > pusun.
+< indica que lo que precede se deriva de: pusun < *uspun.
+* el asterisco señala una forma etimológica o reconstruida: *ya-yku-y.
+** los dos asteriscos señalan que la reconstrucción se basa en concepciones y
+datos históricos.
+. el punto señala el límite silábico.
+- el guión señala límite fonemático de monemas ligados: kay-pi-mi.
+~ indica que la entrada que se ubica en este lugar.
+/č/ señala un fonema africado palatal.
+/ly
+/ señala un fonema lateral palatal.
+// señala un fonema lateral palatal.
+/š/ señala un fonema fricativo palatal sordo.
+/ž/ señala un fonema fricativo palatal sonoro
+/ts/ señala un fonema africado dental sordo.
+/R/ señala una vibrante múltiple.
+/0/ señala ausencia de fonema o marca cero.
+FN señala una frase nominal.
+FV señala una frase verbal.
+O señala una oración.
+OC señala una oración compleja.
+OS señala una oración simple.
+Rn indica raíz nominal.
+Rv indica raíz verbal.
+SN señala un sintagma nominal.
+SV señala un sintagma verbal.
+Tv indica tema verbal.
+
+word [variant_form1, variant_form2] abrev. abrev. región: glosa, traducción
+DESCRIPCIÓN (en línea nueva o continua)
+SINÓNIMOS (si hay)
+
+- word = texto antes de primer espacio
+- variant_forms = contenido dentro de corchetes [ ]
+- abreviatura = lo que sigue a los corchetes (ej: s. v. adj.)
+- dictionary_word_by_class = convertir abreviatura a categoría ("s." → Sustantivo)
+- glosa = palabra o frase posterior al `:` (si no hay, buscar en línea siguiente)
+- translation_value = lo que sigue a la coma después de la glosa
+
+
+

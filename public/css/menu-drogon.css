@@ -1,0 +1,143 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 05/10/2016, 8:58:51
+    Author     : Migu3ln (Perrin)
+*/
+
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 11/06/2016, 12:04:47
+    Author     : Migu3ln (P3rrin)
+*/
+/*#354a5f == azul*/
+/*#0c4156=azul table*/
+/*#16a087=verde*/
+/*96a4a5=griz submenu*/
+/*c7b299= cafe activo menu*/
+/*----formularios colores---*/
+/* #c1d0db=body formulario gris*/
+/*----------tabla defecto---*/
+/* #0c4156=azul cabecera*/
+/* #f1c411 =amarillo*/
+/* naranja=#e84c3d !important*/
+
+/*-------------MENU-----------*/
+
+#menu-dogon-horizontal li {
+    list-style: none;
+    height: 39px;
+    padding: 2px;
+    width: 40px;
+    margin-bottom: 10%;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+}
+
+#menu-dogon-horizontal span {
+    /* Container properties */
+    width: 0;
+    left: -192px;
+
+    padding: 0;
+    position: absolute;
+    overflow: hidden;
+
+    /* Text properties */
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+    font-size: 12px;
+    /*font-weight:bold;*/
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+    line-height: 39px;
+
+    /* CSS3 Transition: */
+    -webkit-transition: 0.25s;
+
+    /* Future proofing (these do not work yet): */
+    -moz-transition: 0.25s;
+    transition: 0.25s;
+
+}
+
+#menu-dogon-horizontal a {
+    background-color: #cccccc;
+    height: 39px;
+    width: 38px;
+    display: block;
+    position: relative;
+    color: #7e8c8d;
+    cursor: pointer;
+
+}
+
+/* General hover styles */
+
+#menu-dogon-horizontal a:hover span {
+    width: 190px;
+    padding: 0 20px;
+    overflow: visible;
+}
+
+#menu-dogon-horizontal a:hover {
+    background-color: #e67f22;
+    color: #fff;
+    text-decoration: none;
+    /*-moz-box-shadow: 0 0 5px #e67f22;*/
+    /*-webkit-box-shadow: 0 0 5px #e67f22;*/
+    /*box-shadow: 0 0 5px #e67f22;*/
+}
+
+#menu-dogon-horizontal span :hover {
+    background-color: #1e8bb4;
+    color: #223a44;
+    text-shadow: 1px 1px 0 #44a8d0;
+}
+
+#content-gestion-menu {
+    right: 0;
+    text-align: left;
+    margin-top: 26%;
+    position: absolute;
+    z-index: 120;
+}
+
+/*
+a, a:visited,a:active {
+    color:#0196e3;
+    text-decoration:none;
+    outline:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}*/
+/*
+a img{
+    border:none;
+}*/
+
+/*--alex--*/
+#menu-dogon-horizontal .menu-drogon-a span {
+    background-color: #7e8c8d;
+    color: #fff;
+    text-shadow: 1px 1px 0 #7e8c8d;
+
+    -moz-box-shadow: 1px 1px 0px #00aff130;
+    -webkit-box-shadow: 1px 1px 0px #00aff130;
+    box-shadow: 1px 1px 0px #00aff130;
+    -moz-border-radius: 8px;
+}
+
+/*--iconos drogon--*/
+.menu-drogon-a > i {
+    font-size: 20px;
+    margin-top: 28%;
+    margin-left: 24%;
+}

@@ -1,0 +1,325 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Multimedia;
+
+class BusinessByAcademicOfferings extends ModelManager
+{
+    const STATE_ACTIVE = 'ACTIVE';
+    const STATE_INACTIVE = 'INACTIVE';
+    protected $table = 'business_by_academic_offerings';
+
+    protected $fillable = array(
+        'value', //*
+        'description',
+        'status', //*
+        'business_id', //*
+        'source',
+        'allow_source', //*
+        'subtitle',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'main',
+
+
+    );
+    protected $attributesData = [
+        ['column' => 'value', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'description', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'status', 'type' => 'string', 'defaultValue' => 'ACTIVE', 'required' => 'true'],
+        ['column' => 'business_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'source', 'type' => 'string', 'defaultValue' => 'nothing', 'required' => 'false'],
+        ['column' => 'allow_source', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true'],
+        ['column' => 'subtitle', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'created_at', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'updated_at', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'deleted_at', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'main', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true'],
+
+
+    ];
+    public $timestamps = true;
+
+    protected $field_main = 'value';
+
+    public static function getRulesModel()
+    {
+        $rules = [
+            "value" => "required|max:150",
+            "status" => "required",
+            "business_id" => "required|numeric",
+            "source" => "max:350",
+            "main" => "required|numeric"
+
+
+        ];
+        return $rules;
+    }
+
+
+    /*MANAGER MAINS*/
+
+    public function getAdmin($params)
+    {
+        $sort = 'desc';
+        $field = 'main';
+
+        $query = DB::table($this->table);
+        $business_id = $params['filters']['business_id'];
+
+        if (isset($params['sort'])) {
+            $field = $column = array_keys($params['sort']);
+            $field = $field[0];
+            $sort = $params['sort'][$column[0]];
+        }
+
+        $page = isset($params['current']) ? (int)$params['current'] : 0;
+        $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
+
+        $selectString = "$this->table.id,$this->table.value,$this->table.description,$this->table.status,business.title as business,
+business.id as business_id,
+$this->table.source,$this->table.allow_source,$this->table.subtitle,$this->table.main";
+
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('business', 'business.id', '=', $this->table . '.business_id');
+        if ($params['searchPhrase'] != null) {
+            $searchValue = $params['searchPhrase'];
+            $likeSet = $searchValue;
+
+            $query->where($this->table . '.value', 'like', '%' . $likeSet . '%');
+            $query->orWhere($this->table . '.description', 'like', '%' . $likeSet . '%');
+            $query->orWhere("business.title", 'like', '%' . $likeSet . '%');
+            $query->orWhere($this->table . '.subtitle', 'like', '%' . $likeSet . '%');;
+        }
+        $query->where($this->table . '.business_id', '=', $business_id);
+
+        $recordsTotal = $query->get()->count();
+        $pages = 1;
+        $total = $recordsTotal; // total items in array
+        // sort
+        $query->orderBy($field, $sort);
+        // Pagination: $perpage 0; get all data
+        if ($perpage > 0) {
+            $pages = ceil($total / $perpage); // calculate total pages
+            $page = max($page, 1); // get 1 page when $_REQUEST['page'] <= 0
+            $page = min($page, $pages); // get last page when $_REQUEST['page'] > $totalPages
+            $offset = ($page - 1) * $perpage;
+            if ($offset < 0) {
+                $offset = 0;
+            }
+            $query->offset((int)$offset);
+            $query->limit((int)$perpage);
+        }
+        $current_page = isset($params['current']) ? (int)$params['current'] : 0;
+        $data = $query->get()->toArray();
+
+        $result['total'] = $total;
+        $result['rows'] = $data;
+        $result['current'] = $current_page;
+        $limit = isset($params['rowCount']) ? $params['rowCount'] : 10;
+        $result['rowCount'] = $limit;
+
+        return $result;
+    }
+
+
+    public function saveData($params)
+    {
+        $success = false;
+        $msj = "";
+        $result = array();
+        $attributesPost = $params["attributesPost"];
+        $errors = array();
+        DB::beginTransaction();
+        try {
+            $modelName = 'BusinessByAcademicOfferings';
+            $model = new BusinessByAcademicOfferings();
+            $createUpdate = true;
+            $auxResource = "";
+            $modelMultimedia = new Multimedia;
+
+            if (isset($attributesPost["id"]) && $attributesPost["id"] != "null" && $attributesPost["id"] != "-1") {
+                $model = BusinessByAcademicOfferings::find($attributesPost['id']);
+                $createUpdate = false;
+                $auxResource = $model->source;
+            } else {
+                $createUpdate = true;
+            }
+
+            $BusinessByAcademicOfferingsData = $attributesPost;
+            $business_id = $attributesPost["business_id"];
+            $allow_source = $attributesPost["allow_source"];
+            $successMultimediaModel = array();
+            if ($allow_source == 1) {
+                $source = $attributesPost["source"];
+                $pathSet = "/uploads/web/BusinessByAcademicOfferings/images";
+                $change = $attributesPost["change"];
+                $successMultimediaModel = $modelMultimedia->managerUploadModel(
+                    array(
+                        'createUpdate' => $createUpdate,
+                        'source' => $source,
+                        'pathSet' => $pathSet,
+                        'change' => $change,
+                        'auxResource' => $auxResource
+                    )
+                );
+            } else {
+                if (!$createUpdate) {
+                    $modelMultimedia->deleteResource(array("path" => $auxResource));
+                }
+            }
+            $successMultimedia = $allow_source == 1 ? $successMultimediaModel['success'] : true;
+            if ($successMultimedia) {
+                $currentResource = '';
+
+                $source = $allow_source == 1 ? $currentResource . $successMultimediaModel['source'] : $BusinessByAcademicOfferingsData['source'];
+
+
+                $BusinessByAcademicOfferingsData['source'] = $source;
+
+                $attributesSet = $this->getValuesModel(array('fillAble' => $this->fillable, 'haystack' => $BusinessByAcademicOfferingsData, 'attributesData' => $this->attributesData));
+                $paramsValidate = array(
+                    'inputs' => $attributesSet,
+                    'rules' => self::getRulesModel(),
+
+                );
+                $validateResult = $this->validateModel($paramsValidate);
+                $success = $validateResult["success"];
+                if ($success) {
+                    if ($attributesSet['main'] == 1) {
+                        if (isset($attributesPost["id"]) && $attributesPost["id"] != "null" && $attributesPost["id"] != "-1") {
+                            $idCurrent = $attributesPost["id"];
+                            BusinessByAcademicOfferings::where('status', 'ACTIVE')
+                                ->where('business_id', '=', $business_id)
+                                ->whereNotIn('id', [$idCurrent])
+                                ->update(['main' => 0]);
+                        } else {
+                            BusinessByAcademicOfferings::where('status', 'ACTIVE')
+                                ->where('business_id', '=', $business_id)
+                                ->update(['main' => 0]);
+                        }
+                    }
+                    $model->fill($attributesSet);
+                    $success = $model->save();
+                } else {
+                    $success = false;
+                    $msj = "Problemas al guardar  BusinessByAcademicOfferings.";
+                    $errors = $validateResult["errors"];
+                }
+                if (!$success) {
+                    DB::rollBack();
+                } else {
+                    DB::commit();
+                }
+                $result = [
+                    "errors" => $errors,
+                    "msj" => $msj,
+                    "success" => $success
+                ];
+            } else {
+                $msj = "Problemas al guardar la imagen.";
+                DB::rollBack();
+                throw new \Exception($msj);
+            }
+            return ($result);
+        } catch (Exception $e) {
+            $msj = $e->getMessage();
+            $result = array(
+                "success" => $success,
+                "msj" => $msj,
+                "errors" => $errors
+            );
+            return ($result);
+        }
+    }
+
+
+    public function getMainFrontend($params)
+    {
+        $sort = 'desc';
+        $field = 'main';
+
+        $query = DB::table($this->table);
+        $business_id = $params['filters']['business_id'];
+
+
+        $selectString = "$this->table.id,$this->table.value,$this->table.description,$this->table.status,business.title as business,
+business.id as business_id,
+$this->table.source,$this->table.allow_source,$this->table.subtitle,$this->table.main";
+
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('business', 'business.id', '=', $this->table . '.business_id');
+        $query->where($this->table . '.business_id', '=', $business_id);
+        $main = 1;
+        $status = 'ACTIVE';
+
+        $query->where($this->table . '.main', '=', $main);
+        $query->where($this->table . '.status', '=', $status);
+
+        $query->orderBy($field, $sort);
+        $result = $query->first();
+
+
+        return $result;
+    }
+
+    public function getManagementFrontend($params)
+    {
+        $resultData = $this->getFrontend($params);
+        $success = false;
+        $data = [];
+        if ($resultData) {
+            $data['parent'] = $resultData;
+            $success = true;
+            $business_by_academic_offerings_id = $resultData->id;
+            $modelData = new \App\Models\BusinessAcademicOfferingsByData();
+            $childrens = $modelData->getDataById([
+                'filters' => [
+                    'business_by_academic_offerings_id' => $business_by_academic_offerings_id
+                ]
+            ]);
+            if ($childrens) {
+                $data['childrens'] = $childrens;
+            }
+        }
+
+        $result = [
+            'data' => $data,
+            'success' => $success
+        ];
+        return $result;
+    }
+
+    public function getFrontend($params)
+    {
+
+        $sort = 'desc';
+        $field = 'main';
+
+        $query = DB::table($this->table);
+        $business_id = $params['filters']['business_id'];
+
+
+        $selectString = "$this->table.id,$this->table.value,$this->table.description,$this->table.status,business.title as business,
+business.id as business_id,
+$this->table.source,$this->table.allow_source,$this->table.subtitle,$this->table.main";
+
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('business', 'business.id', '=', $this->table . '.business_id');
+        $query->where($this->table . '.business_id', '=', $business_id);
+        $query->orderBy($field, $sort);
+        $result = $query->first();
+
+
+        return $result;
+    }
+}

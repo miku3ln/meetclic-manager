@@ -1,0 +1,2888 @@
+2046|a cambio de|adv.|ranti, rantimpa|a continuació n: kipa; chaymanta|
+2047|a diario|adv.|punchanta punchanta, punchantin||
+2048|a gusto|adv.|ninantak||
+2049|a tiempo|adv.|llikchalla, kachka||
+2050|ábaco qichwa (objeto)|s.|yupana||
+2051|abajo|adv.|uray, wayku||
+2052|abandonado|adj.|sapalla, sakishka, shitashka, hichushka||
+2053|abandonar|v.|sakina, hichuna, shitana|abdó men: wiksa|
+2054|abeja|s.|wayrunku, chullumpi, putan chuspi||
+2055|abismo|s.|kaka||
+2056|ablandarse|v.|llampuna, apiyana||
+2057|abonanzar|v.|kasiyachina||
+2058|abonar, el terreno|s.|wanuna||
+2059|abono|s.|wanu, isma||
+2060|aborrecer|v.|chiknina, millana||
+2061|abortar|v.|shulluna||
+2062|aborto|s.|shullu, shullushka, shullushka wawa||
+2063|abrazar|s.|ukllana||
+2064|abrigado|adj.|kunuk||
+2065|abril|s.|ayriwa||
+2066|abrir|v.|paskana, chiktana|a presión manual: chillpina|
+2067|absolutamentetodo|adj.|tukuypacha, illakta, tukuymashna||
+2068|absorber|v.|chumkana, tsumkana||
+2069|abuela|s.|hatuku mama, hatunmama||
+2070|abuelo|s.|hatuku yaya, hatunyaya||
+2071|abultado|adj.|raku||
+2072|abundar|v.|kamana, nanakllakana||
+2073|acabar|v.|puchukana, tukuchina||
+2074|acabarse|v.|tukurina||
+2075|acariciar|v.|kuyachina, kuyana||
+2076|acarrear|v.|astana||
+2077|accidente (desgracia)|s.|llaki, kulluy||
+2078|acechar|v.|qaway; kawana; chapana||
+2079|aceite|s.|wira||
+2080|acelerar|v.|utkana||
+2081|aceptar|v.|chaskina, hapina||
+2082|acequia|s.|larka|hacer acequias: larkana|
+2083|acercar|v.|kimina, kuchuyachina||
+2084|acercarse (en el espacio)|v.|kayllayana, kimirina, kuchuyana, llutarina, manyayana||
+2085|achera|s.|achira||
+2086|achicarse|v.|kintiyana, tuzuyana, wañurina||
+2087|achiote|s.|mantur, manturu||
+2088|achogcha|s.|achukcha||
+2089|achupalla|s.|achupalla||
+2090|aclarar problemas|v.|chimpapurachina|aclararse el dí a: punchayana|
+2091|aconsejar|v.|kunana||
+2092|acordarse|v.|yuyarina||
+2093|acostarse|v.|siririna||
+2094|acostumbrado|adj.|yacharishka||
+2095|acostumbrarse|v.|yacharina||
+2096|acrecentar|v.|mirachina||
+2097|actividad|s.|ruray, llamkay||
+2098|actual|adv.|kunan||
+2099|aculturado|adj.|chasu||
+2100|acuñar|v.|kanichina||
+2101|adelantar|v.|ñawpana|expresión para hacer adelantar a los animales: chi, chisha chisha|
+2102|adelantarse|v.|ñawparina|ademá s: ashtawan|
+2103|adherirse|v.|llutarina||
+2104|adivinanza|s.|watuy; expresión de ~: imashi imashi||
+2105|adivinar|v.|watuna||
+2106|adivino|s.|watuk||
+2107|ad miración, expresión de, hayka, imanash, manchanay, natikalaadmitir|v.|chaskina, hapina, arinina||
+2108|adobe|s.|tika||
+2109|adolescente|adj.||varón: wamra; ambos: mallta, mara; mujer: pasña, kuytsa. adó|
+2110|nde?|preg.|¿maymantak?||
+2111|adoptado|adj.|wiñachishka||
+2112|Adoptivo adoptivo|adj.|wiñachik||
+2113|adorar|v.|muchana||
+2114|adornar|v.|allichina, sumakyachina||
+2115|adulto|adj.|shunkuyuk||
+2116|adversidad|adj.|chiki||
+2117|advertir|v.|willana||
+2118|aferrado|adj.|llumi||
+2119|aficionar|v.|munana||
+2120|afilar|v.||cuchillo: mulana; sacar punta en la madera: ñañuyachina|
+2121|afiliarse|v.|llutarina||
+2122|afligirse|v.|llakirina||
+2123|afrecho|s.|hamchi|de cebada: palak|
+2124|afuera|adv.|hawa, kancha||
+2125|agachar|v.|kumuna||
+2126|agente|s.|chapak|á gil: kutsi, pantalla, hawalla|
+2127|agitar|v.|kuyuchina|cosas líquidas: tsuklupuna|
+2128|agitarse|v.|kuyuna|aglomeració n: wankuriy, talliriy, wayka|
+2129|aglomerado|adj.|tallirishka, wankurishka||
+2130|aglomerarse|v.|tallirina, wankurina, zimpunina||
+2131|agolpar|v.|ñitina||
+2132|agónico|adj.|ayakara||
+2133|agosto|s.|chakmay||
+2134|agotarse|v.|tukurina|físicamente: sampayana, shaykuna|
+2135|agradable|adj.|mishkichiypak||
+2136|agradecer|v.|yupaychana||
+2137|agravarse de enfermedad|v.|anchayana||
+2138|agregar|v.|yapana||
+2139|agriarse, hacerse agrio|v.|puskuyana||
+2140|agrietado|adj.|waka, chiktashka||
+2141|agrietarse|v.|chiktarina, rakrayana|la piel: paspayana|
+2142|agrio|adj.|hayak, tani|agrupació n: tantachiy, tantanakuy, wankuriy|
+2143|agrupar|v.|tantachina|de la misma especie: paypurachina|
+2144|agruparse para acelerar un trabajo|v.|waykana||
+2145|agua|s.|yaku||
+2146|aguacate|s.|pallta||
+2147|aguado|adj.|chuya||
+2148|aguamiel|s.|chawar mishki||
+2149|aguardar|v.|shuyana||
+2150|agudo (filo, puntiagudo)|adj.|ñawchi||
+2151|águila|s.|anka||
+2152|aguja|s.|yawri||
+2153|agujereado|adj.|hutku||
+2154|agujerear|v.|hutkuyachina, puluna||
+2155|agujero|s.|hutku||
+2156|agusanado|adj.|kuruyashka||
+2157|agusanarse|v.|kuruyana||
+2158|aguzado|adj.|ñawchi. ahí, adv. chaypi||
+2159|ahora|adv.|kunan||
+2160|ahorcar|v.|sipina||
+2161|ahorrar|v.|wakaychina, allichina||
+2162|ahuyentar|v.|manchachina, kallpachina|expresión para hacer adelantar a los animales: chi, chisha chisha, hishi hishi, hushu hushu, kisha kisha|
+2163|aire|s.|samay, wayra||
+2164|ajeno (distinto)|adj.|chikan, chuku, hullu. ají, s. uchu; rukutu, piki uchu||
+2165|ajustar|v.|sipina, takllana||
+2166|alargado|v.|suniyashka||
+2167|alargar|v.|suniyachina||
+2168|alargarse|v.|suniyana||
+2169|al frente|adv.|chimpa, ñawpa||
+2170|al instante|adv.|ña, ñapash||
+2171|al lado|adv.|kuchu. allí, adv. chakaypi||
+2172|al otro lado|adv.|chimpa||
+2173|ala|s.|rikra||
+2174|alabarse|v.|chakchuna|alacrá n: uputinti|
+2175|alcanzar|v.|paktana, chayana||
+2176|alcoba|s.|(pitita, killi)||
+2177|alegre|adv.|kushilla|alegrí a: kushikuy, kushi|
+2178|alejarse, en el espacio|v.|karuyana||
+2179|aleta(s) del pez|s.|pimpis, winkanas||
+2180|alforja|s.|wayaka||
+2181|algodón|s.||usual: utku; silvestre: putu. algú|
+2182|n, -o, -a|det.|wakin||
+2183|algunos|det.|tawka, achka, wakinkuna||
+2184|aliento|s.|samay||
+2185|alimentar|v.|karana||
+2186|alimentarse|v.|mikuna||
+2187|alimento|s.|mikuy|envuel to en hojas para cocer: machu; enmohecido: pulak|
+2188|al ma|s.|nuna, samay; tunchi|almacé n: katuwasi|
+2189|almohada|s.|sawna||
+2190|almorzar|v.|(llaqwariy), llakwarina||
+2191|alpaca|s.|allpaka||
+2192|alrededor de|adv.|muyuntin||
+2193|alto, -a|adj.|hatun, suni|lugar alto: hanak, hawa; persona alta y delgada: chawar kiru|
+2194|altamisa|s.|marku||
+2195|alterarse|v.|piñarina||
+2196|alumbrar, dar a luz|v.|pakarina, wachana||
+2197|alum no, -a|s.|yachakuk||
+2198|alzamiento|s.|hatariy||
+2199|alzar|v.|hawayachina|el vestido hasta la cintura: llatanana|
+2200|alzarse|v.|hatarina||
+2201|amado|adj.|kuyashka, munashka||
+2202|amamantar|v.|chuchuchina||
+2203|amancebado|adj.|wayna||
+2204|amanecer|v.|pakarina||
+2205|a mansar|v.|wiwana, uywana||
+2206|amante|s.|kayak, munak; adj. varón: wayna|mujer: paya; dos géneros: ashi|
+2207|amañar|v.|chaknana||
+2208|amar|v.|kuyana, maywana, llakina, munana||
+2209|a margo|adj.|hayak, tani||
+2210|amargura (dolor)|s.|llaki||
+2211|amarillo|adj.|karwa, killu||
+2212|amarrado|adj.|watashka|las puntas del pañuelo o tela: tsutu, sutu|
+2213|amarrar|v.|watana, wankuna|las esquinas de un mantel o pañuelo: tsutuna|
+2214|Amazonia|s.|Anti llakta||
+2215|amazónico, persona del oriente|s.|antiruna||
+2216|ambos|adv.|ishkantin||
+2217|América, continente|s.|Pantinsaya; Apya yala||
+2218|amigo|s.|mashi|trato entre los amigos: alama|
+2219|amontonar|v.|tantachina||
+2220|amontonarse (personas, anima les)|v.|tantarina, intuna, wankurina||
+2221|amoroso, -a|adj.|kuyaylla||
+2222|amortiguarse|v.|upayana, wañurina||
+2223|amplio|adj.|hatun||
+2224|ApArte ampollarse|v.|chulakyana, huklluyana||
+2225|amuleto|s.|(wakanki)||
+2226|anaconda|s.|yakumama||
+2227|ananas, fruta similar a la chirimoya|s.|ananas|anatomí a: ukunyachay|
+2228|anca|s.|chaka||
+2229|ancho|adj.|patak, pala|excesi vamente ancho: ankara|
+2230|anciana|adj.|paya||
+2231|anciano|adj.|ruku, machu||
+2232|andar|v.|purina||
+2233|andariego|adj.|yanka purik||
+2234|andrajoso|adj.|tsuntsu, tsunzu||
+2235|angosto|adj.|kichki||
+2236|anillo|s.|shiwi, siwi||
+2237|animal|s.|wiwa, uywa||
+2238|ano|s.|ukuti, hutku||
+2239|anochecer(se)|v.|tutayana||
+2240|anonadarse|v.|upayana||
+2241|anormal|adj.|paku||
+2242|antebrazo|s.|ñañurikra, maki||
+2243|antes|adv.||recién: ñaka; hace mucho tiempo: sarun, ñawpa, unay|
+2244|anticiparse|v.|ñawpana||
+2245|antiguo (en tiempo, edad)|adv.|ñawpa|para objetos: adj. mawka|
+2246|antojar|v.|munana||
+2247|antropófago|s.|runamikuk||
+2248|anudar el kipu|v.|kipuna||
+2249|anular, dedo|s.|shiwi ruka. anunciar, w. willana||
+2250|anzuelo|s.|(yawrina); yawri||
+2251|año|s.|wata||
+2252|apachurrar|v.|ñitina||
+2253|apaciguar|v.|kasiyachina||
+2254|apagar la luz|v.|wañuchina||
+2255|apagarse (la candela o el fuego)|v.|wañurina, wañuna||
+2256|aparato digestivo|s.|mikuyhilli tukuna||
+2257|aparear, estar en celo, en época de apareamiento|v.|napana, salinana||
+2258|aparecerse|v.|rikurina||
+2259|aparecido|adj.|rikurishka||
+2260|aparejo|s.|hallma||
+2261|aparentar|v.|tukuna||
+2262|apartar|v.|akllana, chikanyachina||
+2263|aparte|adj.|chikan||
+2264|Apático apático|adj.|aminta, chamcha, chamuk, hamlla||
+2265|apearse|v.|uraykuna, waykuykuna||
+2266|apegar|v.|kimina, tinkina||
+2267|apegarse|v.|llutarina||
+2268|apellido|s.|ayllushuti||
+2269|apenarse, tener pena|v.|llakina, llakirina||
+2270|a piñar|v.|ñitina||
+2271|aplanar|v.|allana||
+2272|aplastar|v.|kawtayana, llapina||
+2273|apolillarse|v.|kuruyana, susuna|apoyar en el bastó n: tawnana|
+2274|aprender|v.|yachakuna||
+2275|aprendiz|s.|yachakuk||
+2276|aprendizaje|s.|yachakuy||
+2277|apresar|v.|hapina||
+2278|apresurarse|v.|utkana||
+2279|apretar|v.|ñitina||
+2280|apuntalar|v.|tawnana, tumpina||
+2281|apuñar|v.|llapina, tsutsukina||
+2282|apurado|adv.|ichu, utka||
+2283|apurar|v.|atina, utkana||
+2284|aquel, -llo, -a|pron.|chakay. aquí, adv. kaypi||
+2285|arado|s.|yapuna, taklla||
+2286|araña|s.|uru||
+2287|arañar|v.|aspina, sillkuna||
+2288|arar|v.|yapuna||
+2289|árbol (variedades)|s.||yura: champuru, chukchuwasu, chuku, chulan, chunchu, hulunchi, kapi runa, kapuli, kuya, lan, lunchik, mullchi, paparawa, pasu, pillchi, pitun, sipichi, sirak, shallipu, tankana, tukti, wampula, waranku, wawal, wituk, yutsu, zirka|
+2290|arbusto|s.||variedades: iwilan, kahalli, linchi, tanampu|
+2291|arcoiris|s.|kuychi||
+2292|arder|v.|rawrana||
+2293|arderse|v.|ruparina||
+2294|ardilla|s.|chukuri, waywash||
+2295|arena|s.||fina: tiyu, yuksi; gruesa: tsatsa|
+2296|arenal|s.|tiyu tiyu||
+2297|arenilla, tipo de mosquito|s.|hikiñas||
+2298|aretes|s.|rinriwarkuna||
+2299|arisco|adj.|kita||
+2300|armadillo|s.|kirkinchu, kutimpu. armazón (palos peq ueños colocados dentro de la olla para cocinar) s. panshi||
+2301|arrastrar|v.|aysana||
+2302|arrastrarse|v.|suchuna||
+2303|arrear|v.|karkuna||
+2304|arrebatar|v.|kichuna||
+2305|arreglar|v.|allichina, sumakyachina||
+2306|arrepentirse|v.|nanarina||
+2307|arriba|adv.|hanak, hawa||
+2308|arrimar|v.|kimina|la cabeza sobre la almohada: sawnana|
+2309|arrojar|v.|shitana, yayuna||
+2310|arruga|s.|sipu|de los párpados: tsitsi|
+2311|arrugado|adj.|sipushka, chunu, chuñu|por mojarse: chuchuka|
+2312|arrugar|v.|sipuna||
+2313|arteria|s.|anku, sirka||
+2314|articulación (del cuerpo)|s.|muku||
+2315|artículo (legal)|s.|kamachiy||
+2316|arvejas|s.|alwis||
+2317|asamblea|s.|tantanakuy||
+2318|asar|v.|kusana||
+2319|ascender|v.|sikana, wichayana||
+2320|asco, expresión que denota|interj.|atatay||
+2321|asemejarse|v.|rikchana||
+2322|asentir|v.|iñina||
+2323|asesinar|v.|wañuchina||
+2324|asímismo|conj.|shinallatak||
+2325|así, advchay shina, chashnaasiento|s.|tiyarina||
+2326|asir|v.|hapina||
+2327|asno|s.|chantasu, upawiwa, ushu (¿?)||
+2328|asolear|v.|mashana||
+2329|asomarse|v.|rikurina||
+2330|áspero|adj.|lluru, paza, sakra, tsaka||
+2331|asquear|v.|millana||
+2332|astrólogo|s.|(pacha-unanchaq)||
+2333|asustar|v.|manchachina||
+2334|asustarse|v.|mancharina||
+2335|atado|adj.|watashka, wanku|de frutos que se cuelgan en el interior de la casa: wayunka|
+2336|atajar|v.|harkana||
+2337|atar|v.|watana, tsutsukina, wankuna|pies o manos: chaknana|
+2338|atardecer|v.|chishiyana||
+2339|atemorizar|v.|manchachina||
+2340|atemorizarse|v.|mancharina||
+2341|atender|v.|uyana||
+2342|atleta|s.|kallpak||
+2343|Azul atmósfera|s.|wapsi||
+2344|ave|s.|munchi, variedades||
+2345|anka, chuku, kiatormentarse|v.|ñakarina||
+2346|lliku, kuntur, lluta, munchi, pishku, tsuwan, atracar|v.|ñitina. zhuta||
+2347|atrancarse|v.|chukarina, tukarina, shuka- avena, tipo de gramí||
+2348|nea|s.|waylla. rina||
+2349|avergonzarse|v.|pinkana, urmarina|atrá s: kipa, washa|
+2350|averiguar|v.|tapuna||
+2351|atrasarse|v.|kipayana|avió n: antanka|
+2352|atropellar|v.|saruna, llapina||
+2353|avisar|v.|willana||
+2354|auguriomalo|adj.|chiki, tapya||
+2355|aviso|s.|willay||
+2356|aumentar|v.|yapana, mirachina||
+2357|axila|s.|(wallwaku), kashuk, rikra-uku||
+2358|aumento|s.|miray||
+2359|ayer|adv.|kayna|aú n: chayrak|
+2360|ayuda|s.|yanapay|mútua: rantimpa. aú|
+2361|n no|adv.|manarak||
+2362|ayudante|adj.|yana, yanapak||
+2363|aunqueno|adv.|amapash||
+2364|ayudar|v.|yanapana||
+2365|ausentarse|v.|rina, illana||
+2366|ayunar|v.|sasina||
+2367|ausente|s.|illak||
+2368|ayuno|s.|sasi|día de ayuno: sasi puncha|
+2369|austral|s.|hanansuyu|azadó n: llachu|
+2370|autoridad|s.|apu, kamachik|azú car: akumishki|
+2371|auxiliar|v.|yanapana||
+2372|azucena|s.|amankay||
+2373|auxilio|s.|yanapay||
+2374|azuela|s.|llakllana||
+2375|ávaro, -a|adj.|michak, mitsak||
+2376|azul|adj.|ankas||
+2377|babosa|s.|unik, atyak||
+2378|badea|s.|hulun||
+2379|bagazo|s.|patsak, patsuk||
+2380|bailar|v.|tushuna||
+2381|bajar|v.|urayana, uraykuna|los precios o costos: urayana|
+2382|balancearse|v.|walinyana||
+2383|balanza|s.|aysana||
+2384|baldado|adj.|wistu|baldí o: chushak, purum|
+2385|banca, -o (para sentarse)|s.|tiyarina||
+2386|bandera|s.|(unancha), wipala||
+2387|bañarse|v.|armarina||
+2388|barba|s.|sunka||
+2389|barbechar|v.|chakmana, tulana||
+2390|barbudo|adj.|munza shimi||
+2391|barco|s.|wampu||
+2392|barnizar|v.|hawina, llunchina||
+2393|barranco|s.|wayku||
+2394|barra(s) (divisorias verticales)|s.|harka||
+2395|barredor, (persona)|s.|pichak||
+2396|barrendero|s.|pichak||
+2397|barrer|v.|pichana||
+2398|barrera|s.|harka||
+2399|barrido|adj.|pichashka|muy bien: chuyaklla|
+2400|barriga|s.|wiksa||
+2401|barro|s.|turu|hacer barro: turuyay, chapuy|
+2402|bastante|det.|achka, llashak, tawka, pachan||
+2403|bastón (en general)|s.|tawna|para impulsar canoas: wanka, tawna|
+2404|basura|s.|kupa, ñuku. basurero, objeto: kupachurana|lugar donde se amontona: kupashitana; lugar donde se amontona la maleza: chinta|
+2405|batir|v.|kuyuchina||
+2406|bebé, swawa, llullu wawabeber|v.|upyana||
+2407|bebida|s.|upyana|extraida de la base del penco: chawarmishki|
+2408|bejuco (variedades)|s.|: anku, kalatis, kilampu, nanampi, pulanti, tiyamshi, tsili-anku, waska|para tejer canastos: yallika; amarrado en forma circular: maña|
+2409|bello|adj.|sumak||
+2410|besar|v.|muchana||
+2411|bicolor, de pintas negras con blancas|adj.|muru, muru muru|blanco y negro: pazil, puzu|
+2412|bien|adj.|alli; adv. allilla||
+2413|bienes (recursos)|s.|kaqnin; kaknin||
+2414|bienestar|s.|allikay|bifurcació n: pallka|
+2415|bigote|s.|sunka|bilingü e: ishkantinshimi. bilis (glá|
+2416|ndula biliar)|s.|(hayaqin), hayakin, chinkillis||
+2417|blanco, color|adj.|yurak||
+2418|blando|adj.|llullu, apilla||
+2419|blusa|s.|tallpa||
+2420|boa|s.|amaru; atakapi||
+2421|bobo|adj.|muspa, upa||
+2422|boca|s.|shimi|boca abajo: uray shimi, tuwaman; boca arriba: wichay shimi|
+2423|bocio|s.|kutu||
+2424|bodoquera|s.|pukuna||
+2425|bola, (rumpu), rumpabolso, -a|s.|islampu, pati, shikra, tulu, wayaka||
+2426|bonito, -a|adj.|kuyaylla, sumak||
+2427|borbotear|v.|timpuna||
+2428|borde|s.|manya||
+2429|bordes, hacer|v.|shiminchina||
+2430|borrachera|s.|machay, shinkay||
+2431|borracho|adj.|machashka, shinka||
+2432|borrador (objeto)|s.|pichana||
+2433|borrar|v.|pichana||
+2434|borrego|s.|uwiha||
+2435|bosque|s.|sacha||
+2436|bostezar|v.|ampana, haynallina||
+2437|botar|v.|shitana, chakchuna, chiwana, hichana||
+2438|brazo|s.|rikra, rakurikra|del río: chikta, pallka yaku|
+2439|breve|adv.|utka||
+2440|brillante|adj.|punchalla, hakan, palanikuk||
+2441|brillar|v.|achikyana, llipyana, palanina||
+2442|brincar|v.|kushparina, pawana, tushuna||
+2443|brindar (alimentos)|v.|karana||
+2444|brin demos, expresión para brindar, ishkantishunbromista|adj.|asichik, nuspa||
+2445|brotar (lo sembrado)|v.|kiruyana, tukyana||
+2446|brujear|v.|pukuna, shitana||
+2447|BuscArbrujo|s.|chuntapala, sakra, salamanka||
+2448|bruto|adj.|muspa, upa||
+2449|buen, -o, -a|adj.|alli|bú ho: apapa, kukupa, kuskunku|
+2450|bulla|s.|wanlla||
+2451|bulto|s.|kipi||
+2452|burlar|v.|asipayana, asina||
+2453|burro|s.|chantasu, ushu, muspa wiwa (¿?). buscar, el sustento o alimento: v. maskana|con insistencia: lukllikirina; peces debajo de las piedras: kantina|
+2454|c caballo|s.|(hatun paqu), apiw||
+2455|cabaña|s.|chuklla||
+2456|cabecera|s.|sawna||
+2457|cabello|s.|akcha|blanco o gris: puzu|
+2458|cabeza|s.|uma||
+2459|cabeza de mate (animal similar al tigre)|s.|pantu, tuwi||
+2460|cabuyo|s.|chawar||
+2461|cacao blanco|s.|kila, kula, patas|silvestre: kampik|
+2462|cada|det.|sapan|cadá ver: aya, wañushka|
+2463|cadera|s.|chaka, kankik|caer el rocí o: shullana, sarpana|
+2464|caerse|v.|urmana||
+2465|café, color|adj.|paku|planta y bebida: shañu|
+2466|caimito|s.|hapiyu||
+2467|cal|s.|isku, pukshi||
+2468|calabaza|s.|kitu, sampu|cortada tierna: walak|
+2469|caldo|s.|hilli||
+2470|calendario|s.|(pachakipu)||
+2471|calentura|s.|rupay|cálida regió n: yunka suyu|
+2472|caliente|adj.|inlli, kunuk||
+2473|calladamente|adv.|chulunlla, upalla||
+2474|callarse|v.|chunyana, upallana||
+2475|calmar|v.|kasiyachina||
+2476|calmarse|v.|kasiyarina, samarina||
+2477|calor|s.|rupay|expresión de calor: achachaw; expresión por el calor de algo quemante: araray|
+2478|cama|s.|puñuna|rústica: kawitu. camaró|
+2479|n|s.|lluchunka||
+2480|camilla|s.|chakana||
+2481|caminar|v.|purina; expresión para hacer caminar, a personas o animales: kati kati|empezar a caminar los bebés: tatkina|
+2482|camino|s.|ñan||
+2483|camisa|s.|kushma, unku||
+2484|camiseta|s.|kushma||
+2485|camote|s.|apichu, kumal||
+2486|canas|s.|kushi, puzu||
+2487|canasta|s.|ashanka, saparu|canció n: taki|
+2488|candela|s.|nina||
+2489|canelo, árbol de|s.|akwa, ishpinku, pinchi||
+2490|cangrejo|s.|apankura|can guil, variedad de maí z: kankil|
+2491|canilla|s.|pinkullu, sampi||
+2492|cansarse|v.|sampayana, shaykuna||
+2493|cantante|s.|takik||
+2494|cantar|v.|takina||
+2495|cántaro|s.|wallu|de una oreja: puyñu, puñu. cantó|
+2496|n|s.|kiti||
+2497|caña|s.|wiru|guadúa: wamak. capulí, á|
+2498|rbol y fruto|s.|kapuli, usun||
+2499|cara|s.|uya; ñawi||
+2500|caracol|s.|churu|instrumento musical: churu; caracol grande: chinanku. carbó|
+2501|n|s.|killimsa, shinki||
+2502|carbonizarse (los granos)|v.|hawriyana||
+2503|cárcel|s.|wataywasi||
+2504|cardar|v.|tisana||
+2505|cardo|s.|pircha||
+2506|carear|v.|chimpapurachina||
+2507|carga|s.|apachi, kipi, wanku||
+2508|cargar|v.|aparina|al bebé: tutuna; frutos el árbol: aparina; hacer cargar: apachina|
+2509|carne|s.|aycha|seca al sol: charki; ahumada: mitayu; a medio asarse: inlli|
+2510|carnero|s.|inku||
+2511|carnívoro|s.|aychamikuk||
+2512|carpa|s.|karpa||
+2513|carrizo|s.|sukus||
+2514|carro|s.|anta-shuntu, anta wiwa, antawa||
+2515|cartílago|s.|mutul||
+2516|casa|s.|wasi||
+2517|casado, -da|adj.|sawarishka||
+2518|casarse|v.|sawarina||
+2519|cascada|s.|pakcha, taski||
+2520|cáscara|s.|kara; de arroz, cebada o trigo: kushma||
+2521|casco|s.|sillu||
+2522|casi|adv.|ñalla||
+2523|castellano|s.|kastilla||
+2524|castillo|s.|pukara||
+2525|casucha|s.|chinkana||
+2526|catapulta|s.|pallka||
+2527|catre|s.|kawitu||
+2528|caucho|s.|palata, shirinka||
+2529|cauchoso|adj.|ankulla||
+2530|caverna|s.|chinkana, machay||
+2531|cazar|v.|chakuna; purina|con bodoquera: shitana|
+2532|cazuela|s.|wichi||
+2533|cebada|s.|siwara||
+2534|cecina|s.|charki||
+2535|cecinar|v.|charkina||
+2536|cedazo|s.|shushuna||
+2537|ceibo|s.|putu||
+2538|ceja|s.|ñawi pata; cejas-pelos: ñawi millma||
+2539|celar (tener celos)|v.|tumpana||
+2540|cementerio|s.|ayapampa||
+2541|cemento|s.|rumikuta||
+2542|cenit|s.|tiknu||
+2543|ceniza|s.|uchpa||
+2544|centro de salud|s.|hampiwasi||
+2545|centro educativo|s.||yachaywasi (ver: escuela, colegio, universidad)|
+2546|centro|adv.|chawpi; parte central de cosas, minerales o vegetales: s. shunku||
+2547|ceñirse|v.|chumpillina|de forma cruzada: tahallina|
+2548|cepillar (madera)|v.|llampuna||
+2549|cerbatana|s.|pukuna||
+2550|cerca|adv.|kuchu||
+2551|cercar, hacer cercas|v.|kinchana||
+2552|cerco, -a|s.|kincha||
+2553|cerda, pelo|s.|millma||
+2554|cerdo|s.|kuchi||
+2555|cereales a medio cocer|adj.|kawka||
+2556|cereal|s.|murir||
+2557|cerebro|s.|ñutku|cerebro izquierdo: lluki ñutku; cerebro derecho: allawka ñutku|
+2558|ceremonia nupcial|s.|sirichiy||
+2559|para llamar la lluvia|s.|piripiri||
+2560|coger cernir|v.|shushuna, akichana||
+2561|cero|det.|illak||
+2562|cerramiento|s.|kincha||
+2563|cerrar|v.|wichkana||
+2564|cerro|s.|urku||
+2565|cesar|v.|tukurina||
+2566|cesarse|v.|samarina||
+2567|ciego|adj.|ñawsa|ciempié s: tatis, shiktikuy, shiway|
+2568|cien, ciento|num.|pachak, patsak||
+2569|ciénega|s.|kuzu, guzu||
+2570|científico|s.|alli-yachak, amawta||
+2571|cierto|adv.|(chiqa), chika||
+2572|cigarra|s.|kiskis, zullu||
+2573|cigarrillo|s.|sayri||
+2574|cimiento|s.|sapi, tiqsi||
+2575|cincomil|num.|pichka waranka||
+2576|cinco|num.|pichka||
+2577|cincuenta|num.|pichka chunka||
+2578|cintura|s.|wikaw|cinturó n: chumpi. cí|
+2579|rculo|s.|muyu||
+2580|circunferencia|s.|muyu||
+2581|ciruela|s.|usun||
+2582|citar|v.|kayana||
+2583|ciudad|s.|hatunllakta, llakta||
+2584|claridad|s.|achik, achiklla||
+2585|claro|adj.|achik, paklla||
+2586|clase|comp.|sami||
+2587|clasificar|v.|chikanyachina||
+2588|clavar|v.|tuksina||
+2589|clavel, flor|s.|wayta||
+2590|clavo|s.|takarpu||
+2591|cobarde|adj.|sampa||
+2592|cobertor|s.|katana||
+2593|cobija|s.|katana, pullu||
+2594|cobijar|v.|katana||
+2595|cobre|s.|anta||
+2596|coca, planta medicinal|s.|kuka||
+2597|cocear|v.|haytana||
+2598|cocido|adj.|yanushka|a medias: chawa, hawtsa, kawka|
+2599|cocina, objeto|s.|yanuna|cuarto de cocina: ninapata, yanunakilli|
+2600|cocinar|v.|yanuna|a medias: hawchana|
+2601|cocinero, -a|s.|yanuk||
+2602|codo|s.|kuchus, kuchush||
+2603|coger|v.|hapina|líquidos o granos en un cogollo recipiente o en las manos y traspasarlos a otro espacio: wishina|
+2604|cogollo|s.|llulluk, ñawi, yuyu||
+2605|cojear|v.|hankana||
+2606|col(es)|s.|waylla-aycha|coles y nabos a medio cocer: hawcha|
+2607|cola (parte del cuerpo del animal)|s.|chupa|colaboració n: intuy, yanapay. colació|
+2608|n|s.|kukayu||
+2609|colada|s.|api|de maíz pelado: kawka; de plátano verde: katu|
+2610|colegio secundario|s.|unanchaywasi; hatunyachaywasi||
+2611|colgado|adj.|warkushka||
+2612|colgar|s.|warkuna. colibrí, s. kinti||
+2613|colina|s.|urku||
+2614|co llar|s.|wallka|de semillas silvestres: hallinka, tallika|
+2615|colocar|v.|churana||
+2616|color|s.|(llimpi); tullpu||
+2617|colores (para colorear, pintar)|s.|llimpinakuna||
+2618|columna|s.|(tunu)||
+2619|coma, signo diacrítico|s.|samay||
+2620|comadreja|s.|chukuri||
+2621|comarca|s.|llakta||
+2622|combinar|v.|chakruna||
+2623|comenzar|v.|kallarina||
+2624|comer|v.|mikuna|colada especial realizada en las fiestas: uchuna (ver desayunar, almorzar, merendar)|
+2625|comercializar|v.|mintalana||
+2626|comerciante|s.|mintala, rantinakuk||
+2627|cometa|s.|sasaka|comezó n: shikshi|
+2628|comida|s.|mikuna|comida que se ofrece en los funerales: awkish|
+2629|comienzo|adv.|kallari||
+2630|como|adv.|shina|có mo?: ¿haw?|
+2631|compañero|s.|mashi|trato entre compañeros: alama. compá|
+2632|s|s.|muyuchik, muyuchina||
+2633|compatriota|s.|llaktamashi||
+2634|competir|v.|kamana, mishana||
+2635|complementado|adj.|paktachishka||
+2636|complementar|v.|paktachina||
+2637|complemento gramatical|s.|paktachiy||
+2638|completar|v.|paktachina||
+2639|componer|v.|allichina, sumakyachina||
+2640|comprar|v.|rantina||
+2641|comprender|v.|hamutana, hapina||
+2642|comprimir|v.|ñitina||
+2643|compuesto|adj.|allichishka, sumakyachishka||
+2644|comunicador, -ra|s.|willak||
+2645|comunicar|v.|willana||
+2646|comunidad, pueblo|s.|ayllu-llakta||
+2647|con cuidado|adv.|allilla, allimanta||
+2648|concho (de la chicha)|s.|tikti||
+2649|concluido|adj.|tukurishka, pakta||
+2650|concluir|v.|tukurina, puchukana||
+2651|condimento|s.|mishkichina||
+2652|conducir|v.|pushana||
+2653|conductor|v.|purichik, pushak||
+2654|conejillo de indias|s.|kuwi, kuy||
+2655|conejo|s.|wallinku||
+2656|confrontar|v.|ñawinchina|ideas: chimpapurachina|
+2657|confundir|v.|pantachina, chapuna||
+2658|confundirse|v.|pantana|confu sió n: pantay|
+2659|conglomerarse|v.|tantarinakuna, waykarina, zimpunina||
+2660|congreso|s.|tantanakuy||
+2661|co nocedor|s.|riksik; yachak||
+2662|conocer|v.|riksina||
+2663|consejero|s.|kunak||
+2664|consejo|s.|kunay, kunakuy||
+2665|conservar|v.|wakaychina; allichina||
+2666|constelación un tipo de|s.|munzira||
+2667|construir|v.|rurana|acequias: larkana, rarkana; casas: wasichina|
+2668|consuegra|s.|hawya||
+2669|contador qichwa (objeto)|s.|yupana; persona que cuenta, persona: yupak|de fábulas: hawarikuk. contaminació|
+2670|n|s.|miyuy||
+2671|contaminar|v.|miyuna||
+2672|contar|s.||números: yupana; contar fábulas: hawarikuna|
+2673|contento|adv.|kushilla||
+2674|contestar|v.|kutichina, rantipana, tikrachina||
+2675|contraer el mal aire|v.|wayrana||
+2676|contraerse los músculos|v.|rapyana||
+2677|contratiempo|s.|llaki, harkay||
+2678|convalecerse|v.|kariyana, alliyana|con versació n: rimanakuy|
+2679|con versar|v.|rimana||
+2680|convertirse en|v.|tukuna||
+2681|convidar|v.|karana||
+2682|convocar|v.|kayana|cooperació n: yanapay|
+2683|copular|v.|upina, yukuna, yumana|corazó n: shunku, puka shunku|
+2684|corcobado|adj.|kumu||
+2685|cordel|s.|watu||
+2686|cordillera|s.|kahas, puna||
+2687|corona|s.|llawtu||
+2688|coronilla|s.|mukuku||
+2689|corral|s.|harkashka, kincha||
+2690|correa|s.|chumpi||
+2691|corredor (atleta)|s.|kallpak|parte de la casa: kanchapunku|
+2692|correo, persona|s.|chaski||
+2693|correr|v.|kallpana||
+2694|cortapelos|s.|tsikaru, akcha shuwa||
+2695|cortar|v.|kuchuna, pitina|gramíneas: pitina, ichuna; hierba: kiwana; el pelo y la lana: rutuna|
+2696|corte del cabello|s.|rutuchikuy, rutuy||
+2697|cortesía, dirijida a las mujeres|expr.|mikya||
+2698|corteza|s.|kara||
+2699|corto|adj.|kuru, kutu||
+2700|cosa|s.|ima||
+2701|coscoja|s.|llama uhu||
+2702|cosecha|s.|pallay||
+2703|cosechador|s.|pallak||
+2704|cosechar|v.|pallana||
+2705|coser|v.|sirana||
+2706|costa, región costeña|s.|yunka||
+2707|costal|s.|kutama||
+2708|costeño, persona de la costa|adj.|(yunkaruna)||
+2709|costra|s.|karacha||
+2710|costurero, -a|v.|sirak||
+2711|coya|s.|kuya, esposa del inka|crá neo: uma tullu|
+2712|creador|s.|kamak, wallpak, rurak, yachachik|divinidad: pacha yachachik|
+2713|crear|v.|kamana, wallpana, rurana, yacha- cuidAdor china||
+2714|crecer|v.|wiñana|pegado los frutos: pallkayana|
+2715|creencia|s.|iñikuy||
+2716|creer|v.|iñina||
+2717|creyente|s.|iñikuk||
+2718|criado|adj.|china||
+2719|criado|adj.|yana||
+2720|crisis|adj.|chiki, llaki||
+2721|criticar|v.|washarimana||
+2722|crocante|adj.|kawlla||
+2723|crucificar|v.|chakatana||
+2724|crudo|adj.|chawa||
+2725|cruz|s.|chakata|cruzar (al frente, al otro lado de la calle o del rí o): chimpana|
+2726|cuaderno|s.|killkanapatma, killkanapanka||
+2727|cuadro, recuadro|s.|(tapta); shuyu||
+2728|cuágulo|s.|tukru|cuá l?: ¿maykan?. cuá|
+2729|ndo?|adv.|¿hayka?||
+2730|cuántos?|pron.|¿mashna?||
+2731|cuarenta|num.|chusku chunka||
+2732|cuarto|s.|(pitita, killi); uku||
+2733|cuatromil|num.|chusku waranka||
+2734|cuatro|num.|chusku, tawa||
+2735|cuatro cientos|num.|chusku pachak, chusku patsak||
+2736|cubrir|v.|katana, killpana|la cabeza: lunkuchina|
+2737|cubrirse|v.|killparina|la cabeza: tiyunkullina; de maleza un lugar: witayana|
+2738|cucaracha|s.|hallkan||
+2739|cuchara|s.|(wislla), wishina|cucharó n: mama wishina, mamawislla|
+2740|cuchillo|s.|kuchuna; cuchillo, como el segur: ( tumi)||
+2741|cuello|s.|kunka||
+2742|cuenco de la mano|s.|maki uku||
+2743|cuentas (de collares)|s.|mullu, wallka||
+2744|cuento (antiguo)|s.|ñawparimay||
+2745|cuerdo|adj.|llimpi||
+2746|cuero|s.|kara||
+2747|cuerpo|s.|aycha, ukku||
+2748|cueva|s.|chinkana, hutku, machay, uku||
+2749|cuidado!, expresión prohibitiva, ¡ñatak!cuidador|s.|kamak|de la casa: wasikamak|
+2750|cuidAdosAmente cuidadosamente|adv.|allilla, allimanta||
+2751|cuidar|v.|kamana, rikuna||
+2752|culebra|s.|machakuy, machakway, palu, ushukullin, ukumpi, illulli, pitalala|culminació n: tukuri|
+2753|culminar|v.|tukuchina||
+2754|culo|s.|siki||
+2755|culpa|s.|hucha||
+2756|culpar|v.|huchanchina||
+2757|cultivar (la tierra para la siembra)|v.|chakmana, chakrana||
+2758|cultura|s.|(ayarqapaq), ayarkapak; kawsay||
+2759|cumbre|s.|uma||
+2760|cuñada|s.|kachun||
+2761|curandero|s.|hampik, chuntapala, sakra||
+2762|curar|v.|hampina|del espanto: shunkuchina|
+2763|curarse|v.|alliyana, hampirina||
+2764|curiquingue, ave|s.|kurikinki||
+2765|curso escolar|s.|pata||
+2766|curva|adj.|kinku||
+2767|curvar|v.|kinkuna||
+2768|cuy|s.|(quwi); kuwi, kuy||
+2769|cH chacra|s.|chakra||
+2770|chalina (a colores)|s.|makana||
+2771|chamburo|s.|champuru|pequeño: chilliwakan|
+2772|chamico (planta silvestre pequeña)|s.|chamiku||
+2773|chamisa|s.|chinta||
+2774|chamuscar|v.|kaspana||
+2775|chancho|s.|kuchi||
+2776|charco|s.|kucha, punsa||
+2777|chibolo|s.|zupu||
+2778|chicha|s.|aswa|de maiz tierno: antuchi; recién fermentada: chinlla; de yuca asada: allu; de maíz germinado: hura. chichó|
+2779|n|s.|zupu||
+2780|chilca|s.|chillka||
+2781|chillar|v.|kaparina||
+2782|chímbalo|s.|chimpalu. chistoso, (hawkaq), chawcha||
+2783|chivo|s.|chita||
+2784|chocho|s.|(tarwi), tawri||
+2785|choclo|s.|chukllu|en proceso de for mación: kiki; maduro: tsiwi; bien maduro: kaw; deshidratado: chuchuka|
+2786|chofer|s.|purichik||
+2787|chorrear|v.|shutuna||
+2788|chorrera|s.|pakcha||
+2789|choza|s.|chuklla|chulpi, variedad de maí z: chullpi|
+2790|chumado|adj.|shinka||
+2791|chumarse|v.|shinkayana||
+2792|chonta|s.|chunta||
+2793|chupar|v.|chumkana, tsumkana, lutsana||
+2794|chuquirahua|s.|chukirawa||
+2795|churo|s.||caracolillo: churu|
+2796|tipo de juego con canicas|s.|churu||
+2797|d danta|s.|sachawakra||
+2798|danzante|s.|tushuk||
+2799|danza|s.|tushuy||
+2800|danzar|v.|tushuna||
+2801|dañar|v.|wakllichina, wakllina|la lancha a la sementera: lanchana|
+2802|da ñarse|v.|challana|los frutos: zulayana|
+2803|dar|v.|kuna|dar de comer: karana; dar a luz: pakarina, wachana. de ahí, conj. chaymanta|
+2804|de balde|adv.|yanka, yankamanta||
+2805|de esta manera|adv.|kay shina, kashna||
+2806|de esa manera|adv.|chay shina, chashna||
+2807|de golpe|adv.|haykamanta, zas||
+2808|de la misma formao manera|conj.|shinallatak||
+2809|de nuevo|adv.|kutin||
+2810|de pron to|adv.|haykamanta, kunkaymanta, zas||
+2811|de todas maneras|conj.|shinapash||
+2812|debajero|s.|ukunchina||
+2813|debajo de|adv.|uku|dé bil: api, irki, sampa. dé|
+2814|cada|adv.|chunkawata||
+2815|decaerse|v.|urmarina||
+2816|decir|v.|nina||
+2817|declamar|v.|luwana||
+2818|declarado|adj.|willashka||
+2819|declarar|v.|willana||
+2820|declive|adv.|kinray, uray||
+2821|decorar|v.|allichina, sumakyachina||
+2822|dedo|s.|(rukana), ruka||
+2823|defecar|v.|ismana||
+2824|de fender|v.|mitsana, michana, mitsana||
+2825|deformarse|v.|wistuna||
+2826|deforme de la boca|adj.|wistu||
+2827|degollado|adj.|nakashka||
+2828|degollador|s.|nakak||
+2829|degollar|v.|nakana||
+2830|deidad|s.|wirakucha, pachakamak, pacha yachachik||
+2831|dejar|v.|sakina|algo al descu bierto: pakllana; algo en testamento: sakina|
+2832|delante|adv.|ñawpak||
+2833|delantero|s.|ñawpak||
+2834|delgado|adj.|hamchi, ñañu||
+2835|delicado|adj.|chawcha||
+2836|delicioso|adj.|(ñukñu), mishki||
+2837|delirar|v.|musparina, shimi-chinkachina|demá s: yalli|
+2838|demasiado|adv.|yalliymana, yalli, yapa||
+2839|demorarse|v.|kaynana, unayana||
+2840|demostrar|v.|rikuchina||
+2841|demostrativo|s.|rikuchik||
+2842|dentro|adv.|uku||
+2843|departamento|s.|(pitita, killi)|deposició n: isma|
+2844|depositar|v.|wakaychina, churana|malezas en las orillas de la chacra: chintana. depósito, mesó|
+2845|n del inca rio|s.|tampu||
+2846|depresión (anímica)|s.|kalakyay||
+2847|deprimirse|v.|hamallina, impayana, llakirina||
+2848|derecho, leyes|s.|kamachinakuy||
+2849|derecho, lado|adv.|allawka||
+2850|derramar|v.|hichana||
+2851|derritirse|v.|nuyuna||
+2852|derrochar|v.|usuchina, yakuyachina||
+2853|derrumbarse|v.|tuñirina, tularina||
+2854|desabrido|adj.|chamcha, chamuk, hamlla, hamun, ñukñu||
+2855|desamparar|v.|hichuna, sakina, shitana||
+2856|de sarrollarse|v.|wiñakuna, wiñana||
+2857|desauciado (a punto de morir)|adj.|ayakara||
+2858|desayunar|v.|(paqarinmikuy), pakarinmikuna, chinchina, shunkuna, shunkunchina||
+2859|desayuno|s.|(paqarinmikuy), pakarinmikuy, chinchiy, shunkuy, shunkunchiy||
+2860|desbordarse|v.|tallina, shiwtana||
+2861|descalzo|adj.|lluchu chaki, llapanku||
+2862|descamar|v.|shikina||
+2863|descansar|v.|samana||
+2864|descanso|s.|samay|día de descanso: samay puncha; tiempo de descanso: samay pacha; tierra cultivable en proceso o fase de descanso: purun|
+2865|desca rriarse|v.|challana, challina||
+2866|descascarar|v.|llakana, rawmana||
+2867|des cender|v.|urayana, uraykuna, waykuna||
+2868|descogollar palmeras|v.|yuyuna||
+2869|descomposición|s.||conducta: wakllikuy; dañarse las cosas: putasyay|
+2870|descomponer|v.|chakchuna||
+2871|descomponerse (dañarse)|v.|putasyana||
+2872|desconocido|adj.|mana riksishka, chuku, hullu||
+2873|descriarse|v.|challana||
+2874|descuartizado|adj.|nakashka||
+2875|descuartizar|v.|nakana||
+2876|desdeñar|v.|hunkana||
+2877|desear|v.|munana||
+2878|desenredar (el pelo o cosas semejantes)|v.|shampana||
+2879|desgajar|v.|llakllana||
+2880|desgastar|v.|kaskana||
+2881|desgracia|adj.|chiki, llaki||
+2882|desgranar|v.|chiwana, ishkuna||
+2883|deshierbar|v.|kiwana||
+2884|deshojar|v.|llakana, rawchana, rawmana|el maíz: tipina, saklana|
+2885|desigual|adj.|waka||
+2886|desigualar|v.|wakayachina||
+2887|desigualarse|v.|wakayana|desleí r: yakuyachina|
+2888|desleirse|v.|nuyuna, yakuyana||
+2889|deslizar|v.|aysana, lluchkana||
+2890|deslizarse|v.|llushpina||
+2891|desmayarse|v.|shinkana||
+2892|desmenuzar|v.|hakuna, palikina||
+2893|desmontar maleza|v.|chakuna||
+2894|desmoronarse|v.|tuñirina, chiwana||
+2895|desnudarse|v.|llatanana||
+2896|desnudo|adj.|llatan, lluchu, llushti||
+2897|desobedecer|v.|mana-uyana||
+2898|desobediente|adj.|mana-uyak||
+2899|desobediencia|adj.|mana-uyay|expresión de desobediencia: hay|
+2900|desolado|adv.|chulunlla||
+2901|desordenar|v.|wakllina, chapuna||
+2902|desovar (los peces hembras sus huevos)|v.|wachay||
+2903|dicHA despacio|adv.|allilla, allimanta||
+2904|despedir|v.|kachana, karkuna||
+2905|despejado|adj.|paklla||
+2906|despejar|v.|pakllana, paskana||
+2907|despellejar|v.|llakana, lluchuna, llushtina, rawmana||
+2908|despeñadero|s.|kaka||
+2909|desperdiciar|v.|usuchiy||
+2910|des pertarse|v.|rikcharina||
+2911|despiojar|v.|usana||
+2912|despos tillarse|v.|tukyana||
+2913|despreciar|v.|chiknina||
+2914|desprecio|s.|chikniy|expresión de desprecio: mapa. despué|
+2915|s|adv.|kipa, washa; conj. chaymanta||
+2916|desramar|v.|chillpina, rawchana, rawmana||
+2917|destrucción grande, general|s.|pachakuti||
+2918|destruir plantas y/o frutos una plaga|v.|lanchana||
+2919|desvariar|v.|tapyana||
+2920|desventura|s.|llaki||
+2921|desvestirse|v.|llatanarina|desviar un rí o: chiktana|
+2922|desviarse (de los valores)|v.|challiy||
+2923|desyerbar|v.|hallmay||
+2924|detener|v.|harkana, shayarichina||
+2925|detenerse|v.|shayana||
+2926|deteriorar|v.|wakllichina||
+2927|deuda|s.|manu||
+2928|devolver|v.|kutichina, tikrachina|la vista a alguien: rikuchina. dí|
+2929|a|s.|puncha; el dí|medio día: chawpi puncha|
+2930|a siguiente|adv.|: kaya||
+2931|diadema|s.|llawtu||
+2932|dialogar|v.|rimanakuna||
+2933|diálogo|s.|rimanakuy||
+2934|diamante|s.|yurak umiña||
+2935|diariamente|adv.|punchanta punchanta, punchantin||
+2936|diarrea|s.|kicha|tener diarrea: kichay|
+2937|dibujar|v.|llimpikuy, hawina, shuyuna||
+2938|dibujo|s.|(llimpisqa), shuyu||
+2939|diccionario|s.|shimiyuk||
+2940|diciembre|s.|kapak||
+2941|dicha|s.|kushi, sami||
+2942|dicHodicho|adj.|nishka||
+2943|dichoso|adj.|kushilla, samiyuk||
+2944|diente|s.|kiru||
+2945|diezmil|num.|(hunu)||
+2946|diez|num.|chunka||
+2947|diferenciar|v.|chikanyachina|difí cil: sinchi|
+2948|difunto|adj.|wañushka||
+2949|digno de lástima|adj.|kuyaylla|diluí r: yakuyana|
+2950|diluirse|v.|yakuyarina||
+2951|diminuta, cosa|s.|iñu; chusu||
+2952|dinero|s.|kullki||
+2953|dios no lo quiera|adv.|amallatak||
+2954|dios|s.|achillik-yaya|dios de los incas: wirakucha, pachakamak; dios familiar: waka. direcció|
+2955|n|s.|kuska||
+2956|dirigente|s.|pushak||
+2957|dirigir|v.|pushana||
+2958|disco|s.|piruru|disco musical: takik-piruru|
+2959|disculpar|v.|kishpichina||
+2960|discursar|v.|luwana||
+2961|discutir, meterse en discusiones|v.|hawina|disenterí a: yawarkicha|
+2962|disgustarse|v.|piñarina||
+2963|dislocar|v.|kiwina||
+2964|disparar|v.|tukyachina||
+2965|dispensar|v.|kishpichina||
+2966|dispersarse|v.|chawsirina, tallirina||
+2967|distante, en el espacio|adv.|karu||
+2968|distinguido|adj.|kapak; sumak||
+2969|distinto|adj.|chikan||
+2970|distribuir|v.|rakina||
+2971|dividir|v.|pakina, rakina|en la mitad: chawpina|
+2972|divinidad del incario|s.|wirakucha, pachakamak|divinidad que creó los insectos: palamaku. divisió|
+2973|n|s.|rakiy||
+2974|doblar|v.|lapuna, patarina||
+2975|docente|s.|yachachik||
+2976|doler|v.|nanana||
+2977|dolerse|v.|nanarina||
+2978|dolor|s.|llaki, nanay; a gudo por tumores, heridas: zinzin||
+2979|domesticar|v.|wiwana, uywana||
+2980|domingo|s.|hawkay||
+2981|don|s.|hachi||
+2982|dónde?|preg.|¿mayman?||
+2983|doña|s.|mama||
+2984|dormido|adj.|puñushka||
+2985|dormiente|s.|puñukuk||
+2986|dormir|v.|puñuna||
+2987|dorso de la mano|s.|maki washa||
+2988|dosmil|num.|ishkay waranka||
+2989|dos|num.|ishkay||
+2990|doscientos|num.|ishkay pachak, ishkay patsak||
+2991|dudar|v.|tunkina||
+2992|duende|s.|chusulunku, aya, tunchi||
+2993|dueño de casa|s.|wasiyuk||
+2994|dulce|adj.|mishki, chawcha|de cabuya: chawar mishki|
+2995|duro|adj.|anak, sinchi, taylla|de cocinarse: e akma, kaluk. dú|
+2996|o|s.|ishkantin, yanantin||
+2997|e char|v.|kachana|fuera: karkuna|
+2998|echarse (en el suelo)|v.|siririna||
+2999|edad|s.|wiñay, mita|educació n: yachachikuy|
+3000|educador, -a|s.|yachachik||
+3001|ejemplar|s.|shina||
+3002|ejemplo|s.|shina|é l: pay|
+3003|electricidad|s.|illariy; zirmay||
+3004|elegante|adj.|taslla||
+3005|elegir|v.|akllana||
+3006|elevado|adv.|hanak||
+3007|ella|pron.|pay||
+3008|ellas, -os|pron.|paykuna||
+3009|embarazada|adj.|chichu, wiksayuk||
+3010|embarrar|v.|hawina||
+3011|embarrarse|v.|turuyarina||
+3012|embellecer|v.|sumakyana||
+3013|emblema|s.|unancha|del Tawantin suyu: wipala|
+3014|embobar|v.|umana, upayachina||
+3015|em bobarse|v.|upayarina||
+3016|emborracharse|v.|machay, shinkayay||
+3017|embriagado|adj.||totalmente: machashka; semiembriagado: shinka|
+3018|embriagarse|v.|machana, shinkayana||
+3019|embustero|adj.|challi||
+3020|embutir|v.|ñitina||
+3021|emitir sonidos (los animales)|v.|wakana||
+3022|empalagar|v.|amina||
+3023|empalagoso (dulcísimo)|adj.|ñukñu||
+3024|empaparse|v.|hukuna, mutiyana||
+3025|empeorarse|v.|anchayana||
+3026|empeine del pie|s.|pichuski||
+3027|emperrado|adj.|llumi, llumiyashka||
+3028|emperrarse|v.|llumiyana, isiyana||
+3029|empezado|v.|kallarishka||
+3030|empezar|v.|kallarina||
+3031|empollar|s.|ukllay||
+3032|empujar|v.|suchuchina, tankana|árboles para derribarlos: tulay|
+3033|en ayunas|adv.|mayllakshunku||
+3034|en cinta|adj.|chichu, wiksayuk||
+3035|en dónde?|preg.|¿maypitak?||
+3036|enero|s.|kamay||
+3037|en ex ceso|adv.|manchanay, llashak, yalli||
+3038|en sano juicio|adj.|mayllik||
+3039|en seguida|adv.|haykamanta, ñapash, zas||
+3040|en silencio|adv.|chulunlla, upalla||
+3041|en sus cabales|adj.|mayllik||
+3042|en vano|adv.|yanka, yankamanta||
+3043|enano|adj.|kurpa, umutu||
+3044|encanijarse|v.|kintiyarina||
+3045|encapricharse|v.|nanakyarina||
+3046|encargar|v.|minkana||
+3047|encender la luz|v.|hapichina||
+3048|encerrar|v.|wichkay||
+3049|encharcarse|v.|kuchayarina|encí as: mimish|
+3050|encima|adv.|hanak||
+3051|encogerse|v.|kintiyarina, kuruyana, kutuyana, tuzuyana, wañurina||
+3052|encolerizarse|v.|piñarina||
+3053|encomendar|v.|minkana||
+3054|enconarse las heridas|v.|kiyayay||
+3055|encontrar|v.|tarina||
+3056|encontrarse (con alguien)|v.|tarinakurina||
+3057|encorralar, hacer corrales|v.|kinchana||
+3058|endurarse|v.|taktariy|energí a: kallpa, kushi; energía sexual negativa que causa enfermedad diarreica, no identificada por la medicina actual: zalipa|
+3059|enero|s.|kamay||
+3060|enfermarse|v.|unkurina|persisten temente: takyarina|
+3061|enfermedad|s.|unkuy|persistente: takyakunkuy; que provoca un ser mítico: s. sisu|
+3062|enfermo|adj.|unkushka. enfriar, líquidos: v. chiriyachina, tsuklupuna||
+3063|enfurecerse|v.|millayarina||
+3064|engañar|v.|umachina, umakuna||
+3065|engrosarse|v.|rakuyana||
+3066|engullir|v.|amullina. enlagunarse, formarse un lago: enlodArse v. kuchayana||
+3067|enlodarse|v.|turuyana||
+3068|enlucir|v.|llampuna, llunchina||
+3069|enmudecerse|v.|upayarina||
+3070|enojado|adj.|piña, piñashka||
+3071|enojarse|v.|piñarina, nanakyarina, millayarina, wañurina||
+3072|enraizarse|v.|sapiyana||
+3073|enredado|adj.|chaknarishka, pillurishka; (hilos) punzu||
+3074|enredar|v.|pilluna||
+3075|enrollar|v.|pilluna, maytuna|be juco: mañayachina|
+3076|enseguida|adv.|ñalla, ñapash||
+3077|enseñado, habituado|adj.|yacharishka||
+3078|enseñar|v.|yachachina||
+3079|enseñarse|v.|yacharina||
+3080|ense renado|adj.|ankulla||
+3081|ensordecerse|v.|rinri-upayarina||
+3082|ensuciar|v.|hawina||
+3083|ensuciarse|v.|karkayarina, mapayarina, matayarina, tikayarina||
+3084|entablillar|v.|chanchay||
+3085|entechar|v.|awana, kumpana||
+3086|entender|v.|hamutana, hapina||
+3087|entero|det.|tukuy, hunta||
+3088|enterrar|v.|pampana||
+3089|entonar (un instrumento musical)|v.|takina||
+3090|entrada|s.|punku||
+3091|entrar|v.|yaykuna||
+3092|entrecruzar|v.|chakatana|las piernas: chankana|
+3093|entrelazar|v.|chakatana||
+3094|entretejer|v.|alapana||
+3095|entristecerse|v.|llakirina||
+3096|enumerar|s.|yupay||
+3097|envenenar|v.|hampina, miyuna||
+3098|enviar|v.|kachana||
+3099|envoltorio|s.|maytu, mullapa||
+3100|envolver|v.|maytuna, pilluna||
+3101|envuelto|s.|maytu, mullapa; adj. maytushka||
+3102|época|s.|mita, pacha|equivocació n: pantay|
+3103|equivocado|adj.|pantashka||
+3104|equivocarse|v.|pantarina||
+3105|erizarse|v.|punzuyarina||
+3106|erosionarse|v.|tularina||
+3107|errado|adv.|pantashka||
+3108|errar|v.|pantana||
+3109|error|s.|pantay||
+3110|eructar|v.|aknina|erupcionar (el volcá n): tukyana. es verdad? adv. ¿manachu?|
+3111|esa|pron.|chay||
+3112|escabroso|adj.|sakra, paza, tsaka||
+3113|escalera|s.|chakana||
+3114|escamar|v.|tisana||
+3115|escarabajo|s.|shuntu, katsu, chuna||
+3116|escarbar|v.|aspina||
+3117|escarcha|s.|shulla||
+3118|escasear|v.|pishiyana||
+3119|escaso|adv.|pishi||
+3120|escoba|s.|pichana||
+3121|escogedor|adj.|akllak||
+3122|escoger|v.|akllana||
+3123|escogida|adv.|aklla, akllashka||
+3124|esconder|v.|pakana||
+3125|esconderse|v.|mitikurina||
+3126|escopeta|s.|illapa||
+3127|escorbuto|s.|wichu||
+3128|escribir|v.|killkana|escribir en nudos o en el kipu: kipuna|
+3129|escrito|adj.|killkashka||
+3130|escritor|s.|killkaykamayuk||
+3131|escritorio|s.|(chakiqiru)||
+3132|escuchar|v.|uyana||
+3133|escuela|s.|(yachaywasi), yachanawasi||
+3134|esculpir|v.|llakllana||
+3135|escupir|v.|aktuna, tukana||
+3136|escurrir|v.|chawana||
+3137|ese|pron.|chay||
+3138|esfera|s.|(rumpu), rumpa||
+3139|esferográfico|s.|killkana||
+3140|esmeralda|s.|qumir umiña, kumir umiña||
+3141|eso|pron.|chay||
+3142|esófago|s.|millpuna, tunkuri||
+3143|espacio|s.|pacha|exterior: hawa pacha; espacio superior: hanan pacha; espacio inferior: uku pacha|
+3144|espalda|s.|washa||
+3145|espantado|adj.|mancharishka||
+3146|espantar|v.|manchachina||
+3147|espantarse|v.|mancharina||
+3148|espanto|s.|manchay||
+3149|español, término que se refiere al|s.|wirakucha||
+3150|esparcir|v.|hichana, tallina|agua o granos: chakchuy; agua de regadío: parkuy|
+3151|espejo|s.|rirpu||
+3152|esperanza|s.|shuyay||
+3153|esperar|v.|shuyana||
+3154|espermatozoide|s.|(yumaynin), ullu-api||
+3155|espeso|adj.|sanku, tikti|espí ar: chapana|
+3156|espina, -o|s.|kasha||
+3157|espinazo|s.|washa tullu||
+3158|espiral|adj.|churu||
+3159|espíritu|s.|aya, nuna, samay, supay||
+3160|es posa|s.|warmi|esposa del inka: (quya), kuya|
+3161|esposo|s.|kusa|esposo de la coya: inka|
+3162|espuma|s.|pusku||
+3163|espumarse|v.|puskuyarina||
+3164|esquina|s.|kuchu||
+3165|esta|pron.|kay||
+3166|estaca|s.|takarpu||
+3167|estacar|v.|takarpuna||
+3168|estafa|s.|ayki||
+3169|estado|s.|aylluntintinkuy||
+3170|estafar|v.|aykina, shuwana||
+3171|estaño|s.|titi||
+3172|estar|v.|kana, tiyana||
+3173|este|pron.|kay||
+3174|este, oriente|s.|intillukshina||
+3175|estéril, el terreno|adj.|tsala, kankawa, killin, tullu||
+3176|estiércol|s.|isma||
+3177|estilarse|v.|hukurina, mutiyarina||
+3178|estirar|v.|chutana||
+3179|estirpe|s.|panaka||
+3180|esto|pron.|kay||
+3181|estómago|s.|mamapusun, mama uspun, extremidAd wiksa||
+3182|estopa (de cabuya)|s.|hamchi, karachi||
+3183|estorbar|v.|harkana||
+3184|estorbo|s.|harka||
+3185|estornudar|v.|atsikyana||
+3186|estrangular|v.|sipina||
+3187|estrecho|adj.|kichki||
+3188|estrella|s.|kuyllur||
+3189|estrenar|v.|arina||
+3190|estrujar|v.|llapina, lutsana, tsutsukina||
+3191|estudiado|adj.|yachakushka||
+3192|estudiante|s.|yachakuk||
+3193|estudiar|v.|yachakuna|exageració n: may, manchanay|
+3194|examen|s.|taripay||
+3195|examinador|s.|taripak||
+3196|examinar|v.|taripay||
+3197|excavar|v.|allana||
+3198|exceder|v.|yallina||
+3199|excesivamente|adv.|yalli, yalliymana||
+3200|ex cremento|s.|isma||
+3201|excusar|v.|kishpichina||
+3202|exigir|v.|atina||
+3203|existir|v.|tiyana||
+3204|expandirse|v.|mirarina|substancias graso sas: wisiyay|
+3205|expirar|v.|pitirina, tukurina, wañurina||
+3206|exprimir|v.|chawana, kapina||
+3207|expulgar|v.|millchina, usana||
+3208|extender|v.|aysana, chutana, mantana||
+3209|extenderse|v.|aysarina, chutarina|las guías de un bejuco o calabaza: zakzikiy|
+3210|extenso|adj.|suni||
+3211|exterior|adv.|hawa||
+3212|extranjero|adj.|chuku, hullu, ransiw||
+3213|extraño|adj.|chuku, hullu||
+3214|extremidad|s.|puchukaynin||
+3215|faja|s.|chumpi|la grande: mamachumpi; la pequeña: wawachumpi|
+3216|falda|s.|aksu, anaku||
+3217|fallecer|v.|tukurina, wañuna||
+3218|falsear|v.|llullana||
+3219|falso|adj.|llulla||
+3220|falta|s.|hucha||
+3221|faltar|v.|illana||
+3222|familia|s.|ayllu||
+3223|fango|s.|kuzu, guzu||
+3224|fantasma|s.|aya, atsinku, supay||
+3225|fardo|s.|kipi||
+3226|fastidiar|v.|kushparina, shillinkuna||
+3227|fatigarse|v.|sampayana, shaykuna||
+3228|favorecer|v.|yanapana||
+3229|faz|s.|uya||
+3230|fe|s.|iñikuy|tener fe: iñiy|
+3231|febrero|s.|panchiy||
+3232|felicidad|s.|kushi, kushikuy||
+3233|feliz|adv.|kushilla|fé mur: mama tullu|
+3234|fermentarse|v.|timpurina||
+3235|festividad|s.|raymi||
+3236|fiambre|s.|kukayu||
+3237|fiesta|s.|raymi|fiesta del sol: inti raymi|
+3238|figura|s.|rikchak||
+3239|fila|s.|wachu||
+3240|filo o agudo|adj.|ñawchi|filo u orilla: manya|
+3241|filtrar|v.|shutuna||
+3242|fin|s.|tukuri||
+3243|fingir|v.|tukuna||
+3244|firmar|v.|aspina||
+3245|flaco|adj.|irki, tsala, tullu||
+3246|flecha|s.|wachi||
+3247|flojo|adj.|takla||
+3248|flor|s.|sisa|macho de maíz: tuktu, tuktuma; flor hembra del maíz: chukllu akcha|
+3249|floripondio|s.|wantuk||
+3250|flotar|v.|wampuna|fogó n: ninapata, tullpa|
+3251|forastero|adj.|chuku, hullu||
+3252|forcejear (uno con otro)|v.|chutanakuna|fortaleza (construcció n): pukara|
+3253|sforo|s.|ninayuk; iska|fotogra fí a: (uyap rikchay), rikchak|
+3254|fracasar|v.|kulluna||
+3255|fracaso, acción fallida|s.|kulluy||
+3256|fracción, en matemáticas|s.|paki||
+3257|fraccionar|v.|ikina, pakina||
+3258|fractura|s.|paki||
+3259|fracturar|v.|pakina||
+3260|fragante|adj.|mishki|frá gil: kapya|
+3261|fregar|v.|kakuna, kitina|fré jol: purutu|
+3262|frente, parte del cuerpo|s.|tirku|frí o: chiri|
+3263|friolento|adj.|chirisiki||
+3264|frotar|v.|kakuna, kitina||
+3265|fruncir|v.|sipuna||
+3266|fruta (variedades)|s.||wayuri: chikaksu, pitajaya, punkara, tikasu|
+3267|fruto|s.|muru|caído antes de madurarse: pilis; desagradable: muyan muyan; pequeño: chusu; fruto verde: llullu; dos pegados: chapa, misha|
+3268|fucsia|adj.|wamintsi, chiyu||
+3269|fuego|s.|nina|para llevar: iska|
+3270|fuente de agua|s.|pukyu; pakcha||
+3271|fuera|adv.|kancha, hawa||
+3272|fuerte|adj.|sinchi||
+3273|fugarse|v.|mitikuna||
+3274|fumar|v.|sayrina||
+3275|g fundamento|s.|(tiqsi), sapi||
+3276|futuro|adv.|kipa, shamuk|tiempo futuro: kipa pacha; pasado mañana: mincha|
+3277|galaxia|s.|muyukchuru||
+3278|gallardo|adj.|taslla||
+3279|gallina|s.|atallpa, wallpa; tuktu|que empo lla: tuktuma|
+3280|gallinazo|s.|ullawanka, ushku||
+3281|ganado vacuno|s.|wakra||
+3282|ganar|v.|mishana||
+3283|gan glios, inflamación de|s.|amakulu||
+3284|garganta|s.|tunkuri||
+3285|gargarizar, hacer gárgaras|v.|muklupuna||
+3286|garrapata|v.|tillimanku, waku||
+3287|garza|s.|wakar, mashalli||
+3288|gas|s.|yanta, samay-yanta||
+3289|gatear|v.|llukana||
+3290|gato, -a|s.|misi|gavilá n: waman, mikmichu, usturiw, chuwalli, waktaway|
+3291|gaviota|s.|lluya. gemido, onomatopeya: shinshin|genealogí a: ayllu. geografí|
+3292|a|s.|tiksimuyuyachay||
+3293|Ver tierra, planeta geógrafo|s.|tiksimuyuyachak||
+3294|girar|v.|muyuna; kuyuchina||
+3295|glándula biliar|s.|(hayaqin), hayakin, chinkillis||
+3296|glúteos|s.|siki. gobernación, acto de gobernar: v. pushakuna||
+3297|gobernante|s.|pushak, kamak||
+3298|gobernar|v.|kamana, pushana||
+3299|golondrina, variedad de|s.|suyu, shillishilli, wayanay||
+3300|goloso, hillugolpear|v.|makana, waktana||
+3301|golpearse|v.|takarina. goma para pegar: s. (tuquru), tukuru; lluta||
+3302|gordo, -a|adj.|wira||
+3303|gota|s.|shutu, wiki||
+3304|gotear|v.|shutuna||
+3305|grada|s.|pata|graderí o: pata pata|
+3306|grado escolar|s.|pata||
+3307|granadilla|s.|tintin||
+3308|grande|adj.|hatun, kapak, mama, yaya||
+3309|grandeza|adj.|kapak||
+3310|granillo|s.|sharu, zharu||
+3311|granizar|v.|runtuna||
+3312|granizo|s.|runtu||
+3313|grano|s.|muru||
+3314|granos tostados y cocinados|s.|taznu, kallpu||
+3315|grasa|s.|wira||
+3316|grasoso|adj.|wirasapa||
+3317|gratuitamente|adv.|yanka, yankamanta, yankalla||
+3318|grieta|s.|chikta||
+3319|grillo|s.|chipu, chullu, hiki||
+3320|gris, color|adj.|puzu, uchpa||
+3321|gritar|v.|kaparina||
+3322|grito|s.|kapariy|ininteligible: wirakwirak|
+3323|grueso|adj.|raku||
+3324|gruta|s.|machay, matsi||
+3325|guaba|s.|pakay, kachik, ilta, llutipa||
+3326|guacamayo|s.|wakamayu||
+3327|guanta|s.|lumucha||
+3328|guardar|v.|wakaychina, allichina|en el seno: kinchullina; comida para llevar a la casa: wanllana. guarderí|
+3329|a|s.|wawawasi||
+3330|guatusa|s.|punchana, siku||
+3331|guerra|s.|awka, awkanakuy||
+3332|guerrero|s.|awka, awkak||
+3333|guía|s.||persona: pushak; de una planta o del bejuco: anku|
+3334|guiar|v.|pushana||
+3335|guineo|s.|palanta||
+3336|guiñar el ojo|v.|sipuna|guió n: (sillkuska), aspi|
+3337|gusano|s.|kuru, kuzu, latsik, tuku||
+3338|guzhan|s.|kullan||
+3339|haba, variedad de|s.|nuya||
+3340|haber|v.|tiyana|habitació n: pitita, killi|
+3341|habitar|v.|kawsana, tiyana||
+3342|hábitat|s.|pachamama||
+3343|hábito|s.|yachariy||
+3344|habituado|adj.|yacharishka||
+3345|habituarse|v.|yacharina||
+3346|habla, acto del habla|s.|rimay||
+3347|hablante|s.|rimak||
+3348|hablar|v.|rimana|demasiado: atina; sin sentido: musparina, tapyana|
+3349|hace mucho tiempo|adv.|unay, ñawpa||
+3350|hacepoco|adv.|ñakalla, kunanlla||
+3351|hace tiempo|adv.|sarun||
+3352|hace un momento|adv.|kunanlla||
+3353|hacer|v.|rurana; hoyos para sem brar plátano, maíz, fréjol: tulana|siguiendo un modelo: shinana; algo a escondidas: chakchuna; el amor: upina, yukuna, yumana|
+3354|hacerse (transformarse)|v.|tukuna|hacerse o malograrse los alimentos: hawriyana|
+3355|hacha|s.|(ayri)||
+3356|halar|v.|aysana, chutana|halcó n: waman|
+3357|hallar|v.|tarina||
+3358|hambre|s.|yarkay; tener hambre, tener: yarkay||
+3359|harina|s.|aku; kuta, kutashka||
+3360|hartar|v.|amina||
+3361|hartarse|v.|saksana||
+3362|harto|det.|achka, llashak, pachan||
+3363|hasta dónde?|preg.|¿maykama?||
+3364|hastiar|v.|amina||
+3365|he aquí, toma|exp.|kayka||
+3366|hebra|s.|puchka, kaytu||
+3367|heces|s.|isma||
+3368|helada (fenómeno atmosférico)|s.|kasa||
+3369|helar, caer la helada|v.|kasana||
+3370|helecho|s.|llashipa||
+3371|helicóptero|s.|antachikaru||
+3372|hembra|adj.|china; warmi||
+3373|hender|v.|chiktana, shallina||
+3374|hendido|adj.|chiktashka, waka||
+3375|herida|s.|chukri; adj. chukrishka||
+3376|herirse|v.|chukrina||
+3377|herma na de hermana|s.|ñaña||
+3378|hermana de hermano|s.|pani||
+3379|hermano de hermano|s.|wawki||
+3380|hermano de hermana|s.|turi||
+3381|hermoso, -a|adj.|kuyaylla, sumak|expresión para describir lo hermoso: ananay, munanayay|
+3382|hernia|s.|pawacha. herramienta (en general) s. llamkanakuna|de metal: hillay; para deshojar el maíz: mishun|
+3383|hervir|v.|timpuna||
+3384|hervívoro|s.|kiwamikuk||
+3385|hielo|s.|rasu||
+3386|hacersehielo|v.|rasuna||
+3387|hierba, en general|s.|kiwa|morada: sañi; espinosa: putsu; aromática del páramo: sumpu; un tipo de hierba: mallik|
+3388|hierro|s.|killay, hillay||
+3389|hígado|s.|kipchan, yana shunku|higueró n: ila|
+3390|hija|s.|ushushi; hija única; murushka ushushi|expresión que indica hijita apreciada: payaku|
+3391|hijo|s.|churi; hijo único, murushka churi||
+3392|hilado|adj.|puchkashka||
+3393|hilar|v.|puchkana||
+3394|hilera|s.|wachu||
+3395|hilo|s.|puchka||
+3396|hincharse|v.|punkirina||
+3397|hoja que cubre al choclo|s.|kutul, panka|hoja de la caña del maíz: sarapanka; hoja delgada de cabuya seca: anku; hoja y yerba reseca convertible en polvo: was; hoja de papel: (patma), panka|
+3398|holgazanear|v.|killakuna, kaynana||
+3399|hombre|adj.|kari|hombre común: hatunruna|
+3400|hombro|s.|wamani, waman rikra||
+3401|honda, objeto|s.|waraka||
+3402|hondonada|adj.|pukru||
+3403|hongo|s.|kallampa, ala|de la piel: sisu|
+3404|honrar|v.|yupaychana||
+3405|hora|s.|muray|hor có n: mantakakiru|
+3406|horizontal|adv.|sirik||
+3407|hormiga|s.|añanku|comestible: ukuy; conga: pushinshi, yuturi|
+3408|horqueta|s.|mantakakiru, pallka||
+3409|hortalizas|s.|yuyu||
+3410|hospedar|v.|minkachina||
+3411|hospedarse|v.|minkarina||
+3412|hospital|s.|hampiwasi, hampina wasi||
+3413|hotel|s.|tampu||
+3414|hoy|adv.|kunan||
+3415|hoya|adj.|pukru||
+3416|hoyo|s.|hutku||
+3417|hoz|s.|kuchuna, ichuna||
+3418|huaino|s.|wayñu, waynu||
+3419|Hundirse huanaco, camélido andino|s.|wanaku||
+3420|hueco|s.|hutku||
+3421|huella|s.|(yupi); chaki kati||
+3422|huérfano (animal o persona)|adj.|mana mamayuk, mana yayayuk; wakcha||
+3423|huero, huevo|adj.|huka||
+3424|huerta, -o|s.|muya||
+3425|hueso|s.|tullu|de jugar en los velorios: wayru|
+3426|huevo|s.|lulun||
+3427|huir|v.|mitikuna||
+3428|humanidad|s.|runakay||
+3429|humareda|s.|kushni||
+3430|humear|v.|kushnichina||
+3431|humedecerse|v.|hukuna, sutukyana||
+3432|húmedo|adj.|huku||
+3433|humita|s.|(huminta)||
+3434|humo|s.|kushni||
+3435|humear|v.|kushnichina||
+3436|hundirse|v.|washaykuna||
+3437|i idea|s.|yuyay||
+3438|idéntico|adj.|rikchak||
+3439|idioma|s.|shimi||
+3440|idiota|adj.|muspa, upa||
+3441|iglesia|s.|wakawasi, apunchikwasi||
+3442|igual o parejo|adv.|kuska; rikchak|que otra cosa: shina|
+3443|igualar|v.|allana, paktachina||
+3444|igualmente|conj.|shinallatak||
+3445|iguana|s.|hayampi||
+3446|imagen|s.|rikchak|imbé cil: muspa|
+3447|imitar|v.|katina, rikchana||
+3448|impar|det.|chullanik, chulla||
+3449|impermeabilizar (objetos de barro)|v.|wirana||
+3450|importante|adj.|hatun||
+3451|inadaptable (a las costumbres de un pueblo)|adj.|awka||
+3452|inca, suprema autoridad en el Tawantin suyu|s.|inka||
+3453|incendiar|v.|rupachina||
+3454|inclinado|adj.|kinray, tsan||
+3455|inclinar|v.|kumuna|indicació n: rikuchiy|
+3456|indicar|v.|rikuchina||
+3457|índice, dedo|s.|tuksina ruka||
+3458|indómito|adj.|kita||
+3459|inepto (para la cacería o la pesca)|adj.|awasi, chiki||
+3460|in fectarse (las heridas)|v.|kiyayana||
+3461|inferior|adj.|sullka||
+3462|inflamación (por heridas, golpes, picaduras)|s.|inta||
+3463|inflamarse|v.|ruparina||
+3464|inflarse|v.|punkina||
+3465|informar|v.|willana||
+3466|infortunio|adj.|chiki||
+3467|ingenuo|adj.|muspa||
+3468|inhumar|v.|pampana||
+3469|iniciar|v.|kallarina||
+3470|inicio|adv.|kallari||
+3471|inmediamente|adv.|ñapash||
+3472|inmenso|adj.|hatun, mayma||
+3473|inquieto|adj.|kushpachik, shillinakuk||
+3474|insecto|s.|apu, manchu, palamaku||
+3475|inseminar|v.|yayuna||
+3476|inservible|adv.|mana-alli, yanka||
+3477|insípido|adj.|aminta, chamcha, chamuk, hamlla||
+3478|insistir|v.|atina||
+3479|instantánemente|adv.|ña, ñalla||
+3480|instrumento|s.|hillay|para pedacear la cabuya: wazik|
+3481|insultar|v.|kamina, takurina, tushuna||
+3482|inteligencia|s.|yuyay||
+3483|inteligente|adj.|yuyaysapa. inter, mon. –naku-|interacció n: ruranakuy|
+3484|intercambiar|v.|rantinakuna|intercomunicació n: rimanakuy, willanakuy|
+3485|interior|adv.|uku||
+3486|interrogativo, el que interroga|v.|tapuk||
+3487|interrogar|v.|tapuna||
+3488|intestinos|s.|chunchulli|grueso: raku chunchulli; delgado: ñañu chunchulli|
+3489|introducir|v.|satina||
+3490|inundarse|v.|huntana, kuchayana, nuyuna|inú til: hupi, mana-alli, yanka|
+3491|in vestigar|v.|kuskikuy; mashkana, taripana, lukllikirina||
+3492|invierno|s.|tamya pacha||
+3493|invisible, cosa|s.|mana rikuypak, iñu||
+3494|invitar|v.|kayana||
+3495|invocar|v.|mañana||
+3496|inyectar|v.|tuksina||
+3497|ir|v.|rina|en aglomeración: tallirina, wankurina; de cacería y pezca: mitayuna, purina; a buscar leña: yantana|
+3498|izquierdo, -a|adj.|ichuk, lluki. J ja balí, s. wankana|jardí n: sisa pampa|
+3499|jarra|s.|shila||
+3500|jaspeado|adj.|puzu||
+3501|jefe|s.|apu, kuraka||
+3502|jengibre|s.|akirinri||
+3503|jesús, jesucristo|s.|apunchik||
+3504|jicama, tipo de tubérculo|s.|hikama||
+3505|jora, maíz germinado utilizado en la preparación de la chicha|s.|hura||
+3506|jorobado|adj.|kumu||
+3507|joven|adj.||ambos: mallta; varón: wayna; mujer: pasña, kuytsa|
+3508|juego|s.|pukllay, chunkay; juego y tablero, similar al ajedrez: tapta, taptana|otros: wayru, pichka|
+3509|jueves|s.|patma||
+3510|juez|s.|(kuskachaq), kuskachak, kamachik||
+3511|jugar (juegos de movimientos físicos y de competencias)|v.|pukllana|juegos de azar o de fortuna: chunkana|
+3512|jugo|s.|hilli|del penco: chawar mishki; fermentado de caña de azúcar: warapu|
+3513|juicio (inteligencia)|s.|yuyay||
+3514|juicioso|adj.|yuyaysapa||
+3515|julio|s.|purun||
+3516|junio|s.|inti||
+3517|juntar|v.|tantachina, llutana, tinkina|hierba: kiwana|
+3518|junto, al lado|adv.|kuchu, kuchulla||
+3519|júpiter|s.|akapana||
+3520|justicia|s.|kuskachaq, kuskachak||
+3521|juzgar|v.|taripana||
+3522|l laberinto|s.|chinkana||
+3523|labio|s.||inferior: sipri; superior: wirpa; leporino: waka, wantukshimi|
+3524|laborioso, -a|adj.|llamkak, kutsi||
+3525|labrar madera|v.|llakllana||
+3526|lactar|v.|chuchuna||
+3527|ladrar|v.|awñina, kaparina|ladró n: shuwa. lagaña, chukni|
+3528|lagartija|s.|palu, sacharuna, tsalakulun, tsilinkitsi, tulipa, waksa, yaku palu||
+3529|lago|s.|kucha, hita, mamakucha, hatun kucha||
+3530|lágrima|s.|wiki||
+3531|lagrimear|v.|wikiyana||
+3532|laguna|s.|kucha, hita||
+3533|lamentar|v.|llakina||
+3534|lamentarse|v.|ñakarina||
+3535|lamer|v.|llawana||
+3536|lana|s.|millma||
+3537|langosta|s.|chillik||
+3538|lanza|s.|wachi||
+3539|lanzar|v.|shitana, chutana|lá piz: killkana|
+3540|largo|adj.|suni||
+3541|lástima|s.|llaki|expresión de lástima: alalay, llakinayakta|
+3542|lastimarse|v.|chukrina||
+3543|lavar|v.||el cuerpo o la cabeza: armana; partes del cuerpo u objetos: mayllana; ropa: takshana|
+3544|lazo, agujero de una cuerda|s.|tuklla||
+3545|leche|s.|ñuñu||
+3546|lechero, tipo de árbol|s.|pinllu||
+3547|lechuza|s.|chushik, pullukuku||
+3548|leer|v.|(qillqaktarikuy), killkakatina||
+3549|legislador|s.|kamachik||
+3550|legislar|v.|kamachina||
+3551|lejano|adv.|karu||
+3552|lejos|adv.|karu||
+3553|lengua, órgano articulatorio|s.|kallu||
+3554|lengua(je) articulado|s.|shimi; lengua castellana; kastilla shimi|lengua quichua: kichwa shimi; lengü eta: kallwa|
+3555|leña|s.|yanta|verde: chawa; con fuego: inta; hacer leñar: yantay|
+3556|lerdo, -da|adj.|sampa; lerda, mujer: zanzan||
+3557|letra|s.|killka||
+3558|levantamiento|s.|hatariy||
+3559|levantar|v.|hawayachina|con palanca: wankana|
+3560|levantarse|v.|hatarina||
+3561|ley(es)|s.|(kamachikuska), kamachiy|hacer leyes: kamachiy|
+3562|leyenda|s.|ñawparimay||
+3563|liar|v.|wankuna, alapana|pies o manos: chaknana. libé|
+3564|lula|s.|chikaru, tsikaru, akcha shuwa||
+3565|liberar|v.|kishpichina||
+3566|liberarse|v.|kishpirina, kishpina||
+3567|li brar|v.|kishpichina||
+3568|libro|s.|(qillqa, qillqa kipu, qillqaykusqa), killka, killka kipu, killkaykushka; kamu (¿?)|lí der: apu, pushak|
+3569|liendre|s.|chiya||
+3570|ligero|adj.|ichu, kutsi; adv.: utkay||
+3571|lila|adj.|maywa||
+3572|li mar|v.|llampuna||
+3573|límitar|v.|saywana|limó n: ishnul. lí|
+3574|mite|s.|saywa||
+3575|limpiar|v.|pichana||
+3576|limpio|adj.|chuya, chuyaklla||
+3577|linaje|s.|ayllu||
+3578|linderar|v.|saywana, kimina||
+3579|lindero|s.|||
+3580|saywalindo|adj.|kuyaylla, sumak lí||
+3581|nea|s.|(siqi); aspi, wachu|horizontal: sirik aspi|
+3582|vertical|s.|shayak aspi||
+3583|líquido|s.|yaku||
+3584|lirio|s.|amankay||
+3585|lisiar|v.|kiwina||
+3586|liso|adj.|llampu, lluchka||
+3587|lisonjero|adj.|mishkishimi||
+3588|liviano|adj.|pankalla||
+3589|lobanillo|s.|pukla||
+3590|lobo|s.|atuk. lóbulo, parte inferior carnosa de la oreja: s. llutu||
+3591|lodo|s.|turu||
+3592|hacerselodo|v.|: turuyana||
+3593|loma|s.|urku||
+3594|lomo|s.|washa||
+3595|lora, -o|s.|uritu, kayas, araw, tinkula, llikuy, kalli kalli, shakalli, shakan||
+3596|lucero|s.|kuyllur||
+3597|luciérnaga|s.|ninakuru, tillimpu||
+3598|luz lucma, tipo de fruta|s.|lukma, rukma||
+3599|luego|conj.|chaymanta, chay kipa, kipaman. lugar, donde está algo: tiyaskan; lugar, región o parte: suyu; kuska|sagrado: pukara, waka; lle no de maleza: wita; abandonado: purun|
+3600|lumbre|s.|nina||
+3601|luminoso|adj.|hakan||
+3602|luna|s.|killa||
+3603|lunar|s.|ana||
+3604|lunes|s.|sullka||
+3605|luz|s.|achik||
+3606|ll llama, camélido andino|s.|llama¸ un tipo de llama: chantasu, llaminku||
+3607|llamar|v.|kayana|expresión para llamar al ganado: kachi kachi; llamar la atención en una conversación: hay|
+3608|llanura|s.|pampa||
+3609|llegar|v.|chayamuna, paktamuna||
+3610|llenar|v.|huntachina, paktachina||
+3611|lleno|adj.|hunta, huntashka||
+3612|llevar|v.|; llevar en andas o en camilla wantuy|cosas: apay; llevar al go en la falda: mikllay; llevar en brazos: markay; llevar a la espalda: apariy; llevar en las manos: markay; llevar en los hombros: rikray|
+3613|llorar|v.|wakana||
+3614|llover|v.|tamyana, paramuna|en forma menuda mientras hay sol: chirapana|
+3615|lloviznar|v.|paramuna||
+3616|lluvia|s.|tamya|menuda con sol: chirapa|
+3617|m machacar|v.|kawtayana, takana||
+3618|máchica, harina de cebada|s.|machka||
+3619|macho|adj.|(ullqu), ullku; kari||
+3620|madera|s.|(qiru) kiru; kaspi|del penco: chawar kiru|
+3621|madre|s.|mama. madrecita, expresión cariñosa para las mujeres adultas o jóvenes: mamaku||
+3622|madrina de bautizo|s.|achikmama, markakmama||
+3623|madrugada|adv.|tutamanta||
+3624|madurar|v.|(puquy), pukuna||
+3625|madurarse, el choclo|v.|kawllarina||
+3626|maestro, -a|s.|yachachik||
+3627|maguey|s.|chawar||
+3628|magullar|v.|llakana||
+3629|magullarse|v.|rawmana|maí z: sara|
+3630|mal, -o, -a|adj.|mana-alli|mal acostumbrado: paku; mal genio: millay; mal molido: chamka|
+3631|malestar, tener|v.|champayana||
+3632|maleta|s.|kipi||
+3633|maleza|s.|sacha||
+3634|malhumorado, de mal humor|adj.|millay, warak warak||
+3635|malhumorarse|v.|millayana||
+3636|malograrse, no empollar los huevos|v.|hukana. mamá, s. mama||
+3637|mamar|v.|chuchuna||
+3638|mamífero|s.|chuchuk||
+3639|manantial|s.|pukyu||
+3640|mancera|s.|charina||
+3641|mancha|s.|tiílla, mapa||
+3642|manchado|adj.|tiílla, shuyushka||
+3643|manchar|v.|hawina, llunchina, shuyuna||
+3644|man charse|v.|karkayana, mapayana, wikiyana||
+3645|mancha|s.|mapa, tiklla|del rostro o paño: mirka|
+3646|mandar|v.|kachana||
+3647|maní, sinchik, wachansumaniatar|v.|watana||
+3648|manillas|s.|makiwatana||
+3649|mano|s.|maki|dorso de la mano: maki washa; palma de la mano: maki pampa; cuenco de la mano: maki uku; parte central de la mano: maki shunku|
+3650|manosear|v.|llamkana, hawina||
+3651|manta|s.|mantana|para cargar: aparina; para cosechar el maíz: halunzu|
+3652|manteca|s.|wira||
+3653|mañana|adv.|kaya|la mañana: tutamanta|
+3654|maqueño|s.|yurimawas||
+3655|mar|s.|mamakucha||
+3656|marcador, para escribir|s.|killkana||
+3657|marchar|v.|tatkina||
+3658|marchitarse|v.|ankuyana, urmarina, wañurina||
+3659|marearse|v.|shinkana||
+3660|marfil vegetal|s.|yarina||
+3661|marido|s.|kusa||
+3662|mariposa|s.|pillpintu, chapul||
+3663|marrano|s.|kuchi||
+3664|marte, planeta|s.|mullu||
+3665|martes|s.|kulla||
+3666|marzo|s.|pawkar|má s: ashtawan|
+3667|masa, hacer|v.|chapuna||
+3668|mascar|v.|kashtuna, mukuna||
+3669|mashua|s.|mashuwa||
+3670|masticar|v.|akuna, kashtuna, mukuna|masticar y emitir sonidos los cerdos al comer: chakukina|
+3671|mata|s.|yura||
+3672|matar|v.|wañuchina||
+3673|mate|s.|mati, zampu||
+3674|matrimoniarse, contraer matrimonio|v.|sawarina||
+3675|matrimonio|s.|sawari, sawariy||
+3676|matrona|s.|mama; mamakuna||
+3677|mayo|s.|aymuray||
+3678|mAyormayor|adj.|kurak, kuraka||
+3679|mazamorra|s.|api||
+3680|mazo|s.|makana||
+3681|mazorca (de gramíneas y cereales)|s.|kaspa||
+3682|mecer|v.|kuyuchina, kawina, kantina||
+3683|mediano, -a (objetos, personas y animales)|adj.|mallta, paktalla||
+3684|medicina|s.|hampi|especialidad: hampiyachay. mé|
+3685|dico|s.|hampik; yachak||
+3686|medida|s.|tupu||
+3687|medio ambiente|s.|pachamama||
+3688|medio|det.|chawpi||
+3689|medio, el dedo|s.|chawpi ruka||
+3690|mediocre|adj.|sacha||
+3691|medir|v.|tupuna||
+3692|médula|s.|(chillina), chillona; ñutku|de vegetales: shunku|
+3693|me jorar|v.|allichina, sumakyachina||
+3694|melga|s.|milka||
+3695|melloco|s.|milluku||
+3696|memoria|s.|yuyay||
+3697|mencionado|adj.|nishka||
+3698|mencionar|v.|nina||
+3699|menear|v.|kawina|hacer menear: kuyuchina|
+3700|menor|adj.|sullka||
+3701|menos pensado|adv.|haykamanta, kunkaymanta||
+3702|mensaje|s.|willay||
+3703|mensajero|s.|chaski|menstració n: yawarikuy, mapakuy; yawarta rikuy, killa unkuy, mapa killa|
+3704|menstruar|v.|yawarikuy, mapakuna; killa unkuy||
+3705|mentir|v.|llullana||
+3706|mentira|s.|llulla||
+3707|mentiroso|adj.|llulla|mentó n: kakichu, sintu|
+3708|meñique, dedo|s.|sullka ruka||
+3709|mercurio|s.|rimsi||
+3710|merendar|v.|(chishinmikuy), chishinmikuna||
+3711|merienda|s.|(chishinmikuy), chishinmikuy||
+3712|mermar|v.|anchuchina||
+3713|mes|s.|killa||
+3714|mesa|s.|(chakiqiru); pataku, hampara||
+3715|mestizo|adj.|laychu, mishu, tsala, wirakucha, misti, mishu||
+3716|metal|s.|||
+3717|antameter|v.|satina||
+3718|metro (medida)|s.|tatki||
+3719|mezclar|v.|chakruna, chapuna||
+3720|mezquinar|v.|michana, mitsana||
+3721|mezquino, -a|adj.|michak, mitsak||
+3722|miedo|s.|manchanayay|expresión de miedo: alalay|
+3723|miel de abeja|s.|chullumpi||
+3724|miércoles|s.|haway||
+3725|mierda|s.|isma||
+3726|migaja|s.|palik||
+3727|mil|num.|waranka||
+3728|milenio|adv.|warankawata||
+3729|militar|s.|awka, awkak|milló n: (hachuntinhachu, hachuhachu)|
+3730|mimar|v.|kuyana||
+3731|mimbre|s.|tiyamshi||
+3732|mina|s.|charka, kuya||
+3733|mineral, tipo de piedra|s.|ara rumi||
+3734|minuto|s.|hayri||
+3735|mirar|v.|chapana, kawana, rikuna||
+3736|mirarnos, nos volveremos a encontrar|exp.|rikunakushun||
+3737|mirlo|s.|suksu||
+3738|miserable|adj.|michak, mitsak||
+3739|mis mo, -a|adj.|kikin||
+3740|mitad|det.|chawpi||
+3741|mocho|adj.|putu||
+3742|moco|s.|kuña, lumarisu. mocosos, expresión despectiva a los niños: isi||
+3743|modificar|v.|allichiy||
+3744|moho|s.|allu||
+3745|mojado|adj.|huku|semimojado: ankulla|
+3746|mojarse|v.|hukuna, mutiyana, shuturina, sutukyana||
+3747|moler|v.|kutana|grueso: chamkana|
+3748|molestar|v.|kushparina, shillinkuna||
+3749|molido|adj.|kuta, kutashka|grueso: chamka|
+3750|molle, planta y frutos|s.|mulli||
+3751|mollera, ñupumono|s.|chichiku, kushillu, intillama, kutu, machin, parawaku, shilltipu, sipuru, tsiyampitsu||
+3752|montaña|s.|urku||
+3753|montar|v.|sikana||
+3754|monte|s.|urku|monte y maleza: sacha|
+3755|morada, lugar donde se vive|s.|tiyana, kawsana||
+3756|morado|adj.|maywa, sañi||
+3757|morder|v.|kanina|hacer morder: kanichina|
+3758|morir|v.|wañuna, pitirina, tukurina||
+3759|morirse de iras|v.|wañurina||
+3760|morocho|s.|muruchu||
+3761|mortecina|adj.|ismushka, wañushka||
+3762|mosca, -o|s.|chuspi, hikiñas; kurumama||
+3763|mosquearse|v.|intuna||
+3764|mostrar|v.|rikuchina||
+3765|mote, maíz o choclo cocido|s.|muti||
+3766|moteado|adj.|luyu luyu||
+3767|moverse|v.|kuyuna|en vaivén: kawirina|
+3768|movilizar|v.|kuyuchina||
+3769|mozuela|adj.|pasña, kuytsa||
+3770|muchacha|adj.|kuytsa, pasña||
+3771|muchacho|adj.|wamra||
+3772|muymucho|det.|achka, llashak, may, yapa||
+3773|mudo|adj.|upa||
+3774|muela|s.|mamakiru||
+3775|muerte|s.|wañuy||
+3776|muerto|adj.|wañushka||
+3777|mujer|s.|warmi; noble, escogida en el tiempo del inca rio: palla|mujer mítica: mama awaduna, chificha, mama hataba; lenta en el trabajo: zanzan. mujercita, expresión cariñosa para las adultas: mamaku|
+3778|muletilla en el habla|exp.|imashnaray, imashti||
+3779|multiplicar|v.|mirachina||
+3780|multiplicarse|v.|mirana||
+3781|mundo|s.|pacha||
+3782|muñeca, -o|s.|llullawawa; sayti (?)||
+3783|murciélago|s.|mashu, chimpilaku||
+3784|muro|s.|pirka||
+3785|muslo|s.|raku chanka, mama chanka||
+3786|mutilar|v.|kulluna||
+3787|muy|adv.|may, yapa, ancha||
+3788|n nacer|v.|wacharina, pakarina||
+3789|nacido, en algún lugar|adj.|wacharishka|nació n: llakta, mamallakta|
+3790|nacionalidad|s.|suyukawsay, ayllusuyu||
+3791|nada|det.|mana-ima||
+3792|nadar|v.|waytana, wampuna||
+3793|nadie|det.|manapi, manapipash||
+3794|nalga|s.|siki||
+3795|nalgadas, dar|v.|kullpina||
+3796|naranja|s.|laranka, laranha, chilina||
+3797|nariz|s.|sinka||
+3798|narrador de cuentos|s.|hawarikuk||
+3799|narrar (cuentos, fábulas)|v.|hawarikuy||
+3800|naturaleza|s.|pacha, pachamama||
+3801|nausear|v.|kuynay); kuynana, millana||
+3802|navegante|s.|wampuk||
+3803|navegar|v.|wampuna||
+3804|neblina|s.|puyu||
+3805|necio|adj.|atupa||
+3806|negro, color|adj.|yana||
+3807|neptuno|s.|turumanya||
+3808|nevado, el cerro|s.|rasu urku; rasushka||
+3809|nevar|v.|rasuna||
+3810|ni dios lo quiera|adv.|amallatak||
+3811|nido|s.|kisha, kuzha, putsa||
+3812|niebla|s.|puyu||
+3813|nieve|s.|rasu||
+3814|nigua|s.|iñu, piki||
+3815|niña de los ojos|s.|pichiw||
+3816|niño|s.|wawa, uchilla|que sigue a sus padres: chupa|
+3817|nivelar|v.|allana||
+3818|no es cier to?|adv.|¿manachu?||
+3819|no|adv.|ama, mana||
+3820|noble|adj.|kapak||
+3821|noche|s.|tuta. no friegues, expresión: ampuku||
+3822|nogal|s.|tukti||
+3823|nombre|s.|shuti|norte (regió n): chinchay|
+3824|nosotros|pron.|ñukanchik||
+3825|novecientos|num.|iskun pachak, iskun patsak||
+3826|noventa|num.|iskun chunka||
+3827|novia|s.|sawarina kuytsa||
+3828|noviembre|s.|ayar||
+3829|novio|s.|sawarina wamra||
+3830|nube|s.|puyu||
+3831|nublado|adj.|puyu puyu, puyushka||
+3832|nublarse|v.|puyuna||
+3833|nuca|s.|washa kunka||
+3834|núcleo|s.|shunku||
+3835|nudo|s.|kipu, muku, sutu||
+3836|nuera|s.|kachun||
+3837|nuestroseñor|s.|(Jesucristo) s. Apunchik||
+3838|nuevamente|adv.|kutin||
+3839|nuevemil|num.|iskun waranka||
+3840|nueve|num.|iskun||
+3841|nuevo (persona, objeto, tiempo)|adj.|mushuk, wamak||
+3842|numerado|adj.|yupashka||
+3843|numerar|s.|yupana||
+3844|número|s.|yupay||
+3845|nutria|s.|pishña; yaku ukucha||
+3846|o objeto|s.|ima|sagrado: waka; de barro: puru; hacer objetos de barro: v. awana|
+3847|obsequiar|v.|kamarina, kuyana||
+3848|ob servar|v.|rikuna, chapana||
+3849|obstaculizar|v.|harkana||
+3850|obstáculo|s.|harka||
+3851|oca|s.|uka||
+3852|occidente|s.|inti yaykuna|océ ano: mama kucha|
+3853|ochenta|num.|pusak chunka||
+3854|ocho cientos|num.|pusak pachak||
+3855|ochomil|num.|pusak waranka||
+3856|ocho|num.|pusak||
+3857|ocioso|adj.|(qilla), killa||
+3858|octubre|s.|yaku||
+3859|ocultar|v.|killpana, pakana||
+3860|odiar|v.|chiknina||
+3861|oeste|s.|inti yaykuna||
+3862|ofrecer|v.|kuna|oí do: rinri hutku|
+3863|oido|adj.|uyashka, uyarishka||
+3864|oir|v.|uyana||
+3865|ojo|s.|ñawi|cerrar los ojos: v. itsipuy|
+3866|oler|v.|ashnana, mutkina||
+3867|olfato|s.|mutki||
+3868|olla|s.|manka||
+3869|oloroso|adj.|ashnak||
+3870|olvidado|adj.|kunkashka||
+3871|olvidar|v.|kunkana||
+3872|olvido|s.|kunkay||
+3873|ombligo|s.|pupu||
+3874|omnívoro|adj.|tukuymikuk||
+3875|omóplato|s.|karmin||
+3876|oprimir|v.|ñitina|ordenar, poner en orden, en buena disposició n: (hichyay), hichyana|
+3877|ordeñar|v.|chawana, kapina||
+3878|oreja|s.|rinri, rinri kara|orientació n: rikuchiy|
+3879|oriente|s.||punto cardinal: inti llukshina; región: anti suyu|
+3880|origen|s.|sapi||
+3881|orilla|s.|manya||
+3882|orinar|v.|ishpana; yaku-ishpana||
+3883|ortiga|s.|chini||
+3884|ortigar|v.|chinina||
+3885|orzuelo|s.|itsipu||
+3886|oscilar|v.|walinyana||
+3887|oscuro|adj.|amsa, llantu, pakna||
+3888|oso|s.|ukumari||
+3889|otoño|s.|wayra pacha||
+3890|otravez|adv.|kutin||
+3891|oveja|s.|llama||
+3892|ovillar|v.|kururuna||
+3893|ovillo|s.|kururu||
+3894|oxidarse|v.|wakarina||
+3895|oyente|s.|uyak||
+3896|p pacífico|adj.|kasilla|océano pacífico: wirakuchap kutimunkan|
+3897|padre|s.|yaya||
+3898|padrino de bautizo|s.|markakyaya, achikyaya||
+3899|página|s.|(patara), patara, panka||
+3900|paico, yerba medicinal|s.|payku|paí s: llakta, mamallakta|
+3901|paja (variedades|s.|uksha, siksik, wayuri, lisan||
+3902|pájaro (varidedades)|s.|munchi, chañawi, chikwan, chiwlli, chiyun, killpuntu, kitiwpi, kullishtiti, kuwayu, chikin chikin, liklik, lluta, manku, panzaw, pishku, piyan piyan, pusayu, tiwinkulu, tiyunti, tiyuti, tsalak tsalak, tullik, tunchi, tuntu, wiriwiri, zhuta||
+3903|pala, tipo de|s.|wallmu||
+3904|palanca|s.|tula, wanka||
+3905|palla, tipo de rondador|s.|palla||
+3906|palma de la mano|s.|maki pampa||
+3907|palmadas, dar|v.|kuyachina||
+3908|palmera (variedades)|s.|chilli, chincha, chinku, kuya, lukata, murito, shapaka, shimpi, shipati, shiwa, unkurawa, yarina||
+3909|palo|s.|kaspi; palos y carrizos para cubiertas y paredes de casas, corrales y cercas: chaklla|que nace del cabuyo: (qiru), kiru|
+3910|palpar|v.|llamkana, hawina||
+3911|paludismo|s.|chukchu-unkuy||
+3912|pan|s.|tanta||
+3913|páncreas|s.|iducha; kantsapata|pantaló n: wara|
+3914|pantano|s.|guzu, kuzu||
+3915|pantorilla|s.|chakichichu||
+3916|panza|s.|(uspun), pusun||
+3917|pañal|s.|llachapa, pintu, akawara||
+3918|paño (manchas del rostro)|s.|mirka||
+3919|papa|s.|papa|rojiza: yunkarak; deshidratada: chunu, chuñu, muray; pelada y amarillenta: akma. papá, s. yaya|
+3920|papel|s.|(patara); panka||
+3921|papirotear|v.|tinkana||
+3922|paquete|s.|apay|atado en hojas: maytu|
+3923|par|adv.|ishkantin, yanantin||
+3924|páramo|s.|puna, sallka||
+3925|parar|v.|shayarina||
+3926|pararse|v.|hatarina, shayana||
+3927|parecerse|v.|rikchana||
+3928|parecido, -a|adv.|rikchaklla, shina||
+3929|pared|s.|pirka|de una casa abandonada: yata|
+3930|pareja|adv.|ishkantin, yanantin||
+3931|pariente|s.|ayllu||
+3932|parir|v.|wachana||
+3933|párpado|s.|ñawi kara||
+3934|parque|s.|sisa pampa||
+3935|parroquia|s.|kitilli (¿?)||
+3936|parte alta de la casa, cuesta, pared o peña|adv.|hanak pata||
+3937|parte|s.|rakiy||
+3938|partido (político)|s.|(suyuchakuska); partido o semi, medio: chikta||
+3939|partir|v.|chiktana, ikina, rakina, chillpina|en la mitad: chawpina, patmana|
+3940|pasado|adj.|yallishka|pasado mañana: mincha; tiempo pasado: sarun pacha, ñawpa pacha, unay pacha, wayma pacha|
+3941|pasar|v.|yallina||
+3942|pasarse, el tiempo|v.|( yalliriy), yallirina||
+3943|pasear|v.|puriykachana||
+3944|paso|s.|tatki|dar pa sos el niño: tatkiy|
+3945|paspa, grieta en la piel|s.|paspa, zipi||
+3946|pastar|v.|michina||
+3947|pasto|s.|waylla, muya|lugar de pasto: michina|
+3948|pastor, -a|s.|michik||
+3949|pastorear|v.|michina||
+3950|pata, cosas o animales|s.|chaki||
+3951|patalear|v.|kushparina||
+3952|patata|s.|papa||
+3953|patear|v.|haytana||
+3954|patio|s.|kancha||
+3955|pato, variedad de|s.|kulta||
+3956|patria|s.|pakarishka llakta; llakta, mamallakta||
+3957|patrono|s.|llamkayyuk||
+3958|pausa|s.|samay||
+3959|pava, -o|s.|akankaw, muntiti, pawshi||
+3960|peca|s.|mirka||
+3961|pecado|s.|hucha||
+3962|pecador|s.|huchallik||
+3963|pecar|v.|huchallina||
+3964|pecho|s.|kasku||
+3965|pedacear|v.|pakina, takana|la ropa: challchina; la cabuya fresca: wazikina|
+3966|pedazo|s.|paki, rakiy||
+3967|pedir|v.|mañana|ayuda a otro: minkana; la mano de la novia por segunda vez: paktana|
+3968|pedo|s.|supi||
+3969|peer|v.|supina||
+3970|pegar (golpear)|v.|makana, waktana|con substancias adherentes: llutana|
+3971|peinar|v.|ñakchana||
+3972|peine|s.|ñakcha||
+3973|peinilla|s.|ñakcha||
+3974|pelar|v.|lluchuna, llushtina|con los dientes: kaskana|
+3975|pelea|s.|makanakuy|pelea ritual: tinkuy, pukara|
+3976|pelear|v.|makanakuna|las mujeres: alapana|
+3977|pellejo|s.|kara||
+3978|pellizcar|v.|tispina, tsitsikina||
+3979|pelo|s.|akcha||
+3980|pelota, rumpape lusa|s.|akwas||
+3981|pena|s.|llaki, llakikuy||
+3982|penco|s.|chawar||
+3983|pender, estar colgado|v.|wayunkana, wayurina, warkurina||
+3984|pene|s.|ullu||
+3985|pensamiento|s.|yuyay||
+3986|pensante|adj.|yuyak, yuyayyuk, shunkuyuk||
+3987|pensar|v.|yuyana||
+3988|pensativo|adj.|yuyarikuk||
+3989|estar pensativo|v.|yuyarina||
+3990|peña|s.|kaka||
+3991|pepa|s.|muyu, ruru||
+3992|pequeño|adj.|uchilla, wawa; chusu, hamchi, ñutu||
+3993|piezA perder|v.|chinkana|el conocimiento: mayzana, yuyaychinkana|
+3994|perderse|v.|chinkarina||
+3995|perdiz|s.|yutu, tukilu|per dó n?: ¿haw?|
+3996|perdonar|v.|kishpichina||
+3997|perezoso|adj.|killasapa, sampa||
+3998|perico ligero|s.|intillama||
+3999|perico, tipo de pájaro|s.|chuki, ichu, wichu|perí odo: mita|
+4000|permitir|v.|kacharina||
+4001|pero|conj.|shinallatak, shinapash||
+4002|perro|s.|allku|expresión para los perros cazadores que siguen el rastro de personas o animales: tiw tiw tiw|
+4003|perseguir|v.|katiykachana||
+4004|persona|s.|runa|inadaptable a las costumbres de un pueblo: awka|
+4005|pesadillas|s.|llapik||
+4006|tener pesadillas|v.|llapitukuna; nuspana||
+4007|pesado|adj.|llashak, llashashka||
+4008|pesar en balanza|v.|llashana||
+4009|pescado|s.|, adj. challwa||
+4010|pescar|v.|challwana|buscando debajo de las piedras: kantina|
+4011|pestañar|v.|kimllana, pimpirana, sipuna||
+4012|pestañas|s.|kichipra, llipinshi||
+4013|petrificarse|v.|rumiyana|petró leo: punkara, allpawira|
+4014|pez (variedad)|s.|challwa, chinlus, chuti, kalamatu, kiruyuk, kururu, lupi, paku, paychi, piruru, sichi, siklli, shikitu, tanla, tuksik, tunsa, wal, yaku-aycha, yawisun, yayu|pezó n: chuchu ñawi, chuchu muyu|
+4015|pezuña|s.|sillu||
+4016|picadura|adj.|kanishka|que deja el gusano: chay chay|
+4017|picante|adj.|hayak|picar, dar comezó n: shikshina; los insec- tos: kanina. pí|
+4018|caro|adj.|challi||
+4019|pico (de ave)|s.|tapsa; shimi||
+4020|pie|s.|chaki|piedra preciosa: umiña; piedra pequeña: sharu, zharu|
+4021|piedra, rumipiel|s.|kara||
+4022|pierna|s.|chanka; chuscha. pieza, musical: s. taki||
+4023|pincel pincel|s.|tullpuk-kaspi||
+4024|pinchar|v.|tuksina||
+4025|pingullo, tipo de flauta|s.|pinkullu||
+4026|pintar con colores|v.|(llimpiy), llimpina, hawina, llunchina|pintar con pintura una casa u otro objeto: tullpuna. pintó|
+4027|n|adj.|ankas||
+4028|pintor, de artes plásticas|adj.|(llimpik), shuyuk, hawik||
+4029|pintura del dibujante o artista|s.|llimpinakuna|para teñir: (tullpuna), tullpu|
+4030|piña|s.|chiwilla||
+4031|piojo|s.|usa, pikli, pilis||
+4032|piola|s.|kawchu||
+4033|piraña|s.|paña||
+4034|pisada|s.|(yupi), chaki kati||
+4035|pisar|v.|saruna, haytana||
+4036|piso|s.|pata|pizarró n: killkanapirka|
+4037|placenta|s.|wawamama||
+4038|plaga de plantas|s.|lancha||
+4039|planeta|s.|rumpu||
+4040|planicie|s.|pampa||
+4041|planta del pie|s.|chaki pampa, chaki uku||
+4042|planta, general|s.|yura, mallki|(variedades): chill chill, chullku, illimpu, iñil, lalu, munchi, ñutu, pitsik, purun, tsimpiyu, tsintsimpu, tsinzu, tiyatina, ushun, wala, wamintsi, waranku; planta seca del maíz: challa, kallcha|
+4043|plata, mineral|s.|kullki||
+4044|plátano|s.|palanta|maqueño: yurimawas|
+4045|plato|s.|mulu, puku||
+4046|plaza|s.|kancha, pata, pampa; plaza de entretenimientos, en el Cuzco antiguo: (kussi pata); kushipata||
+4047|plegar|v.|patarina||
+4048|plomo|s.|titi||
+4049|pluma|s.|patpa||
+4050|plutón, planeta|s.|riti||
+4051|poblar|v.|llaktana||
+4052|pobre|adj.|wakcha, tsunzu||
+4053|poco a poco|adv.|allimanta||
+4054|poco|det.|asha, ansa, aslla, pishi||
+4055|poder|v.|atipana, atina, ushana||
+4056|podrido|adj.|ismu, ismushka, misha||
+4057|podrirse|v.|ismuna|poesí a: arawiku, harawi|
+4058|poeta|adj.|arawikuk|policí a: chapak|
+4059|polilla|s.|susu||
+4060|polinizar|v.|yayuna||
+4061|pollo|s.|chuchi, chiwchi||
+4062|polvo|s.|allpa||
+4063|ponderarse|v.|chakchuna||
+4064|pondo|s.|puntu||
+4065|poner|v.|churana|una cosa sobre otra: palltay; huevos las aves o peces: wachana; boca abajo: tikrachina; poner algo en el seno: kinchullina; poner cubierta a la casa: awana|
+4066|ponerse de pie|v.|shayarina, hatarina||
+4067|por dónde?|preg.|¿maytatak?||
+4068|porello|conj.|chayrayku||
+4069|poreso|conj.|chaymanta, chayrayku|por qué ?: ¿imamantatak?|
+4070|por supuesto|adv.|shinami, shinayka, shinaykuti||
+4071|porfiar|v.|atina||
+4072|posada|s.|tampu||
+4073|potrero|s.|muya||
+4074|pozo|s.|pukyu||
+4075|precepto|s.|(kamachikuska)||
+4076|precio|s.|chanin||
+4077|precioso|adj.|sumak||
+4078|pre decesor|s.|ñawpak||
+4079|preguntar|v.|tapuna||
+4080|prendedor|s.|tupu||
+4081|preñada|adj.|chichu||
+4082|preñarse|v.|chichuyana||
+4083|preparar|v.|allichina|la chicha: aswana; la tierra para la siembra: chakrana|
+4084|presentador|v.|riksichik, rikuchik||
+4085|presentar|v.|riksichina, rikuchina||
+4086|presentarse|v.|rikurina||
+4087|presente|adv.|kunan|tiempo presente: kunan pacha|
+4088|presidente|s.|pushak||
+4089|presionar|v.|atina|algo: ñitina|
+4090|prestar|v.|mañachina||
+4091|pretérito|adv.|ñawpa pacha, sarun pacha||
+4092|pretina, especie de|s.|watu||
+4093|prevalecer|v.|atina||
+4094|prever|v.|musyana||
+4095|primavera|s.|pawkar waray, sisa pacha||
+4096|primero|adv.|ñawpak, shukniki; hijo,-a primeros: ñawi||
+4097|princesa|s.|ñusta||
+4098|principal|adj.|hatun, kuraka, kapak||
+4099|príncipe|adj.|awki||
+4100|principiar|v.|kallarina||
+4101|principio|s.|sapi; adv. kallari|prisió n: wataywasi|
+4102|probar|v.|kamana, mallina||
+4103|problema o contratiempo|s.|llaki||
+4104|producto óptimo|adj.|wanlla|productos o granos que se quedan después de la cosecha: challa, chukchi|
+4105|profesor, -a|s.|yachachik||
+4106|pronto|adv.|utka, hayka|propagació n: miray|
+4107|propio (de suyo)|adj.|kikin||
+4108|provincia|s.|marka||
+4109|provocar, hacer antojar|v.|munachina||
+4110|pueblo|s.|llakta||
+4111|puente|s.|chaka||
+4112|puerco, -a|s.|kuchi||
+4113|puerta|s.|punku||
+4114|pus puesto|s.|kuska||
+4115|pujar|v.|hipana||
+4116|pulga|s.|piki. pulgar, dedo: s||
+4117|mama rukapulir|v.|llampuna|pulmó n: (surqan), surkan; paruk, yurak shunku. pulque, de cabuya: s. chawarmishki, mishki|
+4118|pulsera|s.|makiwatana||
+4119|pulverizado|adj.|ñutu, kutashka, kuta||
+4120|pulverizar|v.|ñutuna||
+4121|puma, felino americano|s.|puma||
+4122|pumamaki, tipo de árbol|s.|pumamaki||
+4123|punta|adj.|ñawchi||
+4124|punto|s.|iñu||
+4125|punzar|v.|tuksina, tulana||
+4126|puñado|det.|lutsu, tsutsuk||
+4127|puño cerrado|s.|chuqmi; chukmi||
+4128|pupitre|s.|(chakiqiru), pataku||
+4129|pus|s.|kiya||
+4130|Q quédijo?|interj.|¿haw?. qué cosa?. pron. ima||
+4131|quebrada (depresión geográfica)|s.|wayku||
+4132|quebrado|adj.|paki, pakishka|fracción en matemáticas: paki|
+4133|quebrar|v.|pakina||
+4134|quemado por el sol|adj.|ruparishka, kazuk, kazukyashka, muzuklla||
+4135|quemar|v.|rupachina||
+4136|quemarse|v.|ruparina||
+4137|querer|v.|munana, llakina||
+4138|quichua|adj.|kichwa|quié n?: ¿pi?|
+4139|quieto|adj.|kasilla||
+4140|quilico, variedad de ave|s.|killiku||
+4141|quinientos|num.|pichka pachak, pichka patsak||
+4142|quinoa|s.|kinuwa||
+4143|quipa, ins trumento musical|s.|kipa||
+4144|quipo, nudos del registro y administración incásica|s.|kipu||
+4145|quipocamayoc|s.|kipukamayuk||
+4146|quishuar|s.|kishwar||
+4147|quitar|v.|anchuchina, kichuna||
+4148|quitarse|v.|anchurina|quizá, quizá s: icha, ichapash|
+4149|r rabo|s.|chupa||
+4150|racimo|s.|luntsa, putsa, watu|de chonta: tika. raí|
+4151|z|s.|sapi||
+4152|rajar|v.|chiktana, shallina||
+4153|rallar|v.|shikina||
+4154|rama|s.|mallki||
+4155|rápidamente|adv.|ñapash, utkalla||
+4156|rapidísimo|adv.|ninantak||
+4157|rápido|adv.|ichu, utka, hayka, zas|rápido de cocinarse o de madurarse: chawcha|
+4158|raposa|s.|chakka, chucha, sinik, wanchaka||
+4159|raquítico|adj.|irki, tsala, tsinzu, tullu||
+4160|rascar|v.|aspina||
+4161|rasgar|v.|llikina, challchina||
+4162|raspadura (dulce)|s.|mishki||
+4163|raspar|v.|aspina||
+4164|rastro|s.|chaki kati|rató n: ukucha|
+4165|raya|s.|aspi||
+4166|razonamiento|s.|hamutana, yuyana||
+4167|realizar|v.|rurana, llamkana||
+4168|reanimarse|v.|alliyana, kariyana||
+4169|re basar|v.|hichana||
+4170|rebozo (matrimonial)|s.|lliklla||
+4171|recelo|s.|pinkay||
+4172|rechoncho|adj.|kurpa||
+4173|recibir|v.|chaskina, hapina|recié n: ñakalla, kunanlla|
+4174|recio|adj.|sinchi||
+4175|recipiente|s.|; hecho del tron- co de cabuya: puntulunku|de la cáscara del coco: pillchi; grande de mate: ankara|
+4176|reciprocidad|adv.|ranti, ranti ranti||
+4177|recla mar, con enojo|v.|piñana||
+4178|recoger|v.|tantana|recoger granos: pallana; los primeros frutos de la sementera: chakrana; los residuos de cosechas: challina, chukchina|
+4179|recolectar|v.|tantachina||
+4180|recordar|v.|yuyarina|recto (hacia una direcció n): tsiklla|
+4181|recuadro, cuadro|s.|(tapta); shuyu||
+4182|recuerdo|s.|yuyariy||
+4183|red|s.|llika, linchi|pe queña para pescar: wishinka. redondo, macizo esfé|
+4184|rico|adj.|(rumpu); rumpa||
+4185|refajo|s.|ukunchina||
+4186|refinar|v.|ñutuna||
+4187|reforzar|v.|kimina||
+4188|regalar|v.|kamarina, karana, kuyana||
+4189|regalo|s.|kamari|que se da en las fiestas: hucha; que dan los ahijados a sus padrinos: kuyachiy|
+4190|regañar|v.|piñachina||
+4191|regar|v.|hichana, chakchuna, chiwana, shiwana, tallina|agua de regadío: parkuna|
+4192|regarse|v.|hicharina, tallirina, shiwtana|regió n: suyu|
+4193|regla, objeto escolar|s.|(siqina)||
+4194|reglamento|s.|kamachiy||
+4195|regresar|v.|kutimuna, tikramuna, tikrana; al lugar de origen, a la tierra materna: llaktana||
+4196|reina soltera|s.|ñusta|reina casada: (quya, kuya|
+4197|reir|v.|asina||
+4198|rela ciones sexuales, (tener)|v.|yukuna, yumana||
+4199|relampaguear|v.|llipyana||
+4200|rellenar|v.|awinchina, huntachina||
+4201|reloj|s.|(pacha-unanchanqa)||
+4202|remanso|s.|||
+4203|tuyaka, walun, rematar|v.|alapana||
+4204|remedio|s.|hampi||
+4205|remellar|v.|llakana||
+4206|remellarse|v.|rawmana||
+4207|remendar|v.|llachapana, chupana, lampana||
+4208|remiendo|s.|llachapa||
+4209|remo|s.|kawina, tawna, wanka||
+4210|remojarse|v.|nuyuna. remolino remolino, de viento: s. akapana|de agua: muyuna|
+4211|remorderse, tener remordimiento|v.|nanarina||
+4212|remoto, pasado|adv.|ñawpa, unay, sarun||
+4213|renacuajo|s.|chimpaluk, putukulu, willi willi||
+4214|rendir cuentas|v.|chimpapurachina||
+4215|repartidor de comida y bebida en las fiestas|s.|awlakanu||
+4216|repartir (alimentos, objetos)|v.|rakina||
+4217|reprender|v.|piñachina|reprodució n: mirana, muruna|
+4218|reproducir|v.|mirana, muruna||
+4219|reproductor|s.|mirak, muruk||
+4220|re pugnar|v.|millana||
+4221|resbalar|v.|lluchkana||
+4222|resbalarse|v.|llushpina||
+4223|resbaloso|adj.|lluchka||
+4224|resembrar|v.|awinchina, katichina||
+4225|resentirse|v.|impayarina, nanakyana||
+4226|reserva de alimentos que se lleva a la casa|adj.|wanlla||
+4227|residuo|s.|hamchi, kupa, ñuku|de la chicha: tikti; de hierba o de paja que dejan los animales luego de alimentarse: punzu; residuo matemático: puchu|
+4228|resistencia que pone la per sona al ser halada|s.|zinzin||
+4229|resistente|adj.|sinchi, taylla||
+4230|respetar|v.|muchana|respiració n: samakuy|
+4231|resplandecer|v.|llipyana, palanina||
+4232|resplandeciente|adj.|hakan, palanikuk||
+4233|responder|v.|kutichina, tikrachina, rantipana||
+4234|resquebrajar|v.|chiktana, chillpina||
+4235|resquebrajarse|v.|chiktarina, chillpirina, rakrayana|la piel: paspayana|
+4236|resta|s.|anchuchiy||
+4237|restar|v.|anchuchina||
+4238|resto|s.|puchu||
+4239|retazo (tela, madera, hierba)|s.|puchu|de tierra que tenían los kichwas por trabajar en la hacienda: wasipunku|
+4240|retirar|v.|anchuchina, suchuchina||
+4241|retirarse|v.|anchurina||
+4242|retoñar|v.|wiñana||
+4243|retoño|s.|llulluk||
+4244|retornar|v.|kutimuna, tikramuna, tikrana||
+4245|retrasarse|v.|kipayana||
+4246|retrato|s.|(uyap rikchay), rikchak|reunió n: tantanakuy|
+4247|reunir|v.|tantachina||
+4248|reventar|v.|tukyana||
+4249|reventarse|v.|tukyarina, chulakyarina||
+4250|revolcarse|v.|sinkuna, kawirina||
+4251|rezar|v.|mañana|rincó n: kuchu. riñó|
+4252|n|s.|rurun|rí o: mayu, hatun yaku|
+4253|ripio|s.|sharu, zharu||
+4254|robar|v.|shuwana||
+4255|robusto|adj.|sinchi|rocí o: shulla|
+4256|roca, wanka, rumirodar|v.|sinkuna||
+4257|rodilla|s.|kunkuri. roer, v . kaskana||
+4258|rogar|v.|mañana||
+4259|rojo|adj.|puka||
+4260|romper|v.|llikina, pakina|en pedazos pequeños: pitina|
+4261|roncar|v.|harnina||
+4262|roncha|s.|pukla, sisu||
+4263|ropa|s.|churana, churarina|sucia: waluk|
+4264|rosca|adj.|churu||
+4265|rostro|s.|uya; ñawi||
+4266|rótula|s.|piruru||
+4267|rotura|s.|paki||
+4268|rozar|v.|waktana||
+4269|rozarse|v.|takarina||
+4270|rubí, spuka umiñarubor|s.|pinkay||
+4271|ruborizarse|v.|pinkarina||
+4272|rústico|adj.|purun||
+4273|s sábado|s.|(tinki)||
+4274|saber|v.|yachana|saber a: yachina. sabidurí|
+4275|a|s.|yachay||
+4276|sabio|s.|amawta, yachak||
+4277|sabor|s.|yachik||
+4278|saborear|v.|kamana, mallina||
+4279|sabrosa, -o|adj.|(ñukñu), chawcha, mishki||
+4280|sacapuntas|s.|ñawchichina||
+4281|sacar|v.|surkuna, llukshichina|productos de la tierra: allana; sacar tiras: chillpina|
+4282|sacerdote (principal del incario)|s.|umu; kushipata||
+4283|saciado|adj.|hunta, saksashka||
+4284|sacudirse|v.|shiwarina; las plumas, el ave: patpana||
+4285|sacudir|v.|chaspina, chawsirina||
+4286|saeta|s.|wachi||
+4287|safar|v.|kacharina|saí no: lumukuchi|
+4288|sal|s.|kachi||
+4289|sala|s.|pitita||
+4290|salamanquesa|s.|watawata||
+4291|salir|v.|llukshina|salir el sol: intiyana. saliva, tuka|
+4292|salivar|v.|tukana||
+4293|saltamontes|s.|chipu, hiki||
+4294|saltar|v.|kushpana||
+4295|salud (de bienestar)|s.|allikay||
+4296|saludar|v.|napaykuna||
+4297|salvaje|adj.|sacha, awka||
+4298|salvar|v.|kishpichina||
+4299|salvarse|v.|kishpirina||
+4300|sambo|s.|sampu, zampu, kitu||
+4301|sanarse|v.|alliyana, hampirina||
+4302|sancochar|v.|hawchana, ayumpakuna||
+4303|sandalia|s.|ushuta||
+4304|sango, tipo de pan|s.|sanku||
+4305|sangorache|s.|ataku||
+4306|sangre|s.|yawar||
+4307|sanguijuela|s.|mapamari||
+4308|sapallo, tipo de calabaza|s.|sapallu||
+4309|sa po (variedades)|s.|hampatu, huwin, kunawaru, kuwa, kuwayu, lukarya, murintu, piripiri, tullumpa||
+4310|saquillo|s.|tulu|sarampió n: muru-unkuy|
+4311|sarna|s.|shikshi, isi, akwas||
+4312|satisfecho (de comer)|adj.|hunta, saksashka||
+4313|saturno|s.|chimpu||
+4314|sauce|s.|wayaw||
+4315|savia (de las plantas)|s.|llawsa||
+4316|saya|s.|anaku, aksu|ponerse la saya: anakullikuy, aksullikuy|
+4317|secar|v.|chakichina|la carne al sol: charkina|
+4318|secarse|v.|ankuyana, chakirina, wañurina||
+4319|sedientoestar|v.|upyanayana||
+4320|seducir|v.|kuyachina||
+4321|segar|v.|pitina, ichuna||
+4322|seguidamente|adv.|kipa, kipalla||
+4323|seguir|v.|katina|hacer seguir: katichina|
+4324|segundo, tiempo|s.|tuylla. En lugar o espacio: ishkayniki||
+4325|seis|num.|sukta||
+4326|seis cientos|num.|sukta pachak, sukta patsak||
+4327|seleccionado, -a|adj.|aklla, akllashka||
+4328|seleccionar|v.|akllana||
+4329|selva|s.|sacha||
+4330|semana|s.|sillkukis||
+4331|sembrado|adj.|tarpushka||
+4332|sembrador|s.|tarpuk||
+4333|sembrar|s.|tarpuna||
+4334|semejante|adv.|shina||
+4335|semejanza|s.|rikchak||
+4336|sementera|s.|chakra, tarpushka allpa||
+4337|semilla|s.|muyu|caída en las sementeras: chas|
+4338|sendero|s.|ñan||
+4339|seno|s.|chuchu||
+4340|sentar a los niños|v.|chachichina||
+4341|sentarse|v.|tiyarina|sentarse los niños: chachina|
+4342|señalar|v.|rikuchina, riksichina, shunkuna||
+4343|señor|s.|yaya, hachi||
+4344|señorA señora|s.|mama||
+4345|señorita|adj.|pasña, kuytsa|expresión cariñosa dirigida a las señoritas: mamaku, payaku|
+4346|separar|v.|chikanyachina, karuyachina|septentrió n: uraysuyu|
+4347|septiembre|s.|kuya||
+4348|ser capaz de|v.|atipana, ushana||
+4349|ser humano (hombre y mujer)|s.|runa||
+4350|ser|s.|kak, vivo: kak, kawsak|ser fantástico: atsinku, chificha, chusulunku, chuyan, ishkay umayuk waksa, sacharuna, supay, uchutikan, walampariw, mama awaduna, mama hataba|
+4351|ser|v.|kana||
+4352|sereno|adj.|kasilla||
+4353|serpiente|s.|amaru, machakuy, mutulu, pushllu, shinshin||
+4354|serrano, persona de la sierra|adj.|sallka runa||
+4355|servidor|adj.|yana, yanapak|el que sirve las comidas en las fiestas: rakik, awalahanu|
+4356|servir|v.|yanapana|servir alimentos: karana|
+4357|sesenta|num.|sukta chunka||
+4358|sesentamil|num.|sukta waranka||
+4359|seso|s.|ñutku||
+4360|seta|s.|kallampa||
+4361|setecientos|num.|kanchis pachak, kanchis patsak||
+4362|setenta|num.|kanchis chunka||
+4363|setentamil|num.|kanchis waranka||
+4364|si|adv.|ari||
+4365|siega, tiempo de|s.|kallchay pacha||
+4366|siembra|s.|tarpuy||
+4367|siempre|adv.|wiñay, wiñaypak, tukuy pacha||
+4368|sien|s.|wañuna||
+4369|sierra|s.|puna, sallka||
+4370|sietemil|num.|kanchis waranka||
+4371|siete|num.|kanchis||
+4372|siglo|adv.|pachak-wata||
+4373|sigse|s.|siksik||
+4374|silbar|v.|hukipuna||
+4375|silenciarse|v.|upallayana, chunyana||
+4376|silencio samente|adv.|upalla, chulunlla||
+4377|silla|s.|tiyarina||
+4378|silvestre|adj.|allpa, aya, purun, sacha, mapa||
+4379|similar|adv.|shina||
+4380|sin gracia|adj.|aminta, chamcha, chamuk, hamlla||
+4381|sin motivo|adv.|yankamanta||
+4382|sinuosidad|adj.|kinku||
+4383|sirviente|adj.|yana, yanapak||
+4384|sistema|s.|llika|sistema solar: intipa ayllu|
+4385|sitio o lugar|s.|tiyaskan|ceremonial: pukara, waka|
+4386|soasar|v.|ayampakuna||
+4387|sobar|v.|kakuna||
+4388|soberano|s.|apu, kapak||
+4389|sobra|s.|puchu, sikiyashka||
+4390|sobrar|v.|puchuna||
+4391|so brepasar|v.|yallina||
+4392|sobresalir|v.|yallina, atina||
+4393|sobrio|adj.|mayllik||
+4394|sociable|adj.|maylla||
+4395|socorrer|v.|yanapana||
+4396|soga|s.|waska|soga delgada o soguilla: kawchu; hacer sogas: kawchuy|
+4397|sol|s.|inti|salir el sol: intiyay|
+4398|soldado|s.|awka, awkak||
+4399|solear (el sol)|v.|intina||
+4400|solearse|v.|mashana||
+4401|solicitado|adj.|mañashka||
+4402|solicitar|v.|mañana||
+4403|sólido|adj.|sinchi, kaspiyashka, rumiyashka||
+4404|solista|det.|sapalla, shuklla||
+4405|solitario, pájaro|s.|chiwillu||
+4406|sollozar|v.|hikina, hikiyana||
+4407|solo|adj.|sapalla||
+4408|soltar|v.|kacharina||
+4409|sombra|s.|llantu||
+4410|sombrero|s.|muchiku||
+4411|sombrilla|s.|achiwa||
+4412|sonar|v.|unyay, rukyay), unyana, rukyana||
+4413|soñador|s.|muskuk||
+4414|soñar|v.|muskuna||
+4415|sopa|s.|api||
+4416|soplar|v.|pukuna|el espanto: tukana. soplo de curació|
+4417|n|s.|pukuy||
+4418|sordo|adj.|rinri-illak, uparinri||
+4419|sorpresivamente|adv.|haykamanta, kunkaymanta, zas||
+4420|sortija|s.|shiwi||
+4421|sosegar|v.|kasiyachina||
+4422|soso|adj.|chamuk, chamcha, ñukñu||
+4423|sostener|v.|charina|lo que está por caerse: kimina|
+4424|soto|s.|sutu||
+4425|suave|adj.|kapya, ñutu, api||
+4426|suavecito|adv.|hawalla, amuklla, apilla||
+4427|suavizar|v.|ñutuna, apiyachina, amukyachina||
+4428|suavizarse|v.|apiyana, kapyana, llampuna||
+4429|subir|v.|sikana, wichayana|los precios o costos: wichayana. sú|
+4430|bitamente|adv.|haykamanta, kunkaymanta; zas||
+4431|succionar|v.|chumkana, tsumkana||
+4432|suceder|v.|tukuna||
+4433|sucio|adj.|mapa, karka, tiklla||
+4434|sudar|v.|humpina||
+4435|sudor|s.|humpi||
+4436|suelo|s.|pampa||
+4437|sueño de dormir|s.|puñuy|sueño de soñar: muskuy|
+4438|sufrimiento|s.|llaki||
+4439|sufrir|v.|llakina||
+4440|sujetar, con las manos|v.|charina|sujetar con las piernas: chankana; sujetar con los susto brazos: ukllana|
+4441|suma|s.|yapay||
+4442|sumar|v.|yapana||
+4443|sumergirse|v.|washaykuna||
+4444|superficial|adv.|hawalla||
+4445|superficialmente|adv.|hawalla, hawalla||
+4446|superior|adj.|kurak||
+4447|parte|adv.|hanak||
+4448|supervisar|v.|tukuyrikuna||
+4449|supervisor|s.|tukuyrikuk||
+4450|suplicar|v.|mañana||
+4451|suponer|v.|(watuy), watuna, waturina; yuyana||
+4452|sur, (punto cardinal)|s.|hanansuyu; kullay suyu||
+4453|surcar|v.|wachuna, rawana||
+4454|surco|s.|wachu, rawa|surcos muy apegados: wala|
+4455|suro, variedad de carrizo|s.|suru||
+4456|sustantivo|s.|shuti||
+4457|susto|s.|manchay|que produce susto: manchanayay; expresión de susto: mamallaw, yayawalla|
+4458|t tabaco|s.|sayri||
+4459|taita|s.|yaya||
+4460|talar|v.|kuchuna, waktana||
+4461|talega|s.|wayaka||
+4462|talismán|s.||para el amor: wakanki; el maíz de granos bicolor que se hallan durante la cosecha: misha; utilizado en la caza y en la pesca: piripiri|
+4463|tallo|s.|tullu; tallo del racimo, extraído los frutos: chitus|tallo y hojas de maíz seco: kallcha, sarapanka; tallo de un racimo sin frutos: watu; taló n: tayku|
+4464|tambalear|v.|sinkuna||
+4465|tambor|s.|wankar|pequeño: tuntulli|
+4466|tamo|s.|tamu||
+4467|tantear|v.|llamkana, hawina||
+4468|tapa|s.|killpana||
+4469|tapar|v.|killpana||
+4470|tardarse|v.|kaynana, kipayana, unayana||
+4471|tarde, la|adv.|chishi||
+4472|tarea|s.|ruray||
+4473|tartamudear|v.|aklluna||
+4474|tartamudo|adj.|akllu, tiyarpa||
+4475|tawantin suyu, las cuatro regiones del áreainca|s.|Tawantin suyu||
+4476|taxo|s.|kullan, gullán, taksu||
+4477|teatro|s.|(hawkaypata), hawtaypata||
+4478|techar|v.|katana||
+4479|teja|s.|sañu||
+4480|tejer|v.|awana. tejido rústico, común: awashka|tejido fino: kumpi; de hojas de palmera: almayari, san. tejón, mashu, wachi|
+4481|tela|s.|pintu||
+4482|telar|s.|awanakaspi||
+4483|telaraña|s.|(urup llikan), urupa llika||
+4484|temático|adj.|paku||
+4485|temblar|v.|chukchuna||
+4486|temblor de tierra|s.|allpa chukchuy||
+4487|temer, tener mie do|v.|manchana||
+4488|temor|s.|manchay|expresión de temor: alalay, mamallaw|
+4489|templo|s.|wakawasi; apunchikwasi||
+4490|tender|v.|mantana||
+4491|tener o sostener|v.|charina|tener pena: llakina; tener relaciones sexuales: upina, yumana, yukuna|
+4492|terminado|adj.|pakta; tukurishka||
+4493|terminar|v.|tukuchina||
+4494|terminarse|v.|paktarina; tukurina||
+4495|terremoto|s.|allpa chukchuy||
+4496|terreno|s.|allpa; duro, estéril, erosionado: killin|pisoteado de animales: yata; terreno baldío: purun. terró|
+4497|n|s.|kurpa|terrón de césped: champa. testí|
+4498|culo|s.|lulun||
+4499|testimoniar|v.|iñina||
+4500|teta|s.|chuchu||
+4501|tibio|adj.|inlli, kunuklla||
+4502|tiempo|s.|pacha|tiempo presente: kunan pacha; tiempo pasado: ñawpa pacha, sarun pacha, yallirik pacha; tiempo futuro: kipa pacha|
+4503|tienda|s.|katuwasi||
+4504|tierno|adj.|llullu||
+4505|tierra|s.|allpa|lugar donde se vive: allpamama|
+4506|tierra, planeta|s.|tiksimuyu||
+4507|tiesto|s.|kallana||
+4508|tigre|s.|uturunku||
+4509|tinaja|s.|mawma||
+4510|tiniebla|adj.|amsa, llantu||
+4511|tintura|s.|tullpu|tí o: hachi. tipina, objeto para deshojar el maí|
+4512|z durante la cosecha|s.|tipina||
+4513|tirar|v.|shitana|tiritar, por escalofrí os: chukchuna|
+4514|tiza|s.|aspina, aspik||
+4515|tiznarse|v.|kushniyana|tizó n: inta. tocar, algún instrumento musical: takina|
+4516|tocte|s.|tukti||
+4517|todavíano|adv.|manarak|todaví a: amarak; chayrak|
+4518|todo (s)|det.|tukuy, llampu. toma, he aquí, exp. kayka||
+4519|tomar líquidos|v.|upyana|algo con las manos: hapina|
+4520|tonga|s.|kukayu, kukawi||
+4521|tontear|v.|muspana||
+4522|tonto|adj.|muspa, upa||
+4523|torcer|v.|kawchuna|torcer lana o hilo: kawpuna|
+4524|torcerse|v.|wistuna|dislocarse: kiwina|
+4525|torcido|adj.|wistu, winku||
+4526|torpe|adj.|muspa, upa||
+4527|tortero para hilar|s.|piruru||
+4528|tórtola|s.|urpi, tukurpilla||
+4529|tortuga|s.||acuática: charapa|
+4530|terrestre|s.|mutilun, tsawata|anfibio: yawati|
+4531|tos|s.|uhu||
+4532|tosco|adj.|paza, sakra, tsaka||
+4533|toser|v.|uhuna||
+4534|tostado|s.|kamcha||
+4535|tostar|v.|kamchana||
+4536|totalidad|adv.|tukuylla, llampu||
+4537|trabajador|s.|llamkak||
+4538|trabajar|v.|rurana, llamkana||
+4539|trabajo|s.|llamkay, ruray; comunal, colectivo: minka|familiar: ayñiy; trabajo recíproco: makipura, rantimpa|
+4540|traducir|v.|tikrachina||
+4541|traer|v.|apamuna, pushamuna|traer algo en la boca: amullimuna|
+4542|tragar|v.|millpuna||
+4543|trampa|s.|tuklla, hapina, panwa, tikta||
+4544|tranquilizar|v.|kasiyachina||
+4545|tranquilo|adj.|kasilla|transformació n: pachakuti|
+4546|transformarse|v.|tukuna||
+4547|transmitir la enfermedad zalipa|s.|zalipana||
+4548|transparente|adj.|chuya, chuyalla||
+4549|transpirar|v.|humpina||
+4550|tutumA trapo(s)|s.|llachapa||
+4551|trasladar|v.|ashtana||
+4552|trasnocharse|v.|pakarina||
+4553|traspasado mañana|adv.|kaya mincha||
+4554|trasquilar|v.|rutuna||
+4555|travieso|adj.|sayti, shillinkuk||
+4556|treinta|num.|kimsa chunka||
+4557|tren|s.|antatatis, antakuru||
+4558|trenza|s.|(simpa); chimpa||
+4559|trenzar|v.|(simpay); chimpana||
+4560|tres cientos|num.|kimsa pachak, kimsa patsak||
+4561|tresmil|num.|kimsa waranka||
+4562|tres|num.|kimsa||
+4563|trigo|s.|triku, waña||
+4564|tripa(s)|s.|chunchulli||
+4565|triste|adj.|kuyaylla, llakilla||
+4566|triturado|adj.|chamka, chamkashka||
+4567|triturar|v.|chamkana||
+4568|troje|s.|(taqi), taki||
+4569|trompa|s.|sinka||
+4570|trompetero, ave|s.|yakami||
+4571|trompo|s.|piruru, kushpi||
+4572|tronco|s.|kullu, pulla, putu||
+4573|tropezar|v.|ñitkana||
+4574|tropezarse|v.|ñitkarina||
+4575|trotar|v.|kallpana||
+4576|trozar|v.|llakana, kiwina||
+4577|trueno|onom.|kulun, tulun. tú, pron. kan||
+4578|tubérculo|s.|allpapimuruk|tipo de tubérculo: papa, rakacha, apichu, iwa|
+4579|tubo|s.|tutu|tucá n: kawpi, tumpiki|
+4580|tullido|adj.|suchu||
+4581|tumba|s.-|aya-utku|antigua: waka|
+4582|tumor|s.|chupu||
+4583|tumulto|s.|wayka||
+4584|túnica, especie de|s.|kushma||
+4585|tupido|adj.|kichki||
+4586|turbio|adj.|lanta, sanku||
+4587|tusa|s.|kurunta|sin choclo: wakuyashka|
+4588|tutuma|s.|puru||
+4589|u ubicar|v.|churana||
+4590|ubre|s.|chuchu||
+4591|último|adv.|puchukay, chupa; kunchu||
+4592|único|adj.|sapan, sapalla, shuklla; único hijo, murushka churi|única hija: murushka ushushi|
+4593|unidad(es)|s.|shuk(kuna) unió||
+4594|n|s.|tantachiy, tinkiy, tinkuy||
+4595|unir|v.|tinkina, tinkuna, llutana||
+4596|universidad|s.|hamutaywasi||
+4597|un(o)|num.|shuk||
+4598|untar|v.|hawina, kakuna||
+4599|uña|s.|sillu||
+4600|urano, planeta|s.|tinkullpa||
+4601|urdir|v.|awllina, allwina||
+4602|usado|adj.|mawka, paya||
+4603|usted|pron.|kan, kikin||
+4604|ustedes|pron.|kankuna, kikinkuna||
+4605|útero|s.|wawatiyana|v vací o: chushak, illak|
+4606|vagina|s.|rakakara, raka||
+4607|vagabundo|adj.|yanka purik||
+4608|vago|adj.|(qilla), killa||
+4609|vainas trilladas, como tamo|s.|puchul, puchuy||
+4610|valeroso|adj.|sinchi||
+4611|valle|s.|pampa||
+4612|valor en precio|s.|chanin||
+4613|vámonos|exp.|hakupashun, hakupashunchik||
+4614|vamos|exp.|haku, hakuchik||
+4615|vapor|s.|wapsi||
+4616|variedad|comp.|sami|varó n: kari|
+4617|vasija de barro (variedades)|s.|: puntu|de barro para bebida: mukawa; tipo de jarra: shila; grande: mawma|
+4618|vaso|s.|(qiru), kiru|redondo de madera de cuello largo: kaka|
+4619|vecino|adj.|wasi mashi||
+4620|vegetal|s.|yura||
+4621|vehículo|s.|antawa, anta-shuntu, antawiwa||
+4622|veinte|num.|ishkay chunka||
+4623|vejiga|s.|ishpapuru||
+4624|vello|s.|millma|vello axilar: kashuk millma; vello pubiano masculino: ullu millma; vello pubiano femenino: raka millma|
+4625|velludo|adj.|millmasapa||
+4626|veloz|adj.|pankalla, wayralla||
+4627|vena|s.|anku, sirka||
+4628|venado|s.|taruka, ushpitu, yamala||
+4629|vencer|v.|atina||
+4630|vendaje|s.|yapa||
+4631|vender|v.|katuna||
+4632|veneno|s.|miyu, hampi||
+4633|venerar|v.|muchana. venidero, él o lo que vendrá, adv. shamuk||
+4634|venir|v.|shamuna||
+4635|ventana|s.|(tuqu), tuku||
+4636|ventura|s.|kushi||
+4637|venus, planeta|s.|chaska||
+4638|ver|v.|rikuna, kawana||
+4639|verano|s.|intipacha, usyay pacha||
+4640|verbo|s.|willak|verbo auxiliar para expresar onomatopeyas: nina|
+4641|verdad|adv.|(chiqa), chika||
+4642|verdadero|adj.|chiqallatak; kikin||
+4643|verde, color|adj.|(qumir), kumir, waylla||
+4644|verduras|s.|yuyu|verduras sancochadas: hawcha. vergü|
+4645|enza|s.|pinkay||
+4646|verruga|s.|micha, mitsa, michamuyu, chimpi||
+4647|verter|v.|tallina||
+4648|vertical|adj.|shayak, tsan||
+4649|vertiente|s.|pukyu||
+4650|vestimenta|s.|pacha; churana||
+4651|vestirse|v.|pachallikuy; churarina|ví a: ñan. vía lá|
+4652|ctea|s.|mayu; kasa-anku, kasa ñan||
+4653|viajar|v.|rina, illana||
+4654|vicuña|s.|wikuña||
+4655|vida|s.|kawsay||
+4656|vidrio|s.|kispi||
+4657|vieja (animados)|adj.|paya, atupa; ruku|para cosas: mawka|
+4658|viejo (animado, no animado)|adj.|ruku|para objetos: mawka|
+4659|viento|s.|wayra|fuerte: akapana|
+4660|vientre|s.|wiksa||
+4661|viernes|s.|haycha||
+4662|viga|s.|(qiru), kiru||
+4663|vigilante|s.|chapak|vigilante de la casa: wasikamak|
+4664|viniente|s.|shamuk||
+4665|violar|v.|wakllichina||
+4666|virar|v.|tikrana||
+4667|viruela|s.|muru-unkuy||
+4668|viruta|adj.|punzu||
+4669|viscoso|adj.|llawsa||
+4670|vista|s.|ñawi||
+4671|viuda, -o|adj.|(ikma), wakcha||
+4672|vivienda|s.|wasi; sin paredes, cubierta de viviente paja desde el asiento: chakiwasi||
+4673|viviente|s.|kawsak||
+4674|vivir|v.|kawsana||
+4675|volar|v.|pawana, wampuna|volcá n: urku|
+4676|voltear|v.|tikrana, sinkuna||
+4677|volver|v.|kutimuna, tikramuna, tikrana||
+4678|volverse en, transformarse|v.|tukuna||
+4679|vomitar|v.|kipnay; kuynana||
+4680|vulva|s.|||
+4681|raka y ya|adv.|ña|ya mismo: ñalla|
+4682|yeso|s.|isku||
+4683|yerba en general|s.|kiwa|para teñir: panti|
+4684|yo|pron.|ñuka. yerbas comestibles: yuyu||
+4685|yuca|s.|lumu||
+4686|yerno|s.|masha||
+4687|z zapallo|s.|sapallu, kitu||
+4688|zorrillo|s.|añas||
+4689|zapato|s.|ushuta||
+4690|zumo|s.|hilli|zumo del floripondio: warwar|
+4691|zarcillos|s.|rinriwarkuna||
+4692|zurcir|v.|sirana, chupana||
+4693|zig-zag|adj.|kinku; ir en zig-zag: kinkuy||
+4694|zurdo, -a|adj.|lluki, ichuk||
+4695|zonzo|adj.|muspa, upa. ANEXOS Términos del qichwa general Introducción El título hace referencia a los términos del qichwa general en uso en Perú y Bolivia, que a su vez han sido utilizados por EBI y ALKI, en el Ecuador, en los últimos 10 años. La documentación temprana de los siglos xvi y xvii, en lo que se refiere al qichwa simi muestra el interés y necesidad de disponer de nuevos términos qichwas que señalen significados religiosos, culturales y políticos. Al iniciar el siglo xx, en los países qichwa hablantes se encuentran esfuerzos de creación de neologismos para referirse a categorías gramaticales; durante la segunda mitad de este siglo, sobre todo, en los procesos de EBI se presentan varios esfuerzos para disponer de una nueva terminología kichwa. a) Siglos XVI-XVII En estos siglos, en los vocabularios qichwas, se hallan alusiones a nuevos términos o a extensiones semánticas que se adaptarán tanto por esfuerzos de los españoles como de los mismos qichwas a los nuevos procesos comunicativos. En el ámbito religioso español: Jesucristop suyun, el cielo; qillqakta rikuy, leer; qillqa kipu, libro de cuentas; qillqata chantay, imprimir, etc. En el ámbito de los qichwas tenemos: machu capitu, capitán (Francisco Pizarro); hatun paqu, caballo; paños con letras, libro; conversar con los paños con letras, leer, etc. b) Primera mitad del Siglo XX A inicios de este siglo, en la gramática del qechwa boliviano de David Berrios (1904: 8, 20-21), se hallan algunos términos, por un lado, para referirse a ciertas categorías gramaticales como: nombre, suti; pronombre, sutij rantin; verbo, rimai; participio, chayakej; adverbio, rimaiman tantakuj; partículas, rak’’ina, tinkullina; interjecciones, huajyana. Por otro lado, se presentan nombres de los días (punchau/punchai, día) de la semana: killachau, lunes; atichau, martes; koillurchau, miércoles; illapachau, jueves; chaskachau, viernes; k’’uichichau, sábado; intichau, domingo. En éstos se notan claramente traducciones sintáctico-semánticas de la cultura latina a la cultura qichwa. c) Segunda mitad del Siglo XX Durante la segunda mitad del siglo xx se aprecian varios esfuerzos en la creación de neologismos que se ubican dentro de una serie de acontecimientos socio-políticos y culturales: i) Contexto sociopolítico El interés por atender a la educación rural y campesina motivará las campañas de Educación y Alfabetización (III Curso de Formación Nacional/CIEI, 1980-1982) hasta demandar la Educación Bilingüe Intercultural de forma institucionalizada (DINEIB: 1988) y su uso y producción correspondiente de materiales escritos en lenguas maternas, entre ellas, en el kichwa shimi. ii) Instituciones Casi en los últimos 40 años se han presentado varias entidades como: CIEI, Proyecto Macac (luego Corporación Macac), CEDIME, P. EBI-GTZ, DINEIB/ALKI, etc., todas ellas relacionadas con actividades de Educación Bilingüe, mediante la elaboración de sus propios materiales en lenguas. Asimismo, algunos programas a nivel superior en Educación Bilingüe, se han convertido en espacios para la creación de nuevos términos técnicos de algunas áreas educativas a través de la elaboración de las tesinas o monografías (Universidad de Cuenca/LAEB, Universidad Salesiana/PAC); algunos de aquellos materiales se han impreso en revistas o en textos completos. iii) Actores Los encargados de la creación de los neologismos son los mismos miembros de las instituciones arriba señaladas; además, en dicho proceso, se ha requerido de la participación de la misma dirigencia indígena (Montaluisa, 1990: 166), de los técnicos, asesores (DIPEIBSucumbíos, 2007, Fausto Jara) o de la participación de especialistas investigadores internacionales (Cerrón-Palomino y el equipo de Gabriel Cachimuel y Alberto Conejo, Pujilí, 1994). En los últimos tiempos, se hallan en este proceso los miembros del ALKI. I Procedimientos de creación Antecedentes La revisión de los neologismos que se hallan en los diversos textos escolares ofrece pistas acerca de los procedimientos desarrollados en cada una de las instituciones participantes. Por lo general, se detectan esfuerzos aislados, empíricos, sin conocimiento de los demás aportes y un desconocimiento de la realidad de la lengua qichwa, de su historia total y territorial. Sin embargo, en el “Caimi ñucanchic shimiyuc-panca” (Montaluisa, 1982: 141) y en el “Ñucanchic shimi 1” (Montaluisa, 1989: 159-178), se señalan los caminos del qichwa para su desarrollo lingüístico o “Ingeniería Lingüística”: 1) la reintroducción (consulta a los ancianos y a los diccionarios antiguos); 2) generalización; 3) reencuentro con el significado original; 4) la creatividad; 5) préstamos peruano-bolivianos; 6) préstamos del español y otras lenguas (como último recurso). Así, a partir de los años 80s los materiales destinados a EBI-qichwa contienen términos nuevos: pachamanta yachacui, geografía; antashca micuna, comida enlatada; yachana-huasi, escuela; aspic, lápiz, tiza (C.Ñ.S-P, 1982). Quillcacatina, leer; uyariclla, vocal; upauyari, consonante (Ñucanchic shimi 1, 1989: 163). Pachapac shimi, adverbio de tiempo; paltai, gerundio; quillcana panca, cuaderno; quiquin shuti, sustantivo propio (Serie pedagógica y didáctica 9, 1993: 223229). Hay otras fuentes que han sido revisadas ligeramente como el “léxico actvalizado español-qvechva” (Ileana Almeida, 1992) o el “léxico ampliado quichua-español, español-quichua” (Consuelo Yánez, 2007), que de cierta manera presentarían algunos procedimientos metalingüísticos, aunque no siguiendo la composición qichwa, etc. II Los Neologismos y KAMAK El documento denominado “Neologismos-ALKI”, proporcionado por los representantes de la DINEIB y KAMAK, se nos entregó el día martes 6 de mayo del 2008, en la oficinas de SEPDI, y no llevaba los nombres de los autores o participantes, solo se mencionó que era producto elaborado por ALKI. Dicho texto contenía aproximadamente 3077 términos (a = 404, ch = 285, h = 142, i = 115, k = 513, l = 54, ll = 24, m = 181, n = 24, ñ = 20, p = 231, r = 124, s = 163, sh = 65, t = 135, ts = 67, u = 65, w = 251, y = 162, z = 42, zh= 10). Este documento previamente se había trabajado, revisado y discutido con los miembros de KAMAK tanto en la Sierra, en Toril/Chimborazo, en el que se hallaban como coordinadores, entre otros, Angel Ramírez, Bolívar Yantalema, Polivio Chalán, María Cunduri, etc., durante los años 2003, 2004 (información de Nieves Morocho, 21 de agosto, 2008, Quito), como en la Amazonía. De igual manera, aquellos términos se hallaban registrados en los “kukayus pedagógicos” y en el nuevo diccionario kichwa (ALKI/Sucumbíos, 2007), por ello se argumentaba que ya están publicados en textos de EIB y socializados desde hace mucho tiempo y por lo tanto, se deben registrarlos o servir como base para los nuevos documentos. Pero, ¿en qué condiciones?, bajo ¿qué formas?, o ¿como qué se presentaban estos términos denominados neologismos ALKI?. Después de considerar los casos abajo expuestos, se ha decidido precisar el concepto de neologismo y sólo los términos que se acerquen a este criterio han sido dejados en aquel documento (proporcionado por DINEIB-KAMAK, mayo, 06, 2008), en un Apéndice especial, para una edición posterior. Por lo tanto, solo algunos de aquellos términos se registraron en la parte del diccionario, como apéndice 1; y otros ya se hallaban en la parte kichwa -castellano. Concepto de Neologismo: “Formación o creación de una palabra nueva; expresión nueva que todavía no se ha integrado al lenguaje coloquial”. “Las causas del neologismo pueden ser: desarrollo de la ciencia, la técnica, la cultura, política, etc.”. A continuación presentamos algunos casos en que varios términos, en el documento primero (ALKI), han sido considerados como neologismos. En ciertos casos, el término que se halla entre paréntesis y con el asterisco significa que tiene una reconstrucción o forma originaria posible (etimología). La consideración de los diversos casos que abajo presentamos se ha hecho tomando como fuente el documento: Horizonte de Sentido y Mundo Histórico de los qichwas, siglos xvi-xvii: reconstrucción lexical (Fabián Potosí C.; Tesis de Maestría/Filosofía, PUCE, Quito, 2008). 1. Términos qichwas de los siglos xvi y xvii Varios términos que se hallan en diccionarios antiguos han sido tomados de ellos; y muchos, sin previa crítica y conocimiento de su forma original, su significado y su posible reconstrucción. i) términos antiguos Chusna (chusña) acto pequeño. Chusña, nariz pequeñita. Ipa, tía. Sapsi, común. Tiksi (tiqsi) base, fundamento de origen. Urpa, paloma. Wakanki, amuleto. Wallpay, crear. Wayma, antiguo, antaño (otoñó ¿?). ii) Alteración de formas y significadosAka chinchay (aqu chinchay), cometa fugaz. Amutakay (hamu-ta-ka-y), inteligencia. Awkiy (ayqiy), huir. Chupuyu (chupullu), tataranieto. Chutkiy (desollar, pelar); desarrollar. Ishun (usun), ciruela. Waksi (wapsi), gas. Warpay (warpiy), trinar. iii) imprecisión de fuentes históricas Hakikaylluski, primer mes del año, Cristóbal de Molina (cuál de ellos ¿?, el cuzqueño o el almagrista ¿?). Walak, dios de la agricultura (¿?). 2. Procesos de formación lexical y sintáctica i) elementos formativos del qichwa-cha: wiwacha, protozoario. -ni (-ñi): yachayniyuk, instruido. -wa (wawa), iñuwa, molécula. ii) Sustantivos concretos con infinitivo –yAmawllay ruray, laboratorio. Chukay, bomba. Kuchuyay, cuadra. Pirwayay, maqueta. iii) elementos formativos del castellano -ku (-cu): chiliku, limón; chumpiku, cinta; iñuku, átomo tantariku, subconjunto. -laya: imalaya, diferente. iv) términos del castellano (antiguo y/o actual)Almu, arroba. Harsia, cabuya. Kanchachani milka, cuadro estadístico. Milga ( amelga, mielga), cuadro. Racha, buena suerte. Rapay, desplumar. Tayta, padre, papá. Tisis, tuberculosis. Tupay (topar), encontrar. v) Acomodamiento forzoso Ichanik yuyay, oraciones dubitativas ( tunkiq yuyay). niki-chik, ordenador: taptana nikichik (hich-ya-y, ordenar, disponer secuencialmente). Killimsa rumi, carbón de piedra (<rumi killimsa ?). 3. Adopción de términos Perú-bolivianos i) Qichwa Kutimuy, estar volviendo al mismo lugar. Panay, hermana de hermano. Ripuy, volver donde antes estuvo. Tawa, cuatro. Turay, hermano de hermana. ii) Aymara Achachlla (¿?), culto que rinden los aymaras. Yatiri, sabio del pueblo colla. 4. Neologismos distorsionados bolivianos y ecuatorianos Awaki, lunes (¿?). Awkak / wamra, martes (¿?). Chaska, viernes (Berríos, 1904: 21). Chillay, miércoles (¿?). Inti, domingo (Berríos, 1904: 21). 5. Expresiones de la cotidianidad i) términos simplesAchiklla, claro, claramente. Chunkay, juego de azar. Chushak, vacío. Kupa, basura, etc. ii) términos compuestosanay mayu, luna nueva. Hatun kucha, mar (mamakucha). hatun yaku, río (<mayu). Hatun rumi, piedra de gran tamaño. Kitiñan, calles. Yuyu pallay, cosechar hortalizas. 6. Variantes fonéticas como neologismos (el mismo significado) Iñariy (wiña-ri-y), comenzar a crecer. Tsakna (chaqna-), atadura. Tsarki (charki), carne cecinada. Tsini (chini), ortiga. Tsukni (chuqni), lagaña, etc. Zakra (saqra), áspero. Zala (challa), flaco. 7. UN CORPUS INICIAL El corpus que se halla en el apéndice presenta aún problemas de delimitación, pues de muchos términos se ignoran sus fuentes de origen. Esta situación implica que en lo posterior se realice una discusión, análisis, reflexión, su correspondiente clasificación. A continuación presentamos los términos que de cierta manera se hallan vigentes en otras áreas, tanto del Ecuador como de Perú y Bolivia; señalamos también que varios términos de este apéndice han sido recogidos en el área ecuatoriano y señalan ser vestigios de lenguas prekichwas y/o variantes de éste. Dichos términos los insertamos para su correspondiente conocimiento y su posible utilización y aplicación en los procesos de EBI. A achakmi adj. bello, bonito. achalak adj. espléndido. achachlla s. culto que rendían los aymaras a ciertos accidentes geográficos. achiwa s. sombrilla, paraguas. achiy v. echar suertes con saliva en las manos (I. A. Ataw)||
+4696|achuray|v.|dar porciones de carne||
+4697|aharway (¿?)|s.|langosta||
+4698|ahayu|s.|alma (I. A. nuna)||
+4699|akaktay|v.|||
+4700|enlazar akakuyay|v.|proveer (defecar)||
+4701|akalaw|interj.|¡Qué pena! ¡Qué lá||
+4702|stima! akallin|adj.|magnífico||
+4703|akana|s.|letrina, bacín, corral||
+4704|Miel de las abejas akay, akakipay|s.|óxido metálico||
+4705|aki|s.|suegra||
+4706|akilla|s.|vaso de plata||
+4707|akituy|v.|eructar, descomponer el estómago||
+4708|aknay|v.|celebrar||
+4709|akta|s.|garrapata||
+4710|aku chinchay|s.|cometa fugaz||
+4711|Diosa protectora del ganado salvaje en la mitologíaakuy|adj.|cuerpo muerto; malvado||
+4712|akyaniy|v.|animar, alentar||
+4713|alli yachak|s.|el que sabe, bien habituado||
+4714|allichakuy|v.|pulir, afilar algo||
+4715|allichay|v.|hacer bien a otro. 2 s. ornamento||
+4716|allikay|adj.|bondad, afinidad, virtud, nobleza, distinción||
+4717|allikillkay|s.|ortografí||
+4718|a allima|interj.|¡Qué||
+4719|bueno! allpa ñutuy|v.|quebrantar terrones||
+4720|allpa ñutuyay|v.|desterronarse||
+4721|amachak|s.|protector||
+4722|amankay|s.|sol del ocaso||
+4723|amañariy|v.|acostumbrar||
+4724|amawtakay|s.|sabidurí||
+4725|a amawtay|s.|||
+4726|ciencia amishka|s.|hastío, empalagoso||
+4727|amparu|s.|ceja||
+4728|ancha|adv.|muy, mucho||
+4729|anchaalli|exp.|muy bueno||
+4730|anchiy|v.|gemir con suspiro||
+4731|ankasumiña|s.|zafiro||
+4732|ankas llimpi|adj.|azul claro||
+4733|ankaschay|adj.|color cardenillo||
+4734|ankasyay|adj.|azularse, volverse azul, teñirse de azul||
+4735|ankaylli|s.|eco||
+4736|anuka|s.|alga. Sin. llayta||
+4737|anunya|s.|variedad de oca||
+4738|añallaw|interj.|¡Qué hermoso! ¡Qué sabroso!||
+4739|añallay|interj.|excelente||
+4740|añallu|s.|hormiga pequeña, plaga, insecto. apachik, s, remitente, transportador||
+4741|apachikuk|s.|conductor, transportador||
+4742|apachiy|v.|hacer llevar, hacer cargar||
+4743|apakuk|s.|||
+4744|transportador apanakuy|s.|interrelació||
+4745|n apantin|s.|gemelo||
+4746|aqay|v.|hacer chicha, oxidar, enmohecer||
+4747|arinsay|v.|alquilar, arrendar||
+4748|ariruma|s.|nardo (planta)||
+4749|ashuka|s.|lobo marino||
+4750|atapara|s.|cucaracha||
+4751|atillcha|s.|dos cosas iguales, como dos cereales||
+4752|atinay|v.|entender||
+4753|atipa|s.|victoria||
+4754|atipak|adj.|victorioso, vencedor||
+4755|atipay|v.|conquistar||
+4756|awankay|s.|águila real||
+4757|awki mallku|s.|buitre||
+4758|ayar|s.|quinua silvestre||
+4759|ayrampu|s.|grana (planta)||
+4760|aysachiy|v.|arar alrededor del terreno; recolectar papas; aporcar con la yunta||
+4761|aysariy|v.|arrastrarse||
+4762|ayuy|v.|cometer adulterio la mujer (vocablo antiguo). CH chacha (tsatsa) adj. bisabuelo, -a; tatarabuelo, -a||
+4763|chakana|s.|tres estrellas que llaman las tres Marías||
+4764|chakariy|s.|cruzamiento||
+4765|chakay|v.|cruzar un puente||
+4766|chakchu|s.|el que tiene facilidad de palabra||
+4767|chakichishka|adj.|seco, con el agua agotada. chakmashka s. tierra virada con el azadón. chakna s. atadura de pies y manos||
+4768|chaknashka adjmaniatado, amarradochakpa|s.|niño que nace de pie||
+4769|chaku|adj.|cosa diferente, mal pronóstico, vegetación cortada para leña, sementera nueva||
+4770|chakwas|adj.|viejas||
+4771|chala|s.|último hijo; 2. propina para los ayudantes en una cosecha; 3||
+4772|cápsula vacía de un proyectilchallaku|s.|ceremonia de inauguración de una casa; playa (¿?)||
+4773|challana|s.|hisopo||
+4774|challpuy|v.|sumergir, empapar, bañar||
+4775|chama pacha (¿?)|s.|fase, época de oscuridad anterior a la creación del mundo. charkiriy v. marchitarse||
+4776|chanichiy|v.|valorar||
+4777|chantashkapillu|s.|guirnaldas||
+4778|chapipay|v.|desoldar, desunir||
+4779|chapiy|v.|soldar, fundir||
+4780|chapu|s.|mezcla de harina con azúcar, leche y caldo||
+4781|chapuriy|s.|combinació||
+4782|n chaska|s.|Venus, lucero, estrella; crespo, encrespado||
+4783|chaskachuki|s.|lanza con bolas usada por los cañaris||
+4784|chatay|v.|denunciar, inculpar, delatar||
+4785|chawpiyunka|s.|||
+4786|tierra subtropical chawpichay|v.|medir, estar a la mitad, intercalar, mediar||
+4787|chayachinakuriy|v.|acertar, llevar de un lugar a otro, repartirse entre sí||
+4788|chayanta|s.|estaño||
+4789|chayashka|s.|alimento cocido y sazonado||
+4790|chayllañan|exp.|No hay más que ese camino, existe solo eso||
+4791|chaylla|exp.|Eso basta||
+4792|chaymantapacha|expr.|desde entonces, desde ese momento. chaynik, prep. Hacia allá. chaynikllamanta, prep||
+4793|desde alláchayña|s.|jilguero||
+4794|chayñay|v.|concluir||
+4795|chaypaktak|exp.|por eso||
+4796|chayshi|pron.|eso dice que es, así razonando||
+4797|chichikuri|adj.|oro en polvo||
+4798|chik sodio, aborrecimientochika|det.|tamaño||
+4799|chikanchiy|v.|diferenciar||
+4800|chikanyachishka|adj.|separado, clasificado, apartado||
+4801|chikullu|s.|ruiseñor||
+4802|chimpachiy|v.|hacer pasar al otro lado||
+4803|chinchi|s.|desayuno. chiniriy v. ortigarse. chinishka adj. ortigado||
+4804|chirakru|s.|llantén||
+4805|chiriyachiy|v.|poner a orear alguna cosa. chiyasapa adj. liendroso. chiyay v. enliendrar. chuknisapa adj. lagañoso. chuknishka adj. con lagañas||
+4806|chukniy vproducir lagañachumal|s.|humita. chuñu, s, pimiento, tubérculo. 2 adj. deshidratado||
+4807|chupilla|s.|vagina, órgano genital femenino||
+4808|churukiki|s.|pichón de tórtola pequeña||
+4809|churuta|s.|tórtola||
+4810|chusña|s.|nariz pequeña||
+4811|chutarik|s.|elasticidad||
+4812|chuyniy|v.|zumbar en el oído||
+4813|H I haki|s.|loro||
+4814|hakikaylluski (¿?)|s.|primer mes del año (versión del cronista Cristóbal de Molina, cuál de ellos?)||
+4815|hallalankiru|s.|muela||
+4816|hallpa|s.|insecto pequeño que irrita la piel de las personas||
+4817|hamka|adj.|cojo, maíz tostado semi crudo||
+4818|hampa|s.|tabla||
+4819|hamuy|adj.|modo||
+4820|hapinakuy|s.|rivalidad, emulación||
+4821|2 vrivalizar, emularhapiñuñu|s.|duende, fantasma de la mitología colla||
+4822|haplla|adj.|iracundo, atrevido, descortés||
+4823|hapta|s.|medida, cantidad contenida entre las dos manos juntas||
+4824|hatunkahas|s.|montaña grande||
+4825|hatunkucha|s.|mar||
+4826|hatunurku|s.|loma||
+4827|hatunyaku|s.|río. hatunyachiy, v, alargar, hacer grande, ensanchar, estirar||
+4828|hawapacha|s.|espacio exterior al planeta Tierra||
+4829|hawashimi|s.|idioma extranjero||
+4830|hawayachiy|v.|hacer ascender||
+4831|hawayay|v.|subir, ascender||
+4832|hawi|s.|cántaro de chicha, pomada, aceite. 2 adj. arrugado, marchito, seco, sucio||
+4833|hawka|s.|diversión||
+4834|hawkay|adj.|cómodo||
+4835|hawri|s.|cereales tostados y ligeramente carbonizados||
+4836|hayakin|s.|gran espíritu||
+4837|hayma|s.|ayuda, servicio, favor||
+4838|haytak|s.|arador, el que usa la taklla||
+4839|hillaysapa|adj.|ferroso||
+4840|hiwiy|v.|consumir, acabar, mermar||
+4841|hukuchiy|v.|remojar, humedecer||
+4842|hullki|s.|renacuajo||
+4843|hunichiy|s.|comprometer||
+4844|huñi (¿?)|s.|consenso, aprobación, asentimiento||
+4845|huñikuy|s.|obediencia||
+4846|huñukuy|s.|congregación||
+4847|ichma|s.|color extraído de un vegetal, tierra amarilla, cal de mercurio de color carmesí usado por las mujeres como afeite; azogue; enfermedad del trigo||
+4848|ichmay|v.|teñirse el rostro con achiote||
+4849|illuy|v.|cavar, profundizar, ahondar||
+4850|imak|s.|dato||
+4851|imilla|s.|mujer joven, niña, adolescente, muchacha||
+4852|inkamikuy|s.|comida del inca||
+4853|inka muchay|s.|visita del inca al templo oratorio||
+4854|inka puncha|s.|(¿?) décimo día de la semana kichwa||
+4855|inka umachay|s.|proclamación del inca||
+4856|inkil|s.|flor; jardín||
+4857|inti chillay|s.|astro de primera magnitud||
+4858|intillika|s.|sistema solar||
+4859|intipuriy|s.|el caminar del sol||
+4860|intiwachi|s.|insolación||
+4861|inti wañuynin|s.|eclipse solar||
+4862|intiwata|s.|año solar, milenio, calendario, reloj solar||
+4863|inti yaykuna|s.|poniente, occidente, oeste||
+4864|inti yaykuy|v.|ponerse el sol||
+4865|intiwatay|v.|determinar la posición solar|posición solar ipa: tía materna, tía paterna; suegra; cuñada|
+4866|2 sipa (¿?)|s.|garúa, llovizna. ipa, caña de Guayaquil||
+4867|ipala|s.|tía abuela||
+4868|iwila|s.|shampoo natural (planta)||
+4869|kacha|s.|mensajero||
+4870|kachacha|s.|centella||
+4871|kachakuy|v.|estar enviando un mensaje||
+4872|kacharichiy|v.|relajarse, soltarse, zafarse||
+4873|kacharishka|adj.|libre||
+4874|kachay|s.|mensaje||
+4875|kachiillak|adj.|sin sal||
+4876|kachi chakra|s.|salinas, minas de sal||
+4877|kachichaska|s.|cosa salada||
+4878|kachichay|v.|salar||
+4879|kachi churana|s.|salero||
+4880|kachiyashka|adj.|convertido en sal||
+4881|kachiyay|v.|convertirse en sal||
+4882|kachka|s.|piedra de amolar||
+4883|kachkay|v.|roer un hueso||
+4884|kahas|s.|nudos de una cordillera||
+4885|kahaskancha|s.|cordillera. kakcha s. fruta. Sin. wayu||
+4886|kaki|s.|herencia||
+4887|2 s, quijada, mandíbulakaklla|s.|mejilla||
+4888|kakniyay|v.|tronar, estallar, reventar||
+4889|kallchaypacha|s.|tiempo de cosecha||
+4890|kallma|s.|tallo, rama pequeña||
+4891|2 vacción y efecto de podar las plantaskallmay|s.|ramificación||
+4892|2 vpodar, desgajarkallpanchay|v.|reforzar, fortalecer, potenciar||
+4893|kanipu|s.|plancha de oro, diadema de plata usada por los miembros de la realeza inca||
+4894|kankan|s.|viento que levanta polvo||
+4895|kantsa|s.|páncreas||
+4896|kapak|s.|real||
+4897|kapakayllu|s.|familia real||
+4898|kapakmama|s.|matrona||
+4899|kapakñan|s.|camino real||
+4900|kapakyawar|s.|sangre real||
+4901|kapakchay|v.|hacer a otra persona grande o poderosa||
+4902|kapakkiy|pron.|mi supremo señor||
+4903|kapakraymi|s.|fiesta solemne del solsticio de invierno||
+4904|kapaktuta|s.|nochebuena||
+4905|kapakwasi|s.|casa real, palacio||
+4906|kaparichiy|v.|hacer gritar||
+4907|kapisayu|s.|poncho alargado y entero||
+4908|karaywa|s.|lagartija||
+4909|karpana|s.|regadora, canal de riego||
+4910|karpay|v.|regar||
+4911|karwayay|v.|marchitarse||
+4912|kashil|s.|franjas de tierra con diferentes sembríos||
+4913|kasikay|s.|paz||
+4914|kasi kispilla|adj.|sano y salvo||
+4915|kaskuriy|v.|rumiar||
+4916|katana|s.|cobertor, cobija||
+4917|kawata|adj.|color turquesa||
+4918|kawchirumi|s.|pedernal||
+4919|kawsachiy|v.|dar vida, alimentar||
+4920|kayachiy|v.|convocar||
+4921|kaya mincha|adv.|algún día, un día de estos||
+4922|kaychika|adj.|de este tamaño||
+4923|kaynachiy|v.|detener, demorar||
+4924|kayra|s.|rana||
+4925|kayshuk|adv.|lo demás. kayyuk adj. dueño de algo. kichipra s. párpado. Sin. kichimra. kichipta s. pestaña. kichirpa s. ceja. killay s. acero. killin adj. tierra dura, erosionada, no cultivable. kimchay v. cerrar los ojos, parpadear, guiñar. kimikuy v. arrimarse, inclinarse, acercarse, aproximarse. kipcha s. hígado. Sin. kukupi. kishpina s. refugio||
+4926|kuk sel que dakukan|s.|pechuga de ave||
+4927|kulli|adj.|colorado. kulli sara s. maíz colorado. kullka s. depósito. kullku adj. jorobado. kullku adj. tronco, tabla. kulluk adj. estéril. kultacha s. piquero de patas azules. kumir s. verdura o vegetal lozano, fruto inmaduro; verde. kunka warku s. collares. kunuk yaku s. agua termal. kuruyashka adj. lleno de gusanos. kuskuy v. matizar. kutana s. molino. kutimpay v. responder, contestar. kutipa s. segundo aporque de papas, segundo deshierbe del maíz. kutiy v. volver al mismo lugar. kutuy v. aporcar. 2 v. cortar para hacer pequeño||
+4928|laha|s.|grieta o hendidura, de la tierra||
+4929|laya stipo clase, variedadlayan (¿?)|s.|sauco. luychu s. venado pequeño||
+4930|LL llukllay sinundación, aluvión, avalanchallukllaypacha|s.|tiempo de diluvio. lluku s. red pequeña para atrapar conejos. llumpak s. pureza, limpieza. llushpi s. deslizamiento. llutu s. verdolaga. 2 s. sombrero viejo. 3 s. canto de la perdiz que anuncia lluvia con granizo||
+4931|makanakuk|adj.|guerrero, soldado, peleador. makimañachiy s. colaboración mutual. makma adj. vividor, irresponsable. mallki s. cuerpos momificados de los antepasados. mallki mallki s. bosque. Sin. sacha. mallki panka s. hojas. mallkiy v. volver a plantar árboles. mamantin s. madre e hijo. mamawishina s. cucharón de madera. manarakchu exp. ¿Todavía no?. manatak exp. de ningún modo, en ningún caso, tampoco. manu s. deuda. manyalla adv. Cerca, a cierta distancia. mañashka s. cosa prestada. markalliy v. abrazar. masana s. cordel para tender la ropa||
+4932|mashikay|s.|amistad (I.A.). mashipurariy s. relación mutua. mayhatun adj. macro. maymampash expr. a donde quiera. maynikpi prep. ¿hacia que parte está?. may mutsuriy s. necesidad extrema. may pachamanpron.¿hacia que tiempo vamos? may pachapipash exp. en todas partes, en cualquier tiempo. maytak pron. ¿qué es de ello?. mika s. plato de madera. mikuchiy v. hacer comer, dar de comer. minchakamaexpr. hasta una próxima ocasión. mirachik s. reproductor. mirak s. el que multiplica. mirariy v. aumentar, reproducir. Sin. miray||
+4933|mirashka|adj.|lo multiplicado, lo reproducido. mishanakuy s. competencia. 2 v. competir, apostar. mishki shimi adj. lisonjero, zalamero. miyuchiy v. contaminar. munachay v. amar platónicamente. muspariy v. disvariar. mutsurik adj. útil. mutsuriy s. necesidad. mutsuypa s. utilidad. N naya s. deseo, anhelo. 2 adj. mal agüero. nayay v. desear, querer, tener ganas (junto a raíces verbales). nikpika exp. es decir. nina wachi s. chispa de la candela. Ñ ñukapa yuyaymanta exp.de mi consideración. ñutuyachiy v. ablandar. P R pacha tupuy s. medida de tiempo. pachamamapi tiyakkuna s. recursos naturales. pallka ñan s. bifurcación o división de caminos. panay s. prima. panka allpa s. terreno virgen apto para sembrar. pankalla adj. fácil, liviano, frágil. pankayay v. acción de nacer o brotar hojas de una planta. parku yaku s. agua de regadío. patma s. mitad, parte. pichkalla adj. solamente cinco. pi pitak pron. ¿quién es?. pishi pron. ¿quién será?. Alguien debe ser. pishimuy v. tardar. pishkalla s. maíz o cereales tostados. pistaku adj, el que mata, asesino. pitak pron. ¿quién es?. pitiku s. bocado. Sin. pitiwa. pitita s. departamento, alcoba. pituk s. el que disuelve la harina. pituy v. comer la harina de maíz tostado y molido. 2 v. solicitar, procurar. pukaray v. fortalecer. puputi s. cordón umbilical. purik s. caminante, viajero. puskuchiy v. hacer fermentar. puyu ñawi s. cataratas o nubes de los ojos. rakinakuy s. distribución. rakuyay v. engrosar, volverse voluminoso un objeto cilíndrico. ransiw llakta s. país cuyos habitantes son de fenotipo anglosajón. rantimpa s. ayuda mutua. rantimpay v. intercambiar. rasuyay v. congelarse o solidificarse el agua. raymi pampa s. plaza pública donde se realizan festividades. riksichiy v. mostrar, presentar. riksinakuy v. conocerse mutuamente. rikuchik s. indicador. rikurayay v. cuidar. Sin. kamay. rikurichiy v.hacer aparecer. rimanakuy v. dialogar, conversar. ripuy v. volver donde antes se estuvo. rumiyay v. empedrar, adoquinar, enlosar. S SH 2 v. endurecer, cuajar. runku s. cesto. rurak s. el que hace, autor. rurana allpa s. terreno productivo. ruranalla adj. fácil de hacer. rutuchiy v. cortar el pelo; 2. s. ceremonia del primer corte de pelo de un niño. sakinakuy v. apartarse uno de otro. sallka s. páramo, sierra. samana puncha s. día feriado. samaykuy v. dar el aliento o la respiración a alguien en la cara. sanampa s. signo, señal, indicio. 2 s. señal de ruta. sanka s. gangoso. sankuyay v. hacerse espeso un líquido. sañu allpa s. barro para hacer objetos de loza. saparu s. canasto. sapichakuy v. enraizar. sapiy v. enraizar, echar raíz. sapsi adj. característico, común, ordinario. sarupayay v. pisar con frecuencia. sasa adj. difícil, áspero. sasa ñan adj. camino difícil, áspero. sasayay v. volverse difícil. sawintu s. árbol y fruta de guayaba. sawka s. algo que es motivo de burla. sawkapayay v. hacer burla de otra persona. saywashka adj. limitado. sikana s. peldaño, grada. sikina s. instrumento para rayar. sipuyariy v. arrugarse. sipuyashka adj. arrugado. sisa chantashka s. ramillete de flores. sisak s. inflorescencia. sumakchay v. hermosear. sumaychay v. respetar. suntu s. montón. suntur wasi s. casa construida a manera de una pirámide. suri s. avestruz, ñandú. suti adj. visibilidad clara. shinapi conj. entonces, por lo tanto. shinapika adv. luego, después. Sin. kipata. shutuchiy v. derramar un líquido gota a gota. T takarpu s. estaca, clavo. takataka s. platero. tantalla adj. juntos. tantarinakuy s. asamblea. tantariy s. unión, conexión enlace. tikpay v. desgranar. tiksi s. base, fundamento, origen. tiksimanta adv. desde el principio, originalmente, radicalmente. tiksimuyu s. todo el mundo, el planeta tierra. tinki adj. par de cosas iguales. tinkinakuy v. unirse por parejas, copular, aparearse. tiray v. arrancar una planta. tispiy v. pellizcar. tuki adj. inquieto. tupa s. hoja menuda de coca. (nombre de un rey inca). turay s. primo. U uchillayachiy v. reducir. uchpay v. convertirse en ceniza. ukururu s. berro. umiña s. piedra preciosa. Diosa de la antigua ciudad de Jocay, hoy Manta en la provincia de Manabì. uray pacha s. una de las tres regiones en la cosmovisión kichwa. urpa s. paloma. Sin. kukuli. usnu s. altar con forma de silla de piedra. uypa s. plomada, nivel. 2 s. instrumento de construcción. Sin. wipachi. W wakamayu s. papagayo americano. wakanki s. talismán, amuleto. wakman adv. allá. waklli s. crisis. wakta tullu s. costilla. waluk s. tierno. waluk sara s. maíz tierno. wallak s. sapo. wallpak s. creador, hacedor, inventor. wallpay s. creatividad, formación. 2 v. crear, producir, formar, inventar. waminka s. veterano, soldado de historias legendarias. waminkay s. fortaleza, destreza. wampu s. embarcación, barco. wampuru s. calabaza. wampuy s. navegación; natación. wanachay v. escarmenta, castigar, reprender. wanwa s. zancudo. 2 adv. vacío, sin huella (usado para cosas). wapsiy v. evaporarse, emanar vapor. waralli s. calzoncillo, ropa interior de hombre. warku s. balanza. washa kunka s. nuca. washapura exp. en fila, en hilera. washa rimay s. murmuración, habladuría a las espaldas de alguien. washa tullu s. espinazo, espalda; columna vertebral. waspiti s. aguardiente, trago. watantin adv. anualmente, todos los años. wawakay s. niñez, infancia. waylluy v. amar tiernamente. wayma adv. antiguo, el tiempo de antaño. wayrachiy v. aventar los cereales cuando se está trillando. wayta s. ramillete, plumaje que traen algunos hombres como corona. waytampu s. abridor, variedad de durazno. wayu s. fruta. Sin. kakcha. wichuy v. tirar, botar algo. wiksuy v. torcerse, inclinarse. willapuk s. abogado. willka s. rito. 2 adj. sagrado, divino. 3 sust. nieto, bisnieto. (I. A. churipawan). willkay v. adorar, venerar. wiñariy v. desarrollar, empezar a crecer. wiñaylla adv. siempre, continuamente, perfectamente, eternamente. 2 adj. normal. wiñay mita adv. tiempo eterno, infinito. wiñay pacha adv. tiempo de crecimiento. wiñaypak adv. eterno, para siempre. wipachi s. plomada, nivel. 2 s. instrumento de construcción. Sin. uypa. wishaku s. cucharada. Y yachapayay v. remedar, imitar. yachashka s. costumbre, norma. yaku kucha s. charco. yakuku kuska s. lugar donde el agua es profunda. yakunayay v. tener sed. yakuyashka adj. líquido. yallikuy v. ocurrir. yamki (¿?) adj. noble. yamur s. variedad de chicha elaborada con cinco variedades de maíz. yanapanakuy v. ayudarse, auxiliarse mutuamente. yanapayay v. solidarizarse. yankiy v. cambiar, realizar trueque (I. A.) yawyay v. menoscabar, deteriorar, menguar, decrecer||

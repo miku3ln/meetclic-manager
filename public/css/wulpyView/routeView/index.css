@@ -1,0 +1,420 @@
+.content__image-business img {
+    width: 100%;
+}
+
+.content__image-business {
+    width: 11%;
+    position: fixed;
+    top: 8%;
+    left: 2%;
+}
+
+#map {
+
+    height: 450px;
+
+}
+
+.business-data {
+    display: none;
+}
+
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: table;
+    transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal-container {
+    width: 98%;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    transition: all .3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+    margin-top: 0;
+    color: #42b983;
+}
+
+.modal-body {
+    margin: 20px 0;
+}
+
+.modal-default-button {
+    float: right;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.not-view {
+    display: none;
+}
+
+/*
+-------MANAGER-----*/
+label.label--schedule {
+    width: 38%;
+}
+
+.remove--schedule-day {
+    position: absolute;
+    /* top: 66px; */
+    right: 0px;
+}
+
+.info_details.price_infobox {
+    margin-top: -306px;
+}
+
+div#container-data canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+div#container-data {
+    height: calc(100% - -1px);
+}
+
+.tooltip-view {
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    opacity: 0;
+    position: absolute;
+    transform: translate3d(-50%, -100%, 0);
+    transition: opacity .3s, transform .3s;
+}
+
+.tooltip-view.is-active {
+    opacity: 1;
+    transform: translate3d(-50%, calc(-100% - -20px), 0);
+
+}
+
+/*
+--------INFORMATION-----------*/
+.content-view-information-title {
+    top: 0%;
+    z-index: 90;
+    position: fixed;
+    width: 100%;
+    right: 0;
+    background: #358159;
+    /* padding-top: 1%; */
+    /* padding-bottom: 1%; */
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.content-view-information-title__margin {
+    right: 0;
+    background: #4d504f;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    width: 50%;
+}
+
+.content-view-information-title h1 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.content-view-information-description {
+    height: 150px;
+
+    top: 0%;
+    z-index: 177;
+    position: fixed;
+    width: 50%;
+    right: 0;
+    background: #358159;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.content-view-information-description__margin {
+    height: 130px;
+    color: #fff;
+    overflow: auto;
+}
+
+/*
+LEGEND*/
+.content-toolkit-data {
+    right: 0;
+    background: #fff;
+    text-align: center;
+    top: 63%;
+    z-index: 90;
+    position: fixed;
+    width: 270px;
+    border: 1px solid #8c8888;
+}
+
+.img-legend {
+    width: 22px;
+    height: 22px;
+}
+
+.inline {
+    display: inline-block !important;
+}
+
+table.content-toolkit-legend__tbl {
+    width: 100%;
+}
+
+.content-toolkit-title {
+
+    background: #f58d2c;
+
+    padding: 1%;
+}
+
+.content-toolkit-title h1 {
+    color: #fff;
+}
+
+.content-toolkit-legend {
+    padding-left: 7%;
+    padding-top: 5%;
+}
+
+.content-legend-type__title {
+    text-align: left;
+}
+
+th.content-legend-type__tbl--title {
+    padding-left: 14%;
+}
+
+
+.preview-demo {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 9999999;
+    right: -100%;
+    -webkit-transition: right .3s ease;
+    -o-transition: right .3s ease;
+    transition: right .3s ease;
+    left: -80%;
+    width: 100%;
+}
+
+.preview-demo.active-search {
+    -webkit-box-shadow: -5px 0 10px rgba(0, 0, 0, .1);
+    box-shadow: -5px 0 10px rgba(0, 0, 0, .1);
+    left: 0px !important;
+    display: block !important;
+}
+
+.content-close-btn {
+    font-size: 18px;
+    top: 2%;
+    position: inherit;
+    right: 3%;
+}
+
+/*
+---ADVENTURE TYPES---*/
+.content-toolkit-data-adventure-type {
+    right: 0;
+    position: fixed;
+    width: 50%;
+    top: 20%;
+}
+
+.content-toolkit-adventure-type-title {
+    background: #f58d2c;
+    padding: 1%;
+    width: 17%;
+}
+
+.content-toolkit-adventure-type-title h1 {
+    color: #fff;
+}
+
+.content-legend-adventure-type {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.image-adventure--th {
+    width: 25px;
+    height: 25px;
+}
+
+span.name-adventure--th {
+    font-size: 14px;
+}
+
+/**
+INFO WINDOW DETAILS POINTS MARKER
+ */
+.content-window {
+    width: 215px;
+}
+
+.content-information__title {
+    font-size: 17px;
+}
+
+.gm-style-iw-a {
+    top: -41px !important;
+}
+
+/**
+panorama
+ */
+button.close {
+    font-size: 60px;
+}
+/*----ROUTES DRAWING---*/
+.content-routes-drawing {
+    width: 34%;
+    position: fixed;
+    top: 50%;
+
+}
+.carousel-indicators .active {
+    width: 30px !important;
+    height: 3px !important;
+
+}
+
+@media (min-width: 576px) {
+
+    .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+}
+
+@media (min-width: 992px) {
+
+    .modal-lg, .modal-xl {
+        max-width: 800px;
+    }
+}
+
+
+@media (min-width: 1200px) {
+
+    .modal-xl {
+        max-width: 1140px;
+    }
+}
+
+@media (max-width: 680px) {
+    .content-toolkit-title h1 {
+        font-size: 15px;
+
+    }
+
+    .content-legend-type__title h2 {
+        font-size: 12px;
+    }
+
+    th.content-legend-type__tbl--title {
+        font-size: 10px;
+    }
+
+    .img-legend {
+        width: 30px;
+        height: 30px;
+    }
+
+    .content-toolkit-data {
+
+        top: 50%;
+        width: 170px;
+    }
+
+    .content-view-information-title h1 {
+
+        font-size: 15px;
+    }
+
+    .content-view-information-description__margin {
+        height: 101px;
+        font-size: 12px;
+    }
+
+    .content-view-information-title__margin {
+
+        width: 60%;
+    }
+
+    .content-view-information-description {
+
+        width: 40%;
+    }
+
+    .content-view-information-description {
+        height: 119px;
+    }
+
+    /*---adventure*/
+    .content-toolkit-data-adventure-type {
+
+    }
+
+    .content-toolkit-adventure-type-title h1 {
+        font-size: 15px;
+    }
+
+    .image-adventure--th {
+        width: 30px;
+        height: 30px;
+    }
+
+    span.name-adventure--th {
+        font-size: 7px;
+    }
+}

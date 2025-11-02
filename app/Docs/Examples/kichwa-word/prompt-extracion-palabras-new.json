@@ -1,0 +1,220 @@
+🌿 KICHWA TRADUCTOR INTELIGENTE – PROMPT VERSIÓN FINAL ENRIQUECIDA Y EXPANDIDA (2025)
+
+Actúa como un extractor lingüístico estructurado.
+El texto que recibirás corresponde a entradas de un diccionario Kichwa–Castellano. Cada entrada contiene:
+
+Solo debes extraer los campos indicados abajo, ignorando abreviaturas no incluidas en el siguiente catálogo:
+
+
+Abreviaturas
+1. Topónimos
+amz. Amazonía
+az. Azuay
+bo. Bolívar
+Bol. Bolivia
+ca. Cañar
+chi. Chimborazo
+co. Cotopaxi
+gua. Guayas
+im. Imbabura
+lo. Loja
+na. Napo
+or. El Oro
+ore. Orellana
+pa. Pastaza
+Pe. Perú
+pi. Pichincha
+S. Sierra
+sc. Sierra centro (Cotopaxi, Tungurahua, Chimborazo, Bolívar)
+sn. Sierra norte (Pichincha, Imbabura)
+ss. Sierra sur (Cañar, Azuay, Loja)
+suc. Sucumbíos
+tu. Tungurahua
+za. Zamora
+
+2. Gramaticales
+adj. adjetivo (puka, alli, sumak)
+adv. adverbio (kunan, karu, allimanta)
+C. complemento
+C. consonante
+cant. cantidad
+CC. complemento circunstancial
+CD. complemento directo
+CI. complemento Indirecto
+con. conector (chaymanta, shinaka, shina kaspaka)
+CV. consonante y vocal
+CVC. Consonante- vocal-consonante
+dem. demostrativo
+det. determinante (wakin, ñukapa, pi)
+excl. exclamación (añañaw, alalay, imanash)
+gen. Genitivo (-pa: ñuqapa, paypa)
+indef. Indefinido
+Interj. Interjección
+int. Interrogativo, interrogación
+N. núcleo
+num. numeral, número (shuk, ishkay, pichka)
+onom. onomatopeya (kulun, tulun, tuntún)
+ord. ordinal (ñawpaniki, shukniki, ishkayniki)
+preg. pregunta
+pron. pronombre (ñuka, kan, pay, kay, chay)
+s. sustantivo, nombre (urku, wayku, inti, killa)
+S. sujeto
+SCV. sujeto, complemento y verbo
+sin. Sinónimo (kucha, walun)
+v. verbo (kawsay, puriy, wañuy)
+var. variante, alternancia (chimpalu, tsimpalu, simpalu)
+V. vocal (a, i, u)
+VC. Vocal-consonante
+
+3. Siglas
+ALKI Academia de la Lengua Kichwa (ver KAMAK)
+ANAZPPA Asociación Nacional Zápara de la Provincia de Pastaza
+CEE Conferencia Episcopal Ecuatoriana
+CIEI Centro de Investigaciones Educativas Indígenas
+CNV-Q Campamento Nueva Vida - Quito
+CONAIE Confederación de Nacionalidades Indígenas del Ecuador
+CONPLADEIN Consejo de Planificación y Desarrollo de los Pueblos Indígenas
+DINEIB Dirección Nacional de Educación Intercultural Bilingüe
+DINSE Dirección Nacional de Servicios Educativos
+DIPEIB Dirección Provincial de Educación Intercultural Bilingüe
+EBI Educación Bilingüe Intercultural
+EIB Educación Intercultural Bilingüe
+ECUARUNARI Ecuador runakunapak rikcharimuy
+EIBAMAZ Educación Intercultural Bilingüe para la Amazonía
+FEINE Federación de Evangélicos Indígenas del Ecuador.
+FENOCIN-E Federación Nacional de Organizaciones Campesinas, Indígenas y Negras del Ecuador.
+GTZ Agencia Técnica de Cooperación Alemana
+IEQ Instituto de Estudios Qichwas
+ILL/PUCE Instituto de Lenguas y Lingüística-P
+INCC Instituto Nacional de Capacitación Campesina
+KAMAK Kichwa Amawta Kamachik (Academia de la lengua kichwa)
+LAEB-UC. Lingüística Andina y Educación Bilingüe/Universidad de Cuenca
+ME Ministerio de Educación
+ONGs Organizaciones no Gubernamentales
+PLEIB Programa de Licenciatura en Educación Intercultural Bilingüe
+PRODEPINE Proyecto de Desarrollo de los Pueblos Indígenas y Negros del Ecuador
+PUCE Pontificia Universidad Católica del Ecuador
+SEPDI Subsecretaría de Educación para el Diálogo Intercultural / ME
+SEIC Sistema de Escuelas Indígenas de Cotopaxi
+
+4. Simbología lingüística
+[ ] indica representación fonética.
+/ / indica representación fonológica.
+< > indica representación ortográfica.
+( ) indica formas opcionales.
+> indica que lo que precede da lugar a lo que sigue: *uspun > pusun.
+< indica que lo que precede se deriva de: pusun < *uspun.
+* el asterisco señala una forma etimológica o reconstruida: *ya-yku-y.
+** los dos asteriscos señalan que la reconstrucción se basa en concepciones y
+datos históricos.
+. el punto señala el límite silábico.
+- el guión señala límite fonemático de monemas ligados: kay-pi-mi.
+~ indica que la entrada que se ubica en este lugar.
+/č/ señala un fonema africado palatal.
+/ly
+/ señala un fonema lateral palatal.
+// señala un fonema lateral palatal.
+/š/ señala un fonema fricativo palatal sordo.
+/ž/ señala un fonema fricativo palatal sonoro
+/ts/ señala un fonema africado dental sordo.
+/R/ señala una vibrante múltiple.
+/0/ señala ausencia de fonema o marca cero.
+FN señala una frase nominal.
+FV señala una frase verbal.
+O señala una oración.
+OC señala una oración compleja.
+OS señala una oración simple.
+Rn indica raíz nominal.
+Rv indica raíz verbal.
+SN señala un sintagma nominal.
+SV señala un sintagma verbal.
+Tv indica tema verbal.
+
+    REGLAS
+
+{
+"word": "Palabra en Kichwa (antes de los corchetes)",
+"variant_forms": [
+"Formas fonéticas encontradas entre corchetes [ ]"
+],
+"abreviaturas": [
+"Son todas las abreviaturas válidas que aparecen entre el cierre de los corchetes [ ] y el primer punto (.) que aparece en la línea y Las abreviaturas deben coincidir exactamente con el catálogo oficial listado a continuación (topónimos, gramaticales y siglas). Se pueden presentar separadas por espacio o por punto. Si una entrada incluye abreviaturas no válidas, estas deben descartarse.",
+"Abreviaturas válidas:",
+"Topónimos:amz, amz., az., bo., Bol., ca., chi., co., gua., im., lo., na., or., ore., pa., Pe., pi., S., sc., sn., ss.,s. s., suc., tu., za.",
+"Gramaticales: adj., adv., C., cant., CC., CD., CI., con., CV., CVC., dem., det., excl., gen., indef., Interj.,interj., int., N., num., onom., ord., preg., pron., s., S., SCV., sin., v., var., V., VC.",
+"Siglas institucionales:expr. ALKI, ANAZPPA, CEE, CIEI, CNV-Q, CONAIE, CONPLADEIN, DINEIB, DINSE, DIPEIB, EBI, EIB, ECUARUNARI, EIBAMAZ, FEINE, FENOCIN-E, GTZ, IEQ, ILL/PUCE, INCC, KAMAK, LAEB-UC., ME, ONGs, PLEIB, PRODEPINE, PUCE, SEPDI, SEIC."
+],
+
+"translation_value": "Desde el final de las abreviaturas hasta el primer punto (.) siguiente. Equivale a la glosa.",
+"gloss": "Repetición de translation_value si no hay ambigüedad con sinónimos.",
+"synonyms": [
+"Lista de palabras precedidas por 'Sin.' hasta el punto final."
+],
+"letters_of_the_alphabet": "Primera letra de la palabra principal (en mayúscula)",
+"etymology": "Reconocida si se encuentra forma etimológica como <*palabra> o reconstrucciones (**palabra)",
+"geographic_usage": [
+"Inferida si se encuentran siglas topónimas (amz., sn., etc.) o referencias explícitas"
+],
+"language_variant": "Determinado por región, fonología o patrones culturales: Otavalo, Saraguro, Pastaza, etc.",
+"semantic_type": "Persona, objeto, lugar, concepto, animal o planta. Inferido según contenido",
+"verb_form": "Indicado si se detecta forma verbal como transitivo, reflexivo o impersonal",
+"case_usage": "Caso gramatical presente en estructuras con funciones claras (gen., CD., CI., etc.)",
+"usage_context": "Descripción cultural, emocional, ancestral o social del uso. Inferida si no explícita.",
+"usage_frequency": "común, poco común o arcaico. Determinado por el contexto o uso regional.",
+"emotional_charge": "baja, media, alta. Según carga semántica, tono o uso emocional de la palabra.",
+"symbolic_value": "Valores como espiritualidad, fertilidad, poder, sabiduría. Extraídos de contenido simbólico.",
+"is_neologism": "true/false. Solo si se detecta innovación léxica o préstamo moderno.",
+"is_generic": "true/false. Si representa una categoría base como planta, animal, objeto, etc.",
+"generic_for": "planta, animal, objeto, lugar, etc. Solo si aplica.",
+"morphemic_structure": [
+"División de la palabra en raíz y sufijos si son evidentes"
+],
+"syllables": [
+"Separación silábica de la palabra principal (e.g., ya-ku-ta)"
+],
+"cultural_reference": "Referencia directa o inferida como Inka, Dolores Cacuango, entre otros",
+"source_type": "Fuente de la palabra: oral, literaria o cotidiana",
+"prekichwa_variant": "Forma ancestral o variante documentada como <**palabra>"
+}
+
+
+
+✔️ Validación del método que estás usando:
+word → Extraído antes de los corchetes.
+
+variant_forms → Dentro de [ ].
+
+abreviaturas → Inmediatamente después del cierre ] hasta el primer punto ., aceptando múltiples entradas separadas por coma.
+
+translation_value (equivalente a glosa) → Desde el final de las abreviaturas hasta el siguiente punto ., como bien detectaste.
+
+synonyms → Si aparece Sin., extraes todos los valores hasta el punto final.
+
+✅ Determina valores por inferencia lingüística y llenar automáticamente campos como:
+
+description
+
+usage_context
+
+usage_frequency
+
+emotional_charge
+
+symbolic_value
+
+morphemic_structure
+
+syllables
+
+case_usage
+
+etymology
+
+cultural_reference
+
+geographic_usage
+
+language_variant
+
+source_type
+

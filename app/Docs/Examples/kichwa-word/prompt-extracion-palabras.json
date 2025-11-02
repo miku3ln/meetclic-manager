@@ -1,0 +1,339 @@
+🌿 KICHWA TRADUCTOR INTELIGENTE – PROMPT VERSIÓN FINAL ENRIQUECIDA Y EXPANDIDA (2025)
+
+Actúa como un extractor lingüístico estructurado.
+El texto que recibirás corresponde a entradas de un diccionario Kichwa–Castellano. Cada entrada contiene:
+
+Una palabra principal.
+
+Sus formas variantes fonéticas dentro de corchetes [ ].
+
+Una o más abreviaturas después de los corchetes (ej. s., adj., v.).
+
+Una definición o traducción literal (glosa).
+
+Y posiblemente una línea que inicia con Sin. (sinónimos).
+
+Solo debes extraer los campos indicados abajo, ignorando abreviaturas no incluidas en el siguiente catálogo:
+
+
+
+Abreviaturas
+1. Topónimos
+amz. Amazonía
+az. Azuay
+bo. Bolívar
+Bol. Bolivia
+ca. Cañar
+chi. Chimborazo
+co. Cotopaxi
+gua. Guayas
+im. Imbabura
+lo. Loja
+na. Napo
+or. El Oro
+ore. Orellana
+pa. Pastaza
+Pe. Perú
+pi. Pichincha
+S. Sierra
+sc. Sierra centro (Cotopaxi, Tungurahua, Chimborazo, Bolívar)
+sn. Sierra norte (Pichincha, Imbabura)
+ss. Sierra sur (Cañar, Azuay, Loja)
+suc. Sucumbíos
+tu. Tungurahua
+za. Zamora
+
+2. Gramaticales
+adj. adjetivo (puka, alli, sumak)
+adv. adverbio (kunan, karu, allimanta)
+C. complemento
+C. consonante
+cant. cantidad
+CC. complemento circunstancial
+CD. complemento directo
+CI. complemento Indirecto
+con. conector (chaymanta, shinaka, shina kaspaka)
+CV. consonante y vocal
+CVC. Consonante- vocal-consonante
+dem. demostrativo
+det. determinante (wakin, ñukapa, pi)
+excl. exclamación (añañaw, alalay, imanash)
+gen. Genitivo (-pa: ñuqapa, paypa)
+indef. Indefinido
+Interj. Interjección
+interj. Interjección
+int. Interrogativo, interrogación
+N. núcleo
+num. numeral, número (shuk, ishkay, pichka)
+onom. onomatopeya (kulun, tulun, tuntún)
+ord. ordinal (ñawpaniki, shukniki, ishkayniki)
+preg. pregunta
+pron. pronombre (ñuka, kan, pay, kay, chay)
+s. sustantivo, nombre (urku, wayku, inti, killa)
+S. sujeto
+SCV. sujeto, complemento y verbo
+sin. Sinónimo (kucha, walun)
+v. verbo (kawsay, puriy, wañuy)
+var. variante, alternancia (chimpalu, tsimpalu, simpalu)
+V. vocal (a, i, u)
+VC. Vocal-consonante
+
+3. Siglas
+exp. Expresion
+ALKI Academia de la Lengua Kichwa (ver KAMAK)
+ANAZPPA Asociación Nacional Zápara de la Provincia de Pastaza
+CEE Conferencia Episcopal Ecuatoriana
+CIEI Centro de Investigaciones Educativas Indígenas
+CNV-Q Campamento Nueva Vida - Quito
+CONAIE Confederación de Nacionalidades Indígenas del Ecuador
+CONPLADEIN Consejo de Planificación y Desarrollo de los Pueblos Indígenas
+DINEIB Dirección Nacional de Educación Intercultural Bilingüe
+DINSE Dirección Nacional de Servicios Educativos
+DIPEIB Dirección Provincial de Educación Intercultural Bilingüe
+EBI Educación Bilingüe Intercultural
+EIB Educación Intercultural Bilingüe
+ECUARUNARI Ecuador runakunapak rikcharimuy
+EIBAMAZ Educación Intercultural Bilingüe para la Amazonía
+FEINE Federación de Evangélicos Indígenas del Ecuador.
+FENOCIN-E Federación Nacional de Organizaciones Campesinas, Indígenas y Negras del Ecuador.
+GTZ Agencia Técnica de Cooperación Alemana
+IEQ Instituto de Estudios Qichwas
+ILL/PUCE Instituto de Lenguas y Lingüística-P
+INCC Instituto Nacional de Capacitación Campesina
+KAMAK Kichwa Amawta Kamachik (Academia de la lengua kichwa)
+LAEB-UC. Lingüística Andina y Educación Bilingüe/Universidad de Cuenca
+ME Ministerio de Educación
+ONGs Organizaciones no Gubernamentales
+PLEIB Programa de Licenciatura en Educación Intercultural Bilingüe
+PRODEPINE Proyecto de Desarrollo de los Pueblos Indígenas y Negros del Ecuador
+PUCE Pontificia Universidad Católica del Ecuador
+SEPDI Subsecretaría de Educación para el Diálogo Intercultural / ME
+SEIC Sistema de Escuelas Indígenas de Cotopaxi
+
+4. Simbología lingüística
+[ ] indica representación fonética.
+/ / indica representación fonológica.
+< > indica representación ortográfica.
+( ) indica formas opcionales.
+> indica que lo que precede da lugar a lo que sigue: *uspun > pusun.
+< indica que lo que precede se deriva de: pusun < *uspun.
+* el asterisco señala una forma etimológica o reconstruida: *ya-yku-y.
+** los dos asteriscos señalan que la reconstrucción se basa en concepciones y
+datos históricos.
+. el punto señala el límite silábico.
+- el guión señala límite fonemático de monemas ligados: kay-pi-mi.
+~ indica que la entrada que se ubica en este lugar.
+/č/ señala un fonema africado palatal.
+/ly
+/ señala un fonema lateral palatal.
+// señala un fonema lateral palatal.
+/š/ señala un fonema fricativo palatal sordo.
+/ž/ señala un fonema fricativo palatal sonoro
+/ts/ señala un fonema africado dental sordo.
+/R/ señala una vibrante múltiple.
+/0/ señala ausencia de fonema o marca cero.
+FN señala una frase nominal.
+FV señala una frase verbal.
+O señala una oración.
+OC señala una oración compleja.
+OS señala una oración simple.
+Rn indica raíz nominal.
+Rv indica raíz verbal.
+SN señala un sintagma nominal.
+SV señala un sintagma verbal.
+Tv indica tema verbal.
+
+
+EJEMPLOS
+achupalla [ačupalya, ačupaža, ačupilya]
+s.s. achupalla. Kashayuk panka, uchilla chawarshina, sunilla amuk pankayuk yura.
+Allpasaywapimiachupalla yuratakatarpuni
+
+achikmama [ačikmama, ačimama] s. S.
+madrina. Wawa shutirikukpi markak warmi.
+Achikmamakaachikwawamankatantatami
+kamarin
+
+akichana [axičana, akičana] v. s. cerniren
+harnerooencedazo. Achka hutkuyuk antapi
+imatapash shushuna.
+¿Palantahakutachuakichakunki?
+Sin. Shushuna.
+
+allana [alyana, ažana] v. s. sacar,excavar.
+Imatapash surkunkapak, imatapash satinkapak allpata hutkuna.
+Ukata,papatapashallamuni.
+2. v. Nivelar,igualar,aplanar.Allpakurpakunatahillaywanwaktashpapampayachina.
+Wasitarurankapakyanaallpataallakuni.
+Sin. 2 Pampayachina.
+
+anchayana [aŋchayana] v. s. empeorarse,
+agravarseenunaenfermedad.Kari, warmi,
+ima kash papash ashtawan unkurishpa katina.
+Sisakauhuunkuywanmianchayakun.
+Sin. Kutiparina, tukurina, ayatukuy, kalakyay
+
+ashi [aši] adj. s. amante. Sawarishka kipa
+kari kashpa, warmi kashpa shuk kuyashkata
+charik.
+Ashita rikunkapakshamuni.
+Sin. Wayna, kuyak.
+
+atuk [atux, atug, atuk, atu] s. S. lobo.Allkushina rikurik: waykupi, kakapi, chiri urkupi
+kawsak wiwa.
+
+awanakaspi [awanakaspi] s. s. telar.
+Chakatashpa rurashka kaspi.
+José awanakaspipimimakanatakaawan.
+
+awllina [awly
+ina, awžina, alwina] v. s. urdir.
+Churanata awankapak puchkakunata kaspipi
+allichina.
+Yachakukpuch
+
+chachina [čačina] v.s. sentarselosniños.
+Maypipash wawakuna tiyarina.
+Maríawawakapuñunapimichachin
+
+chakchuna [čaxčuna, čakčuna, čagčuna]
+v. s. descomponer, regar, botar,  esparcir
+aguaogranos. lmatapash karu karupi shita -
+na.
+Pichankapakamaallpahatarichunkayakuwanchakchun.
+2. v. haceralgoaescondidas. Imatapash pakalla rurana.
+Churikamanachariymantayayaparuwanata
+raymimanchakchun.
+Sin. 1 Hichana, chi wana, shitana, tallina, parkuna.
+
+chaklla [čaglya, čagža] s. s. palosycarrizos
+utilizados para cubiertas y paredes de
+casas,corralesycercas.Wasita katankapak,
+pirkankapak sukuskunata, kaspikunawan
+watashka.
+Ñawpawasiku
+
+challina [čaly
+ina, čažina] v. s. recogerresiduosdecosechas. Murukunata pallay washa
+puchushkakunata tantachina.
+Ayllullaktawamrakunakapapatachallin.
+2. v. descarriarse.Maytapash riklla.
+Aylluwakllirikpikawawakunakachallin.
+Sin. 1 cha llana, chukchiyna
+
+chamiku [čamiku] s. s. chamico,plantasilvestrepequeña. Sisa ukupi kashayuk, waylla
+tullpuyuk yura.
+Sarachakraukumantachamiku yurakunata
+tantanchik
+
+champa [čampa, čamba, čaŋba, žaŋba] s.
+s. terróndecésped. Allpata kiwantin llukshichishka.
+Tarpunkapak llachuwan champata chakmani.
+
+chiktana [čixtana, čiktana] v. s. rajar,partir,
+hender,resquebrajar.Kaspikunata, kullukunata rakina.
+Wasichinkapakkakaspikunatakachawpipimi
+chiktan.
+2. amz. desviarunrío.Mayu yakuta paypa
+ñanmanta shukman aysay.
+Kaymayuta urkuwas
+
+chillchill [čilčil, čilžil] s. s. variedad de
+plantamedicinal. Uchilla tawrishina yura.
+Llamauhuhapikpichillchill yurawanhampinchik
+
+
+EJEMPLO Y SOLUCION
+- word =achka
+- variant_forms = [ačka, ačika, aška]
+- abreviatura =[  adv.] EN ESTE EJEMPLO EXISTE UNO PERO SI EXISTE MAS PUES HABRAN MAS EN UN ARRAY
+- dictionary_word_by_class = LO MISMO QUE ABREVIATURAS PERO YA CON SUS SIGNIFICADOS[ Adverbio]
+- glosa =  bastante,
+harto.
+- translation_value = bastante,
+harto.
+- sinonimos =[Ashtaka, hatunta, pachan, tawka, llashak ]
+
+
+chuklla  s.
+choza,cabaña.Pankakunawan, ukshakunawan, katashpalla rurashka uchilla wasi.
+Wakrakamanachukllakakunukllamikan.
+Sin. Chinkana
+EJEMPLO Y SOLUCION
+- word =chuklla
+- variant_forms = [čuxlya, čuxža, čuklya, čugža]
+- abreviatura =[ s.] EN ESTE EJEMPLO EXISTE UNO PERO SI EXISTE MAS PUES HABRAN MAS EN UN ARRAY
+- dictionary_word_by_class = LO MISMO QUE ABREVIATURAS PERO YA CON SUS SIGNIFICADOS[ s. sustantivo]
+- glosa = choza,cabaña.
+- translation_value = choza,cabaña.
+- sinonimos =Chinkana
+
+    JSON PARA OBTENER
+{
+"word": "Palabra en kichwa",
+"description": "Significado cultural y funcional basado en cómo se vive, expresa o piensa esta palabra en la comunidad kichwa. Debe ser clara, no técnica, ni vaga.",
+"gloss": "Traducción literal simple (una palabra en español).",
+"letters_of_the_alphabet": "Letra inicial en mayúscula",
+"translation_value": "Traducción principal al español hasta el primer punto(Documento).",
+"etymology": "Raíz lingüística si es reconocida (opcional).",
+"geographic_usage": ["Región donde se usa puede ser en varios lugares analiza eso en el documento"],
+"language_variant": "Otavalo, Saraguro, Pastaza, Imbabura central, Panandino, Otro",
+"semantic_type": "persona, objeto, lugar, concepto, animal, planta",
+"dictionary_word_by_class": ["Clases gramaticales"],
+"verb_form": "Forma verbal",
+"case_usage": "Caso gramatical relacionado",
+"usage_context": "Explicación cultural, emocional, ancestral o comunitaria de uso",
+"usage_frequency": "común, poco común, arcaico",
+"emotional_charge": "alta, media, baja",
+"symbolic_value": "valor espiritual, resistencia, fertilidad, sabiduría, etc.",
+"is_neologism": true,
+"is_generic": true,
+"generic_for": "planta, animal, objeto, lugar, etc.",
+"morphemic_structure": ["raíz", "sufijo1", "sufijo2"],
+"variant_forms": ["forma1", "forma2"],
+"syllables": ["ya", "ku", "ta"],
+"synonyms": ["umay", "yachay"],
+"cultural_reference": "Dolores Cacuango",
+"source_type": "oral, literaria, cotidiana",
+"prekichwa_variant": "čukulpuy"
+}
+
+
+✔️ Validación del método que estás usando:
+word → Extraído antes de los corchetes.
+
+variant_forms → Dentro de [ ].
+
+abreviaturas → Inmediatamente después del cierre ] hasta el primer punto ., aceptando múltiples entradas separadas por coma.
+
+translation_value (equivalente a glosa) → Desde el final de las abreviaturas hasta el siguiente punto ., como bien detectaste.
+
+synonyms → Si aparece Sin., extraes todos los valores hasta el punto final.
+
+✅ Determina valores por inferencia lingüística y llenar automáticamente campos como:
+
+description
+
+usage_context
+
+usage_frequency
+
+emotional_charge
+
+symbolic_value
+
+morphemic_structure
+
+syllables
+
+case_usage
+
+etymology
+
+cultural_reference
+
+geographic_usage
+
+language_variant
+
+source_type

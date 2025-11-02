@@ -1,0 +1,59 @@
+<div class="col-lg-12">
+    <div class="m-portlet m-portlet--accent m-portlet--head-solid-bg m-portlet--head-sm"
+         m-portlet="true" id="m_portlet_{{$tableConfig["id"]}}">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+						<span class="m-portlet__head-icon">
+							<i class="{{$configPortlet["icon"]}}"></i>
+						</span>
+                    <h3 class="m-portlet__head-text">
+                        {{$configPortlet["title"]}}
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li   class="m-portlet__nav-item">
+                        <a data-toggle="tooltip" data-placement="top" title=" Collapse" href="#" m-portlet-tool="toggle"
+                           class="m-portlet__nav-link m-portlet__nav-link--icon"
+                           aria-describedby="tooltip_ges3mb4ofe"><i class="la la-angle-down"></i></a>
+                        <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip"
+                             id="tooltip_ges3mb4ofe" aria-hidden="true" x-placement="top"
+                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(261px, -32px, 0px); display: none;">
+                            <div class="tooltip-arrow arrow" style="left: 44px;"></div>
+                            <div class="tooltip-inner">Collapse</div>
+                        </div>
+                    </li>
+
+                    <li class="m-portlet__nav-item">
+                        <a data-toggle="tooltip" data-placement="top" title=" Fullscreen"  href="#" m-portlet-tool="fullscreen"
+                           class="m-portlet__nav-link m-portlet__nav-link--icon"
+                           aria-describedby="tooltip_cr4rw063iy"><i class="la la-expand"></i></a>
+                        <div class="m-tooltip m-tooltip--portlet tooltip bs-tooltip-top" role="tooltip"
+                             id="tooltip_cr4rw063iy" aria-hidden="true" x-placement="top"
+                             style="position: absolute; transform: translate3d(321px, -33px, 0px); top: 0px; left: 0px; will-change: transform; display: none;">
+                            <div class="tooltip-arrow arrow" style="left: 48px;"></div>
+                            <div class="tooltip-inner">Fullscreen</div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="m-portlet__body" m-hidden-height="344">
+            @include('partials.odontogram',$odontogramConfiguration)
+            <div class="conten__render-management">
+                <?php
+                $paramsCurrent=array(
+                    "tableConfig"=>$tableConfig,
+                    "formConfiguration"=>$formConfiguration
+                );
+                ?>
+                @include('treatmentPlanByPatient.loads._managementForm',$paramsCurrent)
+            </div>
+
+        </div>
+
+    </div>
+</div>

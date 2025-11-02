@@ -1,0 +1,118 @@
+/* List View
+--------------------------------------------------------------------------------------------------*/
+/* possibly reusable */
+.fc-event-dot {
+  display: inline-block !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 5px !important;
+}
+
+/* view wrapper */
+.fc-rtl .fc-list-view {
+  direction: rtl !important;
+  /* unlike core views, leverage browser RTL */
+}
+
+.fc-list-view {
+  border-width: 1px !important;
+  border-style: solid !important;
+}
+
+/* table resets */
+.fc .fc-list-table {
+  table-layout: auto !important;
+  /* for shrinkwrapping cell content */
+}
+
+.fc-list-table td {
+  border-width: 1px 0 0 !important;
+  padding: 8px 14px !important;
+}
+
+.fc-list-table tr:first-child td {
+  border-top-width: 0 !important;
+}
+
+/* day headings with the list */
+.fc-list-heading {
+  border-bottom-width: 1px !important;
+}
+
+.fc-list-heading td {
+  font-weight: bold !important;
+}
+
+.fc-ltr .fc-list-heading-main {
+  float: left !important;
+}
+
+.fc-ltr .fc-list-heading-alt {
+  float: right !important;
+}
+
+.fc-rtl .fc-list-heading-main {
+  float: right !important;
+}
+
+.fc-rtl .fc-list-heading-alt {
+  float: left !important;
+}
+
+/* event list items */
+.fc-list-item.fc-has-url {
+  cursor: pointer !important;
+  /* whole row will be clickable */
+}
+
+.fc-list-item-marker,
+.fc-list-item-time {
+  white-space: nowrap !important;
+  width: 1px !important;
+}
+
+/* make the dot closer to the event title */
+.fc-ltr .fc-list-item-marker {
+  padding-right: 0 !important;
+}
+
+.fc-rtl .fc-list-item-marker {
+  padding-left: 0 !important;
+}
+
+.fc-list-item-title a {
+  /* every event title cell has an <a> tag */
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.fc-list-item-title a[href]:hover {
+  /* hover effect only on titles with hrefs */
+  text-decoration: underline !important;
+}
+
+/* message when no events */
+.fc-list-empty-wrap2 {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+.fc-list-empty-wrap1 {
+  width: 100% !important;
+  height: 100% !important;
+  display: table !important;
+}
+
+.fc-list-empty {
+  display: table-cell !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+
+.fc-unthemed .fc-list-empty {
+  /* theme will provide own background */
+  background-color: #eee !important;
+}

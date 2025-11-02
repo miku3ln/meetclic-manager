@@ -1,0 +1,270 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22-feb-2017, 13:21:01
+    Author     : Admin
+*/
+
+
+
+/*----INIT REGISTRO*/
+#topBar {
+    background-color: #273474;
+    height: 67px;
+}
+#topBar ul.top-links li.text-welcome {
+    margin-top: 21px!important;
+    font-size: 24px;
+    color:#fff;
+    cursor: pointer;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+}
+#topBar ul.top-links>li>a {
+    padding: 10px;
+    font-size: 17px;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    font-family: Arial;
+}
+#topMain.nav-pills>li:hover>a, #topMain.nav-pills>li:focus>a {
+    color: #273374;
+    background-color: rgb(222, 227, 245);
+    margin-top: 0%;
+}
+#topMain.nav-pills>li>a.dropdown-toggle:after {
+    display: block;
+    content: "\f37";
+    position: absolute;
+    top: 29%;
+    right: 10px;
+    margin: -13px -11px 9px;
+    opacity: 9.5;
+    line-height: 1em;
+    color: #ffffff;
+    border-left: 1px solid #00fbfb;
+    height: 65px;
+} 
+#topNav ul.dropdown-menu {
+    margin-top: 6px;
+}
+/*----FIN REGISTRO*/
+/*-----INIT ACTIVIDADES Y CONTENIDO*/
+#topNav a.logo {
+    margin-top: 20px;
+}
+ul#topMain {
+    margin-top: 29px;
+    font-size: 150%;
+}
+header#topNav {
+    height: 131px!important;
+}
+#header ul.nav-second-main {
+    border-left:  rgba(0,0,0,0.1) 0px solid;
+    padding-left: -11px;
+    margin-top: 39px;
+}
+li.search {
+    font-size: 31%;
+    margin-top: 70%;
+}
+#header li.search i.fa {
+    color: #0ff;
+    cursor: pointer;
+    position: relative;
+    font-size: 670%;
+    margin-left: 18%;
+}
+input.form-control {
+    margin-left: -5px;
+    margin-top: 1px;
+}
+#topMain.nav-pills>li>a {
+    color: #273474 ;
+}
+/*-----FIN ACTIVIDADES Y CONTENIDO*/
+
+/*---INIT BOTONES DE PASE*/
+.tp-bullets.preview2 .bullet.selected {
+    background: rgba(255, 255, 255, 1) !important;
+    width: 6px !important;
+    height: 6px !important;
+    border: 9px solid rgb(255, 255, 255) !important;
+    border-radius: 19px;
+}
+.tp-bullets.preview2 .bullet {
+    background: rgba(55, 253, 235, 0.5) !important;
+    border: 9px solid rgba(0, 0, 0, 0) !important;
+
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 19px;
+}
+/*---FIN BOTONES DE PASE*/
+/*----=-INIT ICONS PNG*/
+
+section.info-bar.info-bar-clean {
+    margin-top: 34px;
+}
+.conten-png {
+    margin-top: 78px;
+}
+h4 {
+    color: #4fb6da;
+}
+/*-----FIN ICONS PNG*/
+
+/*-----INIT IMG Y CONTENIDO*/
+div.row>div img.img-responsive {
+    margin-top: -37%;
+}
+.img-logo-1 {
+    margin-top: 17%;
+    margin-left: 33%;
+    float: left;
+}
+.text-parrafo {
+    color: white;
+    margin-top: -6%;
+}
+.contenedor {
+    margin-top: 46%;
+}
+.btn-warning {
+    color: #fff;
+    background-color: #FBB03B;
+    border-color: #FBB03B;
+    padding: 0.5rem 3rem;
+    margin-left: 38%;
+}
+/*-----FIN IMG Y CONTENIDO*/
+/*----INIT NUESTROS SERVICIOS*/ 
+h2.title-servicio {
+    margin-left: 35%;
+    color: #4fb6da;
+}
+
+h4.title-servicio {
+    margin-top: 40px;
+}
+h4.title-servicio-ELI {
+    margin-top: 43%;
+}
+/*----FIN NUESTROS SERVICIOS*/ 
+/*---INIT IMG Y REDES SOCIALES*/
+.footer_intro {
+    margin-top: -25%;
+    z-index: inherit;
+}
+.toolbar {
+    margin-left: 29%;
+    font-size: 328%;
+    border-bottom: 9px;
+    margin-bottom: 20px;
+}
+i.fa.fa-youtube, i.fa.fa-facebook, i.fa.fa-twitter, i.fa.fa-google-plus{
+    color: #ffffff;
+    padding: 0px 37px;
+}
+/*---FIN IMG Y REDES SOCIALES*/
+/*---INIT INFORMACION*/
+h1.text-center {
+    color: white;
+    margin-top: 7%;
+}
+textarea {
+    resize: vertical;
+    padding: 9.5px;
+    width: 90%;
+}
+.newsletter-description {
+    margin-bottom: 0;
+    color: #48606A;
+    font-family: 'Open Sans',Arial,Helvetica,sans-serif;
+    margin-left: 22%;
+    margin-top: 12%;
+}
+input.info-input-name {
+    background: #fff;
+    border: 0px solid #fff;
+    padding: 9px;
+    margin-left: 20%;
+    width: 103%;
+}
+input.info-input-tema {
+    background: #fff;
+    border: 0px solid #fff;
+    padding: 9px;
+    margin-left: 20%;
+    width: 103%;
+}
+input.info-telefono {
+    background: #fff;
+    border: 0px solid #fff;
+    padding: 9px;
+    margin-left: 19%;
+    width: 71%;
+}
+input.info-input {
+    background: #fff;
+    border: 0px solid #fff;
+    padding: 9px;
+    margin-left: 13%;
+    width: 91%;
+}
+h3.newsletter-description-mensaje {
+    margin-bottom: 0;
+    color:#48606A;
+    padding: 7px 10px;
+    margin-left: 3%;
+    margin-top: 4%;
+}
+textarea.info-input {
+    background: #fff;
+    border: 0px solid #fff;
+    padding: 7px 13px;
+    margin-left: 4%;
+    width: 60%;
+}
+button.btn.btn-default {
+    background: #454C53;
+    border-color: #454C53;
+    border-radius: 10px;
+    margin-left: 4%;
+    margin-top: 3%;
+    padding: 5px 26px;
+}
+input.info-1 {
+    width: 60%;
+    margin-left: -28%;
+}
+input.info-3 {
+    width: 47%;
+    margin-left: -65%;
+}
+img.img-logo {
+    margin-left: 3%;
+    margin-top: 7%;
+}
+h5.info-init {
+    margin-left: 0%;
+    margin-top: 30%;
+    color: white;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+}
+h5.info-final {
+    margin-left: 4%;
+    margin-top: -11%;
+    color: white;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+}
+.info-map {
+    width: 96%!important;
+    height: 432px!important;
+    margin-top: 10%;
+}
+/*---FIN INFORMACION*/

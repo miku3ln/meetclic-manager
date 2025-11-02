@@ -1,0 +1,80 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: db_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      TZ: ${TZ}
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--max_allowed_packet=256M"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+    ports:
+      - "${MYSQL_DIRECT_PUBLISH}"            # ej 3307:3306
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      UPLOAD_LIMIT: ${PMA_UPLOAD_LIMIT}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./phpmyadmin/php-custom.ini:/usr/local/etc/php/conf.d/zzz-custom.ini:ro
+    expose:
+      - "80"                                  # 👈 visible solo dentro de la red para nginx
+
+  # === NUEVO SERVICIO: Apache + PHP (misma red) ===
+  apache:
+    build:
+      context: ./apache                       # 👈 carpeta nueva (ver abajo)
+    container_name: apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${HTTP_PORT:-9080}:80"
+      - "${HTTPS_PORT:-9443}:443"
+    volumes:
+      - "${HOST_ROOT}:/var/www/projects_root:rw"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  nginx:
+    image: nginx:latest
+    container_name: nginx_gateway
+    restart: unless-stopped
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - db
+      - phpmyadmin
+    ports:
+      - "${NGINX_HTTP_PUBLISH}"               # ej 8081:80  (HTTP /pma)
+      - "${NGINX_MYSQL_PUBLISH}"              # ej 3308:3308 (proxy TCP a MySQL)
+
+networks:
+  default:
+    name: mysql_stack_net
+
+volumes:
+  db_data:

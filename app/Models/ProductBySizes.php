@@ -1,0 +1,206 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Auth;
+use Illuminate\Support\Facades\Validator;
+
+
+class ProductBySizes extends ModelManager
+{
+    const STATE_ACTIVE = 'ACTIVE';
+    const STATE_INACTIVE = 'INACTIVE';
+    protected $table = 'product_by_sizes';
+
+    protected $fillable = array();
+    protected $attributesData = [
+
+    ];
+    public $timestamps = false;
+
+    protected $field_main = 'product_sizes_id';
+
+    public static function getRulesModel()
+    {
+        $rules = ["product_sizes_id" => "required|numeric",
+            "product_id" => "required|numeric"
+        ];
+        return $rules;
+    }
+
+
+    /*MANAGER MAINS*/
+
+    public function getAdmin($params)
+    {
+        $sort = 'asc';
+        $field = $this->field_main;
+        $query = DB::table($this->table);
+
+        if (isset($params['sort'])) {
+            $field = $column = array_keys($params['sort']);
+            $field = $field[0];
+            $sort = $params['sort'][$column[0]];
+        }
+
+        $page = isset($params['current']) ? (int)$params['current'] : 0;
+        $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
+
+        $selectString = "product_sizes.value as product_sizes,
+product_sizes.id as product_sizes_id,
+product.code as product,
+product.id as product_id
+";
+
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('product_sizes', 'product_sizes.id', '=', $this->table . '.product_sizes_id');
+        $query->join('product', 'product.id', '=', $this->table . '.product_id');
+        if ($params['searchPhrase'] != null) {
+            $searchValue = $params['searchPhrase'];
+            $likeSet = $searchValue;
+            $query->orWhere("product_sizes.value", 'like', '%' . $likeSet . '%');
+            $query->orWhere("product.code", 'like', '%' . $likeSet . '%');;
+
+        }
+
+        $recordsTotal = $query->get()->count();
+        $pages = 1;
+        $total = $recordsTotal; // total items in array
+// sort
+        $query->orderBy($field, $sort);
+// Pagination: $perpage 0; get all data
+        if ($perpage > 0) {
+            $pages = ceil($total / $perpage); // calculate total pages
+            $page = max($page, 1); // get 1 page when $_REQUEST['page'] <= 0
+            $page = min($page, $pages); // get last page when $_REQUEST['page'] > $totalPages
+            $offset = ($page - 1) * $perpage;
+            if ($offset < 0) {
+                $offset = 0;
+            }
+            $query->offset((int)$offset);
+            $query->limit((int)$perpage);
+        }
+        $current_page = isset($params['current']) ? (int)$params['current'] : 0;
+        $data = $query->get()->toArray();
+
+        $result['total'] = $total;
+        $result['rows'] = $data;
+        $result['current'] = $current_page;
+        $limit = isset($params['rowCount']) ? $params['rowCount'] : 10;
+        $result['rowCount'] = $limit;
+
+        return $result;
+    }
+
+
+    public function saveData($params)
+    {
+        $success = false;
+        $msj = "";
+        $result = array();
+        $attributesPost = $params["attributesPost"];
+        $errors = array();
+        DB::beginTransaction();
+        try {
+            $modelName = 'ProductBySizes';
+            $model = new ProductBySizes();
+            $createUpdate = true;
+
+            if (isset($attributesPost[$modelName]["id"]) && $attributesPost[$modelName]["id"] != "null" && $attributesPost[$modelName]["id"] != "-1") {
+                $model = ProductBySizes::find($attributesPost[$modelName]['id']);
+                $createUpdate = false;
+            } else {
+                $createUpdate = true;
+            }
+
+
+            $productBySizesData = $attributesPost[$modelName];
+            $attributesSet = $this->getValuesModel(array('fillAble' => $this->fillable, 'haystack' => $productBySizesData, 'attributesData' => $this->attributesData));
+            $paramsValidate = array(
+                'inputs' => $attributesSet,
+                'rules' => self::getRulesModel(),
+
+            );
+            $validateResult = $this->validateModel($paramsValidate);
+            $success = $validateResult["success"];
+            if ($success) {
+                $model->fill($attributesSet);
+                $success = $model->save();
+            } else {
+                $success = false;
+                $msj = "Problemas al guardar  ProductBySizes.";
+                $errors = $validateResult["errors"];
+            }
+            if (!$success) {
+                DB::rollBack();
+
+            } else {
+                DB::commit();
+            }
+            $result = [
+                "errors" => $errors,
+                "msj" => $msj,
+                "success" => $success
+            ];
+
+
+            return ($result);
+        } catch (Exception $e) {
+
+            $msj = $e->getMessage();
+            $result = array(
+                "success" => $success,
+                "msj" => $msj,
+                "errors" => $errors
+            );
+            return ($result);
+        }
+
+    }
+
+    public function getListSelect2($params)
+    {
+        $textValue = $this->table . '.' . $this->field_main;
+        $field = $textValue;
+        $query = DB::table($this->table);
+        $selectString = "$this->table.id,$textValue as text";
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('product_sizes', 'product_sizes.id', '=', $this->table . '.product_sizes_id');
+        $query->join('product', 'product.id', '=', $this->table . '.product_id');
+        if (isset($params["filters"]['search_value']["term"])) {
+
+            $likeSet = $params["filters"]['search_value']["term"];
+            $query->orWhere("product_sizes.value", 'like', '%' . $likeSet . '%');
+            $query->orWhere("product.code", 'like', '%' . $likeSet . '%');;
+
+        }
+
+        $query->limit(10)->orderBy($field, 'asc');
+        $result = $query->get()->toArray();
+        return $result;
+
+    }
+    public function getSizesProduct($params)
+    {
+
+        $product_id = $params['filters']['product_id'];
+        $query = DB::table($this->table);
+        $table_name_data = 'product_sizes';
+        $orderField = $table_name_data.'.value';
+        $table_name_data_key = 'product_sizes_id';
+        $selectString = $table_name_data.".value,".$table_name_data.".value as text ,".$table_name_data.".id";
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('product', 'product.id', '=', $this->table . '.product_id');
+        $query->join($table_name_data, $table_name_data . '.id', '=', $this->table . '.' . $table_name_data_key);
+        $query->where($this->table . '.product_id', '=', $product_id);
+        $query->orderBy($orderField, 'asc');
+        $result = $query->get()->toArray();
+        return $result;
+
+    }
+}

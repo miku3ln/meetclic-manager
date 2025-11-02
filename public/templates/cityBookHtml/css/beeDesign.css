@@ -1,0 +1,346 @@
+/*PAGINATION*/
+.pagination--custom {
+    display: flex;
+}
+
+.pagination--custom > li:first-child > a, .pagination > li:first-child > span {
+    margin-left: 0;
+    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+}
+
+.pagination--custom > .disabled > a {
+    color: #666666;
+    background-color: #e4e4e4;
+    border-color: #e4e4e4;
+    cursor: not-allowed;
+}
+
+.pagination--custom > li > a {
+    color: #666666;
+    background-color: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    cursor: pointer;
+}
+
+.pagination--custom > li > a {
+    color: #fff;
+    background-color: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    cursor: pointer;
+}
+
+.pagination > .active > a {
+    color: #e4e4e4;
+    background-color: #445EF2 !important;
+    border-color: #445EF2 !important;
+}
+
+
+.show-reg-form a {
+    color: #fff;
+}
+
+.pagination .nav-links > span.current {
+    color: #fff;
+}
+
+.pagination .nav-links > span, .pagination a {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    font-size: 13px;
+    color: #888DA0;
+    background: #fff;
+    letter-spacing: 1px;
+    margin: 0 2px;
+}
+
+.not-view {
+    display: none;;
+}
+
+.loading-page {
+    width: 100%;
+    height: 180px;
+}
+
+.listings-loader {
+    position: absolute;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+.a--link {
+    color: #fff;
+}
+
+.to-top--bee {
+
+    bottom: 10%;
+}
+
+.chat-widget-button--bee {
+
+    bottom: 16%;
+}
+
+.dark-header .nav-holder nav li ul a.a-act-link {
+    color: #445EF2;
+
+}
+
+
+.custom-form--opacity-placeholder-50 input::-webkit-input-placeholder, .custom-form--opacity-placeholder-50 textarea::-webkit-input-placeholder {
+    color: #66666673;
+
+}
+
+.custom-form--opacity-placeholder-50 input:-moz-placeholder, .custom-form--opacity-placeholder-50 textarea:-moz-placeholder {
+    color: #888DA0;
+    font-weight: 600;
+    font-size: 13px
+}
+
+.share-holder.hid-share .share-container {
+
+    min-width: auto !important;
+}
+
+.pop--share {
+    cursor: pointer !important;
+}
+
+
+/*
+SHOP*/
+.shop-manager-page-header {
+    float: left;
+    width: 100%;
+    position: relative;
+    padding: 15px 30px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+    background: #F8FBFE;
+}
+
+.shop-manager-page-header h2 {
+    text-align: left;
+    font-size: 26px;
+    color: #334e6f;
+    font-weight: 500;
+    float: left;
+}
+
+.shop-manager-page-header .breadcrumbs {
+    float: right;
+    position: relative;
+    top: 8px;
+}
+
+.shop-manager-page-header .breadcrumbs a, .shop-manager-page-header .breadcrumbs span {
+    float: left;
+    margin-left: 24px;
+    position: relative;
+    font-weight: 500;
+}
+
+.shop-manager-page-header .breadcrumbs a:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -16px;
+    margin-top: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+}
+
+.shop-manager-page-header .breadcrumbs {
+    float: right;
+    position: relative;
+    top: 8px;
+}
+
+/*HOME*/
+
+.hero-section--item ul.slick-dots {
+    display: none;
+}
+
+/*
+DEVICES /CPU*/
+/*
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+
+/*BADGES*/
+
+
+.badge {
+    color: #fff;
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    -webkit-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.badge--size-large {
+    font-size: 15px !important;
+}
+
+.badge-success {
+    color: #fff;
+    background-color: #1abc9c;
+}
+
+.badge--bee-points {
+    color: #fff;
+    background-color: #445EF2;
+}
+
+.badge-points--danger {
+    color: #fff;
+    background-color: #f2446d !important;
+}
+
+.badge-points--success {
+    color: #fff;
+    background-color: #445EF2 !important;
+}
+
+span.dashboard-list__content-description-task {
+    padding-left: 3%;
+}
+
+.badge-points--success {
+    color: #fff;
+    background-color: #445EF2 !important;
+}
+@media (min-width: 1281px) {
+
+
+}
+
+/*
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+
+}
+
+/*
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+
+}
+
+/*
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+
+}
+
+/*
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+}
+
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+
+}
+
+@media (min-width: 320px) and (max-width: 1024px) {
+    .shop-manager-page-header {
+
+        margin-bottom: 0px;
+    }
+
+    div#content-manager {
+        padding-top: 21%;
+    }
+
+}
+
+.not-view {
+    display: none;
+}
+
+/*
+SHOP*/
+.single-list-product .product-hover-icon-wrapper .single-icon {
+    background-color: #445EF2 !important;
+}
+
+
+a.to-top.to-top--bee {
+    bottom: 7%;
+}
+
+a.to-top.to-top--bee i {
+    margin-top: 25%;
+}
+
+.chat-widget-button i {
+    margin-left: 0% !important;
+}
+
+a#manager-whatsapp-copy-right {
+    cursor: pointer;
+}
+
+/* Media query para dispositivos móviles */
+@media only screen and (max-width: 768px) {
+
+
+    .nav-button-wrap {
+        display: block;
+
+        margin-right: 0px;
+
+        top: 41px;
+    }
+
+    header.main-header {
+
+        height: 95px !important;
+    }
+}

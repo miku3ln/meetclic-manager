@@ -1,0 +1,4829 @@
+[
+  {
+    "word": "chucha",
+    "description": "Palabra kichwa que representa 'Kuchishina suni\nsinkayuk, raku millmayuk, suni chupayuk, mishki aychayuk wiwa', usada en contextos culturales específicos.",
+    "gloss": "Kuchishina suni\nsinkayuk, raku millmayuk, suni chupayuk, mishki aychayuk wiwa",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Kuchishina suni\nsinkayuk, raku millmayuk, suni chupayuk, mishki aychayuk wiwa",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuča"
+    ],
+    "syllables": [
+      "chu",
+      "cha"
+    ],
+    "synonyms": [
+      "Wanchaka",
+      "sinik."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuča"
+  },
+  {
+    "word": "chuchi",
+    "description": "Palabra kichwa que representa 'pollo, polluelo', usada en contextos culturales específicos.",
+    "gloss": "pollo, polluelo",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "pollo, polluelo",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuči"
+    ],
+    "syllables": [
+      "chu",
+      "chi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuči"
+  },
+  {
+    "word": "chuchuk",
+    "description": "Palabra kichwa que representa 'mamífero', usada en contextos culturales específicos.",
+    "gloss": "mamífero",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "mamífero",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čučuk"
+    ],
+    "syllables": [
+      "chu",
+      "chu",
+      "k"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čučuk"
+  },
+  {
+    "word": "chuchuka",
+    "description": "Palabra kichwa que representa 'deshi- dratado', usada en contextos culturales específicos.",
+    "gloss": "deshi- dratado",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "deshi- dratado",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čučuka"
+    ],
+    "syllables": [
+      "chu",
+      "chu",
+      "ka"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čučuka"
+  },
+  {
+    "word": "chuchu ñawi",
+    "description": "Palabra kichwa que representa 'pezón', usada en contextos culturales específicos.",
+    "gloss": "pezón",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "pezón",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuču ñawi"
+    ],
+    "syllables": [
+      "chu",
+      "chu",
+      " ña",
+      "wi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuču ñawi"
+  },
+  {
+    "word": "chukchuna",
+    "description": "Palabra kichwa que representa 'temblar, tiritar por escalofrío', usada en contextos culturales específicos.",
+    "gloss": "temblar, tiritar por escalofrío",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "temblar, tiritar por escalofrío",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuxčuna",
+      "čukčuna",
+      "čugčuna"
+    ],
+    "syllables": [
+      "chu",
+      "kchu",
+      "na"
+    ],
+    "synonyms": [
+      "Manchana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuxčuna, čukčuna, čugčuna"
+  },
+  {
+    "word": "chuki",
+    "description": "Palabra kichwa que representa 'Imapash ma- kanakuypi ima', usada en contextos culturales específicos.",
+    "gloss": "Imapash ma- kanakuypi ima",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Imapash ma- kanakuypi ima",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuki"
+    ],
+    "syllables": [
+      "chu",
+      "ki"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuki"
+  },
+  {
+    "word": "chuki",
+    "description": "Palabra kichwa que representa 'perico, tipo de pájaro', usada en contextos culturales específicos.",
+    "gloss": "perico, tipo de pájaro",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "perico, tipo de pájaro",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuki"
+    ],
+    "syllables": [
+      "chu",
+      "ki"
+    ],
+    "synonyms": [
+      "Wichu",
+      "ichillu."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuki"
+  },
+  {
+    "word": "chukirawa",
+    "description": "Palabra kichwa que representa 'chuqui- rahua', usada en contextos culturales específicos.",
+    "gloss": "chuqui- rahua",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "chuqui- rahua",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo",
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čukirawa",
+      "čukira"
+    ],
+    "syllables": [
+      "chu",
+      "ki",
+      "ra",
+      "wa"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čukirawa, čukira"
+  },
+  {
+    "word": "chuklla",
+    "description": "Palabra kichwa que representa 'choza, cabaña', usada en contextos culturales específicos.",
+    "gloss": "choza, cabaña",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "choza, cabaña",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuxlya",
+      "čuxža",
+      "čuklya",
+      "čugža"
+    ],
+    "syllables": [
+      "chu",
+      "klla"
+    ],
+    "synonyms": [
+      "Chinkana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuxlya, čuxža, čuklya, čugža"
+  },
+  {
+    "word": "chuku",
+    "description": "Palabra kichwa que representa 'Killu patpayuk yana pishku, sumakta takik', usada en contextos culturales específicos.",
+    "gloss": "Killu patpayuk yana pishku, sumakta takik",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Killu patpayuk yana pishku, sumakta takik",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuku",
+      "čugu"
+    ],
+    "syllables": [
+      "chu",
+      "ku"
+    ],
+    "synonyms": [
+      "wirakchuru."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuku, čugu"
+  },
+  {
+    "word": "chukuri",
+    "description": "Palabra kichwa que representa 'Kuyshina puka millmayuk, chupayuk uchilla wiwa', usada en contextos culturales específicos.",
+    "gloss": "Kuyshina puka millmayuk, chupayuk uchilla wiwa",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Kuyshina puka millmayuk, chupayuk uchilla wiwa",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čukuri"
+    ],
+    "syllables": [
+      "chu",
+      "ku",
+      "ri"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čukuri"
+  },
+  {
+    "word": "chulakyana",
+    "description": "Palabra kichwa que representa 'ampollarse, re- ventarse', usada en contextos culturales específicos.",
+    "gloss": "ampollarse, re- ventarse",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "ampollarse, re- ventarse",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čulaxyana"
+    ],
+    "syllables": [
+      "chu",
+      "la",
+      "kya",
+      "na"
+    ],
+    "synonyms": [
+      "Huklluyana",
+      "chullpukyana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čulaxyana"
+  },
+  {
+    "word": "chulla",
+    "description": "Palabra kichwa que representa 'Imapash shuklla tiyana', usada en contextos culturales específicos.",
+    "gloss": "Imapash shuklla tiyana",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Imapash shuklla tiyana",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo",
+      "Determinante"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čulya",
+      "čuža"
+    ],
+    "syllables": [
+      "chu",
+      "lla"
+    ],
+    "synonyms": [
+      "chullanik",
+      "sapalla."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čulya, čuža"
+  },
+  {
+    "word": "chullanik",
+    "description": "Palabra kichwa que representa 'Ima- pash shuklla tiyana', usada en contextos culturales específicos.",
+    "gloss": "Ima- pash shuklla tiyana",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Ima- pash shuklla tiyana",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo",
+      "Determinante"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čulyanik"
+    ],
+    "syllables": [
+      "chu",
+      "lla",
+      "ni",
+      "k"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čulyanik"
+  },
+  {
+    "word": "chullku",
+    "description": "Palabra kichwa que representa 'ácido', usada en contextos culturales específicos.",
+    "gloss": "ácido",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "ácido",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo",
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čulyku",
+      "čulku"
+    ],
+    "syllables": [
+      "chu",
+      "llku"
+    ],
+    "synonyms": [
+      "Huklluyay",
+      "chulakyay."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čulyku, čulku"
+  },
+  {
+    "word": "chulunlla",
+    "description": "Palabra kichwa que representa 'si-\nlencioso, desolado', usada en contextos culturales específicos.",
+    "gloss": "si-\nlencioso, desolado",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "si-\nlencioso, desolado",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čulunlya",
+      "čulunža",
+      "čunlya"
+    ],
+    "syllables": [
+      "chu",
+      "lu",
+      "nlla"
+    ],
+    "synonyms": [
+      "Upalla."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čulunlya, čulunža, čunlya"
+  },
+  {
+    "word": "chumpi",
+    "description": "Palabra kichwa que representa 'correa, faja, cintu- rón', usada en contextos culturales específicos.",
+    "gloss": "correa, faja, cintu- rón",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "correa, faja, cintu- rón",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čumbi",
+      "čuŋbi"
+    ],
+    "syllables": [
+      "chu",
+      "mpi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čumbi, čuŋbi"
+  },
+  {
+    "word": "chuna",
+    "description": "Palabra kichwa que representa 'Variedad de escarabajo\nnegro y rojo', usada en contextos culturales específicos.",
+    "gloss": "Variedad de escarabajo\nnegro y rojo",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Variedad de escarabajo\nnegro y rojo",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuna"
+    ],
+    "syllables": [
+      "chu",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuna"
+  },
+  {
+    "word": "chunchu",
+    "description": "Palabra kichwa que representa 'árbol grande simi- lar al cedro', usada en contextos culturales específicos.",
+    "gloss": "árbol grande simi- lar al cedro",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "árbol grande simi- lar al cedro",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuŋču"
+    ],
+    "syllables": [
+      "chu",
+      "nchu"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuŋču"
+  },
+  {
+    "word": "chunchulli",
+    "description": "Palabra kichwa que representa 'intestinos, tripas', usada en contextos culturales específicos.",
+    "gloss": "intestinos, tripas",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "intestinos, tripas",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuŋčulyi",
+      "čuŋčuŋži",
+      "čuŋžulyi",
+      "ču-\nnčul"
+    ],
+    "syllables": [
+      "chu",
+      "nchu",
+      "lli"
+    ],
+    "synonyms": [
+      "Pukllay."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuŋčulyi, čuŋčuŋži, čuŋžulyi, ču-\nnčul"
+  },
+  {
+    "word": "chunta",
+    "description": "Palabra kichwa que representa 'Kunuk llaktapi wiñak, sinchi, suni, yana tullpuyuk kiru', usada en contextos culturales específicos.",
+    "gloss": "Kunuk llaktapi wiñak, sinchi, suni, yana tullpuyuk kiru",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "Kunuk llaktapi wiñak, sinchi, suni, yana tullpuyuk kiru",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čunta"
+    ],
+    "syllables": [
+      "chu",
+      "nta"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čunta"
+  },
+  {
+    "word": "churana",
+    "description": "Palabra kichwa que representa 'poner, colocar, ubicar', usada en contextos culturales específicos.",
+    "gloss": "poner, colocar, ubicar",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "poner, colocar, ubicar",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čurana"
+    ],
+    "syllables": [
+      "chu",
+      "ra",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čurana"
+  },
+  {
+    "word": "chushak",
+    "description": "Palabra kichwa que representa 'estéril, baldío, vacío', usada en contextos culturales específicos.",
+    "gloss": "estéril, baldío, vacío",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "estéril, baldío, vacío",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čusax",
+      "čušak"
+    ],
+    "syllables": [
+      "chu",
+      "sha",
+      "k"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čusax, čušak"
+  },
+  {
+    "word": "chutanakuna",
+    "description": "Palabra kichwa que representa 'force- jear', usada en contextos culturales específicos.",
+    "gloss": "force- jear",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "force- jear",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čutaŋakuna"
+    ],
+    "syllables": [
+      "chu",
+      "ta",
+      "na",
+      "ku",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čutaŋakuna"
+  },
+  {
+    "word": "chuwalli",
+    "description": "Palabra kichwa que representa 'gavilán\ngrande', usada en contextos culturales específicos.",
+    "gloss": "gavilán\ngrande",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "gavilán\ngrande",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuwalyi",
+      "čuliwalyi"
+    ],
+    "syllables": [
+      "chu",
+      "wa",
+      "lli"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuwalyi, čuliwalyi"
+  },
+  {
+    "word": "chuya",
+    "description": "Palabra kichwa que representa 'limpio, aguado', usada en contextos culturales específicos.",
+    "gloss": "limpio, aguado",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "limpio, aguado",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuya"
+    ],
+    "syllables": [
+      "chu",
+      "ya"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuya"
+  },
+  {
+    "word": "chuyaklla",
+    "description": "Palabra kichwa que representa 'ba-\nrrido, limpio', usada en contextos culturales específicos.",
+    "gloss": "ba-\nrrido, limpio",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "ba-\nrrido, limpio",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuyaxlya",
+      "čiyuxlya"
+    ],
+    "syllables": [
+      "chu",
+      "ya",
+      "klla"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuyaxlya, čiyuxlya"
+  },
+  {
+    "word": "chuyan",
+    "description": "Palabra kichwa que representa 'mítico ma- ligno', usada en contextos culturales específicos.",
+    "gloss": "mítico ma- ligno",
+    "letters_of_the_alphabet": "C",
+    "translation_value": "mítico ma- ligno",
+    "etymology": "Raíz de 'chu'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otavalo",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "chu",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "čuyan"
+    ],
+    "syllables": [
+      "chu",
+      "ya",
+      "n"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "čuyan"
+  },
+  {
+    "word": "hachi",
+    "description": "Palabra kichwa que representa 'tío', usada en contextos culturales específicos.",
+    "gloss": "tío",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "tío",
+    "etymology": "Raíz de 'hac'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hac",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xači",
+      "ači"
+    ],
+    "syllables": [
+      "ha",
+      "chi"
+    ],
+    "synonyms": [
+      "2 yaya."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xači, ači"
+  },
+  {
+    "word": "hakan",
+    "description": "Palabra kichwa que representa 'brillante, brillo, luminoso, resplandeciente', usada en contextos culturales específicos.",
+    "gloss": "brillante, brillo, luminoso, resplandeciente",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "brillante, brillo, luminoso, resplandeciente",
+    "etymology": "Raíz de 'hak'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hak",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xakan"
+    ],
+    "syllables": [
+      "ha",
+      "ka",
+      "n"
+    ],
+    "synonyms": [
+      "achiklla",
+      "llipyak",
+      "palanikuk."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xakan"
+  },
+  {
+    "word": "haku",
+    "description": "Palabra kichwa que representa 'Vámos', usada en contextos culturales específicos.",
+    "gloss": "Vámos",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Vámos",
+    "etymology": "Raíz de 'hak'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hak",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xaku. aku"
+    ],
+    "syllables": [
+      "ha",
+      "ku"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xaku. aku"
+  },
+  {
+    "word": "hallkan",
+    "description": "Palabra kichwa que representa 'Wasipi mirak uchilla yana hi- kishina', usada en contextos culturales específicos.",
+    "gloss": "Wasipi mirak uchilla yana hi- kishina",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Wasipi mirak uchilla yana hi- kishina",
+    "etymology": "Raíz de 'hal'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hal",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "kalykaŋ",
+      "alykan"
+    ],
+    "syllables": [
+      "ha",
+      "llka",
+      "n"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "kalykaŋ, alykan"
+  },
+  {
+    "word": "hallma",
+    "description": "Palabra kichwa que representa 'Apiwkunapi pall- tashpa alli watashpa imakunatapash apa- chita ruray', usada en contextos culturales específicos.",
+    "gloss": "Apiwkunapi pall- tashpa alli watashpa imakunatapash apa- chita ruray",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Apiwkunapi pall- tashpa alli watashpa imakunatapash apa- chita ruray",
+    "etymology": "Raíz de 'hal'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hal",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xalma"
+    ],
+    "syllables": [
+      "ha",
+      "llma"
+    ],
+    "synonyms": [
+      "Kiwana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xalma"
+  },
+  {
+    "word": "halunzu",
+    "description": "Palabra kichwa que representa 'maíz', usada en contextos culturales específicos.",
+    "gloss": "maíz",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "maíz",
+    "etymology": "Raíz de 'hal'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hal",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xaluŋzu"
+    ],
+    "syllables": [
+      "ha",
+      "lu",
+      "nzu"
+    ],
+    "synonyms": [
+      "Impayana",
+      "kalakyana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xaluŋzu"
+  },
+  {
+    "word": "hamchi",
+    "description": "Palabra kichwa que representa 'afre- cho', usada en contextos culturales específicos.",
+    "gloss": "afre- cho",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "afre- cho",
+    "etymology": "Raíz de 'ham'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ham",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xamči",
+      "xamtsi",
+      "kaŋtsi",
+      "anzi"
+    ],
+    "syllables": [
+      "ha",
+      "mchi"
+    ],
+    "synonyms": [
+      "2 chusu",
+      "ñañu",
+      "uchilla",
+      "wawa; 3 chusu; 4 karachi."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xamči, xamtsi, kaŋtsi, anzi"
+  },
+  {
+    "word": "hampara",
+    "description": "Palabra kichwa que representa 'Chusku cha-\nkiyuk, pampayuk, imatapash hawapi chu- rana', usada en contextos culturales específicos.",
+    "gloss": "Chusku cha-\nkiyuk, pampayuk, imatapash hawapi chu- rana",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Chusku cha-\nkiyuk, pampayuk, imatapash hawapi chu- rana",
+    "etymology": "Raíz de 'ham'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ham",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xampara"
+    ],
+    "syllables": [
+      "ha",
+      "mpa",
+      "ra"
+    ],
+    "synonyms": [
+      "Pataku."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xampara"
+  },
+  {
+    "word": "hampatu",
+    "description": "Palabra kichwa que representa 'Waykukunapi kawsak yana karayuk uchilla kuwa', usada en contextos culturales específicos.",
+    "gloss": "Waykukunapi kawsak yana karayuk uchilla kuwa",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Waykukunapi kawsak yana karayuk uchilla kuwa",
+    "etymology": "Raíz de 'ham'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo",
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ham",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xambatu",
+      "xaŋbatu"
+    ],
+    "syllables": [
+      "ha",
+      "mpa",
+      "tu"
+    ],
+    "synonyms": [
+      "Alliyana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xambatu, xaŋbatu"
+  },
+  {
+    "word": "hampiwasi",
+    "description": "Palabra kichwa que representa 'hos- pital, centro de salud', usada en contextos culturales específicos.",
+    "gloss": "hos- pital, centro de salud",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "hos- pital, centro de salud",
+    "etymology": "Raíz de 'ham'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ham",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xampiwasi",
+      "xaŋbiwasi"
+    ],
+    "syllables": [
+      "ha",
+      "mpi",
+      "wa",
+      "si"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xampiwasi, xaŋbiwasi"
+  },
+  {
+    "word": "hampina",
+    "description": "Palabra kichwa que representa 'Hampita kushpa unkushkaku- nata alliyachiy', usada en contextos culturales específicos.",
+    "gloss": "Hampita kushpa unkushkaku- nata alliyachiy",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Hampita kushpa unkushkaku- nata alliyachiy",
+    "etymology": "Raíz de 'ham'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ham",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xambina",
+      "xaŋbina",
+      "ambina",
+      "aŋ- bina"
+    ],
+    "syllables": [
+      "ha",
+      "mpi",
+      "na"
+    ],
+    "synonyms": [
+      "yuyana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xambina, xaŋbina, ambina, aŋ- bina"
+  },
+  {
+    "word": "hanak",
+    "description": "Palabra kichwa que representa 'arriba, encima, alto, parte superior, elevado', usada en contextos culturales específicos.",
+    "gloss": "arriba, encima, alto, parte superior, elevado",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "arriba, encima, alto, parte superior, elevado",
+    "etymology": "Raíz de 'han'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adverbio"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "han",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xanax",
+      "anax",
+      "xana",
+      "xanan",
+      "ana"
+    ],
+    "syllables": [
+      "ha",
+      "na",
+      "k"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xanax, anax, xana, xanan, ana"
+  },
+  {
+    "word": "hankana",
+    "description": "Palabra kichwa que representa 'Chaki unkushka kakpi wishtu wishtu puriy', usada en contextos culturales específicos.",
+    "gloss": "Chaki unkushka kakpi wishtu wishtu puriy",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Chaki unkushka kakpi wishtu wishtu puriy",
+    "etymology": "Raíz de 'han'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "han",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xaŋkana",
+      "aŋgana",
+      "xaŋgana"
+    ],
+    "syllables": [
+      "ha",
+      "nka",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xaŋkana, aŋgana, xaŋgana"
+  },
+  {
+    "word": "hapina",
+    "description": "Palabra kichwa que representa 'coger, apresar, asir Imatapash makiwan chariy', usada en contextos culturales específicos.",
+    "gloss": "coger, apresar, asir Imatapash makiwan chariy",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "coger, apresar, asir Imatapash makiwan chariy",
+    "etymology": "Raíz de 'hap'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hap",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xapina",
+      "apina"
+    ],
+    "syllables": [
+      "ha",
+      "pi",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xapina, apina"
+  },
+  {
+    "word": "hapiyu",
+    "description": "Palabra kichwa que representa 'Ñañu pankayuk, yura wikiyuk mishki muyuta aparik yura', usada en contextos culturales específicos.",
+    "gloss": "Ñañu pankayuk, yura wikiyuk mishki muyuta aparik yura",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Ñañu pankayuk, yura wikiyuk mishki muyuta aparik yura",
+    "etymology": "Raíz de 'hap'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hap",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xapiyu",
+      "apiyu",
+      "xawiyu",
+      "awiyu"
+    ],
+    "syllables": [
+      "ha",
+      "pi",
+      "yu"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xapiyu, apiyu, xawiyu, awiyu"
+  },
+  {
+    "word": "harkashka",
+    "description": "Palabra kichwa que representa 'Wi-\nwakuna ama llukshichun kaspiwan pirkatas- hina rurashka', usada en contextos culturales específicos.",
+    "gloss": "Wi-\nwakuna ama llukshichun kaspiwan pirkatas- hina rurashka",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Wi-\nwakuna ama llukshichun kaspiwan pirkatas- hina rurashka",
+    "etymology": "Raíz de 'har'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "har",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xarkaška"
+    ],
+    "syllables": [
+      "ha",
+      "rka",
+      "shka"
+    ],
+    "synonyms": [
+      "Kincha."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xarkaška"
+  },
+  {
+    "word": "harkana",
+    "description": "Palabra kichwa que representa 'atajar, obsta- culizar, detener, estorbar', usada en contextos culturales específicos.",
+    "gloss": "atajar, obsta- culizar, detener, estorbar",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "atajar, obsta- culizar, detener, estorbar",
+    "etymology": "Raíz de 'har'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "har",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xarkana",
+      "arkana"
+    ],
+    "syllables": [
+      "ha",
+      "rka",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xarkana, arkana"
+  },
+  {
+    "word": "hatunyaya",
+    "description": "Palabra kichwa que representa 'Yayapa, mamapa yaya', usada en contextos culturales específicos.",
+    "gloss": "Yayapa, mamapa yaya",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Yayapa, mamapa yaya",
+    "etymology": "Raíz de 'hat'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hat",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xatunyaya"
+    ],
+    "syllables": [
+      "ha",
+      "tu",
+      "nya",
+      "ya"
+    ],
+    "synonyms": [
+      "Hatuku",
+      "hatuku yaya",
+      "wachaku."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xatunyaya"
+  },
+  {
+    "word": "haw",
+    "description": "Palabra kichwa que representa '¿qué dijo? ¿qué? ¿per- dón? ¿cómo? Imatak nirkanki nishpa kutintak tapuy, mana kashpaka imatak ninki? niy', usada en contextos culturales específicos.",
+    "gloss": "¿qué dijo? ¿qué? ¿per- dón? ¿cómo? Imatak nirkanki nishpa kutintak tapuy, mana kashpaka imatak ninki? niy",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "¿qué dijo? ¿qué? ¿per- dón? ¿cómo? Imatak nirkanki nishpa kutintak tapuy, mana kashpaka imatak ninki? niy",
+    "etymology": "Raíz de 'haw'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Interjección"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "haw",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xaw",
+      "xa"
+    ],
+    "syllables": [
+      "ha",
+      "w"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xaw, xa"
+  },
+  {
+    "word": "hawa",
+    "description": "Palabra kichwa que representa 'arriba, alto, afuera', usada en contextos culturales específicos.",
+    "gloss": "arriba, alto, afuera",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "arriba, alto, afuera",
+    "etymology": "Raíz de 'haw'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adverbio"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "haw",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xawa",
+      "awa"
+    ],
+    "syllables": [
+      "ha",
+      "wa"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xawa, awa"
+  },
+  {
+    "word": "hawcha",
+    "description": "Palabra kichwa que representa 'cocer, verduras sancocha-\ndas', usada en contextos culturales específicos.",
+    "gloss": "cocer, verduras sancocha-\ndas",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "cocer, verduras sancocha-\ndas",
+    "etymology": "Raíz de 'haw'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "haw",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xawča",
+      "xawtsa",
+      "xawtza"
+    ],
+    "syllables": [
+      "ha",
+      "wcha"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xawča, xawtsa, xawtza"
+  },
+  {
+    "word": "hawya",
+    "description": "Palabra kichwa que representa 'Kusapa, warmipa yayamamapura', usada en contextos culturales específicos.",
+    "gloss": "Kusapa, warmipa yayamamapura",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Kusapa, warmipa yayamamapura",
+    "etymology": "Raíz de 'haw'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "haw",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xawya",
+      "awya"
+    ],
+    "syllables": [
+      "ha",
+      "wya"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xawya, awya"
+  },
+  {
+    "word": "hayakin",
+    "description": "Palabra kichwa que representa 'Wiwakunapa, runakunapa yana shunkupi tiyak waylla rikurik hayak yaku', usada en contextos culturales específicos.",
+    "gloss": "Wiwakunapa, runakunapa yana shunkupi tiyak waylla rikurik hayak yaku",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Wiwakunapa, runakunapa yana shunkupi tiyak waylla rikurik hayak yaku",
+    "etymology": "Raíz de 'hay'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hay",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "kayakin"
+    ],
+    "syllables": [
+      "ha",
+      "ya",
+      "ki",
+      "n"
+    ],
+    "synonyms": [
+      "chinkilis",
+      "hayak."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "kayakin"
+  },
+  {
+    "word": "hayampi",
+    "description": "Palabra kichwa que representa 'Yanawan, killuwan hawirishka, yakupipash, sachapipash kawsak wiwa', usada en contextos culturales específicos.",
+    "gloss": "Yanawan, killuwan hawirishka, yakupipash, sachapipash kawsak wiwa",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Yanawan, killuwan hawirishka, yakupipash, sachapipash kawsak wiwa",
+    "etymology": "Raíz de 'hay'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hay",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xayambi",
+      "xayaŋbi",
+      "ayambi",
+      "ayaŋbi"
+    ],
+    "syllables": [
+      "ha",
+      "ya",
+      "mpi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xayambi, xayaŋbi, ayambi, ayaŋbi"
+  },
+  {
+    "word": "haynallina",
+    "description": "Palabra kichwa que representa 'Ru- nakuna yarkachishpa, shaykushpa shimita paskay', usada en contextos culturales específicos.",
+    "gloss": "Ru- nakuna yarkachishpa, shaykushpa shimita paskay",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Ru- nakuna yarkachishpa, shaykushpa shimita paskay",
+    "etymology": "Raíz de 'hay'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hay",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xaynažina"
+    ],
+    "syllables": [
+      "ha",
+      "yna",
+      "lli",
+      "na"
+    ],
+    "synonyms": [
+      "Ampana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xaynažina"
+  },
+  {
+    "word": "hayñina",
+    "description": "Palabra kichwa que representa 'patear, cocear, pisar el arado', usada en contextos culturales específicos.",
+    "gloss": "patear, cocear, pisar el arado",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "patear, cocear, pisar el arado",
+    "etymology": "Raíz de 'hay'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hay",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "<*xayñina",
+      "xayniyna v. s. rezon- gar",
+      "responder. Imamantapash piñarishpa kutichina.\nWakinka millayrayku piñalla tukushpa hay- ñinmi.\nhayri (<**xayri) s. minuto. Sukta chunka\nuchilla pacha kak.\nMurayka sukta chunka hayriyukmi kan. haytana [xaytay",
+      "aytay"
+    ],
+    "syllables": [
+      "ha",
+      "yñi",
+      "na"
+    ],
+    "synonyms": [
+      "1ñitkay; 2 saruy."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "<*xayñina, xayniyna v. s. rezon- gar, responder. Imamantapash piñarishpa kutichina.\nWakinka millayrayku piñalla tukushpa hay- ñinmi.\nhayri (<**xayri) s. minuto. Sukta chunka\nuchilla pacha kak.\nMurayka sukta chunka hayriyukmi kan. haytana [xaytay, aytay"
+  },
+  {
+    "word": "hikiñas",
+    "description": "Palabra kichwa que representa 'Tutapi kaninkapak llukshik uchilla chuspi', usada en contextos culturales específicos.",
+    "gloss": "Tutapi kaninkapak llukshik uchilla chuspi",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Tutapi kaninkapak llukshik uchilla chuspi",
+    "etymology": "Raíz de 'hik'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hik",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xixiñas",
+      "ixiñas"
+    ],
+    "syllables": [
+      "hi",
+      "ki",
+      "ña",
+      "s"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xixiñas, ixiñas"
+  },
+  {
+    "word": "hillay",
+    "description": "Palabra kichwa que representa 'hierro, herramienta, instrumento', usada en contextos culturales específicos.",
+    "gloss": "hierro, herramienta, instrumento",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "hierro, herramienta, instrumento",
+    "etymology": "Raíz de 'hil'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hil",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xilyay",
+      "kilyay"
+    ],
+    "syllables": [
+      "hi",
+      "lla",
+      "y"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xilyay, kilyay"
+  },
+  {
+    "word": "hilli",
+    "description": "Palabra kichwa que representa 'caldo, jugo, zumo; savia', usada en contextos culturales específicos.",
+    "gloss": "caldo, jugo, zumo; savia",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "caldo, jugo, zumo; savia",
+    "etymology": "Raíz de 'hil'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hil",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xilyi"
+    ],
+    "syllables": [
+      "hi",
+      "lli"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xilyi"
+  },
+  {
+    "word": "hillu",
+    "description": "Palabra kichwa que representa 'go- loso', usada en contextos culturales específicos.",
+    "gloss": "go- loso",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "go- loso",
+    "etymology": "Raíz de 'hil'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hil",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xilyux",
+      "xižux",
+      "xižug",
+      "xilyu",
+      "xižu"
+    ],
+    "syllables": [
+      "hi",
+      "llu"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xilyux, xižux, xižug, xilyu, xižu"
+  },
+  {
+    "word": "hipana",
+    "description": "Palabra kichwa que representa 'Uku wiksa- manta sinchi samayta tankashpa kachay', usada en contextos culturales específicos.",
+    "gloss": "Uku wiksa- manta sinchi samayta tankashpa kachay",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Uku wiksa- manta sinchi samayta tankashpa kachay",
+    "etymology": "Raíz de 'hip'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hip",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xipana"
+    ],
+    "syllables": [
+      "hi",
+      "pa",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xipana"
+  },
+  {
+    "word": "hishi hishi",
+    "description": "Palabra kichwa que representa 'ex-\npresión utilizada para ahuyentar o hacer ade- lantar a algún animal', usada en contextos culturales específicos.",
+    "gloss": "ex-\npresión utilizada para ahuyentar o hacer ade- lantar a algún animal",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "ex-\npresión utilizada para ahuyentar o hacer ade- lantar a algún animal",
+    "etymology": "Raíz de 'his'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Interjección"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "his",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xišixiši",
+      "kišikiši"
+    ],
+    "syllables": [
+      "hi",
+      "shi",
+      " hi",
+      "shi"
+    ],
+    "synonyms": [
+      "Chisha",
+      "hisha",
+      "hushu hushu",
+      "chi."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xišixiši, kišikiši"
+  },
+  {
+    "word": "huchu",
+    "description": "Palabra kichwa que representa 'capulí', usada en contextos culturales específicos.",
+    "gloss": "capulí",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "capulí",
+    "etymology": "Raíz de 'huc'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "huc",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xuču"
+    ],
+    "syllables": [
+      "hu",
+      "chu"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xuču"
+  },
+  {
+    "word": "huka",
+    "description": "Palabra kichwa que representa 'Lulunta ukllachik-\npi mana wawa pishku tukuk', usada en contextos culturales específicos.",
+    "gloss": "Lulunta ukllachik-\npi mana wawa pishku tukuk",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Lulunta ukllachik-\npi mana wawa pishku tukuk",
+    "etymology": "Raíz de 'huk'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "huk",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xuka"
+    ],
+    "syllables": [
+      "hu",
+      "ka"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xuka"
+  },
+  {
+    "word": "hukana",
+    "description": "Palabra kichwa que representa 'desdeñar', usada en contextos culturales específicos.",
+    "gloss": "desdeñar",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "desdeñar",
+    "etymology": "Raíz de 'huk'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "huk",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xukana",
+      "hunkana"
+    ],
+    "syllables": [
+      "hu",
+      "ka",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xukana, hunkana"
+  },
+  {
+    "word": "huklluyana",
+    "description": "Palabra kichwa que representa 'ampo-\nllarse', usada en contextos culturales específicos.",
+    "gloss": "ampo-\nllarse",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "ampo-\nllarse",
+    "etymology": "Raíz de 'huk'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "huk",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xuxlyuyana"
+    ],
+    "syllables": [
+      "hu",
+      "kllu",
+      "ya",
+      "na"
+    ],
+    "synonyms": [
+      "Chulakyay",
+      "chullpukyay."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xuxlyuyana"
+  },
+  {
+    "word": "hullu",
+    "description": "Palabra kichwa que representa 'desconocido, forastero,\nextraño, extranjero, ajeno', usada en contextos culturales específicos.",
+    "gloss": "desconocido, forastero,\nextraño, extranjero, ajeno",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "desconocido, forastero,\nextraño, extranjero, ajeno",
+    "etymology": "Raíz de 'hul'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hul",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xužu"
+    ],
+    "syllables": [
+      "hu",
+      "llu"
+    ],
+    "synonyms": [
+      "Chikan",
+      "chuku",
+      "ista."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xužu"
+  },
+  {
+    "word": "hulun",
+    "description": "Palabra kichwa que representa 'Badea', usada en contextos culturales específicos.",
+    "gloss": "Badea",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Badea",
+    "etymology": "Raíz de 'hul'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hul",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xulun"
+    ],
+    "syllables": [
+      "hu",
+      "lu",
+      "n"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xulun"
+  },
+  {
+    "word": "hulunchi",
+    "description": "Palabra kichwa que representa 'árbol de madera incorruptible que se usa en construc- ción', usada en contextos culturales específicos.",
+    "gloss": "árbol de madera incorruptible que se usa en construc- ción",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "árbol de madera incorruptible que se usa en construc- ción",
+    "etymology": "Raíz de 'hul'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hul",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xuluŋči"
+    ],
+    "syllables": [
+      "hu",
+      "lu",
+      "nchi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xuluŋči"
+  },
+  {
+    "word": "hunu",
+    "description": "Palabra kichwa que representa 'Chunka wa- ranka', usada en contextos culturales específicos.",
+    "gloss": "Chunka wa- ranka",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "Chunka wa- ranka",
+    "etymology": "Raíz de 'hun'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Numeral"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hun",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "<*xuŋu"
+    ],
+    "syllables": [
+      "hu",
+      "nu"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "<*xuŋu"
+  },
+  {
+    "word": "hupi",
+    "description": "Palabra kichwa que representa 'inútil', usada en contextos culturales específicos.",
+    "gloss": "inútil",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "inútil",
+    "etymology": "Raíz de 'hup'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hup",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xupi"
+    ],
+    "syllables": [
+      "hu",
+      "pi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xupi"
+  },
+  {
+    "word": "hushu hushu",
+    "description": "Palabra kichwa que representa 'ex- presión para ahuyentar a los animales', usada en contextos culturales específicos.",
+    "gloss": "ex- presión para ahuyentar a los animales",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "ex- presión para ahuyentar a los animales",
+    "etymology": "Raíz de 'hus'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Interjección"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "hus",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xusu xusu"
+    ],
+    "syllables": [
+      "hu",
+      "shu",
+      " hu",
+      "shu"
+    ],
+    "synonyms": [
+      "chisha",
+      "hishi",
+      "chi",
+      "kisha."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xusu xusu"
+  },
+  {
+    "word": "huwin",
+    "description": "Palabra kichwa que representa 'co- mestible', usada en contextos culturales específicos.",
+    "gloss": "co- mestible",
+    "letters_of_the_alphabet": "H",
+    "translation_value": "co- mestible",
+    "etymology": "Raíz de 'huw'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "huw",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "xuwiŋ"
+    ],
+    "syllables": [
+      "hu",
+      "wi",
+      "n"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "xuwiŋ"
+  },
+  {
+    "word": "icha",
+    "description": "Palabra kichwa que representa 'quizá, quizás', usada en contextos culturales específicos.",
+    "gloss": "quizá, quizás",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "quizá, quizás",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adverbio"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iča"
+    ],
+    "syllables": [
+      "i",
+      "cha"
+    ],
+    "synonyms": [
+      "Ichapash",
+      "-cha",
+      "-chari."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iča"
+  },
+  {
+    "word": "ichapash",
+    "description": "Palabra kichwa que representa 'quizá, quizás', usada en contextos culturales específicos.",
+    "gloss": "quizá, quizás",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "quizá, quizás",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adverbio"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ičapaš"
+    ],
+    "syllables": [
+      "i",
+      "cha",
+      "pa",
+      "sh"
+    ],
+    "synonyms": [
+      "Icha",
+      "-cha",
+      "-chari."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ičapaš"
+  },
+  {
+    "word": "ichillu",
+    "description": "Palabra kichwa que representa 'perico, tipo de pájaro', usada en contextos culturales específicos.",
+    "gloss": "perico, tipo de pájaro",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "perico, tipo de pájaro",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ičilyu"
+    ],
+    "syllables": [
+      "i",
+      "chi",
+      "llu"
+    ],
+    "synonyms": [
+      "Chuki",
+      "wichu."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ičilyu"
+  },
+  {
+    "word": "ichu",
+    "description": "Palabra kichwa que representa 'rápido, apurado, ligero', usada en contextos culturales específicos.",
+    "gloss": "rápido, apurado, ligero",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "rápido, apurado, ligero",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iču"
+    ],
+    "syllables": [
+      "i",
+      "chu"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iču"
+  },
+  {
+    "word": "ichu",
+    "description": "Palabra kichwa que representa 'Yapa uchilla\nwaylla patpayuk, wichu wichu nishpa takik, arawkunapa ayllu pishkumi kan', usada en contextos culturales específicos.",
+    "gloss": "Yapa uchilla\nwaylla patpayuk, wichu wichu nishpa takik, arawkunapa ayllu pishkumi kan",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Yapa uchilla\nwaylla patpayuk, wichu wichu nishpa takik, arawkunapa ayllu pishkumi kan",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iču",
+      "ičilyu"
+    ],
+    "syllables": [
+      "i",
+      "chu"
+    ],
+    "synonyms": [
+      "wichu",
+      "chuki."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iču, ičilyu"
+  },
+  {
+    "word": "ichuna",
+    "description": "Palabra kichwa que representa 'Ima kiwatapash ku- chunkapak winkuyashka achka uchilla kiru- yuk hillay', usada en contextos culturales específicos.",
+    "gloss": "Ima kiwatapash ku- chunkapak winkuyashka achka uchilla kiru- yuk hillay",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Ima kiwatapash ku- chunkapak winkuyashka achka uchilla kiru- yuk hillay",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ičuna"
+    ],
+    "syllables": [
+      "i",
+      "chu",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ičuna"
+  },
+  {
+    "word": "ichuna",
+    "description": "Palabra kichwa que representa 'segar, cortar', usada en contextos culturales específicos.",
+    "gloss": "segar, cortar",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "segar, cortar",
+    "etymology": "Raíz de 'ich'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ich",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ičuna"
+    ],
+    "syllables": [
+      "i",
+      "chu",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ičuna"
+  },
+  {
+    "word": "ikina",
+    "description": "Palabra kichwa que representa 'partir, fraccionar, picar, cortar\nen pedazos, rozar, agrietar, rajar, rebanar,\nabrir, separar; copular, fornicar', usada en contextos culturales específicos.",
+    "gloss": "partir, fraccionar, picar, cortar\nen pedazos, rozar, agrietar, rajar, rebanar,\nabrir, separar; copular, fornicar",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "partir, fraccionar, picar, cortar\nen pedazos, rozar, agrietar, rajar, rebanar,\nabrir, separar; copular, fornicar",
+    "etymology": "Raíz de 'iki'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "iki",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ikina"
+    ],
+    "syllables": [
+      "i",
+      "ki",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ikina"
+  },
+  {
+    "word": "illak",
+    "description": "Palabra kichwa que representa 'cero, vacío', usada en contextos culturales específicos.",
+    "gloss": "cero, vacío",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "cero, vacío",
+    "etymology": "Raíz de 'ill'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Determinante"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ill",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ilyak"
+    ],
+    "syllables": [
+      "i",
+      "lla",
+      "k"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ilyak"
+  },
+  {
+    "word": "illakta",
+    "description": "Palabra kichwa que representa 'Mana pu- chuchishpalla tukuyta ruray', usada en contextos culturales específicos.",
+    "gloss": "Mana pu- chuchishpalla tukuyta ruray",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Mana pu- chuchishpalla tukuyta ruray",
+    "etymology": "Raíz de 'ill'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adverbio"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ill",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ilyaxta",
+      "ižaxta",
+      "ižixta",
+      "ižakta",
+      "ilyagta",
+      "ižagta"
+    ],
+    "syllables": [
+      "i",
+      "lla",
+      "kta"
+    ],
+    "synonyms": [
+      "Tukuypacha",
+      "llampu."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ilyaxta, ižaxta, ižixta, ižakta, ilyagta,\nižagta"
+  },
+  {
+    "word": "illapa",
+    "description": "Palabra kichwa que representa 'Pukuna kaspis- hina chawpika kaspimanta chawpika hillay- manta rurashka, nina-muruta tukyachikpi wiwakunata wañuchik anta', usada en contextos culturales específicos.",
+    "gloss": "Pukuna kaspis- hina chawpika kaspimanta chawpika hillay- manta rurashka, nina-muruta tukyachikpi wiwakunata wañuchik anta",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Pukuna kaspis- hina chawpika kaspimanta chawpika hillay- manta rurashka, nina-muruta tukyachikpi wiwakunata wañuchik anta",
+    "etymology": "Raíz de 'ill'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ill",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ilyapa"
+    ],
+    "syllables": [
+      "i",
+      "lla",
+      "pa"
+    ],
+    "synonyms": [
+      "tukyana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ilyapa"
+  },
+  {
+    "word": "illana",
+    "description": "Palabra kichwa que representa 'faltar, no existir, via- jar, ausentarse Imapash mana tiyay', usada en contextos culturales específicos.",
+    "gloss": "faltar, no existir, via- jar, ausentarse Imapash mana tiyay",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "faltar, no existir, via- jar, ausentarse Imapash mana tiyay",
+    "etymology": "Raíz de 'ill'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ill",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ilyana",
+      "ižana"
+    ],
+    "syllables": [
+      "i",
+      "lla",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ilyana, ižana"
+  },
+  {
+    "word": "ilta",
+    "description": "Palabra kichwa que representa 'Hatun pakay mishki mikunayuk', usada en contextos culturales específicos.",
+    "gloss": "Hatun pakay mishki mikunayuk",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Hatun pakay mishki mikunayuk",
+    "etymology": "Raíz de 'ilt'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ilt",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ilta"
+    ],
+    "syllables": [
+      "i",
+      "lta"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ilta"
+  },
+  {
+    "word": "ima",
+    "description": "Palabra kichwa que representa '¿qué? Tapunkapak shimi', usada en contextos culturales específicos.",
+    "gloss": "¿qué? Tapunkapak shimi",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "¿qué? Tapunkapak shimi",
+    "etymology": "Raíz de 'ima'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Determinante"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ima",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "ima"
+    ],
+    "syllables": [
+      "i",
+      "ma"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "ima"
+  },
+  {
+    "word": "inka",
+    "description": "Palabra kichwa que representa 'emperador, rey, suprema\nautoridad', usada en contextos culturales específicos.",
+    "gloss": "emperador, rey, suprema\nautoridad",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "emperador, rey, suprema\nautoridad",
+    "etymology": "Raíz de 'ink'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ink",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iŋga",
+      "iŋka"
+    ],
+    "syllables": [
+      "i",
+      "nka"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iŋga, iŋka"
+  },
+  {
+    "word": "inta",
+    "description": "Palabra kichwa que representa 'inflamación por he- ridas, golpes y picaduras', usada en contextos culturales específicos.",
+    "gloss": "inflamación por he- ridas, golpes y picaduras",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "inflamación por he- ridas, golpes y picaduras",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iŋta",
+      "iŋda"
+    ],
+    "syllables": [
+      "i",
+      "nta"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iŋta, iŋda"
+  },
+  {
+    "word": "inti anka",
+    "description": "Palabra kichwa que representa 'gavilán', usada en contextos culturales específicos.",
+    "gloss": "gavilán",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "gavilán",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "inti anka"
+    ],
+    "syllables": [
+      "i",
+      "nti",
+      " a",
+      "nka"
+    ],
+    "synonyms": [
+      "usturiw."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "inti anka"
+  },
+  {
+    "word": "intillama",
+    "description": "Palabra kichwa que representa 'pere- zoso, perico ligero', usada en contextos culturales específicos.",
+    "gloss": "pere- zoso, perico ligero",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "pere- zoso, perico ligero",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iŋdi lyama"
+    ],
+    "syllables": [
+      "i",
+      "nti",
+      "lla",
+      "ma"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iŋdi lyama"
+  },
+  {
+    "word": "intipa ayllu",
+    "description": "Palabra kichwa que representa 'Hawa pachapi tiyak rumpukuna', usada en contextos culturales específicos.",
+    "gloss": "Hawa pachapi tiyak rumpukuna",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Hawa pachapi tiyak rumpukuna",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "intipa aylyu"
+    ],
+    "syllables": [
+      "i",
+      "nti",
+      "pa",
+      " a",
+      "yllu"
+    ],
+    "synonyms": [
+      "Usyay pacha."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "intipa aylyu"
+  },
+  {
+    "word": "inti raymi",
+    "description": "Palabra kichwa que representa 'Inti- manta hatun raymi', usada en contextos culturales específicos.",
+    "gloss": "Inti- manta hatun raymi",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Inti- manta hatun raymi",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "inti raymi"
+    ],
+    "syllables": [
+      "i",
+      "nti",
+      " ra",
+      "ymi"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "inti raymi"
+  },
+  {
+    "word": "intina",
+    "description": "Palabra kichwa que representa 'Mana tamyay, mana\npuyu tukuy, kunuk achiklla puncha', usada en contextos culturales específicos.",
+    "gloss": "Mana tamyay, mana\npuyu tukuy, kunuk achiklla puncha",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Mana tamyay, mana\npuyu tukuy, kunuk achiklla puncha",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "intina"
+    ],
+    "syllables": [
+      "i",
+      "nti",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "intina"
+  },
+  {
+    "word": "intiyana",
+    "description": "Palabra kichwa que representa 'Inti rikuri- muna', usada en contextos culturales específicos.",
+    "gloss": "Inti rikuri- muna",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Inti rikuri- muna",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "intiyana"
+    ],
+    "syllables": [
+      "i",
+      "nti",
+      "ya",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "intiyana"
+  },
+  {
+    "word": "intuna",
+    "description": "Palabra kichwa que representa 'Achka\nchuspikuna, putankuna, mama kurukuna mishki mikunapi tantarina', usada en contextos culturales específicos.",
+    "gloss": "Achka\nchuspikuna, putankuna, mama kurukuna mishki mikunapi tantarina",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Achka\nchuspikuna, putankuna, mama kurukuna mishki mikunapi tantarina",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iŋduna"
+    ],
+    "syllables": [
+      "i",
+      "ntu",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iŋduna"
+  },
+  {
+    "word": "intuna",
+    "description": "Palabra kichwa que representa 'per-\nsonas o animales', usada en contextos culturales específicos.",
+    "gloss": "per-\nsonas o animales",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "per-\nsonas o animales",
+    "etymology": "Raíz de 'int'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "int",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iŋduna"
+    ],
+    "syllables": [
+      "i",
+      "ntu",
+      "na"
+    ],
+    "synonyms": [
+      "1 Waykana; 2 yanapana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iŋduna"
+  },
+  {
+    "word": "iñil",
+    "description": "Palabra kichwa que representa 'Mana tarpus- hka muyumanta wiñak yurakuna', usada en contextos culturales específicos.",
+    "gloss": "Mana tarpus- hka muyumanta wiñak yurakuna",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Mana tarpus- hka muyumanta wiñak yurakuna",
+    "etymology": "Raíz de 'iñi'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "vida",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "iñi",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iñil"
+    ],
+    "syllables": [
+      "i",
+      "ñi",
+      "l"
+    ],
+    "synonyms": [
+      "Chas",
+      "wala",
+      "purun",
+      "ushun."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iñil"
+  },
+  {
+    "word": "irki",
+    "description": "Palabra kichwa que representa 'débil; flaco, raquítico', usada en contextos culturales específicos.",
+    "gloss": "débil; flaco, raquítico",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "débil; flaco, raquítico",
+    "etymology": "Raíz de 'irk'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adjetivo",
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "irk",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "irki"
+    ],
+    "syllables": [
+      "i",
+      "rki"
+    ],
+    "synonyms": [
+      "Api",
+      "chusu",
+      "sampa."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "irki"
+  },
+  {
+    "word": "ishkantin",
+    "description": "Palabra kichwa que representa 'ambos, pareja, par', usada en contextos culturales específicos.",
+    "gloss": "ambos, pareja, par",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "ambos, pareja, par",
+    "etymology": "Raíz de 'ish'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Adverbio"
+    ],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ish",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iškaŋdiŋ",
+      "iškaŋdi"
+    ],
+    "syllables": [
+      "i",
+      "shka",
+      "nti",
+      "n"
+    ],
+    "synonyms": [
+      "Upyashun."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iškaŋdiŋ, iškaŋdi"
+  },
+  {
+    "word": "ishkuna",
+    "description": "Palabra kichwa que representa 'des- granar', usada en contextos culturales específicos.",
+    "gloss": "des- granar",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "des- granar",
+    "etymology": "Raíz de 'ish'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ish",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iškuna",
+      "iskuna",
+      "wiškuna"
+    ],
+    "syllables": [
+      "i",
+      "shku",
+      "na"
+    ],
+    "synonyms": [
+      "Chiwana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iškuna, iskuna, wiškuna"
+  },
+  {
+    "word": "ishpapuru",
+    "description": "Palabra kichwa que representa 'Yaku-ishpa tantarina puru', usada en contextos culturales específicos.",
+    "gloss": "Yaku-ishpa tantarina puru",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Yaku-ishpa tantarina puru",
+    "etymology": "Raíz de 'ish'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ish",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "išpapuru"
+    ],
+    "syllables": [
+      "i",
+      "shpa",
+      "pu",
+      "ru"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "išpapuru"
+  },
+  {
+    "word": "ishpana",
+    "description": "Palabra kichwa que representa 'Ishpapurupi tan-\ntarishka yakukunata pakchaman llukshi- china', usada en contextos culturales específicos.",
+    "gloss": "Ishpapurupi tan-\ntarishka yakukunata pakchaman llukshi- china",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Ishpapurupi tan-\ntarishka yakukunata pakchaman llukshi- china",
+    "etymology": "Raíz de 'ish'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ish",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "išpana"
+    ],
+    "syllables": [
+      "i",
+      "shpa",
+      "na"
+    ],
+    "synonyms": [
+      "Yaku-ishpana."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "išpana"
+  },
+  {
+    "word": "ishpinku",
+    "description": "Palabra kichwa que representa 'árbol de canela', usada en contextos culturales específicos.",
+    "gloss": "árbol de canela",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "árbol de canela",
+    "etymology": "Raíz de 'ish'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "ish",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "išpiŋgu"
+    ],
+    "syllables": [
+      "i",
+      "shpi",
+      "nku"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "išpiŋgu"
+  },
+  {
+    "word": "isi",
+    "description": "Palabra kichwa que representa 'expresión despectiva\na los niños (mocosos)', usada en contextos culturales específicos.",
+    "gloss": "expresión despectiva\na los niños (mocosos)",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "expresión despectiva\na los niños (mocosos)",
+    "etymology": "Raíz de 'isi'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [],
+    "verb_form": "",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "isi",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "izi",
+      "igzi"
+    ],
+    "syllables": [
+      "i",
+      "si"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "izi, igzi"
+  },
+  {
+    "word": "isi",
+    "description": "Palabra kichwa que representa 'Runa aychapi mu-\nruklla llukshishpa yapa shikshichik unkuy', usada en contextos culturales específicos.",
+    "gloss": "Runa aychapi mu-\nruklla llukshishpa yapa shikshichik unkuy",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Runa aychapi mu-\nruklla llukshishpa yapa shikshichik unkuy",
+    "etymology": "Raíz de 'isi'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "naturaleza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "isi",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "izi",
+      "igzi"
+    ],
+    "syllables": [
+      "i",
+      "si"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "izi, igzi"
+  },
+  {
+    "word": "isiyana",
+    "description": "Palabra kichwa que representa 'empe-\nrrarse', usada en contextos culturales específicos.",
+    "gloss": "empe-\nrrarse",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "empe-\nrrarse",
+    "etymology": "Raíz de 'isi'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Verbo"
+    ],
+    "verb_form": "infinitivo",
+    "case_usage": "",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "ancestralidad",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "isi",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iziyana",
+      "idziyana"
+    ],
+    "syllables": [
+      "i",
+      "si",
+      "ya",
+      "na"
+    ],
+    "synonyms": null,
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iziyana, idziyana"
+  },
+  {
+    "word": "iska",
+    "description": "Palabra kichwa que representa 'fósforo', usada en contextos culturales específicos.",
+    "gloss": "fósforo",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "fósforo",
+    "etymology": "Raíz de 'isk'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "fuerza",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "isk",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "iska",
+      "isku"
+    ],
+    "syllables": [
+      "i",
+      "ska"
+    ],
+    "synonyms": [
+      "Pukshi."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "iska, isku"
+  },
+  {
+    "word": "islampu",
+    "description": "Palabra kichwa que representa 'Champira kawchushkawan awashka uchilla shik\nAyllu llakta warmikunaka sumak champira is- lamputami rurankuna', usada en contextos culturales específicos.",
+    "gloss": "Champira kawchushkawan awashka uchilla shik\nAyllu llakta warmikunaka sumak champira is- lamputami rurankuna",
+    "letters_of_the_alphabet": "I",
+    "translation_value": "Champira kawchushkawan awashka uchilla shik\nAyllu llakta warmikunaka sumak champira is- lamputami rurankuna",
+    "etymology": "Raíz de 'isl'",
+    "geographic_usage": [
+      "Imbabura",
+      "Cotopaxi",
+      "Pastaza"
+    ],
+    "language_variant": "Otro",
+    "semantic_type": "",
+    "dictionary_word_by_class": [
+      "Sustantivo"
+    ],
+    "verb_form": "",
+    "case_usage": "acusativo",
+    "usage_context": "Uso tradicional en comunidades kichwas para expresar acciones o cualidades cotidianas.",
+    "usage_frequency": "común",
+    "emotional_charge": "media",
+    "symbolic_value": "sabiduría",
+    "is_neologism": false,
+    "is_generic": false,
+    "generic_for": "",
+    "morphemic_structure": [
+      "isl",
+      "-suffix"
+    ],
+    "variant_forms": [
+      "islambu",
+      "islaŋbu",
+      "islabuŋ"
+    ],
+    "syllables": [
+      "i",
+      "sla",
+      "mpu"
+    ],
+    "synonyms": [
+      "ismu",
+      "wañushka."
+    ],
+    "cultural_reference": "Dolores Cacuango",
+    "source_type": "oral",
+    "prekichwa_variant": "islambu, islaŋbu, islabuŋ"
+  }
+]

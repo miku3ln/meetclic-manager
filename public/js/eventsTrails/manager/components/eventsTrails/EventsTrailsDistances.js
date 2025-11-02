@@ -1,0 +1,594 @@
+var componentThisEventsTrailsDistances;
+Vue.component('events-trails-distances-component', {
+    template: '#events-trails-distances-template',
+    directives: {
+        initS2EventsTrailsTypeTeams: {
+            inserted: function (el, binding, vnode, vm, arg) {
+                var paramsInput = binding.value
+                paramsInput._managerS2EventsTrailsTypeTeams({
+                    objSelector: el, rowId: paramsInput.rowId
+                });
+            }
+        }
+    }
+    , props: {
+        params: {
+            type: Object,
+        }
+    },
+    created: function () {
+
+
+    },
+    beforeMount: function () {
+        this.configParams = this.params;
+
+        this.events_trails_project_id = this.configParams.events_trails_project_id;
+    },
+    mounted: function () {
+        componentThisEventsTrailsDistances = this;
+        this.initCurrentComponent();
+        removeClassNotView();
+    },
+    computed: {},
+    validations: function () {
+        var attributes = {
+            "id": {},
+            "value": {required, maxLength: Validators.maxLength(250)},
+            "value_distance": {required},
+            "description": {},
+            "status": {required},
+            "price": {required},
+            "type": {required},
+            events_trails_type_teams_id_data: {required}
+        };
+        var result = {
+            model: {//change
+                attributes: attributes
+            },
+        };
+        return result;
+
+    },
+    data: function () {
+
+        var dataManager = {
+            events_trails_project_id: null,
+            /*  ----MANAGER ENTITY---*/
+            configModelEntity: {
+                "buttonsManagements": [
+                    {
+                        "title": "Actualizar",
+                        "data-placement": "top",
+                        "i-class": "fas fa-pencil-alt",
+                        "managerType": "updateEntity"
+                    }
+                ]
+            },
+            managerMenuConfig: {
+                view: false,
+                menuCurrent: [],
+                rowId: null
+            },
+            configParams: {},
+            labelsConfig: {buttons: {'create': 'Crear', 'update': 'Actualizar'}},
+
+//form config
+            model: {
+                attributes: this.getAttributesForm(),
+                structure: this.getStructureForm(),
+            },
+            tabCurrentSelector: '#tab-events-trails-distances',
+            processName: "Registro Acción.",
+            formConfig: {
+                nameSelector: "#events-trails-distances-form",
+                url: $('#action-events-trails-distances-saveData').val(),
+                loadingMessage: 'Guardando...',
+                errorMessage: 'Error al guardar el EventsTrailsDistances.',
+                successMessage: 'El EventsTrailsDistances se guardo correctamente.',
+                nameModel: "EventsTrailsDistances"
+            },
+//Grid config
+            gridConfig: {
+                selectorCurrent: "#events-trails-distances-grid",
+                url: $("#action-events-trails-distances-getAdmin").val()
+            },
+            submitStatus: "no",
+            showManager: false,
+            managerType: null,
+        };
+
+
+        return dataManager;
+    },
+    methods: {
+        ...$methodsFormValid,
+        initCurrentComponent: function () {
+
+            this.initGridManager(this);
+        },
+
+//EVENTS OF CHILDREN
+        _managerTypes: function (emitValues) {
+            if (emitValues.type == "rebootGrid") {
+                $(this.gridConfig.selectorCurrent).bootgrid("reload");
+
+            }
+        },
+        /*---EVENTS CHILDREN to Parent COMPONENTS send values to parent----*/
+        makeToast: function (params) {
+            var $msjCurrent = params.msj;
+            var $titleCurrent = params.title;
+            var $typeCurrent = params.type;
+
+            this.$notify({
+                type: $typeCurrent,
+                title: $titleCurrent,
+                duration: 0,
+                content: $msjCurrent,
+
+            }).then(() => {
+// resolve after dismissed
+                console.log('dismissed');
+            });
+        },
+//MANAGER PROCESS
+        /*---------GRID--------*/
+        _destroyTooltip: function (selector) {
+            $(selector).tooltip('hide');
+        },
+        _resetManagerGrid: function () {
+            this.managerMenuConfig = {
+                view: false,
+                menuCurrent: [],
+                rowId: null
+            };
+        },
+        _managerMenuGrid: function (index, menu) {
+            var params = {managerType: menu.managerType, id: menu.rowId, row: menu.params.rowData};
+            this._managerRowGrid(params);
+        },
+        getMenuConfig: function (params) {
+            var result = [];
+            $.each(this.configModelEntity["buttonsManagements"], function (key, value) {
+                var setPush = {
+                    title: value["title"],
+                    "data-placement": value["data-placement"],
+                    icon: value["i-class"],
+                    data: value, rowId: params.rowId,
+                    managerType: value["managerType"],
+                    params: params
+                }
+                result.push(setPush);
+            });
+            return result;
+        },
+        _gridManager: function (elementSelect) {
+            var vmCurrent = this;
+            var selectorGrid = vmCurrent.gridConfig.selectorCurrent;
+            elementSelect.find("tbody tr").on("click", function (e) {
+                var self = $(this);
+                var dataRowId = $(self[0]).attr("data-row-id");
+                var selectorRow;
+                if (dataRowId) {
+                    var instance_data_rows = $(selectorGrid).bootgrid("getCurrentRows");
+                    var rowData = searchElementJson(instance_data_rows, 'id', dataRowId);//asi s obtiene los valores del registro en funcion d su id
+                    elementSelect.find("tr.selected").removeClass("selected");
+                    var newEventRow = false;
+                    if (vmCurrent.managerMenuConfig.rowId) {//ready selected
+                        var removeRowId = vmCurrent.managerMenuConfig.rowId;
+                        if (dataRowId == removeRowId) {
+                            selectorRow = selectorGrid + " tr[data-row-id='" + removeRowId + "']";
+                            $(selectorRow).removeClass("selected");
+                            vmCurrent._resetManagerGrid();
+                        } else {
+
+                            newEventRow = true;
+                        }
+                    } else {
+                        newEventRow = true;
+                    }
+                    if (newEventRow) {
+                        selectorRow = selectorGrid + " tr[data-row-id='" + dataRowId + "']";
+                        $(selectorRow).addClass("selected");
+                        vmCurrent.managerMenuConfig = {
+                            view: true,
+                            menuCurrent: vmCurrent.getMenuConfig({rowData: rowData[0], rowId: dataRowId}),
+                            rowId: dataRowId
+                        };
+                    }
+
+                }
+            });
+        },
+        _managerRowGrid: function (params) {
+            var rowCurrent = params.row;
+            var rowId = params.id;
+            if (params.managerType == "updateEntity") {
+                var elementDestroy = ("#a-menu-" + this.managerMenuConfig.rowId);
+                this._destroyTooltip(elementDestroy);
+                this.managerMenuConfig.view = false;
+                this.resetForm();
+                this.model.attributes.id = rowCurrent.id;
+                this.model.attributes.value = rowCurrent.value;
+                this.model.attributes.value_distance = parseFloat(rowCurrent.value_distance);
+                this.model.attributes.description = rowCurrent.description;
+                this.model.attributes.status = rowCurrent.status;
+
+                this.model.attributes.price = parseFloat(rowCurrent.price);
+                this.model.attributes.type = rowCurrent.type;
+                this.model.attributes.events_trails_type_teams_id_data = {
+                    id: rowCurrent.events_trails_type_teams_id,
+                    text: rowCurrent.events_trails_type_teams
+                };
+                this._viewManager(3, rowId);
+            }
+        },
+        initGridManager: function (vmCurrent) {
+            var gridName = this.gridConfig.selectorCurrent;
+            var urlCurrent = this.gridConfig.url;
+            var paramsFilters = {
+                events_trails_project_id: this.events_trails_project_id
+            };
+            let gridInit = $(gridName);
+            var structure = vmCurrent.model.structure;
+            gridInit.bootgrid({
+                ajaxSettings: {
+                    method: "POST"
+                },
+                ajax: true,
+                post: function () {
+                    return {
+                        grid_id: gridName,
+                        filters: paramsFilters
+                    };
+                },
+                url: urlCurrent,
+                labels: {
+                    loading: "Cargando...",
+                    noResults: "Sin Resultados! {{ctx.columns}}",
+                    infos: "Mostrando {{ctx.start}} - {{ctx.end}} de {{ctx.total}} resultados"
+                },
+                css: getCSSCurrentBootGrid(),
+                formatters: {
+                    'description': function (column, row) {
+
+                        var classStatus = "badge-success";
+                        if (row.status == "INACTIVE") {
+                            classStatus = "badge-warning"
+                        }
+                        ;var result = [
+                            "<div class='content-description'>",
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>" + structure.status.label + ":</span><span class='content-description__value'><span class='badge badge--size-large " + classStatus + " '>" + row.status + "</span></span>",
+                            "</div>",
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>" + structure.value.label + ":</span><span class='content-description__value'>" + row.value + "</span>",
+                            "</div>",
+
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>" + structure.value_distance.label + ":</span><span class='content-description__value'>" + row.value_distance + "</span>",
+                            "</div>",
+
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>" + structure.description.label + ":</span><span class='content-description__value'>" + row.description + "</span>",
+                            "</div>",
+
+
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>" + structure.price.label + ":</span><span class='content-description__value'>" + row.price + "</span>",
+                            "</div>"
+                            , "</div>"];
+
+                        return result.join("");
+
+                    }
+
+                }
+            }).on("loaded.rs.jquery.bootgrid", function () {
+                vmCurrent._resetManagerGrid();
+                vmCurrent._gridManager(gridInit);
+            });
+        },
+        /*Manager FORMS-AND VIEWS*/
+        _viewManager: function (typeView, rowId) {
+
+            if (typeView == 1) {//create
+                this.showManager = true;
+                this.managerMenuConfig.view = false;
+                showHideGridHeaderFooter({
+                    selectorGrid: this.gridConfig.selectorCurrent,
+                    hide: true,
+                });
+                this.resetForm();
+                this.managerType = 1;
+                this.onInitEventClickTimerForm();//CHANGE-FORM
+            } else if (typeView == 2) {//admin
+                this.showManager = false;
+
+                showHideGridHeaderFooter({
+                    selectorGrid: this.gridConfig.selectorCurrent,
+                    hide: false,
+                });
+                if (this.managerType == 1) {
+                    this.managerMenuConfig.view = false;
+                    this.managerType = null;
+
+                } else {
+                    this.managerMenuConfig.view = true;
+                }
+            } else if (typeView == 3) {//update
+                this.showManager = true;
+                showHideGridHeaderFooter({
+                    selectorGrid: this.gridConfig.selectorCurrent,
+                    hide: true,
+                });
+                this.managerMenuConfig.view = false;
+                this.managerType = 3;
+                this.onInitEventClickTimerForm();//CHANGE-FORM
+            }
+        },
+//FORM CONFIG
+        getViewErrorForm: function (objValidate) {
+            var result = false
+            if (!objValidate.$dirty) {
+                result = objValidate.$dirty ? (!objValidate.$error) : false;
+            } else {
+                result = objValidate.$error;
+            }
+            return result;
+        },
+        _submitForm: function (e) {
+            console.log(e);
+        },
+        getStructureForm: function () {
+            var result = {
+                value: {
+                    id: "value",
+                    name: "value",
+                    label: "Distancia",
+                    required: {
+                        allow: true,
+                        msj: "Campo requerido.",
+                        error: false
+                    },
+                    maxLength: {
+                        msj: "# Carecteres Excedidos a 250.",
+                    },
+                },
+                value_distance: {
+                    id: "value_distance",
+                    name: "value_distance",
+                    label: "Valor Distancia",
+                    required: {
+                        allow: true,
+                        msj: "Campo requerido.",
+                        error: false
+                    },
+                },
+                description: {
+                    id: "description",
+                    name: "description",
+                    label: "Descripcion",
+                    required: {
+                        allow: false,
+                        msj: "Campo requerido.",
+                        error: false
+                    },
+                },
+                status: {
+                    id: "status",
+                    name: "status",
+                    label: "Estado",
+                    required: {
+                        allow: true,
+                        msj: "Campo requerido.",
+                        error: false
+                    },
+                    options: [{"value": "ACTIVE", "text": "ACTIVE"}, {"value": "INACTIVE", "text": "INACTIVE"}]
+                },
+
+                price: {
+                    id: "price",
+                    name: "price",
+                    label: "Precio",
+                    required: {
+                        allow: true,
+                        msj: "Campo requerido.",
+                        error: false
+                    },
+                },
+                type: {
+                    id: "type",
+                    name: "type",
+                    label: "Tipo",
+                    required: {
+                        allow: true,
+                        msj: "Campo requerido.",
+                        error: false
+                    },
+                    options: [{"value": "SINGLE", "text": "SINGLE"}, {"value": "COUPLE", "text": "COUPLE"}]
+                },
+                events_trails_type_teams_id_data: {
+                    id: "events_trails_type_teams_id_data",
+                    name: "events_trails_type_teams_id_data",
+                    label: "Equipos",
+                    required: {
+                        allow: true,
+                        msj: "Campo requerido.",
+                        error: false
+                    }
+                }
+
+            };
+            return result;
+        },
+        getAttributesForm: function () {
+            var result = {
+                "id": null,
+                "value": null,
+                "value_distance": null,
+                "description": null,
+                "status": "ACTIVE",
+                "price": null,
+                "type": 'SINGLE',
+                events_trails_type_teams_id_data: null
+            };
+            return result;
+        },
+
+        getNameAttribute: function (name) {
+            var result = this.formConfig.nameModel + "[" + name + "]";
+            return result;
+        },
+        getLabelForm: viewGetLabelForm,
+
+
+        _setValueForm: function (name, value) {
+
+            this.model.attributes[name] = value;
+            this.$v["model"]["attributes"][name].$model = value;
+            this.$v["model"]["attributes"][name].$touch();
+        },
+        getClassErrorForm: function (nameElement, objValidate) {
+            var result = null;
+            result = {
+                "form-group--error": objValidate.$error,
+                'form-group--success': objValidate.$dirty ? (!objValidate.$error) : false
+            };
+
+            return result;
+        },
+        getErrorHas: function (model, type) {
+
+            var result = (model.$model == undefined || model.$model == "") ? true : false;
+            return result;
+        },
+        getViewError: function (model) {
+            var result = (model.$dirty == true) ? true : false;
+            return result;
+        },
+//Manager Model
+
+        getValuesSave: function () {
+
+            var result = {
+                EventsTrailsDistances:
+                    {
+                        "id": this.$v.model.attributes.id.$model ? this.$v.model.attributes.id.$model : -1,
+                        "value": this.$v.model.attributes.value.$model,
+                        "value_distance": this.$v.model.attributes.value_distance.$model,
+                        "description": this.$v.model.attributes.description.$model,
+                        "status": this.$v.model.attributes.status.$model,
+                        "price": this.$v.model.attributes.price.$model,
+                        "type": this.$v.model.attributes.type.$model,
+                        "events_trails_project_id": this.events_trails_project_id,
+                        "events_trails_type_teams_id": this.$v.model.attributes.events_trails_type_teams_id_data.$model.id,
+
+
+                    }
+
+            };
+            return result;
+        },
+        _saveModel: function () {
+            var dataSendResult = this.getValuesSave();
+            var dataSend = dataSendResult;
+            var vCurrent = this;
+            vCurrent.$v.$touch();
+            var validateCurrent = this.validateForm();
+            if (!validateCurrent) {
+                vCurrent.submitStatus = 'error';
+
+            } else {
+                ajaxRequest(this.formConfig.url, {
+                    type: 'POST',
+                    data: dataSend,
+                    blockElement: vCurrent.tabCurrentSelector,//opcional: es para bloquear el elemento
+                    loading_message: vCurrent.formConfig.loadingMessage,
+                    error_message: vCurrent.formConfig.errorMessage,
+                    success_message: vCurrent.formConfig.successMessage,
+                    success_callback: function (response) {
+
+                        if (response.success) {
+                            vCurrent._resetManagerGrid();
+                            vCurrent.resetForm();
+                            $(vCurrent.gridConfig.selectorCurrent).bootgrid("reload");
+                            vCurrent._viewManager(2);
+                        }
+                    }
+                });
+            }
+        },
+        resetForm: function () {
+
+            this.$v.$reset();
+            this.model = {
+                attributes: this.getAttributesForm(),
+                structure: this.getStructureForm()
+            };
+            this.model.attributes.id = null;
+        },
+        _valuesForm: function (event) {
+            this.model.init = false;
+            this.validateForm();
+        },
+        validateForm: function () {
+            var currentAllow = this.getValidateForm();
+            return currentAllow.success;
+        },
+
+        getValidateForm:getValidateForm,
+//others functions
+        _managerS2EventsTrailsTypeTeams: function (params) {
+            var el = params.objSelector
+            var valueCurrentRowId = params.rowId;
+            var events_trails_project_id = this.events_trails_project_id;
+            var dataCurrent = [];
+            if (valueCurrentRowId) {
+
+                dataCurrent = [this.model.attributes.events_trails_type_teams_id_data];
+            }
+            var _this = this
+            var elementInit = $(el).select2({
+                allow: true,
+                placeholder: "Seleccione",
+                data: dataCurrent,
+                ajax: {
+                    url: $("#action-events-trails-type-teams-getListSelect2").val(),
+                    type: 'get',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        var paramsFilters = {
+                            filters: {
+                                search_value: term,
+                                events_trails_project_id: events_trails_project_id
+
+                            }
+                        };
+                        return paramsFilters;
+                    },
+                    processResults: function (data, page) {
+                        return {results: data};
+                    }
+                },
+                allowClear: true,
+                multiple: false,
+                width: '100%'
+            });
+
+            elementInit.on('select2:select', function (e) {
+                var data = e.params.data;
+                _this.model.attributes.events_trails_type_teams_id_data = data;
+            }).on("select2:unselecting", function (e) {
+                _this.model.attributes.lodging_room_levels_id_data = null;
+                _this._setValueForm('events_trails_type_teams_id_data', null);
+            });
+        }
+    }
+})
+;
+
+
+
+

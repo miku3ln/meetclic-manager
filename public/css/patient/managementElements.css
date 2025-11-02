@@ -1,0 +1,197 @@
+/*MENU*/
+
+.m-nav .m-nav__item {
+    display: block;
+}
+
+.m-nav .m-nav__item > .m-nav__link {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    position: relative;
+    outline: none !important;
+    vertical-align: middle;
+    padding: 9px 0;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-bullet {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    width: 20px;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-bullet.m-nav__link-bullet--line > span, .m-nav .m-nav__item > .m-nav__link .m-nav__link-bullet.m-nav__link-bullet--dot > span {
+    background-color: #cfcedb;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-bullet.m-nav__link-bullet--line > span {
+    width: 5px;
+    height: 1px;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-bullet > span {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-text {
+    color: #6f727d;
+    font-weight: 400;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-text {
+    display: table-cell;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    font-size: 1rem;
+}
+
+.m-nav .m-nav__item:hover:not(.m-nav__item--disabled) > .m-nav__link .m-nav__link-icon, .m-nav .m-nav__item:hover:not(.m-nav__item--disabled) > .m-nav__link .m-nav__link-text, .m-nav .m-nav__item:hover:not(.m-nav__item--disabled) > .m-nav__link .m-nav__link-arrow, .m-nav .m-nav__item.m-nav__item--active > .m-nav__link .m-nav__link-icon, .m-nav .m-nav__item.m-nav__item--active > .m-nav__link .m-nav__link-text, .m-nav .m-nav__item.m-nav__item--active > .m-nav__link .m-nav__link-arrow {
+    color: #716aca;
+    font-weight: 500;
+}
+
+.m-nav .m-nav__item > .m-nav__link .m-nav__link-title > .m-nav__link-wrap > .m-nav__link-badge {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0px 0px 0px 5px;
+    text-align: right;
+}
+
+/*----ITEMS PORTLET---*/
+.m-portlet__nav-item.hide-element {
+    display: none !important;
+}
+
+/*
+---LEGEND--*/
+.content-legend {
+    text-align: center;
+    padding-bottom: 9%
+}
+
+.content-legend__item {
+    margin-right: 3%;
+    display: inline-block;
+}
+
+.content-legend__item-bullet {
+    width: 2rem;
+    height: .45rem;
+    display: inline-block;
+    border-radius: 1.1rem;
+    margin-bottom: .12rem;
+    margin-right: .8rem;
+}
+
+.m-badge--badge-status {
+    color: #fff !important;
+    text-align: center;
+    width: 66px;
+}
+
+/*
+----TBL--*/
+.xywer-tbl-admin{
+    display: block;
+    min-height: 300px;
+    overflow-x: auto;
+}
+.m-datatable__head tr th a{
+    text-decoration: none;
+    color: #575962; !important;
+}
+.m-datatable__pager {
+    margin-top: 20px;
+}
+
+.m-datatable__pager div.ul-content {
+    margin: 10px 0 0 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.m-datatable__pager div.info-content {
+    float: right;
+    margin-top: 10px;
+
+}
+
+.m-datatable__pager-nav {
+    margin: 10px 0 0 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.m-datatable__pager-nav > li {
+    padding: 0;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.m-datatable__pager-link {
+    margin-left: 7px;
+    padding-top: 3px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
+    text-align: center;
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1rem;
+    line-height: 1rem;
+    font-weight: 400;
+}
+
+.m-datatable__pager-link:hover {
+    background: #716aca;
+    color: #fff;
+}
+
+.m-datatable__pager-link--active {
+    background: #716aca;
+    color: #fff;
+}
+
+.m-datatable__pager-link a {
+    width: 35px;
+    height: 35px;
+    margin-top: 15px;
+}
+
+.m-datatable__pager div.ul-content ul.pagination li.disabled , .m-datatable__pager div.ul-content ul.pagination li.disabled :hover {
+    color: #898b96;
+    background: #ebe9f2;
+    opacity: .3;
+    filter: alpha(opacity=30);
+}
+/*
+---SEARCH--*/
+.bootgrid-header div.search span.fa-search{
+    padding-top: 6px;
+}

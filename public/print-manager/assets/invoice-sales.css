@@ -1,0 +1,104 @@
+/*
+Encabezaedo
+*/
+
+#row-content-encabezado {
+    margin-top: 125px !important;
+}
+
+/*informacion encabezado*/
+.lbl-info.cliente {
+    margin-left: 100px !important;
+}
+
+.lbl-info.ruc {
+    margin-left: 200px !important;
+}
+
+.lbl-info.fecha {
+    margin-left: 60px !important;
+}
+
+.lbl-info.direccion {
+    margin-left: 100px !important;
+}
+
+.lbl-info.guia-remision {
+    margin-left: 130px !important;
+}
+
+.lbl-info.telefono {
+    margin-left: 60px !important;
+}
+
+table#data-table-print-encabezado {
+    margin-left: 0% !important;
+    color: #b3b3b3;
+    font-weight: 100 !important;
+    text-transform: uppercase;
+}
+
+.lbl-info {
+    font-weight: 100 !important;
+    font-size: 11px !important;
+}
+
+.lbl-title {
+    display: none;
+}
+
+/*detalle*/
+/*--encabezado desaparecer*/
+#data-table-print-desgloce {
+    margin-left: 120px;
+}
+
+#row-content-detalle {
+    margin-top: 12px;
+}
+
+.lbl-title-encabezado {
+    display: none;
+}
+
+tbody#data-table-body-detalle {
+    font-size: 8px;
+}
+
+tbody#data-table-body-detalle tr th {
+
+    padding: 0px 40px 0px !important;
+}
+
+/*---pie de factura-*/
+
+div#row-content-pie {
+    width: 670px;
+    margin-top: 194px !important;
+}
+
+tbody#data-table-body-desgloce tr th {
+    text-align: left;
+}
+
+/*DESGLOCE*/
+#col-content-desgloce {
+    margin-left: 405px !important;
+}
+.lbl-title.desgloce{
+    color:#0b0a0a;
+    display: block;
+
+}
+tbody#data-table-body-desgloce tr th {
+    font-size: 12px !important;
+    padding: 0px 35px 2px !important;
+}
+
+/*--desgloce--*/
+#iva-config-lbl {
+    display: block;
+    margin-left: 12px !important;
+    text-align: center !important;
+
+}

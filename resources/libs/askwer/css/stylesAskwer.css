@@ -1,0 +1,119 @@
+.messages {
+    color: #FA787E;
+}
+
+form.ng-submitted input.ng-invalid{
+    border-color: #FA787E;
+}
+
+form input.ng-invalid.ng-touched {
+    border-color: #FA787E;
+}
+
+/*
+  form input.ng-valid.ng-touched {
+    border-color: #78FA89;
+  }
+*/
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.tbl-result {
+    width: 100%;
+}
+
+.form-actions-askwer {
+    top: 9%;
+    position: fixed;
+    right: 2%;
+}
+
+/*
+RESULTS VIEW*/
+.form-horizonta--view {
+    /* width: 99%; */
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.span-title-select-label {
+    font-size: 14px;
+    font-weight: 800;
+    color: blue;
+}
+
+.span-title-comment-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #a90329;
+}
+
+.gridStyle {
+    border: 1px solid rgb(212, 212, 212);
+    width: 400px;
+    height: 300px;
+}
+
+.tbl-result th {
+    border: 3px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.tbl-result td {
+    border: 3px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.tbl-result th {
+    border: 3px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    white-space: pre-line !important;
+    background-color: #f1f1f1;
+}
+
+.tbl-result tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+button.btn.btn-default.btn-sm.editable-cancel {
+    color: red;
+}

@@ -1,0 +1,2476 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+  <Document>
+    <open>1</open>
+    <visibility>1</visibility>
+    <name>Ruta Cascada de Peguche - Ilumán</name>
+    <description>Distancia: 7,4 km&lt;br&gt;Velocidad media: 20,1 km/h&lt;br&gt;Elevación mínima: 2559 m&lt;br&gt;Elevación máxima: 2638 m&lt;br&gt;Ascenso total: 98 m&lt;br&gt;Descenso total: 26 m</description>
+    <atom:author>
+      <atom:name></atom:name>
+    </atom:author>
+    <atom:link href="" />
+    <ExtendedData>
+      <Data name="comment">
+        <value></value>
+      </Data>
+    </ExtendedData>
+    <Style id="track">
+      <LineStyle>
+        <color>ffff0000</color>
+        <width>4</width>
+      </LineStyle>
+    </Style>
+    <Schema id="geotrackerTrackSchema">
+      <gx:SimpleArrayField name="speed" type="float">
+        <displayName>Speed, meters per second</displayName>
+      </gx:SimpleArrayField>
+      <gx:SimpleArrayField name="course" type="float">
+        <displayName>Course, radians</displayName>
+      </gx:SimpleArrayField>
+    </Schema>
+    <Placemark>
+      <name>Entrada a la cascada de Peguche</name>
+      <description></description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.242683,0.242584,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Estación de Policía</name>
+      <description></description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.245522,0.243134,2572.07</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Información turística</name>
+      <description>Elevación: 2559 m</description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.26226,0.23074,2559.16</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Inicio de vía del tren</name>
+      <description></description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.257614,0.228233,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Parque de Ilumán</name>
+      <description>Elevación: 2632 m</description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.234093,0.271908,2631.85</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Plaza cultural de Peguche</name>
+      <description></description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.243599,0.250265,2609.33</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Rotonda</name>
+      <description></description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="visited">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>-78.243843,0.251371,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="tour">
+      <name>Ruta Cascadas de Peguche - Iluman</name>
+      <description>Distancia: 7,4 km&lt;br&gt;Velocidad media: 20,1 km/h&lt;br&gt;Elevación mínima: 2559 m&lt;br&gt;Elevación máxima: 2638 m&lt;br&gt;Ascenso total: 98 m&lt;br&gt;Descenso total: 26 m</description>
+      <atom:author>
+        <atom:name></atom:name>
+      </atom:author>
+      <atom:link href="" />
+      <ExtendedData>
+        <Data name="comment">
+          <value></value>
+        </Data>
+        <Data name="activity">
+          <value>0</value>
+        </Data>
+      </ExtendedData>
+      <styleUrl>#track</styleUrl>
+      <gx:MultiTrack>
+        <altitudeMode>absolute</altitudeMode>
+        <gx:interpolate>0</gx:interpolate>
+        <gx:Track>
+          <gx:coord>-78.26226 0.23074 2559.16</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262367 0.230768 2569.42</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262436 0.23083 2570.33</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.26252 0.230901 2570.82</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262619 0.230964 2570.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262703 0.231031 2570.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262787 0.231101 2569.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262833 0.231182 2569.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262794 0.231288 2570.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262718 0.231391 2569.98</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262657 0.23148 2569.99</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262589 0.231576 2569.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262535 0.231655 2569.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262474 0.231734 2568.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262367 0.231774 2568.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262276 0.231724 2568.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262154 0.231642 2568.85</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.262032 0.231555 2568.74</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261925 0.231472 2569.63</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.26181 0.231392 2570.09</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261703 0.231313 2570.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261597 0.231236 2570.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261505 0.231161 2570.86</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261398 0.231082 2571.3</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261292 0.231003 2571.18</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261185 0.230927 2571.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261086 0.23086 2571.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.261009 0.230807 2571.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260933 0.23075 2571.86</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260834 0.230673 2571.22</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260742 0.23061 2570.63</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260651 0.230541 2570.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260559 0.230476 2571.02</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260475 0.230415 2572.04</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260399 0.230354 2571.75</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260315 0.230295 2571.35</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260231 0.230234 2571</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260147 0.230166 2570.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.260071 0.230106 2570.64</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259972 0.230027 2571.51</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259888 0.229962 2570.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259796 0.229895 2569</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259727 0.229829 2567.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259659 0.229767 2568.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259567 0.229701 2567.62</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259491 0.229639 2567.87</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259407 0.229574 2568.54</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259315 0.229505 2568.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259224 0.229434 2568.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259132 0.229358 2568.13</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.259048 0.229289 2567.91</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25898 0.229236 2568.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.258888 0.229163 2566.83</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25882 0.229104 2566.87</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.258743 0.229034 2566.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.258644 0.228956 2565.82</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25853 0.228867 2566.51</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.258415 0.228777 2567.67</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.258293 0.228686 2568.75</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.258186 0.228599 2568.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25808 0.228513 2568.81</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25798 0.228433 2569.98</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257889 0.228356 2570.54</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257797 0.228284 2571.28</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257713 0.228223 2572.22</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257614 0.228233 2573.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257538 0.228311 2573.94</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257454 0.228397 2573.28</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257355 0.228491 2571.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257256 0.228589 2571.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257172 0.228669 2570.8</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257072 0.228669 2571.13</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.257011 0.228598 2572.07</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256912 0.228557 2572.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256783 0.228624 2571.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256699 0.228688 2571.18</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256622 0.228751 2570.36</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256546 0.228817 2570.28</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25647 0.228885 2569.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256386 0.228953 2568.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25631 0.229023 2567.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256218 0.229085 2568.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.256142 0.229138 2569.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25605 0.229243 2572.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255974 0.229336 2572.95</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255882 0.229415 2572.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255791 0.229508 2571.29</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255707 0.229612 2570.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255615 0.229715 2570.7</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255531 0.229821 2570.06</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25544 0.229928 2570.35</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255371 0.230007 2570.34</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25528 0.230102 2569.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25518 0.230193 2570.06</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255089 0.230293 2570.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.255013 0.2304 2569.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254929 0.230512 2569.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254829 0.23063 2568.05</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254738 0.230744 2567.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254654 0.230845 2567.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254578 0.230937 2568.09</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254494 0.23105 2568.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25441 0.231164 2568.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254318 0.231291 2568.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254234 0.231431 2568.44</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254166 0.231567 2568.49</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254097 0.231697 2568.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.254044 0.231776 2568.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253998 0.23186 2568.86</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253944 0.231965 2569.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253883 0.232107 2569.09</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253815 0.232258 2569.01</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253731 0.2324 2568.91</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253662 0.232542 2568.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253593 0.232677 2567.88</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253532 0.232801 2567.57</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253479 0.232937 2567.42</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25341 0.233078 2567.95</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253342 0.233232 2568.35</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253304 0.233316 2568.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253265 0.233401 2568.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253227 0.233486 2568.62</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253197 0.233569 2568.78</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253151 0.23365 2569.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253113 0.233733 2569.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253075 0.233816 2569.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.253036 0.233901 2569.44</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252998 0.233986 2569.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25296 0.23407 2569.74</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252884 0.234224 2570.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252831 0.234321 2570.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252777 0.234422 2571.16</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252724 0.234542 2572.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252686 0.234637 2572.37</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252625 0.234727 2572.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252579 0.234813 2571.74</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252533 0.234902 2571.07</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252487 0.234997 2570.61</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252449 0.235096 2570.62</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252403 0.235199 2570.36</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25235 0.235306 2569.88</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252296 0.235412 2569.29</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252251 0.235515 2568.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25222 0.235609 2569.25</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25219 0.235705 2569.87</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252136 0.235806 2570.22</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.25209 0.235886 2569.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252045 0.23597 2568.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.252014 0.236058 2568.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251968 0.236167 2568.61</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251915 0.23628 2568.54</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251877 0.236375 2568.32</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251808 0.236459 2568.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251755 0.236565 2568.51</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251724 0.236652 2568.62</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251671 0.236755 2569.23</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251602 0.236849 2568.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251549 0.236977 2569.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251495 0.237084 2569.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251434 0.237202 2570.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251389 0.237314 2570.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251343 0.237413 2571.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251305 0.237513 2571.92</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251259 0.237625 2572.36</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251205 0.237741 2572.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251152 0.237861 2571.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251099 0.237983 2570.92</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.251038 0.238093 2570.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250999 0.238187 2569.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250961 0.238279 2568.78</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250916 0.238367 2568.71</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250847 0.238482 2568.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250786 0.238558 2567.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250755 0.238651 2567.23</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250694 0.238743 2567.23</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250648 0.238845 2566.88</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250595 0.238965 2566.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250557 0.239047 2566.98</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250465 0.239128 2566.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250397 0.239222 2565.93</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250343 0.239294 2564.95</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250282 0.239373 2565.82</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250206 0.239462 2565.64</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250137 0.239541 2567.22</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.250069 0.239616 2567.33</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249992 0.23967 2567.04</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249893 0.239738 2567.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249802 0.239802 2567.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249695 0.239871 2568.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249588 0.239945 2568.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249474 0.24002 2569.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249359 0.240095 2570.05</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249268 0.24014 2569.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249184 0.24019 2569.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.249054 0.240253 2569.61</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248909 0.24033 2569.97</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248756 0.240405 2570.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248627 0.240472 2570.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248505 0.240525 2569.71</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248421 0.240558 2569.06</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248337 0.240609 2570.37</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248207 0.240673 2571.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.248062 0.240744 2571.81</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247902 0.240806 2572.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247749 0.240853 2572.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247627 0.240885 2570.8</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24752 0.240904 2571.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247429 0.240928 2571.26</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247322 0.240956 2570.98</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247215 0.240979 2570.9</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247108 0.240994 2570.67</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.247009 0.241007 2570.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24691 0.241021 2570.47</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24678 0.241038 2570.57</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246666 0.241048 2570.77</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246559 0.241063 2570.47</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246445 0.241075 2570.8</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246338 0.241083 2570.05</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246223 0.241092 2568.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246124 0.241101 2569.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.246025 0.241117 2568.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245941 0.241138 2566.94</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245827 0.241192 2565.44</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24575 0.241298 2563.75</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245705 0.241387 2562.9</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245674 0.241492 2561.82</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245621 0.241608 2562.87</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24559 0.24171 2565.06</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24556 0.241804 2566.55</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245537 0.241929 2568.33</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245522 0.242028 2568.04</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245506 0.242124 2569.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245514 0.24224 2570.91</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245514 0.242338 2571.05</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245514 0.242446 2570.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245514 0.242558 2571.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245522 0.242665 2571.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245537 0.242765 2571.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245544 0.242857 2571.13</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245544 0.242994 2571.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245537 0.243086 2572.65</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245514 0.243181 2572.83</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245468 0.243266 2573.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245369 0.243329 2572.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245285 0.243361 2570.99</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245163 0.243396 2571.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245041 0.243396 2572.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244904 0.243385 2572.62</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244804 0.243376 2573.42</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244705 0.24337 2574.04</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244614 0.243362 2575.19</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244514 0.243353 2577.65</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244415 0.243343 2579.29</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244286 0.243322 2581.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244186 0.243305 2582.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24408 0.24329 2582.64</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243973 0.243268 2583.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243874 0.243244 2584.47</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243774 0.243226 2585.07</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243675 0.243215 2585.83</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243561 0.24321 2586.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243439 0.24321 2587.25</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243317 0.243208 2588.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243195 0.243207 2589.3</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243073 0.243205 2591.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242958 0.243203 2593.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242836 0.243198 2594.64</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242722 0.243194 2596.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242622 0.24318 2598.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242523 0.243117 2601.78</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242531 0.243016 2602.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242569 0.242934 2602.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242599 0.242843 2603.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24263 0.242712 2603.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242676 0.242609 2604.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242592 0.242695 2604.93</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242554 0.242817 2605.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242531 0.242938 2605.97</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.2425 0.243043 2606.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242462 0.243151 2606.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242439 0.243253 2606.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242432 0.243357 2605.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242439 0.243504 2605.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242439 0.243596 2605.54</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242439 0.243695 2605.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242447 0.243796 2604.77</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242455 0.243898 2604.56</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242455 0.243999 2604.37</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242462 0.244099 2604.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24247 0.244198 2604.3</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242477 0.244298 2604.25</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242477 0.2444 2604.09</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242493 0.244501 2604.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.2425 0.2446 2604.19</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242508 0.244698 2604.26</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242516 0.244796 2604.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242523 0.244892 2604.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242531 0.244988 2604.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242538 0.245083 2604.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242538 0.245176 2604.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242554 0.245354 2604.83</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242561 0.245445 2605.01</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242569 0.245539 2605.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242577 0.245633 2605.22</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242584 0.245728 2605.56</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242592 0.245827 2605.92</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242599 0.245927 2606.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242607 0.246028 2606.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242615 0.246129 2606.26</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242622 0.246231 2606.55</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24263 0.246332 2606.75</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242653 0.246431 2606.83</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242668 0.24653 2606.7</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242699 0.246626 2606.63</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242722 0.246718 2606.81</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242752 0.246809 2606.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242775 0.2469 2606.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242798 0.24699 2606.16</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242805 0.247083 2606.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242813 0.247175 2606.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242813 0.247266 2606.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242821 0.247445 2607.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242828 0.24761 2607.61</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242836 0.24774 2608.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242851 0.247892 2608.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242867 0.248075 2607.75</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242874 0.248171 2607.55</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242882 0.24827 2607.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242889 0.24837 2607.34</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242897 0.248471 2607.74</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242912 0.248571 2607.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242928 0.248672 2607.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242943 0.248773 2607.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242958 0.248872 2608.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242973 0.248969 2608.16</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242996 0.249064 2608.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243019 0.249156 2607.47</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243042 0.249247 2606.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243065 0.249338 2606.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243134 0.249492 2605.56</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243225 0.249597 2605.78</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243324 0.249681 2606.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243393 0.249773 2607.65</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243446 0.249871 2608.78</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243484 0.249969 2609.28</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243515 0.250097 2608.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243553 0.250195 2608.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243614 0.250277 2609.61</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243675 0.250349 2609.04</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243713 0.250468 2609.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243729 0.250581 2610.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243729 0.250705 2608.28</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243759 0.250841 2607.75</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24379 0.250975 2606.98</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243813 0.251101 2605.7</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243835 0.251211 2605.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243851 0.251305 2604.97</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243828 0.25141 2606.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243896 0.251472 2607.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244019 0.251454 2605.86</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244141 0.251458 2604.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244232 0.251528 2604.65</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244301 0.251591 2604.87</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244377 0.251656 2604.67</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244453 0.251721 2604.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244522 0.251784 2604.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244591 0.251849 2604.53</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244659 0.251916 2604.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244736 0.251981 2604.35</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244812 0.252054 2603.91</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244888 0.252129 2603.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244972 0.252206 2602.81</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245056 0.252284 2602.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24514 0.252364 2602.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245224 0.252445 2602.2</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.2453 0.252522 2601.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245377 0.252594 2601.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245445 0.252662 2601.56</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245506 0.252739 2601.56</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245605 0.252822 2599.36</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245682 0.252896 2598.47</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245758 0.252972 2597.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245834 0.253047 2596.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245918 0.253106 2596.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245895 0.253214 2597.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245834 0.253328 2597.92</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245781 0.253443 2598.3</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24572 0.253562 2599.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245651 0.253691 2600.32</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24556 0.25385 2600.9</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245514 0.253932 2601.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245468 0.254013 2601.25</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245384 0.254155 2601.65</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245316 0.254259 2601.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245255 0.254357 2601.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245178 0.254471 2602.23</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.245094 0.254604 2602.53</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24501 0.254746 2602.82</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244919 0.254892 2603.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24482 0.255036 2604.35</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244728 0.255183 2604.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244629 0.255329 2605.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244537 0.25548 2606.36</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244492 0.255557 2606.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244438 0.255635 2606.38</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244392 0.255714 2606.54</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244339 0.255795 2606.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244286 0.255879 2607</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244232 0.255965 2607.07</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244171 0.256053 2607.36</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244118 0.256142 2607.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244064 0.25623 2608.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.244003 0.256318 2609.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24395 0.256403 2610.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243896 0.256486 2610.91</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243851 0.256568 2611.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243797 0.256645 2611.93</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243713 0.256778 2613.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24366 0.25687 2613.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243614 0.256953 2614.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243553 0.257062 2615.11</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.2435 0.257153 2615.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243439 0.257269 2616.03</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243362 0.257394 2616.53</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243301 0.257491 2616.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243233 0.257586 2615.63</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243141 0.257719 2615.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243095 0.2578 2615.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.243034 0.257882 2615.51</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242981 0.257967 2616.02</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24292 0.258057 2616.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242859 0.258151 2616.98</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24279 0.258247 2617.6</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242722 0.258348 2617.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242653 0.258449 2618.53</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242592 0.258549 2619.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242531 0.25865 2620.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242462 0.258751 2620.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242401 0.258853 2621.23</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242332 0.258954 2621.94</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242264 0.259056 2622.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242195 0.259159 2622.85</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242126 0.259263 2623.26</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.242065 0.259367 2623.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241997 0.25947 2623.93</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241936 0.259572 2623.77</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241882 0.259669 2624.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241745 0.259872 2624.95</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241676 0.259978 2625.34</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241608 0.260088 2625.7</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241539 0.260202 2626.09</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24147 0.260315 2626.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241402 0.260428 2627.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241341 0.26054 2627.78</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241272 0.260654 2628.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241203 0.260768 2628.88</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24115 0.260879 2629.42</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241089 0.260987 2629.99</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.241028 0.261091 2630.33</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240974 0.261189 2631.06</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240921 0.261282 2631.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240875 0.261372 2632.23</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240829 0.26146 2632.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240784 0.261545 2632.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240738 0.261625 2632.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240677 0.261721 2632.29</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240631 0.261815 2631.35</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240578 0.261917 2631.76</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240517 0.262052 2631.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.24044 0.262186 2631.56</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240364 0.262331 2631.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240318 0.262416 2631.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240273 0.2625 2631.66</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240219 0.262582 2632.1</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240173 0.262661 2632.49</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240074 0.262814 2632.93</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.240021 0.262898 2633.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239967 0.262987 2633.67</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239914 0.263079 2634.04</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239853 0.263175 2634.29</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239799 0.263272 2634.37</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239738 0.263369 2634.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239677 0.263465 2635.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239624 0.263559 2635.51</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239563 0.263654 2635.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.23951 0.263749 2636.34</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239449 0.263844 2636.88</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239395 0.263939 2637.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239342 0.264034 2637.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239281 0.264128 2638.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239227 0.264222 2638.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239166 0.264316 2638.53</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239113 0.264411 2638.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.239052 0.264506 2638.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238991 0.264602 2638.77</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.23893 0.264701 2638.42</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238869 0.264798 2638.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238815 0.264896 2638.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238747 0.264992 2638.71</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238686 0.265087 2638.8</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238625 0.265175 2638.77</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238564 0.265261 2638.79</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238518 0.265341 2638.86</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238434 0.265478 2639.41</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238342 0.265618 2640.96</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238243 0.265772 2638.43</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238182 0.265851 2637.89</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238121 0.265933 2637.25</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.238052 0.266016 2636.86</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237984 0.266098 2636.18</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237915 0.26618 2635.74</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237846 0.266261 2635.3</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237778 0.266339 2634.89</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237709 0.266414 2634.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.23764 0.266487 2633.73</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237579 0.26656 2633</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237518 0.266634 2632.46</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237457 0.26671 2631.71</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237396 0.266789 2631.18</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237335 0.266867 2630.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237267 0.266943 2630.24</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237206 0.267018 2629.8</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237144 0.267089 2629.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237083 0.267159 2629.45</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.237022 0.26723 2629.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236961 0.2673 2629.28</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236855 0.267432 2629.12</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236763 0.267539 2629.07</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236687 0.267625 2628.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.23661 0.267714 2628.21</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236504 0.267837 2627.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236382 0.267971 2627.52</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236313 0.268043 2627.55</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236244 0.268115 2627.55</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236176 0.268187 2627.82</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236107 0.268257 2628.02</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.236038 0.268328 2628.59</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.23597 0.268395 2629.29</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235901 0.268459 2630.17</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235764 0.268556 2630.26</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235664 0.268605 2630.72</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.23555 0.268671 2631.5</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235428 0.268744 2632.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235283 0.268822 2633.39</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235146 0.268898 2633.26</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.235031 0.268996 2633.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234962 0.269121 2632.7</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234917 0.269279 2632.58</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234901 0.269437 2633.68</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234901 0.269591 2634.97</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234909 0.269746 2634.85</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234894 0.269894 2634.69</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234879 0.270043 2633.57</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234848 0.270194 2632.64</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234818 0.270343 2631.92</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234795 0.270449 2631.3</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234749 0.270546 2632.57</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234734 0.270662 2630.88</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234711 0.270753 2630.15</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234665 0.270876 2629.74</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234612 0.270999 2630.31</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234558 0.271129 2630.22</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234505 0.271258 2630.08</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234451 0.271381 2630.48</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234398 0.27149 2630.91</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234344 0.271577 2631.01</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234299 0.27167 2631.4</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234253 0.271758 2631.84</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234177 0.271845 2632.27</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <gx:coord>-78.234093 0.271908 2631.85</gx:coord>
+          <when>1970-01-01T00:00:00.000Z</when>
+          <ExtendedData>
+            <SchemaData schemaUrl="#geotrackerTrackSchema">
+              <gx:SimpleArrayData name="speed">
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+              </gx:SimpleArrayData>
+              <gx:SimpleArrayData name="course">
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+                <gx:value />
+              </gx:SimpleArrayData>
+            </SchemaData>
+          </ExtendedData>
+        </gx:Track>
+      </gx:MultiTrack>
+    </Placemark>
+  </Document>
+</kml>

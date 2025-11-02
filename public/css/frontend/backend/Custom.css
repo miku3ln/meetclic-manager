@@ -1,0 +1,9 @@
+
+.logo-box, .navbar-custom {
+
+    background-color: #445EF2 !important;
+}
+
+.breadcrumb-item.active>a {
+    color: #445ef2 !important;
+}

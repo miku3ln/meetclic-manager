@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Stage Designer (Local)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root { --b:#e2e8f0; --bg:#f8fafc; --text:#334155; }
+        body { font-family: system-ui, Arial; margin: 20px; background: var(--bg); color: var(--text); }
+        .row { display:flex; gap:12px; align-items:center; margin: 8px 0; flex-wrap: wrap; }
+        .toolbar { display:flex; gap:8px; align-items:center; margin: 10px 0; flex-wrap:wrap; }
+        .toolbar button { padding:8px 12px; border:1px solid #cbd5e1; background:#fff; border-radius:8px; cursor:pointer; }
+        .toolbar button.active { background:#e0f2fe; border-color:#38bdf8; }
+        #stageWrap { border:1px solid var(--b); border-radius:12px; overflow:hidden; width:100%; max-width:1100px; }
+        #canvas { width:100%; height:70vh; background:#fff; }
+        .panel { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:12px; max-width:1100px; }
+        .card { border:1px solid var(--b); border-radius:12px; background:#fff; padding:12px; }
+        .card h4 { margin: 4px 0 8px; font-size:16px; }
+        pre, textarea { width:100%; box-sizing:border-box; border:1px solid var(--b); border-radius:8px; background:#0b1020; color:#d1e7ff; padding:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; }
+        .hint { font-size: 12px; color:#64748b; margin-top:6px; }
+    </style>
+</head>
+<body>
+<h2>1) Subir imagen → 2) Dibujar zonas → 3) Generar JSON (local)</h2>
+
+<div class="row">
+    <input type="file" id="imgFile" accept="image/*" />
+    <button id="btnLoad">Cargar imagen</button>
+    <span id="imgInfo"></span>
+</div>
+
+<div class="toolbar" id="tools" style="display:none;">
+    <strong>Herramientas:</strong>
+    <button data-tool="select" class="active">Seleccionar</button>
+    <button data-tool="rect">Rectángulo</button>
+    <button data-tool="circle">Círculo</button>
+    <button data-tool="poly">Polígono</button>
+    <button id="btnEndPoly" title="Terminar polígono (doble click también)">Terminar polígono</button>
+    <button id="btnDelete">Eliminar seleccionado</button>
+    <button id="btnGenerate" style="margin-left:auto;">Generar JSON</button>
+</div>
+
+<div id="stageWrap"><div id="canvas"></div></div>
+
+<div class="panel">
+    <div class="card">
+        <h4>Click en figura → Ubicación y Sección</h4>
+        <pre id="clickInfo">—</pre>
+        <p class="hint">Mueve/redimensiona con los controladores. Con “Polígono”: clic para puntos, “Terminar polígono” o doble clic para cerrar.</p>
+    </div>
+    <div class="card">
+        <h4>JSON a guardar</h4>
+        <textarea id="jsonOut" rows="12" readonly></textarea>
+    </div>
+</div>
+
+<!-- jQuery + Konva -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/konva@9/konva.min.js"></script>
+<script src="../assets/data-config.js"></script>
+<script src="../assets/config-shapes.js"></script>
+
+</body>
+</html>

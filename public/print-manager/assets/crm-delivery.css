@@ -1,0 +1,127 @@
+/*
+Encabezaedo
+*/
+.row-print {
+
+    background-color: #fff0ff;
+    background: #061c2f;
+
+}
+
+#titleBodyOne {
+    /*color:red;*/
+}
+
+.numberBox {
+    font-size: 75px;
+}
+
+.split-line {
+    border-bottom: 1px solid #000000;
+    width: 1181px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#advice {
+    font-size: 24px;
+}
+
+#business {
+    font-size: 22px;
+}
+
+#businessOne {
+    font-size: 22px;
+}
+
+#businessAddressOne {
+    font-size: 22px;
+}
+
+#titleInformationOne {
+    font-size: 22px;
+}
+
+#phoneOne {
+    font-size: 22px;
+}
+
+#phoneTwo {
+    font-size: 22px;
+}
+
+#pageOne {
+    font-size: 22px;
+}
+
+#titleInformationTwo {
+    font-size: 22px;
+}
+
+
+#spanCustomerFullName {
+    font-size: 40px;
+    /*color:red; */
+}
+
+#h4CustomerIdentificationDocument {
+    font-size: 40px;
+    /*color:red; */
+
+}
+
+#customerAddressIdData {
+    font-size: 40px;
+    /*color:red; */
+
+}
+
+#customerPhoneIdData {
+    font-size: 40px;
+    /*color:red; */
+}
+
+#description {
+    font-size: 40px;
+
+    /*color:blue; */
+}
+
+#titleBodyFiveNumber {
+    font-size: 40px;
+
+}
+
+#numberBox {
+    font-size: 35px;
+}
+
+#numberInvoice {
+    font-size: 35px;
+}
+
+#code-invoice {
+    padding-left: 180px;
+}
+
+.content-data {
+    padding-left: 13%;
+    padding-right: 13%;
+}
+
+.titleBodyThree {
+    padding-left: 1%;
+}
+
+.titleBodyThreeTh {
+    width: 125px;
+}
+
+.numberBoxTh {
+    width: 125px;
+}
+
+table.tbl-number-box {
+    margin-left: 1%;
+}

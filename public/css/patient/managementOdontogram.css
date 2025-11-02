@@ -1,0 +1,80 @@
+.content__form-dental_piece_by_odontogram {
+    background: antiquewhite;
+    position: fixed;
+    right: 0;
+    top: 17%;
+    display: none;
+    z-index: 15;
+}
+
+svg#content-all-data-odontogram-inferior {
+    margin-top: 2%;
+}
+
+.content__render-odontogram-loader {
+    height: 360px;
+    text-align: center;
+}
+
+div#content-render-data-odontogram-inferior, div#content-render-data-odontogram-superior {
+    width: 100%;
+    height: 100%;
+}
+
+.hide-element {
+    display: none;
+}
+
+.pointer-mouse {
+    cursor: pointer;
+}
+
+tr.active {
+    background: antiquewhite;
+}
+
+.m-datatable__table.xywer-tbl-admin tbody {
+    display: table;
+    width: 100%;
+}
+
+/*
+------RRESOURCES---*/
+.image-animation {
+    animation-name: image-animation;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    margin-top: 25%;
+    width: 90px
+}
+
+@keyframes image-animation {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.piece-hover {
+    fill-opacity: 0;
+    stroke-opacity: 0.3;
+}
+
+.piece-hover--management {
+    fill: rgb(0, 138, 202);
+    fill-opacity: 0.3;
+    stroke-opacity: 0;
+    display: block !important;
+}
+
+.full-scream-content-all-data-odontogram-inferior{
+    /*0 130 1163 200*/
+    padding-top: 5%;/*0 80 1163 200*/
+}

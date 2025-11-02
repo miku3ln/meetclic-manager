@@ -1,0 +1,91 @@
+%PDF-1.4
+%базон
+
+1 0 obj <<
+  /Type /Catalog
+  /Pages 2 0 R
+>> endobj
+
+2 0 obj <<
+  /Type /Pages
+  /Kids [ 4 0 R ]
+  /Count 1
+>> endobj
+
+3 0 obj <<
+  /Length 144
+>> stream
+1 0 0 -1 0 419.53 cm
+q
+q
+0.6 0.6 0.7137255 RG
+2 w
+0 50 m
+200 50 l
+h
+S
+Q
+q
+0 0 0 rg
+1 0 0 -1 20 40 cm
+BT
+/F1 15 Tf
+0 Tr
+(Hello World!) Tj
+ET
+Q
+Q
+
+endstream endobj
+
+4 0 obj <<
+  /Contents 3 0 R
+  /Parent 2 0 R
+  /MediaBox [ 0 0 595.28 419.53 ]
+  /Type /Page
+  /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+  /Resources <<
+    /Font <<
+      /F1 5 0 R
+    >>
+    /ExtGState <<>>
+    /XObject <<>>
+    /Pattern <<>>
+    /Shading <<>>
+  >>
+  /Annots [ ]
+>> endobj
+
+5 0 obj <<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica-Bold
+>> endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000017 00000 n 
+0000000071 00000 n 
+0000000137 00000 n 
+0000000335 00000 n 
+0000000634 00000 n 
+
+trailer
+<<
+  /Size 6
+  /Root 1 0 R
+  /Info <<
+    /Producer (Kendo UI PDF Generator)
+    /Title ()
+    /Author ()
+    /Subject ()
+    /Keywords ()
+    /Creator (Kendo UI PDF Generator)
+    /CreationDate (D:20170527192246Z)
+  >>
+>>
+
+startxref
+716
+%%EOF

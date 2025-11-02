@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Custom Extendido</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/kjua@0.10.0/dist/kjua.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+        .form__group { margin-bottom: 15px; }
+        .form__label { font-weight: bold; display: block; margin-bottom: 5px; }
+        .form__input, .form__select, .form__range { width: 100%; padding: 8px; }
+        .section__title { font-size: 1.5em; margin-top: 20px; }
+        .qr__container { position: relative; margin-top: 20px; text-align: center; }
+        .qr__canvas, .qr__img { border: 2px solid #ccc; border-radius: 12px; }
+        .qr__label {
+            position: absolute;
+            font-size: 18px;
+            white-space: nowrap;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+
+    </style>
+</head>
+<body>
+
+<h2 class="section__title">QR Personalizado (Completo)</h2>
+
+<div class="form__group">
+    <label class="form__label">Texto del QR:</label>
+    <input type="text" id="qrText" class="form__input" value="https://tu-sitio.com">
+</div>
+
+<div class="form__group">
+    <label class="form__label">Color del QR:</label>
+    <input type="color" id="qrColor" class="form__input" value="#000000">
+</div>
+
+<div class="form__group">
+    <label class="form__label">Texto del Label:</label>
+    <input type="text" id="labelText" class="form__input">
+</div>
+
+<div class="form__group">
+    <label class="form__label">Modo:</label>
+    <select id="qrMode" class="form__select">
+        <option value="plain">PLAIN</option>
+        <option value="label">LABEL</option>
+        <option value="image">IMAGE</option>
+        <option value="image-label">IMAGEN-LABEL</option>
+        <option value="label-image">LABEL-IMAGEN</option>
+    </select>
+</div>
+
+<div id="label-options" class="hidden">
+    <div class="form__group">
+        <label class="form__label">Color del Label:</label>
+        <input type="color" id="labelColor" class="form__input" value="#000000">
+    </div>
+    <div class="form__group">
+        <label class="form__label">Tamaño del Label (%): <span id="labelSize-val">100</span></label>
+        <input type="range" id="labelSize" class="form__range" min="50" max="200" value="100">
+    </div>
+    <div class="form__group">
+        <label class="form__label">Posición X (Label): <span id="labelPosX-val">50</span>%</label>
+        <input type="range" id="labelPosX" class="form__range" min="0" max="100" value="50">
+    </div>
+    <div class="form__group">
+        <label class="form__label">Posición Y (Label): <span id="labelPosY-val">110</span>%</label>
+        <input type="range" id="labelPosY" class="form__range" min="0" max="200" value="110">
+    </div>
+</div>
+
+<div id="image-options" class="hidden">
+    <div class="form__group">
+        <label class="form__label">Ícono central:</label>
+        <input type="file" id="qrIcon" accept=".png,.svg" class="form__input">
+    </div>
+    <div class="form__group">
+        <label class="form__label">Tamaño del Ícono (%): <span id="imgSize-val">30</span></label>
+        <input type="range" id="imgSize" class="form__range" min="10" max="100" value="30">
+    </div>
+</div>
+
+<div class="form__group">
+    <label class="form__label">Quiet Zone: <span id="quiet-val">2</span></label>
+    <input type="range" id="qrQuiet" class="form__range" min="0" max="4" value="2">
+</div>
+
+<div class="form__group">
+    <label class="form__label">Rounded Corners: <span id="rounded-val">0</span>%</label>
+    <input type="range" id="qrRounded" class="form__range" min="0" max="100" value="0">
+</div>
+
+<button id="generateQR">Generar QR</button>
+
+<h3 class="section__title">Descargar como</h3>
+<div class="form__group">
+    <select id="downloadFormat" class="form__select">
+        <option value="png">PNG</option>
+        <option value="jpeg">JPG</option>
+        <option value="svg">SVG</option>
+    </select>
+</div>
+<button id="downloadQR">Descargar</button>
+
+<div class="qr__container">
+    <div id="qrcode"></div>
+    <div id="label-preview" class="qr__label"></div>
+</div>
+
+<script>
+    let iconImage = null;
+    let currentCanvas = null;
+
+    function updateVisibility() {
+        const mode = $('#qrMode').val();
+        $('#label-options').toggle(mode.includes('label'));
+        $('#image-options').toggle(mode.includes('image'));
+    }
+
+    function renderQR() {
+        const text = $('#qrText').val();
+        const fillColor = $('#qrColor').val();
+        const quiet = parseInt($('#qrQuiet').val());
+        const rounded = parseInt($('#qrRounded').val());
+        const mode = $('#qrMode').val();
+
+        $('#quiet-val').text(quiet);
+        $('#rounded-val').text(rounded);
+        $('#imgSize-val').text($('#imgSize').val());
+        $('#labelPosX-val').text($('#labelPosX').val());
+        $('#labelPosY-val').text($('#labelPosY').val());
+        $('#labelSize-val').text($('#labelSize').val());
+
+        $('#qrcode').empty();
+        $('#label-preview').hide();
+
+        const qr = kjua({
+            render: 'canvas',
+            text: text,
+            size: 512,
+            fill: fillColor,
+            back: "#ffffff",
+            ecLevel: 'H',
+            quiet: quiet,
+            rounded: rounded,
+            mode: iconImage && mode.includes('image') ? 'image' : 'plain',
+            image: iconImage,
+            imageSize: parseFloat($('#imgSize').val()) / 100
+        });
+
+        currentCanvas = qr;
+        $('#qrcode').append(qr);
+
+        if (mode.includes('label')) {
+            const label = $('#labelText').val();
+            $('#label-preview').text(label).css({
+                left: $('#labelPosX').val() + '%',
+                top: $('#labelPosY').val() + '%',
+                color: $('#labelColor').val(),
+                fontSize: $('#labelSize').val() + '%',
+                display: 'block'
+            });
+        }
+    }
+    let iconBase64 = "";
+    function downloadQR() {
+        const format = $('#downloadFormat').val();
+        const text = $('#qrText').val();
+
+        if (format === 'svg') {
+            const svg = kjua({
+                render: 'svg',
+                text: text,
+                size: 512,
+                ecLevel: 'H',
+                quiet: 2,
+                rounded: 0,
+                mode: 'plain'
+            });
+
+            if (iconBase64) {
+                const NS = "http://www.w3.org/2000/svg";
+                const imageNode = document.createElementNS(NS, "image");
+                imageNode.setAttributeNS(null, "href", iconBase64);
+                imageNode.setAttributeNS(null, "x", "179");
+                imageNode.setAttributeNS(null, "y", "179");
+                imageNode.setAttributeNS(null, "width", "154");
+                imageNode.setAttributeNS(null, "height", "154");
+                svg.appendChild(imageNode);
+            }
+
+            const serializer = new XMLSerializer();
+            const svgBlob = new Blob([serializer.serializeToString(svg)], { type: "image/svg+xml" });
+            const url = URL.createObjectURL(svgBlob);
+            triggerDownload(url, 'qr-code.svg');
+
+        } else if (currentCanvas) {
+            const dataURL = currentCanvas.toDataURL('image/' + format);
+            triggerDownload(dataURL, 'qr-code.' + format);
+        }
+    }
+
+
+    function triggerDownload(href, filename) {
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = filename;
+        link.click();
+    }
+
+    $('#qrIcon').on('change', function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const img = new Image();
+            img.onload = function () {
+                iconImage = img;
+            };
+            img.src = event.target.result;
+            iconBase64 = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    $('#generateQR').on('click', renderQR);
+    $('#downloadQR').on('click', downloadQR);
+    $('#qrMode').on('change', updateVisibility);
+
+    updateVisibility();
+</script>
+
+</body>
+</html>

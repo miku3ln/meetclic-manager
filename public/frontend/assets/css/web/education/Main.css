@@ -1,0 +1,55 @@
+.rd-navbar-transparent.rd-navbar-static .rd-navbar-nav > li > a {
+
+    font-size: 20px;
+    font-weight: 100;
+}
+.rd-navbar-transparent.rd-navbar-static .rd-navbar-brand-title {
+
+    text-transform: uppercase;
+}
+.rd-navbar-transparent.rd-navbar-static .rd-navbar-brand-slogan {
+    font-style: normal;
+    text-transform: uppercase;
+}
+.page-head{
+    position:absolute; left:0; right:0;top:0
+}
+
+.rd-navbar-transparent.rd-navbar-static .rd-navbar-brand {
+
+    margin-top: -5px;
+}
+
+.rd-navbar-transparent.rd-navbar-static .rd-navbar-nav-wrap {
+    margin-top: 8px;
+}
+.rd-navbar-transparent.rd-navbar-static .rd-navbar-inner {
+
+    background: #004181;
+    height: 70px;
+}
+
+
+.rd-navbar-transparent.rd-navbar-fixed .rd-navbar-panel
+{
+    background: #004181;
+}
+.rd-navbar-transparent.rd-navbar-fixed .panel-title
+{
+    color:#fff;
+}
+.rd-navbar-transparent.rd-navbar-fixed .rd-navbar-nav-wrap.active{
+    background: #004181;
+}
+.rd-navbar-transparent.rd-navbar-fixed .rd-navbar-nav li a
+{
+    color: #fff;
+}
+.rd-navbar-transparent.rd-navbar-fixed .rd-navbar-nav > li + li:before
+{
+    background: none;
+}
+.rd-navbar-transparent.rd-navbar-fixed .rd-navbar-toggle span
+{
+    color: #fff;
+}

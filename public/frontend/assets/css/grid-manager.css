@@ -1,0 +1,19 @@
+
+/*---SEARCH icon*/
+.bootgrid-header .search .fa, .bootgrid-footer .search .fa {
+    font-size: 16px !important;
+    color: #818e8f !important;
+    background: #e6e6e6 !important;
+    padding-top: 5%;
+    display: table-cell;
+}
+.custom-scroll-admin-grid {
+
+    overflow-y: scroll;
+}
+.pagination > .disabled > a {
+    color: #666666;
+    background-color: #e4e4e4;
+    border-color: #e4e4e4;
+    cursor: not-allowed;
+}

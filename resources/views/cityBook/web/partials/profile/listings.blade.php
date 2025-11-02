@@ -1,0 +1,96 @@
+<div class="dashboard-list-box fl-wrap">
+    <div class="dashboard-header fl-wrap">
+        <h3>{{__('frontend.account.menu.my-queens')}}</h3>
+    </div>
+    <!-- dashboard-list end-->
+    <div class="dashboard-list">
+        <div class="dashboard-message">
+
+            <div class="dashboard-listing-table-image">
+                <a href="{{route('businessDetails', app()->getLocale()).'/1'}}"><img src="{{ URL::asset($themePath.'images/all/3.jpg')}}" alt=""></a>
+            </div>
+            <div class="dashboard-listing-table-text">
+                <h4><a href="listing-single.html">Event In City Hall</a></h4>
+                <span class="dashboard-listing-table-address"><i class="fa fa-map-marker"></i><a href="#">USA 27TH Brooklyn NY</a></span>
+                <div class="listing-rating card-popup-rainingvis fl-wrap" data-starrating2="5">
+                    <span>(2 {{__('frontend.referral.activities.five.plural')}})</span>
+                </div>
+                <ul class="dashboard-listing-table-opt  fl-wrap">
+
+                    <li><a href="#" class="del-btn">{{__('frontend.buttons.delete')}} <i class="fa fa-trash-o"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- dashboard-list end-->
+    <!-- dashboard-list end-->
+    <div class="dashboard-list">
+        <div class="dashboard-message">
+            <div class="dashboard-listing-table-image">
+                <a href="{{route('businessDetails', app()->getLocale()).'/2'}}"><img src="{{ URL::asset($themePath.'images/all/1.jpg')}}" alt=""></a>
+            </div>
+            <div class="dashboard-listing-table-text">
+                <h4><a href="listing-single.html">Event In City Hall</a></h4>
+                <span class="dashboard-listing-table-address"><i class="fa fa-map-marker"></i><a href="#">USA 27TH Brooklyn NY</a></span>
+                <div class="listing-rating card-popup-rainingvis fl-wrap" data-starrating2="3">
+                    <span>(2 {{__('frontend.referral.activities.five.plural')}})</span>
+                </div>
+                <ul class="dashboard-listing-table-opt  fl-wrap">
+
+                    <li><a href="#" class="del-btn">{{__('frontend.buttons.delete')}} <i class="fa fa-trash-o"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- dashboard-list end-->
+    <!-- dashboard-list end-->
+    <div class="dashboard-list">
+        <div class="dashboard-message">
+            <div class="dashboard-listing-table-image">
+                <a href="{{route('businessDetails', app()->getLocale()).'/3'}}"><img src="{{ URL::asset($themePath.'images/all/2.jpg')}}" alt=""></a>
+            </div>
+            <div class="dashboard-listing-table-text">
+                <h4><a href="listing-single.html">Event In City Hall</a></h4>
+                <span class="dashboard-listing-table-address"><i class="fa fa-map-marker"></i><a href="#">USA 27TH Brooklyn NY</a></span>
+                <div class="listing-rating card-popup-rainingvis fl-wrap" data-starrating2="4">
+                    <span>(2 {{__('frontend.referral.activities.five.plural')}})</span>
+                </div>
+                <ul class="dashboard-listing-table-opt  fl-wrap">
+
+                    <li><a href="#" class="del-btn">{{__('frontend.buttons.delete')}} <i class="fa fa-trash-o"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- dashboard-list end-->
+    <!-- dashboard-list end-->
+    <div class="dashboard-list">
+        <div class="dashboard-message">
+            <div class="dashboard-listing-table-image">
+                <a href="{{route('businessDetails', app()->getLocale()).'/3/2'}}"><img src="{{ URL::asset($themePath.'images/all/4.jpg')}}" alt=""></a>
+            </div>
+            <div class="dashboard-listing-table-text">
+                <h4><a href="listing-single.html">Event In City Hall</a></h4>
+                <span class="dashboard-listing-table-address"><i class="fa fa-map-marker"></i><a href="#">USA 27TH Brooklyn NY</a></span>
+                <div class="listing-rating card-popup-rainingvis fl-wrap" data-starrating2="5">
+                    <span>(2 {{__('frontend.referral.activities.five.plural')}})</span>
+                </div>
+                <ul class="dashboard-listing-table-opt  fl-wrap">
+
+                    <li><a href="#" class="del-btn">{{__('frontend.buttons.delete')}} <i class="fa fa-trash-o"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- dashboard-list end-->
+</div>
+<!-- pagination-->
+<div class="pagination">
+    <a href="#" class="prevposts-link"><i class="fa fa-caret-left"></i></a>
+    <a href="#">1</a>
+    <a href="#" class="current-page">2</a>
+    <a href="#">3</a>
+    <a href="#">4</a>
+    <a href="#" class="nextposts-link"><i class="fa fa-caret-right"></i></a>
+</div>
+

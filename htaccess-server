@@ -1,0 +1,23 @@
+#Permite proteccion carpetas
+#Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteCond %{HTTPS} !on
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+#http://www.netandsoftware.es/articulos-blog/articulos-del-blog/art-para-webmasters-y-joomla/505-htaccess-en-profundidad-la-guia-completa
+#Instructions
+#[F] Forbidden: prohíbe un acceso y fuerza un acceso denegado. 403 Forbidden.
+#[L] Last rule: indica que es la última regla que debe aplicarse.
+#-f prueba si la cadena es un archivo existente.
+#-d prueba si la cadena es un directorio existente.
+#$ marca el fin de un argumento.

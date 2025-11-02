@@ -1,0 +1,10 @@
+.list-inline {
+    padding-left: 0;
+    list-style: none;
+}
+.badge-soft-success {
+    color: #18c984;
+    background-color: rgba(24, 201, 132, .18);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

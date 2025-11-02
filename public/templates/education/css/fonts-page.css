@@ -1,0 +1,23 @@
+
+@font-face {
+	font-family: 'Quick';
+	src: url("../fonts/Quicksand/static/Quicksand-Bold.ttf") format("truetype");
+
+}
+ body{
+    font-family: "Quick"!important;
+ }
+h1,h2,h3,h4,h5,h6{
+    font-family: "Quick"!important;
+}
+p
+{
+    font-family: "Quick"!important;
+}
+a{
+    font-family: "Quick" !important;
+
+}
+div{
+    font-family: "Quick" !important;
+}

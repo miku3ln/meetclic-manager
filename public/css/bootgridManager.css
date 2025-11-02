@@ -1,0 +1,142 @@
+
+/*--bordes*/
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    margin-left: 0;
+    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+}
+
+/*REBRANDING TBL XYWER*/
+/*------TABLAS*/
+.xywer-tbl-admin {
+    width: 99%;
+    margin-bottom: 15%;
+}
+
+/*HEAD*/
+.xywer-tbl-admin thead > tr {
+    background: #445EF2 !important;
+    height: 47px !important;
+}
+
+/*HEAD LETRAS*/
+
+.xywer-tbl-admin thead > tr > th a {
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 200;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+}
+
+/*---TBODY*/
+.xywer-tbl-admin > tbody > tr {
+    background-color: #e6e6e6;
+    color: #7e8c8d;
+    font-size: 12px;
+    font-weight: 200;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+}
+
+.xywer-tbl-admin > tbody > tr:hover {
+    color: #fff;
+    background-color: #7e8c8dd9;
+
+}
+.xywer-tbl-admin > tbody > tr.selected {
+    color: #fff;
+    background-color: #7e8c8d;
+
+}
+/*---UPDATE*/
+.xywer-tbl-admin > tbody > tr:hover .a-meet-update {
+    color: #cccccc !important;
+
+}
+
+.xywer-tbl-admin tbody tr {
+    text-align: left;
+    height: 55px;
+}
+
+/*---SEARCH icon*/
+.bootgrid-header .search .fa, .bootgrid-footer .search .fa {
+    font-size: 16px !important;
+    color: #818e8f !important;
+    background: #e6e6e6 !important;
+}
+
+/*---GRID---*/
+.input-group-addon:first-child {
+    left: 67% !important;
+    position: relative !important;
+}
+
+/*---BORDERS ROWS--*/
+.xywer-border-tr-info {
+    border-top: 1px solid #29477c;
+    border-bottom: 1px solid #29477c;
+    border-left: 1px solid #29477c;
+    border-right: 1px solid #29477c;
+}
+
+span.title-info i {
+    font-size: 37px;
+    color: #29477c;
+}
+
+span.title-info {
+    /* padding-top: 31px; */
+    color: #29477c;
+    font-size: 24px;
+    margin-right: 13px;
+}
+
+span.title-info-data {
+    color: #29477c;
+    font-size: 13px;
+    margin-right: 13px;
+    font-weight: 200;
+}
+
+/*
+----------OTHERS--------*/
+.inline-data {
+    display: inline;
+}
+
+/*BOOTGRID*/
+.bootgrid-footer .pagination, .bootgrid-header .pagination {
+    margin: 0 !important;
+}
+
+.pagination {
+    display: -webkit-box;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+}
+
+.pagination > .disabled > a {
+    color: #ffff;
+    background-color: #e4e4e4;
+    border-color: #e4e4e4;
+    cursor: not-allowed;
+}
+
+.pagination > li > a {
+    color: #666666;
+    background-color: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    cursor: pointer;
+}
+
+
+.custom-scroll-admin-grid {
+    height: 450px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.bootgrid-header{
+    display:none !important;
+}

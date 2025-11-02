@@ -1,0 +1,14 @@
+
+// Variables
+@import 'variables-template-frontend';
+:root {
+
+    @each $color, $value in $colors {
+        --#{$color}: #{$value};
+    }
+
+    @each $color, $value in $themes-color {
+        --#{$color}: #{$value};
+    }
+
+}

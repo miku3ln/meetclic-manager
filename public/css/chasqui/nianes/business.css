@@ -1,0 +1,273 @@
+.preview-demo.active-search {
+    -webkit-box-shadow: -5px 0 10px rgba(0, 0, 0, .1);
+    box-shadow: -5px 0 10px rgba(0, 0, 0, .1);
+    left: 0px !important;
+    display: block !important;
+
+}
+
+.pagination > li.active>a {
+    border-color: #ddd;
+    color: #181515 !important;
+}
+
+
+/*REBRANDING TBL XYWER*/
+/*------TABLAS*/
+.xywer-tbl-admin {
+    width: 99%;
+    margin-bottom: 15%;
+}
+
+/*HEAD*/
+.xywer-tbl-admin thead > tr {
+    background: #fab200 !important;
+    height: 47px !important;
+}
+
+/*HEAD LETRAS*/
+
+.xywer-tbl-admin thead > tr > th a {
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 200;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+}
+
+/*---TBODY*/
+.xywer-tbl-admin > tbody > tr {
+    background-color: #e6e6e6;
+    color: #7e8c8d;
+    font-size: 12px;
+    font-weight: 200;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+}
+
+.xywer-tbl-admin > tbody > tr:hover {
+    color: #fff;
+    background-color: none;
+
+}
+.xywer-tbl-admin > tbody > tr.selected {
+    color: #fff;
+    background-color: #7e8c8d;
+
+}
+/*---UPDATE*/
+.xywer-tbl-admin > tbody > tr:hover .a-meet-update {
+    color: #cccccc !important;
+
+}
+
+.xywer-tbl-admin tbody tr {
+    height: 55px;
+}
+
+/*---SEARCH icon*/
+.bootgrid-header .search .fa, .bootgrid-footer .search .fa {
+    font-size: 16px !important;
+    color: #818e8f !important;
+    //background: #e6e6e6 !important;
+}
+
+/*---GRID---*/
+.input-group-addon:first-child {
+    left: 67% !important;
+    position: relative !important;
+}
+
+/*---BORDERS ROWS--*/
+.xywer-border-tr-info {
+    border-top: 1px solid #fab200;
+    border-bottom: 1px solid #fab200;
+    border-left: 1px solid #fab200;
+    border-right: 1px solid #fab200;
+}
+
+/*-----------GESTION DE FILTROS------*/
+/*---botones background*/
+.actions button.btn {
+    background: #E6E6E6;
+    color: #818e8f;
+}
+/*---BUTTONS---*/
+.btn:disabled{
+    cursor: not-allowed;
+}
+/*-----BORDES RERECHOS*/
+button.btn.btn-default.btn-refresh {
+    border-right: 7px solid #00AFF1;
+    margin-top: 0px;
+}
+
+.dropdown.btn-group {
+    border-right: 7px solid #00AFF1;
+}
+
+button.btn {
+    border: 0px solid transparent;
+}
+
+.bootgrid-footer .infoBar {
+    /*background: #e7493b;*/
+}
+
+/*------ANCHO DE LA SELECION*/
+/*------HOVER*/
+.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover {
+    background: #00AFF1;
+    color: #fff !important;
+
+}
+
+/*-----ALINEACION DE CUADRADO*/
+.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item .dropdown-item-checkbox {
+    margin: 0px 2px 4px -11px;
+    border-radius: 0px !important;
+}
+
+.input[type=radio] {
+    border-radius: 0px !important;
+
+}
+
+.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item {
+    padding: 2px 15px;
+    font-size: 11px;
+}
+
+.li-last-boot {
+    display: none;
+}
+
+/*-----PAJINACION COLOR*/
+.pagination > li > a {
+    color: #065C77;
+    background-color: #AFBCBC;
+    border: 1px solid #AFBCBC;
+    cursor: pointer;
+
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+    text-decoration: none;
+
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-left: -1px;
+
+}
+
+.pagination > .active > a {
+    background-color: #7E8C8D !important;
+    border-color: #7E8C8D !important;
+}
+
+/*------BUTOON DE LA SELECION*/
+.checkbox-select {
+
+}
+
+/*----CHECBOX*/
+input[type=checkbox] {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+input[type=checkbox]:checked:after {
+    content: "\2714";
+    margin-left: 3px;
+    font-size: 10px;
+}
+
+/*------sirve*/
+input[type=checkbox] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: 1px solid #fff;
+    border-radius: 0px;
+    background-color: #96A4A5;
+    color: black;
+    box-sizing: content-box;
+}
+
+.dropdown-menu > .active > a {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #00AFF1;
+}
+
+.bootgrid-footer .infoBar {
+    /*background: #96a4a5;*/
+}
+
+.bootgrid-table th:hover, .bootgrid-table th:active {
+    background: #607D8B;
+}
+
+/*//////hover del pajinacion*/
+.pagination > li > a:hover {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.pagination > li.prev > a:hover {
+    color: #00aff1 !important;
+
+}
+
+.pagination > li.next > a:hover {
+    color: #00aff1 !important;
+
+}
+
+.pagination > li.first > a:hover {
+    color: #00aff1 !important;
+
+}
+
+.pagination > li.last > a:hover {
+    color: #00aff1 !important;
+}
+
+/*////// activacion*/
+.pagination > .active > a {
+    color: #666666;
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+.pagination > li > a, .pagination > li > span {
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0);
+    -moz-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0);
+    -webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0);
+}
+
+.pagination > li > a {
+    color: #666666;
+    background-color: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    cursor: pointer;
+}
+
+.pagination > .disabled > a {
+    color: #666666;
+    background-color: #e4e4e4;
+    border-color: #e4e4e4;
+    cursor: not-allowed;
+}
+
+.bootgrid-footer div div div.infos {
+    color: #00AFF1;
+    font-size: 11pt;
+    text-align: right !important;
+}
+.custom-scroll-admin-grid {
+    height: 450px;
+    overflow-y: scroll;
+}
