@@ -8,64 +8,306 @@
     <style>
         /* Estado oculto de elementos marcados */
         .not-view {
-            display: none;
+            display: none !important;
         }
 
-        /* Posición de la barra de botones cuando la cámara está activa */
-        .manager-buttons.manager-buttons--view-control-cam {
-            position: fixed;
-            bottom: 3%;
-        }
-
-        /* Normaliza body para canvas XR a pantalla completa */
         body {
             margin: 0;
-            overflow: hidden;
-        }
-
-        /* El contenedor arranca oculto hasta verificar modo */
-        .container--custom.not-view {
-            opacity: 1;
-        }
-
-        /* Layout de la botonera */
-        .manager-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .5rem;
-        }
-
-        /* Forzamos visibilidad de botones AR durante la vista de cámara */
-        .manager-buttons--view-control-cam .not-view {
-            display: inline-block !important;
-        }
-
-        /* Auxiliar específico de items marcados como not-view */
-        .manager-buttons__item.not-view {
-            display: none;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            background: #111;
+            color: #eee;
         }
 
         #map {
-            height: 100vh;
-            width: 100%;
+            position: fixed;
+            inset: 0;
         }
 
+        .not-view {
+            display: none !important;
+        }
+
+        .d-none {
+            display: none !important;
+        }
+        :root{
+            --bg: #0a0a0a;
+            --fg: #f5f5f5;
+            --muted: #b9bcc4;
+            --primary: #2ecc71;
+            --ring: rgba(255,255,255,0.9);
+            --dot:  rgba(255,255,255,0.95);
+        }
         .controls {
             position: fixed;
-            z-index: 1000;
-            top: 12px;
-            left: 12px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 8px 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
-            font: 14px/1.2 system-ui, sans-serif;
+            inset: 0;
+            pointer-events: none;
         }
 
-        .controls button {
-            margin-right: 6px;
+        .controls .container--custom {
+            height: 100%;
+            pointer-events: none;
         }
+
+        #fallback {
+            pointer-events: auto;
+            padding: 8px;
+        }
+
+        #hint {
+            position: fixed;
+            left: 12px;
+            bottom: 12px;
+            background: rgba(0, 0, 0, .65);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 10px;
+            z-index: 10001;
+            font-size: 14px;
+        }
+
+        /* Retícula */
+        /* Loading transparente (no bloquea interacción) */
+        .loading {
+            position: fixed; inset: 0;
+            background: transparent;
+            pointer-events: none;
+            display: grid; place-items: center;
+            z-index: 9998;
+        }
+        .loading__center { display:flex; flex-direction:column; align-items:center; }
+        .spinner {
+            width: 56px; height: 56px; border-radius: 50%;
+            border: 6px solid rgba(255,255,255,0.25);
+            border-top-color: rgba(255,255,255,0.9);
+            animation: spin 1s linear infinite;
+        }
+        .loading__text { margin-top: 10px; text-align:center; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .loading__text strong { display:block; margin-bottom: 4px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .reticle {
+            position: fixed; inset: 0; display: grid; place-items: center; z-index: 4;
+            pointer-events: auto;
+        }
+        .reticle.hidden { display: none; }
+        .reticle__ring {
+            width: 160px; height: 160px; border-radius: 50%;
+            border: 4px solid var(--ring);
+            box-shadow: 0 0 16px rgba(255,255,255,0.35);
+        }
+        .reticle__dot {
+            position:absolute; width: 10px; height: 10px;
+            border-radius: 50%; background: var(--dot);
+        }
+        .reticle__hint {
+            position: absolute; top: calc(50% + 110px); left: 50%; transform: translateX(-50%);
+            font-size: 14px; color: var(--muted);
+            background: rgba(0,0,0,0.5); padding: 6px 8px; border-radius: 6px;
+            backdrop-filter: blur(6px);
+        }
+        /* Botón volver */
+        #btn-back-map {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 10001;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: none;
+            background: #222;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+        }
+
+        #btn-back-map:hover {
+            background: #2c2c2c;
+        }
+
+        /* Popup BEM */
+        .popup-card {
+            width: 280px;
+            font-size: 14px;
+            color: #222;
+        }
+
+        .popup-card__header {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .popup-card__img {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .popup-card__titles {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-card__title {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .popup-card__subtitle {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .popup-card__body {
+            margin-top: 8px;
+            color: #333;
+        }
+
+        .popup-card__description {
+            margin: 0;
+        }
+
+        .popup-card__footer {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .popup-card__btn {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .popup-card__btn--primary {
+            background: #4c4cff;
+            color: #fff;
+        }
+
+        .popup-card__btn--ghost {
+            background: #f1f1f1;
+            color: #333;
+        }
+
+        /* model-viewer */
+        model-viewer {
+            width: 100%;
+            height: 70vh;
+            background: #000;
+            border-radius: 12px;
+        }
+
+        /* loader */
+        .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            border: .35rem solid rgba(255, 255, 255, .25);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #btn-capture {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 10001;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: none;
+            background: #2f8;
+            color: #000;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+            font-weight: 600;
+        }
+
+        #btn-capture:hover {
+            filter: brightness(0.95);
+        }
+        :root{
+            --bg:#0a0a0a; --fg:#f5f5f5; --muted:#b9bcc4;
+            --ring:rgba(255,255,255,0.9); --dot:rgba(255,255,255,0.95);
+            --btn:#222; --btn-h:#2c2c2c; --accent:#2f8;
+        }
+
+        *{ box-sizing:border-box; }
+        html,body{ margin:0; padding:0; height:100%; background:var(--bg); color:var(--fg); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica Neue,Arial; }
+
+        .hint{
+            position:fixed; left:12px; bottom:12px;
+            background:rgba(0,0,0,.65); color:#fff;
+            padding:8px 12px; border-radius:10px; z-index:10001; font-size:14px;
+        }
+        .btn{
+            position:fixed; z-index:10001; padding:8px 12px;
+            border-radius:10px; border:none; cursor:pointer; font-weight:600;
+            box-shadow:0 2px 8px rgba(0,0,0,.35);
+        }
+        #btn-back-map{ top:12px; left:12px; background:var(--btn); color:#fff; }
+        #btn-back-map:hover{ background:var(--btn-h); }
+        #btn-capture{ top:12px; right:12px; background:var(--accent); color:#000; }
+        #btn-capture:hover{ filter:brightness(.95); }
+
+        .map{ position:fixed; inset:0; }
+        .not-view{ display:none !important; }
+        .d-none{ display:none !important; }
+
+        .container--custom{ position:relative; z-index:2; }
+
+        /* Loading transparente */
+        .loading{
+            position:fixed; inset:0; background:transparent; pointer-events:none;
+            display:grid; place-items:center; z-index:9998;
+        }
+        .loading__center{ display:flex; flex-direction:column; align-items:center; }
+        .spinner{
+            width:56px; height:56px; border-radius:50%;
+            border:6px solid rgba(255,255,255,.25); border-top-color:rgba(255,255,255,.9);
+            animation:spin 1s linear infinite;
+        }
+        .loading__text{ margin-top:10px; text-align:center; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.5); }
+        .loading__text strong{ display:block; margin-bottom:4px; }
+        @keyframes spin{ to{ transform:rotate(360deg);} }
+
+        /* Retícula */
+        .reticle{ position:fixed; inset:0; display:grid; place-items:center; z-index:4; pointer-events:auto; }
+        .reticle.hidden{ display:none; }
+        .reticle__ring{ width:160px; height:160px; border-radius:50%; border:4px solid var(--ring); box-shadow:0 0 16px rgba(255,255,255,.35); }
+        .reticle__dot{ position:absolute; width:10px; height:10px; border-radius:50%; background:var(--dot); }
+        .reticle__hint{
+            position:absolute; top:calc(50% + 110px); left:50%; transform:translateX(-50%);
+            font-size:14px; color:var(--muted); background:rgba(0,0,0,.5); padding:6px 8px; border-radius:6px; backdrop-filter:blur(6px);
+        }
+
+        /* Popup (Leaflet) */
+        .leaflet-container a{ color:#1da1f2; }
+        .popup-card{ color:#111; font-family:inherit; width:280px; }
+        .popup-card__header{ display:flex; gap:10px; align-items:center; }
+        .popup-card__img{ width:56px; height:56px; border-radius:10px; object-fit:cover; }
+        .popup-card__title{ margin:0; font-size:16px; color:#111; }
+        .popup-card__subtitle{ margin:0; font-size:12px; color:#444; }
+        .popup-card__body{ margin-top:8px; color:#333; }
+        .popup-card__footer{ display:flex; gap:8px; margin-top:10px; }
+        .popup-card__btn{ padding:6px 10px; border-radius:8px; border:1px solid #ddd; background:#fff; cursor:pointer; text-decoration:none; color:#111; }
+        .popup-card__btn--primary{ background:#111; color:#fff; border-color:#111; }
+        .popup-card__btn--ghost{ background:#fff; }
+
+        /* model-viewer */
+        model-viewer{ width:100%; height:70vh; background:#000; border-radius:12px; }
+
     </style>
     <link
         rel="stylesheet"
@@ -87,1763 +329,774 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""
     ></script>
-
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
     <script>
-        /* ============================================================
-     * AR Viewer con flujo: Explorar / Posición nueva
-     * ============================================================ */
+        /* ===========================================================
+ * Plataforma + capacidades
+ * =========================================================== */
+        const Platform = (() => {
+            const ua = navigator.userAgent || navigator.vendor || "";
+            const isAndroid = /Android/i.test(ua);
+            const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+            const isSecure = location.protocol === "https:" || location.hostname === "localhost";
+            return { isAndroid, isIOS, isSecure };
+        })();
 
-        /* =======================
-         * Clase de eventos del modelo
-         * ======================= */
-        class GestorEventosModelo {
-            /**
-             * @param {JQueryArViewer} viewer
-             * @param {object} opciones
-             */
-            constructor(viewer, opciones = {}) {
-                this.viewer = viewer;
+        async function canUseAR() {
+            if (!Platform.isAndroid || !Platform.isSecure || !('xr' in navigator)) return false;
+            try { return await navigator.xr.isSessionSupported('immersive-ar'); }
+            catch { return false; }
+        }
 
-                const porDefecto = {
-                    autorrotacion: {activa: true, velocidadRadSeg: 0.8, pausaAlInteractuar: true},
-                    clicks: {habilitar: true, umbralXR_metros: 0.25},
-                    gestures: {
-                        habilitar: true,
-                        rotacionFactor: 0.015,
-                        rotacionFactorX: 0.010,
-                        escalaMin: 0.2,
-                        escalaMax: 10.0,
-                        pinchFactor: 0.005
-                    },
-                    onModelClick: null,
-                    onDragStart: null,
-                    onDrag: null,
-                    onDragEnd: null,
-                    onScale: null,
-                    onRotate: null
+        /* ===========================================================
+         * UI Manager (con % de carga)
+         * =========================================================== */
+        const UI = (() => {
+            let $ = {};
+            const pctText = p => (Math.max(0, Math.min(1, p||0)) * 100).toFixed(0) + '%';
+
+            function bind(){
+                $.loading = document.getElementById('ar-loading');
+                $.loadingPct = document.getElementById('ar-loading-percent');
+                $.loadingLbl = document.getElementById('ar-loading-label');
+                $.fallback = document.getElementById('fallback');
+                $.mv = document.getElementById('mv');
+                $.hint = document.getElementById('hint');
+                $.container = document.querySelector('.container--custom');
+                $.reticle = document.getElementById('reticle-overlay');
+                $.retHint = $.reticle?.querySelector('.reticle__hint');
+                $.map = document.getElementById('map');
+                $.back = document.getElementById('btn-back-map');
+                $.capture = document.getElementById('btn-capture');
+            }
+            const show = el => el && el.classList.remove('d-none');
+            const hide = el => el && el.classList.add('d-none');
+
+            return {
+                bind,
+                setHint(m){ $.hint && ($.hint.textContent = m||''); },
+                setReticleText(m){ $.retHint && ($.retHint.textContent = m||''); },
+
+                showLoading(label='Cargando…'){ $.loadingLbl&&( $.loadingLbl.textContent=label ); $.loadingPct&&( $.loadingPct.textContent='0%' ); show($.loading); },
+                hideLoading(){ hide($.loading); },
+                resetLoadingProgress(label='Cargando modelo… 0%'){ $.loadingLbl&&( $.loadingLbl.textContent=label ); $.loadingPct&&( $.loadingPct.textContent='0%'); },
+                updateLoadingProgress(p){ const t=pctText(p); $.loadingPct&&( $.loadingPct.textContent=t ); $.loadingLbl&&( $.loadingLbl.textContent=`Cargando modelo… ${t}` ); },
+                finishLoadingProgress(){ $.loadingPct&&( $.loadingPct.textContent='100%'); $.loadingLbl&&( $.loadingLbl.textContent='Modelo cargado.'); },
+
+                showFallback(){ show($.fallback); },
+                hideFallback(){ hide($.fallback); },
+
+                revealContainer(){ $.container?.classList.remove('not-view'); },
+                showReticle(){ $.reticle?.classList.remove('hidden'); },
+                hideReticle(){ $.reticle?.classList.add('hidden'); },
+
+                hideMap(){ $.map?.classList.add('not-view'); $.back?.classList.remove('d-none'); },
+                showMap(){ $.map?.classList.remove('not-view'); $.back?.classList.add('d-none'); },
+
+                showCapture(){ $.capture?.classList.remove('d-none'); },
+                hideCapture(){ $.capture?.classList.add('d-none'); },
+
+                get mv(){ return $.mv; },
+                get $fallback(){ return $.fallback; },
+                get $reticle(){ return $.reticle; },
+                get $back(){ return $.back; },
+                get $capture(){ return $.capture; }
+            };
+        })();
+
+        /* ===========================================================
+         * Utilidades descarga / stats
+         * =========================================================== */
+        const DownloadUtils = {
+            saveBlob(filename, blob){
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href=url; a.download=filename;
+                document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            }
+        };
+        const StatsUtils = {
+            compute(root){
+                if (!root) return null;
+                const box = new THREE.Box3().setFromObject(root);
+                const size = new THREE.Vector3(); box.getSize(size);
+                let meshes=0, tris=0;
+                root.traverse(o=>{
+                    if (o.isMesh && o.geometry){
+                        meshes++;
+                        const g=o.geometry; const t = g.index ? (g.index.count/3) : (g.attributes?.position ? g.attributes.position.count/3 : 0);
+                        tris += Math.floor(t);
+                    }
+                });
+                return { meshes, triangles:tris, bbox:{ x:+size.x.toFixed(4), y:+size.y.toFixed(4), z:+size.z.toFixed(4) } };
+            }
+        };
+
+        /* ===========================================================
+         * Fallback <model-viewer> con % de progreso
+         * =========================================================== */
+        class ModelViewerController {
+            constructor(mvEl, hooks={}){ this.mv=mvEl; this.hooks=hooks; this._bound=false; }
+            bindOnce(){
+                if (this._bound||!this.mv) return; this._bound=true;
+
+                this._onARStatus = ev => {
+                    const st = ev?.detail?.status;
+                    if (st==='session-started') this.hooks.onEnter && this.hooks.onEnter({mode:'ios/web-ar'});
+                    if (st==='not-presenting') this.hooks.onExit && this.hooks.onExit({reason:'ar-status', status:st});
+                };
+                this._onCameraChange = () => {
+                    const o=this.mv.getCameraOrbit?.();
+                    this.hooks.onRotate && this.hooks.onRotate({ rotY:o?.theta??0, rotX:o?.phi??0 });
+                    this.hooks.onScale  && this.hooks.onScale({ scale:o?.radius??0 });
+                };
+                this._onLoad = () => { UI.finishLoadingProgress(); UI.hideLoading(); UI.setHint('Modelo cargado en visor 3D.'); };
+                this._onError= () => { UI.hideLoading(); UI.setHint('Error al cargar en visor 3D.'); };
+                this._onProgress = ev => {
+                    const p = ev?.detail?.totalProgress;
+                    if (typeof p==='number') UI.updateLoadingProgress(p);
                 };
 
-                this.cfg = $.extend(true, {}, porDefecto, opciones);
-
-                if (typeof this.cfg.onModelClick !== 'function') {
-                    this.cfg.onModelClick = ({modo, punto}) => {
-                        const p = punto ? `${punto.x.toFixed(3)}, ${punto.y.toFixed(3)}, ${punto.z.toFixed(3)}` : '—';
-                        console.log('[AR][onModelClick][default]', modo, p);
-                        try {
-                            const ev = new CustomEvent('ar-model-click', {detail: {modo, punto}});
-                            window.dispatchEvent(ev);
-                        } catch {
-                        }
-                    };
-                }
-
-                // Estado interno
-                this._raycaster = new THREE.Raycaster();
-                this._ndc = new THREE.Vector2();
-                this._escuchandoCanvas = false;
-                this._escuchandoModelViewer = false;
-
-                this._autorrotacionActiva = !!this.cfg.autorrotacion.activa;
-                this._velocidadRadSeg = Number(this.cfg.autorrotacion.velocidadRadSeg || 0.8);
-                this._boundingSphere = null;
-
-                // Gestos
-                this._drag = {activo: false, pointerId: null, lastX: 0, lastY: 0};
-                this._pinch = {activo: false, id1: null, id2: null, startDist: 0, startScale: 1};
-                this._activePointers = new Map();
+                this.mv.addEventListener('ar-status', this._onARStatus);
+                this.mv.addEventListener('camera-change', this._onCameraChange);
+                this.mv.addEventListener('load', this._onLoad);
+                this.mv.addEventListener('error', this._onError);
+                this.mv.addEventListener('progress', this._onProgress);
             }
-
-            iniciar() {
-                this._instalarOyentesCanvas();
-                this._instalarOyentesModelViewer();
+            async setSource({ glbUrl, usdzUrl }){
+                if (!this.mv) return;
+                UI.showFallback(); UI.showLoading(); UI.resetLoadingProgress();
+                this.mv.src = glbUrl || '';
+                if (usdzUrl) this.mv.setAttribute('ios-src', usdzUrl); else this.mv.removeAttribute('ios-src');
+                await new Promise((res,rej)=>{
+                    const ok = ()=>{ this.mv.removeEventListener('load',ok); res(); };
+                    const er = ()=>{ this.mv.removeEventListener('error',er); rej(); };
+                    this.mv.addEventListener('load', ok, {once:true});
+                    this.mv.addEventListener('error', er, {once:true});
+                });
             }
-
-            aplicarAlModelo(modelo) {
-                if (!modelo) return;
-                const box = new THREE.Box3().setFromObject(modelo);
-                const sphere = new THREE.Sphere();
-                box.getBoundingSphere(sphere);
-                this._boundingSphere = sphere;
-
-                if (this._autorrotacionActiva) {
-                    this.viewer.setStatus(this.viewer.msg('eventos.autorrotacion_activada', {
-                        vel: this._velocidadRadSeg.toFixed(2)
-                    }));
-                }
-            }
-
-            onFrame(deltaSeg) {
-                if (!this._autorrotacionActiva) return;
-                const m = this.viewer.model;
-                if (!m) return;
-                m.rotation.y += this._velocidadRadSeg * deltaSeg;
-            }
-
-            activarAutorrotacion() {
-                this._autorrotacionActiva = true;
-                this.viewer.setStatus(this.viewer.msg('eventos.autorrotacion_activada', {
-                    vel: this._velocidadRadSeg.toFixed(2)
-                }));
-            }
-
-            desactivarAutorrotacion() {
-                this._autorrotacionActiva = false;
-                this.viewer.setStatus(this.viewer.msg('eventos.autorrotacion_desactivada'));
-            }
-
-            toggleAutorrotacion() {
-                if (this._autorrotacionActiva) this.desactivarAutorrotacion();
-                else this.activarAutorrotacion();
-            }
-
-            setVelocidadAutorrotacion(radPorSeg) {
-                const v = Number(radPorSeg);
-                if (!isFinite(v) || v <= 0) return;
-                this._velocidadRadSeg = v;
-                if (this._autorrotacionActiva) {
-                    this.viewer.setStatus(this.viewer.msg('eventos.autorrotacion_actualizada', {
-                        vel: this._velocidadRadSeg.toFixed(2)
-                    }));
-                }
-            }
-
-            habilitarClicks() {
-                this.cfg.clicks.habilitar = true;
-                this.viewer.setStatus(this.viewer.msg('eventos.clicks_habilitados'));
-            }
-
-            deshabilitarClicks() {
-                this.cfg.clicks.habilitar = false;
-                this.viewer.setStatus(this.viewer.msg('eventos.clicks_deshabilitados'));
-            }
-
-            // NUEVO: helpers de gestos/interacciones para el flujo
-            habilitarGestos() {
-                this.cfg.gestures.habilitar = true;
-                this.viewer.setStatus('Gestos habilitados.');
-            }
-
-            deshabilitarGestos() {
-                this.cfg.gestures.habilitar = false;
-                this.viewer.setStatus('Gestos deshabilitados.');
-            }
-
-            habilitarInteraccionesModelo() {
-                this.habilitarGestos();
-                this.habilitarClicks();
-            }
-
-            deshabilitarInteraccionesModelo() {
-                this.deshabilitarGestos();
-                this.deshabilitarClicks();
-            }
-
-            /* ===== Listeners de canvas y fallback ===== */
-            _instalarOyentesCanvas() {
-                const canvas = this.viewer?.renderer?.domElement;
-                if (!canvas || this._escuchandoCanvas) return;
-
-                const toNdc = (evt) => {
-                    const rect = canvas.getBoundingClientRect();
-                    const x = ((evt.clientX - rect.left) / rect.width) * 2 - 1;
-                    const y = -((evt.clientY - rect.top) / rect.height) * 2 + 1;
-                    this._ndc.set(x, y);
-                };
-
-                const onPointer = (evt) => {
-                    if (!this.cfg.clicks.habilitar) return;
-                    const inXR = !!this.viewer?.renderer?.xr?.isPresenting;
-                    if (inXR) return;
-
-                    toNdc(evt);
-                    this._raycaster.setFromCamera(this._ndc, this.viewer.camera);
-                    if (this.viewer.model) {
-                        const inter = this._raycaster.intersectObject(this.viewer.model, true);
-                        if (inter && inter.length > 0) {
-                            const p = inter[0].point || null;
-                            this._emitirClickModelo('visor', p);
-                            if (this.cfg.autorrotacion.pausaAlInteractuar && this._autorrotacionActiva) {
-                                this.desactivarAutorrotacion();
-                            }
-                        }
-                    }
-                };
-
-                const getIntersectionsModel = (evt) => {
-                    toNdc(evt);
-                    this._raycaster.setFromCamera(this._ndc, this.viewer.camera);
-                    return this.viewer.model
-                        ? this._raycaster.intersectObject(this.viewer.model, true)
-                        : [];
-                };
-
-                const onPointerDown = (evt) => {
-                    if (!this.cfg.gestures?.habilitar) return;
-                    if (this.viewer?.renderer?.xr?.isPresenting) return;
-
-                    this._activePointers.set(evt.pointerId, {x: evt.clientX, y: evt.clientY});
-
-                    if (evt.pointerType === 'touch') {
-                        if (!this._pinch.activo && this._pinch.id1 === null) {
-                            this._pinch.id1 = evt.pointerId;
-                        } else if (!this._pinch.activo && this._pinch.id2 === null) {
-                            this._pinch.id2 = evt.pointerId;
-                            this._pinch.activo = true;
-                            this._pinch.startDist = 0;
-                            this._pinch.startScale = this.viewer?.model?.scale?.x ?? 1;
-                        }
-                    }
-
-                    const hits = getIntersectionsModel(evt);
-                    if (hits.length > 0 && !this._drag.activo) {
-                        this._drag.activo = true;
-                        this._drag.pointerId = evt.pointerId;
-                        this._drag.lastX = evt.clientX;
-                        this._drag.lastY = evt.clientY;
-
-                        try {
-                            this.cfg.onDragStart && this.cfg.onDragStart({evt, hit: hits[0]});
-                        } catch {
-                        }
-                        if (this.cfg.autorrotacion?.pausaAlInteractuar && this._autorrotacionActiva) {
-                            this.desactivarAutorrotacion();
-                        }
-                    }
-                };
-
-                const onPointerMove = (evt) => {
-                    if (!this.cfg.gestures?.habilitar) return;
-                    if (this.viewer?.renderer?.xr?.isPresenting) return;
-
-                    this._activePointers.set(evt.pointerId, {x: evt.clientX, y: evt.clientY});
-
-                    // PINCH
-                    if (this._pinch.activo && (evt.pointerId === this._pinch.id1 || evt.pointerId === this._pinch.id2)) {
-                        if (this._pinch.id1 != null && this._pinch.id2 != null &&
-                            this._activePointers.has(this._pinch.id1) && this._activePointers.has(this._pinch.id2)) {
-
-                            const p1 = this._activePointers.get(this._pinch.id1);
-                            const p2 = this._activePointers.get(this._pinch.id2);
-                            const dx = p1.x - p2.x, dy = p1.y - p2.y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-
-                            if (this._pinch.startDist === 0) {
-                                this._pinch.startDist = dist || 1;
-                            } else if (dist > 0 && this.viewer?.model) {
-                                const delta = (dist - this._pinch.startDist) * (this.cfg.gestures.pinchFactor || 0.005);
-                                const base = this._pinch.startScale || 1;
-                                const next = THREE.MathUtils.clamp(
-                                    base + delta,
-                                    this.cfg.gestures.escalaMin,
-                                    this.cfg.gestures.escalaMax
-                                );
-                                this.viewer.setUniformScale(next);
-                                try {
-                                    this.cfg.onScale && this.cfg.onScale({scale: next});
-                                } catch {
-                                }
-                            }
-                        }
-                        return;
-                    }
-
-                    // DRAG ROTACIÓN
-                    if (this._drag.activo && evt.pointerId === this._drag.pointerId && this.viewer?.model) {
-                        const dx = evt.clientX - this._drag.lastX;
-                        const dy = evt.clientY - this._drag.lastY;
-                        this._drag.lastX = evt.clientX;
-                        this._drag.lastY = evt.clientY;
-
-                        const fy = this.cfg.gestures.rotacionFactor || 0.015;
-                        const fx = this.cfg.gestures.rotacionFactorX || 0.010;
-                        this.viewer.model.rotation.y += dx * fy;
-                        this.viewer.model.rotation.x = THREE.MathUtils.clamp(
-                            this.viewer.model.rotation.x - dy * fx,
-                            -Math.PI / 2, Math.PI / 2
-                        );
-
-                        try {
-                            this.cfg.onRotate && this.cfg.onRotate({
-                                rotY: this.viewer.model.rotation.y,
-                                rotX: this.viewer.model.rotation.x
-                            });
-                            this.cfg.onDrag && this.cfg.onDrag({dx, dy});
-                        } catch {
-                        }
-                    }
-                };
-
-                const onPointerUpCancel = (evt) => {
-                    if (!this.cfg.gestures?.habilitar) return;
-                    if (this.viewer?.renderer?.xr?.isPresenting) return;
-
-                    this._activePointers.delete(evt.pointerId);
-
-                    if (this._pinch.activo && (evt.pointerId === this._pinch.id1 || evt.pointerId === this._pinch.id2)) {
-                        if (evt.pointerId === this._pinch.id1) this._pinch.id1 = null;
-                        if (evt.pointerId === this._pinch.id2) this._pinch.id2 = null;
-                        if (this._pinch.id1 == null || this._pinch.id2 == null) {
-                            this._pinch.activo = false;
-                            this._pinch.startDist = 0;
-                        }
-                    }
-
-                    if (this._drag.activo && evt.pointerId === this._drag.pointerId) {
-                        this._drag.activo = false;
-                        this._drag.pointerId = null;
-                        try {
-                            this.cfg.onDragEnd && this.cfg.onDragEnd({evt});
-                        } catch {
-                        }
-                    }
-                };
-
-                canvas.addEventListener('pointerdown', onPointerDown, {passive: true});
-                canvas.addEventListener('pointermove', onPointerMove, {passive: true});
-                canvas.addEventListener('pointerup', onPointerUpCancel, {passive: true});
-                canvas.addEventListener('pointercancel', onPointerUpCancel, {passive: true});
-
-                // Click puntual (no-XR)
-                canvas.addEventListener('pointerdown', onPointer, {passive: true});
-                this._escuchandoCanvas = true;
-            }
-
-            _instalarOyentesModelViewer() {
-                if (this._escuchandoModelViewer) return;
-                const mvSel = this.viewer?.cfg?.ui?.modelViewer;
-                if (!mvSel) return;
-                const mv = document.querySelector(mvSel);
-                if (!mv) return;
-
-                const onClick = () => {
-                    if (!this.cfg.clicks.habilitar) return;
-                    this._emitirClickModelo('fallback', null);
-                    if (this.cfg.autorrotacion.pausaAlInteractuar && this._autorrotacionActiva) {
-                        this.desactivarAutorrotacion();
-                    }
-                };
-
-                mv.addEventListener('click', onClick, {passive: true});
-                this._escuchandoModelViewer = true;
-            }
-
-            onSelectXR(reticleMat) {
-                if (!this.cfg.clicks.habilitar) return;
-                if (!this.viewer?.model || !this._boundingSphere) return;
-
-                const centro = this._boundingSphere.center.clone().applyMatrix4(this.viewer.model.matrixWorld);
-                const posRet = new THREE.Vector3();
-                posRet.setFromMatrixPosition(reticleMat);
-                const dist = posRet.distanceTo(centro);
-                if (dist <= this.cfg.clicks.umbralXR_metros) {
-                    this._emitirClickModelo('xr', posRet);
-                    if (this.cfg.autorrotacion.pausaAlInteractuar && this._autorrotacionActiva) {
-                        this.desactivarAutorrotacion();
-                    }
-                }
-            }
-
-            _emitirClickModelo(modo, punto) {
-                const px = punto ? punto.x.toFixed(3) : '—';
-                const py = punto ? punto.y.toFixed(3) : '—';
-                const pz = punto ? punto.z.toFixed(3) : '—';
-                this.viewer.setStatus(this.viewer.msg('eventos.click_modelo', {modo, x: px, y: py, z: pz}));
-                try {
-                    this.cfg.onModelClick({modo, punto});
-                } catch {
-                }
+            destroy(){
+                if (!this.mv) return;
+                this.mv.removeEventListener('ar-status', this._onARStatus);
+                this.mv.removeEventListener('camera-change', this._onCameraChange);
+                this.mv.removeEventListener('load', this._onLoad);
+                this.mv.removeEventListener('error', this._onError);
+                this.mv.removeEventListener('progress', this._onProgress);
+                this.mv.src=''; this.mv.removeAttribute('ios-src'); this._bound=false;
             }
         }
 
-        /* =======================
-         * Viewer principal
-         * ======================= */
-        class JQueryArViewer {
-            constructor(options = {}) {
-                const defaults = {
-                    glbUrl: '',
-                    usdzUrl: '',
-                    ui: {
-                        hint: '#hint',
-                        fallback: '#fallback',
-                        modelViewer: '#mv',
-                        enterBtn: '#btn-enter-ar',
-                        resetBtn: '#btn-reset',
-                        zoomInBtn: '#btn-zoom-in',
-                        zoomOutBtn: '#btn-zoom-out',
-                        scale1xBtn: '#btn-scale-1x',
-                        scale2xBtn: '#btn-scale-2x',
-                        rotLeftBtn: '#btn-rot-left',
-                        rotRightBtn: '#btn-rot-right',
-                        rotUpBtn: '#btn-rot-up',
-                        rotDownBtn: '#btn-rot-down',
-                        // NUEVOS
-                        exploreBtn: '#btn-explore',
-                        newPosBtn: '#btn-new-pos'
-                    },
-                    reticle: {
-                        innerRadius: 0.08,
-                        outerRadius: 0.10,
-                        segments: 32,
-                        color: 0x00ffaa,
-                        innerDot: true,
-                        pulse: true,
-                        pulseMin: 0.95,
-                        pulseMax: 1.05
-                    },
-                    model: {
-                        initialScale: 1.0,
-                        minScale: 0.2,
-                        maxScale: 10.0,
-                        zoomFactor: 1.10,
-                        rotationStepY: 0.15,
-                        rotationStepX: 0.10
-                    },
-                    camera: {
-                        fov: 60,
-                        near: 0.01,
-                        far: 20,
-                        toneMapping: THREE.ACESFilmicToneMapping,
-                        toneExposure: 1.2
-                    },
-                    reticleSensitivity: {
-                        smoothFactor: 0.35,
-                        stableFramesRequired: 5,
-                        minDistance: 0.25,
-                        maxDistance: 4.0,
-                        upDotMin: 0.85,
-                        offsetRayDown: 0.15
-                    },
-                    lighting: {
-                        useLightEstimation: true,
-                        hemiSky: 0xffffff,
-                        hemiGround: 0x404060,
-                        hemiIntensity: 1.1,
-                        dirColor: 0xffffff,
-                        dirIntensity: 0.6
-                    },
-                    xr: {
-                        requiredFeatures: ['hit-test', 'local'],
-                        optionalFeatures: ['dom-overlay', 'unbounded', 'light-estimation'],
-                        domOverlayRoot: () => document.body
-                    },
-                    uiBehavior: {
-                        disableDuring: {sessionStart: true, modelLoad: true},
-                        lockCursor: true,
-                        include: null,
-                        exclude: ['hint', 'fallback', 'modelViewer']
-                    },
-                    events: {
-                        autorrotacion: {activa: true, velocidadRadSeg: 0.8, pausaAlInteractuar: true},
-                        clicks: {habilitar: true, umbralXR_metros: 0.25},
-                        gestures: {habilitar: true, rotacionFactor: 0.015, rotacionFactorX: 0.010, pinchFactor: 0.005},
-                        onModelClick: null,
-                        onDragStart: null,
-                        onDrag: null,
-                        onDragEnd: null,
-                        onScale: null,
-                        onRotate: null
-                    },
-                    i18n: {
-                        locale: 'es',
-                        textos: {
-                            etiquetas: {botonVer: 'Entrar', verEnAr: 'Ver en AR'},
-                            estado: {
-                                listo: 'Listo. Toca “Entrar en AR”. (requiere HTTPS)',
-                                ios_quicklook: 'iOS: pulsa “Ver en AR” para Quick Look.',
-                                ios_sin_usdz: 'iOS: sin USDZ, se mostrará el visor 3D.',
-                                visor_3d: 'Modo visor 3D. La Realidad Aumentada no está disponible en este dispositivo.',
-                                iniciado: 'AR iniciada.',
-                                sin_reticula: 'Sin retícula. Apunta hacia una superficie plana.',
-                                modelo_movido: 'Modelo movido.',
-                                cargando_modelo: 'Cargando modelo…',
-                                progreso_carga: 'Cargando {porcentaje}%…',
-                                colocado: 'Modelo cargado y colocado.',
-                                reiniciado: 'Modelo reiniciado. Toca para colocarlo nuevamente.',
-                                no_modelo_reiniciar: 'No hay modelo para reiniciar.',
-                                sesion_finalizada: 'Sesión de AR finalizada.',
-                                fallback_activo: 'Fallback activo. Usa “Ver en AR” si está disponible.',
-                                visor_reiniciando: 'Reiniciando visor AR…',
-                                visor_reiniciado: 'Visor reiniciado por completo.',
-                                escala: 'Escala: {valor}',
-                                rotY: 'Rotación Y: {valor}',
-                                rotX: 'Rotación X: {valor}',
-                                ios_visor_activo: 'iOS: visor 3D activo. Provee USDZ para Quick Look.',
-                                visor_3d_activo: 'Visor 3D activo.',
-                                // NUEVOS
-                                colocar_primero: 'Apunta al suelo y toca la retícula para colocar el modelo.',
-                                explorar_habilitado: 'Explorar habilitado.',
-                                explorar_deshabilitado: 'Explorar deshabilitado.',
-                                recolocar_listo: 'Posición nueva: toca la retícula para recolocar.',
-                                toque_fuera_reticula: 'Toca exactamente sobre la retícula para colocar.',
-                                recolocado: 'Modelo recolocado. Puedes pulsar Explorar.'
-                            },
-                            eventos: {
-                                autorrotacion_activada: 'Autorrotación activada (vel: {vel} rad/s).',
-                                autorrotacion_desactivada: 'Autorrotación desactivada.',
-                                autorrotacion_actualizada: 'Velocidad de autorrotación actualizada a {vel} rad/s.',
-                                clicks_habilitados: 'Captura de clics habilitada.',
-                                clicks_deshabilitados: 'Captura de clics deshabilitada.',
-                                callback_configurado: 'Callback onModelClick configurado.',
-                                click_modelo: 'Click sobre el modelo ({modo}) en ({x}, {y}, {z}).'
-                            },
-                            error: {
-                                init: 'Falló la inicialización.',
-                                modo: 'Falló la selección del modo de operación.',
-                                iniciar_ar: 'No se pudo iniciar la Realidad Aumentada.',
-                                cargar_glb: 'No se pudo cargar el modelo GLB.',
-                                colocar_modelo: 'Error inesperado al colocar el modelo.',
-                                frame: 'Error durante el frame de AR.',
-                                mostrar_fallback: 'No se pudo mostrar el visor de respaldo.',
-                                reset_total: 'Falló el reinicio completo del visor.',
-                                deshabilitar_ui: 'Falló el cambio de estado de la UI.'
-                            },
-                            consola: {prefijo: '[AR]'}
-                        }
-                    }
-                };
+        /* ===========================================================
+         * Android WebXR (sin hit-test): abre cámara primero; GLB después
+         * Gestos móviles: 1 dedo rotar+vertical, 2 dedos pinch+pan
+         * =========================================================== */
+        class AndroidWebXRController {
+            constructor(hooks={}) {
+                this.hooks=hooks;
+                this.renderer=null; this.scene=null; this.camera=null; this.session=null; this.model=null; this._refSpace=null;
 
-                this.cfg = $.extend(true, {}, defaults, options);
+                this._distanceMeters=1.2;
+                this._loop=this._onXRFrame.bind(this);
+                this._onResize=this._handleResize.bind(this);
 
-                // Plataforma
-                this.platform = JQueryArViewer.detectPlatform();
+                // Primer frame de cámara ⇒ mostrar retícula
+                this._firstFrameSeen=false;
+                this._firstFrameResolve=null;
+                this.ready = new Promise(res => (this._firstFrameResolve = res));
 
-                // Estado Three/XR
-                this.renderer = null;
-                this.scene = null;
-                this.camera = null;
-                this.session = null;
-                this.referenceSpace = null;
-                this.viewerSpace = null;
-                this.hitTestSource = null;
-                this.hitReady = false;
-                this.reticle = null;
-                this.model = null;
+                // eventos sesión
+                this._onEnd=this._onVis=null;
 
-                // Retícula
-                this._reticleState = null;
-                this._stableCount = 0;
-                this._smoothFactor = this.cfg.reticleSensitivity.smoothFactor;
-                this._stableFramesRequired = this.cfg.reticleSensitivity.stableFramesRequired;
-                this.hitFilter = {
-                    minDistance: this.cfg.reticleSensitivity.minDistance,
-                    maxDistance: this.cfg.reticleSensitivity.maxDistance,
-                    upDotMin: this.cfg.reticleSensitivity.upDotMin
-                };
-
-                // jQuery cache
-                this.$win = $(window);
-                this.$hint = $(this.cfg.ui.hint);
-
-                // Gestor eventos
-                this.eventos = new GestorEventosModelo(this, this.cfg.events);
-
-                // Delta
-                this._lastTs = null;
-
-                // Política: colocar solo con tap en retícula
-                this.placeOnlyWhenReticleHit = true;
-
-                // Estado del flujo Explorar / Posición nueva
-                this.uiState = {
-                    inPlacementMode: false, // retícula activa
-                    hasPlaced: false,       // ya se colocó
-                    exploring: false        // gestos/clicks activos
-                };
+                // light
+                this._lightProbe=null; this._headlamp=null;
             }
 
-            static detectPlatform() {
-                const ua = navigator.userAgent || navigator.vendor || window.opera || '';
-                const isAndroid = /Android/i.test(ua);
-                const isIOS = /iPhone|iPad|iPod/i.test(ua) ||
-                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-                return {isAndroid, isIOS};
-            }
-
-            async decideMode() {
-                const {isAndroid, isIOS} = this.platform;
-                if (isIOS) return 'ios-fallback';
-                if (isAndroid) {
-                    const supported = await this.isImmersiveArAvailable();
-                    return supported ? 'android-webxr' : 'fallback';
-                }
-                return 'fallback';
-            }
-
-            _get(obj, path) {
-                if (!obj || !path) return undefined;
-                const parts = String(path).split('.');
-                let cur = obj;
-                for (const p of parts) {
-                    if (cur && Object.prototype.hasOwnProperty.call(cur, p)) cur = cur[p];
-                    else return undefined;
-                }
-                return cur;
-            }
-
-            _fmt(tpl, params = {}) {
-                if (typeof tpl !== 'string') return tpl;
-                return tpl.replace(/\{(\w+)\}/g, (_, k) => {
-                    const v = params[k];
-                    return v == null ? '' : String(v);
+            // Abre SOLO la cámara (sesión). No carga GLB aquí.
+            async startSessionFromGesture(){
+                this.session = await navigator.xr.requestSession('immersive-ar', {
+                    requiredFeatures:['local'],
+                    optionalFeatures:['dom-overlay','light-estimation'],
+                    domOverlay:{ root: document.body }
                 });
-            }
 
-            msg(key, params = {}) {
-                const base = this.cfg.i18n?.textos || {};
-                const val = this._get(base, key);
-                return this._fmt(val || key, params);
-            }
-
-            setStatus(m) {
-                const prefix = this.msg('consola.prefijo');
-                console.log(prefix, m);
-                this.$hint && this.$hint.text(m);
-            }
-
-            logError(key, params = {}, errorObj = null) {
-                const prefix = this.msg('consola.prefijo');
-                if (errorObj) console.error(prefix, this.msg(key, params), errorObj);
-                else console.error(prefix, this.msg(key, params));
-                this.setStatus(this.msg(key));
-            }
-
-            /* ============ API pública ============ */
-            init() {
-                try {
-                    this.bindUi();
-                    this.setStatus(this.msg('estado.listo'));
-                    this.eventos.iniciar();
-                    this._initByMode();
-                } catch (err) {
-                    this.logError('error.init', {}, err);
-                }
-            }
-
-            async _initByMode() {
-                try {
-                    const mode = await this.decideMode();
-                    if (mode === 'android-webxr') {
-                        $(this.cfg.ui.fallback).addClass('d-none');
-                        $(this.cfg.ui.enterBtn).text(this.msg('etiquetas.botonVer'));
-                    } else if (mode === 'ios-fallback') {
-                        this.showFallback();
-                        $(this.cfg.ui.enterBtn).off('click');
-                        this.setStatus(this.cfg.usdzUrl ? this.msg('estado.ios_quicklook') : this.msg('estado.ios_sin_usdz'));
-                        this._hideArControlsExcept(['hint', 'fallback', 'modelViewer']);
-                    } else {
-                        this.showFallback();
-                        $(this.cfg.ui.enterBtn).off('click');
-                        $(this.cfg.ui.enterBtn).addClass('disabled').attr('aria-disabled', 'true');
-                        this.setStatus(this.msg('estado.visor_3d'));
-                        this._hideArControlsExcept(['hint', 'fallback', 'modelViewer']);
-                    }
-                } catch (err) {
-                    this.logError('error.modo', {}, err);
-                    this.showFallback();
-                    this._hideArControlsExcept(['hint', 'fallback', 'modelViewer']);
-                }
-            }
-
-            _hideArControlsExcept(keysToKeep = []) {
-                const entries = Object.entries(this.cfg.ui || {});
-                entries.forEach(([key, sel]) => {
-                    if (!sel) return;
-                    if (keysToKeep.includes(key)) return;
-                    const $el = $(sel);
-                    if ($el.length) {
-                        $el.addClass('d-none')
-                            .prop('disabled', true)
-                            .attr('aria-disabled', 'true')
-                            .css('pointer-events', 'none');
-                    }
-                });
-            }
-
-            configureCamera(opts = {}) {
-                Object.assign(this.cfg.camera, opts);
-                if (this.camera) {
-                    this.camera.fov = this.cfg.camera.fov;
-                    this.camera.near = this.cfg.camera.near;
-                    this.camera.far = this.cfg.camera.far;
-                    this.camera.updateProjectionMatrix();
-                }
-                if (this.renderer) {
-                    this.renderer.toneMapping = this.cfg.camera.toneMapping;
-                    this.renderer.toneMappingExposure = this.cfg.camera.toneExposure;
-                }
-            }
-
-            configureSensitivity(opts = {}) {
-                Object.assign(this.cfg.reticleSensitivity, opts);
-                this._smoothFactor = this.cfg.reticleSensitivity.smoothFactor;
-                this._stableFramesRequired = this.cfg.reticleSensitivity.stableFramesRequired;
-                this.hitFilter = {
-                    minDistance: this.cfg.reticleSensitivity.minDistance,
-                    maxDistance: this.cfg.reticleSensitivity.maxDistance,
-                    upDotMin: this.cfg.reticleSensitivity.upDotMin
-                };
-            }
-
-            configureReticle(opts = {}) {
-                Object.assign(this.cfg.reticle, opts);
-                if (this.reticle?.material?.color) this.reticle.material.color.setHex(this.cfg.reticle.color);
-            }
-
-            async startAr() {
-                try {
-                    if (this._starting) return;
-                    this._starting = true;
-
-                    const available = await this.isImmersiveArAvailable();
-                    if (!available) {
-                        this._starting = false;
-                        return this.showFallback();
-                    }
-
-                    if (this.cfg.uiBehavior?.disableDuring?.sessionStart) this.disableUI(true);
-
-                    this.initThreeIfNeeded();
-                    this.session = await navigator.xr.requestSession('immersive-ar', {
-                        requiredFeatures: this.cfg.xr.requiredFeatures,
-                        optionalFeatures: this.cfg.xr.optionalFeatures,
-                        domOverlay: {root: this.cfg.xr.domOverlayRoot()}
-                    });
-
-                    await this.onSessionStarted(this.session);
-
-                    if (this.cfg.uiBehavior?.disableDuring?.sessionStart) this.disableUI(false);
-                } catch (err) {
-                    this.logError('error.iniciar_ar', {}, err);
-                    this.resetEverything();
-                    this.showFallback();
-                } finally {
-                    this._starting = false;
-                }
-            }
-
-            exitAr() {
-                try {
-                    if (this.session) this.session.end();
-                    else this.resetEverything();
-                } catch {
-                    this.resetEverything();
-                }
-            }
-
-            reset() {
-                try {
-                    if (!this.model) return this.setStatus(this.msg('estado.no_modelo_reiniciar'));
-                    this.scene.remove(this.model);
-                    this.disposeObject(this.model);
-                    this.model = null;
-                    this.setStatus(this.msg('estado.reiniciado'));
-                } catch (err) {
-                    this.logError('error.reset_total', {}, err);
-                }
-            }
-
-            zoomIn() {
-                if (this.model) this.setUniformScale(this.model.scale.x * this.cfg.model.zoomFactor);
-            }
-
-            zoomOut() {
-                if (this.model) this.setUniformScale(this.model.scale.x / this.cfg.model.zoomFactor);
-            }
-
-            setScale(value) {
-                if (this.model) this.setUniformScale(value);
-            }
-
-            rotateY(deltaRadians) {
-                if (!this.model) return;
-                this.model.rotation.y += deltaRadians;
-                this.setStatus(this.msg('estado.rotY', {valor: this.model.rotation.y.toFixed(2)}));
-            }
-
-            rotateX(deltaRadians) {
-                if (!this.model) return;
-                this.model.rotation.x = this.clamp(this.model.rotation.x + deltaRadians, -Math.PI / 2, Math.PI / 2);
-                this.setStatus(this.msg('estado.rotX', {valor: this.model.rotation.x.toFixed(2)}));
-            }
-
-            /* ===== Three/XR internos ===== */
-            initThreeIfNeeded() {
-                if (this.renderer) return;
-
-                this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-                this.renderer.xr.enabled = true;
-                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-                this.renderer.toneMapping = this.cfg.camera.toneMapping ?? THREE.ACESFilmicToneMapping;
-                this.renderer.toneMappingExposure = Number(this.cfg.camera.toneExposure ?? 1.2);
-
-                this.fitToWindow();
-                document.body.appendChild(this.renderer.domElement);
-
-                // Instalar oyentes ahora que existe canvas
-                if (this.eventos && typeof this.eventos._instalarOyentesCanvas === 'function') {
-                    this.eventos._instalarOyentesCanvas();
-                }
-
-                this.scene = new THREE.Scene();
-
-                const aspect = Math.max(window.innerWidth, 1) / Math.max(window.innerHeight, 1);
-                this.camera = new THREE.PerspectiveCamera(
-                    Number(this.cfg.camera.fov ?? 60),
-                    aspect,
-                    Number(this.cfg.camera.near ?? 0.01),
-                    Number(this.cfg.camera.far ?? 20)
-                );
-
-                this.addLights(this.scene);
-                this.reticle = this.createReticle();
-                this.scene.add(this.reticle);
-
-                this.renderer.setAnimationLoop(this.onXrFrame.bind(this));
-                this.$win.on('resize', this.fitToWindow.bind(this));
-            }
-
-            addLights(scene) {
-                const hemi = new THREE.HemisphereLight(
-                    this.cfg.lighting.hemiSky,
-                    this.cfg.lighting.hemiGround,
-                    this.cfg.lighting.hemiIntensity
-                );
-                scene.add(hemi);
-
-                const dir = new THREE.DirectionalLight(this.cfg.lighting.dirColor, this.cfg.lighting.dirIntensity);
-                dir.position.set(0, 0, -1);
-                this._cameraDirLight = dir;
-                scene.add(dir);
-            }
-
-            createReticle() {
-                const r = this.cfg.reticle;
-                const g = new THREE.RingGeometry(r.innerRadius, r.outerRadius, r.segments);
-                g.rotateX(-Math.PI / 2);
-                const mat = new THREE.MeshBasicMaterial({color: r.color, transparent: true, opacity: 0.96});
-                const ring = new THREE.Mesh(g, mat);
-                ring.matrixAutoUpdate = false;
-                ring.visible = false;
-
-                if (r.innerDot) {
-                    const dotGeo = new THREE.CircleGeometry(r.innerRadius * 0.3, 24);
-                    dotGeo.rotateX(-Math.PI / 2);
-                    const dotMat = new THREE.MeshBasicMaterial({color: r.color, transparent: true, opacity: 1.0});
-                    const dot = new THREE.Mesh(dotGeo, dotMat);
-                    dot.position.set(0, 0.001, 0);
-                    ring.add(dot);
-                    ring._dot = dot;
-                }
-
-                if (r.pulse) ring._pulse = {t: 0, min: r.pulseMin ?? 0.95, max: r.pulseMax ?? 1.05};
-                return ring;
-            }
-
-            fitToWindow() {
-                if (!this.renderer) return;
-                const w = Math.max(window.innerWidth, 1);
-                const h = Math.max(window.innerHeight, 1);
-                this.renderer.setSize(w, h);
-                if (this.camera && h > 0) {
-                    this.camera.aspect = w / h;
-                    this.camera.updateProjectionMatrix();
-                }
-            }
-
-            async isImmersiveArAvailable() {
-                const secure = location.protocol === 'https:' || location.hostname === 'localhost';
-                if (!secure || !navigator.xr) return false;
-                try {
-                    return await navigator.xr.isSessionSupported('immersive-ar');
-                } catch {
-                    return false;
-                }
-            }
-
-            async onSessionStarted(session) {
+                this._setupRenderer();
+                this._setupScene();
                 this.renderer.xr.setReferenceSpaceType('local');
-                await this.renderer.xr.setSession(session);
+                await this.renderer.xr.setSession(this.session);
+                this._refSpace = this.renderer.xr.getReferenceSpace();
 
-                session.addEventListener('end', this.onSessionEnded.bind(this));
-                this.referenceSpace = await session.requestReferenceSpace('local');
-                this.viewerSpace = await session.requestReferenceSpace('viewer');
+                // sesión hooks
+                this._onEnd = () => this.hooks.onExit && this.hooks.onExit({reason:'session-end'});
+                this._onVis = () => {
+                    const s=this.session?.visibilityState;
+                    if (s==='hidden' || s==='visible-blurred') this.hooks.onExit && this.hooks.onExit({reason:'visibility', state:s});
+                };
+                this.session.addEventListener('end', this._onEnd);
+                this.session.addEventListener('visibilitychange', this._onVis);
 
-                // Hit test
-                let hitSource = null;
-                try {
-                    let downRay = null;
-                    try {
-                        downRay = new XRRay({x: 0, y: 0, z: 0}, {
-                            x: 0,
-                            y: -this.cfg.reticleSensitivity.offsetRayDown,
-                            z: -1
-                        });
-                    } catch {
-                        downRay = null;
-                    }
-                    hitSource = downRay
-                        ? await session.requestHitTestSource({space: this.viewerSpace, offsetRay: downRay})
-                        : await session.requestHitTestSource({space: this.viewerSpace});
-                } catch {
-                    try {
-                        hitSource = await session.requestHitTestSource({space: this.viewerSpace});
-                    } catch {
-                        hitSource = null;
-                    }
-                }
-                this.hitTestSource = hitSource;
-                this.hitReady = !!this.hitTestSource;
+                // light-probe
+                try{ if (this.session.requestLightProbe) this._lightProbe = await this.session.requestLightProbe({type:'spherical-harmonics'}); }catch{}
 
-                // Light estimation opcional
-                this._lightProbe = null;
-                if (this.cfg.lighting.useLightEstimation && typeof session.requestLightProbe === 'function') {
-                    try {
-                        this._lightProbe = await session.requestLightProbe();
-                    } catch {
-                        this._lightProbe = null;
-                    }
-                }
+                // gestos
+                this._bindGesturesMobile();
 
-                this.attachController();
-                this.setStatus(this.msg('estado.iniciado'));
-                this.initViewUICam();
-
-                // Estado inicial del flujo
-                this.uiState.inPlacementMode = true;   // retícula visible
-                this.uiState.hasPlaced = false;
-                this.uiState.exploring = false;
-                $(this.cfg.ui.exploreBtn).prop('disabled', true).addClass('disabled');
-                $(this.cfg.ui.newPosBtn).prop('disabled', true).addClass('disabled');
-                this.setStatus(this.msg('estado.colocar_primero'));
+                window.addEventListener('resize', this._onResize);
+                this.hooks.onEnter && this.hooks.onEnter({mode:'android-webxr'});
             }
 
-            onSessionEnded() {
-                this.setStatus(this.msg('estado.sesion_finalizada'));
-                this.resetEverything();
-                this.disableUI(false);
-            }
+            // Carga el modelo con % y lo deja listo (no se muestra hasta placeInFront)
+            async loadModel(glbUrl){
+                await this._disposeModel();
+                if (!glbUrl) return;
 
-            attachController() {
-                const controller = this.renderer.xr.getController(0);
-                controller.addEventListener('select', this.onXrSelect.bind(this));
-                this.scene.add(controller);
-            }
+                UI.showLoading(); UI.resetLoadingProgress();
 
-            _getControllerRay() {
-                const controller = this.renderer?.xr?.getController(0);
-                if (!controller) return null;
-                const origin = new THREE.Vector3().setFromMatrixPosition(controller.matrixWorld);
-                const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(controller.quaternion).normalize();
-                return {origin, dir};
-            }
-
-            _isRayOnReticle(ray) {
-                if (!this.reticle) return false;
-
-                const center = new THREE.Vector3();
-                this.reticle.getWorldPosition(center);
-
-                const normal = new THREE.Vector3(0, 1, 0)
-                    .applyQuaternion(this.reticle.getWorldQuaternion(new THREE.Quaternion()))
-                    .normalize();
-
-                const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, center);
-                const t = plane.distanceToPoint(ray.origin) / -plane.normal.dot(ray.dir);
-                if (!isFinite(t) || t < 0) return false;
-
-                const hitPoint = new THREE.Vector3().copy(ray.origin).addScaledVector(ray.dir, t);
-                const dx = hitPoint.x - center.x;
-                const dz = hitPoint.z - center.z;
-                const r = Math.hypot(dx, dz);
-
-                const R = (this.cfg.reticle?.outerRadius ?? 0.10) * (this.reticle.scale?.x ?? 1) * 1.05;
-                return r <= R;
-            }
-
-            onXrSelect() {
-                try {
-                    // 1) Modo COLOCACIÓN: requiere retícula visible y tap sobre la retícula
-                    if (this.uiState.inPlacementMode) {
-                        const ret = this.reticle;
-                        if (!ret || !ret.visible || !ret.matrixWorld) {
-                            this.setStatus(this.msg('estado.sin_reticula'));
-                            return;
-                        }
-
-                        if (this.placeOnlyWhenReticleHit) {
-                            const ray = this._getControllerRay();
-                            if (!ray || !this._isRayOnReticle(ray)) {
-                                this.setStatus(this.msg('estado.toque_fuera_reticula'));
-                                return;
-                            }
-                        }
-
-                        this.placeOrMoveModelAtReticle();
-
-                        // Notifica “click” de proximidad tras colocar
-                        if (this.eventos && typeof this.eventos.onSelectXR === 'function') {
-                            this.eventos.onSelectXR(this.reticle.matrixWorld);
-                        }
-
-                        this.uiState.hasPlaced = true;
-                        this._enterLockedAfterPlacement(); // oculta retícula y habilita botones
-                        return;
-                    }
-
-                    // 2) Modo EXPLORAR: no hay retícula; permitimos click sobre el modelo
-                    if (this.uiState.exploring && this.eventos?.cfg?.clicks?.habilitar) {
-                        const hit = this._intersectControllerWithModel();
-                        if (hit) {
-                            // dispara el callback de click sobre modelo en XR
-                            this.eventos._emitirClickModelo('xr', hit.point || null);
-
-                            // pausamos autorrotación si procede
-                            if (this.eventos?.cfg?.autorrotacion?.pausaAlInteractuar && this.eventos._autorrotacionActiva) {
-                                this.eventos.desactivarAutorrotacion();
-                            }
-                        } else {
-                            // sin impacto en la malla
-                            this.setStatus('Apunta al modelo para interactuar.');
-                        }
-                        return;
-                    }
-
-                    // 3) Fuera de colocación y sin explorar: no hace nada
-                    this.setStatus('Pulsa “Posición nueva” o “Explorar”.');
-                } catch (err) {
-                    this.logError('error.frame', {}, err);
-                }
-            }
-
-            _enterLockedAfterPlacement() {
-                this.uiState.inPlacementMode = false; // oculta retícula por gating
-                this.uiState.exploring = false;
-
-                // UI: habilita Explorar y Posición nueva
-                $(this.cfg.ui.exploreBtn).prop('disabled', false).removeClass('disabled');
-                $(this.cfg.ui.newPosBtn).prop('disabled', false).removeClass('disabled');
-
-                this.setStatus(this.msg('estado.colocado') + ' ' + this.msg('estado.explorar_habilitado'));
-            }
-
-            enterExploreMode() {
-                this.eventos?.habilitarInteraccionesModelo?.();
-                this.uiState.exploring = true;
-
-                $(this.cfg.ui.exploreBtn).prop('disabled', true).addClass('disabled');
-                $(this.cfg.ui.newPosBtn).prop('disabled', false).removeClass('disabled');
-
-                this.setStatus('Explorar activo. Gestos y clicks habilitados.');
-            }
-
-            enterPlacementMode() {
-                this.eventos?.deshabilitarInteraccionesModelo?.();
-                this.uiState.exploring = false;
-
-                this.uiState.inPlacementMode = true;
-                $(this.cfg.ui.exploreBtn).prop('disabled', true).addClass('disabled');
-                $(this.cfg.ui.newPosBtn).prop('disabled', true).addClass('disabled');
-
-                this.setStatus(this.msg('estado.recolocar_listo'));
-            }
-
-            placeOrMoveModelAtReticle() {
-                const mat = new THREE.Matrix4().copy(this.reticle.matrix);
-
-                if (this.model) {
-                    this.applyMatrixToModel(this.model, mat);
-                    return this.setStatus(this.msg('estado.modelo_movido'));
-                }
-
-                try {
-                    this.setStatus(this.msg('estado.cargando_modelo'));
-                    if (this.cfg.uiBehavior?.disableDuring?.modelLoad) this.disableUI(true);
-                    this.showLoading();
-
+                await new Promise((res, rej)=>{
                     const loader = new THREE.GLTFLoader();
                     loader.load(
-                        this.cfg.glbUrl,
-                        (gltf) => {
+                        glbUrl,
+                        (gltf)=>{
                             this.model = gltf.scene;
-                            this.hardenModel(this.model);
-                            this.setUniformScale(this.cfg.model.initialScale);
-                            this.applyMatrixToModel(this.model, mat);
-                            this.scene.add(this.model);
+                            // Escala ≈1m
+                            const box = new THREE.Box3().setFromObject(this.model);
+                            const size = new THREE.Vector3(); box.getSize(size);
+                            const s = 1/(Math.max(size.x,size.y,size.z)||1);
+                            this.model.scale.setScalar(s);
 
-                            this.eventos.aplicarAlModelo(this.model);
+                            this.model.traverse(o=>{
+                                if (o.isMesh){
+                                    o.frustumCulled=false;
+                                    const m=o.material; (Array.isArray(m)?m:[m]).forEach(mm=>{ if(mm){ mm.side=THREE.DoubleSide; mm.needsUpdate=true; }});
+                                }
+                            });
 
-                            this.hideLoading();
-                            if (this.cfg.uiBehavior?.disableDuring?.modelLoad) this.disableUI(false);
-                            this.setStatus(this.msg('estado.colocado'));
+                            UI.finishLoadingProgress(); UI.hideLoading(); res();
                         },
-                        (xhr) => {
-                            const pct = Math.round((xhr.loaded / xhr.total) * 100);
-                            if (isFinite(pct)) this.setStatus(this.msg('estado.progreso_carga', {porcentaje: pct}));
+                        (xhr)=>{
+                            if (xhr && xhr.lengthComputable) {
+                                const p = xhr.total ? (xhr.loaded / xhr.total) : 0;
+                                UI.updateLoadingProgress(p);
+                            }
                         },
-                        (err) => {
-                            this.hideLoading();
-                            if (this.cfg.uiBehavior?.disableDuring?.modelLoad) this.disableUI(false);
-                            this.logError('error.cargar_glb', {}, err);
-                        }
+                        (err)=>{ UI.hideLoading(); UI.setHint('Error al cargar modelo.'); rej(err); }
                     );
-                } catch (err) {
-                    this.logError('error.colocar_modelo', {}, err);
-                    this.hideLoading();
-                    if (this.cfg.uiBehavior?.disableDuring?.modelLoad) this.disableUI(false);
-                }
-            }
-
-            onXrFrame(tsMs, frame) {
-                let delta = 0.016;
-                if (typeof tsMs === 'number') {
-                    if (this._lastTs == null) this._lastTs = tsMs;
-                    delta = Math.max(0, (tsMs - this._lastTs) / 1000);
-                    this._lastTs = tsMs;
-                }
-
-                try {
-                    const xrSession = this.renderer?.xr?.getSession?.();
-                    if (xrSession && frame && this.hitReady && this.referenceSpace && this.hitTestSource) {
-                        const hits = frame.getHitTestResults(this.hitTestSource);
-                        let show = false;
-
-                        if (hits.length) {
-                            const pose = hits[0].getPose(this.referenceSpace);
-                            if (pose) {
-                                const m = new THREE.Matrix4().fromArray(pose.transform.matrix);
-                                const pos = new THREE.Vector3();
-                                const quat = new THREE.Quaternion();
-                                const scl = new THREE.Vector3();
-                                m.decompose(pos, quat, scl);
-
-                                const up = new THREE.Vector3(0, 1, 0).applyQuaternion(quat);
-                                const dot = up.dot(new THREE.Vector3(0, 1, 0));
-                                const upOk = dot >= this.hitFilter.upDotMin;
-
-                                const camPos = this.camera?.position ?? new THREE.Vector3(0, 0, 0);
-                                const d = pos.distanceTo(camPos);
-                                const distOk = d >= this.hitFilter.minDistance && d <= this.hitFilter.maxDistance;
-
-                                if (upOk && distOk) {
-                                    this._smoothReticleUpdate(m);
-                                    show = this._reticleStabilityGate(true);
-                                } else {
-                                    show = this._reticleStabilityGate(false);
-                                }
-                            } else {
-                                show = this._reticleStabilityGate(false);
-                            }
-                        } else {
-                            show = this._reticleStabilityGate(false);
-                        }
-
-                        // Gating por estado: solo visible en modo colocación
-                        this.reticle.visible = this.uiState.inPlacementMode && !!show;
-
-                        if (this.reticle && this.reticle.visible && this.reticle._pulse) {
-                            const p = this.reticle._pulse;
-                            p.t += 0.02;
-                            const s = p.min + (p.max - p.min) * (0.5 + 0.5 * Math.sin(p.t));
-                            this.reticle.scale.set(s, 1, s);
-                        }
-
-                        if (this._cameraDirLight && this.camera) {
-                            this._cameraDirLight.position.copy(this.camera.position);
-                            const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion);
-                            if (!this._cameraDirLight.target?.parent) this.scene.add(this._cameraDirLight.target);
-                            this._cameraDirLight.target.position.copy(this.camera.position.clone().add(fwd));
-                        }
-
-                        if (this._lightProbe && typeof frame.getLightEstimate === 'function') {
-                            const est = frame.getLightEstimate(this._lightProbe);
-                            if (est && this._cameraDirLight) {
-                                const primary = est.primaryLightIntensity;
-                                const base = Array.isArray(primary) ? primary[0] : (primary?.x ?? 1.0);
-                                const intensity = THREE.MathUtils.clamp(base, 0.4, 2.0);
-                                this._cameraDirLight.intensity = intensity * this.cfg.lighting.dirIntensity;
-                            }
-                        }
-                    }
-                } catch (frameErr) {
-                    this.logError('error.frame', {}, frameErr);
-                }
-
-                try {
-                    this.eventos.onFrame(delta);
-                } catch {
-                }
-                if (this.renderer && this.camera) this.renderer.render(this.scene, this.camera);
-            }
-
-            hardenModel(root) {
-                root.traverse(obj => {
-                    if (!obj.isMesh) return;
-                    obj.frustumCulled = false;
-                    if (obj.material) {
-                        if (Array.isArray(obj.material)) obj.material.forEach(m => m.side = THREE.DoubleSide);
-                        else obj.material.side = THREE.DoubleSide;
-                    }
                 });
             }
 
-            applyMatrixToModel(model, mat4) {
-                model.position.setFromMatrixPosition(mat4);
-                model.quaternion.setFromRotationMatrix(mat4);
-                model.updateMatrixWorld(true);
+            placeInFront(){ this._placeInFront(); }
+
+            async stop(){
+                try{ window.removeEventListener('resize', this._onResize); }catch{}
+                try{ this.renderer?.setAnimationLoop(null); }catch{}
+                await this._disposeModel();
+
+                if (this.session){
+                    try{ await this.session.end(); }catch{}
+                    try{ this.session.removeEventListener('end', this._onEnd); this.session.removeEventListener('visibilitychange', this._onVis);}catch{}
+                }
+                if (this.renderer?.domElement?.parentNode) this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+                try{ this.renderer?.dispose?.(); }catch{}
+                this.renderer=this.scene=this.camera=this.session=this._refSpace=null;
+                this._firstFrameSeen=false;
+                this.ready = new Promise(res => (this._firstFrameResolve = res));
             }
 
-            setUniformScale(value) {
-                const s = this.clamp(value, this.cfg.model.minScale, this.cfg.model.maxScale);
-                this.model.scale.set(s, s, s);
-                this.setStatus(this.msg('estado.escala', {valor: s.toFixed(2)}));
+            /* ---------- setup ---------- */
+            _setupRenderer(){
+                if (this.renderer) return;
+                this.renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, powerPreference:'high-performance' });
+                this.renderer.xr.enabled = true;
+                this.renderer.outputEncoding = THREE.sRGBEncoding;
+                this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                this.renderer.toneMappingExposure = 1.2;
+                this.renderer.physicallyCorrectLights = true;
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+                this._handleResize();
+                this.renderer.setClearAlpha(0);
+                Object.assign(this.renderer.domElement.style, { position:'fixed', inset:'0', width:'100%', height:'100%', zIndex:'1', touchAction:'none' });
+                document.body.appendChild(this.renderer.domElement);
+            }
+            _setupScene(){
+                this.scene = new THREE.Scene();
+                const aspect = Math.max(innerWidth,1)/Math.max(innerHeight,1);
+                this.camera = new THREE.PerspectiveCamera(60, aspect, 0.01, 20);
+                const hemi = new THREE.HemisphereLight(0xffffff, 0x404040, 0.8);
+                const dir  = new THREE.DirectionalLight(0xffffff, 0.8); dir.position.set(0,1,-1);
+                this._headlamp = new THREE.PointLight(0xffffff, 1.3, 12, 2.0);
+                this.camera.add(this._headlamp);
+                this.scene.add(this.camera, hemi, dir);
+                this.renderer.setAnimationLoop(this._loop);
             }
 
-            disposeObject(root) {
-                root.traverse(o => {
-                    if (!o.isMesh) return;
-                    if (o.geometry && o.geometry.dispose) o.geometry.dispose();
-                    const m = o.material;
-                    if (!m) return;
-                    if (Array.isArray(m)) m.forEach(mat => mat && mat.dispose && mat.dispose());
-                    else m.dispose && m.dispose();
-                });
-            }
+            _onXRFrame(time, frame){
+                if (!frame || !this._refSpace){ this.renderer.render(this.scene, this.camera); return; }
+                const pose = frame.getViewerPose(this._refSpace);
 
-            bindUi() {
-                $(this.cfg.ui.enterBtn).on('click', async () => {
-                    console.log("CLICK this.cfg.ui.enterBtn");
-                    const mode = await this.decideMode();
-                    console.log("mode ", mode);
+                if (!this._firstFrameSeen && pose){
+                    this._firstFrameSeen=true;
+                    try{ this._firstFrameResolve && this._firstFrameResolve(); }catch{}
+                    UI.setHint('Cámara lista. Toca la retícula para colocar el modelo.');
+                    UI.setReticleText('Toca para colocar el modelo');
+                    UI.showReticle();
+                }
 
-                    if (mode === 'android-webxr') {
-                        return this.startAr();
-                    }
-                    if (mode === 'ios-fallback') {
-                        const mv = document.querySelector(this.cfg.ui.modelViewer);
-                        if (mv && this.cfg.usdzUrl) {
-                            try {
-                                if (typeof mv.activateAR === 'function') {
-                                    mv.activateAR();
-                                    return;
-                                }
-                            } catch {
-                            }
+                if (this._lightProbe){
+                    try{
+                        const est = frame.getLightEstimate(this._lightProbe);
+                        if (est?.primaryLightIntensity){
+                            const i = Math.max(0.7, Math.min(2.0, est.primaryLightIntensity.x));
+                            this._headlamp.intensity = i;
                         }
-                        this.setStatus(this.msg('estado.ios_visor_activo'));
-                        return;
-                    }
-                    this.setStatus(this.msg('estado.visor_3d_activo'));
-                });
-
-                $(this.cfg.ui.resetBtn).on('click', () => this.reset());
-                $(this.cfg.ui.zoomInBtn).on('click', () => this.zoomIn());
-                $(this.cfg.ui.zoomOutBtn).on('click', () => this.zoomOut());
-                $(this.cfg.ui.scale1xBtn).on('click', () => this.setScale(1));
-                $(this.cfg.ui.scale2xBtn).on('click', () => this.setScale(2));
-                $(this.cfg.ui.rotLeftBtn).on('click', () => this.rotateY(-this.cfg.model.rotationStepY));
-                $(this.cfg.ui.rotRightBtn).on('click', () => this.rotateY(+this.cfg.model.rotationStepY));
-                $(this.cfg.ui.rotUpBtn).on('click', () => this.rotateX(+this.cfg.model.rotationStepX));
-                $(this.cfg.ui.rotDownBtn).on('click', () => this.rotateX(-this.cfg.model.rotationStepX));
-
-                // NUEVO: flujo de los dos botones
-                $(this.cfg.ui.exploreBtn).on('click', () => {
-                    let hasPlaced = this.uiState.hasPlaced;
-                    this.setStatus(this.msg('CLICK EXPLORAR :' + hasPlaced));
-                    if (!this.uiState.hasPlaced) return;
-                    this.enterExploreMode();
-                });
-
-                $(this.cfg.ui.newPosBtn).on('click', () => {
-                    this.enterPlacementMode();
-                });
-            }
-
-            handleError(error, key = 'error.colocar_modelo') {
-                this.logError(key, {}, error);
-            }
-
-            clamp(v, min, max) {
-                return Math.min(max, Math.max(min, v));
-            }
-
-            showLoading() {
-                $('#ar-loading').removeClass('d-none');
-            }
-
-            hideLoading() {
-                $('#ar-loading').addClass('d-none');
-            }
-
-            _smoothReticleUpdate(targetMatrix) {
-                if (!this._reticleState) {
-                    const p = new THREE.Vector3(), q = new THREE.Quaternion(), sc = new THREE.Vector3();
-                    targetMatrix.decompose(p, q, sc);
-                    this._reticleState = {pos: p.clone(), quat: q.clone(), scl: sc.clone()};
-                    this.reticle.matrix.compose(this._reticleState.pos, this._reticleState.quat, this._reticleState.scl);
-                    this.reticle.matrixAutoUpdate = false;
-                    this.reticle.updateMatrixWorld(true);
-                    return;
+                    }catch{}
                 }
 
-                const tPos = new THREE.Vector3();
-                const tQuat = new THREE.Quaternion();
-                const tScl = new THREE.Vector3();
-                targetMatrix.decompose(tPos, tQuat, tScl);
-
-                const s = this._smoothFactor ?? 0.35;
-
-                this._reticleState.pos.lerp(tPos, s);
-                this._reticleState.scl.lerp(tScl, s);
-                if (typeof this._reticleState.quat.slerpQuaternions === 'function') {
-                    this._reticleState.quat.slerpQuaternions(this._reticleState.quat, tQuat, s);
-                } else {
-                    this._reticleState.quat.slerp(tQuat, s);
-                }
-
-                this.reticle.matrix.compose(this._reticleState.pos, this._reticleState.quat, this._reticleState.scl);
-                this.reticle.matrixAutoUpdate = false;
-                this.reticle.updateMatrixWorld(true);
+                this.renderer.render(this.scene, this.camera);
             }
 
-            _reticleStabilityGate(validHit) {
-                const N = this._stableFramesRequired ?? 5;
-                this._stableCount = validHit ? (this._stableCount || 0) + 1 : 0;
-                return this._stableCount >= N;
+            _handleResize(){
+                if (!this.renderer) return;
+                const w=Math.max(innerWidth,1), h=Math.max(innerHeight,1);
+                this.renderer.setSize(w,h);
+                if (this.camera && h>0){ this.camera.aspect = w/h; this.camera.updateProjectionMatrix(); }
             }
 
-            showFallback() {
-                try {
-                    $(this.cfg.ui.fallback).removeClass('d-none');
-
-                    const mv = document.querySelector(this.cfg.ui.modelViewer);
-                    if (!mv) return;
-
-                    mv.src = this.cfg.glbUrl || '';
-                    if (this.cfg.usdzUrl) mv.setAttribute('ios-src', this.cfg.usdzUrl);
-                    mv.setAttribute('ar', '');
-                    mv.setAttribute('ar-modes', 'webxr scene-viewer quick-look');
-                    mv.setAttribute('camera-controls', '');
-                    mv.setAttribute('environment-image', 'neutral');
-
-                    this.setStatus(this.msg('estado.fallback_activo'));
-                    this.eventos?._instalarOyentesModelViewer();
-                } catch (err) {
-                    this.logError('error.mostrar_fallback', {}, err);
-                }
-            }
-
-            resetEverything() {
-                this.hitReady = false;
-                this.hitTestSource = null;
-                this.session = null;
-                this.disableUI(false);
-                $(this.cfg.ui.hint).text(this.msg('estado.listo'));
-                this.setStatus(this.msg('estado.visor_reiniciando'));
-                if (this.reticle) this.reticle.visible = false;
-
-                try {
-                    if (this.renderer) this.renderer.setAnimationLoop(null);
-
-                    if (this.model) {
-                        this.disposeObject(this.model);
-                        this.model = null;
-                    }
-
-                    if (this.scene) {
-                        this.scene.traverse(o => {
-                            if (o.isMesh && o.geometry) o.geometry.dispose();
-                            const m = o.material;
-                            if (m) {
-                                if (Array.isArray(m)) m.forEach(mat => mat.dispose && mat.dispose());
-                                else m.dispose && m.dispose();
-                            }
-                        });
-                        this.scene = null;
-                    }
-
-                    this._cameraDirLight = null;
-
-                    if (this.renderer?.domElement?.parentNode) {
-                        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
-                    }
-                    this.renderer?.dispose?.();
-                    this.renderer = null;
-
-                    this.camera = null;
-                    this.hitTestSource = null;
-                    this.referenceSpace = null;
-                    this.viewerSpace = null;
-                    this.reticle = null;
-                    this.hitReady = false;
-                    this._reticleState = null;
-
-                    // Reinicio del flujo de UI
-                    this.uiState = {inPlacementMode: false, hasPlaced: false, exploring: false};
-                    $(this.cfg.ui.exploreBtn).prop('disabled', true).addClass('disabled');
-                    $(this.cfg.ui.newPosBtn).prop('disabled', true).addClass('disabled');
-
-                    this.disableUI(false);
-                    $(this.cfg.ui.hint).text(this.msg('estado.listo'));
-                    this.setStatus(this.msg('estado.visor_reiniciado'));
-                    this.removeViewUICam();
-                } catch (err) {
-                    this.logError('error.reset_total', {}, err);
-                }
-            }
-
-            _animateScaleTo(target, ms = 200) {
+            async _disposeModel(){
                 if (!this.model) return;
-                const start = this.model.scale.x;
-                const end = this.clamp(target, this.cfg.model.minScale, this.cfg.model.maxScale);
-                const t0 = performance.now();
-                const tick = (t) => {
-                    const k = Math.min(1, (t - t0) / ms);
-                    const s = start + (end - start) * k;
-                    this.model.scale.set(s, s, s);
-                    if (k < 1) requestAnimationFrame(tick);
-                    else this.setStatus(this.msg('estado.escala', {valor: end.toFixed(2)}));
-                };
-                requestAnimationFrame(tick);
-            }
-
-            initViewUICam() {
-                $(".manager-buttons").removeClass("manager-buttons--view-control-cam");
-                $(".manager-buttons").addClass("manager-buttons--view-control-cam");
-                $("#btn-reset,#btn-zoom-in,#btn-zoom-out,#btn-scale-1x,#btn-scale-2x,#btn-rot-left,#btn-rot-right,#btn-rot-up,#btn-rot-down,#btn-explore,#btn-new-pos").removeClass("not-view");
-
-                $(".controls").addClass("controls--ui-cam");
-                $("#map").addClass("not-view");
-
-            }
-
-            removeViewUICam() {
-                $(".manager-buttons").removeClass("manager-buttons--view-control-cam");
-                $("#btn-reset,#btn-zoom-in,#btn-zoom-out,#btn-scale-1x,#btn-scale-2x,#btn-rot-left,#btn-rot-right,#btn-rot-up,#btn-rot-down,#btn-explore,#btn-new-pos").addClass("not-view");
-                $("#map").removeClass("not-view");
-
-                $(".controls").removeClass("controls--ui-cam");
-
-
-            }
-
-            disableUI(disabled = true, opts = {}) {
-                try {
-                    const behavior = this.cfg.uiBehavior || {};
-                    const lockCursor = ('lockCursor' in behavior) ? behavior.lockCursor : true;
-
-                    const include = (opts.include !== undefined) ? opts.include : behavior.include;
-                    const exclude = (opts.exclude !== undefined) ? opts.exclude : (behavior.exclude || ['hint', 'fallback', 'modelViewer']);
-
-                    let entries = Object.entries(this.cfg.ui || {});
-                    entries = entries.filter(([key]) => {
-                        if (include && Array.isArray(include)) return include.includes(key);
-                        return !exclude.includes(key);
-                    });
-
-                    entries.forEach(([_, sel]) => {
-                        if (!sel) return;
-                        const $el = $(sel);
-                        if (!$el.length) return;
-
-                        $el
-                            .prop('disabled', disabled)
-                            .toggleClass('disabled', disabled)
-                            .attr('aria-disabled', disabled ? 'true' : 'false')
-                            .css('pointer-events', disabled ? 'none' : '');
-                    });
-
-                    if (lockCursor) $('body').css('cursor', disabled ? 'progress' : '');
-
-                    const mvSel = this.cfg.ui?.modelViewer;
-                    if (mvSel) {
-                        const mv = document.querySelector(mvSel);
-                        if (mv && !document.querySelector(this.cfg.ui.fallback)?.classList.contains('d-none')) {
-                            mv.style.pointerEvents = disabled ? 'none' : '';
-                            const arBtn = mv.querySelector('[slot="ar-button"]');
-                            if (arBtn) {
-                                arBtn.disabled = !!disabled;
-                                arBtn.classList.toggle('disabled', !!disabled);
-                                arBtn.setAttribute('aria-disabled', disabled ? 'true' : 'false');
-                                arBtn.style.pointerEvents = disabled ? 'none' : '';
-                            }
-                        }
+                this.scene?.remove(this.model);
+                this.model.traverse(o=>{
+                    if (o.isMesh){
+                        o.geometry?.dispose?.();
+                        const m=o.material; (Array.isArray(m)?m:[m]).forEach(mm=>mm?.dispose?.());
                     }
-                } catch (err) {
-                    this.logError('error.deshabilitar_ui', {}, err);
-                }
+                });
+                this.model=null;
             }
 
-            _intersectControllerWithModel() {
-                if (!this.model) return null;
-                const ctrl = this.renderer?.xr?.getController(0);
-                if (!ctrl) return null;
-
-                const origin = new THREE.Vector3().setFromMatrixPosition(ctrl.matrixWorld);
-                const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(ctrl.quaternion).normalize();
-
-                const rc = new THREE.Raycaster();
-                rc.set(origin, dir);
-                const hits = rc.intersectObject(this.model, true);
-                return (hits && hits.length) ? hits[0] : null;
+            _placeInFront(){
+                if (!this.model || !this.camera) return;
+                const fwd = new THREE.Vector3(0,0,-1).applyQuaternion(this.camera.quaternion).normalize();
+                const pos = new THREE.Vector3().copy(this.camera.position).add(fwd.multiplyScalar(this._distanceMeters));
+                this.model.position.copy(pos);
+                this.model.position.y -= 0.1;
+                this.model.lookAt(this.camera.position.x, this.model.position.y, this.camera.position.z);
+                if (!this.model.parent) this.scene.add(this.model);
+                UI.setHint('Modelo colocado.');
             }
 
+            /* ---------- Gestos móviles ---------- */
+            _pixelsToMetersAtDistance(d){ const h=2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov*0.5))*d; return h/Math.max(1,this.renderer.getSize(new THREE.Vector2()).y); }
+            _bindGesturesMobile(){
+                const dom=this.renderer.domElement; dom.style.touchAction='none';
+                const st={ mode:'none', lastX:0, lastY:0, lastDist:0, lastCx:0, lastCy:0 };
+                const ROT_S=0.012, ZOOM_S=0.004, clamp=(s)=>THREE.MathUtils.clamp(s,0.2,3.0);
+                let raf=null, dRot=0, dZoom=1, panDX=0, panDY=0;
+                const apply=()=>{ raf=null; if(!this.model) return;
+                    if(dRot){ this.model.rotation.y += dRot; dRot=0; }
+                    if(dZoom!==1){ const s=clamp(this.model.scale.x*dZoom); this.model.scale.setScalar(s); dZoom=1; }
+                    if(panDX||panDY){
+                        const dCam=this.camera.position.distanceTo(this.model.position), px2m=this._pixelsToMetersAtDistance(Math.max(0.01,dCam));
+                        const right=new THREE.Vector3(1,0,0).applyQuaternion(this.camera.quaternion);
+                        const up=new THREE.Vector3(0,1,0).applyQuaternion(this.camera.quaternion);
+                        this.model.position.addScaledVector(right, panDX*px2m);
+                        this.model.position.addScaledVector(up,   -panDY*px2m);
+                        panDX=panDY=0;
+                    }
+                };
+                const queue=()=>{ if(!raf) raf=requestAnimationFrame(apply); };
+
+                const onStart=e=>{
+                    if(e.touches.length===1){ st.mode='one'; st.lastX=e.touches[0].clientX; st.lastY=e.touches[0].clientY; }
+                    else if(e.touches.length>=2){ st.mode='two'; const[a,b]=e.touches; st.lastDist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY); st.lastCx=(a.clientX+b.clientX)*.5; st.lastCy=(a.clientY+b.clientY)*.5; }
+                };
+                const onMove=e=>{
+                    if(!this.model) return; e.preventDefault();
+                    if(st.mode==='one' && e.touches.length===1){
+                        const t=e.touches[0], dx=t.clientX-st.lastX, dy=t.clientY-st.lastY;
+                        dRot += -dx*ROT_S;          // izquierda↔derecha rota
+                        dZoom*= (1 - dy*ZOOM_S);    // arriba agranda / abajo reduce
+                        st.lastX=t.clientX; st.lastY=t.clientY; queue(); return;
+                    }
+                    if(st.mode==='two' && e.touches.length>=2){
+                        const[a,b]=e.touches;
+                        const dist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY); dZoom*= dist/Math.max(1,st.lastDist); st.lastDist=dist;
+                        const cx=(a.clientX+b.clientX)*.5, cy=(a.clientY+b.clientY)*.5; panDX += (cx-st.lastCx); panDY += (cy-st.lastCy); st.lastCx=cx; st.lastCy=cy;
+                        queue(); return;
+                    }
+                };
+                const onEnd=()=>{ st.mode='none'; };
+
+                dom.addEventListener('touchstart', onStart, {passive:true});
+                dom.addEventListener('touchmove',  onMove,  {passive:false});
+                dom.addEventListener('touchend',   onEnd,   {passive:true});
+                dom.addEventListener('touchcancel',onEnd,   {passive:true});
+            }
+
+            getCanvas(){ return this.renderer?.domElement || null; }
+            getModelStats(){ return StatsUtils.compute(this.model)||{}; }
         }
 
-        // Exponer para extensiones si es necesario
-        window.JQueryArViewer = JQueryArViewer;
+        /* ===========================================================
+         * Viewer (Orquestador) — flujo exacto solicitado
+         * =========================================================== */
+        class ViewerOrchestrator {
+            constructor(){ this._state={ mode:null, controller:null, pendingGLB:null, arReady:false, lastSource:null }; }
+            get state(){ return this._state; }
+            isActive(){ return !!this._state.controller; }
 
-        /* =======================
-         * Bootstrap de la app
-         * ======================= */
-        let itemsSources = [{
-            id: "taita",
-            title: "Taita Imbabura – El Abuelo que todo lo ve",
-            subtitle: "Ñawi Hatun Yaya",
-            description: "Sabio y protector, es el guardián del viento y de los ciclos de la tierra. Desde su cima, observa en silencio el camino que estás por recorrer.",
-            position: {},
-            sources: {
-                glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/taita-imbabura-toon-1.glb',
-                img: ""
+            // 1) Click en “Ver en 3D” ⇒ abre cámara (sin GLB)
+            async onMarkerSourceSelected(glbUrl){
+                this._state.lastSource = { glb: glbUrl, usdz: glbUrl?.endsWith?.('.glb') ? glbUrl.replace(/\.glb$/i,'.usdz') : '' };
+
+                UI.revealContainer(); UI.hideMap(); UI.hideFallback();
+
+                if (await canUseAR()){
+                    try{
+                        UI.showLoading('Abriendo cámara…');
+                        const ctrl = new AndroidWebXRController({
+                            onEnter: ()=> UI.setHint('Cámara iniciada.'),
+                            onExit:  async ({reason}) => { UI.setHint(`Sesión finalizada (${reason||'desconocido'}).`); await this.destroy(); }
+                        });
+                        await ctrl.startSessionFromGesture(); // SOLO cámara
+                        this._state.mode='android-webxr'; this._state.controller=ctrl; this._state.pendingGLB=glbUrl;
+
+                        // espera primer frame ⇒ mostramos retícula
+                        await ctrl.ready;
+                        UI.hideLoading();
+                        UI.showReticle();
+                        UI.setHint('Toca la retícula para colocar.');
+                        UI.showCapture();
+                        return;
+                    }catch(e){
+                        console.warn('No se pudo iniciar WebXR, uso fallback', e);
+                    }
+                }
+
+                // Fallback <model-viewer>
+                UI.showFallback(); UI.showLoading(); UI.resetLoadingProgress();
+                const mvCtrl = new ModelViewerController(UI.mv, { onEnter:({mode})=>UI.setHint(`AR activo (${mode}).`) });
+                mvCtrl.bindOnce();
+                await mvCtrl.setSource({ glbUrl, usdzUrl:this._state.lastSource.usdz });
+                this._state.mode = Platform.isIOS ? 'ios-quicklook' : 'web-fallback';
+                this._state.controller = mvCtrl;
+                this._state.pendingGLB = null;
+                UI.showCapture();
+                UI.hideLoading();
             }
-        },
+
+            // 2) Click en retícula ⇒ carga GLB con % y coloca
+            async handleReticleTap(){
+                if (this._state.mode!=='android-webxr' || !this._state.controller) return;
+                const glb = this._state.pendingGLB;
+                if (!glb){ UI.setHint('No hay modelo seleccionado.'); return; }
+
+                UI.showLoading('Cargando modelo…'); UI.resetLoadingProgress();
+                try{
+                    await this._state.controller.loadModel(glb);
+                    this._state.controller.placeInFront();
+                    UI.hideLoading(); UI.hideReticle(); UI.setHint('Modelo colocado.');
+                    this._state.pendingGLB = null;
+                }catch{
+                    UI.hideLoading(); UI.setHint('Error al cargar el modelo.');
+                }
+            }
+
+            // 4) Salir siempre al mapa y limpiar
+            async destroy(){
+                try{
+                    if (this._state.controller){
+                        if (this._state.mode==='android-webxr') await this._state.controller.stop();
+                        else this._state.controller.destroy();
+                    }
+                }catch{}
+                this._state={ mode:null, controller:null, pendingGLB:null, arReady:false, lastSource:this._state.lastSource };
+                UI.hideFallback(); UI.hideReticle(); UI.hideCapture(); UI.showMap(); UI.setHint('');
+            }
+
+            // Captura: pestaña (si se puede) o solo 3D
+            async capture(){
+                if (!this.isActive()){ UI.setHint('No hay vista activa para capturar.'); return; }
+                const ts=new Date().toISOString().replace(/[:.]/g,'-'), name=`captura-${ts}.png`;
+                const save = (b)=>DownloadUtils.saveBlob(name,b);
+
+                const supportsTab = !!(navigator.mediaDevices?.getDisplayMedia || navigator.getDisplayMedia);
+                if (supportsTab){
+                    try{
+                        const getDM = navigator.mediaDevices?.getDisplayMedia
+                            ? ()=>navigator.mediaDevices.getDisplayMedia({video:{preferCurrentTab:true},audio:false})
+                            : ()=>navigator.getDisplayMedia({video:true,audio:false});
+                        const stream = await getDM();
+                        const track = stream.getVideoTracks()[0];
+                        try{
+                            const cap=new ImageCapture(track), bmp=await cap.grabFrame();
+                            const c=document.createElement('canvas'); c.width=bmp.width; c.height=bmp.height;
+                            c.getContext('2d').drawImage(bmp,0,0);
+                            const blob = await new Promise(res=>c.toBlob(res,'image/png'));
+                            save(blob); stream.getTracks().forEach(t=>t.stop()); UI.setHint('✅ Captura (cámara + modelo).'); return;
+                        }catch{
+                            const v=document.createElement('video'); v.srcObject=stream; await v.play();
+                            await new Promise(r=>{ const to=setTimeout(r,180); v.onloadeddata=()=>{clearTimeout(to); r();}; });
+                            const w=v.videoWidth||innerWidth,h=v.videoHeight||innerHeight;
+                            const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(v,0,0,w,h);
+                            const blob=await new Promise(res=>c.toBlob(res,'image/png')); save(blob); stream.getTracks().forEach(t=>t.stop());
+                            UI.setHint('✅ Captura (cámara + modelo).'); return;
+                        }
+                    }catch(e){ console.warn('getDisplayMedia falló/denegado', e); }
+                }
+
+                if (this._state.mode==='android-webxr' && this._state.controller?.getCanvas){
+                    const cnv=this._state.controller.getCanvas();
+                    const blob=await new Promise(res=>cnv.toBlob(res,'image/png'));
+                    save(blob); UI.setHint('📸 Captura (solo modelo 3D).'); return;
+                }
+
+                if (UI.mv && window.html2canvas){
+                    const cnv = await window.html2canvas(UI.$fallback||UI.mv, { useCORS:true, backgroundColor:'#000' });
+                    const blob=await new Promise(res=>cnv.toBlob(res,'image/png'));
+                    save(blob); UI.setHint('📸 Captura (fallback 3D).'); return;
+                }
+
+                UI.setHint('Tu navegador no permite mezcla cámara+modelo. Usa captura del sistema.');
+            }
+        }
+
+        /* ===========================================================
+         * Mapa (Leaflet) — abre cámara al click en “Ver en 3D”
+         * =========================================================== */
+        class MapController {
+            constructor(cfg){ this.cfg=Object.assign({
+                zoom:14, maxZoom:25, position:[0.20830,-78.22798],
+                tileUrl:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                tileAttribution:'&copy; OpenStreetMap contribuyentes'
+            }, cfg||{}); this.map=null; this.layer=null; this.byId={}; }
+
+            init(items){
+                this.map = L.map('map',{zoomControl:true}).setView(this.cfg.position, this.cfg.zoom);
+                L.tileLayer(this.cfg.tileUrl,{maxZoom:this.cfg.maxZoom, attribution:this.cfg.tileAttribution}).addTo(this.map);
+                this.layer = L.layerGroup().addTo(this.map);
+                this.render(items);
+
+                this.map.on('popupopen', (e)=>{
+                    this._bindPopup(e);
+                    const mk=e.popup._source;
+                    if (mk){ requestAnimationFrame(()=> this.map.flyTo(mk.getLatLng(), Math.max(this.cfg.zoom,17), {duration:0.35}) ); }
+                });
+            }
+
+            render(items){
+                this.layer.clearLayers(); this.byId={};
+                const bounds=[];
+                items.forEach(it=>{
+                    const icon=L.icon({ iconUrl:it.sources.img, iconSize:[60,60], iconAnchor:[60,60], popupAnchor:[0,-40] });
+                    const mk=L.marker([it.position.lat,it.position.lng],{icon, title:it.title})
+                        .bindPopup(this._popupHTML(it), { maxWidth:320, autoPan:true, keepInView:true });
+                    mk.addTo(this.layer);
+                    mk.on('click', ()=>{ this.map.flyTo(mk.getLatLng(), Math.max(this.cfg.zoom,17), {duration:0.35}); mk.openPopup(); });
+                    this.byId[it.id]=mk; bounds.push([it.position.lat,it.position.lng]);
+                });
+                if (bounds.length) this.map.fitBounds(bounds,{padding:[40,40]});
+            }
+
+            _popupHTML(item){
+                return `
+      <article class="popup-card" data-popup-id="${item.id}">
+        <header class="popup-card__header">
+          <img class="popup-card__img" src="${item.sources.img}" alt="${item.title}" loading="lazy">
+          <div class="popup-card__titles">
+            <h4 class="popup-card__title">${item.title}</h4>
+            <p class="popup-card__subtitle">${item.subtitle}</p>
+          </div>
+        </header>
+        <section class="popup-card__body"><p class="popup-card__description">${item.description}</p></section>
+        <footer class="popup-card__footer">
+          <button class="popup-card__btn popup-card__btn--primary not-view" data-action="center" data-id="${item.id}">Centrar aquí</button>
+          <a class="popup-card__btn popup-card__btn--ghost" source="${item.sources.glb}" rel="noopener noreferrer">Ver en 3D</a>
+        </footer>
+      </article>`;
+            }
+
+            _bindPopup(e){
+                const root=e.popup.getElement(); if(!root) return;
+                L.DomEvent.disableClickPropagation(root); L.DomEvent.disableScrollPropagation(root);
+
+                const centerBtn = root.querySelector('.popup-card__btn[data-action="center"]');
+                centerBtn?.addEventListener('click', (ev)=>{ ev.preventDefault(); const id=centerBtn.getAttribute('data-id'); this.flyTo(id); }, {once:true});
+
+                const onClick = (ev)=>{
+                    const btn = ev.target.closest('.popup-card__btn--ghost'); if(!btn) return;
+                    ev.preventDefault(); ev.stopPropagation();
+                    const src = btn.getAttribute('data-source') || btn.getAttribute('source') || btn.getAttribute('href') || '';
+                    if (!src){ UI.setHint('No hay fuente GLB/USDZ.'); return; }
+                    setTimeout(()=> window.Viewer.onMarkerSourceSelected(src), 0); // abre cámara ya
+                };
+                root.addEventListener('click', onClick, {passive:false});
+                this.map.once('popupclose', (evClose)=>{ if (evClose.popup===e.popup) root.removeEventListener('click', onClick); });
+            }
+
+            flyTo(id, zoom=17){ const mk=this.byId[id]; if(!mk) return; const ll=mk.getLatLng(); this.map.flyTo(ll,zoom,{duration:0.35}); mk.openPopup(); }
+        }
+
+        /* ===========================================================
+         * Eventos de dispositivo / ciclo de vida
+         * =========================================================== */
+        class DeviceEvents {
+            static attach(){
+                document.addEventListener('visibilitychange', async ()=>{
+                    if (document.hidden){ await window.Viewer?.destroy(); }
+                });
+                window.addEventListener('pagehide', ()=> window.Viewer?.destroy());
+                // (logs opcionales)
+                window.addEventListener('orientationchange', ()=>console.log('[orientationchange]'));
+                window.addEventListener('resize', ()=>console.log('[resize]', innerWidth, innerHeight));
+            }
+        }
+
+        /* ===========================================================
+         * Datos de ejemplo
+         * =========================================================== */
+        const itemsSources = [
             {
-                id: "cerro-cusin",
-                title: "Cusin – El guardián del paso fértil",
-                subtitle: "Allpa ñampi rikchar",
-                description: "Alegre y trabajador, Cusin camina con paso firme cuidando las chacras y senderos que alimentan la vida.",
-                position: {},
+                id: "taita", title: "Taita Imbabura – El Abuelo que todo lo ve", subtitle: "Ñawi Hatun Yaya",
+                description: "Sabio y protector, guardián del viento y ciclos de la tierra.",
+                position: {lat: 0.20477, lng: -78.20639},
                 sources: {
-                    glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/cusin.glb',
-                    img: ""
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/taita-imbabura-toon-1.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/taita-imbabura.png'
                 }
             },
             {
-                id: "mojanda",
-                title: "Mojanda – El susurro del páramo",
-                subtitle: "Sachayaku mama",
-                description: "Entre neblinas y lagunas, Mojanda teje los hilos del agua fría que purifica y renueva. Su silencio es fuerza.",
-                position: {},
+                id: "cerro-cusin", title: "Cusin – El guardián del paso fértil", subtitle: "Allpa ñampi rikchar",
+                description: "Cusin camina con paso firme cuidando las chacras y senderos.",
+                position: {lat: 0.20435, lng: -78.20688},
                 sources: {
-                    glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/taita-imbabura-otro.glb',
-                    img: ""
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/cusin.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/elcusin.png'
+                }
+            },
+            {
+                id: "mojanda", title: "Mojanda – El susurro del páramo", subtitle: "Sachayaku mama",
+                description: "Entre neblinas y lagunas, hilos del agua fría que purifica.",
+                position: {lat: 0.20401, lng: -78.20723},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mojanda.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/mojanda.png'
                 }
             },
             {
                 id: "mama-cotacachi",
                 title: "Mama Cotacachi – Madre de la Pachamama",
                 subtitle: "Allpa mama- Warmi Rasu",
-                description: "Dulce y poderosa, Mama Cotacachi cuida los ciclos de la vida. Su calma abraza a quien camina con respeto.",
-                position: {},
+                description: "Dulce y poderosa, cuida los ciclos de la vida.",
+                position: {lat: 0.20369, lng: -78.20759},
                 sources: {
-                    glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/mama-cotacachi.glb',
-                    img: ""
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mama-cotacachi.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/warmi-razu.png'
                 }
             },
             {
-                id: "coraza",
-                title: "El Coraza – Espíritu de la celebración",
-                subtitle: "Kawsay Taki",
-                description: "Representa el orgullo y la dignidad de su pueblo. Su danza no es solo alegría, es memoria viva de lucha y honor.",
-                position: {},
+                id: "coraza", title: "El Coraza – Espíritu de la celebración", subtitle: "Kawsay Taki",
+                description: "Orgullo y memoria viva de lucha y honor.",
+                position: {lat: 0.20349, lng: -78.20779},
                 sources: {
-                    glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/coraza-one.glb',
-                    img: ""
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/coraza-one.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/elcoraza.png'
                 }
             },
             {
-                id: "lechero",
-                title: "El Lechero – Árbol del Encuentro y los Deseos",
-                subtitle: "Kawsay ranti",
-                description: "Testigo de promesas, abrazos y despedidas. Desde sus ramas, el mundo parece un sueño.",
-                position: {},
+                id: "lechero", title: "El Lechero – Árbol del Encuentro y los Deseos", subtitle: "Kawsay ranti",
+                description: "Testigo de promesas, abrazos y despedidas.",
+                position: {lat: 0.20316, lng: -78.20790},
                 sources: {
-                    glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/other.glb',
-                    img: ""
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lechero.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/lechero.png'
                 }
             },
             {
-                id: "lago-san-pablo",
-                title: "Yaku Mama – La Laguna Viva",
-                subtitle: "Yaku Mama – Kawsaycocha",
-                description: "Aquí termina el camino, pero comienza la conexión. Sus aguas te abrazan con calma, reflejando tu propia esencia.",
-                position: {},
+                id: "lago-san-pablo", title: "Yaku Mama – La Laguna Viva", subtitle: "Yaku Mama – Kawsaycocha",
+                description: "Sus aguas te abrazan con calma, reflejando tu esencia.",
+                position: {lat: 0.20284, lng: -78.20802},
                 sources: {
-                    glb: window.$dataManagerPage['public-root'] + '/simi-rura/muelle-catalina/lago-san-pablo.glb',
-                    img: ""
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lago-san-pablo.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/yaku-mama.png'
                 }
             },
-
-
-
+            {
+                id: "ayahuma-pacha", title: "Ayahuma", subtitle: "Aya huma",
+                description: "Ayahuma.",
+                position: {lat: 0.20184, lng: -78.20902},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/ayahuma.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/ayahuma.jpeg'
+                }
+            }, {
+                id: "corazon-pacha", title: "Corazon Pacha", subtitle: "Corazon Pacha",
+                description: "Corazon Pacha.",
+                position: {lat: 0.20084, lng: -78.21002},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/corazon.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/corazon.jpeg'
+                }
+            },
         ];
-        $(function () {
 
-            const viewer = new JQueryArViewer({
-                glbUrl: itemsSources[6].sources.glb,
-                events: {
-                    autorrotacion: {activa: true, velocidadRadSeg: 1.2, pausaAlInteractuar: true},
-                    clicks: {habilitar: true, umbralXR_metros: 0.25},
-                    gestures: {habilitar: true, rotacionFactor: 0.015, rotacionFactorX: 0.010, pinchFactor: 0.005},
-                    onModelClick: ({modo, punto}) => {
-                        const p = punto ? `${punto.x.toFixed(2)}, ${punto.y.toFixed(2)}, ${punto.z.toFixed(2)}` : '—';
-                        viewer.setStatus(`Click sobre modelo (${modo}) en ${p}`);
-                    },
-                    onDragStart: () => viewer.setStatus('Arrastre iniciado'),
-                    onDrag: ({dx, dy}) => viewer.setStatus(`Arrastrando dx=${dx} dy=${dy}`),
-                    onDragEnd: () => viewer.setStatus('Arrastre finalizado'),
-                    onScale: ({scale}) => viewer.setStatus(`Escala: ${scale.toFixed(2)}`),
-                    onRotate: ({rotY, rotX}) => viewer.setStatus(`Rotación Y=${rotY.toFixed(2)} X=${rotX.toFixed(2)}`)
-                },
-                i18n: {textos: {etiquetas: {botonVer: 'Entrar'}}}
-            });
 
-            window.viewer = viewer; // útil para depurar en consola
+        /* ===========================================================
+         * Bootstrap
+         * =========================================================== */
+        document.addEventListener('DOMContentLoaded', ()=>{
+            UI.bind();
+            window.Viewer = new ViewerOrchestrator();
 
-            viewer.init();
+            const mapCtl = new MapController({});
+            mapCtl.init(itemsSources);
 
-            // Ajustes recomendados
-            viewer.configureCamera({toneExposure: 1.4});
-            viewer.configureSensitivity({
-                stableFramesRequired: 3,
-                offsetRayDown: 0.25,
-                upDotMin: 0.78,
-                minDistance: 0.15
-            });
-            viewer.configureReticle({color: 0x00e5ff});
+            DeviceEvents.attach();
 
-            // Política: colocar solo si el tap cae en el anillo de la retícula
-            viewer.placeOnlyWhenReticleHit = true;
-
-            // Mostrar contenedor tras verificación rápida del modo
-            (async function verifyMode() {
-                const mode = await viewer.decideMode();
-                console.log('mode:', mode);
-                $(".container--custom").removeClass("not-view");
-            })();
-            initMap();
+            UI.$reticle?.addEventListener('click', async ()=>{ await window.Viewer.handleReticleTap(); });
+            UI.$back?.addEventListener('click', async ()=>{ await window.Viewer.destroy(); });
+            UI.$capture?.addEventListener('click', async ()=>{ await window.Viewer.capture(); });
         });
-        let markersAllInit = [];
-        let markersAll = [];
 
-        function initMap() {
-            let configMap = {
-                zoom: 14,
-                position: [0.20830, -78.22798]
-            };
-            const map = L.map('map', {
-                zoomControl: true
-            }).setView(configMap.position, configMap.zoom);
-
-            // 2) Capa base OSM (gratuita). Mantén la atribución visible.
-            const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: configMap.zoom,
-                attribution:
-                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contribuyentes'
-            }).addTo(map);
-
-            map.on('click', function (e) {
-                const {lat, lng} = e.latlng;
-                let positionCurrent = [{lat: lat, lng: lng}];
-                L.marker([lat, lng]).addTo(map)
-                    .bindPopup(`Nuevo marcador:<br><code>${lat.toFixed(5)}, ${lng.toFixed(5)}</code>`)
-                    .openPopup();
-
-                markersAllInit.push(positionCurrent)
-            });
-            map.on('zoomstart', (e) => {
-                console.log('[zoomstart] zoom actual:', map.getZoom());
-            });
-
-            // Opcional: se dispara muchas veces durante la animación
-            map.on('zoom', (e) => {
-                // Si quieres saber si vino de rueda/gesto, algunos navegadores incluyen e.originalEvent
-                // console.log('[zoom] paso intermedio. originalEvent?', !!e.originalEvent);
-            });
-
-            map.on('zoomend', (e) => {
-                const z = map.getZoom();
-                const center = map.getCenter();
-                const bounds = map.getBounds();
-                console.log('[zoomend] nuevo zoom:', z, 'center:', center, 'bounds:', bounds);
-                $('#zoom-info').text(`Zoom: ${z}`);
-            });
-
-        }
     </script>
+
 @endsection
 @section('content')
-    <div class="controls">
+    <!-- Mensajes de estado -->
+    <div id="hint" class="hint">Estado: listo</div>
 
-        <!-- UI contenedora -->
-        <div class="container--custom not-view">
-            <!-- Overlay de carga -->
-            <div id="ar-loading"
-                 class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 d-flex justify-content-center align-items-center d-none"
-                 style="z-index:9999;">
-                <div class="spinner-border text-light" role="status" style="width: 4rem; height: 4rem;"></div>
-            </div>
+    <!-- Controles principales -->
+    <button id="btn-back-map" class="btn d-none">← Volver al mapa</button>
+    <button id="btn-capture" class="btn d-none">📸 Capturar</button>
 
-            <!-- Mensajes de estado -->
-            <div id="hint" class="alert alert-dark py-2 px-3 small mb-2">Ready. Tap “Enter AR”.</div>
-
-            <!-- Barra de controles -->
-            <div class="d-flex flex-wrap gap-2 mb-3">
-                <div class="manager-buttons">
-                    <button id="btn-enter-ar" class="btn btn-primary btn-sm manager-buttons__item">Ver</button>
-
-                    <button id="btn-reset" class="btn btn-outline-secondary btn-sm manager-buttons__item not-view">Reset
-                    </button>
-                    <button id="btn-zoom-in" class="btn btn-outline-success btn-sm manager-buttons__item not-view">Zoom
-                        +
-                    </button>
-                    <button id="btn-zoom-out" class="btn btn-outline-success btn-sm manager-buttons__item not-view">Zoom
-                        −
-                    </button>
-                    <button id="btn-scale-1x" class="btn btn-outline-info btn-sm manager-buttons__item not-view">Scale
-                        1×
-                    </button>
-                    <button id="btn-scale-2x" class="btn btn-outline-info btn-sm manager-buttons__item not-view">Scale
-                        2×
-                    </button>
-                    <div class="vr"></div>
-                    <button id="btn-rot-left" class="btn btn-outline-warning btn-sm manager-buttons__item not-view">⟲
-                        Left
-                    </button>
-                    <button id="btn-rot-right" class="btn btn-outline-warning btn-sm manager-buttons__item not-view">⟳
-                        Right
-                    </button>
-                    <button id="btn-rot-up" class="btn btn-outline-warning btn-sm manager-buttons__item not-view">↑ Up
-                    </button>
-                    <button id="btn-rot-down" class="btn btn-outline-warning btn-sm manager-buttons__item not-view">↓
-                        Down
-                    </button>
-
-                    <!-- NUEVOS -->
-                    <button id="btn-explore" class="btn btn-success btn-sm manager-buttons__item not-view" disabled>
-                        Explorar
-                    </button>
-                    <button id="btn-new-pos" class="btn btn-outline-primary btn-sm manager-buttons__item not-view"
-                            disabled>
-                        Posición nueva
-                    </button>
+    <!-- Contenedor de AR/Fallback -->
+    <div class="container--custom not-view">
+        <!-- Loading transparente con % -->
+        <div id="ar-loading" class="loading d-none">
+            <div class="loading__center">
+                <div class="spinner"></div>
+                <div class="loading__text">
+                    <strong id="ar-loading-label">Cargando…</strong>
+                    <span id="ar-loading-percent">0%</span>
                 </div>
             </div>
+        </div>
 
-            <!-- Fallback cuando no hay WebXR -->
-            <div id="fallback" class="d-none">
-                <model-viewer id="mv" src="" ios-src=""
-                              ar ar-modes="scene-viewer quick-look webxr"
-                              camera-controls environment-image="neutral"
-                              style="width:100%;height:60vh;background:#000">
-                    <button slot="ar-button"
-                            class="btn btn-primary btn-sm position-absolute start-50 translate-middle-x bottom-0 mb-2">
-                        Ver en AR
-                    </button>
-                </model-viewer>
-            </div>
+        <!-- Fallback: <model-viewer> -->
+        <div id="fallback" class="d-none">
+            <model-viewer id="mv"
+                          ar ar-modes="scene-viewer quick-look webxr"
+                          camera-controls
+                          environment-image="neutral"
+                          style="width:100%;height:60vh;background:#000">
+            </model-viewer>
         </div>
     </div>
-    <div id="map"></div>
 
+    <!-- Retícula (tap aquí para colocar) -->
+    <div id="reticle-overlay" class="reticle hidden" aria-hidden="true">
+        <div class="reticle__ring"></div>
+        <div class="reticle__dot"></div>
+        <div class="reticle__hint">Toca la retícula para colocar</div>
+    </div>
+
+    <!-- Mapa -->
+    <div id="map" class="map"></div>
 @endsection
