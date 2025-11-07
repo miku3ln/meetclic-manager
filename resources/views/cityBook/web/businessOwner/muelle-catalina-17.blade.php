@@ -1,7 +1,6 @@
 @php
     $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
     $sourcesRoot = $resourcePathServer . 'frontend/businessOwner/mikuy-yachak';
-
 @endphp
 @extends('layouts.bootstrap5')
 @section('additional-styles')
