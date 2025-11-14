@@ -16,7 +16,7 @@ class FrontendPagesOwnerCms
     {
 
       Route::get('/business/{slug}/{section}', 'Frontend\FrontendPagesOwnerCmsController@businessOwner')->name('pages-owner');
-        Route::get('/simi-rura/chaski/mundo-virtual/{id?}', 'Frontend\FrontendPagesOwnerCmsController@chaski')->name('muelle-catalina');
+        Route::get('/simi-rura/chasqui/mundo-virtual/{id?}', 'Frontend\FrontendPagesOwnerCmsController@chasqui')->name('muelle-catalina');
 
 
     }

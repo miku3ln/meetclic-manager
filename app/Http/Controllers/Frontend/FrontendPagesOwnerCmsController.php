@@ -25,7 +25,7 @@ class FrontendPagesOwnerCmsController extends Controller
         ]);
     }
 
-    public function chaski($id = null)
+    public function chasqui($id = null)
     {
         $slug = "";
         $section = "";
