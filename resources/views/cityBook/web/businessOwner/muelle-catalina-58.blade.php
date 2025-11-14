@@ -57,10 +57,9 @@
         }
 
         #hint {
-            display:none;
             position: fixed;
             left: 12px;
-            bottom: 5%;
+            bottom: 12px;
             background: rgba(0, 0, 0, .65);
             color: #fff;
             padding: 8px 12px;
@@ -555,182 +554,6 @@
             z-index: 3; /* encima del mapa y debajo de UI si quieres */
             box-shadow: 0 6px 18px rgba(0, 0, 0, .2);
         }
-
-
-        #map {
-            position: absolute;
-            inset: 0;
-        }
-
-        /* Panel flotante */
-        .company-panel {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 340px;
-            max-height: 80vh;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            font-family: system-ui, sans-serif;
-            z-index: 1000;
-        }
-
-        .company-panel__header {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 12px 12px 8px;
-            border-bottom: 1px solid #eee;
-            gap: 8px;
-        }
-
-        .company-panel__logo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 999px;
-            object-fit: cover;
-        }
-
-        .company-panel__title h2 {
-            color: #445EF2 !important;
-            font-size: 16px;
-            margin: 0;
-        }
-
-        .company-panel__title span {
-            font-size: 12px;
-            color:#ffc700;
-        }
-
-        .company-panel__toggle {
-            margin-left: auto;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 18px;
-            transform: rotate(0deg);
-            transition: transform 0.2s;
-        }
-
-        .company-panel--collapsed .company-panel__toggle {
-            transform: rotate(180deg);
-        }
-
-        .company-panel__body {
-            padding: 10px 14px 14px;
-            overflow-y: auto;
-        }
-
-        .company-panel__section {
-            margin-bottom: 12px;
-        }
-
-        .company-panel__section h3 {
-            font-size: 13px;
-            margin: 0 0 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #555;
-        }
-
-        .company-panel__section p {
-            font-size: 13px;
-            margin: 0 0 4px;
-            color: #333;
-        }
-
-        .link-button {
-            font-size: 12px;
-            border: none;
-            background: none;
-            color: #4c4cff; /* azulClic */
-            cursor: pointer;
-            padding: 0;
-        }
-
-        .primary-button {
-            width: 100%;
-            padding: 8px 10px;
-            border-radius: 999px;
-            background: #4c4cff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .contact-list a {
-            display: inline-block;
-            margin-right: 6px;
-            margin-bottom: 4px;
-            font-size: 12px;
-            text-decoration: none;
-            color: #4c4cff;
-        }
-
-        .social-icons a {
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 999px;
-            border: 1px solid #ddd;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            margin-bottom: 6px;
-        }
-
-        .stat {
-            background: #f5f5ff;
-            border-radius: 10px;
-            padding: 4px 6px;
-            text-align: center;
-        }
-
-        .stat__label {
-            display: block;
-            font-size: 10px;
-            color: #555;
-        }
-
-        .stat__value {
-            font-size: 14px;
-            font-weight: 600;
-            color: #4c4cff;
-        }
-
-        .totems-list {
-            list-style: none;
-            padding-left: 0;
-            margin: 0;
-            font-size: 12px;
-        }
-
-        .totems-list li {
-            margin-bottom: 3px;
-        }
-
-        /* Responsivo móvil: panel como bottom sheet */
-        @media (max-width: 768px) {
-            .company-panel {
-                right: 0;
-                left: 0;
-                top: auto;
-                bottom: 0;
-                transform: none;
-                width: auto;
-                max-height: 45vh;
-                border-radius: 16px 16px 0 0;
-            }
-        }
-
     </style>
     <link
         rel="stylesheet"
@@ -754,15 +577,12 @@
     ></script>
     <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
     <script>
-        /* ============================================================================
- * CameraOverlayComposer: captura frames de cámara + canvas3D opcional
- * ========================================================================== */
         class CameraOverlayComposer {
             constructor() {
-                this.video = null;
-                this.stream = null;
-                this.canvas3D = null;
-                this.composite = null;
+                this.video = null;         // <video> con getUserMedia
+                this.stream = null;        // MediaStream
+                this.canvas3D = null;      // canvas 3D (opcional)
+                this.composite = null;     // canvas 2D donde se pinta
                 this.ctx = null;
                 this._raf = 0;
                 this._running = false;
@@ -780,17 +600,20 @@
                 this.canvas3D = canvas3D || null;
                 this._include3D = !!includeCanvas3D;
 
+                // 1) pedir cámara (HTTPS!)
                 this.stream = await navigator.mediaDevices.getUserMedia({
-                    video: {facingMode, width, height},
+                    video: { facingMode, width, height },
                     audio: false
                 });
 
+                // 2) crear <video>, ponerlo EN EL DOM y esperar eventos clave
                 this.video = document.createElement('video');
                 this.video.playsInline = true;
                 this.video.muted = true;
                 this.video.autoplay = true;
                 this.video.srcObject = this.stream;
 
+                // tiene que estar en el DOM (algunos móviles no actualizan frames si no está)
                 Object.assign(this.video.style, {
                     position: 'fixed',
                     width: '1px',
@@ -803,69 +626,62 @@
                 });
                 document.body.appendChild(this.video);
 
+                // Esperar metadatos para tener videoWidth / videoHeight
                 await new Promise((res, rej) => {
-                    const onMeta = () => {
-                        cleanup();
-                        res();
-                    };
-                    const onErr = (e) => {
-                        cleanup();
-                        rej(e);
-                    };
+                    const onMeta = () => { cleanup(); res(); };
+                    const onErr = (e) => { cleanup(); rej(e); };
                     const cleanup = () => {
                         this.video.removeEventListener('loadedmetadata', onMeta);
                         this.video.removeEventListener('error', onErr);
                     };
-                    this.video.addEventListener('loadedmetadata', onMeta, {once: true});
-                    this.video.addEventListener('error', onErr, {once: true});
+                    this.video.addEventListener('loadedmetadata', onMeta, { once: true });
+                    this.video.addEventListener('error', onErr, { once: true });
                 });
 
-                try {
-                    await this.video.play();
-                } catch {
-                }
-
+                // Forzar play y esperar a que realmente esté produciendo frames
+                try { await this.video.play(); } catch {}
                 await new Promise((res) => {
+                    // Si ya tenemos dimensiones válidas, seguimos
                     if (this.video.videoWidth > 0 && this.video.videoHeight > 0) return res();
-                    const onPlaying = () => {
-                        cleanup();
-                        res();
-                    };
+                    const onPlaying = () => { cleanup(); res(); };
                     const onLoadedData = () => {
-                        if (this.video.videoWidth > 0 && this.video.videoHeight > 0) {
-                            cleanup();
-                            res();
-                        }
+                        if (this.video.videoWidth > 0 && this.video.videoHeight > 0) { cleanup(); res(); }
                     };
                     const cleanup = () => {
                         this.video.removeEventListener('playing', onPlaying);
                         this.video.removeEventListener('loadeddata', onLoadedData);
                     };
-                    this.video.addEventListener('playing', onPlaying, {once: true});
+                    this.video.addEventListener('playing', onPlaying, { once: true });
                     this.video.addEventListener('loadeddata', onLoadedData);
-                    setTimeout(() => {
-                        cleanup();
-                        res();
-                    }, 500);
+                    // fallback por si no llega playing/loadeddata
+                    setTimeout(() => { cleanup(); res(); }, 500);
                 });
 
+                // 3) canvas compuesto (ajustar al tamaño REAL del video)
                 this.composite = document.createElement('canvas');
-                this._resizeToVideo();
+                this._resizeToVideo(); // usa videoWidth/Height reales
                 this.ctx = this.composite.getContext('2d');
+
+                // Puedes dejarlo fuera del DOM (no es necesario mostrarlo)
+                // pero si quieres, lo agregas oculto:
                 this.composite.style.display = 'none';
                 document.body.appendChild(this.composite);
 
+                // 4) loop de composición
                 this._running = true;
                 const tick = () => {
                     if (!this._running) return;
 
+                    // si cambian dimensiones del stream (raro, pero pasa), reajusta
                     if (this.composite.width !== this.video.videoWidth ||
                         this.composite.height !== this.video.videoHeight) {
                         this._resizeToVideo();
                     }
 
+                    // fondo: cámara
                     this.ctx.drawImage(this.video, 0, 0, this.composite.width, this.composite.height);
 
+                    // encima: 3D (si se pidió)
                     if (this._include3D && this.canvas3D && this.canvas3D.width && this.canvas3D.height) {
                         this.ctx.drawImage(this.canvas3D, 0, 0, this.composite.width, this.composite.height);
                     }
@@ -882,10 +698,12 @@
                 this.composite.height = h;
             }
 
-            async snapshotToBlob({type = 'image/jpeg', quality = 0.95} = {}) {
+            async snapshotToBlob({ type = 'image/jpeg', quality = 0.95 } = {}) {
                 if (!this.composite) return null;
 
+                // Asegurar que el video está listo y con tamaño válido
                 if (!this.video || this.video.videoWidth === 0 || this.video.videoHeight === 0) {
+                    // espera un par de frames y reintenta
                     await new Promise(r => requestAnimationFrame(r));
                     await new Promise(r => requestAnimationFrame(r));
                     if (!this.video || this.video.videoWidth === 0 || this.video.videoHeight === 0) {
@@ -895,6 +713,7 @@
                     this._resizeToVideo();
                 }
 
+                // Espera un frame para que el último drawImage se complete
                 await new Promise(r => requestAnimationFrame(r));
 
                 return await new Promise(res => this.composite.toBlob(res, type, quality));
@@ -905,10 +724,7 @@
                 cancelAnimationFrame(this._raf);
                 this._raf = 0;
 
-                try {
-                    this.stream?.getTracks()?.forEach(t => t.stop());
-                } catch {
-                }
+                try { this.stream?.getTracks()?.forEach(t => t.stop()); } catch {}
                 this.stream = null;
 
                 if (this.video?.parentNode) this.video.parentNode.removeChild(this.video);
@@ -922,10 +738,11 @@
             }
         }
 
-        /* ============================================================================
-         * Plataforma + capacidades
-         * ========================================================================== */
-        const Platform = (function () {
+
+        /* ===========================================================
+ * Plataforma + capacidades
+ * =========================================================== */
+        const Platform = (() => {
             const ua = navigator.userAgent || navigator.vendor || "";
             const isAndroid = /Android/i.test(ua);
             const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
@@ -942,26 +759,26 @@
             }
         }
 
-        /* ============================================================================
-         * UI Manager (jQuery-friendly)
-         * ========================================================================== */
-        const UI = (function () {
-            let $refs = {};
+        /* ===========================================================
+         * UI Manager (con % de carga)
+         * =========================================================== */
+        const UI = (() => {
+            let $ = {};
             const pctText = p => (Math.max(0, Math.min(1, p || 0)) * 100).toFixed(0) + '%';
 
             function bind() {
-                $refs.loading = document.getElementById('ar-loading');
-                $refs.loadingPct = document.getElementById('ar-loading-percent');
-                $refs.loadingLbl = document.getElementById('ar-loading-label');
-                $refs.fallback = document.getElementById('fallback');
-                $refs.mv = document.getElementById('mv');
-                $refs.hint = document.getElementById('hint');
-                $refs.container = document.querySelector('.container--custom');
-                $refs.reticle = document.getElementById('reticle-overlay');
-                $refs.retHint = $refs.reticle?.querySelector('.reticle__hint');
-                $refs.map = document.getElementById('map');
-                $refs.back = document.getElementById('btn-back-map');
-                $refs.capture = document.getElementById('btn-capture');
+                $.loading = document.getElementById('ar-loading');
+                $.loadingPct = document.getElementById('ar-loading-percent');
+                $.loadingLbl = document.getElementById('ar-loading-label');
+                $.fallback = document.getElementById('fallback');
+                $.mv = document.getElementById('mv');
+                $.hint = document.getElementById('hint');
+                $.container = document.querySelector('.container--custom');
+                $.reticle = document.getElementById('reticle-overlay');
+                $.retHint = $.reticle?.querySelector('.reticle__hint');
+                $.map = document.getElementById('map');
+                $.back = document.getElementById('btn-back-map');
+                $.capture = document.getElementById('btn-capture');
             }
 
             const show = el => el && el.classList.remove('d-none');
@@ -970,88 +787,88 @@
             return {
                 bind,
                 setHint(m) {
-                    if ($refs.hint) $refs.hint.textContent = m || '';
+                    $.hint && ($.hint.textContent = m || '');
                 },
                 setReticleText(m) {
-                    if ($refs.retHint) $refs.retHint.textContent = m || '';
+                    $.retHint && ($.retHint.textContent = m || '');
                 },
 
                 showLoading(label = 'Cargando:') {
-                    if ($refs.loadingLbl) $refs.loadingLbl.textContent = label;
-                    if ($refs.loadingPct) $refs.loadingPct.textContent = '0%';
-                    show($refs.loading);
+                    $.loadingLbl && ($.loadingLbl.textContent = label);
+                    $.loadingPct && ($.loadingPct.textContent = '0%');
+                    show($.loading);
                 },
                 hideLoading() {
-                    hide($refs.loading);
+                    hide($.loading);
                 },
                 resetLoadingProgress(label = 'Cargando:') {
-                    if ($refs.loadingLbl) $refs.loadingLbl.textContent = label;
-                    if ($refs.loadingPct) $refs.loadingPct.textContent = '0%';
+                    $.loadingLbl && ($.loadingLbl.textContent = label);
+                    $.loadingPct && ($.loadingPct.textContent = '0%');
                 },
                 updateLoadingProgress(p) {
                     const t = pctText(p);
-                    if ($refs.loadingPct) $refs.loadingPct.textContent = t;
-                    if ($refs.loadingLbl) $refs.loadingLbl.textContent = `Cargando modelo:`;
+                    $.loadingPct && ($.loadingPct.textContent = t);
+                    $.loadingLbl && ($.loadingLbl.textContent = `Cargando modelo:`);
                 },
                 finishLoadingProgress() {
-                    if ($refs.loadingPct) $refs.loadingPct.textContent = '100%';
-                    if ($refs.loadingLbl) $refs.loadingLbl.textContent = 'Modelo cargado.';
+                    $.loadingPct && ($.loadingPct.textContent = '100%');
+                    $.loadingLbl && ($.loadingLbl.textContent = 'Modelo cargado.');
                 },
 
                 showFallback() {
-                    show($refs.fallback);
+                    show($.fallback);
                 },
                 hideFallback() {
-                    hide($refs.fallback);
+                    hide($.fallback);
                 },
 
                 revealContainer() {
-                    $refs.container?.classList.remove('not-view');
+                    $.container?.classList.remove('not-view');
                 },
                 showReticle() {
-                    $refs.reticle?.classList.remove('hidden');
+                    $.reticle?.classList.remove('hidden');
                 },
                 hideReticle() {
-                    $refs.reticle?.classList.add('hidden');
+                    $.reticle?.classList.add('hidden');
                 },
 
                 hideMap() {
-                    $refs.map?.classList.add('not-view');
-                    $refs.back?.classList.remove('d-none');
+                    $.map?.classList.add('not-view');
+                    $.back?.classList.remove('d-none');
                 },
                 showMap() {
-                    $refs.map?.classList.remove('not-view');
-                    $refs.back?.classList.add('d-none');
+                    $.map?.classList.remove('not-view');
+                    $.back?.classList.add('d-none');
                 },
 
                 showCapture() {
-                    $refs.capture?.classList.remove('d-none');
+                    $.capture?.classList.remove('d-none');
                 },
                 hideCapture() {
-                    $refs.capture?.classList.add('d-none');
+                    $.capture?.classList.add('d-none');
                 },
 
                 get mv() {
-                    return $refs.mv;
+                    return $.mv;
                 },
                 get $fallback() {
-                    return $refs.fallback;
+                    return $.fallback;
                 },
                 get $reticle() {
-                    return $refs.reticle;
+                    return $.reticle;
                 },
                 get $back() {
-                    return $refs.back;
+                    return $.back;
                 },
                 get $capture() {
-                    return $refs.capture;
+                    return $.capture;
                 }
             };
         })();
 
-        /* ============================================================================
-         * Utilidades
-         * ========================================================================== */
+        /* ===========================================================
+         * Utilidades descarga / stats
+         * =========================================================== */
         const DownloadUtils = {
             saveBlob(filename, blob) {
                 const url = URL.createObjectURL(blob);
@@ -1064,7 +881,6 @@
                 URL.revokeObjectURL(url);
             }
         };
-
         const StatsUtils = {
             compute(root) {
                 if (!root) return null;
@@ -1076,8 +892,7 @@
                     if (o.isMesh && o.geometry) {
                         meshes++;
                         const g = o.geometry;
-                        const t = g.index ? (g.index.count / 3) :
-                            (g.attributes?.position ? g.attributes.position.count / 3 : 0);
+                        const t = g.index ? (g.index.count / 3) : (g.attributes?.position ? g.attributes.position.count / 3 : 0);
                         tris += Math.floor(t);
                     }
                 });
@@ -1089,15 +904,14 @@
             }
         };
 
-        /* ============================================================================
-         * ModelViewerController (fallback <model-viewer>)
-         * ========================================================================== */
+        /* ===========================================================
+         * Fallback <model-viewer> con % de progreso
+         * =========================================================== */
         class ModelViewerController {
             constructor(mvEl, hooks = {}) {
                 this.mv = mvEl;
                 this.hooks = hooks;
                 this._bound = false;
-
             }
 
             bindOnce() {
@@ -1142,12 +956,13 @@
                 if (!this.mv) return;
 
                 UI.showFallback();
-                UI.showLoading('Cargando modelo…');
+                UI.showLoading();
                 UI.resetLoadingProgress();
 
                 const resolved = AssetPreloader.getBlobURL(glbUrl) || glbUrl || '';
                 this.mv.src = resolved;
 
+                // Quick Look NO acepta blob:, solo setear ios-src si es URL http/https
                 if (usdzUrl && !resolved.startsWith('blob:')) {
                     this.mv.setAttribute('ios-src', usdzUrl);
                 } else {
@@ -1168,6 +983,7 @@
                 });
             }
 
+
             destroy() {
                 if (!this.mv) return;
                 this.mv.removeEventListener('ar-status', this._onARStatus);
@@ -1181,13 +997,63 @@
             }
         }
 
-        /* ============================================================================
-         * AndroidWebXRController
-         * ========================================================================== */
+        /* ===========================================================
+         * Android WebXR (sin hit-test): abre cámara primero; GLB después
+         * Gestos móviles: 1 dedo rotar+vertical, 2 dedos pinch+pan
+         * =========================================================== */
         class AndroidWebXRController {
+            async afterResumeXR() {
+                if (!this.renderer) return;
+
+                // Asegura tamaños correctos (al volver de la cámara el viewport suele cambiar)
+                try { this._handleResize(); } catch {}
+
+                // Espera un frame del browser
+                await new Promise(r => requestAnimationFrame(r));
+
+                // Re-asegura el loop de XR
+                try {
+                    if (this.session) this.renderer.setAnimationLoop(this._loop);
+                } catch {}
+
+                // Fuerza 1–2 renders “en frío” para que ARCore re-tome el swapchain
+                try { this.renderer.render(this.scene, this.camera); } catch {}
+                await new Promise(r => requestAnimationFrame(r));
+                try { this.renderer.render(this.scene, this.camera); } catch {}
+
+                // Si quieres volver a esperar “primer frame XR”:
+                // this._firstFrameSeen = false;
+                // this.ready = new Promise(res => (this._firstFrameResolve = res));
+            }
+            async endXRButKeepScene() {
+                // Si no hay sesión, nada que hacer
+                if (!this.session) return;
+
+                // Quitar listeners de sesión
+                try {
+                    this.session.removeEventListener('end', this._onEnd);
+                    this.session.removeEventListener('visibilitychange', this._onVis);
+                } catch {}
+                this._onEnd = this._onVis = null;
+
+                // Detener animación de THREE controlada por XR
+                try { this.renderer?.setAnimationLoop(null); } catch {}
+
+                // Finalizar XR (esto hace que renderer.xr deje de estar «presenting»)
+                try { await this.session.end(); } catch {}
+
+                // Limpia punteros de XR; la escena/renderer/cámara quedan vivas
+                this.session = null;
+                this._refSpace = null;
+
+                // Asegura renderer transparente para overlay
+                if (this.renderer) {
+                    this.renderer.setClearAlpha(0);
+                }
+            }
             constructor(hooks = {}) {
                 this.hooks = hooks;
-                this.renderer = null;
+                this.renderer = null;        // Renderer principal (XR)
                 this.scene = null;
                 this.camera = null;
                 this.session = null;
@@ -1198,28 +1064,32 @@
                 this._loop = this._onXRFrame.bind(this);
                 this._onResize = this._handleResize.bind(this);
 
+                // Primer frame de cámara ⇒ mostrar retícula
                 this._firstFrameSeen = false;
                 this._firstFrameResolve = null;
                 this.ready = new Promise(res => (this._firstFrameResolve = res));
 
+                // eventos sesión
                 this._onEnd = this._onVis = null;
 
+                // light
                 this._lightProbe = null;
                 this._headlamp = null;
 
+                // Snapshot / video
                 this._snapCanvas = null;
                 this._snapCtx = null;
                 this._recorder = null;
                 this._recChunks = [];
                 this._recStream = null;
 
+                // ESPEJO (mirror) no-XR
                 this._mirrorRenderer = null;
                 this._mirrorCam = null;
-                this._mirrorEnabled = true;
-                this._gesturesBound = false;
-
+                this._mirrorEnabled = true; // si quieres, ponlo en false y actívalo solo al capturar
             }
 
+            /* ========================= Sesión ========================= */
             async startSessionFromGesture() {
                 this.session = await navigator.xr.requestSession('immersive-ar', {
                     requiredFeatures: ['local'],
@@ -1233,6 +1103,7 @@
                 await this.renderer.xr.setSession(this.session);
                 this._refSpace = this.renderer.xr.getReferenceSpace();
 
+                // hooks de sesión
                 this._onEnd = () => this.hooks.onExit && this.hooks.onExit({reason: 'session-end'});
                 this._onVis = () => {
                     const s = this.session?.visibilityState;
@@ -1243,6 +1114,7 @@
                 this.session.addEventListener('end', this._onEnd);
                 this.session.addEventListener('visibilitychange', this._onVis);
 
+                // light-probe
                 try {
                     if (this.session.requestLightProbe) {
                         this._lightProbe = await this.session.requestLightProbe({type: 'spherical-harmonics'});
@@ -1250,7 +1122,10 @@
                 } catch {
                 }
 
+                // gestos
                 this._bindGesturesMobile();
+
+                // canvas snapshot (usa #snap-canvas si existe; si no, crea uno oculto)
                 this._ensureSnapCanvas();
 
                 window.addEventListener('resize', this._onResize);
@@ -1263,17 +1138,18 @@
 
                 const resolved = AssetPreloader.getBlobURL(glbUrl) || glbUrl;
 
-                UI.showLoading('Cargando modelo…');
+                UI.showLoading();
                 UI.resetLoadingProgress();
-
                 await new Promise((res, rej) => {
                     const loader = new THREE.GLTFLoader();
+                    // if (loader.setCrossOrigin) loader.setCrossOrigin('anonymous'); // activar si usas texturas cross-origin
 
                     loader.load(
                         resolved,
                         (gltf) => {
                             this.model = gltf.scene;
 
+                            // Escala ≈1m
                             const box = new THREE.Box3().setFromObject(this.model);
                             const size = new THREE.Vector3();
                             box.getSize(size);
@@ -1327,6 +1203,7 @@
                 }
                 await this._disposeModel();
 
+                // detener grabación si estaba activa
                 try {
                     if (this._recorder && this._recorder.state !== 'inactive') this._recorder.stop();
                 } catch {
@@ -1353,12 +1230,14 @@
                 } catch {
                 }
 
+                // limpiar snap canvas si lo agregaste al DOM (solo si se creó dinámico)
                 if (this._snapCanvas && this._snapCanvas.id !== 'snap-canvas' && this._snapCanvas.parentNode) {
                     this._snapCanvas.parentNode.removeChild(this._snapCanvas);
                 }
                 this._snapCanvas = null;
                 this._snapCtx = null;
 
+                // espejo
                 try {
                     this._mirrorRenderer?.dispose?.();
                 } catch {
@@ -1371,14 +1250,16 @@
                 this.ready = new Promise(res => (this._firstFrameResolve = res));
             }
 
+            /* ========================= Setup ========================= */
             _setupRenderer() {
                 if (this.renderer) return;
 
+                // Renderer principal (XR)
                 this.renderer = new THREE.WebGLRenderer({
                     antialias: true,
                     alpha: true,
                     powerPreference: 'high-performance',
-                    preserveDrawingBuffer: true
+                    preserveDrawingBuffer: true // necesario para snapshots consistentes
                 });
                 this.renderer.xr.enabled = true;
                 this.renderer.outputEncoding = THREE.sRGBEncoding;
@@ -1398,6 +1279,7 @@
                 });
                 document.body.appendChild(this.renderer.domElement);
 
+                // === MIRROR: renderer secundario NO XR (oculto) ===
                 this._mirrorRenderer = new THREE.WebGLRenderer({
                     antialias: true,
                     alpha: true,
@@ -1405,7 +1287,11 @@
                 });
                 this._mirrorRenderer.setClearAlpha(0);
                 this._mirrorRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                // Si quieres ver el espejo para debug, descomenta:
+                // Object.assign(this._mirrorRenderer.domElement.style, { position:'fixed', right:'8px', bottom:'8px', width:'200px', height:'120px', zIndex:'2', border:'1px solid #fff3' });
+                // document.body.appendChild(this._mirrorRenderer.domElement);
 
+                // Cámara espejo
                 this._mirrorCam = new THREE.PerspectiveCamera(60, 1, 0.01, 20);
             }
 
@@ -1422,10 +1308,13 @@
                 this.renderer.setAnimationLoop(this._loop);
             }
 
+            /* ========================= Frame loop ========================= */
             _onXRFrame(time, frame) {
                 if (!frame || !this._refSpace) {
+                    // Render normal (fuera de XR)
                     this.renderer.render(this.scene, this.camera);
 
+                    // ESPEJO fuera de XR
                     if (this._mirrorEnabled) {
                         this._renderMirror(this.camera);
                         this._copyToSnapCanvasFrom(this._mirrorRenderer.domElement);
@@ -1457,10 +1346,12 @@
                     }
                 }
 
+                // Render principal en XR layer (lo que ve el usuario)
                 this.renderer.render(this.scene, this.camera);
 
+                // ESPEJO cada frame (no-XR) para poder copiar píxeles
                 if (this._mirrorEnabled) {
-                    const xrCam = this.renderer.xr.getCamera(this.camera);
+                    const xrCam = this.renderer.xr.getCamera(this.camera); // cámara compuesta XR
                     this._renderMirror(xrCam);
                     this._copyToSnapCanvasFrom(this._mirrorRenderer.domElement);
                 }
@@ -1469,18 +1360,21 @@
             _renderMirror(srcCam) {
                 if (!this._mirrorRenderer || !this._mirrorCam) return;
 
+                // Copiar pose/proyección
                 this._mirrorCam.matrixWorld.copy(srcCam.matrixWorld);
                 this._mirrorCam.matrixWorldInverse.copy(srcCam.matrixWorldInverse);
                 this._mirrorCam.projectionMatrix.copy(srcCam.projectionMatrix);
                 if (srcCam.projectionMatrixInverse) {
                     this._mirrorCam.projectionMatrixInverse = srcCam.projectionMatrixInverse.clone();
                 } else {
+                    // @ts-ignore
                     this._mirrorCam.projectionMatrixInverse = this._mirrorCam.projectionMatrix.clone().invert();
                 }
                 this._mirrorCam.position.setFromMatrixPosition(this._mirrorCam.matrixWorld);
                 this._mirrorCam.quaternion.setFromRotationMatrix(this._mirrorCam.matrixWorld);
                 this._mirrorCam.updateMatrixWorld(true);
 
+                // Render escena en renderer espejo (NO XR)
                 this._mirrorRenderer.render(this.scene, this._mirrorCam);
             }
 
@@ -1496,6 +1390,11 @@
                 this._snapCtx.drawImage(srcCanvas, 0, 0, w, h);
             }
 
+            // compat si en algún lado llamas sin args
+            _copyToSnapCanvas() {
+                if (this._mirrorRenderer) this._copyToSnapCanvasFrom(this._mirrorRenderer.domElement);
+            }
+
             _handleResize() {
                 if (!this.renderer) return;
                 const w = Math.max(innerWidth, 1), h = Math.max(innerHeight, 1);
@@ -1504,19 +1403,20 @@
                     this.camera.aspect = w / h;
                     this.camera.updateProjectionMatrix();
                 }
-
+                // espejo
                 if (this._mirrorRenderer && this._mirrorCam) {
                     this._mirrorRenderer.setSize(w, h);
                     this._mirrorCam.aspect = w / h;
                     this._mirrorCam.updateProjectionMatrix();
                 }
-
+                // snap
                 if (this._snapCanvas) {
                     this._snapCanvas.width = w;
                     this._snapCanvas.height = h;
                 }
             }
 
+            /* ========================= Colocar modelo ========================= */
             _placeInFront() {
                 if (!this.model || !this.camera) return;
                 const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion).normalize();
@@ -1541,25 +1441,18 @@
                 this.model = null;
             }
 
+            /* ========================= Gestos móviles ========================= */
             _pixelsToMetersAtDistance(d) {
                 const h = 2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov * 0.5)) * d;
                 return h / Math.max(1, this.renderer.getSize(new THREE.Vector2()).y);
             }
 
             _bindGesturesMobile() {
-                const dom = this.renderer?.domElement;
-                if (!dom) return;
-
-                // 🔹 Si ya se ligaron una vez para este renderer, no volver a registrar
-                if (this._gesturesBound) return;
-                this._gesturesBound = true;
-
+                const dom = this.renderer.domElement;
                 dom.style.touchAction = 'none';
-
                 const st = {mode: 'none', lastX: 0, lastY: 0, lastDist: 0, lastCx: 0, lastCy: 0};
                 const ROT_S = 0.012, ZOOM_S = 0.004, clamp = (s) => THREE.MathUtils.clamp(s, 0.2, 3.0);
                 let raf = null, dRot = 0, dZoom = 1, panDX = 0, panDY = 0;
-
                 const apply = () => {
                     raf = null;
                     if (!this.model) return;
@@ -1604,8 +1497,8 @@
                     e.preventDefault();
                     if (st.mode === 'one' && e.touches.length === 1) {
                         const t = e.touches[0], dx = t.clientX - st.lastX, dy = t.clientY - st.lastY;
-                        dRot += -dx * ROT_S;
-                        dZoom *= (1 - dy * ZOOM_S);
+                        dRot += -dx * ROT_S;          // izquierda↔derecha rota
+                        dZoom *= (1 - dy * ZOOM_S);   // arriba agranda / abajo reduce
                         st.lastX = t.clientX;
                         st.lastY = t.clientY;
                         queue();
@@ -1630,13 +1523,12 @@
                 };
 
                 dom.addEventListener('touchstart', onStart, {passive: true});
-                dom.addEventListener('touchmove',  onMove,  {passive: false});
-                dom.addEventListener('touchend',   onEnd,   {passive: true});
-                dom.addEventListener('touchcancel',onEnd,   {passive: true});
-
+                dom.addEventListener('touchmove', onMove, {passive: false});
+                dom.addEventListener('touchend', onEnd, {passive: true});
+                dom.addEventListener('touchcancel', onEnd, {passive: true});
             }
 
-
+            /* ========================= API util ========================= */
             getCanvas() {
                 return this.renderer?.domElement || null;
             }
@@ -1647,36 +1539,20 @@
 
             _ensureSnapCanvas() {
                 if (this._snapCanvas) return;
-
                 const external = document.getElementById('snap-canvas');
-
                 if (external) {
-                    // Usar canvas externo, pero SIEMPRE oculto
                     this._snapCanvas = external;
+                    this._snapCtx = this._snapCanvas.getContext('2d', {willReadFrequently: false});
                 } else {
-                    // Crear uno nuevo, también oculto
                     this._snapCanvas = document.createElement('canvas');
+                    this._snapCtx = this._snapCanvas.getContext('2d', {willReadFrequently: false});
+                    this._snapCanvas.style.display = 'none';
                     document.body.appendChild(this._snapCanvas);
                 }
-
-                // 🔹 AQUI lo importante: SIEMPRE oculto
-                Object.assign(this._snapCanvas.style, {
-                    display: 'none',
-                    position: 'fixed',
-                    inset: '0',
-                    pointerEvents: 'none',
-                    opacity: '0',
-                    zIndex: '-1'
-                });
-
-                this._snapCtx = this._snapCanvas.getContext('2d', { willReadFrequently: false });
-
-                const w = Math.max(innerWidth, 1);
-                const h = Math.max(innerHeight, 1);
-                this._snapCanvas.width  = w;
+                const w = Math.max(innerWidth, 1), h = Math.max(innerHeight, 1);
+                this._snapCanvas.width = w;
                 this._snapCanvas.height = h;
             }
-
 
             _timestamp() {
                 const p = (n, s = 2) => String(n).padStart(s, '0');
@@ -1684,6 +1560,7 @@
                 return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
             }
 
+            // Captura con config y defaults de alta calidad
             async capture({
                               type = 'image/jpeg',
                               quality = 0.95,
@@ -1691,14 +1568,19 @@
                               filename,
                               download = true
                           } = {}) {
+                // OPCIÓN: activar espejo solo en la captura (ahorra batería):
+                // const prev = this._mirrorEnabled; this._mirrorEnabled = true;
+
                 if (!this._snapCanvas) this._ensureSnapCanvas();
                 if (!this._snapCanvas || !this._snapCtx) throw new Error('Snap canvas no disponible');
 
+                // forzar un frame antes de capturar para asegurar espejo actualizado
                 await new Promise(r => requestAnimationFrame(r));
 
                 const src = this._mirrorRenderer?.domElement;
                 if (!src || !src.width || !src.height) throw new Error('Espejo no disponible');
 
+                // sincroniza tamaños
                 if (this._snapCanvas.width !== src.width) this._snapCanvas.width = src.width;
                 if (this._snapCanvas.height !== src.height) this._snapCanvas.height = src.height;
 
@@ -1711,6 +1593,7 @@
                     this._snapCtx.clearRect(0, 0, w, h);
                 }
 
+                // copiar render espejo (solo 3D; la cámara real NO se incluye en WebXR)
                 this._snapCtx.drawImage(src, 0, 0, w, h);
 
                 await new Promise(r => requestAnimationFrame(r));
@@ -1731,416 +1614,16 @@
                     setTimeout(() => URL.revokeObjectURL(url), 1000);
                 }
 
+                // this._mirrorEnabled = prev; // si activaste espejo “solo para capturar”
                 return {blob, url};
             }
 
-            async captureWithVideoTextureQuad({
-                                                  facingMode = 'environment',
-                                                  type      = 'image/jpeg',
-                                                  quality   = 0.95,
-                                                  download  = true,
-                                                  filename
-                                              } = {}) {
-                // 📌 Canvas AR de referencia: mirrorRenderer (o, si no hay, el renderer principal)
-                const srcAR =
-                    (this._mirrorRenderer && this._mirrorRenderer.domElement) ||
-                    (this.renderer && this.renderer.domElement);
-
-                if (!srcAR) {
-                    console.warn('[captureWithVideoTextureQuad] no hay canvas AR disponible');
-                    return null;
-                }
-
-                let stream = null;
-                let video  = null;
-
-                try {
-                    // 1) Abrimos cámara normal (NO tocamos XR)
-                    stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode, width: 1280, height: 720 },
-                        audio: false
-                    });
-
-                    video = document.createElement('video');
-                    video.playsInline = true;
-                    video.muted = true;
-                    video.autoplay = true;
-                    video.srcObject = stream;
-                    Object.assign(video.style, {
-                        position: 'fixed',
-                        width: '1px',
-                        height: '1px',
-                        opacity: '0',
-                        pointerEvents: 'none',
-                        zIndex: '-1',
-                        left: '0',
-                        top: '0'
-                    });
-                    document.body.appendChild(video);
-
-                    // Esperar a que tenga tamaño real
-                    await new Promise((res, rej) => {
-                        const onMeta = () => { cleanup(); res(); };
-                        const onErr  = (e) => { cleanup(); rej(e); };
-                        const cleanup = () => {
-                            video.removeEventListener('loadedmetadata', onMeta);
-                            video.removeEventListener('error', onErr);
-                        };
-                        video.addEventListener('loadedmetadata', onMeta, { once: true });
-                        video.addEventListener('error', onErr, { once: true });
-                    });
-
-                    try { await video.play(); } catch {}
-                    await new Promise(r => setTimeout(r, 120));
-
-                    // Aseguramos un frame fresco de XR → mirrorRenderer actualizado
-                    await new Promise(r => requestAnimationFrame(r));
-
-                    // 2) Tamaño final = tamaño del canvas AR (escala del teléfono)
-                    const vw = Math.max(1, srcAR.width);
-                    const vh = Math.max(1, srcAR.height);
-
-                    const cnv = document.createElement('canvas');
-                    cnv.width  = vw;
-                    cnv.height = vh;
-                    const ctx = cnv.getContext('2d', { willReadFrequently: false });
-
-                    const vW = video.videoWidth  || 1280;
-                    const vH = video.videoHeight || 720;
-
-                    // 3) Dibujar cámara con efecto "cover" (sin deformar)
-                    const videoAspect  = vW / vH;
-                    const canvasAspect = vw / vh;
-                    let sx, sy, sWidth, sHeight;
-
-                    if (videoAspect > canvasAspect) {
-                        // Video más ancho → recorta lados
-                        sHeight = vH;
-                        sWidth  = sHeight * canvasAspect;
-                        sx      = (vW - sWidth) / 2;
-                        sy      = 0;
-                    } else {
-                        // Video más alto → recorta arriba/abajo
-                        sWidth  = vW;
-                        sHeight = sWidth / canvasAspect;
-                        sx      = 0;
-                        sy      = (vH - sHeight) / 2;
-                    }
-
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(
-                        video,
-                        sx, sy, sWidth, sHeight,
-                        0, 0, vw, vh
-                    );
-
-                    // 4) Dibujar el AR encima 1:1 (modelo nítido, SIN reescalar)
-                    ctx.imageSmoothingEnabled = false;
-                    ctx.drawImage(srcAR, 0, 0, vw, vh);
-
-                    await new Promise(r => requestAnimationFrame(r));
-
-                    // 5) Exportar a blob con la calidad indicada
-                    const blob = await new Promise(res =>
-                        cnv.toBlob(res, type, quality)
-                    );
-
-                    if (blob && download) {
-                        const ext = type === 'image/png' ? 'png'
-                            : (type === 'image/webp' ? 'webp' : 'jpg');
-                        const name = filename || `ar-composite-${this._timestamp() || Date.now()}.${ext}`;
-                        const url  = URL.createObjectURL(blob);
-                        const a    = document.createElement('a');
-                        a.href = url;
-                        a.download = name;
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        setTimeout(() => URL.revokeObjectURL(url), 1000);
-                    }
-
-                    return blob || null;
-
-                } catch (e) {
-                    console.error('[captureWithVideoTextureQuad] error', e);
-                    return null;
-
-                } finally {
-                    // 6) Cerrar SOLO la cámara temporal (XR se queda intacto)
-                    try {
-                        stream?.getTracks()?.forEach(t => t.stop());
-                    } catch {}
-                    if (video?.parentNode) video.parentNode.removeChild(video);
-                }
-            }
-
-
-            async captureWithVideoTextureQuad2({
-                                                  facingMode = 'environment',
-                                                  type = 'image/jpeg',
-                                                  quality = 0.95,
-                                                  download = true,
-                                                  filename
-                                              } = {}) {
-                // 🔹 Necesitamos que el mirrorRenderer esté listo
-                if (!this._mirrorRenderer) {
-                    console.warn('[captureWithVideoTextureQuad] mirrorRenderer no disponible');
-                    return null;
-                }
-
-                let stream = null;
-                let video  = null;
-
-                try {
-                    // 1) Abrimos cámara normal (NO tocamos XR)
-                    stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode, width: 1280, height: 720 },
-                        audio: false
-                    });
-
-                    video = document.createElement('video');
-                    video.playsInline = true;
-                    video.muted = true;
-                    video.autoplay = true;
-                    video.srcObject = stream;
-                    Object.assign(video.style, {
-                        position: 'fixed',
-                        width: '1px',
-                        height: '1px',
-                        opacity: '0',
-                        pointerEvents: 'none',
-                        zIndex: '-1',
-                        left: '0',
-                        top: '0'
-                    });
-                    document.body.appendChild(video);
-
-                    // Esperamos a que tenga medidas
-                    await new Promise((res, rej) => {
-                        const onMeta = () => { cleanup(); res(); };
-                        const onErr  = (e) => { cleanup(); rej(e); };
-                        const cleanup = () => {
-                            video.removeEventListener('loadedmetadata', onMeta);
-                            video.removeEventListener('error', onErr);
-                        };
-                        video.addEventListener('loadedmetadata', onMeta, { once: true });
-                        video.addEventListener('error', onErr, { once: true });
-                    });
-
-                    try { await video.play(); } catch {}
-                    await new Promise(r => setTimeout(r, 120));
-
-                    // 2) Aseguramos al menos un frame más de XR → mirrorRenderer actualizado
-                    await new Promise(r => requestAnimationFrame(r));
-
-                    const bgCanvas = this._mirrorRenderer.domElement;
-                    const vw = Math.max(1, video.videoWidth  || bgCanvas.width  || 1280);
-                    const vh = Math.max(1, video.videoHeight || bgCanvas.height || 720);
-
-                    // 3) Canvas temporal para componer: cámara + AR (mirrorRenderer)
-                    const cnv = document.createElement('canvas');
-                    cnv.width  = vw;
-                    cnv.height = vh;
-                    const ctx = cnv.getContext('2d', { willReadFrequently: false });
-
-                    // Fondo: frame de cámara
-                    ctx.drawImage(video, 0, 0, vw, vh);
-
-                    // Encima: AR (mirrorRenderer), escalado al mismo tamaño
-                    const srcAR = bgCanvas;
-                    if (srcAR && srcAR.width && srcAR.height) {
-                        ctx.drawImage(srcAR, 0, 0, vw, vh);
-                    }
-
-                    await new Promise(r => requestAnimationFrame(r));
-
-                    const blob = await new Promise(res =>
-                        cnv.toBlob(res, type, quality)
-                    );
-
-                    if (blob && download) {
-                        const ext = type === 'image/png' ? 'png'
-                            : (type === 'image/webp' ? 'webp' : 'jpg');
-                        const name = filename || `ar-composite-${this._timestamp() || Date.now()}.${ext}`;
-                        const url  = URL.createObjectURL(blob);
-                        const a    = document.createElement('a');
-                        a.href = url;
-                        a.download = name;
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        setTimeout(() => URL.revokeObjectURL(url), 1000);
-                    }
-
-                    return blob || null;
-
-                } catch (e) {
-                    console.error('[captureWithVideoTextureQuad] error', e);
-                    return null;
-
-                } finally {
-                    // 🔹 Cerrar solo la cámara temporal
-                    try {
-                        stream?.getTracks()?.forEach(t => t.stop());
-                    } catch {}
-                    if (video?.parentNode) video.parentNode.removeChild(video);
-                }
-            }
-
-
-            async restartXRAfterCamera({rePlaceModel = true} = {}) {
-                let prevDist = null;
-                const hadModel = !!this.model;
-
-                try {
-                    if (this.model && this.camera) {
-                        prevDist = this.camera.position.distanceTo(this.model.position);
-                    }
-                } catch {}
-
-                // 1) Volver a crear la sesión XR
-                await this._resumeXRSessionInternal();
-                await this.afterResumeXR?.();
-
-                // 2) Si queremos recolocar el modelo frente a la cámara (otros flujos)
-                if (rePlaceModel && this.model && this.camera &&
-                    typeof prevDist === 'number' && isFinite(prevDist) && prevDist > 0.05) {
-                    try {
-                        const fwd = new THREE.Vector3(0, 0, -1)
-                            .applyQuaternion(this.camera.quaternion)
-                            .normalize();
-                        const pos = new THREE.Vector3()
-                            .copy(this.camera.position)
-                            .addScaledVector(fwd, prevDist);
-                        this.model.position.copy(pos);
-                        this.model.lookAt(
-                            this.camera.position.x,
-                            this.model.position.y,
-                            this.camera.position.z
-                        );
-                        if (!this.model.parent) this.scene.add(this.model);
-                    } catch {}
-                }
-
-                // 3) Si YA había modelo, no queremos que se active el flow de "primer frame"
-                if (hadModel && this.model) {
-                    // Evita que _onXRFrame vuelva a mostrar la retícula y "Toca para colocar…"
-                    this._firstFrameSeen = true;
-                    try {
-                        this._firstFrameResolve && this._firstFrameResolve();
-                    } catch {}
-
-                    // Aseguramos que la UI quede en modo "modelo ya colocado"
-                    UI.hideReticle();
-                    UI.setHint('Modelo listo.');
-                }
-
-            }
-
-
-            async _resumeXRSessionInternal() {
-                try {
-                    this.renderer?.setAnimationLoop(null);
-                } catch {}
-
-                this.session = await navigator.xr.requestSession('immersive-ar', {
-                    requiredFeatures: ['local'],
-                    optionalFeatures: ['dom-overlay', 'light-estimation'],
-                    domOverlay: { root: document.body }
-                });
-
-                this.renderer.xr.enabled = true;
-                this.renderer.xr.setReferenceSpaceType('local');
-                await this.renderer.xr.setSession(this.session);
-                this._refSpace = this.renderer.xr.getReferenceSpace();
-
-                this._onEnd = () => this.hooks.onExit && this.hooks.onExit({ reason: 'session-end' });
-                this._onVis = () => {
-                    const s = this.session?.visibilityState;
-                    if (s === 'hidden' || s === 'visible-blurred') {
-                        this.hooks.onExit && this.hooks.onExit({ reason: 'visibility', state: s });
-                    }
-                };
-                this.session.addEventListener('end', this._onEnd);
-                this.session.addEventListener('visibilitychange', this._onVis);
-
-                this._lightProbe = null;
-                try {
-                    if (this.session.requestLightProbe) {
-                        this._lightProbe = await this.session.requestLightProbe({ type: 'spherical-harmonics' });
-                    }
-                } catch {}
-
-                this.renderer.setAnimationLoop(this._loop);
-
-                this._firstFrameSeen = false;
-                this.ready = new Promise(res => (this._firstFrameResolve = res));
-
-                // 🔹 IMPORTANTE: re-asegurar gestos sobre el canvas
-                this._bindGesturesMobile();
-            }
-
-
-            async afterResumeXR() {
-                if (!this.renderer) return;
-
-                try {
-                    this._handleResize();
-                } catch {
-                }
-
-                await new Promise(r => requestAnimationFrame(r));
-
-                try {
-                    if (this.session) this.renderer.setAnimationLoop(this._loop);
-                } catch {
-                }
-
-                try {
-                    this.renderer.render(this.scene, this.camera);
-                } catch {
-                }
-                await new Promise(r => requestAnimationFrame(r));
-                try {
-                    this.renderer.render(this.scene, this.camera);
-                } catch {
-                }
-            }
-
-            async endXRButKeepScene() {
-                if (!this.session) return;
-
-                try {
-                    this.session.removeEventListener('end', this._onEnd);
-                    this.session.removeEventListener('visibilitychange', this._onVis);
-                } catch {
-                }
-                this._onEnd = this._onVis = null;
-
-                try {
-                    this.renderer?.setAnimationLoop(null);
-                } catch {
-                }
-
-                try {
-                    await this.session.end();
-                } catch {
-                }
-
-                this.session = null;
-                this._refSpace = null;
-
-                if (this.renderer) {
-                    this.renderer.setClearAlpha(0);
-                }
-            }
-
+            /* ========================= Grabación video (solo 3D) ========================= */
             startRecording({fps = 30, mimeType = 'video/webm;codecs=vp9'} = {}) {
                 if (!this._mirrorRenderer) return false;
                 if (this._recorder && this._recorder.state === 'recording') return true;
 
-                const canvas = this._mirrorRenderer.domElement;
+                const canvas = this._mirrorRenderer.domElement; // grabamos el espejo (no-XR)
                 this._recStream = canvas.captureStream(fps);
                 try {
                     this._recorder = new MediaRecorder(this._recStream, {mimeType});
@@ -2188,37 +1671,22 @@
             }
         }
 
-        /* ============================================================================
-         * ViewerOrchestrator
-         * ========================================================================== */
+
+        /* ===========================================================
+         * Viewer (Orquestador) — flujo exacto solicitado
+         * =========================================================== */
         class ViewerOrchestrator {
-            constructor() {
-                this._state = {
-                    mode: null,
-                    controller: null,
-                    pendingGLB: null,
-                    arReady: false,
-                    lastSource: null
-                };
-            }
-
-            get state() {
-                return this._state;
-            }
-
-            isActive() {
-                return !!this._state.controller;
-            }
-
+            // 1) Capturar SOLO CÁMARA → Blob
             async captureCameraFrameBlob() {
                 const st = this._state;
                 if (st.mode !== 'android-webxr' || !st.controller) {
-                    UI.setHint('Cámara: no hay sesión AR activa.');
+                    UI.setHint('Cámara: no hay sesión AR WEBactiva.');
                     return null;
                 }
 
                 const composer = new CameraOverlayComposer();
 
+                // Guardar si hay modelo y su transform (por si acaso)
                 const hadModel = !!st.controller.model;
                 const saved = hadModel ? {
                     pos: st.controller.model.position.clone(),
@@ -2227,13 +1695,21 @@
                 } : null;
 
                 try {
+                    // Pausar XR sin destruir escena
                     await st.controller.endXRButKeepScene();
 
+                    // NO necesitamos render 3D para cámara sola, pero si quieres mantener vista, puedes:
+                    // st.controller.startOverlayRenderLoop();  // opcional para ver el 3D, aquí NO lo usamos
+
+                    // Arrancar cámara (solo cámara, sin 3D)
                     await composer.start({includeCanvas3D: false});
+
+                    // Estabilizar
                     await new Promise(r => setTimeout(r, 250));
 
+                    // Foto
                     const camBlob = await composer.snapshotToBlob({type: 'image/jpeg', quality: 0.95});
-                    console.log("camBlob", camBlob);
+                    console.log("camBlob",camBlob);
                     return camBlob || null;
                 } catch (e) {
                     console.error('[captureCameraFrameBlob] error', e);
@@ -2243,8 +1719,12 @@
                         await composer.stop();
                     } catch {
                     }
+                    // st.controller.stopOverlayRenderLoop(); // si lo activaste
+                    // Reanudar XR y restaurar modelo
                     try {
-                        await st.controller.restartXRAfterCamera({rePlaceModel: true});
+                        await st.controller.resumeXRSession();
+
+
                     } catch {
                     }
                     if (hadModel && saved) {
@@ -2255,18 +1735,20 @@
                 }
             }
 
+// 2) Capturar SOLO MODELO → Blob (tu propio capture, sin descargar)
             async captureModelFrameBlob() {
                 const st = this._state;
                 if (st.mode === 'android-webxr' && typeof st.controller?.capture === 'function') {
                     const {blob} = await st.controller.capture({
-                        type: 'image/png',
+                        type: 'image/png',        // PNG mantiene alfa del modelo (ideal para overlay)
                         quality: 1.0,
-                        background: null,
+                        background: null,         // IMPORTANTE: sin fondo para conservar transparencia
                         download: false
                     });
                     return blob || null;
                 }
 
+                // Fallback <model-viewer>
                 if (st.mode !== 'android-webxr' && UI.mv?.shadowRoot) {
                     const cnv = UI.mv.shadowRoot.querySelector('canvas');
                     if (cnv && cnv.width && cnv.height) {
@@ -2274,7 +1756,7 @@
                         tmp.width = cnv.width;
                         tmp.height = cnv.height;
                         const ctx = tmp.getContext('2d');
-                        ctx.clearRect(0, 0, tmp.width, tmp.height);
+                        ctx.clearRect(0, 0, tmp.width, tmp.height); // sin fondo → alfa
                         ctx.drawImage(cnv, 0, 0);
                         const blob = await new Promise(res => tmp.toBlob(res, 'image/png', 1.0));
                         return blob || null;
@@ -2283,138 +1765,185 @@
                 return null;
             }
 
-            async onCaptureGpu() {
+// 3) Flujo completo: cámara (fondo) + modelo (encima) → merge → guardar
+            async captureCameraPlusModelAndSave() {
                 const st = this._state;
-                const ctrl = st.controller;
-                if (!ctrl || typeof ctrl.captureWithVideoTextureQuad !== 'function') {
-                    UI.setHint('No hay sesión AR activa.');
+                if (!st.controller) {
+                    UI.setHint('No hay sesión activa para capturar.');
                     return;
                 }
-                UI.setHint('Capturando…');
-                const blob = await ctrl.captureWithVideoTextureQuad({
-                    facingMode: 'environment',
-                    type: 'image/jpeg',
-                    quality: 0.95,
-                    download: true
-                });
-                UI.setHint(blob ? 'Captura guardada.' : 'No se pudo capturar.');
-            }
 
-            async captureScreenFrame({
-                                         type = 'image/jpeg',
-                                         quality = 0.95,
-                                         download = true,
-                                         filename
-                                     } = {}) {
-                const caps = canScreenCapture?.() || {ok: false, reason: 'desconocido'};
-                if (!caps.ok) {
-                    UI.setHint(`ScreenCapture no disponible: ${caps.reason || 'permiso/HTTPS'}`);
-                    return null;
-                }
-
-                const st = this._state;
-                const ctrl = st.controller;
-                const wasXR = (st.mode === 'android-webxr');
-
-                let stream = null;
-                let video = null;
-
-                const hadModel = !!ctrl?.model;
-                const saved = hadModel ? {
-                    pos: ctrl.model.position.clone(),
-                    quat: ctrl.model.quaternion.clone(),
-                    scl: ctrl.model.scale.clone()
-                } : null;
+                const id = st.lastSource?.id || 'snapshot';
+                const t = new Date(), pad = n => String(n).padStart(2, '0');
+                const filename = `${id}-${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}.jpg`;
 
                 try {
-                    UI.setHint('Selecciona la pantalla para capturar…');
 
-                    stream = await navigator.mediaDevices.getDisplayMedia({
-                        video: {frameRate: 30}, audio: false
-                    });
 
-                    video = document.createElement('video');
-                    video.playsInline = true;
-                    video.muted = true;
-                    video.autoplay = true;
-                    video.srcObject = stream;
-                    Object.assign(video.style, {
-                        position: 'fixed',
-                        left: '-9999px',
-                        top: '-9999px',
-                        width: '1px',
-                        height: '1px'
-                    });
-                    document.body.appendChild(video);
-
-                    await new Promise((res, rej) => {
-                        const ok = () => {
-                            cleanup();
-                            res();
-                        };
-                        const er = (e) => {
-                            cleanup();
-                            rej(e);
-                        };
-                        const cleanup = () => {
-                            video.removeEventListener('loadedmetadata', ok);
-                            video.removeEventListener('error', er);
-                        };
-                        video.addEventListener('loadedmetadata', ok, {once: true});
-                        video.addEventListener('error', er, {once: true});
-                    });
-                    try {
-                        await video.play();
-                    } catch {
+                    // 2) modelo después (Blob con alfa)
+                    const modelBlob = await this.captureModelFrameBlob();
+                    // 1) cámara primero (Blob)
+                    const cameraBlob = await this.captureCameraFrameBlob();
+                    if (!cameraBlob && !modelBlob) {
+                        UI.setHint('No se pudo capturar cámara ni modelo.');
+                        return;
                     }
 
-                    const w = Math.max(1, video.videoWidth || screen.width || 1280);
-                    const h = Math.max(1, video.videoHeight || screen.height || 720);
-                    const cnv = document.createElement('canvas');
-                    cnv.width = w;
-                    cnv.height = h;
-                    const ctx = cnv.getContext('2d', {willReadFrequently: false});
-                    ctx.drawImage(video, 0, 0, w, h);
-
-                    const blob = await new Promise(res => cnv.toBlob(res, type, quality));
-                    if (blob && download) {
-                        const ext = (type === 'image/png') ? 'png' : (type === 'image/webp' ? 'webp' : 'jpg');
-                        const id = st.lastSource?.id || 'screen';
-                        const t = new Date();
-                        const p = n => String(n).padStart(2, '0');
-                        const name = filename || `${id}-${t.getFullYear()}${p(t.getMonth() + 1)}${p(t.getDate())}-${p(t.getHours())}${p(t.getMinutes())}${p(t.getSeconds())}.${ext}`;
-                        DownloadUtils.saveBlob(name, blob);
+                    // 3) merge (cámara=fondo, modelo=encima)
+                    console.log("cameraBlob",cameraBlob ,"modelBlob", modelBlob);
+                    if (cameraBlob && modelBlob) {
+                        const merged = await this.mergeCameraAndModelBlobs({
+                            cameraBlob,
+                            modelBlob,
+                            outType: 'image/jpeg',
+                            quality: 0.95,
+                            cameraMode: 'cover',
+                            modelMode: 'contain',
+                            modelOpacity: 1.0,
+                            background: '#ffffff' // aplana alfa del modelo sobre blanco
+                        });
+                        if (merged) {
+                            DownloadUtils.saveBlob(filename, merged);
+                            UI.setHint('Imagen (cámara+modelo) guardada.');
+                            return;
+                        }
                     }
 
-                    UI.setHint('Captura de pantalla lista.');
-                    return blob || null;
-
+                    // Si solo tenemos uno, guarda el disponible
+                    if (cameraBlob) {
+                        DownloadUtils.saveBlob(filename, cameraBlob);
+                        UI.setHint('Imagen (solo cámara) guardada.');
+                        return;
+                    }
+                    if (modelBlob) {
+                        // Si guardas PNG mantienes alfa
+                        const namePNG = filename.replace(/\.jpg$/i, '.png');
+                        DownloadUtils.saveBlob(namePNG, modelBlob);
+                        UI.setHint('Imagen (solo modelo) guardada.');
+                        return;
+                    }
                 } catch (e) {
-                    console.error('[captureScreenFrame] error', e);
-                    UI.setHint('No se pudo capturar la pantalla.');
-                    return null;
-
-                } finally {
-                    try {
-                        stream?.getTracks()?.forEach(t => t.stop());
-                    } catch {
-                    }
-                    if (video?.parentNode) video.parentNode.removeChild(video);
-
-                    if (wasXR && ctrl && typeof ctrl.restartXRAfterCamera === 'function') {
-                        try {
-                            await ctrl.restartXRAfterCamera({rePlaceModel: true});
-                        } catch {
-                        }
-                        if (hadModel && saved) {
-                            ctrl.model.position.copy(saved.pos);
-                            ctrl.model.quaternion.copy(saved.quat);
-                            ctrl.model.scale.copy(saved.scl);
-                        }
-                    }
+                    console.error('[captureCameraPlusModelAndSave] error', e);
+                    UI.setHint('Error al capturar.');
                 }
             }
 
+            constructor() {
+                this._state = {mode: null, controller: null, pendingGLB: null, arReady: false, lastSource: null};
+            }
+
+            get state() {
+                return this._state;
+            }
+
+
+            isActive() {
+                return !!this._state.controller;
+            }
+
+            // 1) Click en “Ver en 3D” ⇒ abre cámara (sin GLB) o fallback
+            async onMarkerSourceSelected(input) {
+                // Soporta string (legacy) o { id, glbUrl }
+                let id = null;
+                let raw = null;
+
+                if (typeof input === 'string') {
+                    raw = input;
+                    const match = ItemsStore.getItems().find(i => i.sources?.glb === input);
+                    id = match?.id ?? null;
+                } else {
+                    id = input?.id ?? null;
+                    raw = input?.glbUrl ?? '';
+                }
+
+                // Si hay blob precargado, úsalo; si no, usa el URL original
+                const blob = AssetPreloader.getBlobURL(raw);
+                const glbUrl = blob || raw;
+
+                // Quick Look no soporta blob: genera .usdz solo si no es blob
+                const usdzUrl = (!glbUrl?.startsWith('blob:') && glbUrl?.endsWith?.('.glb'))
+                    ? glbUrl.replace(/\.glb$/i, '.usdz')
+                    : '';
+
+                this._state.lastSource = {id, glb: glbUrl, usdz: usdzUrl};
+
+                UI.revealContainer();
+                UI.hideMap();
+                UI.hideFallback();
+
+                if (await canUseAR()) {
+                    try {
+                        UI.showLoading('Abriendo cámara…');
+                        const ctrl = new AndroidWebXRController({
+                            onEnter: () => UI.setHint('Cámara iniciada.'),
+                            onExit: async ({reason}) => {
+                                UI.setHint(`Sesión finalizada (${reason || 'desconocido'}).`);
+                                await this.destroy();
+                            }
+                        });
+
+                        await ctrl.startSessionFromGesture(); // SOLO cámara
+                        this._state.mode = 'android-webxr';
+                        this._state.controller = ctrl;
+                        this._state.pendingGLB = glbUrl; // diferido: carga en tap
+
+                        // Espera primer frame ⇒ mostramos retícula
+                        await ctrl.ready;
+                        UI.hideLoading();
+                        UI.showReticle();
+                        UI.setHint('Toca la retícula para colocar.');
+                        UI.showCapture();
+                        return;
+                    } catch (e) {
+                        console.warn('No se pudo iniciar WebXR, usando fallback', e);
+                    }
+                }
+
+                // Fallback <model-viewer>
+                UI.showFallback();
+                UI.showLoading();
+                UI.resetLoadingProgress();
+
+                const mvCtrl = new ModelViewerController(UI.mv, {
+                    onEnter: ({mode}) => UI.setHint(`AR activo (${mode}).`)
+                });
+                mvCtrl.bindOnce();
+
+                await mvCtrl.setSource({glbUrl: glbUrl, usdzUrl});
+                this._state.mode = Platform.isIOS ? 'ios-quicklook' : 'web-fallback';
+                this._state.controller = mvCtrl;
+                this._state.pendingGLB = null;
+
+                UI.showCapture();
+                UI.hideLoading();
+            }
+
+
+            // 2) Click en retícula ⇒ carga GLB con % y coloca
+            async handleReticleTap() {
+                if (this._state.mode !== 'android-webxr' || !this._state.controller) return;
+                const glb = this._state.pendingGLB;
+                if (!glb) {
+                    UI.setHint('No hay modelo seleccionado.');
+                    return;
+                }
+
+                UI.showLoading('Cargando modelo…');
+                UI.resetLoadingProgress();
+                try {
+                    await this._state.controller.loadModel(glb);
+                    this._state.controller.placeInFront();
+                    UI.hideLoading();
+                    UI.hideReticle();
+                    UI.setHint('Modelo colocado.');
+                    this._state.pendingGLB = null;
+                } catch {
+                    UI.hideLoading();
+                    UI.setHint('Error al cargar el modelo.');
+                }
+            }
+
+// Ajusta cómo encajar cada imagen en el lienzo final: "cover" o "contain"
             _fitRect(srcW, srcH, dstW, dstH, mode = 'cover') {
                 const sr = srcW / srcH, dr = dstW / dstH;
                 let w, h;
@@ -2427,6 +1956,7 @@
                 }
                 return {x: (dstW - w) * .5, y: (dstH - h) * .5, w, h};
             }
+
 
             async mergeCameraAndModelBlobs({
                                                cameraBlob, modelBlob,
@@ -2442,9 +1972,10 @@
 
                 const W = width || camBmp.width || 1280;
                 const H = height || camBmp.height || 720;
-                const cnv = (typeof OffscreenCanvas !== 'undefined')
-                    ? new OffscreenCanvas(W, H)
-                    : Object.assign(document.createElement('canvas'), {width: W, height: H});
+                const cnv = (typeof OffscreenCanvas !== 'undefined') ? new OffscreenCanvas(W, H) : Object.assign(document.createElement('canvas'), {
+                    width: W,
+                    height: H
+                });
                 if (!('width' in cnv)) {
                     cnv.width = W;
                     cnv.height = H;
@@ -2480,174 +2011,7 @@
                 return out;
             }
 
-            async captureCameraPlusModelAndSave() {
-                const st = this._state;
-                if (!st.controller) {
-                    UI.setHint('No hay sesión activa para capturar.');
-                    return;
-                }
-
-                const id = st.lastSource?.id || 'snapshot';
-                const t = new Date(), pad = n => String(n).padStart(2, '0');
-                const filename = `${id}-${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}.jpg`;
-
-                try {
-                    let modelBlob = null;
-                    let cameraBlob = null;
-
-                    // cameraBlob = await this.captureCameraFrameBlob();
-                    // modelBlob = await this.captureModelFrameBlob();
-                    // De momento desactivado para no mezclar 2 flows pesados
-
-                    if (!cameraBlob && !modelBlob) {
-                        UI.setHint('No se pudo capturar cámara ni modelo.');
-                        return;
-                    }
-
-                    console.log("cameraBlob", cameraBlob, "modelBlob", modelBlob);
-                    const all = false;
-                    if (cameraBlob && modelBlob && all) {
-                        const merged = await this.mergeCameraAndModelBlobs({
-                            cameraBlob,
-                            modelBlob,
-                            outType: 'image/jpeg',
-                            quality: 0.95,
-                            cameraMode: 'cover',
-                            modelMode: 'contain',
-                            modelOpacity: 1.0,
-                            background: '#ffffff'
-                        });
-                        if (merged) {
-                            DownloadUtils.saveBlob(filename, merged);
-                            UI.setHint('Imagen (cámara+modelo) guardada.');
-                            return;
-                        }
-                    }
-
-                    if (cameraBlob) {
-                        DownloadUtils.saveBlob(filename, cameraBlob);
-                        UI.setHint('Imagen (solo cámara) guardada.');
-                        return;
-                    }
-                    if (modelBlob) {
-                        const namePNG = filename.replace(/\.jpg$/i, '.png');
-                        DownloadUtils.saveBlob(namePNG, modelBlob);
-                        UI.setHint('Imagen (solo modelo) guardada.');
-                        return;
-                    }
-                } catch (e) {
-                    console.error('[captureCameraPlusModelAndSave] error', e);
-                    UI.setHint('Error al capturar.');
-                }
-            }
-
-            async onMarkerSourceSelected(input) {
-                let id = null;
-                let raw = null;
-
-                if (typeof input === 'string') {
-                    raw = input;
-                    const match = ItemsStore.getItems().find(i => i.sources?.glb === input);
-                    id = match?.id ?? null;
-                } else {
-                    id = input?.id ?? null;
-                    raw = input?.glbUrl ?? '';
-                }
-
-                // Siempre usamos el URL original como clave de caché
-                const cachedBlobUrl = AssetPreloader.getBlobURL(raw);
-                const cacheStatus = id ? ItemsStore.getCacheStatus(id) : (cachedBlobUrl ? 'hot' : 'cold');
-                const isCached = !!cachedBlobUrl || cacheStatus === 'hot';
-                const glbUrl = raw;
-
-                const usdzUrl = (!glbUrl?.startsWith('blob:') && glbUrl?.endsWith?.('.glb'))
-                    ? glbUrl.replace(/\.glb$/i, '.usdz')
-                    : '';
-
-                this._state.lastSource = {id, glb: glbUrl, usdz: usdzUrl};
-
-                console.log('[ViewerOrchestrator] onMarkerSourceSelected cache', {
-                    id,
-                    glbUrl,
-                    isCached,
-                    cacheStatus
-                });
-
-                UI.revealContainer();
-                UI.hideMap();
-                UI.hideFallback();
-
-                if (await canUseAR()) {
-                    try {
-                        UI.showLoading(isCached ? 'Abriendo cámara (modelo precargado)…' : 'Abriendo cámara…');
-                        const ctrl = new AndroidWebXRController({
-                            onEnter: () => UI.setHint('Cámara iniciada.'),
-                            onExit: async ({reason}) => {
-                                UI.setHint(`Sesión finalizada (${reason || 'desconocido'}).`);
-                                await this.destroy();
-                            }
-                        });
-
-                        await ctrl.startSessionFromGesture();
-                        this._state.mode = 'android-webxr';
-                        this._state.controller = ctrl;
-                        this._state.pendingGLB = glbUrl;
-
-                        await ctrl.ready;
-                        UI.hideLoading();
-                        UI.showReticle();
-                        UI.setHint('Toca la retícula para colocar.');
-                        UI.showCapture();
-                        return;
-                    } catch (e) {
-                        console.warn('No se pudo iniciar WebXR, usando fallback', e);
-                        // ⚠️ IMPORTANTE: si falla WebXR, ocultamos el loading que se quedó activo
-                        UI.hideLoading();
-                    }
-                }
-
-                // Fallback <model-viewer>
-                const mvCtrl = new ModelViewerController(UI.mv, {
-                    onEnter: ({mode}) => UI.setHint(`AR activo (${mode}).`)
-                });
-                mvCtrl.bindOnce();
-
-                try {
-                    await mvCtrl.setSource({glbUrl, usdzUrl});
-                    this._state.mode = Platform.isIOS ? 'ios-quicklook' : 'web-fallback';
-                    this._state.controller = mvCtrl;
-                    this._state.pendingGLB = null;
-
-                    UI.showCapture();
-                } catch (err) {
-                    console.error('Error en fallback model-viewer', err);
-                    UI.setHint('No se pudo cargar el modelo en fallback.');
-                }
-            }
-
-            async handleReticleTap() {
-                if (this._state.mode !== 'android-webxr' || !this._state.controller) return;
-                const glb = this._state.pendingGLB;
-                if (!glb) {
-                    UI.setHint('No hay modelo seleccionado.');
-                    return;
-                }
-
-                UI.showLoading('Cargando modelo…');
-                UI.resetLoadingProgress();
-                try {
-                    await this._state.controller.loadModel(glb);
-                    this._state.controller.placeInFront();
-                    UI.hideLoading();
-                    UI.hideReticle();
-                    UI.setHint('Modelo colocado.');
-                    this._state.pendingGLB = null;
-                } catch {
-                    UI.hideLoading();
-                    UI.setHint('Error al cargar el modelo.');
-                }
-            }
-
+            // 4) Salir siempre al mapa y limpiar
             async destroy() {
                 try {
                     if (this._state.controller) {
@@ -2669,11 +2033,12 @@
                 UI.showMap();
                 UI.setHint('');
             }
+
         }
 
-        /* ============================================================================
-         * Mapa (Leaflet)
-         * ========================================================================== */
+        /* ===========================================================
+         * Mapa (Leaflet) — abre cámara al click en “Ver en 3D”
+         * =========================================================== */
         class MapController {
             constructor(cfg) {
                 this.cfg = Object.assign({
@@ -2730,24 +2095,25 @@
 
             _popupHTML(item) {
                 return `
-<article class="popup-card" data-popup-id="${item.id}">
-  <header class="popup-card__header">
-    <img class="popup-card__img" src="${item.sources.img}" alt="${item.title}" loading="lazy">
-    <div class="popup-card__titles">
-      <h4 class="popup-card__title">${item.title}</h4>
-      <p class="popup-card__subtitle">${item.subtitle}</p>
-    </div>
-  </header>
-  <section class="popup-card__body"><p class="popup-card__description">${item.description}</p></section>
-  <footer class="popup-card__footer">
-    <button class="popup-card__btn popup-card__btn--primary not-view" data-action="center" data-id="${item.id}">Centrar aquí</button>
-    <a class="popup-card__btn popup-card__btn--ghost"
-       data-action="view3d"
-       data-id="${item.id}"
-       rel="noopener noreferrer">Ver en 3D</a>
-  </footer>
-</article>`;
+    <article class="popup-card" data-popup-id="${item.id}">
+      <header class="popup-card__header">
+        <img class="popup-card__img" src="${item.sources.img}" alt="${item.title}" loading="lazy">
+        <div class="popup-card__titles">
+          <h4 class="popup-card__title">${item.title}</h4>
+          <p class="popup-card__subtitle">${item.subtitle}</p>
+        </div>
+      </header>
+      <section class="popup-card__body"><p class="popup-card__description">${item.description}</p></section>
+      <footer class="popup-card__footer">
+        <button class="popup-card__btn popup-card__btn--primary not-view" data-action="center" data-id="${item.id}">Centrar aquí</button>
+        <a class="popup-card__btn popup-card__btn--ghost"
+           data-action="view3d"
+           data-id="${item.id}"
+           rel="noopener noreferrer">Ver en 3D</a>
+      </footer>
+    </article>`;
             }
+
 
             _bindPopup(e) {
                 const root = e.popup.getElement();
@@ -2763,6 +2129,7 @@
                     this.flyTo(id);
                 }, {once: true});
 
+                // Precarga “amable” del GLB al abrir el popup (no bloquea UI)
                 const idForWarm = root.querySelector('[data-action="view3d"]')?.dataset?.id;
                 if (idForWarm) {
                     ItemsStore.warmById(idForWarm).catch(() => {
@@ -2785,6 +2152,7 @@
                         return;
                     }
 
+                    // Llama al visor pasando { id, glbUrl } para que él resuelva blob/URL
                     setTimeout(() => window.Viewer.onMarkerSourceSelected({id, glbUrl: best}), 0);
                 };
 
@@ -2793,6 +2161,7 @@
                     if (evClose.popup === e.popup) root.removeEventListener('click', onClick);
                 });
             }
+
 
             flyTo(id, zoom = 17) {
                 const mk = this.byId[id];
@@ -2803,9 +2172,9 @@
             }
         }
 
-        /* ============================================================================
-         * Device events
-         * ========================================================================== */
+        /* ===========================================================
+         * Eventos de dispositivo / ciclo de vida
+         * =========================================================== */
         class DeviceEvents {
             static attach() {
                 document.addEventListener('visibilitychange', async () => {
@@ -2814,20 +2183,19 @@
                     }
                 });
                 window.addEventListener('pagehide', () => window.Viewer?.destroy());
+                // (logs opcionales)
                 window.addEventListener('orientationchange', () => console.log('[orientationchange]'));
                 window.addEventListener('resize', () => console.log('[resize]', innerWidth, innerHeight));
             }
         }
 
-        /* ============================================================================
-         * Datos de ejemplo: itemsSources
-         * ========================================================================== */
+        /* ===========================================================
+         * Datos de ejemplo
+         * =========================================================== */
         const itemsSources = [
             {
-                id: "taita",
-                title: "Taita Imbabura – Abuelo que despierta las montañas",
-                subtitle: "Ñawi Hatun Yaya – Yaku Kawsay Tukuy Kuna",
-                description: "Padre volcán de Imbabura, sabio y vigilante. Desde sus laderas nacen vientos, manantiales y semillas que dan vida a la provincia. Sus aguas bajan hacia la laguna y alimentan chacras y comunidades. Taita Imbabura es guía y protector, un anciano vivo que recuerda a la gente su relación con la tierra y el agua.",
+                id: "taita", title: "Taita Imbabura – El Abuelo que todo lo ve", subtitle: "Ñawi Hatun Yaya",
+                description: "Sabio y protector, guardián del viento y ciclos de la tierra.",
                 position: {lat: 0.20477, lng: -78.20639},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/taita-imbabura-toon-1.glb',
@@ -2835,10 +2203,8 @@
                 }
             },
             {
-                id: "cerro-cusin",
-                title: "Cerro Cusin – Guardián del paso fértil",
-                subtitle: "Allpa Ñanpi Rikchar – Chacra Kamak",
-                description: "Cusin es el cerro que cuida los caminos que unen comunidades. La neblina que lo envuelve baja hacia Yaku Mama, manteniendo húmeda y fértil la tierra. Protege a quienes caminan, trabajan y siembran, recordando que cada sendero y cada chacra dependen del agua y del respeto a la montaña.",
+                id: "cerro-cusin", title: "Cusin – El guardián del paso fértil", subtitle: "Allpa ñampi rikchar",
+                description: "Cusin camina con paso firme cuidando las chacras y senderos.",
                 position: {lat: 0.20435, lng: -78.20688},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/cusin.glb',
@@ -2846,10 +2212,8 @@
                 }
             },
             {
-                id: "mojanda",
-                title: "Mojanda – Susurro del páramo y las lagunas",
-                subtitle: "Sachayaku Mama – Uksha Yaku Tiyana",
-                description: "En Mojanda el páramo respira y de él nacen lagunas frías y puras. Sus aguas limpian el espíritu y alimentan ríos que descienden hacia los valles. Es un apu que conversa con las nubes y trae la lluvia necesaria para la vida. Mojanda recuerda que la vida empieza donde nace el agua.",
+                id: "mojanda", title: "Mojanda – El susurro del páramo", subtitle: "Sachayaku mama",
+                description: "Entre neblinas y lagunas, hilos del agua fría que purifica.",
                 position: {lat: 0.20401, lng: -78.20723},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mojanda.glb',
@@ -2858,9 +2222,9 @@
             },
             {
                 id: "mama-cotacachi",
-                title: "Mama Cotacachi – Madre que abraza la Pachamama",
-                subtitle: "Allpa Mama – Warmi Rasu",
-                description: "Volcán madre que protege a las familias, a las semillas y a los tejidos de la vida diaria. Junto a Taita Imbabura equilibra los ciclos de clima, lluvia y fertilidad. Sus nubes y aguas sostienen a las comunidades. Mama Cotacachi representa cuidado, refugio y amor que sostiene la vida.",
+                title: "Mama Cotacachi – Madre de la Pachamama",
+                subtitle: "Allpa mama- Warmi Rasu",
+                description: "Dulce y poderosa, cuida los ciclos de la vida.",
                 position: {lat: 0.20369, lng: -78.20759},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mama-cotacachi.glb',
@@ -2868,10 +2232,8 @@
                 }
             },
             {
-                id: "coraza",
-                title: "El Coraza – Espíritu de celebración y memoria",
-                subtitle: "Kawsay Taki – Yuyay Ayllu",
-                description: "El Coraza es el espíritu del danzante que une a la gente con los apus y las aguas. Su baile honra a Taita Imbabura, a Mama Cotacachi y a Yaku Mama. A través de la fiesta se agradece a la tierra y a los ancestros. Mantiene viva la memoria del pueblo y la fuerza de su identidad.",
+                id: "coraza", title: "El Coraza – Espíritu de la celebración", subtitle: "Kawsay Taki",
+                description: "Orgullo y memoria viva de lucha y honor.",
                 position: {lat: 0.20349, lng: -78.20779},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/coraza-one.glb',
@@ -2879,10 +2241,8 @@
                 }
             },
             {
-                id: "lechero",
-                title: "El Lechero – Árbol del encuentro y los deseos",
-                subtitle: "Kawsay Ranti – Yaku Rikuna Sacha",
-                description: "Árbol sagrado donde las personas dejan promesas, agradecimientos y recuerdos. Desde su altura contempla a los apus y a la laguna. Es un puente entre el corazón humano y la naturaleza. El Lechero recibe los deseos y los entrega al viento, conectándolos con el gran tejido de la vida.",
+                id: "lechero", title: "El Lechero – Árbol del Encuentro y los Deseos", subtitle: "Kawsay ranti",
+                description: "Testigo de promesas, abrazos y despedidas.",
                 position: {lat: 0.20316, lng: -78.20790},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lechero.glb',
@@ -2890,10 +2250,8 @@
                 }
             },
             {
-                id: "lago-san-pablo",
-                title: "Yaku Mama – La laguna viva de Imbabura",
-                subtitle: "Yaku Mama – Kawsaycocha",
-                description: "Laguna madre que recibe las aguas de Imbabura, Cusin, Mojanda y Cotacachi. Refleja a los apus y al cielo, y devuelve alimento, pesca y calma a las comunidades. Yaku Mama es un ser vivo que siente y escucha; su existencia recuerda que sin agua no hay vida ni memoria.",
+                id: "lago-san-pablo", title: "Yaku Mama – La Laguna Viva", subtitle: "Yaku Mama – Kawsaycocha",
+                description: "Sus aguas te abrazan con calma, reflejando tu esencia.",
                 position: {lat: 0.20284, lng: -78.20802},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lago-san-pablo.glb',
@@ -2901,110 +2259,158 @@
                 }
             },
             {
-                id: "ayahuma-pacha",
-                title: "Ayahuma – Espíritu que escucha la tierra",
-                subtitle: "Aya Huma – Yuyay Uma",
-                description: "Espíritu que representa conciencia, equilibrio y claridad. Ayahuma ayuda a escuchar la voz profunda de la tierra y a entender que cada decisión humana tiene efecto en la Pachamama. Acompaña los procesos de cambio y protege la conexión entre los apus, el agua y las comunidades.",
+                id: "ayahuma-pacha", title: "Ayahuma", subtitle: "Aya huma",
+                description: "Ayahuma.",
                 position: {lat: 0.20184, lng: -78.20902},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/ayahuma.glb',
                     img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/ayahuma.jpeg'
                 }
-            },
-            {
-                id: "corazon-pacha",
-                title: "Corazón Pacha – Nodo de energía y vida",
-                subtitle: "Pacha Sonkoy – Kawsay Tinkuy",
-                description: "Lugar simbólico donde se encuentran los caminos del agua, la montaña y el ser humano. Es el centro energético de la zona, un punto donde todo late al mismo tiempo. Corazón Pacha recuerda que los apus, la laguna y la gente forman una sola familia dentro de la tierra viva.",
+            }, {
+                id: "corazon-pacha", title: "Corazon Pacha", subtitle: "Corazon Pacha",
+                description: "Corazon Pacha.",
                 position: {lat: 0.20084, lng: -78.21002},
                 sources: {
                     glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/corazon.glb',
                     img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/corazon.jpeg'
                 }
-            }
+            },
         ];
 
+        function initPreCache(params) {
+            // 2) Cargar items (inyecta dataCache por ítem)
+            ItemsStore.setItems(itemsSources);
 
-        /* ============================================================================
-         * AssetPreloader (precache GLB) + Verificador de cache
-         * ========================================================================== */
-        /**
-         * AssetPreloader (Clean Code + URL Normalization Fix)
-         * ---------------------------------------------------
-         * - Corrige el problema de que la URL cacheada no coincide con la URL solicitada.
-         * - Normaliza todas las URLs para que siempre coincidan.
-         * - Mantiene soporte para CacheStorage + memoria local.
-         * - Añade verificador de caché para depurar y coordinar entre clases.
-         */
+            // 3) Mapa
+            const MAP_CONFIG = Object.freeze({
+                zoom: 14, maxZoom: 25,
+                position: [0.20830, -78.22798],
+                tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                tileAttribution: '&copy; OpenStreetMap contrib.'
+            });
 
-        const AssetPreloader = (() => {
-
-            /** =============================
-             *  Normalización estable de URLs
-             * ============================== */
-            function normalizeUrl(url) {
-                if (!url) return '';
-
+            // Usa la copia “segura” de ItemsStore para pintar
+            params.mapCtl.init(ItemsStore.getItems());
+            // 4) Precarga (cuando la pestaña esté visible e “idle”)
+            const startWarm = async () => {
+                // Evita precargar en redes lentas: ya lo maneja AssetPreloader, pero puedes filtrar extra aquí
                 try {
-                    const u = new URL(url, location.origin);
-                    u.hash = '';                 // Sin hash
-                    u.search = '';               // Sin querystring
-                    return u.toString();
-                } catch {
-                    // Caso: rutas relativas locales
-                    return url.replace(location.origin, '')
-                        .replace(/#.*$/, '')
-                        .replace(/\?.*$/, '');
+                    await ItemsStore.warmAll({concurrency: 3}); // descarga, cachea y sincroniza blob:URL por ítem
+                    console.log('[preload] OK: blobs listos');
+                } catch (e) {
+                    console.warn('[preload] fallo o cancelado', e);
                 }
-            }
+            };
 
-            /** =============================
-             *  Memoria interna
-             * ============================== */
-            const mem = new Map();   // normalizedUrl -> { buffer, blobUrl }
-            const inflight = new Map();
+            // Lanza la precarga de forma amable
+            const warmWhenVisible = () => {
+                if (document.visibilityState !== 'visible') {
+                    document.addEventListener('visibilitychange', function onVis() {
+                        if (document.visibilityState === 'visible') {
+                            document.removeEventListener('visibilitychange', onVis);
+                            queueWarm();
+                        }
+                    });
+                    return;
+                }
+                queueWarm();
+            };
+
+            const queueWarm = () => {
+                // Si existe requestIdleCallback, mejor; si no, usa setTimeout corto
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(() => startWarm(), {timeout: 2000});
+                } else {
+                    setTimeout(() => startWarm(), 300);
+                }
+            };
+
+            warmWhenVisible();
+        }
+
+        /* ===========================================================
+         * Bootstrap
+         * =========================================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded");
+            UI.bind();
+            window.Viewer = new ViewerOrchestrator();
+            const mapCtl = new MapController({});
+            initPreCache({
+                mapCtl: mapCtl
+            });
+            DeviceEvents.attach();
+
+            UI.$reticle?.addEventListener('click', async () => {
+                await window.Viewer.handleReticleTap();
+            });
+            UI.$back?.addEventListener('click', async () => {
+                await window.Viewer.destroy();
+            });
+            const camComposer = new CameraOverlayComposer();
+            UI.$capture?.addEventListener('click', async () => {
+                console.log("adaodaodaodm")
+                await window.Viewer.captureCameraPlusModelAndSave();
+
+
+            });
+
+
+        });
+
+        function canScreenCapture() {
+            const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+            const hasAPI = !!(navigator.mediaDevices?.getDisplayMedia || navigator.getDisplayMedia);
+            const inIframe = window.self !== window.top;
+            const isWV = /\bwv\b/i.test(navigator.userAgent); // Android WebView
+
+            return {
+                ok: isSecure && hasAPI && !isWV,
+                reason: !isSecure ? 'No HTTPS' :
+                    !hasAPI ? 'API no disponible' :
+                        isWV ? 'WebView limita captura' :
+                            inIframe ? 'Iframe sin permisos (display-capture)' :
+                                'Desconocido',
+                hasAPI, isSecure, inIframe, isWV
+            };
+        }
+
+        /* ===========================================================
+ * AssetPreloader: precarga .glb en memoria y (opcional) CacheStorage
+ * - Guarda ArrayBuffer en RAM (Map) y opcionalmente en CacheStorage.
+ * - Expone getBlobURL(url) para que GLTFLoader/ModelViewer usen blob: URL.
+ * - Evita duplicar descargas con un pool de Promises.
+ * =========================================================== */
+        const AssetPreloader = (() => {
+            const mem = new Map();        // url -> { buffer:ArrayBuffer, blobUrl:string }
+            const inflight = new Map();   // url -> Promise<void>
             const CACHE_NAME = 'glb-precache-v1';
-            const canCacheStorage = ('caches' in window);
 
+            const canCacheStorage = 'caches' in window;
 
-            /** =============================
-             *  Fetch directo
-             * ============================== */
-            async function _fetchToBuffer(urlN) {
-                const r = await fetch(urlN, {credentials: 'omit', mode: 'cors'});
-                if (!r.ok) throw new Error(`Fetch failed (${r.status}) ${urlN}`);
+            async function _fetchToBuffer(url) {
+                const r = await fetch(url, {credentials: 'omit', mode: 'cors'});
+                if (!r.ok) throw new Error(`Preload fail ${r.status} ${url}`);
                 return await r.arrayBuffer();
             }
 
-            /** =============================
-             *  CacheStorage: guardar
-             * ============================== */
-            async function _putInCache(urlN, buffer) {
+            async function _putInCache(url, buffer) {
                 if (!canCacheStorage) return;
-
                 try {
                     const cache = await caches.open(CACHE_NAME);
                     const resp = new Response(buffer, {
-                        headers: {
-                            'Content-Type': 'model/gltf-binary',
-                            'Content-Length': String(buffer.byteLength)
-                        }
+                        headers: {'Content-Type': 'model/gltf-binary', 'Content-Length': String(buffer.byteLength)}
                     });
-
-                    await cache.put(urlN, resp);
-                } catch {
+                    await cache.put(url, resp);
+                } catch { /* ignore */
                 }
             }
 
-            /** =============================
-             *  CacheStorage: leer
-             * ============================== */
-            async function _fromCache(urlN) {
+            async function _fromCache(url) {
                 if (!canCacheStorage) return null;
-
                 try {
                     const cache = await caches.open(CACHE_NAME);
-                    const resp = await cache.match(urlN);
+                    const resp = await cache.match(url);
                     if (!resp) return null;
                     return await resp.arrayBuffer();
                 } catch {
@@ -3012,191 +2418,116 @@
                 }
             }
 
-            /** =============================
-             *  Preload individual
-             * ============================== */
             async function warm(url) {
                 if (!url) return;
-
-                const urlN = normalizeUrl(url);
-
-                if (mem.has(urlN)) return;
-
-                if (inflight.has(urlN)) {
-                    await inflight.get(urlN);
+                if (mem.has(url)) return;               // ya en RAM
+                if (inflight.has(url)) {
+                    await inflight.get(url);
                     return;
-                }
+                } // ya descargando
 
                 const job = (async () => {
-                    let buf = await _fromCache(urlN);
-
+                    // 1) intenta cache storage
+                    let buf = await _fromCache(url);
+                    // 2) si no está en cache, descarga
                     if (!buf) {
-                        const goodNet =
-                            !('connection' in navigator) ||
-                            ['wifi', 'ethernet', '4g']
-                                .includes(navigator.connection.effectiveType || '4g');
-
-                        if (!goodNet) return;
-
-                        buf = await _fetchToBuffer(urlN);
-                        _putInCache(urlN, buf).catch(() => {
+                        // política: solo precargar si red es buena
+                        const goodNet = !('connection' in navigator) ||
+                            ['wifi', 'ethernet', '4g'].includes(navigator.connection.effectiveType || '4g');
+                        if (!goodNet) return; // evita precargas agresivas en 2g/3g
+                        buf = await _fetchToBuffer(url);
+                        _putInCache(url, buf).catch(() => {
                         });
                     }
-
-                    if (buf && !mem.has(urlN)) {
-                        const blobUrl = URL.createObjectURL(
-                            new Blob([buf], {type: 'model/gltf-binary'})
-                        );
-                        mem.set(urlN, {buffer: buf, blobUrl});
+                    // 3) construye blob URL y guarda en RAM
+                    if (buf && !mem.has(url)) {
+                        const blobUrl = URL.createObjectURL(new Blob([buf], {type: 'model/gltf-binary'}));
+                        mem.set(url, {buffer: buf, blobUrl});
                     }
-                })().finally(() => inflight.delete(urlN));
+                })().finally(() => inflight.delete(url));
 
-                inflight.set(urlN, job);
+                inflight.set(url, job);
                 await job;
             }
 
-
-            /** =============================
-             *  Preload múltiple
-             * ============================== */
             function warmMany(urls = [], {concurrency = 3} = {}) {
-                const list = urls.map(u => normalizeUrl(u));
+                // cola simple con concurrencia limitada
                 let idx = 0, active = 0;
-
-                return new Promise(resolve => {
+                return new Promise((resolve) => {
                     const next = () => {
-                        while (active < concurrency && idx < list.length) {
-                            const urlN = list[idx++];
+                        while (active < concurrency && idx < urls.length) {
                             active++;
-
-                            warm(urlN).finally(() => {
+                            warm(urls[idx++]).finally(() => {
                                 active--;
                                 next();
                             });
                         }
-                        if (active === 0 && idx >= list.length) resolve();
+                        if (active === 0 && idx >= urls.length) resolve();
                     };
                     next();
                 });
             }
 
-
-            /** =============================
-             *  Obtener blob: URL real
-             * ============================== */
+            /** Devuelve blob:URL si está precargado, si no null */
             function getBlobURL(url) {
-                const urlN = normalizeUrl(url);
-                return mem.get(urlN)?.blobUrl || null;
+                return mem.get(url)?.blobUrl || null;
             }
 
-            /** =============================
-             *  Verificador simple de memoria
-             * ============================== */
-            function has(url) {
-                const urlN = normalizeUrl(url);
-                return mem.has(urlN);
-            }
-
-            function isWarming(url) {
-                const urlN = normalizeUrl(url);
-                return inflight.has(urlN);
-            }
-
-            /**
-             * Verificador detallado: memoria + CacheStorage
-             * Devuelve un objeto útil para debug/log:
-             * {
-             *   urlOriginal, urlNormalized,
-             *   inMemory, inCacheStorage, hasBlobUrl
-             * }
-             */
-            async function check(url) {
-                const urlN = normalizeUrl(url);
-                const inMemory = mem.has(urlN);
-                const hasBlobUrl = !!mem.get(urlN)?.blobUrl;
-
-                let inCacheStorage = false;
-                if (canCacheStorage) {
-                    try {
-                        const cache = await caches.open(CACHE_NAME);
-                        const resp = await cache.match(urlN);
-                        inCacheStorage = !!resp;
-                    } catch {
-                        inCacheStorage = false;
-                    }
-                }
-
-                return {
-                    urlOriginal: url,
-                    urlNormalized: urlN,
-                    inMemory,
-                    inCacheStorage,
-                    hasBlobUrl
-                };
-            }
-
-            /** =============================
-             *  Liberar
-             * ============================== */
+            /** Limpia blob URLs (si salen muchos modelos) */
             function dispose(url) {
-                const urlN = normalizeUrl(url);
-                const obj = mem.get(urlN);
-
+                const obj = mem.get(url);
                 if (obj?.blobUrl) URL.revokeObjectURL(obj.blobUrl);
-
-                mem.delete(urlN);
+                mem.delete(url);
             }
 
-
-            /** =============================
-             *  API pública
-             * ============================== */
-            return {
-                warm,
-                warmMany,
-                getBlobURL,
-                dispose,
-                normalizeUrl,
-                has,
-                isWarming,
-                check
-            };
+            return {warm, warmMany, getBlobURL, dispose};
         })();
-
-        /* ============================================================================
-         * ItemsStore + verificador de caché por item
-         * ========================================================================== */
-        const ItemsStore = (function () {
+        /* ===========================================================
+         * ItemsStore: administra itemsSources + cache por ítem
+         *  - Añade key dataCache a cada item
+         *  - Lee/escribe (sobrescribe) el array completo
+         *  - Actualiza/mergea un ítem por id
+         *  - Lanza precarga con AssetPreloader y guarda blob:URL en dataCache
+         *  - Expone getters para MapController / Viewer
+         * =========================================================== */
+        const ItemsStore = (() => {
+            /** estado interno */
             let _items = [];
 
+            /** Normaliza el objeto item para garantizar dataCache */
             function _withCacheShape(item) {
                 return {
                     ...item,
                     dataCache: {
-                        glbBlobUrl: item?.dataCache?.glbBlobUrl || null,
-                        lastWarmAt: item?.dataCache?.lastWarmAt || null,
-                        bytes: item?.dataCache?.bytes || null,
+                        glbBlobUrl: item?.dataCache?.glbBlobUrl || null, // blob: URL si está precargado
+                        lastWarmAt: item?.dataCache?.lastWarmAt || null, // timestamp ISO
+                        bytes: item?.dataCache?.bytes || null,       // tamaño opcional
                     }
                 };
             }
 
+            /** Inicializa o sobrescribe toda la lista */
             function setItems(list) {
                 _items = Array.isArray(list) ? list.map(_withCacheShape) : [];
             }
 
+            /** Obtiene copia “inmutable” del array */
             function getItems() {
                 return _items.map(i => ({...i, dataCache: {...i.dataCache}}));
             }
 
+            /** Obtiene referencia de solo lectura a un ítem */
             function getItemById(id) {
                 return _items.find(i => i.id === id) || null;
             }
 
+            /** Hace merge parcial sobre un ítem por id (sin perder dataCache) */
             function updateItem(id, patch) {
                 const idx = _items.findIndex(i => i.id === id);
                 if (idx === -1) return false;
                 const current = _items[idx];
                 const next = _withCacheShape({...current, ...patch});
+                // preserva blobUrl si el patch no lo trae
                 if (!patch?.dataCache?.glbBlobUrl && current.dataCache?.glbBlobUrl) {
                     next.dataCache.glbBlobUrl = current.dataCache.glbBlobUrl;
                 }
@@ -3204,11 +2535,13 @@
                 return true;
             }
 
+            /** Reemplaza TODO el array (sobrescritura) y devuelve copia */
             function replaceAll(newItems) {
                 setItems(newItems);
                 return getItems();
             }
 
+            /** Marca manualmente el cache de un ítem (si lo precargaste tú) */
             function markCache(id, {glbBlobUrl, bytes} = {}) {
                 const it = getItemById(id);
                 if (!it) return false;
@@ -3218,12 +2551,14 @@
                 return true;
             }
 
+            /** Devuelve el URL “óptimo” para GLTFLoader/model-viewer (blob si existe) */
             function getBestGlbUrl(id) {
                 const it = getItemById(id);
                 if (!it) return null;
                 return it.dataCache?.glbBlobUrl || it.sources?.glb || null;
             }
 
+            /** Precarga un ítem por id usando AssetPreloader y guarda blob:URL en dataCache */
             async function warmById(id) {
                 const it = getItemById(id);
                 if (!it?.sources?.glb) return false;
@@ -3240,6 +2575,7 @@
                 return false;
             }
 
+            /** Precarga varios/ todos con concurrencia limitada */
             async function warmAll({ids = null, concurrency = 3} = {}) {
                 const urls = (ids
                         ? _items.filter(i => ids.includes(i.id))
@@ -3248,6 +2584,7 @@
 
                 await AssetPreloader.warmMany(urls, {concurrency});
 
+                // sincroniza blob:URL en dataCache
                 for (const it of _items) {
                     const u = it.sources?.glb;
                     if (!u) continue;
@@ -3256,195 +2593,15 @@
                 }
             }
 
-            /**
-             * Estado resumido de caché de un ítem:
-             * - "hot": en memoria con blob listo
-             * - "warming": se está precargando
-             * - "cold": sin precarga
-             * - "missing": sin URL GLB
-             */
-            function getCacheStatus(id) {
-                const it = getItemById(id);
-                if (!it?.sources?.glb) return 'missing';
-                const url = it.sources.glb;
-                const hasMem = AssetPreloader.has(url);
-                const warming = AssetPreloader.isWarming(url);
-                if (hasMem) return 'hot';
-                if (warming) return 'warming';
-                return 'cold';
-            }
-
-            /**
-             * Info detallada por item para depuración/log.
-             */
-            async function getCacheInfo(id) {
-                const it = getItemById(id);
-                if (!it?.sources?.glb) return null;
-                const base = await AssetPreloader.check(it.sources.glb);
-                return {
-                    id: it.id,
-                    title: it.title,
-                    subtitle: it.subtitle,
-                    ...base,
-                    lastWarmAt: it.dataCache?.lastWarmAt || null,
-                    bytes: it.dataCache?.bytes || null
-                };
-            }
-
             return {
+                /** CRUD del arreglo */
                 setItems, getItems, replaceAll, updateItem, getItemById,
+                /** cache por ítem */
                 markCache, getBestGlbUrl,
+                /** precarga */
                 warmById, warmAll,
-                getCacheStatus, getCacheInfo,
             };
         })();
-
-        /* ============================================================================
-         * canScreenCapture
-         * ========================================================================== */
-        function canScreenCapture() {
-            const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
-            const hasAPI = !!(navigator.mediaDevices?.getDisplayMedia || navigator.getDisplayMedia);
-            const inIframe = window.self !== window.top;
-            const isWV = /\bwv\b/i.test(navigator.userAgent);
-
-            return {
-                ok: isSecure && hasAPI && !isWV,
-                reason: !isSecure ? 'No HTTPS' :
-                    !hasAPI ? 'API no disponible' :
-                        isWV ? 'WebView limita captura' :
-                            inIframe ? 'Iframe sin permisos (display-capture)' :
-                                'Desconocido',
-                hasAPI, isSecure, inIframe, isWV
-            };
-        }
-
-        /* ============================================================================
-         * initPreCache
-         * ========================================================================== */
-        function initPreCache(params) {
-            ItemsStore.setItems(itemsSources);
-
-            const MAP_CONFIG = Object.freeze({
-                zoom: 14, maxZoom: 25,
-                position: [0.20830, -78.22798],
-                tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                tileAttribution: '&copy; OpenStreetMap contrib.'
-            });
-
-            params.mapCtl.init(ItemsStore.getItems());
-
-            const startWarm = async () => {
-                try {
-                    await ItemsStore.warmAll({concurrency: 3});
-                    console.log('[preload] OK: blobs listos');
-                } catch (e) {
-                    console.warn('[preload] fallo o cancelado', e);
-                }
-            };
-
-            const warmWhenVisible = () => {
-                if (document.visibilityState !== 'visible') {
-                    document.addEventListener('visibilitychange', function onVis() {
-                        if (document.visibilityState === 'visible') {
-                            document.removeEventListener('visibilitychange', onVis);
-                            queueWarm();
-                        }
-                    });
-                    return;
-                }
-                queueWarm();
-            };
-
-            const queueWarm = () => {
-                if ('requestIdleCallback' in window) {
-                    requestIdleCallback(() => startWarm(), {timeout: 2000});
-                } else {
-                    setTimeout(() => startWarm(), 300);
-                }
-            };
-
-            warmWhenVisible();
-        }
-
-        /* ============================================================================
-         * Helpers de debug de cache (opcional)
-         * ========================================================================== */
-        window.CacheDebug = {
-            async logAll() {
-                const items = ItemsStore.getItems();
-                for (const it of items) {
-                    const info = await ItemsStore.getCacheInfo(it.id);
-                    console.log('[CacheDebug] item', it.id, info);
-                }
-            },
-            async logOne(id) {
-                const info = await ItemsStore.getCacheInfo(id);
-                console.log('[CacheDebug] item', id, info);
-            }
-        };
-
-        /* ============================================================================
-         * Bootstrap — usando jQuery
-         * ========================================================================== */
-        $(function () {
-            console.log("DOMContentLoaded (jQuery ready)");
-            UI.bind();
-            window.Viewer = new ViewerOrchestrator();
-            const mapCtl = new MapController({});
-            initPreCache({mapCtl: mapCtl});
-            DeviceEvents.attach();
-
-            UI.$reticle?.addEventListener('click', async () => {
-                await window.Viewer.handleReticleTap();
-            });
-            UI.$back?.addEventListener('click', async () => {
-                await window.Viewer.destroy();
-            });
-
-            UI.$capture?.addEventListener('click', async () => {
-                console.log("Captura pantalla");
-               // await window.Viewer.captureScreenFrame();
-                // Otras opciones:
-                // await window.Viewer.captureCameraPlusModelAndSave();
-                await window.Viewer.onCaptureGpu();
-            });
-
-            const companyPanel = document.getElementById('companyPanel');
-            const companyPanelToggle = document.querySelector('.company-panel__toggle');
-
-            companyPanelToggle.addEventListener('click', () => {
-                companyPanel.classList.toggle('company-panel--collapsed');
-                const body = companyPanel.querySelector('.company-panel__body');
-                if (companyPanel.classList.contains('company-panel--collapsed')) {
-                    body.style.display = 'none';
-                } else {
-                    body.style.display = 'block';
-                }
-            });
-            const btnMoreInfo = document.getElementById('btnMoreInfo');
-            const companyDescriptionEl = document.getElementById('companyDescription');
-
-            btnMoreInfo.addEventListener('click', () => {
-                const isExpanded = btnMoreInfo.dataset.expanded === 'true';
-                const full = companyDescriptionEl.dataset.full;
-                const short = companyDescriptionEl.dataset.short || full;
-
-                if (isExpanded) {
-                    // Volver a descripción corta
-                  //  companyDescriptionEl.textContent = short;
-                    btnMoreInfo.textContent = 'Ver más';
-                    btnMoreInfo.dataset.expanded = 'false';
-                } else {
-                    // Mostrar descripción completa
-                //    companyDescriptionEl.textContent = full;
-                    btnMoreInfo.textContent = 'Ver menos';
-                    btnMoreInfo.dataset.expanded = 'true';
-                }
-            });
-            btnMoreInfo.click();
-        });
-
 
 
     </script>
@@ -3493,76 +2650,5 @@
     <!-- Mapa -->
     <div id="map" class="map"></div>
     <canvas id="snap-canvas" class="snap-canvas d-none"></canvas>
-    <!-- Panel flotante de empresa -->
-    <div class="company-panel" id="companyPanel">
-        <div class="company-panel__header view-toogle-company">
-            <div class="company-panel__logo">
-                <img src="https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png" alt="Logo Empresa" />
-            </div>
-            <div class="company-panel__title view-toogle-company">
-                <h2 id="companyName">Muelle Catalina.</h2>
-                <span id="companyTagline">Turismo · Deportes · Geología</span>
-            </div>
-            <button class="company-panel__toggle view-toogle-company" id="companyPanelToggle">⟩</button>
-        </div>
 
-        <div class="company-panel__body">
-            <div class="company-panel__section">
-                <h3>Descripción</h3>
-                <p id="companyDescription">
-                    ✨ Una bienvenida mágica
-                    Desde el momento en que llegas al Muelle Catalina, la energía cambia. 🌬️ El sol se refleja en el agua, las aves vuelan cerca y los niños ríen con emoción. “¡Mira, un pato!” 🦆 — “¡Es un pez!” 🐟. Todos con chalecos coloridos, explorando con entusiasmo.
-
-                    🛳️ El barco de dos pisos
-                    Subimos a bordo. Espacioso, elegante y seguro. En el primer piso conversas o te relajas. En el segundo, disfrutas de una vista panorámica espectacular. 📸 Jóvenes graban TikToks, otros simplemente contemplan en silencio. 🎧🧘‍♂️
-
-                    💙 Momentos inolvidables
-                    Hay parejas abrazadas, adultos leyendo, tomando mate 🍵 o respirando paz. El capitán a veces apaga el motor... y solo flotas. Ese instante es mágico. 🌌 Silencio. Solo el corazón de la laguna habla. 🫶
-                </p>
-                <button class="link-button" id="btnMoreInfo">Ver perfil completo</button>
-            </div>
-
-            <div class="company-panel__section">
-                <h3>Contacto</h3>
-                <div class="contact-list">
-                    <a id="companyEmail" href="mailto:info@empresa.com">📧 Email</a>
-                    <a id="companyWhatsapp" href="https://wa.me/593985339457" target="_blank">💬 WhatsApp</a>
-                    <a id="companyWebsite" href="https://meetclic.com/es/businessDetails/Muelle%20Catalina" target="_blank">🌐 Sitio web</a>
-                    <div class="social-icons">
-                        <a id="companyInstagram" href="https://instagram.com/empresa" target="_blank">IG</a>
-                        <a id="companyFacebook" href="https://facebook.com/empresa" target="_blank">FB</a>
-                        <a id="companyTiktok" href="https://tiktok.com/@empresa" target="_blank">TT</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="company-panel__section">
-                <h3>Actividad en este mapa</h3>
-                <div class="stats">
-                    <div class="stat">
-                        <span class="stat__label">Tótems turísticos</span>
-                        <span class="stat__value" id="statTourism">5</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat__label">Tótems deportivos</span>
-                        <span class="stat__value" id="statSports">2</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat__label">Tótems geológicos</span>
-                        <span class="stat__value" id="statGeo">3</span>
-                    </div>
-                </div>
-                <ul class="totems-list" id="totemsList">
-                    <!-- Se llena dinámicamente -->
-                </ul>
-            </div>
-
-            <div class="company-panel__section" id="selectedTotemSection" style="display:none;">
-                <h3>Tótem seleccionado</h3>
-                <p><strong id="totemName">Nombre del tótem</strong></p>
-                <p id="totemDescription">Descripción corta del tótem seleccionado.</p>
-                <button class="primary-button" id="btnViewTotem">Ver detalles del tótem</button>
-            </div>
-        </div>
-    </div>
 @endsection
