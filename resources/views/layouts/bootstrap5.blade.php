@@ -35,6 +35,21 @@
 
         var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
     </script>
+
+    <meta property="og:title" content="Chasqui- Ñan by Meetclic">
+    <meta property="og:description" content="Explora rutas dinámicas, tótems vivos y turismo aumentado en AR con MeetClic.">
+    <meta property="og:image" content="{{ $dataManagerPage['public-root'] }}/simi-rura/header/meta.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property='og:image:width' content='400'/>
+    <meta property='og:image:height' content='400'/>
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chasqui- Ñan by Meetclic">
+    <meta name="twitter:description" content="Explora rutas dinámicas, tótems vivos y turismo aumentado en AR con MeetClic.">
+    <meta name="twitter:image" content="{{ $dataManagerPage['public-root'] }}/simi-rura/header/meta.png">
     @yield('additional-scripts')
 
 </head>
