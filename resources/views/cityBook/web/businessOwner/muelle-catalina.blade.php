@@ -512,7 +512,7 @@
         .popup-card__btn {
             padding: 6px 10px;
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #445EF2;
             background: #fff;
             cursor: pointer;
             text-decoration: none;
@@ -703,7 +703,7 @@
         .stat__value {
             font-size: 14px;
             font-weight: 600;
-            color: #4c4cff;
+            color:#ffc700;
         }
 
         .totems-list {
@@ -730,7 +730,12 @@
                 border-radius: 16px 16px 0 0;
             }
         }
-
+       .color-primary--title{
+           color: #445EF2 !important;
+        }
+        .color-secondary--title{
+            color: #ffc700 !important;
+        }
     </style>
     <link
         rel="stylesheet"
@@ -741,7 +746,9 @@
 @endsection
 
 @section('additional-scripts')
-
+    <script>
+        var $dataManager = <?php echo json_encode($dataManager)?>;
+    </script>
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -2733,15 +2740,15 @@
 <article class="popup-card" data-popup-id="${item.id}">
   <header class="popup-card__header">
     <img class="popup-card__img" src="${item.sources.img}" alt="${item.title}" loading="lazy">
-    <div class="popup-card__titles">
-      <h4 class="popup-card__title">${item.title}</h4>
-      <p class="popup-card__subtitle">${item.subtitle}</p>
+    <div class="popup-card__titles ">
+      <h4 class="popup-card__title color-primary--title">${item.title}</h4>
+      <p class="popup-card__subtitle color-secondary--title">${item.subtitle}</p>
     </div>
   </header>
   <section class="popup-card__body"><p class="popup-card__description">${item.description}</p></section>
   <footer class="popup-card__footer">
     <button class="popup-card__btn popup-card__btn--primary not-view" data-action="center" data-id="${item.id}">Centrar aquí</button>
-    <a class="popup-card__btn popup-card__btn--ghost"
+    <a class="popup-card__btn popup-card__btn--ghost color-secondary--title"
        data-action="view3d"
        data-id="${item.id}"
        rel="noopener noreferrer">Ver en 3D</a>
@@ -3508,7 +3515,7 @@
 
         <div class="company-panel__body">
             <div class="company-panel__section">
-                <h3>Descripción</h3>
+                <h3 class="color-primary--title">Descripción</h3>
                 <p id="companyDescription">
                     ✨ Una bienvenida mágica
                     Desde el momento en que llegas al Muelle Catalina, la energía cambia. 🌬️ El sol se refleja en el agua, las aves vuelan cerca y los niños ríen con emoción. “¡Mira, un pato!” 🦆 — “¡Es un pez!” 🐟. Todos con chalecos coloridos, explorando con entusiasmo.
@@ -3523,21 +3530,21 @@
             </div>
 
             <div class="company-panel__section">
-                <h3>Contacto</h3>
+                <h3 class="color-primary--title">Contacto</h3>
                 <div class="contact-list">
-                    <a id="companyEmail" href="mailto:info@empresa.com">📧 Email</a>
-                    <a id="companyWhatsapp" href="https://wa.me/593985339457" target="_blank">💬 WhatsApp</a>
-                    <a id="companyWebsite" href="https://meetclic.com/es/businessDetails/Muelle%20Catalina" target="_blank">🌐 Sitio web</a>
+                    <a class="color-secondary--title" id="companyEmail" href="mailto:info@empresa.com">📧 Email</a>
+                    <a class="color-secondary--title"  id="companyWhatsapp" href="https://wa.me/593985339457" target="_blank">💬 WhatsApp</a>
+                    <a class="color-secondary--title"  id="companyWebsite" href="https://meetclic.com/es/businessDetails/Muelle%20Catalina" target="_blank">🌐 Sitio web</a>
                     <div class="social-icons">
-                        <a id="companyInstagram" href="https://instagram.com/empresa" target="_blank">IG</a>
-                        <a id="companyFacebook" href="https://facebook.com/empresa" target="_blank">FB</a>
-                        <a id="companyTiktok" href="https://tiktok.com/@empresa" target="_blank">TT</a>
+                        <a class="color-secondary--title"  id="companyInstagram" href="https://instagram.com/empresa" target="_blank">IG</a>
+                        <a class="color-secondary--title"  id="companyFacebook" href="https://facebook.com/empresa" target="_blank">FB</a>
+                        <a class="color-secondary--title"  id="companyTiktok" href="https://tiktok.com/@empresa" target="_blank">TT</a>
                     </div>
                 </div>
             </div>
 
             <div class="company-panel__section">
-                <h3>Actividad en este mapa</h3>
+                <h3 class="color-primary--title" >Actividad en este mapa</h3>
                 <div class="stats">
                     <div class="stat">
                         <span class="stat__label">Tótems turísticos</span>

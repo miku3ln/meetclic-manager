@@ -128,6 +128,7 @@ Vue.component('panorama-component', {
                 rowData: []
             },
             managerType: null,
+            businessId:$businessManager.id
         };
 
         return dataManager;
