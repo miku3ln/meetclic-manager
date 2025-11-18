@@ -749,6 +749,112 @@
 
 @section('additional-scripts')
     <script>
+
+        /* ============================================================================
+         * Datos de ejemplo: itemsSources
+         * ========================================================================== */
+        let itemsSources = [
+            {
+                id: "taita",
+                title: "Taita Imbabura – Abuelo que despierta las montañas",
+                subtitle: "Ñawi Hatun Yaya – Yaku Kawsay Tukuy Kuna",
+                description: "Padre volcán de Imbabura, sabio y vigilante. Desde sus laderas nacen vientos, manantiales y semillas que dan vida a la provincia. Sus aguas bajan hacia la laguna y alimentan chacras y comunidades. Taita Imbabura es guía y protector, un anciano vivo que recuerda a la gente su relación con la tierra y el agua.",
+                position: {lat: 0.20477, lng: -78.20639},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/taita-imbabura-toon-1.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/taita-imbabura.png'
+                }
+            },
+            {
+                id: "cerro-cusin",
+                title: "Cerro Cusin – Guardián del paso fértil",
+                subtitle: "Allpa Ñanpi Rikchar – Chacra Kamak",
+                description: "Cusin es el cerro que cuida los caminos que unen comunidades. La neblina que lo envuelve baja hacia Yaku Mama, manteniendo húmeda y fértil la tierra. Protege a quienes caminan, trabajan y siembran, recordando que cada sendero y cada chacra dependen del agua y del respeto a la montaña.",
+                position: {lat: 0.20435, lng: -78.20688},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/cusin.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/elcusin.png'
+                }
+            },
+            {
+                id: "mojanda",
+                title: "Mojanda – Susurro del páramo y las lagunas",
+                subtitle: "Sachayaku Mama – Uksha Yaku Tiyana",
+                description: "En Mojanda el páramo respira y de él nacen lagunas frías y puras. Sus aguas limpian el espíritu y alimentan ríos que descienden hacia los valles. Es un apu que conversa con las nubes y trae la lluvia necesaria para la vida. Mojanda recuerda que la vida empieza donde nace el agua.",
+                position: {lat: 0.20401, lng: -78.20723},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mojanda.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/mojanda.png'
+                }
+            },
+            {
+                id: "mama-cotacachi",
+                title: "Mama Cotacachi – Madre que abraza la Pachamama",
+                subtitle: "Allpa Mama – Warmi Rasu",
+                description: "Volcán madre que protege a las familias, a las semillas y a los tejidos de la vida diaria. Junto a Taita Imbabura equilibra los ciclos de clima, lluvia y fertilidad. Sus nubes y aguas sostienen a las comunidades. Mama Cotacachi representa cuidado, refugio y amor que sostiene la vida.",
+                position: {lat: 0.20369, lng: -78.20759},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mama-cotacachi.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/warmi-razu.png'
+                }
+            },
+            {
+                id: "coraza",
+                title: "El Coraza – Espíritu de celebración y memoria",
+                subtitle: "Kawsay Taki – Yuyay Ayllu",
+                description: "El Coraza es el espíritu del danzante que une a la gente con los apus y las aguas. Su baile honra a Taita Imbabura, a Mama Cotacachi y a Yaku Mama. A través de la fiesta se agradece a la tierra y a los ancestros. Mantiene viva la memoria del pueblo y la fuerza de su identidad.",
+                position: {lat: 0.20349, lng: -78.20779},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/coraza-one.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/elcoraza.png'
+                }
+            },
+            {
+                id: "lechero",
+                title: "El Lechero – Árbol del encuentro y los deseos",
+                subtitle: "Kawsay Ranti – Yaku Rikuna Sacha",
+                description: "Árbol sagrado donde las personas dejan promesas, agradecimientos y recuerdos. Desde su altura contempla a los apus y a la laguna. Es un puente entre el corazón humano y la naturaleza. El Lechero recibe los deseos y los entrega al viento, conectándolos con el gran tejido de la vida.",
+                position: {lat: 0.20316, lng: -78.20790},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lechero.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/lechero.png'
+                }
+            },
+            {
+                id: "lago-san-pablo",
+                title: "Yaku Mama – La laguna viva de Imbabura",
+                subtitle: "Yaku Mama – Kawsaycocha",
+                description: "Laguna madre que recibe las aguas de Imbabura, Cusin, Mojanda y Cotacachi. Refleja a los apus y al cielo, y devuelve alimento, pesca y calma a las comunidades. Yaku Mama es un ser vivo que siente y escucha; su existencia recuerda que sin agua no hay vida ni memoria.",
+                position: {lat: 0.20284, lng: -78.20802},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lago-san-pablo.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/yaku-mama.png'
+                }
+            },
+            {
+                id: "ayahuma-pacha",
+                title: "Ayahuma – Espíritu que escucha la tierra",
+                subtitle: "Aya Huma – Yuyay Uma",
+                description: "Espíritu que representa conciencia, equilibrio y claridad. Ayahuma ayuda a escuchar la voz profunda de la tierra y a entender que cada decisión humana tiene efecto en la Pachamama. Acompaña los procesos de cambio y protege la conexión entre los apus, el agua y las comunidades.",
+                position: {lat: 0.20184, lng: -78.20902},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/ayahuma.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/ayahuma.jpeg'
+                }
+            },
+            {
+                id: "corazon-pacha",
+                title: "Corazón Pacha – Nodo de energía y vida",
+                subtitle: "Pacha Sonkoy – Kawsay Tinkuy",
+                description: "Lugar simbólico donde se encuentran los caminos del agua, la montaña y el ser humano. Es el centro energético de la zona, un punto donde todo late al mismo tiempo. Corazón Pacha recuerda que los apus, la laguna y la gente forman una sola familia dentro de la tierra viva.",
+                position: {lat: 0.20084, lng: -78.21002},
+                sources: {
+                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/corazon.glb',
+                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/corazon.jpeg'
+                }
+            }
+        ];
+
         function getStructureRouteMap(params) {
             var latLngData = [];
             var dataLayers = [];
@@ -766,6 +872,7 @@
                     var rd_description = value["rd_description"] ? value["rd_description"] : "";
                     var rd_id = value["rd_id"];
                     var routes_drawing_id = value["routes_drawing_id"];
+                    var rd_subtitle = value["rd_subtitle"];
 
 
                     var setPush = null;
@@ -776,7 +883,8 @@
                         content: rd_description,
                         id: id,
                         rd_id: rd_id,
-                        routes_drawing_id: routes_drawing_id
+                        routes_drawing_id: routes_drawing_id,
+                        subtitle: rd_subtitle
                     });
 
                     var path = [];
@@ -785,6 +893,16 @@
                             var data = value.hasOwnProperty('data') ? value["data"] : [];
                             path = options.position;
                             options['data'] = data;
+                            options['dataSource'] = {};
+                            if (value.rd_src == null) {
+                                options['dataSource']["src"] = "https://meetclic.com/public/wulpy/developers/assets/images/markers/artesanias.png";
+                            } else {
+                                options['dataSource']["src"] = value.rd_src;
+                            }
+                            if (value.rd_src_glb == null) {
+                            } else {
+                                options['dataSource']["src_glb"] = value.rd_src_glb;
+                            }
                             setPush = getConfigMarker({
                                 options: options,
                                 map: mapCurrentRoutes
@@ -891,7 +1009,6 @@
         }
     </script>
     <script src="{{ asset($resourcePathServer.'js/developers/UtilCustom.js')}}" type='text/javascript'></script>
-    <script src="{{ asset($resourcePathServer.'js/business/manager/Util.js')}}" type='text/javascript'></script>
 
 
     <script>
@@ -2915,6 +3032,12 @@
             }
 
             _popupHTML(item) {
+                console.log("_popupHTML",item);
+                let clasViewGLB="not-view";
+                let allowViewGLB=!(item.glb==null);
+                if(allowViewGLB){
+                    clasViewGLB="";
+                }
                 return `
 <article class="popup-card" data-popup-id="${item.id}">
   <header class="popup-card__header">
@@ -2927,7 +3050,7 @@
   <section class="popup-card__body"><p class="popup-card__description">${item.description}</p></section>
   <footer class="popup-card__footer">
     <button class="popup-card__btn popup-card__btn--primary not-view" data-action="center" data-id="${item.id}">Centrar aquí</button>
-    <a class="popup-card__btn popup-card__btn--ghost color-secondary--title"
+    <a class="popup-card__btn popup-card__btn--ghost color-secondary--title ${clasViewGLB}"
        data-action="view3d"
        data-id="${item.id}"
        rel="noopener noreferrer">Ver en 3D</a>
@@ -3004,112 +3127,6 @@
                 window.addEventListener('resize', () => console.log('[resize]', innerWidth, innerHeight));
             }
         }
-
-        /* ============================================================================
-         * Datos de ejemplo: itemsSources
-         * ========================================================================== */
-        const itemsSources = [
-            {
-                id: "taita",
-                title: "Taita Imbabura – Abuelo que despierta las montañas",
-                subtitle: "Ñawi Hatun Yaya – Yaku Kawsay Tukuy Kuna",
-                description: "Padre volcán de Imbabura, sabio y vigilante. Desde sus laderas nacen vientos, manantiales y semillas que dan vida a la provincia. Sus aguas bajan hacia la laguna y alimentan chacras y comunidades. Taita Imbabura es guía y protector, un anciano vivo que recuerda a la gente su relación con la tierra y el agua.",
-                position: {lat: 0.20477, lng: -78.20639},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/taita-imbabura-toon-1.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/taita-imbabura.png'
-                }
-            },
-            {
-                id: "cerro-cusin",
-                title: "Cerro Cusin – Guardián del paso fértil",
-                subtitle: "Allpa Ñanpi Rikchar – Chacra Kamak",
-                description: "Cusin es el cerro que cuida los caminos que unen comunidades. La neblina que lo envuelve baja hacia Yaku Mama, manteniendo húmeda y fértil la tierra. Protege a quienes caminan, trabajan y siembran, recordando que cada sendero y cada chacra dependen del agua y del respeto a la montaña.",
-                position: {lat: 0.20435, lng: -78.20688},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/cusin.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/elcusin.png'
-                }
-            },
-            {
-                id: "mojanda",
-                title: "Mojanda – Susurro del páramo y las lagunas",
-                subtitle: "Sachayaku Mama – Uksha Yaku Tiyana",
-                description: "En Mojanda el páramo respira y de él nacen lagunas frías y puras. Sus aguas limpian el espíritu y alimentan ríos que descienden hacia los valles. Es un apu que conversa con las nubes y trae la lluvia necesaria para la vida. Mojanda recuerda que la vida empieza donde nace el agua.",
-                position: {lat: 0.20401, lng: -78.20723},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mojanda.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/mojanda.png'
-                }
-            },
-            {
-                id: "mama-cotacachi",
-                title: "Mama Cotacachi – Madre que abraza la Pachamama",
-                subtitle: "Allpa Mama – Warmi Rasu",
-                description: "Volcán madre que protege a las familias, a las semillas y a los tejidos de la vida diaria. Junto a Taita Imbabura equilibra los ciclos de clima, lluvia y fertilidad. Sus nubes y aguas sostienen a las comunidades. Mama Cotacachi representa cuidado, refugio y amor que sostiene la vida.",
-                position: {lat: 0.20369, lng: -78.20759},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/mama-cotacachi.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/warmi-razu.png'
-                }
-            },
-            {
-                id: "coraza",
-                title: "El Coraza – Espíritu de celebración y memoria",
-                subtitle: "Kawsay Taki – Yuyay Ayllu",
-                description: "El Coraza es el espíritu del danzante que une a la gente con los apus y las aguas. Su baile honra a Taita Imbabura, a Mama Cotacachi y a Yaku Mama. A través de la fiesta se agradece a la tierra y a los ancestros. Mantiene viva la memoria del pueblo y la fuerza de su identidad.",
-                position: {lat: 0.20349, lng: -78.20779},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/coraza-one.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/elcoraza.png'
-                }
-            },
-            {
-                id: "lechero",
-                title: "El Lechero – Árbol del encuentro y los deseos",
-                subtitle: "Kawsay Ranti – Yaku Rikuna Sacha",
-                description: "Árbol sagrado donde las personas dejan promesas, agradecimientos y recuerdos. Desde su altura contempla a los apus y a la laguna. Es un puente entre el corazón humano y la naturaleza. El Lechero recibe los deseos y los entrega al viento, conectándolos con el gran tejido de la vida.",
-                position: {lat: 0.20316, lng: -78.20790},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lechero.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/lechero.png'
-                }
-            },
-            {
-                id: "lago-san-pablo",
-                title: "Yaku Mama – La laguna viva de Imbabura",
-                subtitle: "Yaku Mama – Kawsaycocha",
-                description: "Laguna madre que recibe las aguas de Imbabura, Cusin, Mojanda y Cotacachi. Refleja a los apus y al cielo, y devuelve alimento, pesca y calma a las comunidades. Yaku Mama es un ser vivo que siente y escucha; su existencia recuerda que sin agua no hay vida ni memoria.",
-                position: {lat: 0.20284, lng: -78.20802},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/lago-san-pablo.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/yaku-mama.png'
-                }
-            },
-            {
-                id: "ayahuma-pacha",
-                title: "Ayahuma – Espíritu que escucha la tierra",
-                subtitle: "Aya Huma – Yuyay Uma",
-                description: "Espíritu que representa conciencia, equilibrio y claridad. Ayahuma ayuda a escuchar la voz profunda de la tierra y a entender que cada decisión humana tiene efecto en la Pachamama. Acompaña los procesos de cambio y protege la conexión entre los apus, el agua y las comunidades.",
-                position: {lat: 0.20184, lng: -78.20902},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/ayahuma.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/ayahuma.jpeg'
-                }
-            },
-            {
-                id: "corazon-pacha",
-                title: "Corazón Pacha – Nodo de energía y vida",
-                subtitle: "Pacha Sonkoy – Kawsay Tinkuy",
-                description: "Lugar simbólico donde se encuentran los caminos del agua, la montaña y el ser humano. Es el centro energético de la zona, un punto donde todo late al mismo tiempo. Corazón Pacha recuerda que los apus, la laguna y la gente forman una sola familia dentro de la tierra viva.",
-                position: {lat: 0.20084, lng: -78.21002},
-                sources: {
-                    glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/corazon.glb',
-                    img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/pacha/images/corazon.jpeg'
-                }
-            }
-        ];
-
 
         /* ============================================================================
          * AssetPreloader (precache GLB) + Verificador de cache
@@ -3573,63 +3590,114 @@
         /* ============================================================================
          * Bootstrap — usando jQuery
          * ========================================================================== */
+        let itemsSourcesAux = [];
         $(function () {
-            console.log("DOMContentLoaded (jQuery ready)");
-            UI.bind();
-            window.Viewer = new ViewerOrchestrator();
-            const mapCtl = new MapController({});
-            initPreCache({mapCtl: mapCtl});
-            DeviceEvents.attach();
 
-            UI.$reticle?.addEventListener('click', async () => {
-                await window.Viewer.handleReticleTap();
-            });
-            UI.$back?.addEventListener('click', async () => {
-                await window.Viewer.destroy();
-            });
+                /*   itemsSources = [
+                       {
+                           id: "taita",
+                           title: "Taita Imbabura – Abuelo que despierta las montañas",
+                           subtitle: "Ñawi Hatun Yaya – Yaku Kawsay Tukuy Kuna",
+                           description: "Padre volcán de Imbabura, sabio y vigilante. Desde sus laderas nacen vientos, manantiales y semillas que dan vida a la provincia. Sus aguas bajan hacia la laguna y alimentan chacras y comunidades. Taita Imbabura es guía y protector, un anciano vivo que recuerda a la gente su relación con la tierra y el agua.",
+                           position: {lat: 0.20477, lng: -78.20639},
+                           sources: {
+                               glb: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/taita-imbabura-toon-1.glb',
+                               img: (window.$dataManagerPage?.['public-root'] || '') + '/simi-rura/muelle-catalina/images/taita-imbabura.png'
+                           }
+                       },
+                   */
 
-            UI.$capture?.addEventListener('click', async () => {
-                console.log("Captura pantalla");
-                // await window.Viewer.captureScreenFrame();
-                // Otras opciones:
-                // await window.Viewer.captureCameraPlusModelAndSave();
-                await window.Viewer.onCaptureGpu();
-            });
+                if ($dataManager.allow) {
+                    let dataItemsMap =
+                        getStructureRouteMap({
+                            map: "",
+                            haystack: $dataManager.dataRoute.routes_drawing_data,
+                            typeGetData: true
+                        });
+                    let haystack = dataItemsMap.layers;
+                    let itemsSourcesAux = [];
+                    $.each(haystack, function (key, value) {
+                        if (value.type == "marker") {
+                            let sources = {glb: null, img: null};
+                            if (typeof value.src_glb !== 'undefined') {
+                                sources.glb = value["dataSource"].src_glb;
+                            }
+                            sources.img = value["dataSource"].src;
+                            let setPush = {
+                                id: value.id,
+                                title: value.title,
+                                subtitle: value.subtitle,
+                                description: value.content,
+                                position: value.position,
+                                sources: sources
+                            };
+                            itemsSourcesAux.push(setPush);
+                        }
+                    });
+                    console.log("DOMContentLoaded (jQuery ready)");
+                    if (itemsSourcesAux.length > 0) {
+                        itemsSources = [];
+                        itemsSources = itemsSourcesAux;
 
-            const companyPanel = document.getElementById('companyPanel');
-            const companyPanelToggle = document.querySelector('.company-panel__toggle');
-
-            companyPanelToggle.addEventListener('click', () => {
-                companyPanel.classList.toggle('company-panel--collapsed');
-                const body = companyPanel.querySelector('.company-panel__body');
-                if (companyPanel.classList.contains('company-panel--collapsed')) {
-                    body.style.display = 'none';
-                } else {
-                    body.style.display = 'block';
+                    }
                 }
-            });
-            const btnMoreInfo = document.getElementById('btnMoreInfo');
-            const companyDescriptionEl = document.getElementById('companyDescription');
+                UI.bind();
+                window.Viewer = new ViewerOrchestrator();
+                const mapCtl = new MapController({});
+                initPreCache({mapCtl: mapCtl});
+                DeviceEvents.attach();
 
-            btnMoreInfo.addEventListener('click', () => {
-                const isExpanded = btnMoreInfo.dataset.expanded === 'true';
-                const full = companyDescriptionEl.dataset.full;
-                const short = companyDescriptionEl.dataset.short || full;
+                UI.$reticle?.addEventListener('click', async () => {
+                    await window.Viewer.handleReticleTap();
+                });
+                UI.$back?.addEventListener('click', async () => {
+                    await window.Viewer.destroy();
+                });
 
-                if (isExpanded) {
-                    // Volver a descripción corta
-                    //  companyDescriptionEl.textContent = short;
-                    btnMoreInfo.textContent = 'Ver más';
-                    btnMoreInfo.dataset.expanded = 'false';
-                } else {
-                    // Mostrar descripción completa
-                    //    companyDescriptionEl.textContent = full;
-                    btnMoreInfo.textContent = 'Ver menos';
-                    btnMoreInfo.dataset.expanded = 'true';
-                }
-            });
-            btnMoreInfo.click();
-        });
+                UI.$capture?.addEventListener('click', async () => {
+                    console.log("Captura pantalla");
+                    // await window.Viewer.captureScreenFrame();
+                    // Otras opciones:
+                    // await window.Viewer.captureCameraPlusModelAndSave();
+                    await window.Viewer.onCaptureGpu();
+                });
+
+                const companyPanel = document.getElementById('companyPanel');
+                const companyPanelToggle = document.querySelector('.company-panel__toggle');
+
+                companyPanelToggle.addEventListener('click', () => {
+                    companyPanel.classList.toggle('company-panel--collapsed');
+                    const body = companyPanel.querySelector('.company-panel__body');
+                    if (companyPanel.classList.contains('company-panel--collapsed')) {
+                        body.style.display = 'none';
+                    } else {
+                        body.style.display = 'block';
+                    }
+                });
+                const btnMoreInfo = document.getElementById('btnMoreInfo');
+                const companyDescriptionEl = document.getElementById('companyDescription');
+
+                btnMoreInfo.addEventListener('click', () => {
+                    const isExpanded = btnMoreInfo.dataset.expanded === 'true';
+                    const full = companyDescriptionEl.dataset.full;
+                    const short = companyDescriptionEl.dataset.short || full;
+
+                    if (isExpanded) {
+                        // Volver a descripción corta
+                        //  companyDescriptionEl.textContent = short;
+                        btnMoreInfo.textContent = 'Ver más';
+                        btnMoreInfo.dataset.expanded = 'false';
+                    } else {
+                        // Mostrar descripción completa
+                        //    companyDescriptionEl.textContent = full;
+                        btnMoreInfo.textContent = 'Ver menos';
+                        btnMoreInfo.dataset.expanded = 'true';
+                    }
+                });
+                btnMoreInfo.click();
+            }
+        )
+        ;
 
 
     </script>

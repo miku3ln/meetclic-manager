@@ -1649,7 +1649,12 @@ function getCenterByType(params) {
     } else if (type == "rectangle") {
         latlng = polygonCenter(objCurrent);
     } else if (type == "marker") {
-        latlng = objCurrent.getPosition();
+        if (typeof google !== 'undefined') {
+            latlng = objCurrent.getPosition();
+        } else {
+            latlng = objCurrent.position;
+        }
+
     } else if (type == "circle") {
         latlng = objCurrent.getCenter();
     }
@@ -1698,17 +1703,33 @@ function polygonCenter(poly) {
             lng: lng
         });
     } else if (poly.type == "polygon") {
-        vertices = poly.getPath();
+
+        if (typeof google !== 'undefined') {
+            vertices = poly.getPath();
+        } else {
+            vertices = poly.path;
+        }
     } else {
-        vertices = poly.getPath();
+
+        if (typeof google !== 'undefined') {
+            vertices = poly.getPath();
+        } else {
+            vertices = poly.path;
+        }
     }
     for (var i = 0; i < vertices.length; i++) {
         if (poly.type == "rectangle") {
             lngs.push(vertices[i].lng);
             lats.push(vertices[i].lat);
         } else {
-            lngs.push(vertices.getAt(i).lng());
-            lats.push(vertices.getAt(i).lat());
+            if (typeof google !== 'undefined') {
+                lngs.push(vertices.getAt(i).lng());
+                lats.push(vertices.getAt(i).lat());
+            } else {
+                lngs.push(vertices[i].lng);
+                lats.push(vertices[i].lat);
+            }
+
         }
     }
 
@@ -1722,12 +1743,12 @@ function polygonCenter(poly) {
     center_y = lowy + (highy - lowy) / 2;
     let result = null;
     if (typeof google !== 'undefined') {
-        result= new google.maps.LatLng(center_x, center_y);
+        result = new google.maps.LatLng(center_x, center_y);
 
     } else {
-        result={
-            center_x:center_x,
-            center_y:center_y,
+        result = {
+            center_x: center_x,
+            center_y: center_y,
 
         };
 
@@ -1974,6 +1995,7 @@ function mergeObjects(obj, src) {
     });
     return obj;
 }
+
 function addYourLocationButton(map, marker) {
     var controlDiv = document.createElement("div");
 
