@@ -1,22 +1,22 @@
 function getCategories() {
     var result;
     result = [
-        { id: 1, text: "Comida & Bebida" },
-        { id: 2, text: "Que Hacer" },
-        { id: 3, text: "Compras" },
-        { id: 4, text: "Servicios" }
+        {id: 1, text: "Comida & Bebida"},
+        {id: 2, text: "Que Hacer"},
+        {id: 3, text: "Compras"},
+        {id: 4, text: "Servicios"}
     ];
     return result;
 }
 
 function getDataShortCut() {
     return [
-        { value: 0, text: "Ruta Turistica" },
-        { value: 1, text: "Ruta Transito" },
-        { value: 2, text: "Ruta Historica" },
-        { value: 3, text: "Ruta Tematica" },
-        { value: 4, text: "Chakiñan" },
-        { value: 5, text: "Atractivo Túristico" }
+        {value: 0, text: "Ruta Turistica"},
+        {value: 1, text: "Ruta Transito"},
+        {value: 2, text: "Ruta Historica"},
+        {value: 3, text: "Ruta Tematica"},
+        {value: 4, text: "Chakiñan"},
+        {value: 5, text: "Atractivo Túristico"}
     ];
 }
 
@@ -30,7 +30,7 @@ function getShortCutById(id) {
 function getDataAdventureType() {
     var resourceCurrent = $resourcesCustom + "frontend/wulpyme/adventureType/";
     return [
-        { value: 0, text: "Apnea deporte", src: resourceCurrent + "apnea.png" },
+        {value: 0, text: "Apnea deporte", src: resourceCurrent + "apnea.png"},
         {
             value: 1,
             text: "Cicloturismo",
@@ -41,32 +41,32 @@ function getDataAdventureType() {
             text: "Bungee/Puenting",
             src: resourceCurrent + "bungee.jpg"
         },
-        { value: 3, text: "Rafting", src: resourceCurrent + "rafting.png" },
-        { value: 4, text: "Cabalgata", src: resourceCurrent + "ride.png" },
+        {value: 3, text: "Rafting", src: resourceCurrent + "rafting.png"},
+        {value: 4, text: "Cabalgata", src: resourceCurrent + "ride.png"},
         {
             value: 5,
             text: "Montañismo/Andinismo",
             src: resourceCurrent + "mountaineering.png"
         },
-        { value: 6, text: "Senderismo", src: resourceCurrent + "trekking.png" },
+        {value: 6, text: "Senderismo", src: resourceCurrent + "trekking.png"},
         {
             value: 7,
             text: "Ciclismo de montaña",
             src: resourceCurrent + "mountainBiking.png"
         },
-        { value: 8, text: "Escalada", src: resourceCurrent + "climbing.png" },
+        {value: 8, text: "Escalada", src: resourceCurrent + "climbing.png"},
         {
             value: 9,
             text: "Canopy/Tirolesas",
             src: resourceCurrent + "canopy.png"
         },
-        { value: 10, text: "Camping", src: resourceCurrent + "camping.jpg" },
+        {value: 10, text: "Camping", src: resourceCurrent + "camping.jpg"},
         {
             value: 11,
             text: "Overlanding",
             src: resourceCurrent + "overLanding.png"
         },
-        { value: 12, text: "Rápel", src: resourceCurrent + "rappel.png" },
+        {value: 12, text: "Rápel", src: resourceCurrent + "rappel.png"},
         {
             value: 13,
             text: "Vías ferratas",
@@ -95,140 +95,140 @@ function getAdventureTypeById(id) {
 /*https://developers.google.com/places/web-service/supported_types*/
 function getPlaceTypes(type = null) {
     var placesTypes = [
-        { type: 1, id: "accounting" },
-        { type: 1, id: "airport" },
-        { type: 1, id: "amusement_park" },
-        { type: 1, id: "aquarium" },
-        { type: 1, id: "art_gallery" },
-        { type: 1, id: "atm" },
-        { type: 1, id: "bakery" },
-        { type: 1, id: "bank" },
-        { type: 1, id: "bar" },
-        { type: 1, id: "beauty_salon" },
-        { type: 1, id: "bicycle_store" },
-        { type: 1, id: "book_store" },
-        { type: 1, id: "bowling_alley" },
-        { type: 1, id: "bus_station" },
-        { type: 1, id: "cafe" },
-        { type: 1, id: "campground" },
-        { type: 1, id: "car_dealer" },
-        { type: 1, id: "car_rental" },
-        { type: 1, id: "car_repair" },
-        { type: 1, id: "car_wash" },
-        { type: 1, id: "casino" },
-        { type: 1, id: "cemetery" },
-        { type: 1, id: "church" },
-        { type: 1, id: "city_hall" },
-        { type: 1, id: "clothing_store" },
-        { type: 1, id: "convenience_store" },
-        { type: 1, id: "courthouse" },
-        { type: 1, id: "dentist" },
-        { type: 1, id: "department_store" },
-        { type: 1, id: "doctor" },
-        { type: 1, id: "electrician" },
-        { type: 1, id: "electronics_store" },
-        { type: 1, id: "embassy" },
-        { type: 1, id: "fire_station" },
-        { type: 1, id: "florist" },
-        { type: 1, id: "funeral_home" },
-        { type: 1, id: "furniture_store" },
-        { type: 1, id: "gas_station" },
-        { type: 1, id: "gym" },
-        { type: 1, id: "hair_care" },
-        { type: 1, id: "hardware_store" },
-        { type: 1, id: "hindu_temple" },
-        { type: 1, id: "home_goods_store" },
-        { type: 1, id: "hospital" },
-        { type: 1, id: "insurance_agency" },
-        { type: 1, id: "jewelry_store" },
-        { type: 1, id: "laundry" },
-        { type: 1, id: "lawyer" },
-        { type: 1, id: "library" },
-        { type: 1, id: "liquor_store" },
-        { type: 1, id: "local_government_office" },
-        { type: 1, id: "locksmith" },
-        { type: 1, id: "lodging" },
-        { type: 1, id: "meal_delivery" },
-        { type: 1, id: "meal_takeaway" },
-        { type: 1, id: "mosque" },
-        { type: 1, id: "movie_rental" },
-        { type: 1, id: "movie_theater" },
-        { type: 1, id: "moving_company" },
-        { type: 1, id: "museum" },
-        { type: 1, id: "night_club" },
-        { type: 1, id: "painter" },
-        { type: 1, id: "park" },
-        { type: 1, id: "parking" },
-        { type: 1, id: "pet_store" },
-        { type: 1, id: "pharmacy" },
-        { type: 1, id: "physiotherapist" },
-        { type: 1, id: "plumber" },
-        { type: 1, id: "police" },
-        { type: 1, id: "post_office" },
-        { type: 1, id: "real_estate_agency" },
-        { type: 1, id: "restaurant" },
-        { type: 1, id: "roofing_contractor" },
-        { type: 1, id: "rv_park" },
-        { type: 1, id: "school" },
-        { type: 1, id: "shoe_store" },
-        { type: 1, id: "shopping_mall" },
-        { type: 1, id: "spa" },
-        { type: 1, id: "stadium" },
-        { type: 1, id: "storage" },
-        { type: 1, id: "store" },
-        { type: 1, id: "subway_station" },
-        { type: 1, id: "supermarket" },
-        { type: 1, id: "synagogue" },
-        { type: 1, id: "taxi_stand" },
-        { type: 1, id: "train_station" },
-        { type: 1, id: "transit_station" },
-        { type: 1, id: "travel_agency" },
-        { type: 1, id: "veterinary_care" },
-        { type: 1, id: "zoo" },
+        {type: 1, id: "accounting"},
+        {type: 1, id: "airport"},
+        {type: 1, id: "amusement_park"},
+        {type: 1, id: "aquarium"},
+        {type: 1, id: "art_gallery"},
+        {type: 1, id: "atm"},
+        {type: 1, id: "bakery"},
+        {type: 1, id: "bank"},
+        {type: 1, id: "bar"},
+        {type: 1, id: "beauty_salon"},
+        {type: 1, id: "bicycle_store"},
+        {type: 1, id: "book_store"},
+        {type: 1, id: "bowling_alley"},
+        {type: 1, id: "bus_station"},
+        {type: 1, id: "cafe"},
+        {type: 1, id: "campground"},
+        {type: 1, id: "car_dealer"},
+        {type: 1, id: "car_rental"},
+        {type: 1, id: "car_repair"},
+        {type: 1, id: "car_wash"},
+        {type: 1, id: "casino"},
+        {type: 1, id: "cemetery"},
+        {type: 1, id: "church"},
+        {type: 1, id: "city_hall"},
+        {type: 1, id: "clothing_store"},
+        {type: 1, id: "convenience_store"},
+        {type: 1, id: "courthouse"},
+        {type: 1, id: "dentist"},
+        {type: 1, id: "department_store"},
+        {type: 1, id: "doctor"},
+        {type: 1, id: "electrician"},
+        {type: 1, id: "electronics_store"},
+        {type: 1, id: "embassy"},
+        {type: 1, id: "fire_station"},
+        {type: 1, id: "florist"},
+        {type: 1, id: "funeral_home"},
+        {type: 1, id: "furniture_store"},
+        {type: 1, id: "gas_station"},
+        {type: 1, id: "gym"},
+        {type: 1, id: "hair_care"},
+        {type: 1, id: "hardware_store"},
+        {type: 1, id: "hindu_temple"},
+        {type: 1, id: "home_goods_store"},
+        {type: 1, id: "hospital"},
+        {type: 1, id: "insurance_agency"},
+        {type: 1, id: "jewelry_store"},
+        {type: 1, id: "laundry"},
+        {type: 1, id: "lawyer"},
+        {type: 1, id: "library"},
+        {type: 1, id: "liquor_store"},
+        {type: 1, id: "local_government_office"},
+        {type: 1, id: "locksmith"},
+        {type: 1, id: "lodging"},
+        {type: 1, id: "meal_delivery"},
+        {type: 1, id: "meal_takeaway"},
+        {type: 1, id: "mosque"},
+        {type: 1, id: "movie_rental"},
+        {type: 1, id: "movie_theater"},
+        {type: 1, id: "moving_company"},
+        {type: 1, id: "museum"},
+        {type: 1, id: "night_club"},
+        {type: 1, id: "painter"},
+        {type: 1, id: "park"},
+        {type: 1, id: "parking"},
+        {type: 1, id: "pet_store"},
+        {type: 1, id: "pharmacy"},
+        {type: 1, id: "physiotherapist"},
+        {type: 1, id: "plumber"},
+        {type: 1, id: "police"},
+        {type: 1, id: "post_office"},
+        {type: 1, id: "real_estate_agency"},
+        {type: 1, id: "restaurant"},
+        {type: 1, id: "roofing_contractor"},
+        {type: 1, id: "rv_park"},
+        {type: 1, id: "school"},
+        {type: 1, id: "shoe_store"},
+        {type: 1, id: "shopping_mall"},
+        {type: 1, id: "spa"},
+        {type: 1, id: "stadium"},
+        {type: 1, id: "storage"},
+        {type: 1, id: "store"},
+        {type: 1, id: "subway_station"},
+        {type: 1, id: "supermarket"},
+        {type: 1, id: "synagogue"},
+        {type: 1, id: "taxi_stand"},
+        {type: 1, id: "train_station"},
+        {type: 1, id: "transit_station"},
+        {type: 1, id: "travel_agency"},
+        {type: 1, id: "veterinary_care"},
+        {type: 1, id: "zoo"},
 
-        { type: 2, id: "administrative_area_level_1" },
-        { type: 2, id: "administrative_area_level_2" },
-        { type: 2, id: "administrative_area_level_3" },
-        { type: 2, id: "administrative_area_level_4" },
-        { type: 2, id: "administrative_area_level_5" },
-        { type: 2, id: "colloquial_area" },
-        { type: 2, id: "country" },
-        { type: 2, id: "establishment" },
-        { type: 2, id: "finance" },
-        { type: 2, id: "floor" },
-        { type: 2, id: "food" },
-        { type: 2, id: "general_contractor" },
-        { type: 2, id: "geocode" },
-        { type: 2, id: "health" },
-        { type: 2, id: "intersection" },
-        { type: 2, id: "locality" },
-        { type: 2, id: "natural_feature" },
-        { type: 2, id: "neighborhood" },
-        { type: 2, id: "place_of_worship" },
-        { type: 2, id: "subpremise" },
-        { type: 2, id: "sublocality_level_1" },
-        { type: 2, id: "sublocality_level_2" },
-        { type: 2, id: "sublocality_level_3" },
-        { type: 2, id: "sublocality_level_4" },
-        { type: 2, id: "sublocality" },
-        { type: 2, id: "street_number" },
-        { type: 2, id: "street_address" },
-        { type: 2, id: "route" },
-        { type: 2, id: "room" },
-        { type: 2, id: "premise" },
-        { type: 2, id: "postal_town" },
-        { type: 2, id: "postal_code_suffix" },
-        { type: 2, id: "postal_code_prefix" },
-        { type: 2, id: "postal_code" },
-        { type: 2, id: "post_box" },
-        { type: 2, id: "point_of_interest" },
-        { type: 2, id: "political" },
-        { type: 3, id: "locality" },
-        { type: 3, id: "sublocality" },
-        { type: 3, id: "postal_code" },
-        { type: 3, id: "country" },
-        { type: 3, id: "administrative_area_level_1" },
-        { type: 3, id: "administrative_area_level_2" }
+        {type: 2, id: "administrative_area_level_1"},
+        {type: 2, id: "administrative_area_level_2"},
+        {type: 2, id: "administrative_area_level_3"},
+        {type: 2, id: "administrative_area_level_4"},
+        {type: 2, id: "administrative_area_level_5"},
+        {type: 2, id: "colloquial_area"},
+        {type: 2, id: "country"},
+        {type: 2, id: "establishment"},
+        {type: 2, id: "finance"},
+        {type: 2, id: "floor"},
+        {type: 2, id: "food"},
+        {type: 2, id: "general_contractor"},
+        {type: 2, id: "geocode"},
+        {type: 2, id: "health"},
+        {type: 2, id: "intersection"},
+        {type: 2, id: "locality"},
+        {type: 2, id: "natural_feature"},
+        {type: 2, id: "neighborhood"},
+        {type: 2, id: "place_of_worship"},
+        {type: 2, id: "subpremise"},
+        {type: 2, id: "sublocality_level_1"},
+        {type: 2, id: "sublocality_level_2"},
+        {type: 2, id: "sublocality_level_3"},
+        {type: 2, id: "sublocality_level_4"},
+        {type: 2, id: "sublocality"},
+        {type: 2, id: "street_number"},
+        {type: 2, id: "street_address"},
+        {type: 2, id: "route"},
+        {type: 2, id: "room"},
+        {type: 2, id: "premise"},
+        {type: 2, id: "postal_town"},
+        {type: 2, id: "postal_code_suffix"},
+        {type: 2, id: "postal_code_prefix"},
+        {type: 2, id: "postal_code"},
+        {type: 2, id: "post_box"},
+        {type: 2, id: "point_of_interest"},
+        {type: 2, id: "political"},
+        {type: 3, id: "locality"},
+        {type: 3, id: "sublocality"},
+        {type: 3, id: "postal_code"},
+        {type: 3, id: "country"},
+        {type: 3, id: "administrative_area_level_1"},
+        {type: 3, id: "administrative_area_level_2"}
     ];
     var result = placesTypes;
     if (type) {
@@ -1013,7 +1013,6 @@ function getDataPolyline(params) {
                     ) {
                         var coordinatesData = $(
                             $(valuePoint).children().prevObject[0]
-
                         )
                             .html()
                             .split(" ");
@@ -1230,7 +1229,7 @@ function getExistPolyline(params) {
         }
     });
 
-    var result = { isTracking: isTracking, type: type };
+    var result = {isTracking: isTracking, type: type};
     return result;
 }
 
@@ -1296,7 +1295,7 @@ function getDataTypeLay(params) {
                 var lat = parseFloat(coordinatesDataArray[1]);
                 var lng = parseFloat(coordinatesDataArray[0]);
                 var setPushLay = {
-                    position: { lat: lat, lng: lng },
+                    position: {lat: lat, lng: lng},
                     type: "marker",
                     title: name,
                     content: description
@@ -1463,10 +1462,21 @@ function uniqid() {
 function getConfigMarker(params) {
     var options = params.options;
     var _map = params.map;
-    var positionCurrent = new google.maps.LatLng(
-        parseFloat(options.position.lat),
-        parseFloat(options.position.lng)
-    );
+    var positionCurrent = null;
+
+
+    if (typeof google !== 'undefined') {
+        positionCurrent = new google.maps.LatLng(
+            parseFloat(options.position.lat),
+            parseFloat(options.position.lng)
+        );
+    } else {
+        positionCurrent = {
+            lat: parseFloat(options.position.lat),
+            lng: parseFloat(options.position.lng),
+        };
+    }
+
     var data = options.hasOwnProperty('data') ? options.data : [];
     var setOptions = {
         map: _map,
@@ -1479,15 +1489,18 @@ function getConfigMarker(params) {
     };
     setOptions = mergeObjects(setOptions, options);
     setOptions.position = positionCurrent;
-    var result = new google.maps.Marker(setOptions);
-
+    var result = null;
+    if (typeof google !== 'undefined') {
+        result = new google.maps.Marker(setOptions);
+    } else {
+        result = setOptions;
+    }
     return result;
 }
 
 function getConfigPolygon(params) {
     var options = params.options;
     var _map = params.map;
-
     var paths = [];
     var pathsCurrent = options.paths;
     $.each(pathsCurrent, function (key, value) {
@@ -1506,9 +1519,13 @@ function getConfigPolygon(params) {
     };
     setOptions = mergeObjects(setOptions, options);
     setOptions.paths = paths;
-    var result = new google.maps.Polygon(setOptions);
-    result.setMap(_map);
-
+    var result = null;
+    if (typeof google !== 'undefined') {
+        result = new google.maps.Polygon(setOptions);
+        result.setMap(_map);
+    } else {
+        result = setOptions;
+    }
     return result;
 }
 
@@ -1540,9 +1557,14 @@ function getConfigPolyline(params) {
     setOptions = mergeObjects(setOptions, options);
     setOptions.path = paths;
     setOptions.strokeColor = strokeColor;
-    var result = new google.maps.Polyline(setOptions);
-    result.setMap(_map);
+    var result = null;
 
+    if (typeof google !== 'undefined') {
+        result = new google.maps.Polyline(setOptions);
+        result.setMap(_map);
+    } else {
+        result = setOptions;
+    }
     return result;
 }
 
@@ -1552,8 +1574,16 @@ function getConfigCircle(params) {
     var lat = options.center.lat;
     var lng = options.center.lng;
 
-    var cntr = new google.maps.LatLng(lat, lng);
+    var cntr = null;
+    if (typeof google !== 'undefined') {
+        cntr = new google.maps.LatLng(lat, lng);
+    } else {
+        cntr = {
+            lat: lat,
+            lng: lng,
 
+        };
+    }
     var setOptions = {
         center: cntr,
         type: options.type,
@@ -1561,7 +1591,12 @@ function getConfigCircle(params) {
         map: _map
     };
     setOptions = mergeObjects(setOptions, options);
-    result = new google.maps.Circle(setOptions);
+    let result = null;
+    if (typeof google !== 'undefined') {
+        result = new google.maps.Circle(setOptions);
+    } else {
+        result = setOptions;
+    }
     return result;
 }
 
@@ -1591,7 +1626,14 @@ function getConfigRectangle(params) {
     };
     setOptions = mergeObjects(setOptions, options);
     setOptions.bounds = bounds;
-    result = new google.maps.Rectangle(setOptions);
+    let result = null;
+    if (typeof google !== 'undefined') {
+        result = new google.maps.Rectangle(setOptions);
+
+    } else {
+        result = (setOptions);
+
+    }
     return result;
 }
 
@@ -1678,8 +1720,19 @@ function polygonCenter(poly) {
     highy = lngs[vertices.length - 1];
     center_x = lowx + (highx - lowx) / 2;
     center_y = lowy + (highy - lowy) / 2;
+    let result = null;
+    if (typeof google !== 'undefined') {
+        result= new google.maps.LatLng(center_x, center_y);
 
-    return new google.maps.LatLng(center_x, center_y);
+    } else {
+        result={
+            center_x:center_x,
+            center_y:center_y,
+
+        };
+
+    }
+    return result;
 }
 
 function getCenterDataLatLng(params) {
@@ -1750,21 +1803,21 @@ function getEditorContent(overlay) {
         var strokeColor =
             overlay.strokeColor == undefined ? "#000000" : overlay.strokeColor;
         content +=
-            '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor+'<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' +
+            '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor + '<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' +
             strokeColor +
             '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
         var strokeOpacity =
             overlay.strokeOpacity == undefined ? 0.9 : overlay.strokeOpacity;
         content +=
-            '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+'<input type="text" id="BlitzMapInfoWindow_strokeopacity" value="' +
+            '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input type="text" id="BlitzMapInfoWindow_strokeopacity" value="' +
             strokeOpacity.toString() +
             '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay(overlay)" ></div>';
 
         var strokeWeight =
             overlay.strokeWeight == undefined ? 3 : overlay.strokeWeight;
         content +=
-            '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness+'<input type="text" id="BlitzMapInfoWindow_strokeweight" value="' +
+            '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness + '<input type="text" id="BlitzMapInfoWindow_strokeweight" value="' +
             strokeWeight.toString() +
             '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay(overlay)" ></div>';
     } else {
@@ -1915,7 +1968,12 @@ function getLayersMap(params) {
     return result;
 }
 
-
+function mergeObjects(obj, src) {
+    Object.keys(src).forEach(function (key) {
+        obj[key] = src[key];
+    });
+    return obj;
+}
 function addYourLocationButton(map, marker) {
     var controlDiv = document.createElement("div");
 
@@ -2005,7 +2063,7 @@ function getRowsColsStructure(params) {
             }
             $countTravel++;
         }
-        var $setPushRow = { data: $dataColumn };
+        var $setPushRow = {data: $dataColumn};
         $result.push($setPushRow);
     }
 
@@ -2749,21 +2807,21 @@ function getStringParamsGet(params) {
     var recursiveDecoded = decodeURIComponent($.param(dataParams));
     return recursiveDecoded;
 }
+
 function getMobileOperatingSystem() {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
     if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i)) {
         return 'iOS';
 
-    }
-    else if (userAgent.match(/Android/i)) {
+    } else if (userAgent.match(/Android/i)) {
 
         return 'Android';
-    }
-    else {
+    } else {
         return 'unknown';
     }
 }
+
 function msjSystem($data) {
     var $params = {};
     $params.title = $data.title ? $data.title : "Sin titulo";
@@ -2773,8 +2831,9 @@ function msjSystem($data) {
     $params.content = $data.content ? $data.content : "nada";
     $params.type = $data.type ? $data.type : "info";
 
-    showAlert( $params.type,  $params.content,45000,    $params.color);
+    showAlert($params.type, $params.content, 45000, $params.color);
 }
+
 function gestionInformacion(options) {
     var $url = options.url;
     var $async = options.async == true ? true : false;

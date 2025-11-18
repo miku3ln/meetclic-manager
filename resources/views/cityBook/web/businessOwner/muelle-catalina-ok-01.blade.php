@@ -57,7 +57,7 @@
         }
 
         #hint {
-            display: none;
+            display:none;
             position: fixed;
             left: 12px;
             bottom: 5%;
@@ -604,7 +604,7 @@
 
         .company-panel__title span {
             font-size: 12px;
-            color: #ffc700;
+            color:#ffc700;
         }
 
         .company-panel__toggle {
@@ -703,7 +703,7 @@
         .stat__value {
             font-size: 14px;
             font-weight: 600;
-            color: #ffc700;
+            color:#ffc700;
         }
 
         .totems-list {
@@ -730,12 +730,10 @@
                 border-radius: 16px 16px 0 0;
             }
         }
-
-        .color-primary--title {
-            color: #445EF2 !important;
+       .color-primary--title{
+           color: #445EF2 !important;
         }
-
-        .color-secondary--title {
+        .color-secondary--title{
             color: #ffc700 !important;
         }
     </style>
@@ -749,153 +747,7 @@
 
 @section('additional-scripts')
     <script>
-        function getStructureRouteMap(params) {
-            var latLngData = [];
-            var dataLayers = [];
-            var mapCurrentRoutes = params['map'];
-            var optionsCenter = [];
-            var haystack = params.haystack;
-            var routeInformation = params.routeInformation;
-            var typeGetData = params.typeGetData;//true=db,false=kml
-            if (typeGetData) {//DB
-
-                $.each(haystack, function (key, value) {
-                    var typeLayer = value["rd_type"];
-                    var id = value["id"];
-                    var rd_name = value["rd_name"] ? value["rd_name"] : "";
-                    var rd_description = value["rd_description"] ? value["rd_description"] : "";
-                    var rd_id = value["rd_id"];
-                    var routes_drawing_id = value["routes_drawing_id"];
-
-
-                    var setPush = null;
-                    var options = jQuery.parseJSON(value["rd_options_type"]);
-                    options = mergeObjects(options, {
-                        title: rd_name,
-                        type: typeLayer,
-                        content: rd_description,
-                        id: id,
-                        rd_id: rd_id,
-                        routes_drawing_id: routes_drawing_id
-                    });
-
-                    var path = [];
-                    switch (typeLayer) {
-                        case "marker":
-                            var data = value.hasOwnProperty('data') ? value["data"] : [];
-                            path = options.position;
-                            options['data'] = data;
-                            setPush = getConfigMarker({
-                                options: options,
-                                map: mapCurrentRoutes
-                            });
-
-                            break;
-                        case "polygon":
-                            path = options.paths[0];//[]
-                            options.paths = path;
-                            setPush = getConfigPolygon({
-                                options: options,
-                                map: mapCurrentRoutes
-                            });
-
-                            break;
-
-                        case "polyline":
-                            path = options.path;//[]
-                            options.path = path;
-                            setPush = getConfigPolyline({
-                                options: options,
-                                map: mapCurrentRoutes
-                            });
-
-                            break;
-                        case "rectangle":
-                            path = options.bounds;//4 points ne,sw
-                            setPush = getConfigRectangle({
-                                options: options,
-                                map: mapCurrentRoutes
-                            });
-
-                            break;
-                        case "circle":
-                            path = options.center;//lat-lng
-                            setPush = getConfigCircle({
-                                options: options,
-                                map: mapCurrentRoutes
-                            });
-                            break;
-
-                    }
-
-                    if (setPush) {
-//step 1
-                        latLngData.push({
-                            type: typeLayer,
-                            haystack: path
-                        });
-                        dataLayers.push(setPush);
-
-                        var setPushCenter = getCenterByType({
-                            obj: setPush,
-                            type: typeLayer,
-                            path: path
-                        });
-                        optionsCenter.push(setPushCenter);
-                    }
-                });
-            } else {
-                $.each(haystack, function (key, layer) {
-                    var setPush = null;
-                    var path = [];
-                    var typeLayer = layer.type;
-                    console.log('KML READ', typeLayer);
-                    if (typeLayer == "marker") {
-                        setPush = getConfigMarker({
-                            options: layer,
-                            map: mapCurrentRoutes
-                        });
-                        path = layer.position;
-
-
-                    } else if (typeLayer == "polyline") {
-                        setPush = getConfigPolyline({
-                            options: layer,
-                            map: mapCurrentRoutes
-                        });
-                        path = layer.path;
-
-                    }
-                    if (setPush) {
-//step 1
-                        latLngData.push({
-                            type: typeLayer,
-                            haystack: path
-                        });
-                        dataLayers.push(setPush);
-
-                        var setPushCenter = getCenterByType({
-                            obj: setPush,
-                            type: layer.type,
-                            path: path
-                        });
-                        optionsCenter.push(setPushCenter);
-
-                    }
-                });
-            }
-            var result = {layers: dataLayers, latLngData: latLngData, optionsCenter: optionsCenter};
-            return result;
-
-
-        }
-    </script>
-    <script src="{{ asset($resourcePathServer.'js/developers/UtilCustom.js')}}" type='text/javascript'></script>
-    <script src="{{ asset($resourcePathServer.'js/business/manager/Util.js')}}" type='text/javascript'></script>
-
-
-    <script>
-        var $dataManager = <?php echo json_encode($dataManager) ?>;
+        var $dataManager = <?php echo json_encode($dataManager)?>;
     </script>
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
@@ -1705,175 +1557,90 @@
                 const dom = this.renderer?.domElement;
                 if (!dom) return;
 
-                // Evitar registrar eventos más de una vez
+                // 🔹 Si ya se ligaron una vez para este renderer, no volver a registrar
                 if (this._gesturesBound) return;
                 this._gesturesBound = true;
 
-                // Desactivar gestos por defecto del navegador (scroll, zoom, etc.)
                 dom.style.touchAction = 'none';
 
-                // ================== ESTADO DE GESTOS ==================
-                const st = {
-                    mode: 'none',   // 'one' | 'two'
-                    lastX: 0,
-                    lastY: 0,
-                    lastDist: 0
-                };
-
-                const clampScale = (s) => THREE.MathUtils.clamp(s, 0.2, 3.0);
-
-                let raf = null;
-                let dZoom = 1;    // factor acumulado de zoom
-                let panDX = 0;    // desplazamiento acumulado X (px)
-                let panDY = 0;    // desplazamiento acumulado Y (px)
-
-                // Para detectar doble tap
-                let lastTapTime = 0;
-                let lastTapX = 0;
-                let lastTapY = 0;
-                const DOUBLE_TAP_MS = 300;
-                const DOUBLE_TAP_MAX_DIST = 25; // px
+                const st = {mode: 'none', lastX: 0, lastY: 0, lastDist: 0, lastCx: 0, lastCy: 0};
+                const ROT_S = 0.012, ZOOM_S = 0.004, clamp = (s) => THREE.MathUtils.clamp(s, 0.2, 3.0);
+                let raf = null, dRot = 0, dZoom = 1, panDX = 0, panDY = 0;
 
                 const apply = () => {
                     raf = null;
-                    if (!this.model || !this.camera) return;
-
-                    // 1) Zoom (2 dedos)
+                    if (!this.model) return;
+                    if (dRot) {
+                        this.model.rotation.y += dRot;
+                        dRot = 0;
+                    }
                     if (dZoom !== 1) {
-                        const newScale = clampScale(this.model.scale.x * dZoom);
-                        this.model.scale.setScalar(newScale);
+                        const s = clamp(this.model.scale.x * dZoom);
+                        this.model.scale.setScalar(s);
                         dZoom = 1;
                     }
-
-                    // 2) Pan (1 dedo)
                     if (panDX || panDY) {
-                        const dCam = this.camera.position.distanceTo(this.model.position);
-                        const px2m = (typeof this._pixelsToMetersAtDistance === 'function')
-                            ? this._pixelsToMetersAtDistance(Math.max(0.01, dCam))
-                            : dCam * 0.001; // fallback
-
+                        const dCam = this.camera.position.distanceTo(this.model.position),
+                            px2m = this._pixelsToMetersAtDistance(Math.max(0.01, dCam));
                         const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion);
                         const up = new THREE.Vector3(0, 1, 0).applyQuaternion(this.camera.quaternion);
-
-                        // izquierda/derecha/arriba/abajo
                         this.model.position.addScaledVector(right, panDX * px2m);
                         this.model.position.addScaledVector(up, -panDY * px2m);
-
-                        panDX = 0;
-                        panDY = 0;
+                        panDX = panDY = 0;
                     }
                 };
-
                 const queue = () => {
                     if (!raf) raf = requestAnimationFrame(apply);
                 };
 
-                const onStart = (e) => {
-                    if (!this.model) return;
-
-                    const n = e.touches.length;
-
-                    if (n === 1) {
-                        // 1 dedo → MOVER
+                const onStart = e => {
+                    if (e.touches.length === 1) {
                         st.mode = 'one';
                         st.lastX = e.touches[0].clientX;
                         st.lastY = e.touches[0].clientY;
-
-                    } else if (n === 2) {
-                        // 2 dedos → ZOOM
+                    } else if (e.touches.length >= 2) {
                         st.mode = 'two';
                         const [a, b] = e.touches;
-                        st.lastDist = Math.hypot(
-                            a.clientX - b.clientX,
-                            a.clientY - b.clientY
-                        );
-                    } else {
-                        // 3+ dedos: ignoramos (sin giros)
-                        st.mode = 'none';
+                        st.lastDist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+                        st.lastCx = (a.clientX + b.clientX) * .5;
+                        st.lastCy = (a.clientY + b.clientY) * .5;
                     }
                 };
-
-                const onMove = (e) => {
+                const onMove = e => {
                     if (!this.model) return;
-
-                    // Necesario para evitar scroll/zoom del navegador
                     e.preventDefault();
-
-                    const n = e.touches.length;
-
-                    // ===== 1 dedo: PAN =====
-                    if (st.mode === 'one' && n === 1) {
-                        const t = e.touches[0];
-                        const dx = t.clientX - st.lastX;
-                        const dy = t.clientY - st.lastY;
-
-                        panDX += dx;
-                        panDY += dy;
-
+                    if (st.mode === 'one' && e.touches.length === 1) {
+                        const t = e.touches[0], dx = t.clientX - st.lastX, dy = t.clientY - st.lastY;
+                        dRot += -dx * ROT_S;
+                        dZoom *= (1 - dy * ZOOM_S);
                         st.lastX = t.clientX;
                         st.lastY = t.clientY;
-
                         queue();
                         return;
                     }
-
-                    // ===== 2 dedos: ZOOM =====
-                    if (st.mode === 'two' && n >= 2) {
+                    if (st.mode === 'two' && e.touches.length >= 2) {
                         const [a, b] = e.touches;
-                        const dist = Math.hypot(
-                            a.clientX - b.clientX,
-                            a.clientY - b.clientY
-                        );
-
-                        const ratio = dist / Math.max(1, st.lastDist);
-                        dZoom *= ratio;
+                        const dist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+                        dZoom *= dist / Math.max(1, st.lastDist);
                         st.lastDist = dist;
-
+                        const cx = (a.clientX + b.clientX) * .5, cy = (a.clientY + b.clientY) * .5;
+                        panDX += (cx - st.lastCx);
+                        panDY += (cy - st.lastCy);
+                        st.lastCx = cx;
+                        st.lastCy = cy;
                         queue();
                         return;
                     }
                 };
-
-                const resetPose = () => {
-                    // Si tienes un método propio mejor usarlo:
-                    if (typeof this.resetModelPose === 'function') {
-                        this.resetModelPose();
-                        return;
-                    }
-
-                    // Reset genérico: ajusta a tus defaults
-                    this.model.position.set(0, 0, 0);
-                    this.model.rotation.set(0, 0, 0);
-                    this.model.scale.setScalar(1);
-                };
-
-                const onEnd = (e) => {
-                    const now = performance.now();
-
-                    // Detectar doble tap cuando se levanta el último dedo
-                    if (e.touches.length === 0 && e.changedTouches.length === 1) {
-                        const t = e.changedTouches[0];
-                        const dt = now - lastTapTime;
-                        const dist = Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY);
-
-                        if (dt < DOUBLE_TAP_MS && dist < DOUBLE_TAP_MAX_DIST) {
-                            // Doble tap → resetear modelo
-                            resetPose();
-                            lastTapTime = 0;
-                        } else {
-                            lastTapTime = now;
-                            lastTapX = t.clientX;
-                            lastTapY = t.clientY;
-                        }
-                    }
-
+                const onEnd = () => {
                     st.mode = 'none';
                 };
 
                 dom.addEventListener('touchstart', onStart, {passive: true});
-                dom.addEventListener('touchmove', onMove, {passive: false});
-                dom.addEventListener('touchend', onEnd, {passive: true});
-                dom.addEventListener('touchcancel', onEnd, {passive: true});
+                dom.addEventListener('touchmove',  onMove,  {passive: false});
+                dom.addEventListener('touchend',   onEnd,   {passive: true});
+                dom.addEventListener('touchcancel',onEnd,   {passive: true});
+
             }
 
 
@@ -1909,11 +1676,11 @@
                     zIndex: '-1'
                 });
 
-                this._snapCtx = this._snapCanvas.getContext('2d', {willReadFrequently: false});
+                this._snapCtx = this._snapCanvas.getContext('2d', { willReadFrequently: false });
 
                 const w = Math.max(innerWidth, 1);
                 const h = Math.max(innerHeight, 1);
-                this._snapCanvas.width = w;
+                this._snapCanvas.width  = w;
                 this._snapCanvas.height = h;
             }
 
@@ -1974,72 +1741,30 @@
                 return {blob, url};
             }
 
-
             async captureWithVideoTextureQuad({
                                                   facingMode = 'environment',
-                                                  type = 'image/png',   // ⬅️ PNG por defecto para no degradar color
-                                                  quality = 0.95,
-                                                  download = true,
-                                                  filename,
-                                                  includeCamera = true
+                                                  type      = 'image/jpeg',
+                                                  quality   = 0.95,
+                                                  download  = true,
+                                                  filename
                                               } = {}) {
+                // 📌 Canvas AR de referencia: mirrorRenderer (o, si no hay, el renderer principal)
                 const srcAR =
                     (this._mirrorRenderer && this._mirrorRenderer.domElement) ||
                     (this.renderer && this.renderer.domElement);
 
                 if (!srcAR) {
-                    console.warn('[captureWithVideoTextureQuad] No hay canvas AR disponible');
+                    console.warn('[captureWithVideoTextureQuad] no hay canvas AR disponible');
                     return null;
                 }
 
-                // Helper para descargar
-                const getExtension = (mimeType) => {
-                    if (mimeType === 'image/png') return 'png';
-                    if (mimeType === 'image/webp') return 'webp';
-                    return 'jpg';
-                };
-
-                const downloadBlob = (blob, prefix) => {
-                    if (!blob || !download) return;
-
-                    const ext = getExtension(type);
-                    const label = prefix || 'capture';
-                    const ts = (typeof this._timestamp === 'function')
-                        ? (this._timestamp() || Date.now())
-                        : Date.now();
-
-                    const name = filename || `${label}-${ts}.${ext}`;
-                    const url = URL.createObjectURL(blob);
-
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = name;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-
-                    setTimeout(() => URL.revokeObjectURL(url), 1000);
-                };
-
-                // Asegurar un frame fresco del AR
-                await new Promise((resolve) => requestAnimationFrame(resolve));
-
-                // ================= SOLO AR (sin cámara extra) =================
-                if (!includeCamera) {
-                    const blob = await new Promise((resolve) =>
-                        srcAR.toBlob(resolve, type, quality)
-                    );
-                    downloadBlob(blob, 'ar-only');
-                    return blob || null;
-                }
-
-                // ================= CÁMARA + AR (composite) =================
                 let stream = null;
-                let video = null;
+                let video  = null;
 
                 try {
+                    // 1) Abrimos cámara normal (NO tocamos XR)
                     stream = await navigator.mediaDevices.getUserMedia({
-                        video: {facingMode, width: 1280, height: 720},
+                        video: { facingMode, width: 1280, height: 720 },
                         audio: false
                     });
 
@@ -2048,7 +1773,6 @@
                     video.muted = true;
                     video.autoplay = true;
                     video.srcObject = stream;
-
                     Object.assign(video.style, {
                         position: 'fixed',
                         width: '1px',
@@ -2059,103 +1783,215 @@
                         left: '0',
                         top: '0'
                     });
-
                     document.body.appendChild(video);
 
-                    // Esperar metadata
-                    await new Promise((resolve, reject) => {
-                        const onLoadedMetadata = () => {
-                            cleanup();
-                            resolve();
-                        };
-                        const onError = (e) => {
-                            cleanup();
-                            reject(e);
-                        };
+                    // Esperar a que tenga tamaño real
+                    await new Promise((res, rej) => {
+                        const onMeta = () => { cleanup(); res(); };
+                        const onErr  = (e) => { cleanup(); rej(e); };
                         const cleanup = () => {
-                            video.removeEventListener('loadedmetadata', onLoadedMetadata);
-                            video.removeEventListener('error', onError);
+                            video.removeEventListener('loadedmetadata', onMeta);
+                            video.removeEventListener('error', onErr);
                         };
-                        video.addEventListener('loadedmetadata', onLoadedMetadata, {once: true});
-                        video.addEventListener('error', onError, {once: true});
+                        video.addEventListener('loadedmetadata', onMeta, { once: true });
+                        video.addEventListener('error', onErr, { once: true });
                     });
 
-                    try {
-                        await video.play();
-                    } catch (_) {
-                    }
-                    await new Promise((resolve) => setTimeout(resolve, 120));
-                    await new Promise((resolve) => requestAnimationFrame(resolve));
+                    try { await video.play(); } catch {}
+                    await new Promise(r => setTimeout(r, 120));
 
-                    const targetWidth = Math.max(1, srcAR.width);
-                    const targetHeight = Math.max(1, srcAR.height);
+                    // Aseguramos un frame fresco de XR → mirrorRenderer actualizado
+                    await new Promise(r => requestAnimationFrame(r));
 
-                    // ⬅️ Intentamos forzar sRGB cuando el navegador lo soporte
-                    const compositeCanvas = document.createElement('canvas');
-                    compositeCanvas.width = targetWidth;
-                    compositeCanvas.height = targetHeight;
+                    // 2) Tamaño final = tamaño del canvas AR (escala del teléfono)
+                    const vw = Math.max(1, srcAR.width);
+                    const vh = Math.max(1, srcAR.height);
 
-                    const ctx = compositeCanvas.getContext('2d', {
-                        willReadFrequently: false,
-                        colorSpace: 'srgb'
-                    }) || compositeCanvas.getContext('2d');
+                    const cnv = document.createElement('canvas');
+                    cnv.width  = vw;
+                    cnv.height = vh;
+                    const ctx = cnv.getContext('2d', { willReadFrequently: false });
 
-                    const videoWidth = video.videoWidth || 1280;
-                    const videoHeight = video.videoHeight || 720;
+                    const vW = video.videoWidth  || 1280;
+                    const vH = video.videoHeight || 720;
 
-                    const videoAspect = videoWidth / videoHeight;
-                    const canvasAspect = targetWidth / targetHeight;
-
+                    // 3) Dibujar cámara con efecto "cover" (sin deformar)
+                    const videoAspect  = vW / vH;
+                    const canvasAspect = vw / vh;
                     let sx, sy, sWidth, sHeight;
 
                     if (videoAspect > canvasAspect) {
-                        sHeight = videoHeight;
-                        sWidth = sHeight * canvasAspect;
-                        sx = (videoWidth - sWidth) / 2;
-                        sy = 0;
+                        // Video más ancho → recorta lados
+                        sHeight = vH;
+                        sWidth  = sHeight * canvasAspect;
+                        sx      = (vW - sWidth) / 2;
+                        sy      = 0;
                     } else {
-                        sWidth = videoWidth;
+                        // Video más alto → recorta arriba/abajo
+                        sWidth  = vW;
                         sHeight = sWidth / canvasAspect;
-                        sx = 0;
-                        sy = (videoHeight - sHeight) / 2;
+                        sx      = 0;
+                        sy      = (vH - sHeight) / 2;
                     }
 
-                    // 1) Fondo: cámara (suave, con suavizado)
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
-                    ctx.filter = 'none';
                     ctx.drawImage(
                         video,
                         sx, sy, sWidth, sHeight,
-                        0, 0, targetWidth, targetHeight
+                        0, 0, vw, vh
                     );
 
-                    // 2) AR encima 1:1, con un ligero ajuste para bajar saturación/brillo
-                    //    (ajústalo si lo ves necesario: p.ej. 'saturate(0.9) brightness(0.95)')
+                    // 4) Dibujar el AR encima 1:1 (modelo nítido, SIN reescalar)
                     ctx.imageSmoothingEnabled = false;
-                    ctx.filter = 'saturate(0.9) brightness(0.97)';
-                    ctx.drawImage(srcAR, 0, 0, targetWidth, targetHeight);
-                    ctx.filter = 'none';
+                    ctx.drawImage(srcAR, 0, 0, vw, vh);
 
-                    const blob = await new Promise((resolve) =>
-                        compositeCanvas.toBlob(resolve, type, quality)
+                    await new Promise(r => requestAnimationFrame(r));
+
+                    // 5) Exportar a blob con la calidad indicada
+                    const blob = await new Promise(res =>
+                        cnv.toBlob(res, type, quality)
                     );
 
-                    downloadBlob(blob, 'ar-composite');
+                    if (blob && download) {
+                        const ext = type === 'image/png' ? 'png'
+                            : (type === 'image/webp' ? 'webp' : 'jpg');
+                        const name = filename || `ar-composite-${this._timestamp() || Date.now()}.${ext}`;
+                        const url  = URL.createObjectURL(blob);
+                        const a    = document.createElement('a');
+                        a.href = url;
+                        a.download = name;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    }
+
                     return blob || null;
 
-                } catch (error) {
-                    console.error('[captureWithVideoTextureQuad] error', error);
+                } catch (e) {
+                    console.error('[captureWithVideoTextureQuad] error', e);
                     return null;
 
                 } finally {
+                    // 6) Cerrar SOLO la cámara temporal (XR se queda intacto)
                     try {
-                        stream?.getTracks()?.forEach(track => track.stop());
-                    } catch (_) {
+                        stream?.getTracks()?.forEach(t => t.stop());
+                    } catch {}
+                    if (video?.parentNode) video.parentNode.removeChild(video);
+                }
+            }
+
+
+            async captureWithVideoTextureQuad2({
+                                                  facingMode = 'environment',
+                                                  type = 'image/jpeg',
+                                                  quality = 0.95,
+                                                  download = true,
+                                                  filename
+                                              } = {}) {
+                // 🔹 Necesitamos que el mirrorRenderer esté listo
+                if (!this._mirrorRenderer) {
+                    console.warn('[captureWithVideoTextureQuad] mirrorRenderer no disponible');
+                    return null;
+                }
+
+                let stream = null;
+                let video  = null;
+
+                try {
+                    // 1) Abrimos cámara normal (NO tocamos XR)
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode, width: 1280, height: 720 },
+                        audio: false
+                    });
+
+                    video = document.createElement('video');
+                    video.playsInline = true;
+                    video.muted = true;
+                    video.autoplay = true;
+                    video.srcObject = stream;
+                    Object.assign(video.style, {
+                        position: 'fixed',
+                        width: '1px',
+                        height: '1px',
+                        opacity: '0',
+                        pointerEvents: 'none',
+                        zIndex: '-1',
+                        left: '0',
+                        top: '0'
+                    });
+                    document.body.appendChild(video);
+
+                    // Esperamos a que tenga medidas
+                    await new Promise((res, rej) => {
+                        const onMeta = () => { cleanup(); res(); };
+                        const onErr  = (e) => { cleanup(); rej(e); };
+                        const cleanup = () => {
+                            video.removeEventListener('loadedmetadata', onMeta);
+                            video.removeEventListener('error', onErr);
+                        };
+                        video.addEventListener('loadedmetadata', onMeta, { once: true });
+                        video.addEventListener('error', onErr, { once: true });
+                    });
+
+                    try { await video.play(); } catch {}
+                    await new Promise(r => setTimeout(r, 120));
+
+                    // 2) Aseguramos al menos un frame más de XR → mirrorRenderer actualizado
+                    await new Promise(r => requestAnimationFrame(r));
+
+                    const bgCanvas = this._mirrorRenderer.domElement;
+                    const vw = Math.max(1, video.videoWidth  || bgCanvas.width  || 1280);
+                    const vh = Math.max(1, video.videoHeight || bgCanvas.height || 720);
+
+                    // 3) Canvas temporal para componer: cámara + AR (mirrorRenderer)
+                    const cnv = document.createElement('canvas');
+                    cnv.width  = vw;
+                    cnv.height = vh;
+                    const ctx = cnv.getContext('2d', { willReadFrequently: false });
+
+                    // Fondo: frame de cámara
+                    ctx.drawImage(video, 0, 0, vw, vh);
+
+                    // Encima: AR (mirrorRenderer), escalado al mismo tamaño
+                    const srcAR = bgCanvas;
+                    if (srcAR && srcAR.width && srcAR.height) {
+                        ctx.drawImage(srcAR, 0, 0, vw, vh);
                     }
-                    if (video?.parentNode) {
-                        video.parentNode.removeChild(video);
+
+                    await new Promise(r => requestAnimationFrame(r));
+
+                    const blob = await new Promise(res =>
+                        cnv.toBlob(res, type, quality)
+                    );
+
+                    if (blob && download) {
+                        const ext = type === 'image/png' ? 'png'
+                            : (type === 'image/webp' ? 'webp' : 'jpg');
+                        const name = filename || `ar-composite-${this._timestamp() || Date.now()}.${ext}`;
+                        const url  = URL.createObjectURL(blob);
+                        const a    = document.createElement('a');
+                        a.href = url;
+                        a.download = name;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        setTimeout(() => URL.revokeObjectURL(url), 1000);
                     }
+
+                    return blob || null;
+
+                } catch (e) {
+                    console.error('[captureWithVideoTextureQuad] error', e);
+                    return null;
+
+                } finally {
+                    // 🔹 Cerrar solo la cámara temporal
+                    try {
+                        stream?.getTracks()?.forEach(t => t.stop());
+                    } catch {}
+                    if (video?.parentNode) video.parentNode.removeChild(video);
                 }
             }
 
@@ -2168,8 +2004,7 @@
                     if (this.model && this.camera) {
                         prevDist = this.camera.position.distanceTo(this.model.position);
                     }
-                } catch {
-                }
+                } catch {}
 
                 // 1) Volver a crear la sesión XR
                 await this._resumeXRSessionInternal();
@@ -2192,8 +2027,7 @@
                             this.camera.position.z
                         );
                         if (!this.model.parent) this.scene.add(this.model);
-                    } catch {
-                    }
+                    } catch {}
                 }
 
                 // 3) Si YA había modelo, no queremos que se active el flow de "primer frame"
@@ -2202,8 +2036,7 @@
                     this._firstFrameSeen = true;
                     try {
                         this._firstFrameResolve && this._firstFrameResolve();
-                    } catch {
-                    }
+                    } catch {}
 
                     // Aseguramos que la UI quede en modo "modelo ya colocado"
                     UI.hideReticle();
@@ -2216,13 +2049,12 @@
             async _resumeXRSessionInternal() {
                 try {
                     this.renderer?.setAnimationLoop(null);
-                } catch {
-                }
+                } catch {}
 
                 this.session = await navigator.xr.requestSession('immersive-ar', {
                     requiredFeatures: ['local'],
                     optionalFeatures: ['dom-overlay', 'light-estimation'],
-                    domOverlay: {root: document.body}
+                    domOverlay: { root: document.body }
                 });
 
                 this.renderer.xr.enabled = true;
@@ -2230,11 +2062,11 @@
                 await this.renderer.xr.setSession(this.session);
                 this._refSpace = this.renderer.xr.getReferenceSpace();
 
-                this._onEnd = () => this.hooks.onExit && this.hooks.onExit({reason: 'session-end'});
+                this._onEnd = () => this.hooks.onExit && this.hooks.onExit({ reason: 'session-end' });
                 this._onVis = () => {
                     const s = this.session?.visibilityState;
                     if (s === 'hidden' || s === 'visible-blurred') {
-                        this.hooks.onExit && this.hooks.onExit({reason: 'visibility', state: s});
+                        this.hooks.onExit && this.hooks.onExit({ reason: 'visibility', state: s });
                     }
                 };
                 this.session.addEventListener('end', this._onEnd);
@@ -2243,10 +2075,9 @@
                 this._lightProbe = null;
                 try {
                     if (this.session.requestLightProbe) {
-                        this._lightProbe = await this.session.requestLightProbe({type: 'spherical-harmonics'});
+                        this._lightProbe = await this.session.requestLightProbe({ type: 'spherical-harmonics' });
                     }
-                } catch {
-                }
+                } catch {}
 
                 this.renderer.setAnimationLoop(this._loop);
 
@@ -2462,28 +2293,18 @@
             async onCaptureGpu() {
                 const st = this._state;
                 const ctrl = st.controller;
-
                 if (!ctrl || typeof ctrl.captureWithVideoTextureQuad !== 'function') {
                     UI.setHint('No hay sesión AR activa.');
                     return;
                 }
-
                 UI.setHint('Capturando…');
-
-                try {
-                    const blob = await ctrl.captureWithVideoTextureQuad({
-                        facingMode: 'environment',
-                        type: 'image/jpeg',
-                        quality: 0.95,
-                        download: true,
-                        includeCamera: true // cámara + AR
-                    });
-
-                    UI.setHint(blob ? 'Captura guardada.' : 'No se pudo capturar.');
-                } catch (error) {
-                    console.error('[onCaptureGpu] Error al capturar', error);
-                    UI.setHint('Ocurrió un error al capturar.');
-                }
+                const blob = await ctrl.captureWithVideoTextureQuad({
+                    facingMode: 'environment',
+                    type: 'image/jpeg',
+                    quality: 0.95,
+                    download: true
+                });
+                UI.setHint(blob ? 'Captura guardada.' : 'No se pudo capturar.');
             }
 
             async captureScreenFrame({
@@ -3590,7 +3411,7 @@
 
             UI.$capture?.addEventListener('click', async () => {
                 console.log("Captura pantalla");
-                // await window.Viewer.captureScreenFrame();
+               // await window.Viewer.captureScreenFrame();
                 // Otras opciones:
                 // await window.Viewer.captureCameraPlusModelAndSave();
                 await window.Viewer.onCaptureGpu();
@@ -3618,18 +3439,19 @@
 
                 if (isExpanded) {
                     // Volver a descripción corta
-                    //  companyDescriptionEl.textContent = short;
+                  //  companyDescriptionEl.textContent = short;
                     btnMoreInfo.textContent = 'Ver más';
                     btnMoreInfo.dataset.expanded = 'false';
                 } else {
                     // Mostrar descripción completa
-                    //    companyDescriptionEl.textContent = full;
+                //    companyDescriptionEl.textContent = full;
                     btnMoreInfo.textContent = 'Ver menos';
                     btnMoreInfo.dataset.expanded = 'true';
                 }
             });
             btnMoreInfo.click();
         });
+
 
 
     </script>
@@ -3682,8 +3504,7 @@
     <div class="company-panel" id="companyPanel">
         <div class="company-panel__header view-toogle-company">
             <div class="company-panel__logo">
-                <img src="https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png"
-                     alt="Logo Empresa"/>
+                <img src="https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png" alt="Logo Empresa" />
             </div>
             <div class="company-panel__title view-toogle-company">
                 <h2 id="companyName">Muelle Catalina.</h2>
@@ -3697,18 +3518,13 @@
                 <h3 class="color-primary--title">Descripción</h3>
                 <p id="companyDescription">
                     ✨ Una bienvenida mágica
-                    Desde el momento en que llegas al Muelle Catalina, la energía cambia. 🌬️ El sol se refleja en el
-                    agua, las aves vuelan cerca y los niños ríen con emoción. “¡Mira, un pato!” 🦆 — “¡Es un pez!” 🐟.
-                    Todos con chalecos coloridos, explorando con entusiasmo.
+                    Desde el momento en que llegas al Muelle Catalina, la energía cambia. 🌬️ El sol se refleja en el agua, las aves vuelan cerca y los niños ríen con emoción. “¡Mira, un pato!” 🦆 — “¡Es un pez!” 🐟. Todos con chalecos coloridos, explorando con entusiasmo.
 
                     🛳️ El barco de dos pisos
-                    Subimos a bordo. Espacioso, elegante y seguro. En el primer piso conversas o te relajas. En el
-                    segundo, disfrutas de una vista panorámica espectacular. 📸 Jóvenes graban TikToks, otros simplemente
-                    contemplan en silencio. 🎧🧘‍♂️
+                    Subimos a bordo. Espacioso, elegante y seguro. En el primer piso conversas o te relajas. En el segundo, disfrutas de una vista panorámica espectacular. 📸 Jóvenes graban TikToks, otros simplemente contemplan en silencio. 🎧🧘‍♂️
 
                     💙 Momentos inolvidables
-                    Hay parejas abrazadas, adultos leyendo, tomando mate 🍵 o respirando paz. El capitán a veces apaga el
-                    motor... y solo flotas. Ese instante es mágico. 🌌 Silencio. Solo el corazón de la laguna habla. 🫶
+                    Hay parejas abrazadas, adultos leyendo, tomando mate 🍵 o respirando paz. El capitán a veces apaga el motor... y solo flotas. Ese instante es mágico. 🌌 Silencio. Solo el corazón de la laguna habla. 🫶
                 </p>
                 <button class="link-button" id="btnMoreInfo">Ver perfil completo</button>
             </div>
@@ -3717,23 +3533,18 @@
                 <h3 class="color-primary--title">Contacto</h3>
                 <div class="contact-list">
                     <a class="color-secondary--title" id="companyEmail" href="mailto:info@empresa.com">📧 Email</a>
-                    <a class="color-secondary--title" id="companyWhatsapp" href="https://wa.me/593985339457"
-                       target="_blank">💬 WhatsApp</a>
-                    <a class="color-secondary--title" id="companyWebsite"
-                       href="https://meetclic.com/es/businessDetails/Muelle%20Catalina" target="_blank">🌐 Sitio web</a>
+                    <a class="color-secondary--title"  id="companyWhatsapp" href="https://wa.me/593985339457" target="_blank">💬 WhatsApp</a>
+                    <a class="color-secondary--title"  id="companyWebsite" href="https://meetclic.com/es/businessDetails/Muelle%20Catalina" target="_blank">🌐 Sitio web</a>
                     <div class="social-icons">
-                        <a class="color-secondary--title" id="companyInstagram" href="https://instagram.com/empresa"
-                           target="_blank">IG</a>
-                        <a class="color-secondary--title" id="companyFacebook" href="https://facebook.com/empresa"
-                           target="_blank">FB</a>
-                        <a class="color-secondary--title" id="companyTiktok" href="https://tiktok.com/@empresa"
-                           target="_blank">TT</a>
+                        <a class="color-secondary--title"  id="companyInstagram" href="https://instagram.com/empresa" target="_blank">IG</a>
+                        <a class="color-secondary--title"  id="companyFacebook" href="https://facebook.com/empresa" target="_blank">FB</a>
+                        <a class="color-secondary--title"  id="companyTiktok" href="https://tiktok.com/@empresa" target="_blank">TT</a>
                     </div>
                 </div>
             </div>
 
             <div class="company-panel__section">
-                <h3 class="color-primary--title">Actividad en este mapa</h3>
+                <h3 class="color-primary--title" >Actividad en este mapa</h3>
                 <div class="stats">
                     <div class="stat">
                         <span class="stat__label">Tótems turísticos</span>

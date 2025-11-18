@@ -362,12 +362,7 @@ function addRowBootgrid(element_obj, $row) {
     element_obj.bootgrid("append", [$row]);
 }
 
-function mergeObjects(obj, src) {
-    Object.keys(src).forEach(function (key) {
-        obj[key] = src[key];
-    });
-    return obj;
-}
+
 
 function _gridManager(elementSelect) {
     var vmCurrent = this;
