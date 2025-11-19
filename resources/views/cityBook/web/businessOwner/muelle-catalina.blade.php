@@ -738,6 +738,9 @@
         .color-secondary--title {
             color: #ffc700 !important;
         }
+        div#companyDescription {
+            color: #929290;
+        }
     </style>
     <link
         rel="stylesheet"
@@ -748,11 +751,17 @@
 @endsection
 
 @section('additional-scripts')
+    <script src="{{ asset($resourcePathServer.'js/developers/UtilCustom.js')}}" type='text/javascript'></script>
+
+    <script>
+        var $dataManager = <?php echo json_encode($dataManager) ?>;
+    </script>
     <script>
 
         /* ============================================================================
          * Datos de ejemplo: itemsSources
          * ========================================================================== */
+
         let itemsSources = [
             {
                 id: "taita",
@@ -854,6 +863,41 @@
                 }
             }
         ];
+        console.log($dataManager)
+        if ($dataManager.allow) {
+            let dataItemsMap =
+                getStructureRouteMap({
+                    map: "",
+                    haystack: $dataManager.dataRoute.routes_drawing_data,
+                    typeGetData: true
+                });
+            let haystack = dataItemsMap.layers;
+            let itemsSourcesAux = [];
+            $.each(haystack, function (key, value) {
+                if (value.type == "marker") {
+                    let sources = {glb: null, img: null};
+                    if (typeof value.dataSource.src_glb !== 'undefined') {
+                        sources.glb = value["dataSource"].src_glb;
+                    }
+                    sources.img = value["dataSource"].src;
+                    let setPush = {
+                        id: value.id,
+                        title: value.title,
+                        subtitle: value.subtitle,
+                        description: value.content,
+                        position: value.position,
+                        sources: sources
+                    };
+                    itemsSourcesAux.push(setPush);
+                }
+            });
+            console.log("DOMContentLoaded (jQuery ready)");
+            if (itemsSourcesAux.length > 0) {
+                itemsSources = [];
+                itemsSources = itemsSourcesAux;
+
+            }
+        }
 
         function getStructureRouteMap(params) {
             var latLngData = [];
@@ -1008,12 +1052,8 @@
 
         }
     </script>
-    <script src="{{ asset($resourcePathServer.'js/developers/UtilCustom.js')}}" type='text/javascript'></script>
 
 
-    <script>
-        var $dataManager = <?php echo json_encode($dataManager) ?>;
-    </script>
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -3032,11 +3072,11 @@
             }
 
             _popupHTML(item) {
-                console.log("_popupHTML",item);
-                let clasViewGLB="not-view";
-                let allowViewGLB=!(item.glb==null);
-                if(allowViewGLB){
-                    clasViewGLB="";
+                console.log("_popupHTML", item);
+                let clasViewGLB = "not-view";
+                let allowViewGLB = !(item.sources.glb == null);
+                if (allowViewGLB) {
+                    clasViewGLB = "";
                 }
                 return `
 <article class="popup-card" data-popup-id="${item.id}">
@@ -3079,6 +3119,7 @@
                 }
 
                 const onClick = (ev) => {
+                    console.log("onClick");
                     const btn = ev.target.closest('[data-action="view3d"]');
                     if (!btn) return;
                     ev.preventDefault();
@@ -3392,7 +3433,7 @@
             }
 
             function getItemById(id) {
-                return _items.find(i => i.id === id) || null;
+                return _items.find(i => i.id == id) || null;
             }
 
             function updateItem(id, patch) {
@@ -3526,7 +3567,7 @@
          * initPreCache
          * ========================================================================== */
         function initPreCache(params) {
-            ItemsStore.setItems(itemsSources);
+
 
             const MAP_CONFIG = Object.freeze({
                 zoom: 14, maxZoom: 25,
@@ -3592,7 +3633,7 @@
          * ========================================================================== */
         let itemsSourcesAux = [];
         $(function () {
-
+                ItemsStore.setItems(itemsSources);
                 /*   itemsSources = [
                        {
                            id: "taita",
@@ -3607,40 +3648,7 @@
                        },
                    */
 
-                if ($dataManager.allow) {
-                    let dataItemsMap =
-                        getStructureRouteMap({
-                            map: "",
-                            haystack: $dataManager.dataRoute.routes_drawing_data,
-                            typeGetData: true
-                        });
-                    let haystack = dataItemsMap.layers;
-                    let itemsSourcesAux = [];
-                    $.each(haystack, function (key, value) {
-                        if (value.type == "marker") {
-                            let sources = {glb: null, img: null};
-                            if (typeof value.src_glb !== 'undefined') {
-                                sources.glb = value["dataSource"].src_glb;
-                            }
-                            sources.img = value["dataSource"].src;
-                            let setPush = {
-                                id: value.id,
-                                title: value.title,
-                                subtitle: value.subtitle,
-                                description: value.content,
-                                position: value.position,
-                                sources: sources
-                            };
-                            itemsSourcesAux.push(setPush);
-                        }
-                    });
-                    console.log("DOMContentLoaded (jQuery ready)");
-                    if (itemsSourcesAux.length > 0) {
-                        itemsSources = [];
-                        itemsSources = itemsSourcesAux;
 
-                    }
-                }
                 UI.bind();
                 window.Viewer = new ViewerOrchestrator();
                 const mapCtl = new MapController({});
@@ -3665,7 +3673,7 @@
                 const companyPanel = document.getElementById('companyPanel');
                 const companyPanelToggle = document.querySelector('.company-panel__toggle');
 
-                companyPanelToggle.addEventListener('click', () => {
+                companyPanel.addEventListener('click', () => {
                     companyPanel.classList.toggle('company-panel--collapsed');
                     const body = companyPanel.querySelector('.company-panel__body');
                     if (companyPanel.classList.contains('company-panel--collapsed')) {
@@ -3742,53 +3750,90 @@
         <div class="reticle__dot"></div>
         <div class="reticle__hint">Toca la retícula para colocar</div>
     </div>
+    <?php
 
-    <!-- Mapa -->
+    $companyTagline = "Turismo · Deportes · Geología";
+    $hrefCurrent="https://meetclic.com/es/businessDetails/Muelle%20Catalina";
+    $titleChaquiñan="Vive la Vida";
+    $descriptinoChaquiñan="La Ruta Sagrada del Muelle Catalina es un recorrido temático, turístico y cultural que conecta los puntos más emblemáticos del territorio de Imbabura. En esta travesía, viajeros y familias se acercan a los espíritus protectores de la laguna y las montañas, descubriendo paisajes ancestrales, actividades deportivas, historias vivas y experiencias de contacto con la naturaleza.\r\n\r\nLa ruta integra montañismo, senderismo, fotografía, historia, espiritualidad andina y observación paisajística, guiando a los visitantes desde la serenidad del Muelle Catalina hasta la grandeza de Taita Imbabura, la magia de las lagunas y la fuerza ceremonial del Lechero.\r\n\r\nEs una experiencia diseñada para educar, inspirar y conectar, ideal para turistas, deportistas, familias y estudiantes.";
+
+    if ($dataManager["allow"]) {
+        $titleChaquiñan=$dataManager["dataRoute"]["information"]["name"];
+        $descriptinoChaquiñan=$dataManager["dataRoute"]["information"]["description"];
+
+        $companyTagline = "";
+        $tags = [];
+        $hrefCurrent="https://meetclic.com/es/businessDetails/".$dataManager["business"]["business"][0]["business_name"];
+        foreach ($dataManager["dataRoute"]["adventure_type_data"] as $name => $value) {
+            $tags[] = $value->adventure_adventure_type_text;
+
+        }
+        if (!empty($tags)) {
+            $companyTagline = implode(' · ', $tags);
+        }
+    }
+
+    ?>
+        <!-- Mapa -->
     <div id="map" class="map"></div>
     <canvas id="snap-canvas" class="snap-canvas d-none"></canvas>
     <!-- Panel flotante de empresa -->
     <div class="company-panel" id="companyPanel">
         <div class="company-panel__header view-toogle-company">
             <div class="company-panel__logo">
-                <img src="https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png"
-                     alt="Logo Empresa"/>
+                <img
+                    src="{{$dataManager["allow"]? URL::asset($resourcePathServer.$dataManager["business"]["business"][0]["source"]):'https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png'}}"
+                    alt="Logo Empresa"/>
             </div>
             <div class="company-panel__title view-toogle-company">
-                <h2 id="companyName">Muelle Catalina.</h2>
-                <span id="companyTagline">Turismo · Deportes · Geología</span>
+                <h2 id="companyName">{{$dataManager["allow"]? $dataManager["business"]["business"][0]["business_name"]:'Muelle Catalina.'}}</h2>
+                <span id="companyTagline">{{$companyTagline}}</span>
             </div>
             <button class="company-panel__toggle view-toogle-company" id="companyPanelToggle">⟩</button>
         </div>
 
         <div class="company-panel__body">
             <div class="company-panel__section">
+                <div class="company-panel__section">
+                    <h3 class="color-primary--title">{{$titleChaquiñan}}</h3>
+
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat__label">Tótems turísticos</span>
+                            <span class="stat__value" id="statTourism">5</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__label">Tótems deportivos</span>
+                            <span class="stat__value" id="statSports">2</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__label">Tótems geológicos</span>
+                            <span class="stat__value" id="statGeo">3</span>
+                        </div>
+                    </div>
+
+                </div>
                 <h3 class="color-primary--title">Descripción</h3>
-                <p id="companyDescription">
-                    ✨ Una bienvenida mágica
-                    Desde el momento en que llegas al Muelle Catalina, la energía cambia. 🌬️ El sol se refleja en el
-                    agua, las aves vuelan cerca y los niños ríen con emoción. “¡Mira, un pato!” 🦆 — “¡Es un pez!” 🐟.
-                    Todos con chalecos coloridos, explorando con entusiasmo.
-
-                    🛳️ El barco de dos pisos
-                    Subimos a bordo. Espacioso, elegante y seguro. En el primer piso conversas o te relajas. En el
-                    segundo, disfrutas de una vista panorámica espectacular. 📸 Jóvenes graban TikToks, otros simplemente
-                    contemplan en silencio. 🎧🧘‍♂️
-
-                    💙 Momentos inolvidables
-                    Hay parejas abrazadas, adultos leyendo, tomando mate 🍵 o respirando paz. El capitán a veces apaga el
-                    motor... y solo flotas. Ese instante es mágico. 🌌 Silencio. Solo el corazón de la laguna habla. 🫶
-                </p>
-                <button class="link-button" id="btnMoreInfo">Ver perfil completo</button>
+                @if(!$dataManager["allow"])
+                    <p id="companyDescription">
+{{$descriptinoChaquiñan}}
+                    </p>
+                @else
+                    <div id="companyDescription">
+                        {!! $descriptinoChaquiñan !!}
+                    </div>
+                @endif
+                <button class="link-button not-view" id="btnMoreInfo">Ver perfil completo</button>
             </div>
 
             <div class="company-panel__section">
-                <h3 class="color-primary--title">Contacto</h3>
+                <h3 class="color-primary--title">Contactanos</h3>
                 <div class="contact-list">
                     <a class="color-secondary--title" id="companyEmail" href="mailto:info@empresa.com">📧 Email</a>
                     <a class="color-secondary--title" id="companyWhatsapp" href="https://wa.me/593985339457"
                        target="_blank">💬 WhatsApp</a>
                     <a class="color-secondary--title" id="companyWebsite"
-                       href="https://meetclic.com/es/businessDetails/Muelle%20Catalina" target="_blank">🌐 Sitio web</a>
+                       href="{{$hrefCurrent}}" target="_blank">🌐 Sitio web</a>
                     <div class="social-icons">
                         <a class="color-secondary--title" id="companyInstagram" href="https://instagram.com/empresa"
                            target="_blank">IG</a>
@@ -3800,33 +3845,6 @@
                 </div>
             </div>
 
-            <div class="company-panel__section">
-                <h3 class="color-primary--title">Actividad en este mapa</h3>
-                <div class="stats">
-                    <div class="stat">
-                        <span class="stat__label">Tótems turísticos</span>
-                        <span class="stat__value" id="statTourism">5</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat__label">Tótems deportivos</span>
-                        <span class="stat__value" id="statSports">2</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat__label">Tótems geológicos</span>
-                        <span class="stat__value" id="statGeo">3</span>
-                    </div>
-                </div>
-                <ul class="totems-list" id="totemsList">
-                    <!-- Se llena dinámicamente -->
-                </ul>
-            </div>
-
-            <div class="company-panel__section" id="selectedTotemSection" style="display:none;">
-                <h3>Tótem seleccionado</h3>
-                <p><strong id="totemName">Nombre del tótem</strong></p>
-                <p id="totemDescription">Descripción corta del tótem seleccionado.</p>
-                <button class="primary-button" id="btnViewTotem">Ver detalles del tótem</button>
-            </div>
         </div>
     </div>
 @endsection
