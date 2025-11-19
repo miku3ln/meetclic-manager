@@ -1867,7 +1867,7 @@ function getEditorContent(overlay) {
     return content;
 }
 
-function getLayersMap(params) {
+function getLayersMap(params) {//TODO CHASQUI-MANAGEMENT
     var haystack = params.haystack;
     var result = [];
     for (var i = 0; i < haystack.length; i++) {
@@ -1982,6 +1982,11 @@ function getLayersMap(params) {
                 lat: mapOverlays[i].getPosition().lat(),
                 lng: mapOverlays[i].getPosition().lng()
             };
+
+            tmpOverlay.file_glb = mapOverlays[i].file_glb;//TODO CHASQUI-MANAGEMENT
+            tmpOverlay.file_src = mapOverlays[i].file_src;
+            tmpOverlay.subtitle = mapOverlays[i].subtitle;
+
         }
         result.push(tmpOverlay);
     }

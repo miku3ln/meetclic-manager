@@ -738,9 +738,12 @@
         .color-secondary--title {
             color: #ffc700 !important;
         }
+
         div#companyDescription {
             color: #929290;
         }
+
+
     </style>
     <link
         rel="stylesheet"
@@ -748,6 +751,273 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin=""
     />
+
+    <style>
+        :root {
+            --mc-azul-clic: #4C4CFF;
+            --mc-amarillo-vital: #FFCC00;
+            --mc-blanco: #FFFFFF;
+            --mc-gris-oscuro: #2C2C2C;
+            --mc-morado-suave: #5C5CFF;
+            --mc-border-radius: 20px;
+            --mc-shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --mc-spacing: 1rem;
+        }
+
+        /* =============================
+         * BLOQUE PRINCIPAL
+         * ============================= */
+        .company-panel {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1050; /* sobre el mapa */
+            background-color: var(--mc-blanco);
+            box-shadow: var(--mc-shadow-soft);
+            border-radius: 18px 18px 0 0;
+            padding: 0.75rem 1rem 1rem;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+
+        /* Estado colapsado / expandido (para JS) */
+        .company-panel--collapsed .company-panel__body {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .company-panel--expanded .company-panel__body {
+            max-height: 60vh;
+            opacity: 1;
+        }
+
+        /* Scroll interno cuando hay mucho contenido */
+        .company-panel__body {
+            margin-top: 0.75rem;
+            overflow-y: auto;
+            transition: max-height 0.25s ease, opacity 0.2s ease;
+        }
+
+        /* =============================
+         * HEADER
+         * ============================= */
+        .company-panel__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .company-panel__header--clickable {
+            cursor: pointer;
+        }
+
+        .company-panel__logo {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+
+        .company-panel__logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .company-panel__title {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .company-panel__name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--mc-azul-clic);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .company-panel__tagline {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--mc-morado-suave);
+        }
+
+        /* Botón toggle */
+        .company-panel__toggle {
+            border: none;
+            background: var(--mc-blanco);
+            color: var(--mc-azul-clic);
+            font-size: 1.2rem;
+            line-height: 1;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            box-shadow: 0 0 0 1px rgba(76, 76, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.15s ease;
+        }
+
+        .company-panel__toggle:hover {
+            background-color: rgba(76, 76, 255, 0.06);
+        }
+
+        .company-panel--collapsed .company-panel__toggle {
+            transform: rotate(180deg);
+        }
+
+        /* =============================
+         * SECTIONS
+         * ============================= */
+        .company-panel__section {
+            padding-block: 0.5rem;
+        }
+
+        .company-panel__section + .company-panel__section {
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            margin-top: 0.5rem;
+        }
+
+        /* Título interno (Descripción / Contactos) */
+        .company-panel__subtitle {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.35rem;
+        }
+
+        /* =============================
+         * STATS (Tótems)
+         * ============================= */
+        .company-panel__stats {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-panel__stat {
+            flex: 1;
+            background-color: #f8f8ff;
+            border-radius: 12px;
+            padding: 0.5rem 0.6rem;
+            text-align: center;
+        }
+
+        .company-panel__stat-label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--mc-gris-oscuro);
+        }
+
+        .company-panel__stat-value {
+            display: block;
+            margin-top: 0.1rem;
+            font-weight: 700;
+            color: var(--mc-azul-clic);
+        }
+
+        /* =============================
+         * DESCRIPCIÓN
+         * ============================= */
+        .company-panel__description {
+            font-size: 0.8rem;
+            line-height: 1.45;
+            color: var(--mc-gris-oscuro);
+            max-height: 8rem;
+            overflow: hidden;
+        }
+
+        /* link "Ver perfil completo" */
+        .company-panel__more-link {
+            margin-top: 0.4rem;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: var(--mc-azul-clic);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* =============================
+         * CONTACTOS
+         * ============================= */
+        .company-panel__contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .company-panel__contact-link {
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: var(--mc-azul-clic);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .company-panel__contact-link:hover {
+            text-decoration: underline;
+        }
+
+        .company-panel__social {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
+        }
+
+        .company-panel__social-link {
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            background-color: rgba(255, 204, 0, 0.1);
+            border: 1px solid rgba(255, 204, 0, 0.6);
+            text-decoration: none;
+            color: var(--mc-gris-oscuro);
+        }
+
+        .company-panel__social-link:hover {
+            background-color: var(--mc-amarillo-vital);
+            color: var(--mc-gris-oscuro);
+        }
+
+        /* =============================
+         * RESPONSIVE – DESKTOP
+         * ============================= */
+        @media (min-width: 768px) {
+            .company-panel {
+                position: absolute;
+                right: 1.5rem;
+                left: auto;
+                bottom: 1.5rem;
+                top: auto;
+                width: 380px;
+                max-height: 70vh;
+                border-radius: var(--mc-border-radius);
+                padding: 1rem 1.25rem;
+            }
+
+            .company-panel__description {
+                max-height: none; /* más alto en escritorio */
+            }
+        }
+
+    </style>
 @endsection
 
 @section('additional-scripts')
@@ -3670,12 +3940,12 @@
                     await window.Viewer.onCaptureGpu();
                 });
 
-                const companyPanel = document.getElementById('companyPanel');
+                const companyPanel = document.getElementById('companyPanelHeader');
                 const companyPanelToggle = document.querySelector('.company-panel__toggle');
 
                 companyPanel.addEventListener('click', () => {
                     companyPanel.classList.toggle('company-panel--collapsed');
-                    const body = companyPanel.querySelector('.company-panel__body');
+                    const body = document.querySelector('.company-panel__body');
                     if (companyPanel.classList.contains('company-panel--collapsed')) {
                         body.style.display = 'none';
                     } else {
@@ -3753,17 +4023,23 @@
     <?php
 
     $companyTagline = "Turismo · Deportes · Geología";
-    $hrefCurrent="https://meetclic.com/es/businessDetails/Muelle%20Catalina";
-    $titleChaquiñan="Vive la Vida";
-    $descriptinoChaquiñan="La Ruta Sagrada del Muelle Catalina es un recorrido temático, turístico y cultural que conecta los puntos más emblemáticos del territorio de Imbabura. En esta travesía, viajeros y familias se acercan a los espíritus protectores de la laguna y las montañas, descubriendo paisajes ancestrales, actividades deportivas, historias vivas y experiencias de contacto con la naturaleza.\r\n\r\nLa ruta integra montañismo, senderismo, fotografía, historia, espiritualidad andina y observación paisajística, guiando a los visitantes desde la serenidad del Muelle Catalina hasta la grandeza de Taita Imbabura, la magia de las lagunas y la fuerza ceremonial del Lechero.\r\n\r\nEs una experiencia diseñada para educar, inspirar y conectar, ideal para turistas, deportistas, familias y estudiantes.";
+    $hrefCurrent = "https://meetclic.com/es/businessDetails/Muelle%20Catalina";
+    $titleChaquiñan = "Vive la Vida";
+    $descriptinoChaquiñan = "La Ruta Sagrada del Muelle Catalina es un recorrido temático, turístico y cultural que conecta los puntos más emblemáticos del territorio de Imbabura. En esta travesía, viajeros y familias se acercan a los espíritus protectores de la laguna y las montañas, descubriendo paisajes ancestrales, actividades deportivas, historias vivas y experiencias de contacto con la naturaleza.\r\n\r\nLa ruta integra montañismo, senderismo, fotografía, historia, espiritualidad andina y observación paisajística, guiando a los visitantes desde la serenidad del Muelle Catalina hasta la grandeza de Taita Imbabura, la magia de las lagunas y la fuerza ceremonial del Lechero.\r\n\r\nEs una experiencia diseñada para educar, inspirar y conectar, ideal para turistas, deportistas, familias y estudiantes.";
+    $companyName = "Meetclic";
+    $sourceChaquiñan = 'https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png';
 
     if ($dataManager["allow"]) {
-        $titleChaquiñan=$dataManager["dataRoute"]["information"]["name"];
-        $descriptinoChaquiñan=$dataManager["dataRoute"]["information"]["description"];
+        $sourceChaquiñanBusiness = URL::asset($resourcePathServer . $dataManager["business"]["business"][0]["source"]);
+        $sourceChaquiñan =  URL::asset($resourcePathServer .$dataManager["dataRoute"]["information"]["src"]);
+
+        $companyName =  $dataManager["business"]["business"][0]["business_name"];
+        $titleChaquiñan = $dataManager["dataRoute"]["information"]["name"];
+        $descriptinoChaquiñan = $dataManager["dataRoute"]["information"]["description"];
 
         $companyTagline = "";
         $tags = [];
-        $hrefCurrent="https://meetclic.com/es/businessDetails/".$dataManager["business"]["business"][0]["business_name"];
+        $hrefCurrent = "https://meetclic.com/es/businessDetails/" . $dataManager["business"]["business"][0]["business_name"];
         foreach ($dataManager["dataRoute"]["adventure_type_data"] as $name => $value) {
             $tags[] = $value->adventure_adventure_type_text;
 
@@ -3777,74 +4053,117 @@
         <!-- Mapa -->
     <div id="map" class="map"></div>
     <canvas id="snap-canvas" class="snap-canvas d-none"></canvas>
-    <!-- Panel flotante de empresa -->
-    <div class="company-panel" id="companyPanel">
-        <div class="company-panel__header view-toogle-company">
+    <div class="company-panel company-panel--expanded" id="companyPanel">
+        <div class="company-panel__header view-toogle-company company-panel__header--clickable" id="companyPanelHeader">
             <div class="company-panel__logo">
                 <img
-                    src="{{$dataManager["allow"]? URL::asset($resourcePathServer.$dataManager["business"]["business"][0]["source"]):'https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png'}}"
-                    alt="Logo Empresa"/>
+                    src="{{$sourceChaquiñan}}"
+                    alt="Logo Empresa"
+                    class="company-panel__logo-img"
+                />
             </div>
+
             <div class="company-panel__title view-toogle-company">
-                <h2 id="companyName">{{$dataManager["allow"]? $dataManager["business"]["business"][0]["business_name"]:'Muelle Catalina.'}}</h2>
-                <span id="companyTagline">{{$companyTagline}}</span>
+                <h2 id="companyName" class="company-panel__name">{{$titleChaquiñan}}</h2>
+                <span id="companyTagline" class="company-panel__tagline">{{$companyTagline}}</span>
             </div>
-            <button class="company-panel__toggle view-toogle-company" id="companyPanelToggle">⟩</button>
+
+            <button
+                class="company-panel__toggle view-toogle-company company-panel__toggle--right"
+                id="companyPanelToggle"
+            >
+                ⟩
+            </button>
         </div>
 
         <div class="company-panel__body">
-            <div class="company-panel__section">
-                <div class="company-panel__section">
-                    <h3 class="color-primary--title">{{$titleChaquiñan}}</h3>
-
-                    <div class="stats">
-                        <div class="stat">
-                            <span class="stat__label">Tótems turísticos</span>
-                            <span class="stat__value" id="statTourism">5</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat__label">Tótems deportivos</span>
-                            <span class="stat__value" id="statSports">2</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat__label">Tótems geológicos</span>
-                            <span class="stat__value" id="statGeo">3</span>
-                        </div>
+            <div class="company-panel__section company-panel__section--stats">
+                <div class="stats company-panel__stats">
+                    <div class="stat company-panel__stat">
+                        <span class="stat__label company-panel__stat-label">Tótems turísticos</span>
+                        <span class="stat__value company-panel__stat-value" id="statTourism">5</span>
                     </div>
-
+                    <div class="stat company-panel__stat">
+                        <span class="stat__label company-panel__stat-label">Tótems deportivos</span>
+                        <span class="stat__value company-panel__stat-value" id="statSports">2</span>
+                    </div>
+                    <div class="stat company-panel__stat">
+                        <span class="stat__label company-panel__stat-label">Tótems geológicos</span>
+                        <span class="stat__value company-panel__stat-value" id="statGeo">3</span>
+                    </div>
                 </div>
-                <h3 class="color-primary--title">Descripción</h3>
+            </div>
+
+            <div class="company-panel__section company-panel__section--description">
+                <h3 class="color-primary--title company-panel__subtitle">Descripción</h3>
+
                 @if(!$dataManager["allow"])
-                    <p id="companyDescription">
-{{$descriptinoChaquiñan}}
+                    <p id="companyDescription" class="company-panel__description">
+                        {{$descriptinoChaquiñan}}
                     </p>
                 @else
-                    <div id="companyDescription">
+                    <div id="companyDescription" class="company-panel__description">
                         {!! $descriptinoChaquiñan !!}
                     </div>
                 @endif
-                <button class="link-button not-view" id="btnMoreInfo">Ver perfil completo</button>
+
+                <button
+                    class="link-button not-view company-panel__more-link"
+                    id="btnMoreInfo"
+                >
+                    Ver perfil completo
+                </button>
             </div>
 
-            <div class="company-panel__section">
-                <h3 class="color-primary--title">Contactanos</h3>
-                <div class="contact-list">
-                    <a class="color-secondary--title" id="companyEmail" href="mailto:info@empresa.com">📧 Email</a>
-                    <a class="color-secondary--title" id="companyWhatsapp" href="https://wa.me/593985339457"
-                       target="_blank">💬 WhatsApp</a>
-                    <a class="color-secondary--title" id="companyWebsite"
-                       href="{{$hrefCurrent}}" target="_blank">🌐 Sitio web</a>
-                    <div class="social-icons">
-                        <a class="color-secondary--title" id="companyInstagram" href="https://instagram.com/empresa"
-                           target="_blank">IG</a>
-                        <a class="color-secondary--title" id="companyFacebook" href="https://facebook.com/empresa"
-                           target="_blank">FB</a>
-                        <a class="color-secondary--title" id="companyTiktok" href="https://tiktok.com/@empresa"
-                           target="_blank">TT</a>
+            <div class="company-panel__section company-panel__section--contacts">
+                <h3 class="color-primary--title company-panel__subtitle">
+                    Contactanos-{{$titleChaquiñan}}
+                </h3>
+
+                <div class="contact-list company-panel__contacts">
+                    <a class="color-secondary--title company-panel__contact-link"
+                       id="companyEmail"
+                       href="mailto:info@empresa.com">
+                        📧 Email
+                    </a>
+
+                    <a class="color-secondary--title company-panel__contact-link"
+                       id="companyWhatsapp"
+                       href="https://wa.me/593985339457"
+                       target="_blank">
+                        💬 WhatsApp
+                    </a>
+
+                    <a class="color-secondary--title company-panel__contact-link"
+                       id="companyWebsite"
+                       href="{{$hrefCurrent}}"
+                       target="_blank">
+                        🌐 Sitio web
+                    </a>
+
+                    <div class="social-icons company-panel__social">
+                        <a class="color-secondary--title company-panel__social-link"
+                           id="companyInstagram"
+                           href="https://instagram.com/empresa"
+                           target="_blank">
+                            IG
+                        </a>
+                        <a class="color-secondary--title company-panel__social-link"
+                           id="companyFacebook"
+                           href="https://facebook.com/empresa"
+                           target="_blank">
+                            FB
+                        </a>
+                        <a class="color-secondary--title company-panel__social-link"
+                           id="companyTiktok"
+                           href="https://tiktok.com/@empresa"
+                           target="_blank">
+                            TT
+                        </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+
 @endsection

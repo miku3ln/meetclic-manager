@@ -46,18 +46,17 @@ class BusinessByRoutesMapController extends MyBaseController
 
 
             $allowNextProcess = false;
-            $attributesPost =Request::all();
+            $attributesPost = Request::all();
             $business_id = $attributesPost["business_id"];
             $type = $attributesPost["type"];
             $description = isset($attributesPost["description"]) ? $attributesPost["description"] : "";
             $options_map = isset($attributesPost["options_map"]) ? $attributesPost["options_map"] : "";
-            $deleteData = isset($attributesPost["deleteData"]) ?  json_decode($attributesPost["deleteData"] ,true): array();
+            $deleteData = isset($attributesPost["deleteData"]) ? json_decode($attributesPost["deleteData"], true) : array();
             $name = $attributesPost["name"];
             $status = $attributesPost["status"];
             $kml_structure = $attributesPost["kml_structure"];
             $kml_structure_data = json_decode($kml_structure, true);
             $routes_drawing_data = $kml_structure_data["routes_drawing_data"];
-
             $file = $attributesPost["src"];
             $pathSet = "/uploads/business/information";
             $change = $attributesPost["change"];
@@ -83,14 +82,14 @@ class BusinessByRoutesMapController extends MyBaseController
             if ($createUpdate) {
 
                 $resultMultimedia = $modelMultimedia->managerUpload(array("file" => $file, "pathSet" => $pathSet));
-                $source = $currentResource.$resultMultimedia["uploadedImageData"]["destinationPublic"];
+                $source = $currentResource . $resultMultimedia["uploadedImageData"]["destinationPublic"];
                 $successMultimedia = $resultMultimedia["success"];
 
             } else {
 
                 if ($change != "undefined" && $change == "true") {
                     $resultMultimedia = $modelMultimedia->managerUpload(array("file" => $file, "pathSet" => $pathSet));
-                    $source = $currentResource.$resultMultimedia["uploadedImageData"]["destinationPublic"];
+                    $source = $currentResource . $resultMultimedia["uploadedImageData"]["destinationPublic"];
                     $successMultimedia = $resultMultimedia["success"];
 
                 } else {
@@ -174,16 +173,27 @@ class BusinessByRoutesMapController extends MyBaseController
                             }
                         }
                         //drawing
+                        $items = $attributesPost["items"];
+
+                        foreach ($items as $index => $item) {
+                          //  var_dump($item);
+                        }
+
                         foreach ($routes_drawing_data as $key => $attributes) {
                             $modelRD = new RoutesDrawing();
                             if (isset($attributes["rd_id"])) {
                                 $modelRD = RoutesDrawing::find($attributes["rd_id"]);
 
+                            }else{
+
                             }
                             $type = null;
                             $options_type = "";
 
+
                             $name = isset($attributes["title"]) ? $attributes["title"] : $attributes["type"];
+                            $subtitle = isset($attributes["subtitle"]) ? $attributes["subtitle"] : $attributes["type"];
+
                             if ($attributes["type"] == "marker") {
                                 $type = RoutesDrawing::typeMarker;
                                 $options_type = array(
@@ -242,6 +252,7 @@ class BusinessByRoutesMapController extends MyBaseController
                             $attributesSet = array(
                                 "type" => $type,
                                 "name" => $name,
+                                "subtitle" => $subtitle,
                                 "description" => ($description),
                                 "options_type" => json_encode($options_type)
                             );
@@ -354,7 +365,7 @@ class BusinessByRoutesMapController extends MyBaseController
     public function getListSelect2()
     {
 
-        $attributesPost =Request::all();
+        $attributesPost = Request::all();
         $model = new  BusinessByRoutesMap();
         $result = $model->getListSelect2($attributesPost);
         return Response::json($result);

@@ -183,92 +183,92 @@ function setValuesFrm(lat, lng) {
 function WulpyMapUtil() {
     var mapCurrent;
     // Grey Scale
-if(!typeof google =='undefined'){
-    this.greyscale_style = getGreyScaleStyle();
-    var greyStyleMap = new google.maps.StyledMapType(getGreyScaleStyle(), {
-        name: "Greyscale"
-    });
-    var mapOptions = {
-        title: "Ubicacion",
-        panControl: true,
-        scrollwheel: true,
-        mapTypeControl: false,
-        scaleControl: true,
-        streetViewControl: false,
-        overviewMapControl: false,
-        draggable: true,
-        center: myLatlng,
-        zoom: zoom,
-        animation: google.maps.Animation.DROP,
+    if (!typeof google == 'undefined') {
+        this.greyscale_style = getGreyScaleStyle();
+        var greyStyleMap = new google.maps.StyledMapType(getGreyScaleStyle(), {
+            name: "Greyscale"
+        });
+        var mapOptions = {
+            title: "Ubicacion",
+            panControl: true,
+            scrollwheel: true,
+            mapTypeControl: false,
+            scaleControl: true,
+            streetViewControl: false,
+            overviewMapControl: false,
+            draggable: true,
+            center: myLatlng,
+            zoom: zoom,
+            animation: google.maps.Animation.DROP,
 //        position: new google.maps.LatLng(myLatlng.lat, myLatlng.lng),
 //                mapTypeId: google.maps.MapTypeId.,
 //                scrollwheel: true,
-        icon: icon_mapa_url
+            icon: icon_mapa_url
 
-    }
+        }
 
 //----INIT MAP
-    var icon_mapa_url = pathDevelopers + "assets/images/markers/merceria.png";
-    var mapOptions = {
-        title: "Ubicacion",
-        panControl: true,
-        scrollwheel: true,
-        mapTypeControl: false,
-        scaleControl: true,
-        streetViewControl: false,
-        overviewMapControl: false,
-        draggable: true,
-        center: myLatlng,
-        zoom: zoom,
-        animation: google.maps.Animation.DROP,
+        var icon_mapa_url = pathDevelopers + "assets/images/markers/merceria.png";
+        var mapOptions = {
+            title: "Ubicacion",
+            panControl: true,
+            scrollwheel: true,
+            mapTypeControl: false,
+            scaleControl: true,
+            streetViewControl: false,
+            overviewMapControl: false,
+            draggable: true,
+            center: myLatlng,
+            zoom: zoom,
+            animation: google.maps.Animation.DROP,
 //        position: new google.maps.LatLng(myLatlng.lat, myLatlng.lng),
 //                mapTypeId: google.maps.MapTypeId.,
 //                scrollwheel: true,
-        icon: icon_mapa_url
+            icon: icon_mapa_url
 
-    };
-    this.markerCurrent = null;
-    this.map;
-    this.initMap = function (init_map_element, data) {
-        var name_empresa = "Wulpy";
-        map = new google.maps.Map($(init_map_element)[0], mapOptions);
-        var key = 1;
-        var latitud = myLatlng.lat;
-        var longitud = myLatlng.lng;
-        var key_id = key;
-        var info_name = name_empresa;
-        var mssg = key_id + " " + info_name;
-        var marker_object = new google.maps.Marker({
-            draggable: false,
-            title: info_name,
-            animation: google.maps.Animation.DROP,
-            position: new google.maps.LatLng(latitud, longitud),
-            icon: icon_mapa_url,
-        });
-        init_map = true;
-        map.mapTypes.set('greyscale_style', greyStyleMap);
-        map.setMapTypeId('greyscale_style');
-        this.map = map;
-        return this.map;
+        };
+        this.markerCurrent = null;
+        this.map;
+        this.initMap = function (init_map_element, data) {
+            var name_empresa = "Wulpy";
+            map = new google.maps.Map($(init_map_element)[0], mapOptions);
+            var key = 1;
+            var latitud = myLatlng.lat;
+            var longitud = myLatlng.lng;
+            var key_id = key;
+            var info_name = name_empresa;
+            var mssg = key_id + " " + info_name;
+            var marker_object = new google.maps.Marker({
+                draggable: false,
+                title: info_name,
+                animation: google.maps.Animation.DROP,
+                position: new google.maps.LatLng(latitud, longitud),
+                icon: icon_mapa_url,
+            });
+            init_map = true;
+            map.mapTypes.set('greyscale_style', greyStyleMap);
+            map.setMapTypeId('greyscale_style');
+            this.map = map;
+            return this.map;
 
-    }
+        }
 
-    function closeAllMarker() {
-        angular.forEach(markers_opens, function (value_marker, key) {
-            value_marker.close();
-        });
-        markers_opens = [];
-    }
+        function closeAllMarker() {
+            angular.forEach(markers_opens, function (value_marker, key) {
+                value_marker.close();
+            });
+            markers_opens = [];
+        }
 
 
-    this.latLngCurrent = null;
-    var _this = this;
-    this.addMarker = function (params) {
-        var markerOptions = params.marker;
-        var map = params.map;
-        var content = params.content;
-        markers.push(markerOptions); // add marker to array
-        markerOptions.setMap(map);
+        this.latLngCurrent = null;
+        var _this = this;
+        this.addMarker = function (params) {
+            var markerOptions = params.marker;
+            var map = params.map;
+            var content = params.content;
+            markers.push(markerOptions); // add marker to array
+            markerOptions.setMap(map);
 
 
 //        mcOptions = {styles: [{
@@ -298,82 +298,81 @@ if(!typeof google =='undefined'){
 //                }]}
 ////        var markerCluster = new MarkerClusterer(map, markerOptions, mcOptions);
 
-    }
+        }
 
-    function eventsMarker(marker_data) {
+        function eventsMarker(marker_data) {
 
-        // Add dragging event listeners.
-        google.maps.event.addListener(marker_data, 'dragstart', function () {
-            console.log("dragstart");
+            // Add dragging event listeners.
+            google.maps.event.addListener(marker_data, 'dragstart', function () {
+                console.log("dragstart");
 //            updateMarkerAddress('Dragging...');
 
-        });
+            });
 
-        google.maps.event.addListener(marker_data, 'drag', function () {
+            google.maps.event.addListener(marker_data, 'drag', function () {
 //            updateMarkerStatus('Dragging...');
-            console.log("drag");
-            /!*$scope.updateMarkerPosition(marker_data.getPosition());*!/
-        });
+                console.log("drag");
+                /!*$scope.updateMarkerPosition(marker_data.getPosition());*!/
+            });
 
-        google.maps.event.addListener(marker_data, 'dragend', function () {
-            /!*   updateMarkerStatus('Drag ended');*!/
+            google.maps.event.addListener(marker_data, 'dragend', function () {
+                /!*   updateMarkerStatus('Drag ended');*!/
 //        geocodePosition(marker.getPosition());
 //        map.panTo(marker.getPosition());
-        });
-    }
+            });
+        }
 
-    function getMessage(data) {
-        var html_data = "";
-        var key_id = data.id;
-        html_data += "<div class='content-data-info' id='content-data-info-" + key_id + "'>";
+        function getMessage(data) {
+            var html_data = "";
+            var key_id = data.id;
+            html_data += "<div class='content-data-info' id='content-data-info-" + key_id + "'>";
 
-        var title = data.nombres + " CI:" + data.identificacion;
-        html_data += "<h1 id='content-informacion-title'>" + title + "</h1>";
-        var telefono = data.telefono;
-        var email = data.email;
-        var direccion_cliente = data.direccion.calle_1 + " y " + data.direccion.calle_2;
-        html_data += "<div id='content-informacion-table'>";
-        html_data += "<table id='table-info'>";
-        html_data += "<tbody>";
-        //            DIRECCION
-        html_data += "<tr class='tr-direccion'>";
-        html_data += "<td class='col-info-name'>";
-        html_data += "Dirección:";
-        html_data += "</td>";
-        html_data += "<td class='col-info-valor'>";
-        html_data += direccion_cliente;
-        html_data += "</td>";
-        html_data += "</tr>";
+            var title = data.nombres + " CI:" + data.identificacion;
+            html_data += "<h1 id='content-informacion-title'>" + title + "</h1>";
+            var telefono = data.telefono;
+            var email = data.email;
+            var direccion_cliente = data.direccion.calle_1 + " y " + data.direccion.calle_2;
+            html_data += "<div id='content-informacion-table'>";
+            html_data += "<table id='table-info'>";
+            html_data += "<tbody>";
+            //            DIRECCION
+            html_data += "<tr class='tr-direccion'>";
+            html_data += "<td class='col-info-name'>";
+            html_data += "Dirección:";
+            html_data += "</td>";
+            html_data += "<td class='col-info-valor'>";
+            html_data += direccion_cliente;
+            html_data += "</td>";
+            html_data += "</tr>";
 //            TELEFONO
-        html_data += "<tr class='tr-telefono'>";
-        html_data += "<td class='col-info-name'>";
-        html_data += "Telefono:";
-        html_data += "</td>";
-        html_data += "<td class='col-info-valor'>";
-        html_data += telefono;
-        html_data += "</td>";
-        html_data += "</tr>";
+            html_data += "<tr class='tr-telefono'>";
+            html_data += "<td class='col-info-name'>";
+            html_data += "Telefono:";
+            html_data += "</td>";
+            html_data += "<td class='col-info-valor'>";
+            html_data += telefono;
+            html_data += "</td>";
+            html_data += "</tr>";
 //            EMAIL
-        html_data += "<tr class='tr-telefono'>";
-        html_data += "<td class='col-info-name'>";
-        html_data += "Email:";
-        html_data += "</td>";
-        html_data += "<td class='col-info-valor'>";
-        html_data += email;
-        html_data += "</td>";
-        html_data += "</tr>";
+            html_data += "<tr class='tr-telefono'>";
+            html_data += "<td class='col-info-name'>";
+            html_data += "Email:";
+            html_data += "</td>";
+            html_data += "<td class='col-info-valor'>";
+            html_data += email;
+            html_data += "</td>";
+            html_data += "</tr>";
 
-        html_data += "</tbody>"
-        html_data += "</table>"
-        html_data += "</div>"
+            html_data += "</tbody>"
+            html_data += "</table>"
+            html_data += "</div>"
 
 
-        html_data += "</div >";
-        return html_data;
+            html_data += "</div >";
+            return html_data;
 
+        }
     }
-}
-
 
 
 }
@@ -976,7 +975,7 @@ function UtilBlitzMap(paramsConfig) {
     }
 
     this.getEditorContent = function (overlay) {
-
+console.log("getEditorContent",overlay);
         var managerColors = '<input type="button" id="BlitzMapInfoWindow_toggle" title="Manage Colors and Styles" onclick="BlitzMap.toggleStyleEditor();return false;" style="border:0;float:right;margin-top:5px;cursor:pointer;background-color:#fff;color:#2883CE;font-family:Arial;font-size:12px;text-align:right;" value="Customize Colors&gt;&gt;" />';
         var content = '<style>'
             + '#BlitzMapInfoWindow_container input:focus, #BlitzMapInfoWindow_container textarea:focus{border:2px solid #7DB1FF;} '
@@ -986,8 +985,8 @@ function UtilBlitzMap(paramsConfig) {
 
             + '<form style="height:100%"><div id="BlitzMapInfoWindow_container" style="height:100%">'
             + '<div id="BlitzMapInfoWindow_details">'
-            + '<div style="padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.details.title+'&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_title" value="' + overlay.title + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
-            + '<div style="padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.details.description+'<br><textarea id="BlitzMapInfoWindow_content" style="border:2px solid #dddddd;width:250px;height:115px;">' + overlay.content + '</textarea></div>'
+            + '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.title + '&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_title" value="' + overlay.title + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
+            + '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.description + '<br><textarea id="BlitzMapInfoWindow_content" style="border:2px solid #dddddd;width:250px;height:115px;">' + overlay.content + '</textarea></div>'
             + '</div>'
             + '<div id="BlitzMapInfoWindow_styles" style="display:none;width:100%;">'
             + '<div style="height:25px;padding-bottom:2px;font-weight:bold;">Styles &amp; Colors</div>';
@@ -995,38 +994,35 @@ function UtilBlitzMap(paramsConfig) {
         if (overlay.type == 'polygon' || overlay.type == 'circle' || overlay.type == 'rectangle') {
 
             var fillColor = (overlay.fillColor == undefined) ? "#000000" : overlay.fillColor;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+'<input type="text" id="BlitzMapInfoWindow_fillcolor" value="' + fillColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input type="text" id="BlitzMapInfoWindow_fillcolor" value="' + fillColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
             var fillOpacity = (overlay.fillOpacity == undefined) ? 0.3 : overlay.fillOpacity;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+'<input min="0" max="1" type="number" id="BlitzMapInfoWindow_fillopacity" value="' + fillOpacity.toString() + '"  style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1" type="number" id="BlitzMapInfoWindow_fillopacity" value="' + fillOpacity.toString() + '"  style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
 
         }
         if (overlay.type != 'marker') {
 
             var strokeColor = (overlay.strokeColor == undefined) ? "#000000" : overlay.strokeColor;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor+'<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' + strokeColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor + '<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' + strokeColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
             var strokeOpacity = (overlay.strokeOpacity == undefined) ? 0.9 : overlay.strokeOpacity;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+'<input min="0" max="1"  type="number" id="BlitzMapInfoWindow_strokeopacity" value="' + strokeOpacity.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1"  type="number" id="BlitzMapInfoWindow_strokeopacity" value="' + strokeOpacity.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
 
             var strokeWeight = (overlay.strokeWeight == undefined) ? 3 : overlay.strokeWeight;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness+'<input min="0"  type="number" id="BlitzMapInfoWindow_strokeweight" value="' + strokeWeight.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness + '<input min="0"  type="number" id="BlitzMapInfoWindow_strokeweight" value="' + strokeWeight.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
 
         } else {
-
             //var strokeColor = ( overlay.strokeColor == undefined )? "#000000":overlay.strokeColor;
             //content += '<div style="height:25px;padding-bottom:3px;">Line Color: <input type="text" id="BlitzMapInfoWindow_strokecolor" value="'+ strokeColor +'" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
-
             //var animation = overlay.getAnimation();
             //content += '<div style="height:25px;padding-bottom:3px;">Line Opacity(percent): <select id="BlitzMapInfoWindow_animation" style="border:2px solid #dddddd;width:30px;float:right" ><option value="none">None</option><option value="bounce">Bounce</option><option value="drop">Drop</option></div>';
-
             var icon = (overlay.icon == undefined) ? "" : overlay.icon;
             content += '<div style="height:25px;padding-bottom:3px;">Icon(): <input type="text" id="BlitzMapInfoWindow_icon" value="' + icon.toString() + '" style="border:2px solid #dddddd;width:100px;float:right" ></div>';
             managerColors = "";
         }
-        content += '</div><div style="position:relative; bottom:0px;"><input type="button" value="'+$managerTitlesProcess.popupManagerGoogleMaps.btnDelete+'" class="BlitzMapInfoWindow_button" onclick="BlitzMap.deleteOverlay()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;" title"Delete selected shape">&nbsp;&nbsp;'
-            + '<input type="button" value="'+$managerTitlesProcess.popupManagerGoogleMaps.btnOk+'" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
-            + '<input type="button" value="'+$managerTitlesProcess.popupManagerGoogleMaps.btnCancel+'" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
+        content += '</div><div style="position:relative; bottom:0px;"><input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnDelete + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.deleteOverlay()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;" title"Delete selected shape">&nbsp;&nbsp;'
+            + '<input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnOk + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
+            + '<input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnCancel + '" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
             + '<div style="clear:both;"></div>'
             + managerColors;
         +'<div style="clear:both;"></div>';
@@ -1103,12 +1099,12 @@ function UtilBlitzMap(paramsConfig) {
         if (tmp) {
             if (this.getStyle(tmp, "display") == 'none') {
                 _this.setStyle(tmp1, {display: "none"});
-                document.getElementById('BlitzMapInfoWindow_toggle').value =  $managerTitlesProcess.popupManagerGoogleMaps.btnInitColors
+                document.getElementById('BlitzMapInfoWindow_toggle').value = $managerTitlesProcess.popupManagerGoogleMaps.btnInitColors
                 _this.setStyle(tmp, {display: "block"});
 
             } else {
                 _this.setStyle(tmp, {display: "none"});
-                document.getElementById('BlitzMapInfoWindow_toggle').value =$managerTitlesProcess.popupManagerGoogleMaps.btnReturn
+                document.getElementById('BlitzMapInfoWindow_toggle').value = $managerTitlesProcess.popupManagerGoogleMaps.btnReturn
                 _this.setStyle(tmp1, {display: "block"});
             }
 

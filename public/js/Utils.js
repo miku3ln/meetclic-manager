@@ -1,9 +1,13 @@
 var latLngCurrent = {lat: 0.2314799, lng: -78.271874};
 var $managerTitlesProcess = {
-    'popupManagerGoogleMaps': {
+    'popupManagerGoogleMaps': {//TODO CHASQUI-MANAGEMENT
         'details': {
             'title': 'Titulo:',
+            'subtitle': 'Subtitulo:',
             'description': 'Descripcion:',
+            'file_glb': 'Archivo Modelo',
+            'file_src': 'Imagen',
+            'allowSource': 'Permitir Recursos?',
 
         },
         'colors': {

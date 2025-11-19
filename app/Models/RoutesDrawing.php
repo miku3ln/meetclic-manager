@@ -28,7 +28,7 @@ class RoutesDrawing extends Model
 
     protected $table = 'routes_drawing';
 
-    protected $fillable = array('type', 'name', 'description', 'options_type');
+    protected $fillable = array('type', 'name', 'description', 'options_type','subtitle','src','src_glb');
 
     public $timestamps = false;
 

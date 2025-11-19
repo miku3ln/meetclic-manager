@@ -17,6 +17,33 @@ var boundsLatLng;
 var latlngData;
 var curentMapR;
 var componentThisRoute;
+
+function appendToFormData(formData, prefix, obj) {
+    Object.entries(obj).forEach(([key, value]) => {
+        const fieldName = prefix ? `${prefix}[${key}]` : key;
+
+        if (value === undefined || value === null) {
+            return;
+        }
+
+        if (value instanceof File) {
+            // Archivos: se agregan tal cual
+            formData.append(fieldName, value);
+        } else if (Array.isArray(value)) {
+            // Arrays: items[0], items[1]...
+            value.forEach((item, index) => {
+                appendToFormData(formData, `${fieldName}[${index}]`, item);
+            });
+        } else if (typeof value === 'object') {
+            // Objetos anidados
+            appendToFormData(formData, fieldName, value);
+        } else {
+            // Primitivos: string, number, boolean
+            formData.append(fieldName, value);
+        }
+    });
+}
+
 var routesComponent = Vue.component('routes-component', {
     template: '#routes-template',
     created: function () {
@@ -58,9 +85,7 @@ var routesComponent = Vue.component('routes-component', {
         },
 
     },
-    computed: {
-
-    },
+    computed: {},
     data: function () {
 
         var dataManager = {
@@ -303,7 +328,7 @@ var routesComponent = Vue.component('routes-component', {
             return result;
         },
         getLabelForm: function (nameId) {
-            return viewGetLabelForm(nameId,this.modelRoutes);
+            return viewGetLabelForm(nameId, this.modelRoutes);
 
         },
 
@@ -375,12 +400,10 @@ var routesComponent = Vue.component('routes-component', {
             this._valuesForm();
         },
         getClassErrorForm: function (nameElement, objValidate) {
-
             var result = {
                 "form-group--error": objValidate.$error,
                 'form-group--success': objValidate.$dirty ? (!objValidate.$error) : false
-            }
-
+            };
             return result;
         },
         deleteItemsKml: function (stringKml, deleteDataCurrent) {
@@ -400,12 +423,14 @@ var routesComponent = Vue.component('routes-component', {
 
             return JSON.stringify(result);
         },
-        _saveRoutes: function () {
+        _saveRoutes: function () {//TODO CHASQUI-MANAGEMENT
             var kml_structure = this.modelRoutes.attributes.kml_structure;
+
+            var data = BlitzMap.getDataMapLayersConfig();
+            var overlays = data.object.overlays;
             if (Object.keys(deleteData).length > 0) {
                 kml_structure = this.deleteItemsKml(kml_structure, deleteData);
             }
-
             var dataSend = {
                 id: this.modelRoutes.attributes.id,
                 type: this.modelRoutes.attributes.type,
@@ -419,8 +444,26 @@ var routesComponent = Vue.component('routes-component', {
                 change: this.modelRoutes.attributes.change,
                 src: this.modelRoutes.attributes.src,
                 type_shortcut: this.modelRoutes.attributes.type_shortcut,
-                adventure_type: this.modelRoutes.attributes.adventure_type
+                adventure_type: this.modelRoutes.attributes.adventure_type,
             };
+
+            overlays.forEach((item, index) => {
+                if (item.type == 'marker') {
+                    var base = `items[${index}]`;
+                    if (item.id != null) {
+                        dataSend[`${base}[id]`] = item.id;
+                    }
+                    if (item.rd_id != null) {
+                        dataSend[`${base}[rd_id]`] = item.rd_id;
+                    }
+                    if (item.routes_drawing_id != null) {
+                        dataSend[`${base}[routes_drawing_id]`] = item.routes_drawing_id;
+                    }
+                    dataSend[`${base}[file_glb]`] = item.file_glb;
+                    dataSend[`${base}[file_src]`] = item.file_src;
+                }
+
+            });
             var _this = this;
             _this.$v.$touch();
             if (this.$v.$invalid) {
@@ -519,8 +562,8 @@ var routesComponent = Vue.component('routes-component', {
             params['map'] = mapCurrentRoutes;
             _this = this;
             var resultStructure = getStructureRouteMap(params);
-            dataLayers=resultStructure['layers'];
-            latlngData=resultStructure['latLngData'];
+            dataLayers = resultStructure['layers'];
+            latlngData = resultStructure['latLngData'];
             $.each(dataLayers, function (key, setPush) {
                 BlitzMap._layerMap(setPush, mapCurrentRoutes);
             });

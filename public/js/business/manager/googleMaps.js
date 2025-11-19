@@ -975,9 +975,26 @@ function UtilBlitzMap(paramsConfig) {
         infWindow.open(mapObj);
     }
 
-    this.getEditorContent = function (overlay) {
-
+    this.getEditorContent = function (overlay) {//TODO CHASQUI-MANAGEMENT
+        console.log("getEditorContent", overlay);
         var managerColors = '<input type="button" id="BlitzMapInfoWindow_toggle" title="Manage Colors and Styles" onclick="BlitzMap.toggleStyleEditor();return false;" style="border:0;float:right;margin-top:5px;cursor:pointer;background-color:#fff;color:#2883CE;font-family:Arial;font-size:12px;text-align:right;" value="Customize Colors&gt;&gt;" />';
+        let inputLoadSources = [];
+        let inputSubtitle = [];
+
+        if (overlay.type == 'marker') {
+            inputSubtitle = [
+                '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.subtitle + '&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_subtitle" value="' + overlay.subtitle + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
+
+            ];
+            inputLoadSources = [
+                '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.file_glb + '&nbsp;&nbsp;' +
+                '    <input accept=".glb" type="file" id="BlitzMapInfoWindow_file_glb" value="' + overlay.file_glb + '" style="border:2px solid #dddddd;width:150px;padding:3px;" >' +
+                '</div>',
+                '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.file_src + '&nbsp;&nbsp;' +
+                '    <input accept=".jpg,.jpeg,.png" type="file" id="BlitzMapInfoWindow_file_src" value="' + overlay.file_src + '" style="border:2px solid #dddddd;width:150px;padding:3px;" >' +
+                '</div>',
+            ];
+        }
         var content = '<style>'
             + '#BlitzMapInfoWindow_container input:focus, #BlitzMapInfoWindow_container textarea:focus{border:2px solid #7DB1FF;} '
             + '#BlitzMapInfoWindow_container .BlitzMapInfoWindow_button{background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;} '
@@ -986,31 +1003,33 @@ function UtilBlitzMap(paramsConfig) {
 
             + '<form style="height:100%"><div id="BlitzMapInfoWindow_container" style="height:100%">'
             + '<div id="BlitzMapInfoWindow_details">'
-            + '<div style="padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.details.title+'&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_title" value="' + overlay.title + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
-            + '<div style="padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.details.description+'<br><textarea id="BlitzMapInfoWindow_content" style="border:2px solid #dddddd;width:250px;height:115px;">' + overlay.content + '</textarea></div>'
+            + '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.title + '&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_title" value="' + overlay.title + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
+            +inputSubtitle.join("")
+            + '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.description + '<br><textarea id="BlitzMapInfoWindow_content" style="border:2px solid #dddddd;width:250px;height:115px;">' + overlay.content + '</textarea></div>'
+            + inputLoadSources.join("")
             + '</div>'
             + '<div id="BlitzMapInfoWindow_styles" style="display:none;width:100%;">'
-            + '<div style="height:25px;padding-bottom:2px;font-weight:bold;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.title+'</div>';
+            + '<div style="height:25px;padding-bottom:2px;font-weight:bold;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.title + '</div>';
 
         if (overlay.type == 'polygon' || overlay.type == 'circle' || overlay.type == 'rectangle') {
 
             var fillColor = (overlay.fillColor == undefined) ? "#000000" : overlay.fillColor;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+' <input type="text" id="BlitzMapInfoWindow_fillcolor" value="' + fillColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + ' <input type="text" id="BlitzMapInfoWindow_fillcolor" value="' + fillColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
             var fillOpacity = (overlay.fillOpacity == undefined) ? 0.3 : overlay.fillOpacity;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+'<input min="0" max="1" type="number" id="BlitzMapInfoWindow_fillopacity" value="' + fillOpacity.toString() + '"  style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1" type="number" id="BlitzMapInfoWindow_fillopacity" value="' + fillOpacity.toString() + '"  style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
 
         }
         if (overlay.type != 'marker') {
 
             var strokeColor = (overlay.strokeColor == undefined) ? "#000000" : overlay.strokeColor;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor+'<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' + strokeColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor + '<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' + strokeColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
             var strokeOpacity = (overlay.strokeOpacity == undefined) ? 0.9 : overlay.strokeOpacity;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity+'<input min="0" max="1"  type="number" id="BlitzMapInfoWindow_strokeopacity" value="' + strokeOpacity.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1"  type="number" id="BlitzMapInfoWindow_strokeopacity" value="' + strokeOpacity.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
 
             var strokeWeight = (overlay.strokeWeight == undefined) ? 3 : overlay.strokeWeight;
-            content += '<div style="height:25px;padding-bottom:3px;">'+$managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness+'<input min="0"  type="number" id="BlitzMapInfoWindow_strokeweight" value="' + strokeWeight.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness + '<input min="0"  type="number" id="BlitzMapInfoWindow_strokeweight" value="' + strokeWeight.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
 
         } else {
 
@@ -1024,9 +1043,9 @@ function UtilBlitzMap(paramsConfig) {
             content += '<div style="height:25px;padding-bottom:3px;">Icon(): <input type="text" id="BlitzMapInfoWindow_icon" value="' + icon.toString() + '" style="border:2px solid #dddddd;width:100px;float:right" ></div>';
             managerColors = "";
         }
-        content += '</div><div style="position:relative; bottom:0px;"><input type="button" value="'+$managerTitlesProcess.popupManagerGoogleMaps.btnDelete+'" class="BlitzMapInfoWindow_button" onclick="BlitzMap.deleteOverlay()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;" title"Delete selected shape">&nbsp;&nbsp;'
-            + '<input type="button" value="'+$managerTitlesProcess.popupManagerGoogleMaps.btnOk+'" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
-            + '<input type="button" value="'+$managerTitlesProcess.popupManagerGoogleMaps.btnCancel+'" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
+        content += '</div><div style="position:relative; bottom:0px;"><input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnDelete + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.deleteOverlay()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;" title"Delete selected shape">&nbsp;&nbsp;'
+            + '<input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnOk + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
+            + '<input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnCancel + '" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
             + '<div style="clear:both;"></div>'
             + managerColors;
         +'<div style="clear:both;"></div>';
@@ -1069,9 +1088,11 @@ function UtilBlitzMap(paramsConfig) {
         infWindow.close();
     }
 
-    this.updateOverlay = function () {
+    this.updateOverlay = function () {//TODO CHASQUI-MANAGEMENT
         infWindow.relatedOverlay.title = document.getElementById('BlitzMapInfoWindow_title').value;
         infWindow.relatedOverlay.content = document.getElementById('BlitzMapInfoWindow_content').value;
+console.log("updateOverlay",  infWindow.relatedOverlay);
+
 
         if (infWindow.relatedOverlay.type == 'polygon' || infWindow.relatedOverlay.type == 'circle' || infWindow.relatedOverlay.type == 'rectangle') {
 
@@ -1089,6 +1110,22 @@ function UtilBlitzMap(paramsConfig) {
             infWindow.relatedOverlay.setOptions({strokeWeight: Number(document.getElementById('BlitzMapInfoWindow_strokeweight').value)});
         } else {
             infWindow.relatedOverlay.setOptions({icon: document.getElementById('BlitzMapInfoWindow_icon').value});
+        }
+        if(infWindow.relatedOverlay.type == 'marker'){
+            const glbInput = document.getElementById('BlitzMapInfoWindow_file_glb');
+            const file = glbInput.files[0]; // primer archivo seleccionado
+            infWindow.relatedOverlay.file_glb = file;
+            const srcInput = document.getElementById('BlitzMapInfoWindow_file_src');
+            const fileSrc = srcInput.files[0]; // primer archivo seleccionado
+            infWindow.relatedOverlay.file_src= fileSrc;
+
+            infWindow.relatedOverlay.subtitle = document.getElementById('BlitzMapInfoWindow_subtitle').value;
+
+
+
+
+
+
         }
         if (currentManager) {
 
