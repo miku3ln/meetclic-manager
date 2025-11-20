@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\GeoIpLocalService;
 use Closure;
 use App;
 use Request;
@@ -103,8 +104,256 @@ class FrontendMiddleware
 
         }
     }
+    //COUNTER-001
+    public function managerCounters($params)
+    {
+        $hasToken = \Session::has('_token');
+        $_token = \Session::get('_token');
+        $type = $params['type'];
 
-    public function managerAllowRoutes($request, $next)
+        $urlSegments = $params['data']['urlSegments'];
+        $user = $params['data']['user'];
+        $is_guess = $user == null ? true : false;
+        $user_id = $is_guess ? 0 : $user->id;
+        $business_id = null;
+        $businessIdCurrent = null;
+
+        $token = $_token;
+        $informationBusiness = null;
+        $allowManagerProcess = false;
+        if ($type == 'businessDetails') {
+            if (isset($urlSegments[2])) {
+                $allowManagerProcess = true;
+                $business_id = $urlSegments[2];
+            } else {
+                $allowManagerProcess = false;
+            }
+        } else {
+            $modelBusiness = new \App\Models\Business();
+            $business_id = $modelBusiness::BUSINESS_MAIN_ID;
+            $businessIdCurrent = $business_id;
+        }
+
+        $modelBusiness = new \App\Models\Business();
+        $information = $modelBusiness->getDetailsBee([
+            'filters' => [
+                'business_id' => $business_id
+            ]
+        ]);
+
+        if ($information) {
+            $allowManagerProcess = true;
+            if ($type == 'businessDetails') {
+                $businessIdCurrent = $information->id;
+            }
+        } else {
+            $allowManagerProcess = false;
+        }
+        $manager_click_type = 'NONE';
+        $manager_click_id = 'NONE';
+        $source_origin = 'NONE';
+        $referer = 'NONE';
+        $device_agent = 'NONE';
+        $ip_address = 'NONE';
+        $campaign_code = 'NONE';
+        $referer_url = 'NONE';
+        $type_process = 'NONE';
+        $country = 'NONE';
+        $region = 'NONE';
+        $city = 'NONE';
+
+        $latitude = 0;
+        $longitude = 0;
+        $click_type_id = 1;
+        $source_id = 1;
+
+        if (isset($params['data']['managerClick']) && count($params['data']['managerClick']) > 0) {
+            $manager_click_type = $params['data']['managerClick']['type'];
+            $manager_click_id = $params['data']['managerClick']['id'];
+            $source_origin = $params['data']['managerClick']['source_origin'];
+            $referer = $params['data']['managerClick']['referer'];
+            $device_agent = $params['data']['managerClick']['device_agent'];
+            $ip_address = $params['data']['managerClick']['ip_address'];
+            $campaign_code = $params['data']['managerClick']['campaign_code'];
+            $referer_url = $params['data']['managerClick']['referer_url'];
+            $type_process = $params['data']['managerClick']['type_process'];
+
+            $country = $params['data']['managerClick']['country'];
+            $region = $params['data']['managerClick']['region'];
+            $city = $params['data']['managerClick']['city'];
+            $latitude = $params['data']['managerClick']['latitude'];
+            $longitude = $params['data']['managerClick']['longitude'];
+            $source_id = $params['data']['managerClick']['source_id'];
+            $click_type_id = $params['data']['managerClick']['click_type_id'];
+
+        }
+        $sendParams = [
+            'business_id' => $businessIdCurrent,
+            'user_id' => $user_id,
+            'is_guess' => $is_guess,
+            'token' => $token,
+            'user' => $user,
+            'manager_click_id' => $manager_click_id,
+            'manager_click_type' => $manager_click_type,
+            'action_name' => $type,
+            'source_origin' => $source_origin,
+            'referer' => $referer,
+            'device_agent' => $device_agent,
+            'ip_address' => $ip_address,
+            'campaign_code' => $campaign_code,
+            'referer_url' => $referer_url,
+            'country' => $country,
+            'region' => $region,
+            'city' => $city,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'type_process' => $type_process,
+            'click_type_id' => $click_type_id,
+            'source_id' => $source_id,
+
+        ];
+
+        $modelCounter = new \App\Models\BusinessByCounter();
+
+        if ($allowManagerProcess) {
+            $modelCounter->managerCounter(
+                [
+                    'filters' => $sendParams
+                ]
+            );
+        }
+
+    }
+
+    function managerAllowRoutes($request, $next)
+    {
+        $url = \Request::segments();
+        $isGetMethod = $request->isMethod('get');
+        $typeUrl = null;
+        $success = true;
+        $language = $request->language;
+        $typeRender = '';
+        $data = [];
+        $params = [];
+        $case = null;
+
+        $input = $request->all();
+        $user = $request->user();
+        $type = $request->query('typeProcess');     // Ej: 'share', 'click','view','referral','web-tracking'
+        $source = $request->query('sourceProcess'); // Ej: 'facebook', 'whatsapp','camera','meetclick'
+        $campaign_code = $request->query('campaign_code');     // Ej: 'fb_234', "00-web-tracking"
+
+        // -------------------------------
+        // TIPO DE URL (como ya tenías)
+        // -------------------------------
+        if (count($url) > 1) {
+            $typeUrl = self::URL_MANY;
+        } elseif (count($url) == 0) {
+            $typeUrl = self::URL_EMPTY;
+        } elseif (count($url) == 1) {
+            $typeUrl = self::URL_NOT_MANY;
+        }
+
+        // -------------------------------
+        // OBTENER RUTA, PARÁMETROS Y NOMBRE
+        // -------------------------------
+        $route        = $request->route();                 // instancia de Route
+        $routeName    = $route ? $route->getName() : null; // 'pages-owner', 'chasqui-routes', etc.
+        $actionName   = $route ? $route->getActionName() : null; // 'Frontend\...\FrontendPagesOwnerCmsController@businessOwner'
+        $actionMethod = $route ? $route->getActionMethod() : null; // 'businessOwner', 'chasqui', etc.
+        $params       = $route ? $route->parameters() : []; // ['slug' => '...', 'section' => '...'] o ['id' => '...']
+
+        // Si quieres valores específicos:
+        $slug    = $request->route('slug');    // null si no aplica
+        $section = $request->route('section'); // null si no aplica
+        $id      = $request->route('id');      // null si no aplica
+
+        // Puedes decidir cómo llamar a tu "acción actual"
+        $actionCurrent = $routeName ?: $actionMethod ?: 'homeInit';
+
+        // -------------------------------
+        // RESTO DE TU LÓGICA (tracking)
+        // -------------------------------
+        $id = "-1";
+        if (isset($input['fbclid'])) {
+            $code = $input['fbclid'];
+            $source = 'facebook';
+            $type = "click-facebook";
+            $campaign_code = $code;
+        }
+        if ($type == "" && $source == "" && $campaign_code == "") {
+            $type = "web-tracking";
+            $source = "meetclick";
+            $code = "00-web-tracking";
+            $campaign_code = "campaign-00-web-tracking";
+        }
+
+        $referer = $request->headers->get('referer') ?? 'internal';
+        $agent = $request->userAgent() ?? 'unknown';
+        $ip = $request->ip() ?? 'unknown';
+        $geo = new GeoIpLocalService();
+        $location = [];
+
+        $modelSource = new \App\Models\Tracking\TrackingSources();
+        $source_origin = $source;
+        $resultSource = $modelSource->findByAttribute("code", $source_origin);
+        $source_id = $resultSource ? $resultSource->id : 1;
+
+        $modelTypes = new \App\Models\Tracking\TrackingClickTypes();
+        $type_process = $type;
+        $resultTypes = $modelTypes->findByAttribute("code", $type_process);
+        $click_type_id = $resultTypes ? $resultTypes->id : 1;
+
+        $country = "none";
+        $region = "none";
+        $city = "none";
+        $latitude = 0;
+        $longitude = 0;
+
+        $location = $geo->locate($ip);
+        if ($location) {
+            $country = $location["countryName"];
+            $region = $location["regionName"];
+            $city = $location["cityName"];
+            $latitude = $location["latitude"];
+            $longitude = $location["longitude"];
+        }
+
+        $referer_url = $request->headers->get('referer');
+        $managerClick = [
+            'type'          => $type,
+            'type_process'  => $type,
+            'click_type_id' => $click_type_id,
+            'id'            => $source_id,
+            'source_origin' => $source,
+            'source_id'     => $source_id,
+            'referer'       => $referer,
+            'device_agent'  => $agent,
+            'ip_address'    => $ip,
+            'referer_url'   => $referer_url ?: "not-referral",
+            'campaign_code' => $campaign_code ?: '00-web-tracking',
+            'country'       => $country,
+            'region'        => $region,
+            'city'          => $city,
+            'latitude'      => $latitude,
+            'longitude'     => $longitude,
+        ];
+
+        $data = [
+            'url'          => $actionCurrent, // aquí ya va el nombre de la acción / ruta
+            'route_name'   => $routeName,
+            'action_name'  => $actionName,
+            'action_method'=> $actionMethod,
+            'params'       => $params,        // aquí van slug, section, id, etc.
+            'urlSegments'  => $url,
+            'user'         => $user,
+            'managerClick' => $managerClick
+        ];
+
+        return ['success' => $success, 'typeRender' => $typeRender, 'data' => $data];
+    }
+
+    public function managerAllowRoutes2($request, $next)
     {
 
         $url = Request::segments();
@@ -190,11 +439,15 @@ class FrontendMiddleware
     public function handle($request, Closure $next, $plan = null)
     {
         $response = $next($request);
-
-        $url = Request::segments();
-        $isGetMethod = $request->isMethod('get');
-        $this->setLanguage($request,  $next);
         $result = $this->managerAllowRoutes($request, $next);
+        $allowView = $result['success'];
+        $actionUrlManagement = $result['data']['url'];
+        $this->managerCounters([
+            'type' => $actionUrlManagement,
+            'data' => $result['data']
+        ]);
+
+        $this->setLanguage($request,  $next);
         $allowView = $result['success'];
         if ($allowView) {
             $allowCookies = $request->hasCookie('init_cart');

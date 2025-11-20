@@ -3181,7 +3181,7 @@
 
             constructor(cfg) {
                 this.cfg = Object.assign({
-                    zoom: 14, maxZoom: 25, position: [0.20830, -78.22798],
+                    zoom: 19, maxZoom: 25, position: [0.20830, -78.22798],
                     tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     tileAttribution: '&copy; OpenStreetMap contribuyentes'
                 }, cfg || {});

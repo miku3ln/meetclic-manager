@@ -335,7 +335,7 @@ class FrontendCityBookMiddleware
             'type' => $type,
             'type_process' => $type,
             "click_type_id" => $click_type_id,
-            'id' => "-1",
+            'id' => $source_id,
             'source_origin' => $source,
             "source_id" => $source_id,
             'referer' => $referer,
@@ -519,13 +519,9 @@ class FrontendCityBookMiddleware
     {
 
         $response = $next($request);
-
-
-        $isGetMethod = $request->isMethod('get');
         $result = $this->managerAllowRoutes($request, $next);
         $allowView = $result['success'];
         $actionUrlManagement = $result['data']['url'];
-
         $this->managementCookies([
             '$response' => $response,
             '$request' => $request,
