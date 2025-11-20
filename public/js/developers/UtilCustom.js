@@ -1674,48 +1674,67 @@ function polygonCenter(poly) {
         lngs = [];
     var vertices = [];
     if (poly.type == "rectangle") {
-        var lat = 0;
-        var lng = 0;
-        if (poly.bounds.ga) {
-            lat = poly.bounds.ga.j;
-            lng = poly.bounds.ga.l;
-        } else if (poly.bounds.pa) {
-            lat = poly.bounds.pa.g;
-            lng = poly.bounds.pa.h;
+
+        if (poly.bounds.east) {
+            vertices.push(poly.bounds.east);
+            vertices.push(poly.bounds.north);
+            vertices.push(poly.bounds.south);
+            vertices.push(poly.bounds.west);
+
+        } else {
+            var lat = 0;
+            var lng = 0;
+            if (poly.bounds.ga) {
+                lat = poly.bounds.ga.j;
+                lng = poly.bounds.ga.l;
+            } else if (poly.bounds.pa) {
+                lat = poly.bounds.pa.g;
+                lng = poly.bounds.pa.h;
+            }
+
+            vertices.push({
+                lat: lat,
+                lng: lng
+            });
+            lat = 0;
+            lng = 0;
+            if (poly.bounds.na) {
+                lat = poly.bounds.na.j;
+                lng = poly.bounds.na.l;
+            } else if (poly.bounds.ka) {
+                lat = poly.bounds.ka.g;
+                lng = poly.bounds.ka.h;
+            }
+
+            vertices.push({
+                lat: lat,
+                lng: lng
+            });
         }
 
-        vertices.push({
-            lat: lat,
-            lng: lng
-        });
-        lat = 0;
-        lng = 0;
-        if (poly.bounds.na) {
-            lat = poly.bounds.na.j;
-            lng = poly.bounds.na.l;
-        } else if (poly.bounds.ka) {
-            lat = poly.bounds.ka.g;
-            lng = poly.bounds.ka.h;
-        }
-
-        vertices.push({
-            lat: lat,
-            lng: lng
-        });
     } else if (poly.type == "polygon") {
 
         if (typeof google !== 'undefined') {
             vertices = poly.getPath();
         } else {
-            vertices = poly.path;
+            vertices = poly.paths;
         }
     } else {
 
-        if (typeof google !== 'undefined') {
-            vertices = poly.getPath();
-        } else {
+
+        if (poly.type == "polyline") {
+
             vertices = poly.path;
+        } else if (poly.type == "rectangle") {
+
+        } else {
+            if (typeof google !== 'undefined') {
+                vertices = poly.getPath();
+            } else {
+                vertices = poly.paths;
+            }
         }
+
     }
     for (var i = 0; i < vertices.length; i++) {
         if (poly.type == "rectangle") {

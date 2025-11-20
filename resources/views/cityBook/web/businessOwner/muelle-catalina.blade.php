@@ -135,6 +135,10 @@
             box-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
         }
 
+        span.badge.bg-secondary.popup-card__subcategory {
+            background-color: #445EF2 !important;
+        }
+
         .reticle__dot {
             position: absolute;
             width: 10px;
@@ -189,8 +193,8 @@
         }
 
         .popup-card__img {
-            width: 56px;
-            height: 56px;
+            width: 90px;
+            height: auto;
             object-fit: cover;
             border-radius: 8px;
         }
@@ -479,12 +483,6 @@
             align-items: center;
         }
 
-        .popup-card__img {
-            width: 56px;
-            height: 56px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
 
         .popup-card__title {
             margin: 0;
@@ -752,7 +750,6 @@
         crossorigin=""
     />
 
-
 @endsection
 
 @section('additional-scripts')
@@ -868,7 +865,14 @@
                 }
             }
         ];
-        console.log($dataManager)
+
+        function hasUploadsPath(url) {
+            let result = url.indexOf("/uploads/") !== -1;
+
+            return result;
+        }
+
+        var $itemsOtherDraw = [];
         if ($dataManager.allow) {
             let dataItemsMap =
                 getStructureRouteMap({
@@ -878,23 +882,53 @@
                 });
             let haystack = dataItemsMap.layers;
             let itemsSourcesAux = [];
+
             $.each(haystack, function (key, value) {
+                let isMarker = false;
+                let setPush = {
+                    id: value.id,
+                    title: value.title,
+                    subtitle: value.subtitle,
+                    description: value.content,
+                    position: null,
+                    sources: null,
+                    routes_map_id: value.routes_map_id,
+                    totem_category_code: value.totem_category_code,
+                    totem_category_id: value.totem_category_id,
+                    totem_category_name: value.totem_category_name,
+                    totem_subcategory_code: value.totem_subcategory_code,
+                    totem_subcategory_id: value.totem_subcategory_id,
+                    totem_subcategory_name: value.totem_subcategory_name,
+                    totem_subcategory_real_id: value.totem_subcategory_real_id,
+                };
                 if (value.type == "marker") {
+                    var srcCurrent = "";
                     let sources = {glb: null, img: null};
                     if (typeof value.dataSource.src_glb !== 'undefined') {
-                        sources.glb = value["dataSource"].src_glb;
+                        srcCurrent = value["dataSource"].src_glb;
+                        let isManagerSystem = hasUploadsPath(srcCurrent);
+                        if (isManagerSystem) {
+                            srcCurrent = window.$dataManagerPage?.['public-root'] + srcCurrent;
+                        }
+                        sources.glb = srcCurrent;
                     }
-                    sources.img = value["dataSource"].src;
-                    let setPush = {
-                        id: value.id,
-                        title: value.title,
-                        subtitle: value.subtitle,
-                        description: value.content,
-                        position: value.position,
-                        sources: sources
-                    };
+                    srcCurrent = value["dataSource"].src;
+                    let isManagerSystem = hasUploadsPath(srcCurrent);
+                    if (isManagerSystem) {
+                        srcCurrent = window.$dataManagerPage?.['public-root'] + srcCurrent;
+                    }
+                    sources.img = srcCurrent;
+                    setPush.sources = sources;
+                    setPush.position = value.position;
+
                     itemsSourcesAux.push(setPush);
+
+
+                } else {
+
+                    $itemsOtherDraw.push(value);
                 }
+
             });
             console.log("DOMContentLoaded (jQuery ready)");
             if (itemsSourcesAux.length > 0) {
@@ -902,6 +936,91 @@
                 itemsSources = itemsSourcesAux;
 
             }
+        }
+
+        function addRoutesDrawingToMap(map, drawings) {
+            if (!Array.isArray(drawings)) {
+                console.warn('drawings no es un array');
+                return;
+            }
+
+            drawings.forEach(function (item) {
+                var type = item.type; // "rectangle", "polygon", "polyline", etc.
+                var layer = null;
+
+                // Opciones comunes de estilo
+                var strokeColor = item.strokeColor || '#000000';
+                var strokeWeight = item.strokeWeight || 2;
+                var strokeOpacity = (typeof item.strokeOpacity !== 'undefined') ? item.strokeOpacity : 1;
+                var fillColor = item.fillColor || strokeColor;
+                var fillOpacity = (typeof item.fillOpacity !== 'undefined') ? item.fillOpacity : 0.2;
+
+                var baseOptions = {
+                    color: strokeColor,
+                    weight: strokeWeight,
+                    opacity: strokeOpacity
+                };
+
+                // RECTÁNGULO
+                if (type === 'rectangle' && item.bounds) {
+                    var b = item.bounds;
+                    // Leaflet espera [ [southLat, westLng], [northLat, eastLng] ]
+                    var southWest = L.latLng(b.south, b.west);
+                    var northEast = L.latLng(b.north, b.east);
+                    var bounds = L.latLngBounds(southWest, northEast);
+
+                    layer = L.rectangle(bounds, Object.assign({}, baseOptions, {
+                        fillColor: fillColor,
+                        fillOpacity: fillOpacity
+                    }));
+                }
+
+                // POLÍGONO
+                else if (type === 'polygon' && Array.isArray(item.paths)) {
+                    var latLngsPolygon = item.paths.map(function (p) {
+                        return L.latLng(parseFloat(p.lat), parseFloat(p.lng));
+                    });
+
+                    layer = L.polygon(latLngsPolygon, Object.assign({}, baseOptions, {
+                        fillColor: fillColor,
+                        fillOpacity: fillOpacity
+                    }));
+                }
+
+                // POLILÍNEA
+                else if (type === 'polyline' && Array.isArray(item.path)) {
+                    var latLngsLine = item.path.map(function (p) {
+                        return L.latLng(parseFloat(p.lat), parseFloat(p.lng));
+                    });
+
+                    layer = L.polyline(latLngsLine, baseOptions);
+                }
+
+                // Si no se reconoció el tipo o faltan datos, salimos
+                if (!layer) {
+                    console.warn('No se pudo crear layer para item id:', item.id, 'type:', type);
+                    return;
+                }
+
+                // 👉 Opcional: guardar meta-datos dentro del layer
+                layer._totemMeta = {
+                    id: item.id,
+                    rd_id: item.rd_id,
+                    routes_drawing_id: item.routes_drawing_id,
+                    routes_map_id: item.routes_map_id,
+                    totem_category_code: item.totem_category_code,
+                    totem_category_id: item.totem_category_id,
+                    totem_category_name: item.totem_category_name,
+                    totem_subcategory_code: item.totem_subcategory_code,
+                    totem_subcategory_id: item.totem_subcategory_id,
+                    totem_subcategory_name: item.totem_subcategory_name,
+                    title: item.title,
+                    subtitle: item.subtitle,
+                    content: item.content
+                };
+                // 👉 Agregar al mapa
+                layer.addTo(map);
+            });
         }
 
         function getStructureRouteMap(params) {
@@ -922,7 +1041,15 @@
                     var rd_id = value["rd_id"];
                     var routes_drawing_id = value["routes_drawing_id"];
                     var rd_subtitle = value["rd_subtitle"];
+                    var routes_map_id = value["routes_map_id"];
+                    var totem_category_code = value["totem_category_code"];
 
+                    var totem_category_id = value["totem_category_id"];
+                    var totem_category_name = value["totem_category_name"];
+                    var totem_subcategory_code = value["totem_subcategory_code"];
+                    var totem_subcategory_id = value["totem_subcategory_id"];
+                    var totem_subcategory_name = value["totem_subcategory_name"];
+                    var totem_subcategory_real_id = value["totem_subcategory_real_id"];
 
                     var setPush = null;
                     var options = jQuery.parseJSON(value["rd_options_type"]);
@@ -933,7 +1060,16 @@
                         id: id,
                         rd_id: rd_id,
                         routes_drawing_id: routes_drawing_id,
-                        subtitle: rd_subtitle
+                        subtitle: rd_subtitle,
+                        routes_map_id: routes_map_id,
+                        totem_category_code: totem_category_code,
+                        totem_category_id: totem_category_id,
+                        totem_category_name: totem_category_name,
+                        totem_subcategory_code: totem_subcategory_code,
+                        totem_subcategory_id: totem_subcategory_id,
+                        totem_subcategory_name: totem_subcategory_name,
+                        totem_subcategory_real_id: totem_subcategory_real_id,
+
                     });
 
                     var path = [];
@@ -3034,6 +3170,102 @@
                 this.byId = {};
             }
 
+            initDrawOther(drawings) {
+                let map = this.map;
+                if (!Array.isArray(drawings)) {
+                    console.warn('drawings no es un array');
+                    return;
+                }
+
+                drawings.forEach(function (item) {
+                    var type = item.type; // "rectangle", "polygon", "polyline", etc.
+                    var layer = null;
+
+                    // Opciones comunes de estilo
+                    var strokeColor = item.strokeColor || '#000000';
+                    var strokeWeight = item.strokeWeight || 2;
+                    var strokeOpacity = (typeof item.strokeOpacity !== 'undefined') ? item.strokeOpacity : 1;
+                    var fillColor = item.fillColor || strokeColor;
+                    var fillOpacity = (typeof item.fillOpacity !== 'undefined') ? item.fillOpacity : 0.2;
+
+                    var baseOptions = {
+                        color: strokeColor,
+                        weight: strokeWeight,
+                        opacity: strokeOpacity
+                    };
+
+                    // RECTÁNGULO
+                    if (type === 'rectangle' && item.bounds) {
+                        var b = item.bounds;
+                        // Leaflet espera [ [southLat, westLng], [northLat, eastLng] ]
+                        var southWest = L.latLng(b.south, b.west);
+                        var northEast = L.latLng(b.north, b.east);
+                        var bounds = L.latLngBounds(southWest, northEast);
+
+                        layer = L.rectangle(bounds, Object.assign({}, baseOptions, {
+                            fillColor: fillColor,
+                            fillOpacity: fillOpacity
+                        }));
+                    }
+
+                    // POLÍGONO
+                    else if (type === 'polygon' && Array.isArray(item.paths)) {
+                        var latLngsPolygon = item.paths.map(function (p) {
+                            return L.latLng(parseFloat(p.lat), parseFloat(p.lng));
+                        });
+
+                        layer = L.polygon(latLngsPolygon, Object.assign({}, baseOptions, {
+                            fillColor: fillColor,
+                            fillOpacity: fillOpacity
+                        }));
+                    }
+
+                    // POLILÍNEA
+                    else if (type === 'polyline' && Array.isArray(item.path)) {
+                        var latLngsLine = item.path.map(function (p) {
+                            return L.latLng(parseFloat(p.lat), parseFloat(p.lng));
+                        });
+
+                        layer = L.polyline(latLngsLine, baseOptions);
+                    }
+
+                    // Si no se reconoció el tipo o faltan datos, salimos
+                    if (!layer) {
+                        console.warn('No se pudo crear layer para item id:', item.id, 'type:', type);
+                        return;
+                    }
+
+                    // 👉 Opcional: guardar meta-datos dentro del layer
+                    layer._totemMeta = {
+                        id: item.id,
+                        rd_id: item.rd_id,
+                        routes_drawing_id: item.routes_drawing_id,
+                        routes_map_id: item.routes_map_id,
+                        totem_category_code: item.totem_category_code,
+                        totem_category_id: item.totem_category_id,
+                        totem_category_name: item.totem_category_name,
+                        totem_subcategory_code: item.totem_subcategory_code,
+                        totem_subcategory_id: item.totem_subcategory_id,
+                        totem_subcategory_name: item.totem_subcategory_name,
+                        title: item.title,
+                        subtitle: item.subtitle,
+                        content: item.content
+                    };
+
+                    // 👉 Popup básico usando título, subcategoría y contenido
+                    var popupHtml = '<strong>' + (item.title || '') + '</strong><br>' +
+                        '<em>' + (item.subtitle || '') + '</em><br>' +
+                        (item.totem_category_name ? ('<br><b>Categoria:</b> ' + item.totem_category_name) : '') +
+                        (item.totem_subcategory_name ? ('<br><b>Subcategoria:</b> ' + item.totem_subcategory_name) : '') +
+                        (item.content ? ('<br><br>' + item.content) : '');
+
+                    //   layer.bindPopup(popupHtml);
+
+                    // 👉 Agregar al mapa
+                    layer.addTo(map);
+                });
+            }
+
             init(items) {
                 this.map = L.map('map', {zoomControl: true}).setView(this.cfg.position, this.cfg.zoom);
                 L.tileLayer(this.cfg.tileUrl, {
@@ -3088,6 +3320,7 @@
   <header class="popup-card__header">
     <img class="popup-card__img" src="${item.sources.img}" alt="${item.title}" loading="lazy">
     <div class="popup-card__titles ">
+       <span class="badge bg-secondary popup-card__subcategory">Totem-${item.totem_subcategory_name}</span>
       <h4 class="popup-card__title color-primary--title">${item.title}</h4>
       <p class="popup-card__subtitle color-secondary--title">${item.subtitle}</p>
     </div>
@@ -3658,6 +3891,7 @@
                 window.Viewer = new ViewerOrchestrator();
                 const mapCtl = new MapController({});
                 initPreCache({mapCtl: mapCtl});
+                mapCtl.initDrawOther($itemsOtherDraw);
                 DeviceEvents.attach();
 
                 UI.$reticle?.addEventListener('click', async () => {
@@ -3763,7 +3997,7 @@
     $descriptinoChaquiñan = "La Ruta Sagrada del Muelle Catalina es un recorrido temático, turístico y cultural que conecta los puntos más emblemáticos del territorio de Imbabura. En esta travesía, viajeros y familias se acercan a los espíritus protectores de la laguna y las montañas, descubriendo paisajes ancestrales, actividades deportivas, historias vivas y experiencias de contacto con la naturaleza.\r\n\r\nLa ruta integra montañismo, senderismo, fotografía, historia, espiritualidad andina y observación paisajística, guiando a los visitantes desde la serenidad del Muelle Catalina hasta la grandeza de Taita Imbabura, la magia de las lagunas y la fuerza ceremonial del Lechero.\r\n\r\nEs una experiencia diseñada para educar, inspirar y conectar, ideal para turistas, deportistas, familias y estudiantes.";
     $companyName = "Meetclic";
     $sourceChaquiñan = 'https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png';
-$phone_value="0985339457";
+    $phone_value = "0985339457";
 
     // Asegúrate de que el número esté en formato internacional sin "+"
     $phone = preg_replace('/\D+/', '', $phone_value);
@@ -3772,10 +4006,10 @@ $phone_value="0985339457";
     $whatsappMessage = 'Hola, me interesa obtener más información sobre su empresa ,esta informacion es desde la ruta ';
     if ($dataManager["allow"]) {
         $sourceChaquiñanBusiness = URL::asset($resourcePathServer . $dataManager["business"]["business"][0]["source"]);
-        $sourceChaquiñan =  URL::asset($resourcePathServer .$dataManager["dataRoute"]["information"]["src"]);
+        $sourceChaquiñan = URL::asset($resourcePathServer . $dataManager["dataRoute"]["information"]["src"]);
 
-        $companyName =  $dataManager["business"]["business"][0]["business_name"];
-        $phone_value =  $dataManager["business"]["business"][0]["phone_value"];
+        $companyName = $dataManager["business"]["business"][0]["business_name"];
+        $phone_value = $dataManager["business"]["business"][0]["phone_value"];
         $whatsappMessage = "Hola, vi {$companyName} en MeetClic y me gustaría más información 🙌";
 
         $titleChaquiñan = $dataManager["dataRoute"]["information"]["name"];
@@ -3821,22 +4055,27 @@ $phone_value="0985339457";
         </div>
 
         <div class="company-panel__body">
-            <div class="company-panel__section company-panel__section--stats">
-                <div class="stats company-panel__stats">
-                    <div class="stat company-panel__stat">
-                        <span class="stat__label company-panel__stat-label">Tótems turísticos</span>
-                        <span class="stat__value company-panel__stat-value" id="statTourism">5</span>
-                    </div>
-                    <div class="stat company-panel__stat">
-                        <span class="stat__label company-panel__stat-label">Tótems deportivos</span>
-                        <span class="stat__value company-panel__stat-value" id="statSports">2</span>
-                    </div>
-                    <div class="stat company-panel__stat">
-                        <span class="stat__label company-panel__stat-label">Tótems geológicos</span>
-                        <span class="stat__value company-panel__stat-value" id="statGeo">3</span>
+            @if(    ($dataManager["allow"]))
+                {!! $dataManager["dataRoute"]["routesDrawingGroupHtml"]!!}
+            @else
+                <div class="company-panel__section company-panel__section--stats">
+                    <div class="stats company-panel__stats">
+                        <div class="stat company-panel__stat">
+                            <span class="stat__label company-panel__stat-label">Tótems turísticos</span>
+                            <span class="stat__value company-panel__stat-value" id="statTourism">5</span>
+                        </div>
+                        <div class="stat company-panel__stat">
+                            <span class="stat__label company-panel__stat-label">Tótems deportivos</span>
+                            <span class="stat__value company-panel__stat-value" id="statSports">2</span>
+                        </div>
+                        <div class="stat company-panel__stat">
+                            <span class="stat__label company-panel__stat-label">Tótems geológicos</span>
+                            <span class="stat__value company-panel__stat-value" id="statGeo">3</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
 
             <div class="company-panel__section company-panel__section--description">
                 <h3 class="color-primary--title company-panel__subtitle">Descripción</h3>

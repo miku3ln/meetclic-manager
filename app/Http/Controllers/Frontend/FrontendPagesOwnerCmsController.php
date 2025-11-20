@@ -45,6 +45,12 @@ class FrontendPagesOwnerCmsController extends Controller
             $dataBusiness = $model->getBusinessData(array("id" => $business_id));
             $modelRMBRD = new RoutesMapByRoutesDrawing();
             $routes_drawing_data = $modelRMBRD->getRoutesDrawing(array("routes_map_id" => $routes_map_id));
+            $routesDrawingGroup = $modelRMBRD->getRoutesDrawingGroupedBySubcategory(["rows" => $routes_drawing_data]);
+            $routesDrawingGroupHtml = $modelRMBRD->getRoutesDrawingStatsHtml(["grouped" => $routesDrawingGroup]);
+
+
+
+
             $business_by_routes_map_id = $id;
             $modelRMBAT = new RouteMapByAdventureTypes();
             $adventure_type_data = $modelRMBAT->getAdventureTypes(array("business_by_routes_map_id" => $business_by_routes_map_id));
@@ -62,18 +68,19 @@ class FrontendPagesOwnerCmsController extends Controller
                     'state' => $modelManager::STATE_ACTIVE,
                     'main' => $modelManager::MAIN,
                     'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
-                //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
                     'entity_id' => $entity_id,
                 ]
             ]);
             $dataRoute = array(
                 "information" => $information,
-                'socialNetwork'=>$resultCurrentData,
+                'socialNetwork' => $resultCurrentData,
                 "routes_drawing_data" => $routes_drawing_data,
-                "adventure_type_data" => $adventure_type_data
+                "routesDrawingGroup" => $routesDrawingGroup,
+                "adventure_type_data" => $adventure_type_data,
+                "routesDrawingGroupHtml"=>$routesDrawingGroupHtml
             );
         }
-
 
 
         return view('cityBook.web.businessOwner.muelle-catalina', [
