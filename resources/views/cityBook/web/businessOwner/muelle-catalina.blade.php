@@ -872,6 +872,17 @@
             return result;
         }
 
+        function pathTieneArchivo(path) {
+            // Quita posibles "/" del final
+            path = path.replace(/\/+$/, '');
+
+            const partes = path.split('/');
+            const ultimo = partes[partes.length - 1];
+
+            // Si el último fragmento tiene un punto, asumimos que es archivo
+            return ultimo.includes('.');
+        }
+
         var $itemsOtherDraw = [];
         if ($dataManager.allow) {
             let dataItemsMap =
@@ -882,7 +893,7 @@
                 });
             let haystack = dataItemsMap.layers;
             let itemsSourcesAux = [];
-
+            var defaultMarker = "/wulpy/developers/assets/images/markers/excursiones.png";
             $.each(haystack, function (key, value) {
                 let isMarker = false;
                 let setPush = {
@@ -908,6 +919,10 @@
                         srcCurrent = value["dataSource"].src_glb;
                         let isManagerSystem = hasUploadsPath(srcCurrent);
                         if (isManagerSystem) {
+                            let existData = pathTieneArchivo(srcCurrent);
+                            if (!existData) {
+                                srcCurrent = defaultMarker;
+                            }
                             srcCurrent = window.$dataManagerPage?.['public-root'] + srcCurrent;
                         }
                         sources.glb = srcCurrent;
@@ -915,6 +930,10 @@
                     srcCurrent = value["dataSource"].src;
                     let isManagerSystem = hasUploadsPath(srcCurrent);
                     if (isManagerSystem) {
+                        let existData = pathTieneArchivo(srcCurrent);
+                        if (!existData) {
+                            srcCurrent = defaultMarker;
+                        }
                         srcCurrent = window.$dataManagerPage?.['public-root'] + srcCurrent;
                     }
                     sources.img = srcCurrent;
@@ -3159,6 +3178,7 @@
          * Mapa (Leaflet)
          * ========================================================================== */
         class MapController {
+
             constructor(cfg) {
                 this.cfg = Object.assign({
                     zoom: 14, maxZoom: 25, position: [0.20830, -78.22798],
@@ -3168,6 +3188,28 @@
                 this.map = null;
                 this.layer = null;
                 this.byId = {};
+                this.appMapConfig = {
+                    zoom: {
+                        WORLD: 0,          // Vista del planeta
+                        CONTINENT: 2,      // Vista continental
+                        COUNTRY: 5,        // País / región
+                        CITY: 10,          // Ciudad
+
+                        CITY_DETAIL: 12,   // Ciudad con buenas calles
+                        NEIGHBORHOOD: 14,  // Barrios
+                        STREET: 16,        // Vista de calles
+                        HOUSE: 17,         // Casas (zoom recomendado)
+                        BUILDING: 18,      // Muy cerca
+                        MAX: 19            // Máximo recomendado por OSM
+                    },
+
+                    flyOptions: {
+                        FAST: { duration: 0.35 },
+                        NORMAL: { duration: 0.7 },
+                        SLOW: { duration: 1.2 }
+                    }
+                };
+
             }
 
             initDrawOther(drawings) {
@@ -3279,7 +3321,8 @@
                     this._bindPopup(e);
                     const mk = e.popup._source;
                     if (mk) {
-                        requestAnimationFrame(() => this.map.flyTo(mk.getLatLng(), Math.max(this.cfg.zoom, 17), {duration: 0.35}));
+                        console.log("popupopen");
+                        requestAnimationFrame(() => this.map.flyTo(mk.getLatLng(),  this.appMapConfig.zoom.BUILDING, {duration: 0.35}));
                     }
                 });
             }
@@ -3299,8 +3342,15 @@
                         .bindPopup(this._popupHTML(it), {maxWidth: 320, autoPan: true, keepInView: true});
                     mk.addTo(this.layer);
                     mk.on('click', () => {
-                        this.map.flyTo(mk.getLatLng(), Math.max(this.cfg.zoom, 17), {duration: 0.35});
-                        mk.openPopup();
+                     let currentZoom=   this.map.getZoom();
+                        console.log("click mk",currentZoom);
+                        let setZoom=this.appMapConfig.zoom.BUILDING;
+                        this.map.flyTo(
+                            mk.getLatLng(),
+                            setZoom,   // usa el zoom actual del mapa
+                            { duration: 0.35 }    // segundo parámetro son las options
+                        );
+                    //    mk.openPopup();
                     });
                     this.byId[it.id] = mk;
                     bounds.push([it.position.lat, it.position.lng]);
@@ -3347,6 +3397,8 @@
                 centerBtn?.addEventListener('click', (ev) => {
                     ev.preventDefault();
                     const id = centerBtn.getAttribute('data-id');
+                    console.log("click centerBtn");
+
                     this.flyTo(id);
                 }, {once: true});
 
@@ -3386,7 +3438,9 @@
                 const mk = this.byId[id];
                 if (!mk) return;
                 const ll = mk.getLatLng();
-                this.map.flyTo(ll, zoom, {duration: 0.35});
+                console.log("click flyTo");
+
+                this.map.flyTo(ll,  this.appMapConfig.zoom.BUILDING, {duration: 0.35});
                 mk.openPopup();
             }
         }

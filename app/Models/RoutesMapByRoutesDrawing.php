@@ -139,13 +139,13 @@ class RoutesMapByRoutesDrawing extends Model
             $labelParts = array();
 
             if ($totemCategoryName !== '') {
-                $labelParts[] = $totemCategoryName;
+                //$labelParts[] = $totemCategoryName;
             }
             if ($totemSubcategoryName !== '') {
                 $labelParts[] = $totemSubcategoryName;
             }
 
-            $labelText = 'Tótems';
+            $labelText = 'Tótem'.($count>1?"s":"");
             if (!empty($labelParts)) {
                 $labelText .= ' ' . implode(' – ', $labelParts);
             }
