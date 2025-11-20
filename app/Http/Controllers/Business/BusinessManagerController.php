@@ -17,6 +17,8 @@ use App\Models\PeopleTypeIdentification as PeopleTypeIdentification;
 use App\Models\Repair;
 use App\Models\RucType as RucType;
 use App\Models\TaxByBusiness;
+use App\Models\Routes\RoutesTotemSubcategories;
+
 use App\Utils\BusinessManager;
 use App\Utils\BusinessMenu;
 use App\Utils\Util;
@@ -184,7 +186,13 @@ class BusinessManagerController extends BusinessBaseController
                         )
                     ];
 
+                    if ($typeManager == 'managerRoutes') {
+                        $modelSubcategories = new RoutesTotemSubcategories();
+                        $subcategoriesTotems = $modelSubcategories->getSubcategoriesHtmlDrop();
+                        $paramsSend['subcategoriesTotemsDataHtml'] = $subcategoriesTotems;
 
+
+                    }
                     if ($typeManager == 'managerProduct') {
 
 
@@ -295,7 +303,7 @@ class BusinessManagerController extends BusinessBaseController
                         $modelCurrentManager = new \App\Models\ProsecutorOffice\SecretaryProcessesByCustomerPresentation();
                         $generateEntityNames = $modelCurrentManager->generateEntityNames();
                         $configProcess = $generateEntityNames;
-                        $configProcess['data'] = [ 'stateData' => $modelCurrentManager->getStatesData()]      ;
+                        $configProcess['data'] = ['stateData' => $modelCurrentManager->getStatesData()];
 
 
                         $modelPTI = new \App\Models\PeopleTypeIdentification();
@@ -432,6 +440,9 @@ class BusinessManagerController extends BusinessBaseController
                     $paramsSend['menuConfigByRole'] = $menuConfigByRole;
                     $paramsSend['configProcess'] = $configProcess;
                     $paramsSend['allowPlugins'] = $allowPlugins;
+
+
+
                     return view($renderView, $paramsSend);
                 } else {
                     if ($allowViewsResult['typeError'] == '404') {

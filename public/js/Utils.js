@@ -8,6 +8,7 @@ var $managerTitlesProcess = {
             'file_glb': 'Archivo Modelo',
             'file_src': 'Imagen',
             'allowSource': 'Permitir Recursos?',
+            'subcategory': 'Tipo de Totem',
 
         },
         'colors': {
@@ -367,7 +368,6 @@ function addRowBootgrid(element_obj, $row) {
 }
 
 
-
 function _gridManager(elementSelect) {
     var vmCurrent = this;
     var selectorGrid = vmCurrent.gridConfig.selectorCurrent;
@@ -583,21 +583,23 @@ var $methodsFormValid = {
 };
 
 var $methodsManagerProcess = {
-    viewProcessButton:viewProcessButton,
+    viewProcessButton: viewProcessButton,
 
 };
-function viewProcessButton(params){
-    var allowView=false;
-    var haystack=this. configModelEntity.buttonsProcess;
+
+function viewProcessButton(params) {
+    var allowView = false;
+    var haystack = this.configModelEntity.buttonsProcess;
     $.each(haystack, function (key, value) {
-        if(value.type==params.type){
-            allowView=true;
+        if (value.type == params.type) {
+            allowView = true;
         }
     });
 
     return allowView;
 
 }
+
 var $shareManager = {
     getDataShare: $getDataShare,
     _shareType: $_shareType,
@@ -1633,7 +1635,7 @@ function UtilMenu(componentCurrent) {
     var UploadUtil = function () {
         (this.$body = $("body")), (this.$window = $(window)), (this.types = []);
         this.typesImages = ["image/png", "image/jpeg", "image/svg+xml"];
-        this.typesImagesIcon = ["image/x-icon","image/png", "image/jpeg", "image/svg+xml"];
+        this.typesImagesIcon = ["image/x-icon", "image/png", "image/jpeg", "image/svg+xml"];
 
         this.progress_bar_selector = "";
     };
@@ -1930,9 +1932,9 @@ function ajaxRequestManager(url, params, hasFileUpload) {
         error: function (data) {
 
             blockElement ? unblockContainerManager({selector: blockElement}) : unblockPageManager();
-            if(data.status==500){
+            if (data.status == 500) {
                 showAlertManager({type: 'error', message: data.responseJSON.message});
-            }else{
+            } else {
                 //Error messages from server
                 if (data.hasOwnProperty('status') && data.hasOwnProperty('message')) {
                     showAlertManager({type: 'error', message: data.message});

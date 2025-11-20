@@ -452,6 +452,8 @@ var routesComponent = Vue.component('routes-component', {
                     var base = `items[${index}]`;
                     if (item.id != null) {
                         dataSend[`${base}[id]`] = item.id;
+                    }else{
+                        dataSend[`${base}[index]`] = index;
                     }
                     if (item.rd_id != null) {
                         dataSend[`${base}[rd_id]`] = item.rd_id;

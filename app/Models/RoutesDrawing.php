@@ -28,12 +28,16 @@ class RoutesDrawing extends Model
 
     protected $table = 'routes_drawing';
 
-    protected $fillable = array('type', 'name', 'description', 'options_type','subtitle','src','src_glb');
+    protected $fillable = array('type', 'name', 'description', 'options_type','subtitle','src','src_glb','totem_subcategory_id');
 
     public $timestamps = false;
 
     public function routesMapByRoutes()
     {
         return $this->belongsTo(RoutesMapByRoutesDrawing::class, 'routes_map_id','routes_drawing_id');
+    }
+    public function totemSubcategory()
+    {
+        return $this->belongsTo(RoutesMapByRoutesDrawing::class, 'totem_subcategory_id');
     }
 }

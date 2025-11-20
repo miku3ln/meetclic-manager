@@ -465,8 +465,8 @@ var BlitzMap = new function () {
 
         }
         content += '</div><div style="position:relative; bottom:0px;"><input type="button" value="Delete" class="BlitzMapInfoWindow_button" onclick="BlitzMap.deleteOverlay()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;" title"Delete selected shape">&nbsp;&nbsp;'
-            + '<input type="button" value="OK" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
-            + '<input type="button" value="Cancel" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
+            + '<input type="button" value="OK" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow({type:overlay.type ,typeButton:0})" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
+            + '<input type="button" value="Cancel" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow({type:overlay.type ,typeButton:-1})" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
             + '<div style="clear:both;"></div>'
             + '<input type="button" id="BlitzMapInfoWindow_toggle" title="Manage Colors and Styles" onclick="BlitzMap.toggleStyleEditor();return false;" style="border:0;float:right;margin-top:5px;cursor:pointer;background-color:#fff;color:#2883CE;font-family:Arial;font-size:12px;text-align:right;" value="Customize Colors&gt;&gt;" />';
         +'<div style="clear:both;"></div>';
@@ -494,9 +494,17 @@ var BlitzMap = new function () {
         infWindow.close();
     }
 
-    this.closeInfoWindow = function () {
-        this.updateOverlay();
-        infWindow.close();
+    this.closeInfoWindow = function (params) {
+        let {type, typeButton} = params;
+
+
+        if (typeButton == 1) {
+            this.updateOverlay({type:type});
+            infWindow.close();
+        }
+        if (typeButton == -1) {
+            infWindow.close();
+        }
     }
 
     this.updateOverlay = function () {
@@ -1103,12 +1111,12 @@ var BlitzMap = new function () {
 google.maps.event.addDomListener(window, "load", BlitzMap.init);
 
 
-  
-  
-  
-  
 
-  
 
-	
+
+
+
+
+
+
 

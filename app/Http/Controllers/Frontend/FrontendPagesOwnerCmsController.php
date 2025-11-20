@@ -53,8 +53,22 @@ class FrontendPagesOwnerCmsController extends Controller
             if ($modelInformation) {
                 $information = $modelInformation->getAttributes();
             }
+
+
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
             $dataRoute = array(
                 "information" => $information,
+                'socialNetwork'=>$resultCurrentData,
                 "routes_drawing_data" => $routes_drawing_data,
                 "adventure_type_data" => $adventure_type_data
             );

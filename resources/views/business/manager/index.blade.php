@@ -722,6 +722,8 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
         var $managerProcessBusiness = $menuConfigManager.managerProcessBusiness;
         var $configProcess =<?php echo json_encode($configProcess) ?>;
 
+        var $subcategoriesTotemsDataHtml ='<?php echo isset($subcategoriesTotemsDataHtml)?$subcategoriesTotemsDataHtml:'' ?>';
+
 
     </script>
 

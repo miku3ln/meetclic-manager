@@ -1878,6 +1878,7 @@ function getLayersMap(params) {//TODO CHASQUI-MANAGEMENT
         tmpOverlay.type = haystack[i].type;
         tmpOverlay.title = haystack[i].title;
         tmpOverlay.content = haystack[i].content;
+        tmpOverlay.title = haystack[i].title;
 
         if (haystack[i]["id"]) {
             tmpOverlay.id = haystack[i]["id"];
@@ -1914,6 +1915,7 @@ function getLayersMap(params) {//TODO CHASQUI-MANAGEMENT
         }
 
         if (haystack[i].type == "polygon") {
+            tmpOverlay.totem_subcategory_id = mapOverlays[i].totem_subcategory_id;
             tmpOverlay.paths = new Array();
             paths = haystack[i].getPaths();
             for (var j = 0; j < paths.length; j++) {
@@ -1934,6 +1936,7 @@ function getLayersMap(params) {//TODO CHASQUI-MANAGEMENT
                 }
             }
         } else if (haystack[i].type == "polyline") {
+            tmpOverlay.totem_subcategory_id = mapOverlays[i].totem_subcategory_id;
             tmpOverlay.path = new Array();
             path = haystack[i].getPath();
             for (var j = 0; j < path.length; j++) {
@@ -1949,12 +1952,14 @@ function getLayersMap(params) {//TODO CHASQUI-MANAGEMENT
                 };
             }
         } else if (haystack[i].type == "circle") {
+            tmpOverlay.totem_subcategory_id = mapOverlays[i].totem_subcategory_id;
             tmpOverlay.center = {
                 lat: haystack[i].getCenter().lat(),
                 lng: haystack[i].getCenter().lng()
             };
             tmpOverlay.radius = haystack[i].radius;
         } else if (haystack[i].type == "rectangle") {
+            tmpOverlay.totem_subcategory_id = mapOverlays[i].totem_subcategory_id;
             tmpOverlay.bounds = {
                 sw: {
                     lat: haystack[i]
@@ -1985,9 +1990,9 @@ function getLayersMap(params) {//TODO CHASQUI-MANAGEMENT
 
             tmpOverlay.file_glb = mapOverlays[i].file_glb;//TODO CHASQUI-MANAGEMENT
             tmpOverlay.file_src = mapOverlays[i].file_src;
-            tmpOverlay.subtitle = mapOverlays[i].subtitle;
-
+            tmpOverlay.totem_subcategory_id = mapOverlays[i].totem_subcategory_id;
         }
+
         result.push(tmpOverlay);
     }
 

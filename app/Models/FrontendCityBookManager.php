@@ -34,9 +34,7 @@ class FrontendCityBookManager extends ModelManager
         $paramsRequest = $params['paramsRequest'];
         $language = $paramsRequest['language'];
         $resultPageData = $this->modelFMD->getPageData($params);
-
         $modelCategories = FrontendPageSections::PROJECT_TYPE_EVENT ? new EventsTrailsTypes() : new ProductCategory();
-        $modelB = new Business();
         $allowTemplate = $resultPageData['allowTemplate'];
         $template_information_id = $resultPageData['template_information_id'];
         $entity_id = $resultPageData['entity_id'];

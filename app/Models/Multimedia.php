@@ -148,6 +148,7 @@ class Multimedia extends Model
         $type = isset($params["type"]) ? $params["type"] : "image";
         $mines = "";
         if (isset($params["mines"])) {
+
             $mines = $params["mines"];
         } else {
             if ($type == "image") {
@@ -183,6 +184,11 @@ class Multimedia extends Model
 
             ];
         }
+        if ($file->getMimeType() == 'model/gltf-binary') {
+            $rules = [
+                'file' => 'required|max:' . $max
+            ];
+        }
 
         $validation = Validator::make($fileArray, $rules);
         $nameImage = null;
@@ -204,7 +210,7 @@ class Multimedia extends Model
             $className = "alert-success";
             $success = $uploadedImageData["success"];
         } else {
-            $message = "Resource Not Upload";
+            $message = "Resource Not Upload ";
             $errors = $validation->errors()->all();
 
             foreach ($errors as $key => $value) {

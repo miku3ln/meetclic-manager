@@ -898,6 +898,7 @@ function UtilBlitzMap(paramsConfig) {
         dataLayers = mapOverlays;
 
         _this._layerMap(event.overlay);
+        console.log("overlayDone");
         _this.openInfowindow(event.overlay, _this.getShapeCenter(event.overlay), _this.getEditorContent(event.overlay));
     }
 
@@ -920,6 +921,8 @@ function UtilBlitzMap(paramsConfig) {
         google.maps.event.addListener(overlay, "click", function (clkEvent) {
             var infContent = "";
             if (isEditable) {
+                console.log("_layerMap");
+
                 infContent = _this.getEditorContent(overlay);
 
             } else {
@@ -974,25 +977,113 @@ function UtilBlitzMap(paramsConfig) {
         var t = overlay.get('fillColor');
         infWindow.open(mapObj);
     }
+    this.managerChangeFiles = function (fileChange, currentInput) {
+        var {overlays} = _this.mapToObject();
+        let resultSearch = _this.findDataLayerById(overlays, infWindow.relatedOverlay.id);
+        let file_current = resultSearch.item.file_glb;
+        let isChange = "0";
+        if (file_current !== fileChange) {
+            isChange = "1";
+        }
+        currentInput.setAttribute('is-change', isChange);
+        currentInput.setAttribute('is-type-init', '1');
 
+
+    }
+    this.initFileInputsOnce = function () {//TODO CHASQUI-MANAGEMENT
+
+
+        setTimeout(function () {
+            const glbInput = document.getElementById('BlitzMapInfoWindow_file_glb');
+            const srcInput = document.getElementById('BlitzMapInfoWindow_file_src');
+            glbInput.addEventListener('change', function () {
+                var currentInput = glbInput;
+                let files = this.files;
+
+                let fileChange = null;
+                if (files.length > 0) {
+                    fileChange = files[0];
+                    currentInput.setAttribute('is-file', '1');
+                } else {
+                    currentInput.setAttribute('is-file', '0');
+                }
+                _this.managerChangeFiles(fileChange, currentInput);
+
+            });
+
+            srcInput.addEventListener('change', function () {
+                var currentInput = srcInput;
+                let files = this.files;
+                let fileChange = null;
+                if (files.length > 0) {
+                    fileChange = files[0];
+                    currentInput.setAttribute('is-file', '1');
+                } else {
+                    currentInput.setAttribute('is-file', '0');
+                }
+                _this.managerChangeFiles(fileChange, currentInput);
+
+            });
+
+
+        }, 5000);
+    }
     this.getEditorContent = function (overlay) {//TODO CHASQUI-MANAGEMENT
         console.log("getEditorContent", overlay);
+        let valuesCurrent = _this.mapToObject();
+        var {overlays} = valuesCurrent;
         var managerColors = '<input type="button" id="BlitzMapInfoWindow_toggle" title="Manage Colors and Styles" onclick="BlitzMap.toggleStyleEditor();return false;" style="border:0;float:right;margin-top:5px;cursor:pointer;background-color:#fff;color:#2883CE;font-family:Arial;font-size:12px;text-align:right;" value="Customize Colors&gt;&gt;" />';
+        const subtitle = overlay.subtitle || "";
         let inputLoadSources = [];
         let inputSubtitle = [];
-
-        if (overlay.type == 'marker') {
+        let inputType = [];
+        let selectedId = overlay.totem_subcategory_id;
+        if (['marker', 'polygon', 'circle', 'rectangle'].includes(overlay.type)) {
+            inputType = [' <div style="padding-bottom:3px;">',
+                $managerTitlesProcess.popupManagerGoogleMaps.details.subcategory,
+                '&nbsp;&nbsp;<span class="form__label--required">*</span>', $subcategoriesTotemsDataHtml, '</div>'];
             inputSubtitle = [
-                '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.subtitle + '&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_subtitle" value="' + overlay.subtitle + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
 
-            ];
+                ' <div style="padding-bottom:3px;">',
+                $managerTitlesProcess.popupManagerGoogleMaps.details.subtitle,
+                '&nbsp;&nbsp;<span class="form__label--required">*</span><input type="text" id="BlitzMapInfoWindow_subtitle" value="' + subtitle + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'];
+        }
+        if (overlay.type == 'marker') {
+            let isFileSrc = 0;
+            let currentSrcName = "";
+            let isFileSrcGLB = 0;
+            let currentSrcGLBName = "";
+            let currentSrcUrl = "";
+            let currentSrcGLBUrl = "";
+
+            if (overlay.file_src) {
+                if (overlay.file_src instanceof File) {
+                    isFileSrc = 1;
+                    currentSrcName = overlay.file_src.name;
+                } else if (typeof overlay.file_src === "string") {
+                    currentSrcUrl = overlay.file_src;
+                    currentSrcName = "Actualizacion de Datos.";
+                }
+            }
+            if (overlay.file_glb) {
+                if (overlay.file_src instanceof File) {
+                    isFileSrcGLB = 1;
+                    currentSrcGLBName = overlay.file_glb.name;
+                } else if (typeof overlay.file_glb === "string") {
+                    currentSrcGLBUrl = overlay.file_glb;
+                    currentSrcGLBName = "Actualizacion de Datos.";
+                }
+            }
+
             inputLoadSources = [
-                '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.file_glb + '&nbsp;&nbsp;' +
-                '    <input accept=".glb" type="file" id="BlitzMapInfoWindow_file_glb" value="' + overlay.file_glb + '" style="border:2px solid #dddddd;width:150px;padding:3px;" >' +
+                '<div style="padding-bottom:3px;">',
+                $managerTitlesProcess.popupManagerGoogleMaps.details.file_glb + '&nbsp;&nbsp;<span class="form__label--required">*</span>',
+                '     <input   is-file="' + isFileSrcGLB + '" is-change="0" is-type-init="0" accept=".glb" type="file" id="BlitzMapInfoWindow_file_glb" value="' + currentSrcGLBUrl + '" style="border:2px solid #dddddd;width:150px;padding:3px;" >',
                 '</div>',
-                '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.file_src + '&nbsp;&nbsp;' +
-                '    <input accept=".jpg,.jpeg,.png" type="file" id="BlitzMapInfoWindow_file_src" value="' + overlay.file_src + '" style="border:2px solid #dddddd;width:150px;padding:3px;" >' +
-                '</div>',
+                '<div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.file_src + '&nbsp;&nbsp;<span class="form__label--required">*</span>',
+                '   <input  is-file="' + isFileSrc + '" is-change="0" is-type-init="0" accept=".jpg,.jpeg,.png" type="file" id="BlitzMapInfoWindow_file_src" value="' + currentSrcUrl + '" style="border:2px solid #dddddd;width:150px;padding:3px;">',
+                '</div>'
+
             ];
         }
         var content = '<style>'
@@ -1003,9 +1094,10 @@ function UtilBlitzMap(paramsConfig) {
 
             + '<form style="height:100%"><div id="BlitzMapInfoWindow_container" style="height:100%">'
             + '<div id="BlitzMapInfoWindow_details">'
-            + '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.title + '&nbsp;&nbsp;<input type="text" id="BlitzMapInfoWindow_title" value="' + overlay.title + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
-            +inputSubtitle.join("")
-            + '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.description + '<br><textarea id="BlitzMapInfoWindow_content" style="border:2px solid #dddddd;width:250px;height:115px;">' + overlay.content + '</textarea></div>'
+            + inputType.join("")
+            + '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.title + '&nbsp;&nbsp;<span class="form__label--required">*</span><input type="text" id="BlitzMapInfoWindow_title" value="' + overlay.title + '" style="border:2px solid #dddddd;width:150px;padding:3px;" ></div>'
+            + inputSubtitle.join("")
+            + '    <div style="padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.details.description + '<span class="form__label--required">*</span><br><textarea id="BlitzMapInfoWindow_content" style="border:2px solid #dddddd;width:250px;height:115px;">' + overlay.content + '</textarea></div>'
             + inputLoadSources.join("")
             + '</div>'
             + '<div id="BlitzMapInfoWindow_styles" style="display:none;width:100%;">'
@@ -1017,7 +1109,7 @@ function UtilBlitzMap(paramsConfig) {
             content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + ' <input type="text" id="BlitzMapInfoWindow_fillcolor" value="' + fillColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
             var fillOpacity = (overlay.fillOpacity == undefined) ? 0.3 : overlay.fillOpacity;
-            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1" type="number" id="BlitzMapInfoWindow_fillopacity" value="' + fillOpacity.toString() + '"  style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1" type="number" id="BlitzMapInfoWindow_fillopacity" value="' + fillOpacity.toString() + '"  style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay({type:overlay.type})" ></div>';
 
         }
         if (overlay.type != 'marker') {
@@ -1026,10 +1118,10 @@ function UtilBlitzMap(paramsConfig) {
             content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineColor + '<input type="text" id="BlitzMapInfoWindow_strokecolor" value="' + strokeColor + '" style="border:2px solid #dddddd;width:30px;height:20px;font-size:0;float:right" ></div>';
 
             var strokeOpacity = (overlay.strokeOpacity == undefined) ? 0.9 : overlay.strokeOpacity;
-            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1"  type="number" id="BlitzMapInfoWindow_strokeopacity" value="' + strokeOpacity.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineOpacity + '<input min="0" max="1"  type="number" id="BlitzMapInfoWindow_strokeopacity" value="' + strokeOpacity.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay({type:overlay.type})" ></div>';
 
             var strokeWeight = (overlay.strokeWeight == undefined) ? 3 : overlay.strokeWeight;
-            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness + '<input min="0"  type="number" id="BlitzMapInfoWindow_strokeweight" value="' + strokeWeight.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay()" ></div>';
+            content += '<div style="height:25px;padding-bottom:3px;">' + $managerTitlesProcess.popupManagerGoogleMaps.colors.lineThickness + '<input min="0"  type="number" id="BlitzMapInfoWindow_strokeweight" value="' + strokeWeight.toString() + '" style="border:2px solid #dddddd;width:30px;float:right" onkeyup="BlitzMap.updateOverlay({type:overlay.type})" ></div>';
 
         } else {
 
@@ -1043,16 +1135,21 @@ function UtilBlitzMap(paramsConfig) {
             content += '<div style="height:25px;padding-bottom:3px;">Icon(): <input type="text" id="BlitzMapInfoWindow_icon" value="' + icon.toString() + '" style="border:2px solid #dddddd;width:100px;float:right" ></div>';
             managerColors = "";
         }
+
         content += '</div><div style="position:relative; bottom:0px;"><input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnDelete + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.deleteOverlay()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;" title"Delete selected shape">&nbsp;&nbsp;'
-            + '<input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnOk + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
-            + '<input type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnCancel + '" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow()" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
+            + '<input  type-object="' + overlay.type + '" id="btnOk" type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnOk + '" class="BlitzMapInfoWindow_button" onclick="BlitzMap.closeInfoWindow(0)" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;" title="Apply changes to the overlay">'
+            + '<input type-object="' + overlay.type + '"   id="btnCancel"  type="button" value="' + $managerTitlesProcess.popupManagerGoogleMaps.btnCancel + '" class="BlitzMapInfoWindow_button" onclick="this.form.reset();BlitzMap.closeInfoWindow(-1)" style="background-color:#2883CE;color:#ffffff;padding:3px 10px;border:2px double #cccccc;cursor:pointer;float:right;">'
             + '<div style="clear:both;"></div>'
             + managerColors;
         +'<div style="clear:both;"></div>';
         +'</div>';
         +'</div></form>'
-
-
+        if (overlay.type == "marker") {
+            _this.initFileInputsOnce();
+        }
+        setTimeout(function () {
+            $('#totem_subcategory_id').val(selectedId);
+        }, 1000);
         return content;
     }
 
@@ -1083,54 +1180,145 @@ function UtilBlitzMap(paramsConfig) {
         infWindow.close();
     }
 
-    this.closeInfoWindow = function () {
-        this.updateOverlay();
-        infWindow.close();
-    }
+    this.closeInfoWindow = function (typeButton) {//TODO CHASQUI-MANAGEMENT
+        if (typeButton == -1) {
+            infWindow.close();
+        } else {
+            var inputOkBtn = document.getElementById('btnOk');
+            let type = inputOkBtn.attributes[0].value;
+            let resultUpdate = this.updateOverlay({type: type});
+            if (resultUpdate.success) {
+                infWindow.close();
+            } else {
+                alert(resultUpdate.message);
+            }
+        }
 
-    this.updateOverlay = function () {//TODO CHASQUI-MANAGEMENT
+    }
+    this.findDataLayerById = function (items, idBuscado) {
+        // índice (key del array)
+        const index = items.findIndex(item => item.id === idBuscado);
+
+        if (index === -1) {
+            return null; // no existe
+        }
+
+        // item completo
+        const item = items[index];
+
+        return {
+            index,  // posición en el array
+            item    // objeto completo { id, name, value }
+        };
+    }
+    this.updateOverlay = function (params) {//TODO CHASQUI-MANAGEMENT
+
+        let validationErrors = [];
         infWindow.relatedOverlay.title = document.getElementById('BlitzMapInfoWindow_title').value;
         infWindow.relatedOverlay.content = document.getElementById('BlitzMapInfoWindow_content').value;
-console.log("updateOverlay",  infWindow.relatedOverlay);
-
-
+       let selectedId=  $('#totem_subcategory_id').val();
+        const glbInput = document.getElementById('BlitzMapInfoWindow_file_glb');
+        const srcInput = document.getElementById('BlitzMapInfoWindow_file_src');
+        let file_glb = null;
+        let file_src = null;
+        let subtitle = null;
+        let result = {
+            success: true,
+            message: "",
+            data: null,
+            errors: []
+        };
         if (infWindow.relatedOverlay.type == 'polygon' || infWindow.relatedOverlay.type == 'circle' || infWindow.relatedOverlay.type == 'rectangle') {
+            subtitle = document.getElementById('BlitzMapInfoWindow_subtitle').value;
+            infWindow.relatedOverlay.totem_subcategory_id = selectedId;
 
             infWindow.relatedOverlay.setOptions({fillColor: '#' + document.getElementById('BlitzMapInfoWindow_fillcolor').value.replace('#', '')});
             _this.setStyle(document.getElementById('BlitzMapInfoWindow_fillcolor'), {'background-color': '#' + document.getElementById('BlitzMapInfoWindow_fillcolor').value.replace('#', '')});
-
             infWindow.relatedOverlay.setOptions({fillOpacity: Number(document.getElementById('BlitzMapInfoWindow_fillopacity').value)});
         }
 
         if (infWindow.relatedOverlay.type != 'marker') {
             infWindow.relatedOverlay.setOptions({strokeColor: '#' + document.getElementById('BlitzMapInfoWindow_strokecolor').value.replace('#', '')});
-
             infWindow.relatedOverlay.setOptions({strokeOpacity: Number(document.getElementById('BlitzMapInfoWindow_strokeopacity').value)});
-
             infWindow.relatedOverlay.setOptions({strokeWeight: Number(document.getElementById('BlitzMapInfoWindow_strokeweight').value)});
         } else {
             infWindow.relatedOverlay.setOptions({icon: document.getElementById('BlitzMapInfoWindow_icon').value});
         }
-        if(infWindow.relatedOverlay.type == 'marker'){
-            const glbInput = document.getElementById('BlitzMapInfoWindow_file_glb');
-            const file = glbInput.files[0]; // primer archivo seleccionado
-            infWindow.relatedOverlay.file_glb = file;
-            const srcInput = document.getElementById('BlitzMapInfoWindow_file_src');
-            const fileSrc = srcInput.files[0]; // primer archivo seleccionado
-            infWindow.relatedOverlay.file_src= fileSrc;
-
-            infWindow.relatedOverlay.subtitle = document.getElementById('BlitzMapInfoWindow_subtitle').value;
-
-
-
-
-
-
+        if (infWindow.relatedOverlay.type == 'marker') {
+            var inputOkBtn = document.getElementById('btnOk');
+            let type = inputOkBtn.attributes[0].value;
+            let isFileGlb = glbInput.attributes[0].value;
+            let isFileImg = srcInput.attributes[0].value;
+            let isTypeInitGLB = glbInput.attributes[2].value;
+            let isTypeInitSRC = srcInput.attributes[2].value;
+            var {overlays} = _this.mapToObject();
+            let resultSearch = _this.findDataLayerById(overlays, infWindow.relatedOverlay.id)
+            if (glbInput.files.length > 0) {
+                file_glb = glbInput.files[0]; // primer archivo seleccionado
+            }
+            if (srcInput.files.length > 0) {
+                file_src = srcInput.files[0]; // primer archivo seleccionado
+            }
+            if (isFileGlb == "1") {
+                if (isTypeInitGLB == '0') {
+                    file_glb = resultSearch.item.file_glb;
+                }
+            } else {
+                if (isTypeInitGLB == '0') {
+                    file_glb = resultSearch.item.file_glb;
+                }
+            }
+            if (isFileImg == "1") {
+                if (isTypeInitSRC == '0') {
+                    file_src = resultSearch.item.file_src;
+                }
+            } else {
+                if (isTypeInitSRC == '0') {
+                    file_src = resultSearch.item.file_src;
+                }
+            }
+            infWindow.relatedOverlay.file_glb = file_glb;
+            infWindow.relatedOverlay.file_src = file_src;
+            subtitle = document.getElementById('BlitzMapInfoWindow_subtitle').value;
+            infWindow.relatedOverlay.subtitle = subtitle;
+            infWindow.relatedOverlay.totem_subcategory_id = selectedId;
         }
-        if (currentManager) {
+        if (infWindow.relatedOverlay.type == 'marker') {
+            if (file_src == null || file_glb == null) {
 
-            currentManager.setDataFormKml();
+                if (file_src == null) {
+                    result.errors.push({"file_src": "Imagen sin Asignar"});
+                    validationErrors.push("Imagen sin Asignar");
+
+                }
+                if (file_glb == null) {
+                    result.errors.push({"file_src": "Modelo 3D sin Asignar"});
+                    validationErrors.push("Modelo 3D sin Asignar");
+
+                }
+            }
         }
+        if (infWindow.relatedOverlay.type == 'marker' || infWindow.relatedOverlay.type == 'polygon' || infWindow.relatedOverlay.type == 'circle' || infWindow.relatedOverlay.type == 'rectangle') {
+            if ((subtitle == null || subtitle == '')) {
+                validationErrors.push("Subtitulo sin Asignar");
+                result.errors.push({"subtitle": "Subtitulo sin Asignar"});
+            }
+            if(selectedId==null||selectedId==''){
+                validationErrors.push("Tipo sin seleccionar");
+                result.errors.push({"totem_subcategory_id": "Tipo sin seleccionar"});
+            }
+        }
+        result.success = result.errors.length === 0;
+        if (result.success) {
+            if (currentManager) {
+                currentManager.setDataFormKml();
+            }
+        } else {
+            result.message = validationErrors.join("");
+        }
+
+
+        return result;
     }
 
 

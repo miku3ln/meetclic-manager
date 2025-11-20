@@ -1,5 +1,3 @@
-
-
 function getFormatterProcess(params) {
     var processName = params['processName'];
     var viewAll = params.hasOwnProperty('viewAll') ? params['viewAll'] : false;
@@ -100,7 +98,7 @@ function getFormatterProcess(params) {
                     var unitsCurrent = structure.hasOwnProperty('quantity_units') ? ["   <div class='content-description__information--quantity'>",
                         "        <span class='content-description__title'>" + structure.quantity_units.label + ":</span><span class='content-description__value'><span class='badge badge--size-large " + classQuantityUnits + " '>" + quantity_units + "</span></span>",
                         "   </div>"] : [];
-                    unitsCurrent=unitsCurrent.join('');
+                    unitsCurrent = unitsCurrent.join('');
                     var result = [
                         "<div class='content-description'>",
 
@@ -302,7 +300,7 @@ function initSelectMultiple(params) {
 }
 
 
-function getStructureRouteMap(params) {
+function getStructureRouteMap(params) {//TODO CHASQUI-MANAGEMENT
     var latLngData = [];
     var dataLayers = [];
     var mapCurrentRoutes = params['map'];
@@ -316,20 +314,25 @@ function getStructureRouteMap(params) {
             var typeLayer = value["rd_type"];
             var id = value["id"];
             var rd_name = value["rd_name"] ? value["rd_name"] : "";
+            var subtitle = value["rd_subtitle"] ? value["rd_subtitle"] : "";
+
             var rd_description = value["rd_description"] ? value["rd_description"] : "";
             var rd_id = value["rd_id"];
             var routes_drawing_id = value["routes_drawing_id"];
+            var totem_subcategory_id = value["totem_subcategory_id"];
 
 
             var setPush = null;
             var options = jQuery.parseJSON(value["rd_options_type"]);
             options = mergeObjects(options, {
                 title: rd_name,
+                subtitle: subtitle,
                 type: typeLayer,
                 content: rd_description,
                 id: id,
                 rd_id: rd_id,
-                routes_drawing_id: routes_drawing_id
+                routes_drawing_id: routes_drawing_id,
+                totem_subcategory_id:totem_subcategory_id
             });
 
             var path = [];
@@ -338,6 +341,10 @@ function getStructureRouteMap(params) {
                     var data = value.hasOwnProperty('data') ? value["data"] : [];
                     path = options.position;
                     options['data'] = data;
+
+                    options['file_src'] = value["rd_src"];
+                    options['file_glb'] = value["rd_src_glb"];
+
                     setPush = getConfigMarker({
                         options: options,
                         map: mapCurrentRoutes
