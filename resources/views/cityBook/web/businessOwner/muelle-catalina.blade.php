@@ -275,16 +275,14 @@
 
         #btn-capture {
             position: fixed;
-            top: 12px;
             right: 12px;
             z-index: 10001;
             padding: 8px 12px;
             border-radius: 10px;
             border: none;
-            background: #2f8;
             color: #000;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+            box-shadow: 0 2px 8px rgb(0 0 0 / 0%);
             font-weight: 600;
         }
 
@@ -351,9 +349,9 @@
         }
 
         #btn-capture {
-            top: 12px;
-            right: 12px;
-            background: var(--accent);
+            font-size: 45px;
+            bottom: 10%;
+            right: 43%;
             color: #000;
         }
 
@@ -739,6 +737,10 @@
 
         div#companyDescription {
             color: #929290;
+        }
+
+        .btn-view-data-cam {
+            bottom: 45% !important;
         }
 
 
@@ -3979,10 +3981,14 @@
                 companyPanel.addEventListener('click', () => {
                     companyPanel.classList.toggle('company-panel--collapsed');
                     const body = document.querySelector('.company-panel__body');
+                    $("#btn-capture").removeClass("btn-view-data-cam");
                     if (companyPanel.classList.contains('company-panel--collapsed')) {
                         body.style.display = 'none';
+                        $("#btn-capture").removeClass("btn-view-data-cam");
                     } else {
                         body.style.display = 'block';
+                        $("#btn-capture").addClass("btn-view-data-cam");
+
                     }
                 });
                 const btnMoreInfo = document.getElementById('btnMoreInfo');
@@ -4021,7 +4027,7 @@
 
     <!-- Controles principales -->
     <button id="btn-back-map" class="btn d-none">← Volver al mapa</button>
-    <button id="btn-capture" class="btn d-none">📸 Capturar</button>
+    <button id="btn-capture" class="btn d-none">📸</button>
 
     <!-- Contenedor de AR/Fallback -->
     <div class="container--custom not-view">
