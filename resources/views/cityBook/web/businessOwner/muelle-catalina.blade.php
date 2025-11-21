@@ -754,11 +754,20 @@
 
 @section('additional-scripts')
     <script src="{{ asset($resourcePathServer.'js/developers/UtilCustom.js')}}" type='text/javascript'></script>
+    <script src="{{ asset($resourcePathServer.'js/Utils.js')}}" type='text/javascript'></script>
 
     <script>
         var $dataManager = <?php echo json_encode($dataManager) ?>;
     </script>
     <script>
+        function initWhatsapp() {
+
+            if ($dataManager.business && $dataManager.business.dataPhoneWhatsapp && $dataManager.business.dataPhoneWhatsapp.urlWhatsapp != '') {
+                var urlWhatsapp = getUrlWhatsApp()+$dataManager.business.dataPhoneWhatsapp.urlWhatsapp;
+                console.log(urlWhatsapp);
+                $("#companyWhatsapp").attr("href",urlWhatsapp);
+            }
+        }
 
         /* ============================================================================
          * Datos de ejemplo: itemsSources
@@ -3204,9 +3213,9 @@
                     },
 
                     flyOptions: {
-                        FAST: { duration: 0.35 },
-                        NORMAL: { duration: 0.7 },
-                        SLOW: { duration: 1.2 }
+                        FAST: {duration: 0.35},
+                        NORMAL: {duration: 0.7},
+                        SLOW: {duration: 1.2}
                     }
                 };
 
@@ -3322,7 +3331,7 @@
                     const mk = e.popup._source;
                     if (mk) {
                         console.log("popupopen");
-                        requestAnimationFrame(() => this.map.flyTo(mk.getLatLng(),  this.appMapConfig.zoom.BUILDING, {duration: 0.35}));
+                        requestAnimationFrame(() => this.map.flyTo(mk.getLatLng(), this.appMapConfig.zoom.BUILDING, {duration: 0.35}));
                     }
                 });
             }
@@ -3342,15 +3351,15 @@
                         .bindPopup(this._popupHTML(it), {maxWidth: 320, autoPan: true, keepInView: true});
                     mk.addTo(this.layer);
                     mk.on('click', () => {
-                     let currentZoom=   this.map.getZoom();
-                        console.log("click mk",currentZoom);
-                        let setZoom=this.appMapConfig.zoom.BUILDING;
+                        let currentZoom = this.map.getZoom();
+                        console.log("click mk", currentZoom);
+                        let setZoom = this.appMapConfig.zoom.BUILDING;
                         this.map.flyTo(
                             mk.getLatLng(),
                             setZoom,   // usa el zoom actual del mapa
-                            { duration: 0.35 }    // segundo parámetro son las options
+                            {duration: 0.35}    // segundo parámetro son las options
                         );
-                    //    mk.openPopup();
+                        //    mk.openPopup();
                     });
                     this.byId[it.id] = mk;
                     bounds.push([it.position.lat, it.position.lng]);
@@ -3440,7 +3449,7 @@
                 const ll = mk.getLatLng();
                 console.log("click flyTo");
 
-                this.map.flyTo(ll,  this.appMapConfig.zoom.BUILDING, {duration: 0.35});
+                this.map.flyTo(ll, this.appMapConfig.zoom.BUILDING, {duration: 0.35});
                 mk.openPopup();
             }
         }
@@ -3925,6 +3934,7 @@
          * ========================================================================== */
         let itemsSourcesAux = [];
         $(function () {
+            initWhatsapp();
                 ItemsStore.setItems(itemsSources);
                 /*   itemsSources = [
                        {

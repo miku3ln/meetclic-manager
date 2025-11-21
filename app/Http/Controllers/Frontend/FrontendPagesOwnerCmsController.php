@@ -10,6 +10,7 @@ use App\Models\BusinessByRoutesMap;
 use App\Models\RouteMapByAdventureTypes;
 use App\Models\RoutesMap;
 use App\Models\RoutesMapByRoutesDrawing;
+use App\Models\Whatsapp\WhatsappConfigs;
 use Illuminate\Http\Request;
 
 class FrontendPagesOwnerCmsController extends Controller
@@ -49,8 +50,6 @@ class FrontendPagesOwnerCmsController extends Controller
             $routesDrawingGroupHtml = $modelRMBRD->getRoutesDrawingStatsHtml(["grouped" => $routesDrawingGroup]);
 
 
-
-
             $business_by_routes_map_id = $id;
             $modelRMBAT = new RouteMapByAdventureTypes();
             $adventure_type_data = $modelRMBAT->getAdventureTypes(array("business_by_routes_map_id" => $business_by_routes_map_id));
@@ -59,8 +58,13 @@ class FrontendPagesOwnerCmsController extends Controller
             if ($modelInformation) {
                 $information = $modelInformation->getAttributes();
             }
-
-
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'name_chasqui' =>$information["name"] ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -78,8 +82,9 @@ class FrontendPagesOwnerCmsController extends Controller
                 "routes_drawing_data" => $routes_drawing_data,
                 "routesDrawingGroup" => $routesDrawingGroup,
                 "adventure_type_data" => $adventure_type_data,
-                "routesDrawingGroupHtml"=>$routesDrawingGroupHtml
+                "routesDrawingGroupHtml" => $routesDrawingGroupHtml
             );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
 
