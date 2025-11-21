@@ -219,7 +219,7 @@ business.id as business_id
         $ip_address = $params['filters']['ip_address'];
         $type_process = $params['filters']['type_process'];
         $device_agent = $params['filters']['device_agent'];
-$token= $params['filters']['token'];
+        $token = $params['filters']['token'];
         $source_id = $params['filters']['source_id'];
         $click_type_id = $params['filters']['click_type_id'];
 
@@ -263,7 +263,6 @@ $token= $params['filters']['token'];
 
         $counterBusiness = $this->getCounterBusiness($params);
 
-
         $is_guess = $params['filters']['is_guess'] ? 1 : 0;
         if ($counterBusiness == null) {
             $managerData = [
@@ -300,6 +299,7 @@ $token= $params['filters']['token'];
 
                     ],
                 ]];
+
             $resultAll = $this->saveDataCounter($managerData);
 
 
@@ -399,11 +399,15 @@ $token= $params['filters']['token'];
                 $modelParent = new \App\Models\Tracking\TrackingEvents();
                 $attributesSetParent = $attributesPost["TrackingEvents"];
                 $attributesSetParent["session_id"] = $session_id;
+                if (!is_string($attributesSetParent["manager_click_id"])) {
 
+                    $attributesSetParent["manager_click_id"] = (string)$attributesSetParent["manager_click_id"];
+                }
                 $paramsValidateParent = array(
                     'modelAttributes' => $attributesSetParent,
                     'rules' => $modelParent::getRulesModel(),
                 );
+
                 $validateResultParent = $modelParent->validateModel($paramsValidateParent);
                 $success = $validateResultParent["success"];
 
