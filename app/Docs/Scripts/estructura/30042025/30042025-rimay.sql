@@ -48,7 +48,6 @@ CREATE TABLE `dictionary_word_by_class`
     `dictionary_by_words_id`          INT NOT NULL,
     `dictionary_grammatical_class_id` INT NOT NULL
 );
-
 CREATE TABLE `dictionary_by_words`
 (
     `id`                      INT                                                           NOT NULL,

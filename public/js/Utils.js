@@ -1253,33 +1253,53 @@ function initApisSocialNetworks() {
 }
 
 function getUrlWhatsApp() {
-    var userAgentData = navigator.userAgentData;
-    var typeSmarth = userAgentData.platform;
+    var urlRoot = 'https://api.whatsapp.com/'; // default
+    var typeSmarth = null;
 
-    var urlRoot = 'https://api.whatsapp.com/';
+    // 1) Intentar con userAgentData (Chrome, Edge nuevos)
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+        typeSmarth = navigator.userAgentData.platform; // "Windows", "Android", "iOS", "macOS", etc.
+    } else {
+        // 2) Fallback: usar userAgent clásico
+        var ua = navigator.userAgent || '';
+
+        if (/Windows/i.test(ua)) {
+            typeSmarth = 'Windows';
+        } else if (/Android/i.test(ua)) {
+            typeSmarth = 'Android';
+        } else if (/iPhone|iPad|iPod/i.test(ua)) {
+            typeSmarth = 'iOS';
+        } else if (/Macintosh|Mac OS X/i.test(ua)) {
+            typeSmarth = 'macOS';
+        } else if (/Linux/i.test(ua)) {
+            typeSmarth = 'Linux';
+        } else {
+            typeSmarth = 'Unknown';
+        }
+    }
+
+    // 3) Decidir URL de WhatsApp según plataforma
     switch (typeSmarth) {
         case 'Windows':
+        case 'macOS':
+        case 'Linux':
+            // Escritorio
             urlRoot = 'https://web.whatsapp.com/';
             break;
-
         case 'Android':
-
-            urlRoot = 'https://api.whatsapp.com/';
-            break;
         case 'iOS':
-
+            // Móviles
             urlRoot = 'https://api.whatsapp.com/';
             break;
         default:
+            // Si no se reconoce, usar api (deja que WhatsApp resuelva)
             urlRoot = 'https://api.whatsapp.com/';
-
     }
-    var urlCurrent = urlRoot;
-    var result = urlCurrent;
-    console.log(typeSmarth, urlRoot);
-    return result;
 
+    console.log('platform:', typeSmarth, 'url:', urlRoot);
+    return urlRoot;
 }
+
 
 function getStringParamsGet(params) {
     var dataParams = params['dataParams'];

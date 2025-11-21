@@ -3,17 +3,28 @@
 
 @endsection
 @section('additional-scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script>
 
     <script>
         $(function () {
 
             $('.show-search-button').show();
             $('.main-footer').addClass('not-view');
+
+            var finalDate = '2026/04/04 23:59:59';
+
+            $('.countdown').countdown(finalDate, function(event) {
+                $(this).find('.days').text(event.strftime('%D'));
+                $(this).find('.hours').text(event.strftime('%H'));
+                $(this).find('.minutes').text(event.strftime('%M'));
+                $(this).find('.seconds').text(event.strftime('%S'));
+            });
         })
+
     </script>
 @endsection
 @section('content')
-    <div id="app-management">
+    <div id="app-management" class="comming-soon">
 
         <!--wrapper -->
         <div class="fixed-bg">
