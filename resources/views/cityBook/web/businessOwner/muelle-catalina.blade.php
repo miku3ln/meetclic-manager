@@ -1,7 +1,8 @@
 @php
     $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
     $sourcesRoot = $resourcePathServer . 'frontend/businessOwner/mikuy-yachak';
-
+ $leftRightMove   = URL::asset( $resourcePathServer."simi-rura/ui-totems/left-right.png");
+    $upDownMove   = URL::asset( $resourcePathServer."simi-rura/ui-totems/up-down.png");
 @endphp
 @extends('layouts.bootstrap5')
 @section('additional-styles')
@@ -288,6 +289,30 @@
 
         #btn-capture:hover {
             filter: brightness(0.95);
+        }
+
+        #btn-up-down {
+            bottom: 10%;
+            right: 26%;
+            position: fixed;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, .35) !important;
+        }
+
+        #btn-right-left {
+            position: fixed;
+            bottom: 10%;
+            right: 62%;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, .35) !important;
+        }
+
+        img.btn-up-down__img {
+            width: 45px;
+            height: 51px;
+        }
+
+        img.btn-right-left__img {
+            width: 67px;
+            height: 51px;
         }
 
         :root {
@@ -871,12 +896,11 @@
         function initWhatsapp() {
 
             if ($dataManager.business && $dataManager.business.dataPhoneWhatsapp && $dataManager.business.dataPhoneWhatsapp.urlWhatsapp != '') {
-                var urlWhatsapp = getUrlWhatsApp()+$dataManager.business.dataPhoneWhatsapp.urlWhatsapp;
+                var urlWhatsapp = getUrlWhatsApp() + $dataManager.business.dataPhoneWhatsapp.urlWhatsapp;
                 console.log(urlWhatsapp);
-                $("#companyWhatsapp").attr("href",urlWhatsapp);
+                $("#companyWhatsapp").attr("href", urlWhatsapp);
             }
         }
-
 
 
         function hasUploadsPath(url) {
@@ -1447,6 +1471,10 @@
                 $refs.map = document.getElementById('map');
                 $refs.back = document.getElementById('btn-back-map');
                 $refs.capture = document.getElementById('btn-capture');
+                $refs.upDown = document.getElementById('btn-up-down');
+                $refs.rightLeft = document.getElementById('btn-right-left');
+
+
             }
 
             const show = el => el && el.classList.remove('d-none');
@@ -1466,8 +1494,13 @@
                     if ($refs.loadingPct) $refs.loadingPct.textContent = '0%';
                     show($refs.loading);
                 },
-                hideLoading() {
+                hideLoading(type = -1) {
                     hide($refs.loading);
+                    console.log(type);
+                    if (type == 420) {
+
+                        UI.showCapture();
+                    }
                 },
                 resetLoadingProgress(label = 'Cargando:') {
                     if ($refs.loadingLbl) $refs.loadingLbl.textContent = label;
@@ -1511,9 +1544,14 @@
 
                 showCapture() {
                     $refs.capture?.classList.remove('d-none');
+                    $("#btn-up-down").removeClass('d-none');
+                    $("#btn-right-left").removeClass('d-none');
                 },
                 hideCapture() {
                     $refs.capture?.classList.add('d-none');
+                    $("#btn-up-down").addClass('d-none');
+                    $("#btn-right-left").addClass('d-none');
+
                 },
 
                 get mv() {
@@ -1530,7 +1568,15 @@
                 },
                 get $capture() {
                     return $refs.capture;
-                }
+                },
+                get $upDown() {
+                    return $refs.upDown;
+                },
+                get $rightLeft() {
+                    return $refs.rightLeft;
+                },
+
+
             };
         })();
 
@@ -1604,7 +1650,7 @@
                 };
                 this._onLoad = () => {
                     UI.finishLoadingProgress();
-                    UI.hideLoading();
+                    UI.hideLoading(420);
                     UI.setHint('Modelo cargado en visor 3D.');
                 };
                 this._onError = () => {
@@ -1705,6 +1751,28 @@
 
             }
 
+            rotateModelLeft(degrees = 15) {
+                if (!this.model) return;
+
+                // Convertimos grados a radianes
+                const radians = THREE.MathUtils.degToRad(degrees);
+
+                // Rotamos alrededor del eje Y (arriba/abajo)
+                // Positivo = izquierda (desde la perspectiva de la cámara)
+                this.model.rotation.y += radians;
+            }
+
+            rotateModelUpDown(degrees = 15) {
+                if (!this.model) return;
+
+                const radians = THREE.MathUtils.degToRad(degrees);
+
+                // Rotar en el eje X (pitch)
+                // Positivo = inclinar hacia arriba
+                // Negativo = inclinar hacia abajo
+                this.model.rotation.x += radians;
+            }
+
             async startSessionFromGesture() {
                 this.session = await navigator.xr.requestSession('immersive-ar', {
                     requiredFeatures: ['local'],
@@ -1758,7 +1826,6 @@
                         resolved,
                         (gltf) => {
                             this.model = gltf.scene;
-
                             const box = new THREE.Box3().setFromObject(this.model);
                             const size = new THREE.Vector3();
                             box.getSize(size);
@@ -1777,9 +1844,8 @@
                                     });
                                 }
                             });
-
                             UI.finishLoadingProgress();
-                            UI.hideLoading();
+                            UI.hideLoading(420);
                             res();
                         },
                         (xhr) => {
@@ -2789,6 +2855,32 @@
                 return null;
             }
 
+            rotateModelRight(degrees = 15) {
+                const st = this._state;
+                const ctrl = st.controller;
+                ctrl.rotateModelLeft(-degrees);
+            }
+
+            rotateModelLeft(degrees = 15) {
+                const st = this._state;
+                const ctrl = st.controller;
+                ctrl.rotateModelLeft(degrees);
+            }
+
+            rotateModelDown(degrees = 15) {
+                const st = this._state;
+
+                const ctrl = st.controller;
+                ctrl.rotateModelUpDown(degrees);
+            }
+
+            rotateModelUp(degrees = 15) {
+                const st = this._state;
+
+                const ctrl = st.controller;
+                ctrl.rotateModelUpDown(-degrees);
+            }
+
             async onCaptureGpu() {
                 const st = this._state;
                 const ctrl = st.controller;
@@ -3113,7 +3205,6 @@
                         UI.hideLoading();
                         UI.showReticle();
                         UI.setHint('Toca la retícula para colocar.');
-                        UI.showCapture();
                         return;
                     } catch (e) {
                         console.warn('No se pudo iniciar WebXR, usando fallback', e);
@@ -3938,7 +4029,7 @@
          * ========================================================================== */
         let itemsSourcesAux = [];
         $(function () {
-            initWhatsapp();
+                initWhatsapp();
                 ItemsStore.setItems(itemsSources);
                 /*   itemsSources = [
                        {
@@ -3969,6 +4060,7 @@
                     await window.Viewer.destroy();
                 });
 
+
                 UI.$capture?.addEventListener('click', async () => {
                     console.log("Captura pantalla");
                     // await window.Viewer.captureScreenFrame();
@@ -3976,7 +4068,12 @@
                     // await window.Viewer.captureCameraPlusModelAndSave();
                     await window.Viewer.onCaptureGpu();
                 });
-
+                UI.$rightLeft?.addEventListener('click', async () => {
+                    await window.Viewer.rotateModelLeft(5);
+                });
+                UI.$upDown?.addEventListener('click', async () => {
+                    await window.Viewer.rotateModelUp(5);
+                });
                 const companyPanel = document.getElementById('companyPanelHeader');
                 const companyPanelToggle = document.querySelector('.company-panel__toggle');
 
@@ -3984,12 +4081,20 @@
                     companyPanel.classList.toggle('company-panel--collapsed');
                     const body = document.querySelector('.company-panel__body');
                     $("#btn-capture").removeClass("btn-view-data-cam");
+                    $("#btn-up-down").removeClass("btn-view-data-cam");
+                    $("#btn-right-left").removeClass("btn-view-data-cam");
+
+
                     if (companyPanel.classList.contains('company-panel--collapsed')) {
                         body.style.display = 'none';
                         $("#btn-capture").removeClass("btn-view-data-cam");
+                        $("#btn-up-down").removeClass("btn-view-data-cam");
+                        $("#btn-right-left").removeClass("btn-view-data-cam");
                     } else {
                         body.style.display = 'block';
                         $("#btn-capture").addClass("btn-view-data-cam");
+                        $("#btn-up-down").addClass("btn-view-data-cam");
+                        $("#btn-right-left").addClass("btn-view-data-cam");
 
                     }
                 });
@@ -4028,8 +4133,17 @@
 
     <!-- Controles principales -->
     <button id="btn-back-map" class="btn d-none">← Volver al mapa</button>
+    <button id="btn-right-left" class="btn d-none"><img
+            src="{{$leftRightMove}}"
+            alt="Logo Empresa"
+            class="btn-right-left__img"
+        /></button>
     <button id="btn-capture" class="btn d-none">📸</button>
-
+    <button id="btn-up-down" class="btn d-none"><img
+            src="{{$upDownMove}}"
+            alt="Logo Empresa"
+            class="btn-up-down__img"
+        /></button>
     <!-- Contenedor de AR/Fallback -->
     <div class="container--custom not-view">
         <!-- Loading transparente con % -->
@@ -4068,6 +4182,9 @@
     $descriptinoChaquiñan = "La Ruta Sagrada del Muelle Catalina es un recorrido temático, turístico y cultural que conecta los puntos más emblemáticos del territorio de Imbabura. En esta travesía, viajeros y familias se acercan a los espíritus protectores de la laguna y las montañas, descubriendo paisajes ancestrales, actividades deportivas, historias vivas y experiencias de contacto con la naturaleza.\r\n\r\nLa ruta integra montañismo, senderismo, fotografía, historia, espiritualidad andina y observación paisajística, guiando a los visitantes desde la serenidad del Muelle Catalina hasta la grandeza de Taita Imbabura, la magia de las lagunas y la fuerza ceremonial del Lechero.\r\n\r\nEs una experiencia diseñada para educar, inspirar y conectar, ideal para turistas, deportistas, familias y estudiantes.";
     $companyName = "Meetclic";
     $sourceChaquiñan = 'https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png';
+
+
+
     $phone_value = "0985339457";
 
     // Asegúrate de que el número esté en formato internacional sin "+"
