@@ -18,17 +18,7 @@
     <div id="hint" class="hint">Estado: listo</div>
     <!-- Controles principales -->
     <button id="btn-back-map" class="btn d-none">← Volver al mapa</button>
-    <button id="btn-right-left" class="btn d-none"><img
-            src="{{$leftRightMove}}"
-            alt="Logo Empresa"
-            class="btn-right-left__img"
-        /></button>
     <button id="btn-capture" class="btn d-none">📸</button>
-    <button id="btn-up-down" class="btn d-none"><img
-            src="{{$upDownMove}}"
-            alt="Logo Empresa"
-            class="btn-up-down__img"
-        /></button>
     <!-- Contenedor de AR/Fallback -->
     <div class="container--custom not-view">
         <!-- Loading transparente con % -->

@@ -2073,7 +2073,7 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
             ctrl.rotateModelLeft(-degrees);
         }
 
-        rotateModelLeft(degrees = -15) {
+        rotateModelLeft(degrees = 15) {
             const st = this._state;
             const ctrl = st.controller;
             ctrl.rotateModelLeft(degrees);
@@ -2081,14 +2081,12 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
 
         rotateModelDown(degrees = 15) {
             const st = this._state;
-
             const ctrl = st.controller;
             ctrl.rotateModelUpDown(degrees);
         }
 
         rotateModelUp(degrees = 15) {
             const st = this._state;
-
             const ctrl = st.controller;
             ctrl.rotateModelUpDown(-degrees);
         }
@@ -3014,211 +3012,32 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
             check
         };
     })();
-
+</script>
+<script>
     /* ============================================================================
      * ItemsStore + verificador de caché por item
      * ========================================================================== */
-    const ItemsStore = (function () {
-        let _items = [];
 
-        function _withCacheShape(item) {
-            return {
-                ...item,
-                dataCache: {
-                    glbBlobUrl: item?.dataCache?.glbBlobUrl || null,
-                    lastWarmAt: item?.dataCache?.lastWarmAt || null,
-                    bytes: item?.dataCache?.bytes || null,
-                }
-            };
-        }
-
-        function setItems(list) {
-            _items = Array.isArray(list) ? list.map(_withCacheShape) : [];
-        }
-
-        function getItems() {
-            return _items.map(i => ({...i, dataCache: {...i.dataCache}}));
-        }
-
-        function getItemById(id) {
-            return _items.find(i => i.id == id) || null;
-        }
-
-        function updateItem(id, patch) {
-            const idx = _items.findIndex(i => i.id === id);
-            if (idx === -1) return false;
-            const current = _items[idx];
-            const next = _withCacheShape({...current, ...patch});
-            if (!patch?.dataCache?.glbBlobUrl && current.dataCache?.glbBlobUrl) {
-                next.dataCache.glbBlobUrl = current.dataCache.glbBlobUrl;
-            }
-            _items[idx] = next;
-            return true;
-        }
-
-        function replaceAll(newItems) {
-            setItems(newItems);
-            return getItems();
-        }
-
-        function markCache(id, {glbBlobUrl, bytes} = {}) {
-            const it = getItemById(id);
-            if (!it) return false;
-            it.dataCache.glbBlobUrl = glbBlobUrl ?? it.dataCache.glbBlobUrl ?? null;
-            it.dataCache.lastWarmAt = new Date().toISOString();
-            if (typeof bytes === 'number') it.dataCache.bytes = bytes;
-            return true;
-        }
-
-        function getBestGlbUrl(id) {
-            const it = getItemById(id);
-            if (!it) return null;
-            return it.dataCache?.glbBlobUrl || it.sources?.glb || null;
-        }
-
-        async function warmById(id) {
-            const it = getItemById(id);
-            if (!it?.sources?.glb) return false;
-            try {
-                await AssetPreloader.warm(it.sources.glb);
-                const blobUrl = AssetPreloader.getBlobURL(it.sources.glb);
-                if (blobUrl) {
-                    markCache(id, {glbBlobUrl: blobUrl});
-                    return true;
-                }
-            } catch (e) {
-                console.warn('[ItemsStore] warmById error', id, e);
-            }
-            return false;
-        }
-
-        async function warmAll({ids = null, concurrency = 3} = {}) {
-            const urls = (ids
-                    ? _items.filter(i => ids.includes(i.id))
-                    : _items
-            ).map(i => i.sources?.glb).filter(Boolean);
-
-            await AssetPreloader.warmMany(urls, {concurrency});
-
-            for (const it of _items) {
-                const u = it.sources?.glb;
-                if (!u) continue;
-                const blob = AssetPreloader.getBlobURL(u);
-                if (blob) markCache(it.id, {glbBlobUrl: blob});
-            }
-        }
-
-        /**
-         * Estado resumido de caché de un ítem:
-         * - "hot": en memoria con blob listo
-         * - "warming": se está precargando
-         * - "cold": sin precarga
-         * - "missing": sin URL GLB
-         */
-        function getCacheStatus(id) {
-            const it = getItemById(id);
-            if (!it?.sources?.glb) return 'missing';
-            const url = it.sources.glb;
-            const hasMem = AssetPreloader.has(url);
-            const warming = AssetPreloader.isWarming(url);
-            if (hasMem) return 'hot';
-            if (warming) return 'warming';
-            return 'cold';
-        }
-
-        /**
-         * Info detallada por item para depuración/log.
-         */
-        async function getCacheInfo(id) {
-            const it = getItemById(id);
-            if (!it?.sources?.glb) return null;
-            const base = await AssetPreloader.check(it.sources.glb);
-            return {
-                id: it.id,
-                title: it.title,
-                subtitle: it.subtitle,
-                ...base,
-                lastWarmAt: it.dataCache?.lastWarmAt || null,
-                bytes: it.dataCache?.bytes || null
-            };
-        }
-
-        return {
-            setItems, getItems, replaceAll, updateItem, getItemById,
-            markCache, getBestGlbUrl,
-            warmById, warmAll,
-            getCacheStatus, getCacheInfo,
-        };
-    })();
-
+</script>
+@include('cityBook.web.businessOwner.chasqui-manager.partials.js.ItemsStore')
+<script>
     /* ============================================================================
-     * canScreenCapture
-     * ========================================================================== */
-    function canScreenCapture() {
-        const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
-        const hasAPI = !!(navigator.mediaDevices?.getDisplayMedia || navigator.getDisplayMedia);
-        const inIframe = window.self !== window.top;
-        const isWV = /\bwv\b/i.test(navigator.userAgent);
+    * canScreenCapture
+    * ========================================================================== */
 
-        return {
-            ok: isSecure && hasAPI && !isWV,
-            reason: !isSecure ? 'No HTTPS' :
-                !hasAPI ? 'API no disponible' :
-                    isWV ? 'WebView limita captura' :
-                        inIframe ? 'Iframe sin permisos (display-capture)' :
-                            'Desconocido',
-            hasAPI, isSecure, inIframe, isWV
-        };
-    }
+</script>
+@include('cityBook.web.businessOwner.chasqui-manager.partials.js.canScreenCapture')
 
+<script>
     /* ============================================================================
      * initPreCache
      * ========================================================================== */
-    function initPreCache(params) {
 
+</script>
 
-        const MAP_CONFIG = Object.freeze({
-            zoom: 14, maxZoom: 25,
-            position: [0.20830, -78.22798],
-            tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            tileAttribution: '&copy; OpenStreetMap contrib.'
-        });
+@include('cityBook.web.businessOwner.chasqui-manager.partials.js.initPreCache')
 
-        params.mapCtl.init(ItemsStore.getItems());
-
-        const startWarm = async () => {
-            try {
-                await ItemsStore.warmAll({concurrency: 3});
-                console.log('[preload] OK: blobs listos');
-            } catch (e) {
-                console.warn('[preload] fallo o cancelado', e);
-            }
-        };
-
-        const warmWhenVisible = () => {
-            if (document.visibilityState !== 'visible') {
-                document.addEventListener('visibilitychange', function onVis() {
-                    if (document.visibilityState === 'visible') {
-                        document.removeEventListener('visibilitychange', onVis);
-                        queueWarm();
-                    }
-                });
-                return;
-            }
-            queueWarm();
-        };
-
-        const queueWarm = () => {
-            if ('requestIdleCallback' in window) {
-                requestIdleCallback(() => startWarm(), {timeout: 2000});
-            } else {
-                setTimeout(() => startWarm(), 300);
-            }
-        };
-
-        warmWhenVisible();
-    }
-
+<script>
     /* ============================================================================
      * Helpers de debug de cache (opcional)
      * ========================================================================== */
@@ -3235,13 +3054,12 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
             console.log('[CacheDebug] item', id, info);
         }
     };
-
     /* ============================================================================
      * Bootstrap — usando jQuery
      * ========================================================================== */
     let itemsSourcesAux = [];
 
-    function verifyStatePanelCollapsed(viewJoystick) {
+    function verifyStatePanelCollapsed() {
         $("#btn-capture").removeClass("btn-view-data-cam");
         $("#joystick-zone").removeClass("btn-view-data-cam-joystick-zone");
         const companyPanel = document.getElementById('companyPanelHeader');
@@ -3331,24 +3149,22 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
 
     function initJoystickZone() {
         function isViewerReady() {
-            // viewer viene por parámetro
             if (!window.Viewer) return false;
             if (typeof window.Viewer.isActive === 'function') {
                 return window.Viewer.isActive();
             }
-            // por si no tienes isActive o no quieres usarlo
             return !!window.Viewer.state?.controller;
         }
 
         const zoneEl = document.getElementById('joystick-zone');
-        if (!zoneEl) return; // por si no existe en algunas vistas
+        if (!zoneEl) return;
 
         const options = {
             zone: zoneEl,
-            mode: 'static',                  // fijo en el lugar
+            mode: 'static',
             position: {left: '50%', top: '50%'},
-            size: 120,                       // tamaño del círculo exterior
-            color: '#4C4CFF',                // azulClic
+            size: 120,
+            color: '#4C4CFF', // azulClic
             restOpacity: 0.8,
             lockX: false,
             lockY: false
@@ -3359,72 +3175,70 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
         JoystickState.enabled = false;  // arranca DESHABILITADO
 
         // ---- Parámetros de comportamiento del joystick ----
-        const DEAD_ZONE = 0.2;  // fuerza mínima para empezar a mover
-        const BASE_STEP = 2;    // grados mínimos
-        const EXTRA_STEP = 8;    // grados extra según fuerza -> máx aprox 10°
+        const DEAD_ZONE = 0.25;   // un poco más grande para que no tiemble
+        const BASE_STEP = 0.2;    // antes 2 → ahora MUCHO más suave
+        const EXTRA_STEP = 0.8;    // antes 8 → rango total ~0.2–1.0 grados
+
+        // Throttle de tiempo (ms)
+        const MIN_INTERVAL = 40;   // ~25fps, suficiente para sentirse fluido
+        let lastTime = 0;
 
         let viewerType = "";
 
         manager.on('move', function (evt, data) {
-            if (!JoystickState.enabled) return;      // ⛔ si está deshabilitado, no hace nada
+            if (!JoystickState.enabled) return;
             if (!data || !data.vector || !data.angle) return;
+
+            const now = performance.now();
+            if (now - lastTime < MIN_INTERVAL) return; // ⏱️ throttle
+            lastTime = now;
 
             const angle = data.angle.degree;   // 0 dcha, 90 arriba, 180 izq, 270 abajo
             const force = data.force || 0;
 
-            // Deadzone para evitar vibración
             if (force < DEAD_ZONE) return;
 
-            // Cálculo de grados según fuerza
+            // step proporcional pero pequeño
             let step = BASE_STEP + (force - DEAD_ZONE) * (EXTRA_STEP / (1 - DEAD_ZONE));
             if (step < BASE_STEP) step = BASE_STEP;
             if (step > BASE_STEP + EXTRA_STEP) step = BASE_STEP + EXTRA_STEP;
+
+            if (!isViewerReady()) return;
 
             // Mapeo por cuadrantes
             if (angle >= 45 && angle < 135) {
                 // ARRIBA
                 viewerType = "ARRIBA";
-                if (isViewerReady()) {
-                    window.Viewer.rotateModelUp(2);
-
-                }
+                window.Viewer.rotateModelUp(step);
 
             } else if (angle >= 135 && angle < 225) {
                 // IZQUIERDA
                 viewerType = "IZQUIERDA";
-                if (isViewerReady()) {
-
-                    window.Viewer.rotateModelLeft(2);
-                }
+                // si a nivel visual sientes que va al lado contrario,
+                // aquí puedes cambiar Right por Left
+                window.Viewer.rotateModelRight(step);
 
             } else if (angle >= 225 && angle < 315) {
                 // ABAJO
                 viewerType = "ABAJO";
-                if (isViewerReady()) {
-
-                    window.Viewer.rotateModelDown(-2);
-                }
+                window.Viewer.rotateModelDown(step);
 
             } else {
                 // DERECHA (0–45 y 315–360)
                 viewerType = "DERECHA";
-
-                if(isViewerReady()){
-                window.Viewer.rotateModelRight(-2);
-
-                }
+                window.Viewer.rotateModelLeft(step);
             }
 
-            console.log('Joystick:', viewerType, 'step:', step.toFixed(2));
+            console.log('Joystick:', viewerType, 'step:', step.toFixed(3));
         });
 
-        manager.on('end', function (evt, data) {
-            // Aquí podrías parar rotaciones continuas si algún día las implementas
+        manager.on('end', function () {
+            // aquí podrías resetear algo si lo necesitas
         });
 
-        // Helpers globales para que tú los llames cuando quieras
         window.enableJoystick = function () {
             JoystickState.enabled = true;
+            zoneEl.style.display = 'block';
             zoneEl.classList.add('joystick--enabled');
             zoneEl.classList.remove('joystick--disabled');
         };
@@ -3433,10 +3247,12 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
             JoystickState.enabled = false;
             zoneEl.classList.add('joystick--disabled');
             zoneEl.classList.remove('joystick--enabled');
+            // si quieres que desaparezca:
+            // zoneEl.style.display = 'none';
         };
 
-        // Opcional: arrancar visualmente como deshabilitado
         zoneEl.classList.add('joystick--disabled');
     }
+
 
 </script>

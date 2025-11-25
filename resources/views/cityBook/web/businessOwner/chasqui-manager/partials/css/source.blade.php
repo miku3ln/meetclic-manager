@@ -780,4 +780,14 @@
         height: 140px;
         z-index: 9999;
     }
+
+    #joystick-zone.joystick--disabled {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    #joystick-zone.joystick--enabled {
+        opacity: 1;
+        pointer-events: auto;
+    }
 </style>
