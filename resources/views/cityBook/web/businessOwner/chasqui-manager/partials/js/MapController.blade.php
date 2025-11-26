@@ -188,11 +188,13 @@
                 clasViewGLB = "";
             }
             return `
+
 <article class="popup-card" data-popup-id="${item.id}">
+<span class="badge bg-secondary popup-card__subcategory">Totem-${item.totem_subcategory_name}</span>
   <header class="popup-card__header">
     <img class="popup-card__img" src="${item.sources.img}" alt="${item.title}" loading="lazy">
     <div class="popup-card__titles ">
-       <span class="badge bg-secondary popup-card__subcategory">Totem-${item.totem_subcategory_name}</span>
+
       <h4 class="popup-card__title color-primary--title">${item.title}</h4>
       <p class="popup-card__subtitle color-secondary--title">${item.subtitle}</p>
     </div>

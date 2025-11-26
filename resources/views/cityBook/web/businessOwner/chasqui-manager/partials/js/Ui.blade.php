@@ -44,7 +44,7 @@
                 console.log(type);
                 if (type == 420) {
 
-                    UI.showCapture();
+                    UI.showCapture(type);
                 }
             },
             resetLoadingProgress(label = 'Cargando:') {
@@ -87,15 +87,16 @@
                 $refs.back?.classList.add('d-none');
             },
 
-            showCapture() {
+            showCapture(type) {
+                console.log("showCapture type",type)
                 $refs.capture?.classList.remove('d-none');
-                $("#btn-up-down").removeClass('d-none');
-                $("#btn-right-left").removeClass('d-none');
+                if (type == 420) {
+                    window.enableJoystick();
+
+                }
             },
             hideCapture() {
                 $refs.capture?.classList.add('d-none');
-                $("#btn-up-down").addClass('d-none');
-                $("#btn-right-left").addClass('d-none');
 
             },
 

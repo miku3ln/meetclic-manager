@@ -367,12 +367,11 @@
 
     #btn-capture {
         font-size: 45px;
-        bottom: 7.6%;
-        right: 43%;
+        bottom: 11.6%;
         color: #000;
     }
     .btn-view-data-cam-joystick-zone {
-        bottom: 51% !important;
+        bottom: 45% !important;
     }
     #btn-capture:hover {
         filter: brightness(.95);
@@ -759,7 +758,7 @@
     }
 
     .btn-view-data-cam {
-        bottom: 44% !important;
+        bottom: 48% !important;
     }
 
 
@@ -773,7 +772,7 @@
 <style>
     #joystick-zone {
         position: fixed; /* o absolute dentro de tu contenedor AR */
-        bottom: 120px; /* súbelo un poco para no pisar la tarjeta de ruta */
+        bottom: 84px; /* súbelo un poco para no pisar la tarjeta de ruta */
         left: 50%;
         transform: translateX(-50%);
         width: 140px;
@@ -782,7 +781,7 @@
     }
 
     #joystick-zone.joystick--disabled {
-        opacity: 0.3;
+        opacity: 0;
         pointer-events: none;
     }
 
