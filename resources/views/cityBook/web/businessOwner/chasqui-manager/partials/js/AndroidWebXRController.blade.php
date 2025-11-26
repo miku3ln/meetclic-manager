@@ -653,9 +653,398 @@
 
             return {blob, url};
         }
-
-
         async captureWithVideoTextureQuad({
+                                              facingMode = 'environment',
+                                              type = 'image/png',   // ⬅️ PNG por defecto para no degradar color
+                                              quality = 0.95,
+                                              download = true,
+                                              filename,
+                                              includeCamera = true
+                                          } = {}) {
+            const srcAR =
+                (this._mirrorRenderer && this._mirrorRenderer.domElement) ||
+                (this.renderer && this.renderer.domElement);
+
+            if (!srcAR) {
+                console.warn('[captureWithVideoTextureQuad] No hay canvas AR disponible');
+                return null;
+            }
+
+            // Helper para descargar
+            const getExtension = (mimeType) => {
+                if (mimeType === 'image/png') return 'png';
+                if (mimeType === 'image/webp') return 'webp';
+                return 'jpg';
+            };
+
+            const downloadBlob = (blob, prefix) => {
+                if (!blob || !download) return;
+
+                const ext = getExtension(type);
+                const label = prefix || 'capture';
+                const ts = (typeof this._timestamp === 'function')
+                    ? (this._timestamp() || Date.now())
+                    : Date.now();
+
+                const name = filename || `${label}-${ts}.${ext}`;
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            };
+
+            // Asegurar un frame fresco del AR
+            await new Promise((resolve) => requestAnimationFrame(resolve));
+
+            // ================= SOLO AR (sin cámara extra) =================
+            if (!includeCamera) {
+                const blob = await new Promise((resolve) =>
+                    srcAR.toBlob(resolve, type, quality)
+                );
+                downloadBlob(blob, 'ar-only');
+                return blob || null;
+            }
+
+            // ================= CÁMARA + AR (composite) =================
+            let stream = null;
+            let video = null;
+
+            try {
+                // ⬅️ Pedir la mayor resolución posible al navegador
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode,
+                        width:  { ideal: 1920, max: 3840 }, // FullHD / 4K si la cámara y el navegador lo permiten
+                        height: { ideal: 1080, max: 2160 }
+                    },
+                    audio: false
+                });
+
+                video = document.createElement('video');
+                video.playsInline = true;
+                video.muted = true;
+                video.autoplay = true;
+                video.srcObject = stream;
+
+                Object.assign(video.style, {
+                    position: 'fixed',
+                    width: '1px',
+                    height: '1px',
+                    opacity: '0',
+                    pointerEvents: 'none',
+                    zIndex: '-1',
+                    left: '0',
+                    top: '0'
+                });
+
+                document.body.appendChild(video);
+
+                // Esperar metadata del video
+                await new Promise((resolve, reject) => {
+                    const onLoadedMetadata = () => {
+                        cleanup();
+                        resolve();
+                    };
+                    const onError = (e) => {
+                        cleanup();
+                        reject(e);
+                    };
+                    const cleanup = () => {
+                        video.removeEventListener('loadedmetadata', onLoadedMetadata);
+                        video.removeEventListener('error', onError);
+                    };
+                    video.addEventListener('loadedmetadata', onLoadedMetadata, { once: true });
+                    video.addEventListener('error', onError, { once: true });
+                });
+
+                try {
+                    await video.play();
+                } catch (_) {}
+                await new Promise((resolve) => setTimeout(resolve, 120));
+                await new Promise((resolve) => requestAnimationFrame(resolve));
+
+                // Leer resolución REAL del track de vídeo
+                const track = stream.getVideoTracks()[0];
+                const settings = track.getSettings();
+                const camWidth = settings.width || video.videoWidth || 1280;
+                const camHeight = settings.height || video.videoHeight || 720;
+
+                // Tamaño objetivo: al menos tan grande como la cámara y el AR
+                const targetWidth = Math.max(camWidth, srcAR.width || 1);
+                const targetHeight = Math.max(camHeight, srcAR.height || 1);
+
+                // IMPORTANTE:
+                // Para aprovechar la calidad, asegúrate en tu setup AR de renderizar
+                // como mínimo a (targetWidth, targetHeight), por ejemplo:
+                // this.renderer.setSize(targetWidth, targetHeight, false);
+
+                // ⬅️ Intentamos forzar sRGB cuando el navegador lo soporte
+                const compositeCanvas = document.createElement('canvas');
+                compositeCanvas.width = targetWidth;
+                compositeCanvas.height = targetHeight;
+
+                const ctx = compositeCanvas.getContext('2d', {
+                    willReadFrequently: false,
+                    colorSpace: 'srgb'
+                }) || compositeCanvas.getContext('2d');
+
+                const videoWidth = video.videoWidth || camWidth;
+                const videoHeight = video.videoHeight || camHeight;
+
+                const videoAspect = videoWidth / videoHeight;
+                const canvasAspect = targetWidth / targetHeight;
+
+                let sx, sy, sWidth, sHeight;
+
+                if (videoAspect > canvasAspect) {
+                    // El video es más "ancho": recortamos laterales
+                    sHeight = videoHeight;
+                    sWidth = sHeight * canvasAspect;
+                    sx = (videoWidth - sWidth) / 2;
+                    sy = 0;
+                } else {
+                    // El video es más "alto": recortamos arriba/abajo
+                    sWidth = videoWidth;
+                    sHeight = sWidth / canvasAspect;
+                    sx = 0;
+                    sy = (videoHeight - sHeight) / 2;
+                }
+
+                // 1) Fondo: cámara (suave, con suavizado)
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.filter = 'none';
+                ctx.drawImage(
+                    video,
+                    sx, sy, sWidth, sHeight,
+                    0, 0, targetWidth, targetHeight
+                );
+
+                // 2) AR encima 1:1, con ligero ajuste de saturación/brillo si lo necesitas
+                ctx.imageSmoothingEnabled = false;
+                ctx.filter = 'saturate(0.9) brightness(0.97)';
+                ctx.drawImage(srcAR, 0, 0, targetWidth, targetHeight);
+                ctx.filter = 'none';
+
+                const blob = await new Promise((resolve) =>
+                    compositeCanvas.toBlob(resolve, type, quality)
+                );
+
+                downloadBlob(blob, 'ar-composite');
+                return blob || null;
+
+            } catch (error) {
+                console.error('[captureWithVideoTextureQuad] error', error);
+                return null;
+
+            } finally {
+                try {
+                    stream?.getTracks()?.forEach(track => track.stop());
+                } catch (_) {}
+                if (video?.parentNode) {
+                    video.parentNode.removeChild(video);
+                }
+            }
+        }
+
+        async captureWithVideoTextureQuad2({
+                                              facingMode = 'environment',
+                                              type = 'image/png',   // PNG por defecto
+                                              quality = 0.95,
+                                              download = true,
+                                              filename,
+                                              includeCamera = true
+                                          } = {}) {
+            const srcAR =
+                (this._mirrorRenderer && this._mirrorRenderer.domElement) ||
+                (this.renderer && this.renderer.domElement);
+
+            if (!srcAR) {
+                console.warn('[captureWithVideoTextureQuad] No hay canvas AR disponible');
+                return null;
+            }
+
+            const getExtension = (mimeType) => {
+                if (mimeType === 'image/png') return 'png';
+                if (mimeType === 'image/webp') return 'webp';
+                return 'jpg';
+            };
+
+            const downloadBlob = (blob, prefix) => {
+                if (!blob || !download) return;
+
+                const ext = getExtension(type);
+                const label = prefix || 'capture';
+                const ts = (typeof this._timestamp === 'function')
+                    ? (this._timestamp() || Date.now())
+                    : Date.now();
+
+                const name = filename || `${label}-${ts}.${ext}`;
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            };
+
+            await new Promise((resolve) => requestAnimationFrame(resolve));
+
+            if (!includeCamera) {
+                const blob = await new Promise((resolve) =>
+                    srcAR.toBlob(resolve, type, quality)
+                );
+                downloadBlob(blob, 'ar-only');
+                return blob || null;
+            }
+
+            let stream = null;
+            let video = null;
+
+            try {
+                // ⬅️ Pedir la mayor resolución posible
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode,
+                        width:  { ideal: 1920, max: 3840 },
+                        height: { ideal: 1080, max: 2160 }
+                    },
+                    audio: false
+                });
+
+                video = document.createElement('video');
+                video.playsInline = true;
+                video.muted = true;
+                video.autoplay = true;
+                video.srcObject = stream;
+
+                Object.assign(video.style, {
+                    position: 'fixed',
+                    width: '1px',
+                    height: '1px',
+                    opacity: '0',
+                    pointerEvents: 'none',
+                    zIndex: '-1',
+                    left: '0',
+                    top: '0'
+                });
+
+                document.body.appendChild(video);
+
+                await new Promise((resolve, reject) => {
+                    const onLoadedMetadata = () => {
+                        cleanup();
+                        resolve();
+                    };
+                    const onError = (e) => {
+                        cleanup();
+                        reject(e);
+                    };
+                    const cleanup = () => {
+                        video.removeEventListener('loadedmetadata', onLoadedMetadata);
+                        video.removeEventListener('error', onError);
+                    };
+                    video.addEventListener('loadedmetadata', onLoadedMetadata, { once: true });
+                    video.addEventListener('error', onError, { once: true });
+                });
+
+                try {
+                    await video.play();
+                } catch (_) {}
+                await new Promise((resolve) => setTimeout(resolve, 120));
+                await new Promise((resolve) => requestAnimationFrame(resolve));
+
+                // ⬅️ Leer la resolución REAL de la cámara
+                const track = stream.getVideoTracks()[0];
+                const settings = track.getSettings();
+                const camWidth = settings.width || video.videoWidth || 1280;
+                const camHeight = settings.height || video.videoHeight || 720;
+
+                // ⬅️ Opciones:
+                //  A) usar resolución de la cámara
+                //  B) usar la mayor entre cámara y AR
+                const targetWidth = Math.max(camWidth, srcAR.width || 1);
+                const targetHeight = Math.max(camHeight, srcAR.height || 1);
+
+                // IMPORTANTE:
+                // Asegúrate de que tu renderer AR renderiza al menos a (targetWidth, targetHeight)
+                // p.ej. this.renderer.setSize(targetWidth, targetHeight, false) antes del render final.
+
+                const compositeCanvas = document.createElement('canvas');
+                compositeCanvas.width = targetWidth;
+                compositeCanvas.height = targetHeight;
+
+                const ctx = compositeCanvas.getContext('2d', {
+                    willReadFrequently: false,
+                    colorSpace: 'srgb'
+                }) || compositeCanvas.getContext('2d');
+
+                const videoWidth = video.videoWidth || camWidth;
+                const videoHeight = video.videoHeight || camHeight;
+
+                const videoAspect = videoWidth / videoHeight;
+                const canvasAspect = targetWidth / targetHeight;
+
+                let sx, sy, sWidth, sHeight;
+                if (videoAspect > canvasAspect) {
+                    sHeight = videoHeight;
+                    sWidth = sHeight * canvasAspect;
+                    sx = (videoWidth - sWidth) / 2;
+                    sy = 0;
+                } else {
+                    sWidth = videoWidth;
+                    sHeight = sWidth / canvasAspect;
+                    sx = 0;
+                    sy = (videoHeight - sHeight) / 2;
+                }
+
+                // Fondo cámara con suavizado
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.filter = 'none';
+                ctx.drawImage(
+                    video,
+                    sx, sy, sWidth, sHeight,
+                    0, 0, targetWidth, targetHeight
+                );
+
+                // AR encima
+                ctx.imageSmoothingEnabled = false;
+                ctx.filter = 'saturate(0.9) brightness(0.97)';
+                ctx.drawImage(srcAR, 0, 0, targetWidth, targetHeight);
+                ctx.filter = 'none';
+
+                const blob = await new Promise((resolve) =>
+                    compositeCanvas.toBlob(resolve, type, quality)
+                );
+
+                downloadBlob(blob, 'ar-composite');
+                return blob || null;
+
+            } catch (error) {
+                console.error('[captureWithVideoTextureQuad] error', error);
+                return null;
+            } finally {
+                try {
+                    stream?.getTracks()?.forEach(track => track.stop());
+                } catch (_) {}
+                if (video?.parentNode) {
+                    video.parentNode.removeChild(video);
+                }
+            }
+        }
+
+        async captureWithVideoTextureQuad2({
                                               facingMode = 'environment',
                                               type = 'image/png',   // ⬅️ PNG por defecto para no degradar color
                                               quality = 0.95,

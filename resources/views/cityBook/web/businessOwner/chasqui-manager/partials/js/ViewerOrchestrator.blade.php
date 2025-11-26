@@ -429,6 +429,7 @@
                         onExit: async ({reason}) => {
                             UI.setHint(`Sesión finalizada (${reason || 'desconocido'}).`);
                             await this.destroy();
+                            window.disableJoystick();
                         }
                     });
 
