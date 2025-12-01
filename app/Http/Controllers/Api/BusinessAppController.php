@@ -79,8 +79,10 @@ class BusinessAppController extends Controller
         try {
             $type = -1;
             $businessId = $request->input('businessId');
+            $from = $request->input('from');
+            $to = $request->input('to');
 
-            $data = $this->serviceUser->getDeparturesWithCustomers($businessId, null, null);
+            $data = $this->serviceUser->getDeparturesWithCustomers($businessId, $from, $to);
             return Response::json([
                 "type" => $type,
                 'success' => true,

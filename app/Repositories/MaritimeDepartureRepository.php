@@ -23,7 +23,7 @@ class MaritimeDepartureRepository
             $query->whereDate('arrival_time', '<=', $to);
         }
 
-        return $query->orderBy('arrival_time', 'asc') // Orden cronológico
+        return $query->orderBy('arrival_time', 'desc') // Orden cronológico
         ->get()
             ->map(function ($departure) {
                 return [
