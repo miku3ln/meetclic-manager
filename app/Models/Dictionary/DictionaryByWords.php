@@ -36,43 +36,60 @@ class DictionaryByWords extends ModelManager
         return $rules;
     }
 
+
+
     public function getDictionaryData($params)
     {
-        $resultData = $this->getDictionaryAdmin($params);
-        $data = $resultData['rows'];
-        $result = [];
+        try {
+            $resultData = $this->getDictionaryAdmin($params);
+            $data = $resultData['rows'];
 
-        foreach ($resultData['rows'] as $item => $value) {
-            $idMaster = $value->id;
-            $setPush = $value;
+            foreach ($resultData['rows'] as $item => $value) {
+                $idMaster = $value->id;
+                $setPush = $value;
 
-            $photosCurrent = $this->getDataPhoto(['dictionary_by_words_id' => $idMaster]);
-            if (count($photosCurrent) > 0) {
-                $setPush->photos = $photosCurrent;
+                $photosCurrent = $this->getDataPhoto(['dictionary_by_words_id' => $idMaster]);
+                if (count($photosCurrent) > 0) {
+                    $setPush->photos = $photosCurrent;
+                }
 
+                $audiosCurrent = $this->getDataAudio(['dictionary_by_words_id' => $idMaster]);
+                if (count($audiosCurrent) > 0) {
+                    $setPush->audios = $audiosCurrent;
+                }
+
+                $pronunciationsCurrent = $this->getDataPronunciation(['dictionary_by_words_id' => $idMaster]);
+                if (count($pronunciationsCurrent) > 0) {
+                    $setPush->pronunciations = $pronunciationsCurrent;
+                }
+
+                $examplesCurrent = $this->getDataExample(['dictionary_by_words_id' => $idMaster]);
+                if (count($examplesCurrent) > 0) {
+                    $setPush->examples = $examplesCurrent;
+                }
+
+                $resultData['rows'][$item] = $setPush;
             }
 
+            return $resultData;
 
-            $audiosCurrent = $this->getDataAudio(['dictionary_by_words_id' => $idMaster]);
-            if (count($audiosCurrent) > 0) {
-                $setPush->audios = $audiosCurrent;
+        } catch (\Exception $e) {
 
-            }
-
-            $pronunciationsCurrent=$this->getDataPronunciation(['dictionary_by_words_id' => $idMaster]);
-            if (count($pronunciationsCurrent) > 0) {
-                $setPush->pronunciations = $pronunciationsCurrent;
-
-            }
-            $examplesCurrent=$this->getDataExample(['dictionary_by_words_id' => $idMaster]);
-            if (count($examplesCurrent) > 0) {
-                $setPush->examples = $examplesCurrent;
-
-            }
-            $resultData['rows'][$item] = $setPush;
+            // Puedes relanzar o devolver una estructura de error
+            return [
+                'total'   => 0,
+                'rows'    => [],
+                'current' =>-1,
+                'rowCount'=> -10,
+                'error'   => [
+                    'message' => $e->getMessage(),
+                    'file'    => $e->getFile(),
+                    'line'    => $e->getLine(),
+                ]
+            ];
         }
-        return $resultData;
     }
+
 
     public function getDictionaryAdmin($params)
     {
@@ -80,16 +97,11 @@ class DictionaryByWords extends ModelManager
         $field = 'value';
         $query = DB::table($this->table);
         $entity_manager_id = isset($params['filters']['entity_manager_id']) ? $params['filters']['entity_manager_id'] : null;
-
         $page = isset($params['current']) ? (int)$params['current'] : 0;
         $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
-
         $selectString = "$this->table.id,$this->table.translation_value,$this->table.usage_context,$this->table.value,$this->table.description,$this->table.status,$this->table.diccionary_language_id,$this->table.letters_of_the_alphabet
         ,dictionary_word_by_class.dictionary_grammatical_class_id
         ,dictionary_grammatical_class.name dictionary_grammatical_class_name ";
-
-
-
 
         $query->where(
             $this->table . '.diccionary_language_id', '=', $entity_manager_id
@@ -97,12 +109,11 @@ class DictionaryByWords extends ModelManager
         $query->where(
             $this->table . '.status', '=', 'ACTIVE'
         );
-        if ($params['searchPhrase'] != null && $params['searchPhrase'] != '') {
+        if (isset($params['searchPhrase'])&&$params['searchPhrase'] != null && $params['searchPhrase'] != '') {
             $searchValue = $params['searchPhrase'];
             $likeSet = $searchValue;
             $query->where(function ($query) use ($likeSet
             ) {
-
                 $query->orWhere($this->table . '.value', 'like', '%' . $likeSet . '%');
 
             });

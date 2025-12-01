@@ -16,7 +16,9 @@ return [
     */
 
     'paths' => [
-        'api/*',
+        //'api/*',
+       // 'api/api-information/*',          // incluye consultar-cedula-legal
+        'api/traductor/*',                // incluye getDictionaryByLanguage
         'sanctum/csrf-cookie',
         'api-rest/cms/*',
         'data/*', // ENVIO DE DATOS

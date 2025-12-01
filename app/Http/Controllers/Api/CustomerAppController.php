@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use App;
 use App\Models\Customer;
 use App\Models\MaritimeOperationsManagement\MaritimeDepartures;
 use Illuminate\Http\Request;
@@ -92,5 +92,16 @@ class CustomerAppController extends Controller
         $model = new MaritimeDepartures();
         $result = $model->saveMaritimeDepartureApi($payloadJsonString);
         return Response::json($result);
+    }
+    public function getDictionaryByLanguage()//CMS-TEMPLATE-MENU-CONTROLLER---KICHWA-CASTILIAN
+    {
+
+        $dataPost = \Illuminate\Support\Facades\Request::all();
+        $model = new App\Models\Dictionary\DictionaryByWords();
+        $result = $model->getDictionaryData($dataPost);
+
+        return Response::json(
+            $result
+        );
     }
 }

@@ -27,21 +27,36 @@ Route::middleware('publicApi')->group(function () {
     Route::post('/auth/with/meetclic/register', 'Auth\MeetclicController@register')->name('registerMeetclic');
     Route::post('/business/searchNearbyBusinesses', 'Api\BusinessAppController@searchNearbyBusinesses')->name('searchNearbyBusinesses');
     Route::post('/auth/with/resendVerificationByEmail', 'Auth\MeetclicController@resendVerificationByEmail')->name('resendVerificationByEmail');
-
-
     Route::post('/business/businessDetails', 'Api\BusinessAppController@businessDetails')->name('searchNearbyBusinesses');
-
-
     Route::get('/api-information/consultar-cedula-legal', 'Api\CustomerAppController@consultarCedula')->name('consultarCedula');
     Route::post('/saveCustomer', 'Api\CustomerAppController@saveCustomerApi')->name('saveCustomerApi');
     Route::post('/saveMaritimeDepartureApi', 'Api\CustomerAppController@saveMaritimeDepartureApi')->name('saveMaritimeDepartureApi');
     Route::get('/getDeparturesWithCustomers', 'Api\BusinessAppController@getDeparturesWithCustomers')->name('getDeparturesWithCustomers');
     Route::get('/setKichwaText', 'MintonPages\MintonPagesController@setKichwaText')->name('setKichwaText');
     Route::get('/setTxtDataCastellano', 'MintonPages\MintonPagesController@setTxtDataCastellano')->name('setCastellanoText');
-
-
     Route::post('/traductor/getDictionaryByLanguage', 'Api\CustomerAppController@getDictionaryByLanguage')->name('getDictionaryByLanguage');
 
+
+
+    Route::get('/test/json', function (Request $request) {
+        return response()->json([
+            'success' => true,
+            'method'  => 'GET',
+            'message' => 'API funcionando correctamente',
+            'ip'      => $request->ip(),
+            'time'    => now()->toDateTimeString(),
+        ]);
+    });
+    Route::post('/test/json', function (Request $request) {
+        return response()->json([
+            'success' => true,
+            'method'  => 'POST',
+            'message' => 'API funcionando correctamente',
+            'data'    => $request->all(), // lo que mandes en el body te lo devuelve
+            'ip'      => $request->ip(),
+            'time'    => now()->toDateTimeString(),
+        ]);
+    });
 
 });
 
