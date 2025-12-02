@@ -1,3 +1,45 @@
+# ============================
+# 1) TIPOS MIME PARA GLTF/GLB
+# ============================
+<IfModule mod_mime.c>
+    AddType model/gltf-binary .glb
+    AddType model/gltf+json   .gltf
+</IfModule>
+
+# ==========================================
+# 2) CONFIG ESPECÍFICA PARA .glb / .gltf
+#    - Content-Type correcto
+#    - Desactivar gzip dinámico (para que haya Content-Length)
+#    - Cache estática
+#    - (Opcional) CORS abierto para AR/WebGL
+# ==========================================
+<IfModule mod_headers.c>
+    <FilesMatch "\.(glb|gltf)$">
+        # Tipo correcto para binario GLB
+        Header set Content-Type "model/gltf-binary"
+
+        # Opcional: si sirves .gltf JSON, puedes cambiar a model/gltf+json según archivo
+        # Header set Content-Type "model/gltf+json"
+
+        # MUY IMPORTANTE: evitar compresión dinámica
+        Header unset Content-Encoding
+
+        # Cachear en clientes/CDN por 7 días
+        Header set Cache-Control "public, max-age=604800"
+
+        # CORS (ajusta si no quieres *)
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
+# Evitar gzip sobre .glb/.gltf (para que Apache pueda calcular Content-Length)
+<IfModule mod_deflate.c>
+    SetEnvIfNoCase Request_URI "\.(glb|gltf)$" no-gzip dont-vary
+</IfModule>
+
+# ============================
+# 3) LARAVEL (lo que ya tenías)
+# ============================
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
