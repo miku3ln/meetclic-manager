@@ -726,7 +726,7 @@ if (env('allowAllInOne')) {
             urlConQuery.searchParams.set('device', 'movil');
 
             // Redirecciona automáticamente con los parámetros
-            window.location.href = urlConQuery.toString();
+          //  window.location.href = urlConQuery.toString();
         });
     }
 </script>

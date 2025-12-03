@@ -94,7 +94,7 @@ class BusinessRepository
 
         return $results->toArray();
     }
-    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = [])
+    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null)
     {
         $haversine = "(6371 * acos(
         cos(radians(?)) *
@@ -133,8 +133,27 @@ class BusinessRepository
             ->whereRaw("$haversine <= ?", [$latitude, $longitude, $latitude, $radiusKm]); // ✅ Filtrado por rango
 
         // Si filtras por subcategoría
-        if (!empty($subcategoryIds) && !(count($subcategoryIds) === 1 && $subcategoryIds[0] == 0)) {
-            $query->whereIn('b.business_subcategories_id', $subcategoryIds);
+        if (!empty($subcategoryIds)) {
+
+            // Si viene como string "15,14"
+            if (is_string($subcategoryIds)) {
+                $subcategoryIds = array_filter(
+                    array_map('intval', explode(',', $subcategoryIds)),
+                    fn ($id) => $id > 0
+                );
+            }
+
+            // Si ya es array, nos aseguramos de castearlo bien
+            if (is_array($subcategoryIds)) {
+                $subcategoryIds = array_filter(
+                    array_map('intval', $subcategoryIds),
+                    fn ($id) => $id > 0
+                );
+            }
+
+            if (!empty($subcategoryIds)) {
+                $query->whereIn('b.business_subcategories_id', $subcategoryIds);
+            }
         }
 
         $results = $query->get();

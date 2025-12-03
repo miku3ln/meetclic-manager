@@ -17,7 +17,7 @@ class BusinessAppService
 
     }
 
-    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = [])
+    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds=null )
     {
 
         return $this->repository->searchNearbyBusinesses($latitude, $longitude, $radiusKm , $subcategoryIds );
