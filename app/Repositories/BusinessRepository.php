@@ -16,6 +16,33 @@ use Illuminate\Support\Facades\DB;
 
 class BusinessRepository
 {
+    /**
+     * Normaliza valores tipo "true"/"false", 1/0, true/false.
+     * Devuelve:
+     *   - true  → si entra algo equivalente a verdadero
+     *   - false → si entra algo equivalente a falso
+     *   - null  → si viene null o cadena vacía (no filtrar)
+     */
+    private function normalizeBool($value): ?bool
+    {
+        if (is_bool($value)) {
+            return $value === true;
+        }
+
+        if (is_int($value) || is_float($value) || ctype_digit((string) $value)) {
+            return ((int) $value) === 1;
+        }
+
+        if (is_string($value)) {
+            $v = strtolower(trim($value));
+            $truthy = ['1', 'true', 'on', 'yes', 'y', 'si', 'sí'];
+
+            return in_array($v, $truthy, true);
+        }
+
+        return false;
+    }
+
     public function businessDetails($businessId)
     {
 
@@ -45,7 +72,7 @@ class BusinessRepository
             ->where('b.status', 'ACTIVE')
             ->whereNotNull('b.street_lat')
             ->whereNotNull('b.street_lng');
-            $query->whereIn('b.id', [$businessId]);
+        $query->whereIn('b.id', [$businessId]);
         $results = $query->get();
         foreach ($results as $business) {
 
@@ -58,8 +85,8 @@ class BusinessRepository
                     'isWeek' => true,
                 ]
             ]);
-            $reputationData= $this->getReputationLogForBusiness($business_id);
-            $getRatingSummaryForBusiness= $this->getRatingSummaryForBusiness($business_id);
+            $reputationData = $this->getReputationLogForBusiness($business_id);
+            $getRatingSummaryForBusiness = $this->getRatingSummaryForBusiness($business_id);
             $reputationScore = $reputationData["summary"]["total_reputation"];
             $totalTrophies = 0;
             $totalVisits = 0;
@@ -87,14 +114,17 @@ class BusinessRepository
             $business->schedules = $schedules;
             $business->reputationData = $reputationData;
             $business->getRatingSummaryForBusiness = $getRatingSummaryForBusiness;
-            $socialNetworksData=    $this->getSocialNetwork(["filters"=>["business_id"=>$business_id]]);
+            $socialNetworksData = $this->getSocialNetwork(["filters" => ["business_id" => $business_id]]);
             $business->socialNetworksData = $socialNetworksData;
 
         }
 
         return $results->toArray();
     }
-    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null)
+
+    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null, $onlyWithRedeemableRewards = null,
+                                           $onlyWithGamesActive = null,
+                                           $onlyAlliedCompanies = null)
     {
         $haversine = "(6371 * acos(
         cos(radians(?)) *
@@ -103,35 +133,60 @@ class BusinessRepository
         sin(radians(?)) *
         sin(radians(b.street_lat))
     ))";
-
+$select=[
+    'b.id',
+    'b.title',
+    'b.description',
+    'b.source',
+    'b.business_name',
+    'b.email',
+    'b.phone_value',
+    'b.page_url',
+    'b.street_1',
+    'b.street_2',
+    'b.street_lat',
+    'b.street_lng',
+    'b.status',
+    'b.qualification',
+    'b.business_subcategories_id',
+    'bs.name as subcategory_name',
+    'epf.value as fiscal_position',
+    'bg.id as gamification_config_id',
+    'bg.gamification_id',
+    'bg.allow_exchange',           // 0/1
+    'bg.allow_exchange_business',  // 0/1
+    'bg.state as gamification_state',
+];
         $query = DB::table('business as b')
             ->leftJoin('entity_position_fiscal as epf', 'epf.id', '=', 'b.entity_position_fiscal_id')
             ->leftJoin('business_subcategories as bs', 'bs.id', '=', 'b.business_subcategories_id')
-            ->select([
-                'b.id',
-                'b.title',
-                'b.description',
-                'b.source',
-                'b.business_name',
-                'b.email',
-                'b.phone_value',
-                'b.page_url',
-                'b.street_1',
-                'b.street_2',
-                'b.street_lat',
-                'b.street_lng',
-                'b.status',
-                'b.qualification',
-                'b.business_subcategories_id',
-                'bs.name as subcategory_name',
-                'epf.value as fiscal_position',
-            ])
+            // Siempre traemos la tabla de gamificación para SELECT
+            ->leftJoin('business_by_gamification as bg', function ($join) {
+                $join->on('bg.business_id', '=', 'b.id')
+                    ->where('bg.state', '=', 'ACTIVE'); // solo config activa
+            })
+            ->select($select)
             ->selectRaw("$haversine as distance", [$latitude, $longitude, $latitude]) // ✅ Muestra distancia
             ->where('b.status', 'ACTIVE')
             ->whereNotNull('b.street_lat')
             ->whereNotNull('b.street_lng')
             ->whereRaw("$haversine <= ?", [$latitude, $longitude, $latitude, $radiusKm]); // ✅ Filtrado por rango
+        $onlyWithRedeemableRewards = $this->normalizeBool($onlyWithRedeemableRewards);
+        $onlyWithGamesActive = $this->normalizeBool($onlyWithGamesActive);
+        $onlyAlliedCompanies = $this->normalizeBool($onlyAlliedCompanies);
 
+        // onlyWithRedeemableRewards → bg.allow_exchange = 1
+        if ($onlyWithRedeemableRewards) {
+            $query->where('bg.allow_exchange', 1);
+        }
+        // onlyAlliedCompanies → bg.allow_exchange_business = 1
+        if ($onlyAlliedCompanies) {
+            $query->where('bg.allow_exchange_business', 1);
+        }
+        // onlyWithGamesActive → tiene gamification_id (configurada)
+        if ($onlyWithGamesActive) {
+            $query->whereNotNull('bg.gamification_id');
+        }
         // Si filtras por subcategoría
         if (!empty($subcategoryIds)) {
 
@@ -139,7 +194,7 @@ class BusinessRepository
             if (is_string($subcategoryIds)) {
                 $subcategoryIds = array_filter(
                     array_map('intval', explode(',', $subcategoryIds)),
-                    fn ($id) => $id > 0
+                    fn($id) => $id > 0
                 );
             }
 
@@ -147,7 +202,7 @@ class BusinessRepository
             if (is_array($subcategoryIds)) {
                 $subcategoryIds = array_filter(
                     array_map('intval', $subcategoryIds),
-                    fn ($id) => $id > 0
+                    fn($id) => $id > 0
                 );
             }
 
@@ -170,12 +225,11 @@ class BusinessRepository
                     'isWeek' => true,
                 ]
             ]);
-            $reputationData= $this->getReputationLogForBusiness($business_id);
-            $reputationCustomer= $this->getReputationLogForClient(1);
-            $socialFollowDataCustomer= $this->getSocialFollowLogForClient(1);
-            $getRatingSummaryForClientData= $this->getRatingSummaryForClient(1);
-            $getRatingSummaryForBusiness= $this->getRatingSummaryForBusiness($business_id);
-
+            $reputationData = $this->getReputationLogForBusiness($business_id);
+            $reputationCustomer = $this->getReputationLogForClient(1);
+            $socialFollowDataCustomer = $this->getSocialFollowLogForClient(1);
+            $getRatingSummaryForClientData = $this->getRatingSummaryForClient(1);
+            $getRatingSummaryForBusiness = $this->getRatingSummaryForBusiness($business_id);
 
 
             $reputationScore = $reputationData["summary"]["total_reputation"];
@@ -209,17 +263,15 @@ class BusinessRepository
             $business->socialFollowDataCustomer = $socialFollowDataCustomer;
             $business->getRatingSummaryForClientData = $getRatingSummaryForClientData;
             $business->getRatingSummaryForBusiness = $getRatingSummaryForBusiness;
-            $socialNetworksData=    $this->getSocialNetwork(["filters"=>["business_id"=>$business_id]]);
+            $socialNetworksData = $this->getSocialNetwork(["filters" => ["business_id" => $business_id]]);
             $business->socialNetworksData = $socialNetworksData;
-
-
-
 
 
         }
 
         return $results->toArray();
     }
+
     public function getReputationLogForClient(int $userId): array
     {
         // Verificar si existen movimientos de reputación para el usuario
@@ -258,7 +310,7 @@ class BusinessRepository
                     'timestamp' => $record->timestamp,
                     'description' => $record->description,
                     'direction' => $record->type_manager === 1 ? 'IN' : 'OUT',
-                    'reputation_points' => (float) $record->reputation_points,
+                    'reputation_points' => (float)$record->reputation_points,
                     'user_id' => $record->user_id,
                     'process_name' => $record->process_name ?? 'Unknown',
                 ];
@@ -278,6 +330,7 @@ class BusinessRepository
             ],
         ];
     }
+
     public function getSocialFollowLogForClient(int $userId): array
     {
         // Verificar si existe resumen social para este usuario
@@ -334,6 +387,7 @@ class BusinessRepository
             ],
         ];
     }
+
     public function getRatingSummaryForBusiness(int $businessId): array
     {
         $ratings = DB::table('rating_movement_business as rmb')
@@ -454,7 +508,7 @@ class BusinessRepository
                     'timestamp' => $record->timestamp,
                     'description' => $record->description,
                     'direction' => $record->type_manager === 1 ? 'IN' : 'OUT',
-                    'reputation_points' => (float) $record->reputation_points,
+                    'reputation_points' => (float)$record->reputation_points,
                     'user_id' => $record->user_id,
                     'process_name' => $record->process_name ?? 'Unknown',
                 ];
@@ -473,6 +527,7 @@ class BusinessRepository
             ],
         ];
     }
+
     public function getCountersBusiness($params)
     {
         $limitDays = Util::getDatesInitWeek();

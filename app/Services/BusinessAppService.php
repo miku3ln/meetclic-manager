@@ -17,10 +17,14 @@ class BusinessAppService
 
     }
 
-    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds=null )
+    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds=null,   $onlyWithRedeemableRewards = null,
+                                                                                                          $onlyWithGamesActive = null,
+                                                                                                          $onlyAlliedCompanies = null )
     {
 
-        return $this->repository->searchNearbyBusinesses($latitude, $longitude, $radiusKm , $subcategoryIds );
+        return $this->repository->searchNearbyBusinesses($latitude, $longitude, $radiusKm , $subcategoryIds,   $onlyWithRedeemableRewards ,
+            $onlyWithGamesActive,
+            $onlyAlliedCompanies  );
     }
     public function businessDetails($businessId)
     {
