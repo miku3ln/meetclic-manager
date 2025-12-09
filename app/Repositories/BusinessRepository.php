@@ -29,8 +29,8 @@ class BusinessRepository
             return $value === true;
         }
 
-        if (is_int($value) || is_float($value) || ctype_digit((string) $value)) {
-            return ((int) $value) === 1;
+        if (is_int($value) || is_float($value) || ctype_digit((string)$value)) {
+            return ((int)$value) === 1;
         }
 
         if (is_string($value)) {
@@ -124,7 +124,7 @@ class BusinessRepository
 
     public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null, $onlyWithRedeemableRewards = null,
                                            $onlyWithGamesActive = null,
-                                           $onlyAlliedCompanies = null)
+                                           $onlyAlliedCompanies = null, $searchQuery = "")
     {
         $haversine = "(6371 * acos(
         cos(radians(?)) *
@@ -133,30 +133,30 @@ class BusinessRepository
         sin(radians(?)) *
         sin(radians(b.street_lat))
     ))";
-$select=[
-    'b.id',
-    'b.title',
-    'b.description',
-    'b.source',
-    'b.business_name',
-    'b.email',
-    'b.phone_value',
-    'b.page_url',
-    'b.street_1',
-    'b.street_2',
-    'b.street_lat',
-    'b.street_lng',
-    'b.status',
-    'b.qualification',
-    'b.business_subcategories_id',
-    'bs.name as subcategory_name',
-    'epf.value as fiscal_position',
-    'bg.id as gamification_config_id',
-    'bg.gamification_id',
-    'bg.allow_exchange',           // 0/1
-    'bg.allow_exchange_business',  // 0/1
-    'bg.state as gamification_state',
-];
+        $select = [
+            'b.id',
+            'b.title',
+            'b.description',
+            'b.source',
+            'b.business_name',
+            'b.email',
+            'b.phone_value',
+            'b.page_url',
+            'b.street_1',
+            'b.street_2',
+            'b.street_lat',
+            'b.street_lng',
+            'b.status',
+            'b.qualification',
+            'b.business_subcategories_id',
+            'bs.name as subcategory_name',
+            'epf.value as fiscal_position',
+            'bg.id as gamification_config_id',
+            'bg.gamification_id',
+            'bg.allow_exchange',           // 0/1
+            'bg.allow_exchange_business',  // 0/1
+            'bg.state as gamification_state',
+        ];
         $query = DB::table('business as b')
             ->leftJoin('entity_position_fiscal as epf', 'epf.id', '=', 'b.entity_position_fiscal_id')
             ->leftJoin('business_subcategories as bs', 'bs.id', '=', 'b.business_subcategories_id')
@@ -174,7 +174,15 @@ $select=[
         $onlyWithRedeemableRewards = $this->normalizeBool($onlyWithRedeemableRewards);
         $onlyWithGamesActive = $this->normalizeBool($onlyWithGamesActive);
         $onlyAlliedCompanies = $this->normalizeBool($onlyAlliedCompanies);
-
+        if ($searchQuery !== '') {
+            $query->when($searchQuery !== '', function ($q) use ($searchQuery) {
+                $q->where(function ($sub) use ($searchQuery) {
+                    $sub->where('b.business_name', 'LIKE', "%{$searchQuery}%")
+                        ->orWhere('b.title', 'LIKE', "%{$searchQuery}%")
+                        ->orWhere('b.description', 'LIKE', "%{$searchQuery}%");
+                });
+            });
+        }
         // onlyWithRedeemableRewards → bg.allow_exchange = 1
         if ($onlyWithRedeemableRewards) {
             $query->where('bg.allow_exchange', 1);

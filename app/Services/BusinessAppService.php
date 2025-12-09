@@ -19,12 +19,12 @@ class BusinessAppService
 
     public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds=null,   $onlyWithRedeemableRewards = null,
                                                                                                           $onlyWithGamesActive = null,
-                                                                                                          $onlyAlliedCompanies = null )
+                                                                                                          $onlyAlliedCompanies = null ,$searchQuery='')
     {
 
         return $this->repository->searchNearbyBusinesses($latitude, $longitude, $radiusKm , $subcategoryIds,   $onlyWithRedeemableRewards ,
             $onlyWithGamesActive,
-            $onlyAlliedCompanies  );
+            $onlyAlliedCompanies ,$searchQuery );
     }
     public function businessDetails($businessId)
     {

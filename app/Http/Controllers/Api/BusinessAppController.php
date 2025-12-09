@@ -31,8 +31,9 @@ class BusinessAppController extends Controller
             $onlyWithGamesActive = $request->input('onlyWithGamesActive',null);
             $onlyAlliedCompanies = $request->input('onlyAlliedCompanies',null);
 
+            $searchQuery = $request->input('searchQuery','');
 
-            $data = $this->serviceUser->searchNearbyBusinesses($latitude, $longitude, $radiusKm, $subcategoryIds,$onlyWithRedeemableRewards,$onlyWithGamesActive,$onlyAlliedCompanies);
+            $data = $this->serviceUser->searchNearbyBusinesses($latitude, $longitude, $radiusKm, $subcategoryIds,$onlyWithRedeemableRewards,$onlyWithGamesActive,$onlyAlliedCompanies,$searchQuery);
             return Response::json([
                 "type" => $type,
                 'success' => true,
