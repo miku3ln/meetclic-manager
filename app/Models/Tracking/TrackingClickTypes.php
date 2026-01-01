@@ -112,9 +112,14 @@ class TrackingClickTypes extends ModelManager
     {
         $field = $this->table . '.' . $this->field_main;
         $query = DB::table($this->table);
-        $selectString = "$this->table.id, $this->table.description as text";
+        $selectString = "$this->table.id, $this->table.description as text, $this->table.uid, $this->table.uid, $this->table.code";
         $query->select(DB::raw($selectString));
-
+        $allowAll = true;
+        $limit = 0;
+        if (isset($params['filters']['limit'])) {
+            $allowAll = false;
+            $limit = $params['filters']['limit'];
+        }
         if (!empty($params['filters']['search_value']['term'])) {
             $term = $params['filters']['search_value']['term'];
             $query->where(function ($query) use ($term) {
@@ -123,8 +128,10 @@ class TrackingClickTypes extends ModelManager
                 $query->orWhere('description', 'like', '%' . $term . '%');
             });
         }
-
-        $query->limit(10)->orderBy('description', 'asc');
+        if (!$allowAll) {
+            $query->limit($limit);
+        }
+        $query->orderBy('description', 'asc');
         return $query->get()->toArray();
     }
 

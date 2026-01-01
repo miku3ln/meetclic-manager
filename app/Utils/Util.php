@@ -21,15 +21,17 @@ use DateTimeZone;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Support\Facades\Session;
 use App;
+
 class Util
 {
-    const INFORMATION_CUSTOMER_TYPE=0;
-    const INFORMATION_BUSINESS_TYPE=1;
-    public  $languageData = [
+    const INFORMATION_CUSTOMER_TYPE = 0;
+    const INFORMATION_BUSINESS_TYPE = 1;
+    public $languageData = [
         'en', 'es', 'ki'
 
     ];
-    public  function getLanguageValid($languagePost)
+
+    public function getLanguageValid($languagePost)
     {
         $languageCurrent = $languagePost;
         $language = 'es';
@@ -40,7 +42,8 @@ class Util
         }
         return $language;
     }
-    public  function setLanguage($request)
+
+    public function setLanguage($request)
     {
 
         $language = $request->route('language');
@@ -53,6 +56,7 @@ class Util
 
 
     }
+
     public static function sumData($params)
     {
         $data_all = $params["haystack"];
@@ -324,6 +328,255 @@ class Util
         $month = date('m');
         $year = date('Y');
         return date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
+    }
+    public static function getGamificationSectionsData($userData, $isProduction)
+    {
+        $roles = $userData['roles'] ?? [];
+        $roleGod = 1;
+        $isGod = !empty(array_intersect([$roleGod], $roles));
+
+        // ✅ IDs de secciones (puedes crecerlos sin romper compatibilidad)
+        $SECTIONS = [
+            'BUSINESS_PUBLIC' => 0, // Perfil empresarial (público)
+            'CMS'             => 2, // CMS / Admin (solo GOD)
+            'PRODUCTS'     => 1, // Tienda (público)
+
+        ];
+
+        // ✅ Secciones públicas (para todos)
+        $publicSections = [
+            [
+                'value' => $SECTIONS['BUSINESS_PUBLIC'],
+                'text'  => 'Empresa',
+                'type'  => 'business',
+                'icon'  => 'fa fa-building',
+                'description' => 'Perfil, calificación, sugerencias y acciones del negocio',
+            ],
+            [
+                'value' => $SECTIONS['PRODUCTS'],
+                'text'  => 'Productos - Servicios',
+                'type'  => 'shop',
+                'icon'  => 'fa fa-store',
+                'description' => 'Productos y servicios del negocio',
+            ],
+        ];
+
+        // ✅ Secciones CMS (solo GOD)
+        $cmsSections = [
+            [
+                'value' => $SECTIONS['CMS'],
+                'text'  => 'CMS / Administración',
+                'type'  => 'cms',
+                'icon'  => 'fa fa-shield-alt',
+                'description' => 'Panel, páginas, cultura, configuraciones',
+            ],
+        ];
+
+        $merged = $isGod ? array_merge($cmsSections, $publicSections) : $publicSections;
+
+        // ✅ Unique por value
+        $unique = [];
+        foreach ($merged as $item) {
+            if (!isset($item['value'])) continue;
+            $unique[$item['value']] = $unique[$item['value']] ?? $item;
+        }
+
+        return array_values($unique);
+    }
+
+    public static function getGamificationUrlData($userData, $isProduction)
+    {
+        $roles = $userData['roles'] ?? [];
+        $roleGod = 1;
+        $isGod = !empty(array_intersect([$roleGod], $roles));
+
+        $routeRoot = rtrim(route('urlBase'), '/') . "/es/";
+
+        $slugBusiness = '{slug_business}';
+        $slugProductService = '{slug_product_service}';
+
+        // ✅ IDs de secciones (deben coincidir con getGamificationSectionsData)
+        $SECTIONS = [
+            'BUSINESS_PUBLIC' => 0,
+            'SHOP_PUBLIC'     => 4,
+            'GAMING_PUBLIC'   => 2,
+            'REWARDS_PUBLIC'  => 3,
+            'CMS'             => 10,
+            'PRODUCTS'     => 1,
+
+        ];
+
+        /**
+         * ✅ Rutas públicas por secciones (para empresa/turismo)
+         * - Aquí van los links “permitidos” que tú listaste (y los nuevos exclusivos si decides crear)
+         */
+        $publicRoutes = [
+            // -------------------------
+            // EMPRESA (perfil y acciones empresariales)
+            // -------------------------
+            [
+                'id'         => $routeRoot."businessDetails/$slugBusiness",
+                'text'       => 'Perfil del negocio',
+                'type'       => 'business-details',
+                'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
+            ],
+            [
+                'id'         => $routeRoot."suggestionsMailBoxByBusiness/$slugBusiness", // si es público cámbialo; si es login muévelo a CMS/LOGIN
+                'text'       => 'Buzón de sugerencias',
+                'type'       => 'suggestions-business',
+                'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
+                'requires_auth' => true, // normalmente esto es login
+            ],
+            // -------------------------
+            // TIENDA
+            // -------------------------
+            [
+                'id'         => $routeRoot."shopByBusiness/$slugBusiness",
+                'text'       => 'Tienda del negocio',
+                'type'       => 'shop-business',
+                'section_id' => $SECTIONS['SHOP_PUBLIC'],
+            ],
+            [
+                'id'         => $routeRoot."productDetailsByBusiness/$slugProductService",
+                'text'       => 'Detalle de producto/servicio',
+                'type'       => 'product-details-business',
+                'section_id' => $SECTIONS['PRODUCTS'],
+            ],
+
+            // -------------------------
+            // TAREAS (gamificación empresa)
+            // -------------------------
+            [
+                'id'         => $routeRoot."businessPullkay/$slugBusiness",
+                'text'       => 'Tareas del negocio',
+                'type'       => 'gaming-business',
+                'section_id' => $SECTIONS['GAMING_PUBLIC'],
+            ],
+            // -------------------------
+            // PREMIOS / CANJES (nuevo)
+            // ✅ Aquí define tu ruta real cuando la crees:
+            //    Ej: rewards, redemptions, exchange, prizeStore, etc.
+            // -------------------------
+            [
+                'id'         => $routeRoot."rewardsByBusiness/$slugBusiness", // <- CREA ESTA RUTA EN TU WEB / FRONT
+                'text'       => 'Premios y canjes',
+                'type'       => 'rewards-business',
+                'section_id' => $SECTIONS['REWARDS_PUBLIC'],
+            ],
+        ];
+
+        /**
+         * ✅ Rutas CMS (solo GOD)
+         * - Las dejo ordenadas por “bloques” (login, páginas, core)
+         */
+        $godRoutes = [
+            // -------- CMS / Login
+            [
+                'id'         => $routeRoot.'account',
+                'text'       => 'Tablero',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'myProfile',
+                'text'       => 'Mi perfil',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'password',
+                'text'       => 'Cambiar contraseña',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'business',
+                'text'       => 'Mis empresas',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'businessEmployer',
+                'text'       => 'Mis empleos',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'orders',
+                'text'       => 'Órdenes',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'pointsSales',
+                'text'       => 'Puntos de venta',
+                'type'       => 'cms-login',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+
+            // -------- CMS / Páginas
+            [
+                'id'         => $routeRoot.'aboutUsBee',
+                'text'       => 'Conócenos',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'howItWorks',
+                'text'       => 'Preguntas',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'homeBackLine',
+                'text'       => 'Equipo y alianzas',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'homeChaski',
+                'text'       => 'Cultura',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'yachaSun',
+                'text'       => 'Aprender Kichwa',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'diccionario',
+                'text'       => 'Diccionario Kichwa',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+            [
+                'id'         => $routeRoot.'traductor',
+                'text'       => 'Traductor',
+                'type'       => 'cms-pages',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+
+            // -------- CMS / Core
+            [
+                'id'         => $routeRoot.'search',
+                'text'       => 'Búsqueda de empresas',
+                'type'       => 'cms-core',
+                'section_id' => $SECTIONS['CMS'],
+            ],
+        ];
+
+        $merged = $isGod ? array_merge($godRoutes, $publicRoutes) : $publicRoutes;
+
+        // ✅ Unique por id
+        $unique = [];
+        foreach ($merged as $item) {
+            if (!isset($item['id'])) continue;
+            $unique[$item['id']] = $unique[$item['id']] ?? $item;
+        }
+
+        return array_values($unique);
     }
 
     public static function DateCurrent($tz = 'America/Guayaquil', $format = "Y-m-d H:i:s")
@@ -837,14 +1090,14 @@ class Util
             $active = $item['active'];
             $icon = $item['icon'];
             $isParent = $item['isParent'];
-            $weight = isset($item['weight'])?$item['weight']:-1;
+            $weight = isset($item['weight']) ? $item['weight'] : -1;
 
             if ($isParent) {
                 $parentData = $item['parentData'];
                 $itemsAll = array();
                 foreach ($parentData as $keyData => $itemData) {
                     $urlCurrent = $itemData['urlCurrent'];
-                    $weightChildren =  isset($itemData['weight'])?$itemData['weight']:-2;
+                    $weightChildren = isset($itemData['weight']) ? $itemData['weight'] : -2;
                     $setPushItems = array(
                         'type_item' => 0,
                         'active' => $itemData['active'],
@@ -1442,6 +1695,76 @@ class Util
         return $result;
     }
 
+    public static function getDataBusinessPullkay($params): array
+    {
+        $paramsRequest = $params["paramsRequest"];
+        $publicAsset = env('APP_IS_SERVER') ? "public" : '';
+        $resourcePathServer = $publicAsset;
+        $dataManagerPage = [];
+        $viewPage = false;
+        $modelBusiness = new \App\Models\Business;
+        $business_id = null;
+        $paramId = $paramsRequest['id'];
+        $information = $modelBusiness->getDetailsBee([
+            'filters' => [
+                'business_id' => $paramId
+            ]
+        ]);
+        $colorDefault = '#FACC39';
+        $dataManagerPage['allowVue'] = true;
+        $dataManagerPage['categories'] = [];
+        $dataManagerPage['business_id'] = $business_id;
+        $inventoryConfig = [
+            'type' => 0,
+            'management' => null,
+            'not-manager' => true,
+            'config_management_inventory' => [
+                'header_subcategories' => [
+                    'content' => [
+                        'styles' => [
+                            'background_color' => $colorDefault
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        if ($information) {
+            $details = [];
+            $modelBusinessGamification = new \App\Models\BusinessByGamification;
+            $informationAll = [
+                'business' => $information,
+                'gallery' => [],
+                'tags' => [],
+                'details' => $details,
+                'amenities' => [],
+                'scheduling' => [],
+                'aboutUs' => [],
+                'counters' => [],
+                'networkSocial' => [],
+            ];
+            $business_id = $information->id;
+            $viewPage = true;
+            $dataManagerPage['business'] = Util::getStructureBusiness($informationAll, $resourcePathServer);
+            $managerDataGamification = $modelBusinessGamification->getGamificationFrontend([
+                'filters' => [
+                    'business_id' => $business_id
+                ]
+            ]);
+            $allowGamification = !$managerDataGamification == null;
+
+            $dataManagerPage['gamification'] = [
+                'allow' => $allowGamification,
+                'data' => $managerDataGamification
+            ];
+
+        }
+        $dataManagerPage['inventory-config'] = $inventoryConfig;
+
+        $dataManagerPage["viewPage"] = $viewPage;
+        $dataManagerPage["business_id"] = $business_id;
+        return $dataManagerPage;
+    }
+
     public static function getDataBusinessAll($params): array
     {
         $publicAsset = env('APP_IS_SERVER') ? "public" : '';
@@ -1647,6 +1970,18 @@ class Util
         $dataManagerPage["viewPage"] = $viewPage;
         $dataManagerPage["pageSectionsConfig"] = $pageSectionsConfig;
         $dataManagerPage["business_id"] = $business_id;
+        $modelBusinessGamification = new \App\Models\BusinessByGamification;
+        $managerDataGamification = $modelBusinessGamification->getGamificationFrontend([
+            'filters' => [
+                'business_id' => $business_id
+            ]
+        ]);
+        $allowGamification = !$managerDataGamification == null;
+
+        $dataManagerPage['gamification'] = [
+            'allow' => $allowGamification,
+            'data' => $managerDataGamification
+        ];
 
         return $dataManagerPage;
     }
@@ -1699,22 +2034,22 @@ class Util
             $result .= '      <div class="expand-lg collapse" id="categoriesMenu" role="menu">';//menu
             $titleCategories = __('shop.filters.categories');
 
-            $result .= '           <h5 class="sidebar-heading d-none d-lg-block">'.$titleCategories.' </h5>';
+            $result .= '           <h5 class="sidebar-heading d-none d-lg-block">' . $titleCategories . ' </h5>';
             $result .= '           <div class="sidebar-icon-menu mt-4 mt-lg-0">';
             foreach ($data as $key => $rowCategory) {
                 $result .= '             <div class="sidebar-icon-menu-item active" data-bs-toggle="collapse"';
-                $result .= '               data-bs-target="#subcategories_'.$key.'" aria-expanded aria-controls="subcategories_'.$key.'"';
+                $result .= '               data-bs-target="#subcategories_' . $key . '" aria-expanded aria-controls="subcategories_' . $key . '"';
                 $result .= '               role="menuitem">';
                 $result .= '                 <div class="d-flex align-items-center">';
-              //  $result .= '                    <svg class="svg-icon sidebar-icon">';
-              //  $result .= '                     <use xlink:href="#trousers-1"></use>';
-               // $result .= '                     </svg>';
-                $result .= '                     <a class="sidebar-icon-menu-link fw-bold me-2" >'.$rowCategory['value'].'</a>';
+                //  $result .= '                    <svg class="svg-icon sidebar-icon">';
+                //  $result .= '                     <use xlink:href="#trousers-1"></use>';
+                // $result .= '                     </svg>';
+                $result .= '                     <a class="sidebar-icon-menu-link fw-bold me-2" >' . $rowCategory['value'] . '</a>';
                 $result .= '                     <span class="sidebar-icon-menu-count not-view"> 120</span>';
                 $result .= '                  </div>';
 
-               $result .= '                    <div class="collapse show" id="subcategories_'.$key.'">';
-                    $result .= '                  <ul class="sidebar-icon-menu sidebar-icon-submenu">';
+                $result .= '                    <div class="collapse show" id="subcategories_' . $key . '">';
+                $result .= '                  <ul class="sidebar-icon-menu sidebar-icon-submenu">';
                 foreach ($rowCategory["data"] as $keySub => $rowSubcategory) {
                     $result .= '                     <li class="sidebar-icon-submenu-item">';
                     $result .= '                       <a class="sidebar-icon-submenu-link link-animated link-animated-light"';

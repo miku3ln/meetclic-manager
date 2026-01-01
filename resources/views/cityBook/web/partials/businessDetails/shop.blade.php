@@ -1,6 +1,6 @@
 @if ($dataManagerPage['inventory-config']['type'] == 0)
     <div class="">
-        <section id="busines__shop">
+        <section id="shop">
             <div class="shop-manager-wrap">
                 <div class="page-content-wrapper">
 
@@ -158,8 +158,7 @@
             </div>
         </div>
     </section>
-
-    <section id="business__shop">
+    <section id="shop">
         <div class="shop-manager-wrap">
             <div class="page-content-wrapper">
 

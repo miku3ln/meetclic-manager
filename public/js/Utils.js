@@ -263,7 +263,7 @@ function getValidateForm(params) {
     $.each(modelAttributes, function (key, value) {
         var allowValidate = $.inArray(key, notValidate) == 0 ? false : true;
         if (allowValidate) {
-            if (value.$invalid) {
+            if (value.$invalid && [null, undefined, '', ""].includes(value.$model)) {
 
                 errors.push(
                     {
@@ -465,6 +465,7 @@ function resetForm() {
         structure: this.getStructureForm()
     };
     this.model.attributes.id = null;
+
 }
 
 function _viewManager(typeView, rowId) {
@@ -527,11 +528,32 @@ function getNameAttribute(name) {
     return result;
 }
 
+function formInvalidFeedback(params) {
+    var objValidate = params['objValidate'];
+    var isError = objValidate.$error;
+    if ([null, undefined].includes(objValidate.$model)) {
+        isError = true;
+    } else {
+        isError = false;
+
+    }
+    var allowError = objValidate.$dirty ? (isError) : false;
+    return !allowError;
+}
+
 function getClassErrorForm(nameElement, objValidate) {
     var result = null;
+    var isError = objValidate.$error;
+    if (objValidate.$model == null) {
+        isError = true;
+    } else {
+        isError = false;
+
+    }
+    var allowError = objValidate.$dirty ? (isError) : false;
     result = {
-        "form-group--error": objValidate.$error,
-        'form-group--success': objValidate.$dirty ? (!objValidate.$error) : false
+        "form-group--error": allowError,
+        'form-group--success': objValidate.$dirty ? (!isError) : false
     };
     return result;
 }
@@ -647,10 +669,8 @@ function viewShare() {
 }
 
 function $_shareType(network) {
-    console.log(network);
     this.networkManagerData = network;
     var paramsShare = this.getDataShare();
-    console.log(paramsShare, this.informationShare);
     if (network.type == 0) {
         FB.ui(
             paramsShare,

@@ -120,7 +120,8 @@ class FrontendCityBookMiddleware
         $utilTracking = new App\Utils\TrackingUtil();
 
         $response = $next($request);
-        $result = $utilTracking->managerAllowRoutes($request, $next,1);
+        $result = $utilTracking->managerAllowRoutes($request, $next,1);//CMS TRACKING
+//dd($result);
         $allowView = $result['success'];
         $actionUrlManagement = $result['data']['url'];
         $this->managementCookies([
@@ -135,7 +136,6 @@ class FrontendCityBookMiddleware
             ]);
         } else {
             $typeRender = $result['typeRender'];
-
             if ($typeRender == '404') {
                 abort(404);
             } else if ($typeRender == '202') {

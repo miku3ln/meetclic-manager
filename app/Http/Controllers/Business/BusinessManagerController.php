@@ -156,6 +156,20 @@ class BusinessManagerController extends BusinessBaseController
                     $dataManagerProcess = $this->getDataManagerProcess([
                         'processName' => $typeManager
                     ]);
+
+if($typeManager =="managerBusinessByGamification"){
+
+    $userData=$modelDataManager['userData'];
+    $urlTrackingData=Util::getGamificationUrlData($userData,env('APP_ENV')=='production');
+    $sectionsData=Util::getGamificationSectionsData($userData,env('APP_ENV')=='production');
+
+    $modelDataManager['processData']=[
+        'urlTracking'=>$urlTrackingData,
+        'sections'=>$sectionsData,
+
+    ];
+}
+
                     $paramsSend = [
                         "configPartial" => array(
                             "dataManagerProcess" => $dataManagerProcess,

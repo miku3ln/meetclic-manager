@@ -1145,7 +1145,16 @@
                 $(".fa.fa-play.icon-hover").click();
             });
         }
+        function initMenuGamification(){
+            $('#menu-gamification-li').on('click',function(e){
+                e.preventDefault();
+
+                const href = $(this).find('a').attr('href');
+                window.open(href, '_blank');
+            })
+        }
         $(function(){
+            initMenuGamification();
             initEvents();
         });
     </script>

@@ -1014,6 +1014,13 @@ class BusinessManager
             Route::post("gamificationTypeActivity/admin", "Gamification\GamificationTypeActivityController@getAdmin");
             Route::get("gamificationTypeActivity/listSelect2", "Gamification\GamificationTypeActivityController@getListSelect2");
 
+
+
+            Route::get("trackingClickTypes/listSelect2", "Tracking\TrackingClickTypesController@getListSelect2");
+            Route::get("trackingSources/listSelect2", "Tracking\TrackingSourcesController@getListSelect2");
+
+
+
             Route::post("gamificationByProcess/save", "Gamification\GamificationByProcessController@saveData");
             Route::post("gamificationByProcess/admin", "Gamification\GamificationByProcessController@getAdmin");
             Route::get("gamificationByProcess/listSelect2", "Gamification\GamificationByProcessController@getListSelect2");

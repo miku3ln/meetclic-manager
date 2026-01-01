@@ -12,9 +12,9 @@ class TrackingUtil
 {
     public $cookies = [];
 
-    const URL_MANY     = 1;
+    const URL_MANY = 1;
     const URL_NOT_MANY = 2;
-    const URL_EMPTY    = 0;
+    const URL_EMPTY = 0;
 
     public $allowLanguage = [
         'es', 'en', 'ki'
@@ -88,21 +88,22 @@ class TrackingUtil
     // =========================================
     //  PUBLIC: MANAGER ALLOW ROUTES
     // =========================================
-    public function managerAllowRoutes($request, $next, $type)
+    public function managerAllowRoutes($request, $next, $type)//CMS TRACKING
     {
         // type == 1  => lógica vieja con segments + permisos + casos 1..8
         // type != 1  => lógica de tracking por route name / action name
         if ($type == 1) {
             return $this->handleTypeOneRoutes($request);
         }
+        $result = $this->handleNonTypeOneRoutes($request);//CMS TRACKING
 
-        return $this->handleNonTypeOneRoutes($request);
+        return $result;
     }
 
     // =========================================
     //  PUBLIC: MANAGER COUNTERS
     // =========================================
-    public function managerCounters($params)
+    public function managerCounters($params)//CMS TRACKING
     {
         $hasToken = Session::has('_token');
         $token = $hasToken ? Session::get('_token') : null;
@@ -116,10 +117,10 @@ class TrackingUtil
             ? $params['data']['user']
             : null;
 
-        $is_guest   = $user == null;
-        $user_id    = $is_guest ? 0 : $user->id;
+        $is_guest = $user == null;
+        $user_id = $is_guest ? 0 : $user->id;
         $businessIdCurrent = null;
-        $business_id       = null;
+        $business_id = null;
         $allowManagerProcess = false;
 
         // -------------------------
@@ -158,34 +159,35 @@ class TrackingUtil
         // EXTRAER DATA DE MANAGER CLICK
         // -------------------------
         $clickContext = $this->extractManagerClickContextFromParams($params);
-
+//dd($params,$clickContext);
         $sendParams = [
-            'business_id'        => $businessIdCurrent,
-            'user_id'            => $user_id,
-            'is_guess'           => $is_guest,
-            'token'              => $token,
-            'user'               => $user,
-            'manager_click_id'   => $clickContext['manager_click_id'],
+            'business_id' => $businessIdCurrent,
+            'user_id' => $user_id,
+            'is_guess' => $is_guest,
+            'token' => $token,
+            'user' => $user,
+            'manager_click_id' => $clickContext['manager_click_id'],//tracking_click_types-typeProcess
             'manager_click_type' => $clickContext['manager_click_type'],
-            'action_name'        => $type,
-            'source_origin'      => $clickContext['source_origin'],
-            'referer'            => $clickContext['referer'],
-            'device_agent'       => $clickContext['device_agent'],
-            'ip_address'         => $clickContext['ip_address'],
-            'campaign_code'      => $clickContext['campaign_code'],
-            'referer_url'        => $clickContext['referer_url'],
-            'country'            => $clickContext['country'],
-            'region'             => $clickContext['region'],
-            'city'               => $clickContext['city'],
-            'latitude'           => $clickContext['latitude'],
-            'longitude'          => $clickContext['longitude'],
-            'type_process'       => $clickContext['type_process'],
-            'click_type_id'      => $clickContext['click_type_id'],
-            'source_id'          => $clickContext['source_id'],
+            'action_name' => $type,
+            'source_origin' => $clickContext['source_origin'],
+            'referer' => $clickContext['referer'],
+            'device_agent' => $clickContext['device_agent'],
+            'ip_address' => $clickContext['ip_address'],
+            'campaign_code' => $clickContext['campaign_code'],
+            'referer_url' => $clickContext['referer_url'],
+            'country' => $clickContext['country'],
+            'region' => $clickContext['region'],
+            'city' => $clickContext['city'],
+            'latitude' => $clickContext['latitude'],
+            'longitude' => $clickContext['longitude'],
+            'type_process' => $clickContext['type_process'],
+            'click_type_id' => $clickContext['click_type_id'],
+            'source_id' => $clickContext['source_id'],
         ];
 
         if ($allowManagerProcess) {
             $modelCounter = new \App\Models\BusinessByCounter();
+
             $modelCounter->managerCounter([
                 'filters' => $sendParams
             ]);
@@ -197,36 +199,36 @@ class TrackingUtil
     // ==================================================
     private function handleTypeOneRoutes($request)
     {
-        $url       = Request::segments();
-        $language  = $request->language;
-        $success   = true;
+        $url = Request::segments();
+        $language = $request->language;
+        $success = true;
         $typeRender = '';
-        $params    = [];
-        $case      = null;
+        $params = [];
+        $case = null;
         $actionCurrent = '';
 
         $input = $request->all();
-        $user  = $request->user();
+        $user = $request->user();
 
         // tracking type / source / campaign
-        $typeProcess    = $request->query('typeProcess', '');     // 'share', 'click', 'view', 'referral', 'web_tracking'
-        $sourceProcess  = $request->query('sourceProcess', '');   // 'facebook', 'whatsapp', 'meetclick', etc.
-        $campaign_code  = $request->query('campaign_code', '');   // 'fb_234', 'campaign-00-web-tracking'
+        $typeProcess = $request->query('typeProcess', '');     // 'share', 'click', 'view', 'referral', 'web_tracking'
+        $sourceProcess = $request->query('sourceProcess', '');   // 'facebook', 'whatsapp', 'meetclick', etc.
+        $campaign_code = $request->query('campaign_code', '');   // 'fb_234', 'campaign-00-web-tracking'
 
         // fbclid sobrescribe -> usar códigos válidos en BDD
         if (isset($input['fbclid'])) {
-            $code          = $input['fbclid'];
+            $code = $input['fbclid'];
             $sourceProcess = 'facebook';     // tracking_sources.code
-            $typeProcess   = 'click';        // tracking_click_types.code
+            $typeProcess = 'click';        // tracking_click_types.code
             $campaign_code = $code;
         }
 
         // tracking (tipo, source, location, etc.)
         $tracking = $this->buildTrackingContext($request, $typeProcess, $sourceProcess, $campaign_code);
-        $managerClick   = $tracking['managerClick'];
-        $typeProcess    = $tracking['typeProcess'];
-        $sourceProcess  = $tracking['sourceProcess'];
-        $campaign_code  = $tracking['campaign_code'];
+        $managerClick = $tracking['managerClick'];
+        $typeProcess = $tracking['typeProcess'];
+        $sourceProcess = $tracking['sourceProcess'];
+        $campaign_code = $tracking['campaign_code'];
 
         $typeUrl = $this->getUrlType($url);
 
@@ -315,18 +317,18 @@ class TrackingUtil
         }
 
         $data = [
-            'url'          => $actionCurrent,
-            'params'       => $params,
-            'case'         => $case,
-            'urlSegments'  => $url,
-            'user'         => $user,
+            'url' => $actionCurrent,
+            'params' => $params,
+            'case' => $case,
+            'urlSegments' => $url,
+            'user' => $user,
             'managerClick' => $managerClick,
         ];
 
         return [
-            'success'    => $success,
+            'success' => $success,
             'typeRender' => $typeRender,
-            'data'       => $data,
+            'data' => $data,
         ];
     }
 
@@ -335,64 +337,64 @@ class TrackingUtil
     // ==================================================
     private function handleNonTypeOneRoutes($request)
     {
-        $url       = Request::segments();
-        $success   = true;
+        $url = Request::segments();
+        $success = true;
         $typeRender = '';
 
         $input = $request->all();
-        $user  = $request->user();
+        $user = $request->user();
 
         // tracking type / source / campaign
-        $typeProcess    = $request->query('typeProcess', '');
-        $sourceProcess  = $request->query('sourceProcess', '');
-        $campaign_code  = $request->query('campaign_code', '');
+        $typeProcess = $request->query('typeProcess', '');
+        $sourceProcess = $request->query('sourceProcess', '');
+        $campaign_code = $request->query('campaign_code', '');
 
         // fbclid sobrescribe -> usar códigos válidos en BDD
         if (isset($input['fbclid'])) {
-            $code          = $input['fbclid'];
+            $code = $input['fbclid'];
             $sourceProcess = 'facebook';     // tracking_sources.code
-            $typeProcess   = 'click';        // tracking_click_types.code
+            $typeProcess = 'click';        // tracking_click_types.code
             $campaign_code = $code;
         }
 
         // tracking (tipo, source, location, etc.)
         $tracking = $this->buildTrackingContext($request, $typeProcess, $sourceProcess, $campaign_code);
-        $managerClick   = $tracking['managerClick'];
-        $typeProcess    = $tracking['typeProcess'];
-        $sourceProcess  = $tracking['sourceProcess'];
-        $campaign_code  = $tracking['campaign_code'];
+        $managerClick = $tracking['managerClick'];
+        $typeProcess = $tracking['typeProcess'];
+        $sourceProcess = $tracking['sourceProcess'];
+        $campaign_code = $tracking['campaign_code'];
 
         // -----------------------------------------
         // INFORMACIÓN DE RUTA / CONTROLLER / MÉTODO
         // -----------------------------------------
         $route = $request->route();
-        $routeName    = $route ? $route->getName() : null;
-        $actionName   = $route ? $route->getActionName() : null;
+        $routeName = $route ? $route->getName() : null;
+        $actionName = $route ? $route->getActionName() : null;
         $actionMethod = $route ? $route->getActionMethod() : null;
-        $params       = $route ? $route->parameters() : [];
+        $params = $route ? $route->parameters() : [];
 
         // Si quieres valores específicos:
-        $slug    = $request->route('slug');
+        $slug = $request->route('slug');
         $section = $request->route('section');
-        $id      = $request->route('id');
+        $id = $request->route('id');
 
         $actionCurrent = $routeName ?: $actionMethod ?: 'homeInit';
 
         $data = [
-            'url'           => $actionCurrent,
-            'route_name'    => $routeName,
-            'action_name'   => $actionName,
+            'url' => $actionCurrent,
+            'route_name' => $routeName,
+            'action_name' => $actionName,
             'action_method' => $actionMethod,
-            'params'        => $params,
-            'urlSegments'   => $url,
-            'user'          => $user,
-            'managerClick'  => $managerClick,
+            'params' => $params,
+            'urlSegments' => $url,
+            'user' => $user,
+            'managerClick' => $managerClick,
         ];
 
         return [
-            'success'    => $success,
+            'success' => $success,
             'typeRender' => $typeRender,
-            'data'       => $data,
+            'data' => $data,
         ];
     }
 
@@ -474,110 +476,110 @@ class TrackingUtil
     private function buildTrackingContext($request, $typeProcess, $sourceProcess, $campaign_code)
     {
         // Normalizar nulos a string vacío para comparar
-        $typeProcess   = $typeProcess ?? '';
+        $typeProcess = $typeProcess ?? '';
         $sourceProcess = $sourceProcess ?? '';
         $campaign_code = $campaign_code ?? '';
 
         // Si no vino nada, defaults -> usar códigos válidos en BDD
         if ($typeProcess === '' && $sourceProcess === '' && $campaign_code === '') {
-            $typeProcess   = 'web_tracking';                 // tracking_click_types.code
+            $typeProcess = 'web_tracking';                 // tracking_click_types.code
             $sourceProcess = 'meetclick';                    // tracking_sources.code
             $campaign_code = 'campaign-00-web-tracking';
         }
 
         $referer = $request->headers->get('referer') ?: 'internal';
-        $agent   = $request->userAgent() ?: 'unknown';
-        $ip      = $request->ip() ?: 'unknown';
+        $agent = $request->userAgent() ?: 'unknown';
+        $ip = $request->ip() ?: 'unknown';
 
         // Si viene 'device', se intentan leer lat/lon/device de cookies o query (compatibilidad)
         if ($request->has('device')) {
-            $latCookie    = $request->cookie('lat');
-            $lonCookie    = $request->cookie('lon');
+            $latCookie = $request->cookie('lat');
+            $lonCookie = $request->cookie('lon');
             $deviceCookie = $request->cookie('device');
 
-            $latQuery     = $request->query('lat');
-            $lonQuery     = $request->query('lon');
-            $deviceQuery  = $request->query('device');
+            $latQuery = $request->query('lat');
+            $lonQuery = $request->query('lon');
+            $deviceQuery = $request->query('device');
         }
 
         $geo = new GeoIpLocalService();
 
         // SOURCE
-        $modelSource   = new \App\Models\Tracking\TrackingSources();
+        $modelSource = new \App\Models\Tracking\TrackingSources();
         $source_origin = $sourceProcess;
-        $resultSource  = $modelSource->findByAttribute('code', $source_origin);
-        $source_id     = $resultSource ? $resultSource->id : 1;
+        $resultSource = $modelSource->findByAttribute('code', $source_origin);
+        $source_id = $resultSource ? $resultSource->id : 1;
 
         // TYPE
-        $modelTypes    = new \App\Models\Tracking\TrackingClickTypes();
-        $type_process  = $typeProcess;
-        $resultTypes   = $modelTypes->findByAttribute('code', $type_process);
+        $modelTypes = new \App\Models\Tracking\TrackingClickTypes();
+        $type_process = $typeProcess;
+        $resultTypes = $modelTypes->findByAttribute('code', $type_process);
         $click_type_id = $resultTypes ? $resultTypes->id : 1;
 
         // GEOLOCATION
-        $country   = 'none';
-        $region    = 'none';
-        $city      = 'none';
-        $latitude  = 0;
+        $country = 'none';
+        $region = 'none';
+        $city = 'none';
+        $latitude = 0;
         $longitude = 0;
 
         $location = $geo->locate($ip);
         if ($location) {
-            $country   = $location['countryName'];
-            $region    = $location['regionName'];
-            $city      = $location['cityName'];
-            $latitude  = $location['latitude'];
+            $country = $location['countryName'];
+            $region = $location['regionName'];
+            $city = $location['cityName'];
+            $latitude = $location['latitude'];
             $longitude = $location['longitude'];
         }
 
         $referer_url = $request->headers->get('referer');
 
         $managerClick = [
-            'type'          => $typeProcess,
-            'type_process'  => $typeProcess,
+            'type' => $typeProcess,
+            'type_process' => $typeProcess,
             'click_type_id' => $click_type_id,
-            'id'            => $source_id, // OJO: este es el id de la fuente
+            'id' => $source_id, // OJO: este es el id de la fuente
             'source_origin' => $sourceProcess,
-            'source_id'     => $source_id,
-            'referer'       => $referer,
-            'device_agent'  => $agent,
-            'ip_address'    => $ip,
-            'referer_url'   => $referer_url ?: 'not-referral',
+            'source_id' => $source_id,
+            'referer' => $referer,
+            'device_agent' => $agent,
+            'ip_address' => $ip,
+            'referer_url' => $referer_url ?: 'not-referral',
             'campaign_code' => $campaign_code ?: '00-web-tracking',
-            'country'       => $country,
-            'region'        => $region,
-            'city'          => $city,
-            'latitude'      => $latitude,
-            'longitude'     => $longitude,
+            'country' => $country,
+            'region' => $region,
+            'city' => $city,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
         ];
 
         return [
-            'typeProcess'   => $typeProcess,
+            'typeProcess' => $typeProcess,
             'sourceProcess' => $sourceProcess,
             'campaign_code' => $campaign_code,
-            'managerClick'  => $managerClick,
+            'managerClick' => $managerClick,
         ];
     }
 
-    private function extractManagerClickContextFromParams($params)
+    private function extractManagerClickContextFromParams($params)//CMS TRACKING
     {
         $defaults = [
-            'manager_click_type' => 'NONE',
-            'manager_click_id'   => 'NONE',
-            'source_origin'      => 'NONE',
-            'referer'            => 'NONE',
-            'device_agent'       => 'NONE',
-            'ip_address'         => 'NONE',
-            'campaign_code'      => 'NONE',
-            'referer_url'        => 'NONE',
-            'type_process'       => 'NONE',
-            'country'            => 'NONE',
-            'region'             => 'NONE',
-            'city'               => 'NONE',
-            'latitude'           => 0,
-            'longitude'          => 0,
-            'click_type_id'      => 1,
-            'source_id'          => 1,
+            'source_origin' => 'NONE',
+            'referer' => 'NONE',
+            'device_agent' => 'NONE',
+            'ip_address' => 'NONE',
+            'campaign_code' => 'NONE',
+            'referer_url' => 'NONE',
+            'type_process' => 'NONE',
+            'country' => 'NONE',
+            'region' => 'NONE',
+            'city' => 'NONE',
+            'latitude' => 0,
+            'longitude' => 0,
+            'click_type_id' => 1,//tracking_click_types
+            'manager_click_type' => 'default',//tracking_click_types
+            'source_id' => 1,//tracking_sources
+            'manager_click_id' => '1',//tracking_sources
         ];
 
         if (!isset($params['data']['managerClick']) || !is_array($params['data']['managerClick'])) {
@@ -587,21 +589,21 @@ class TrackingUtil
         $mc = $params['data']['managerClick'];
 
         $defaults['manager_click_type'] = isset($mc['type']) ? $mc['type'] : $defaults['manager_click_type'];
-        $defaults['manager_click_id']   = isset($mc['id']) ? $mc['id'] : $defaults['manager_click_id'];
-        $defaults['source_origin']      = isset($mc['source_origin']) ? $mc['source_origin'] : $defaults['source_origin'];
-        $defaults['referer']            = isset($mc['referer']) ? $mc['referer'] : $defaults['referer'];
-        $defaults['device_agent']       = isset($mc['device_agent']) ? $mc['device_agent'] : $defaults['device_agent'];
-        $defaults['ip_address']         = isset($mc['ip_address']) ? $mc['ip_address'] : $defaults['ip_address'];
-        $defaults['campaign_code']      = isset($mc['campaign_code']) ? $mc['campaign_code'] : $defaults['campaign_code'];
-        $defaults['referer_url']        = isset($mc['referer_url']) ? $mc['referer_url'] : $defaults['referer_url'];
-        $defaults['type_process']       = isset($mc['type_process']) ? $mc['type_process'] : $defaults['type_process'];
+        $defaults['manager_click_id'] = isset($mc['id']) ? $mc['id'] : $defaults['manager_click_id'];
+        $defaults['source_origin'] = isset($mc['source_origin']) ? $mc['source_origin'] : $defaults['source_origin'];
+        $defaults['referer'] = isset($mc['referer']) ? $mc['referer'] : $defaults['referer'];
+        $defaults['device_agent'] = isset($mc['device_agent']) ? $mc['device_agent'] : $defaults['device_agent'];
+        $defaults['ip_address'] = isset($mc['ip_address']) ? $mc['ip_address'] : $defaults['ip_address'];
+        $defaults['campaign_code'] = isset($mc['campaign_code']) ? $mc['campaign_code'] : $defaults['campaign_code'];
+        $defaults['referer_url'] = isset($mc['referer_url']) ? $mc['referer_url'] : $defaults['referer_url'];
+        $defaults['type_process'] = isset($mc['type_process']) ? $mc['type_process'] : $defaults['type_process'];
 
-        $defaults['country']      = isset($mc['country']) ? $mc['country'] : $defaults['country'];
-        $defaults['region']       = isset($mc['region']) ? $mc['region'] : $defaults['region'];
-        $defaults['city']         = isset($mc['city']) ? $mc['city'] : $defaults['city'];
-        $defaults['latitude']     = isset($mc['latitude']) ? $mc['latitude'] : $defaults['latitude'];
-        $defaults['longitude']    = isset($mc['longitude']) ? $mc['longitude'] : $defaults['longitude'];
-        $defaults['source_id']    = isset($mc['source_id']) ? $mc['source_id'] : $defaults['source_id'];
+        $defaults['country'] = isset($mc['country']) ? $mc['country'] : $defaults['country'];
+        $defaults['region'] = isset($mc['region']) ? $mc['region'] : $defaults['region'];
+        $defaults['city'] = isset($mc['city']) ? $mc['city'] : $defaults['city'];
+        $defaults['latitude'] = isset($mc['latitude']) ? $mc['latitude'] : $defaults['latitude'];
+        $defaults['longitude'] = isset($mc['longitude']) ? $mc['longitude'] : $defaults['longitude'];
+        $defaults['source_id'] = isset($mc['source_id']) ? $mc['source_id'] : $defaults['source_id'];
         $defaults['click_type_id'] = isset($mc['click_type_id']) ? $mc['click_type_id'] : $defaults['click_type_id'];
 
         return $defaults;

@@ -103,17 +103,26 @@ class GamificationByProcess extends ModelManager
         $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
 
         $selectString = "$this->table.id,$this->table.source,$this->table.title,$this->table.subtitle,$this->table.description,$this->table.state,$this->table.has_source,$this->table.entity,$this->table.entity_id,$this->table.url_manager,gamification.value as gamification,
+    $this->table.valid_from,$this->table.valid_until,$this->table.expiration_type,$this->table.expiration_value,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.is_repetitive,$this->table.max_times_per_user,$this->table.execution_channel,
+ $this->table.campaign_code_template,
+tracking_click_types.id tracking_type_code,tracking_click_types.uid tracking_type_name,
+tracking_sources.id tracking_source_code,tracking_sources.uid tracking_source_name,
+
 gamification.id as gamification_id,
 gamification_type_activity.title as gamification_type_activity,
 gamification_type_activity.id as gamification_type_activity_id,
 gamification_by_points.points,gamification_by_points.id gamification_by_points_id,
-$this->table.is_url,$this->table.type_manager
+$this->table.is_url,$this->table.type_manager,$this->table.unique_code
 ,product.id product_id,product.name product_name";
         $select = DB::raw($selectString);
         $query->select($select);
         $query->join('gamification', 'gamification.id', '=', $this->table . '.gamification_id');
         $query->join('gamification_type_activity', 'gamification_type_activity.id', '=', $this->table . '.gamification_type_activity_id');
         $query->join('gamification_by_points', $this->table . '.id', '=', 'gamification_by_points.gamification_by_process_id');
+
+        $query->join('tracking_click_types', $this->table . '.tracking_click_type_id', '=', 'tracking_click_types.id');
+        $query->join('tracking_sources', $this->table . '.tracking_source_id', '=', 'tracking_sources.id');
+
         $gamification_id = ($params['filters']['gamification_id']);
         $query->where($this->table . '.gamification_id', '=', $gamification_id);
 
@@ -133,6 +142,8 @@ $this->table.is_url,$this->table.type_manager
 
                 $query->orWhere("gamification.value", 'like', '%' . $likeSet . '%');
                 $query->orWhere("gamification_by_points.points", 'like', '%' . $likeSet . '%');
+                $query->orWhere("tracking_click_types.uid", 'like', '%' . $likeSet . '%');
+                $query->orWhere("tracking_sources.uid", 'like', '%' . $likeSet . '%');
 
 
             });
@@ -348,30 +359,104 @@ $this->table.is_url,$this->table.type_manager
 
     }
 
-    public function getActivitiesGamificationFrontend($params)
+    public function getAdminGamificationFrontend($params)
     {
+
+
+
         $sort = 'asc';
         $field = $this->field_main;
         $query = DB::table($this->table);
 
-        $selectString = "$this->table.id,$this->table.source,$this->table.title,$this->table.subtitle,$this->table.description,$this->table.state,$this->table.has_source,$this->table.entity,$this->table.entity_id,$this->table.url_manager,gamification.value as gamification,
+        if (isset($params['sort'])) {
+            $field = $column = array_keys($params['sort']);
+            $field = $field[0];
+            $sort = $params['sort'][$column[0]];
+        }
+
+        $page = isset($params['current']) ? (int)$params['current'] : 0;
+        $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
+
+        $selectString = "$this->table.id,$this->table.source,$this->table.title,$this->table.subtitle,$this->table.description,$this->table.state,$this->table.has_source,$this->table.entity,$this->table.entity_id,$this->table.url_manager
+        ,$this->table.valid_from,$this->table.valid_until,$this->table.expiration_type,$this->table.expiration_value,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.is_repetitive,$this->table.max_times_per_user,$this->table.execution_channel
+,business.title business_name, business.id business_id
+        ,gamification.value as gamification,
 gamification.id as gamification_id,
 gamification_type_activity.title as gamification_type_activity,
 gamification_type_activity.id as gamification_type_activity_id,
 gamification_by_points.points,gamification_by_points.id gamification_by_points_id,
-$this->table.is_url,$this->table.type_manager";
+$this->table.is_url,$this->table.type_manager,$this->table.unique_code
+,product.id product_id,product.name product_name";
         $select = DB::raw($selectString);
         $query->select($select);
         $query->join('gamification', 'gamification.id', '=', $this->table . '.gamification_id');
         $query->join('gamification_type_activity', 'gamification_type_activity.id', '=', $this->table . '.gamification_type_activity_id');
         $query->join('gamification_by_points', $this->table . '.id', '=', 'gamification_by_points.gamification_by_process_id');
-        $gamification_id = ($params['filters']['gamification_id']);
-        $query->where($this->table . '.gamification_id', '=', $gamification_id);
+        $query->join('business_by_gamification',  'gamification.id', '=', 'business_by_gamification.gamification_id');
+        $query->join('business',  'business.id', '=', 'business_by_gamification.business_id');
 
+        $business_id = ($params['filters']['business_id']);
+        $query->where( 'business_by_gamification.business_id', '=', $business_id);
+        if ($params['searchPhrase'] != null) {
+            $searchValue = $params['searchPhrase'];
+            $likeSet = $searchValue;
+
+            $query->where(function ($query) use (
+                $likeSet
+            ) {
+
+                $query->where($this->table . '.title', 'like', '%' . $likeSet . '%');
+                $query->orWhere($this->table . '.subtitle', 'like', '%' . $likeSet . '%');
+                $query->orWhere($this->table . '.description', 'like', '%' . $likeSet . '%');
+                $query->orWhere($this->table . '.url_manager', 'like', '%' . $likeSet . '%');
+                $query->orWhere($this->table . '.unique_code', 'like', '%' . $likeSet . '%');
+
+                $query->orWhere("gamification.value", 'like', '%' . $likeSet . '%');
+                $query->orWhere("gamification_by_points.points", 'like', '%' . $likeSet . '%');
+
+
+            });
+        }
+        $tableRelation = 'product';
+        $tableRelationMain = 'gamification_by_process';
+        $paramsCurrent = [
+            'tableRelation' => $tableRelation,
+            'tableRelationMain' => $tableRelationMain
+        ];
+        $query->leftJoin($tableRelation, function ($query)
+        use (
+            $paramsCurrent
+        ) {
+            $tableRelation = $paramsCurrent['tableRelation'];
+            $tableRelationMain = $paramsCurrent['tableRelationMain'];
+            $query->on($tableRelation . '.id', '=', $tableRelationMain . '.entity_id');
+        });
+
+        $recordsTotal = $query->get()->count();
+        $pages = 1;
+        $total = $recordsTotal; // total items in array
 // sort
         $query->orderBy($field, $sort);
+// Pagination: $perpage 0; get all data
+        if ($perpage > 0) {
+            $pages = ceil($total / $perpage); // calculate total pages
+            $page = max($page, 1); // get 1 page when $_REQUEST['page'] <= 0
+            $page = min($page, $pages); // get last page when $_REQUEST['page'] > $totalPages
+            $offset = ($page - 1) * $perpage;
+            if ($offset < 0) {
+                $offset = 0;
+            }
+            $query->offset((int)$offset);
+            $query->limit((int)$perpage);
+        }
+        $current_page = isset($params['current']) ? (int)$params['current'] : 0;
+        $data = $query->get()->toArray();
 
-        $result = $query->get()->toArray();
+        $result['total'] = $total;
+        $result['rows'] = $data;
+        $result['current'] = $current_page;
+        $limit = isset($params['rowCount']) ? $params['rowCount'] : 10;
+        $result['rowCount'] = $limit;
 
         return $result;
     }

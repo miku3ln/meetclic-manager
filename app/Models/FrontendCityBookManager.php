@@ -279,6 +279,14 @@ class FrontendCityBookManager extends ModelManager
             }
 
 
+
+        } else if ($page == 'businessPullkay') {
+
+            $resultBusinessDetails = Util::getDataBusinessPullkay($params);
+            $dataManagerPage = array_merge($dataManagerPage, $resultBusinessDetails);
+            $dataManagerPage['allowVue'] = true;
+
+
         } else if ($page == 'authorSingle') {//CMS-TEMPLATE-AUTHOR-SINGLE-VIEW-DATA
             $dataManagerPage['allowPlugins']['googleMaps'] = true;
             $dataManagerPage['allowVue'] = true;
@@ -1537,9 +1545,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $dataManagerPage['allowVue'] = true;
                 $dataManagerPage['isUserMenu'] = false;
 
-                $dataManagerPage['allowPlugins']['googleMaps']= false;
-            }
-            else if ($page == 'userAccount') {
+                $dataManagerPage['allowPlugins']['googleMaps'] = false;
+            } else if ($page == 'userAccount') {
                 $dataManagerPage['allowPlugins']['googleMaps'] = true;
             }
 

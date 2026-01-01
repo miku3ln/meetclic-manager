@@ -322,6 +322,13 @@
 <input id="action-gamification-type-activity-getListSelect2" type="hidden"
        value="{{action("Gamification\GamificationTypeActivityController@getListSelect2")}}"/>
 
+
+<input id="action-tracking-sources-getListSelect2" type="hidden"
+       value="{{action("Tracking\TrackingSourcesController@getListSelect2")}}"/>
+<input id="action-tracking-click-types-getListSelect2" type="hidden"
+       value="{{action("Tracking\TrackingClickTypesController@getListSelect2")}}"/>
+
+
 <input id="action-gamification-by-rewards-saveData" type="hidden"
        value="{{action("Gamification\GamificationByRewardsController@saveData")}}"/>
 <input id="action-gamification-by-rewards-getAdmin" type="hidden"

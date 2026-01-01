@@ -71,6 +71,8 @@ class FrontendCmsCityBook
 
             Route::post("/business/adminBee", "Business\BusinessController@getAdminBee");
             Route::get('/businessDetails/{id?}/{type?}', 'Frontend\FrontendCityBookController@businessDetails')->name('businessDetails');
+            Route::get('/businessPullkay/{id?}', 'Frontend\FrontendCityBookController@businessPullkay')->name('businessPullkay');
+
             Route::get('/authorSingle/{id?}', 'Frontend\FrontendCityBookController@authorSingle')->name('authorSingle');
 
 

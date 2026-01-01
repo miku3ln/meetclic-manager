@@ -78,6 +78,7 @@ class FrontendCms
 
 
 
+
             if (env('allowAllInOne')) {
                 Route::get('/checkout', 'Frontend\FrontendCityBookController@checkout')->name('checkout');
             } else {

@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\BusinessBySchedule;
+use App\Models\PeopleNationality;
+use App\Models\PeopleProfession;
 use App\Utils\Util;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Auth;
-use App\Models\BusinessBySchedule;
-use App\Models\Role;
-use App\Models\UsersHasRoles;
 
-use App\Models\BusinessByPanorama;
-use App\Models\BusinessByLodgingByPrice;
-use App\Models\BusinessByEmployeeProfile;
 
-use App\Models\PeopleNationality;
-use App\Models\PeopleProfession;
+
 
 class Business extends ModelManager
 {
@@ -321,6 +317,8 @@ class Business extends ModelManager
         $modelPN = new PeopleNationality();
         $modelPP = new PeopleProfession();
         $user = Auth::user();
+        $roles = $user->roles->pluck('id')->toArray();
+
         $business = $this->getBusinessByIdManager(array("id" => $id));
         $schedules = array();
         $success = false;
@@ -332,17 +330,21 @@ class Business extends ModelManager
         $peopleNationalityData = $modelPN->getDataListAll();
         $peopleProfessionData = $modelPP->getDataListAll();
         $dateCurrentData = array("format" => Util::DateCurrent('America/Guayaquil'), "not-format" => Util::DateCurrent('America/Guayaquil', "H:i:s d/m/Y"));
-        $result = array(
+
+        return array(
             "business" => $business,
             "success" => $success,
             "schedules" => $schedules,
             "peopleNationalityData" => $peopleNationalityData,
             "peopleProfessionData" => $peopleProfessionData,
             "dateCurrentData" => $dateCurrentData,
+            'user'=>$user,
+            "userData"=>[
+                'model'=>$user,
+                'roles'=>$roles
+            ]
 
         );
-
-        return $result;
     }
 
 

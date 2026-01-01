@@ -352,7 +352,36 @@ class FrontendCityBookController extends FrontendBaseController
             $result
         );
     }
+    public function businessPullkay($language = 'es', $id = null, $type = 2)
+    {
+        if ($id) {
+            $nameProcess = 'businessPullkay';
+            $renderView = self::LAYOUT_MAIN . '.web.' . $nameProcess;
+            $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+            $language = $languageManager['language'];
+            $paramsRequest = [];
+            $paramsRequest['language'] = $language;
+            $paramsRequest['id'] = $id;
+            $paramsRequest['type'] = $type;
 
+            $modelPage = $this->modelInit;
+            $paramsSend = $modelPage->getParamsPage([
+                'page' => $nameProcess,
+                'paramsRequest' => $paramsRequest
+
+            ]);
+
+            if ($paramsSend['viewPage']) {
+                return view($renderView, $paramsSend);
+            } else {
+                return view('errors.modelsView.404', ['msg' => 'No existe informacion de esta Empresa.']);
+            }
+
+        } else {
+            return view('errors.modelsView.404', ['msg' => 'No se envio los parametros correctos.']);
+
+        }
+    }
     public function businessDetails($language = 'es', $id = null, $type = 2)
     {
         if ($id) {

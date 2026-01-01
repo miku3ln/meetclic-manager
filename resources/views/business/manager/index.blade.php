@@ -40,9 +40,9 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 @extends('layouts.masterMinton')
 
 @if($configPartial['typeManager']!='managerPointOfSale')
-@section('breadcrumb')
-    @include('partials.breadcrumb',$managerOptions)
-@endsection
+    @section('breadcrumb')
+        @include('partials.breadcrumb',$managerOptions)
+    @endsection
 @endif
 
 @section('menuCurrent')
@@ -185,6 +185,31 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
         div#grid-data {
             width: 100%;
         }
+
+        legend.legend--section {
+            color: #445EF2 !important;
+            font-size: 18px;
+        }
+
+
+        .qr__container {
+            position: relative;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .qr__canvas, .qr__img {
+            border: 2px solid #ccc;
+            border-radius: 12px;
+        }
+
+        .qr__label {
+            position: absolute;
+            font-size: 18px;
+            white-space: nowrap;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
     </style>
     <style>
         .preview-management__people {
@@ -198,6 +223,22 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
             height: 244px;
             overflow-y: scroll;
             overflow-x: hidden;
+        }
+
+        span.link-manager.warning a {
+            color: #fdb901 !important;
+        }
+
+        span.link-manager.success a {
+            color: #034b04 !important;
+        }
+
+        span.link-manager.info a {
+            color: #076070 !important;
+        }
+
+        span.link-manager a {
+            font-size: 27px;
         }
     </style>
 @endsection
@@ -691,14 +732,14 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                     ])
 
                 </div>
-                @elseif($configPartial['typeManager']=='managerDashboard' )
+            @elseif($configPartial['typeManager']=='managerDashboard' )
 
-                    <div class="manager-process not-view" id="tab-template-manager-dashboard"
-                    >
-                        @include($partials.'.wizards.templateDashboard',[
-                        ])
+                <div class="manager-process not-view" id="tab-template-manager-dashboard"
+                >
+                    @include($partials.'.wizards.templateDashboard',[
+                    ])
 
-                    </div>
+                </div>
             @endif
 
         </div>
@@ -722,11 +763,384 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
         var $managerProcessBusiness = $menuConfigManager.managerProcessBusiness;
         var $configProcess =<?php echo json_encode($configProcess) ?>;
 
-        var $subcategoriesTotemsDataHtml ='<?php echo isset($subcategoriesTotemsDataHtml)?$subcategoriesTotemsDataHtml:'' ?>';
+        var $subcategoriesTotemsDataHtml = '<?php echo isset($subcategoriesTotemsDataHtml) ? $subcategoriesTotemsDataHtml : '' ?>';
 
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/kjua@0.10.0/dist/kjua.min.js"></script>
+    <script>
+        /**
+         * Devuelve el índice (key) del item con más similitud y el item.
+         * - Ignora querystring (?...)
+         * - Trata {slug_business} / {slug} como comodín
+         * - Scoring por "segments" (partes separadas por /)
+         */
+        function findMostSimilarIndex(list, targetUrl) {
+            function safeStr(v) {
+                return (v === null || v === undefined) ? "" : String(v);
+            }
 
+            function stripQuery(url) {
+                url = safeStr(url);
+                var q = url.indexOf("?");
+                return (q === -1) ? url : url.substring(0, q);
+            }
+
+            function normalize(url) {
+                url = stripQuery(url);
+                // quita host (http://localhost:4949) para comparar solo path
+                // si no hay host, no pasa nada
+                url = url.replace(/^https?:\/\/[^\/]+/i, "");
+                // normaliza slashes finales
+                url = url.replace(/\/+$/g, "");
+                return url;
+            }
+
+            function isPlaceholder(seg) {
+                // {slug_business} {slug} etc.
+                return /^\{[^}]+\}$/.test(seg);
+            }
+
+            function scoreBySegments(templateUrl, target) {
+                var a = normalize(templateUrl).split("/");
+                var b = normalize(target).split("/");
+
+                var i, max = Math.max(a.length, b.length);
+                var score = 0;
+
+                for (i = 0; i < max; i++) {
+                    var sa = a[i] || "";
+                    var sb = b[i] || "";
+
+                    if (sa === "" && sb === "") continue;
+
+                    if (sa === sb) {
+                        score += 3; // match exacto
+                        continue;
+                    }
+
+                    // si el template tiene placeholder, cuenta como match suave
+                    if (isPlaceholder(sa) && sb !== "") {
+                        score += 2;
+                        continue;
+                    }
+
+                    // match parcial (misma palabra dentro)
+                    if (sa && sb && (sa.indexOf(sb) !== -1 || sb.indexOf(sa) !== -1)) {
+                        score += 1;
+                    } else {
+                        score -= 1; // penaliza diferencias
+                    }
+                }
+
+                // bonus si el path base coincide bastante
+                if (normalize(templateUrl).indexOf(normalize(target)) !== -1 ||
+                    normalize(target).indexOf(normalize(templateUrl)) !== -1) {
+                    score += 2;
+                }
+
+                return score;
+            }
+
+            var bestIndex = -1;
+            var bestScore = -999999;
+            var bestItem = null;
+
+            for (var idx = 0; idx < list.length; idx++) {
+                var item = list[idx];
+                if (!item || !item.id) continue;
+
+                var sc = scoreBySegments(item.id, targetUrl);
+                if (sc > bestScore) {
+                    bestScore = sc;
+                    bestIndex = idx;
+                    bestItem = item;
+                }
+            }
+
+            return {
+                index: bestIndex,     // ✅ key (posición en el array)
+                score: bestScore,
+                item: bestItem
+            };
+        }
+
+        let iconImage = null;
+        let currentCanvas = null;
+        let iconBase64 = "";
+
+        function downloadQR(params) {
+            const format = params['format'];
+            const text = params['text'];
+
+            if (format === 'svg') {
+                const svg = kjua({
+                    render: 'svg',
+                    text: text,
+                    size: 512,
+                    ecLevel: 'H',
+                    quiet: 2,
+                    rounded: 0,
+                    mode: 'plain'
+                });
+
+                if (iconBase64) {
+                    const NS = "http://www.w3.org/2000/svg";
+                    const imageNode = document.createElementNS(NS, "image");
+                    imageNode.setAttributeNS(null, "href", iconBase64);
+                    imageNode.setAttributeNS(null, "x", "179");
+                    imageNode.setAttributeNS(null, "y", "179");
+                    imageNode.setAttributeNS(null, "width", "154");
+                    imageNode.setAttributeNS(null, "height", "154");
+                    svg.appendChild(imageNode);
+                }
+
+                const serializer = new XMLSerializer();
+                const svgBlob = new Blob([serializer.serializeToString(svg)], {type: "image/svg+xml"});
+                const url = URL.createObjectURL(svgBlob);
+                triggerDownload(url, 'qr-code.svg');
+
+            } else if (currentCanvas) {
+                const dataURL = currentCanvas.toDataURL('image/' + format);
+                triggerDownload(dataURL, 'qr-code.' + format);
+            }
+        }
+
+
+        function triggerDownload(href, filename) {
+            const link = document.createElement('a');
+            link.href = href;
+            link.download = filename;
+            link.click();
+        }
+
+        function renderQR(params) {
+            // ===== Helpers ES5 =====
+            function isNil(v) {
+                return v === null || v === undefined;
+            }
+
+            function isEmptyStr(v) {
+                return isNil(v) || (typeof v === "string" && v.replace(/^\s+|\s+$/g, "") === "");
+            }
+
+            function clamp(n, min, max) {
+                n = Number(n);
+                if (isNaN(n)) return min;
+                if (n < min) return min;
+                if (n > max) return max;
+                return n;
+            }
+
+            function getNum(obj, key, def) {
+                if (!obj || !obj.hasOwnProperty(key)) return def;
+                var v = obj[key];
+                if (isNil(v) || v === "") return def;
+                var n = Number(v);
+                return isNaN(n) ? def : n;
+            }
+
+            function getStr(obj, key, def) {
+                if (!obj || !obj.hasOwnProperty(key)) return def;
+                var v = obj[key];
+                if (isNil(v)) return def;
+                v = String(v);
+                return isEmptyStr(v) ? def : v;
+            }
+
+            function getBool(obj, key, def) {
+                if (!obj || !obj.hasOwnProperty(key)) return def;
+                var v = obj[key];
+                if (typeof v === "boolean") return v;
+                if (typeof v === "number") return v === 1;
+                if (typeof v === "string") {
+                    v = v.toLowerCase();
+                    return (v === "true" || v === "1" || v === "yes" || v === "si");
+                }
+                return def;
+            }
+
+            function has(sub, str) {
+                return String(str).indexOf(sub) !== -1;
+            }
+
+            // ===== Flags de control =====
+            var doDestroy = getBool(params, "destroy", false); // destruye y limpia
+            var doHide = getBool(params, "hide", false);       // solo oculta
+
+            // ✅ Si te piden destruir/ocultar todo, se hace y se sale
+            if (doDestroy || doHide) {
+                try {
+                    // Ocultar label
+                    $('#label-preview').hide().text('');
+
+                    // Limpiar QR
+                    if (doDestroy) {
+                        $('#qrcode').empty();   // quita canvas del DOM
+                    }
+
+                    // Ocultar contenedor completo (opcional)
+                    // Si quieres ocultar siempre:
+                    $('#qrcode').toggle(!doHide); // hide => false, destroy => true (se muestra, pero vacío)
+                    // Si quieres que destroy también oculte:
+                    if (doDestroy) {
+                        $('#qrcode').hide();
+                    }
+
+                    // Reset variables globales si existen
+                    if (typeof currentCanvas !== "undefined") {
+                        currentCanvas = null;
+                    }
+                } catch (e) {
+                    // nada
+                }
+                return; // ✅ termina aquí
+            }
+
+            // ===== Defaults =====
+            var text = 'hola';
+            var fillColor = '#000000';
+            var quiet = 2;
+            var rounded = 0;
+            var mode = 'plain';
+            var imgSize = 30;
+
+            var labelPosX = 50;
+            var labelPosY = 110;
+            var labelSize = 100;
+            var labelText = '';
+            var labelColor = '#000000';
+
+            // ===== Params =====
+            if (params) {
+                text = getStr(params, 'text', 'hola');
+                fillColor = getStr(params, 'fillColor', '#000000');
+                quiet = clamp(getNum(params, 'quiet', 2), 0, 20);
+                rounded = clamp(getNum(params, 'rounded', 0), 0, 100);
+                mode = getStr(params, 'mode', 'plain');
+
+                imgSize = clamp(getNum(params, 'imgSize', 30), 1, 100);
+
+                labelPosX = clamp(getNum(params, 'labelPosX', 50), 0, 100);
+                // si quieres permitir 110, pon max 150:
+                labelPosY = clamp(getNum(params, 'labelPosY', 110), 0, 150);
+                labelSize = clamp(getNum(params, 'labelSize', 100), 10, 300);
+
+                labelText = getStr(params, 'labelText', '');
+                labelColor = getStr(params, 'labelColor', '#000000');
+            }
+
+            // Asegura que el contenedor esté visible (por si antes lo ocultaste)
+            $('#qrcode').show();
+
+            $('#qrcode').empty();
+            $('#label-preview').hide();
+
+            var size = 512;
+
+            var hasIcon = (typeof iconImage !== "undefined" && iconImage);
+
+            var modeFinal = 'plain';
+            if (hasIcon && has('image', mode)) modeFinal = 'image';
+            else if (has('plain', mode)) modeFinal = 'plain';
+            var qr = kjua({
+                render: 'canvas',
+                text: text,
+                size: size,
+                fill: fillColor,
+                back: "#ffffff",
+                ecLevel: 'H',
+                quiet: quiet,
+                rounded: rounded,
+                mode: modeFinal,
+                image: hasIcon ? iconImage : null,
+                imageSize: (imgSize / 100)
+            });
+
+            if (typeof currentCanvas !== "undefined") {
+                currentCanvas = qr;
+            }
+
+            $('#qrcode').append(qr);
+
+            if (has('label', mode) && !isEmptyStr(labelText)) {
+                $('#label-preview').text(labelText).css({
+                    left: labelPosX + '%',
+                    top: labelPosY + '%',
+                    color: labelColor,
+                    fontSize: labelSize + '%',
+                    display: 'block'
+                });
+            }
+        }
+
+        function setIconFromUrl(url, cb) {
+            function done(success, message, img, base64) {
+                if (typeof cb === "function") {
+                    cb({
+                        success: !!success,
+                        message: message || "",
+                        image: img || null,
+                        base64: base64 || null,
+                        url: url || null
+                    });
+                }
+            }
+
+            if (!url) {
+                return done(false, "URL de imagen vacía o no válida.", null, null);
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.responseType = "blob";
+
+            xhr.onload = function () {
+                // OJO: a veces status puede ser 0 en algunos contextos; aquí pediste "en función de la respuesta"
+                if (xhr.status !== 200) {
+                    return done(false, "No se pudo cargar la imagen. Status: " + xhr.status, null, null);
+                }
+
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var base64 = event.target.result;
+
+                    var img = new Image();
+                    img.onload = function () {
+                        // set globales (si quieres)
+                        iconImage = img;
+                        iconBase64 = base64;
+
+                        return done(true, "Imagen cargada correctamente.", img, base64);
+                    };
+                    img.onerror = function () {
+                        return done(false, "La imagen se descargó pero no se pudo decodificar (formato inválido o corrupto).", null, null);
+                    };
+
+                    img.src = base64;
+                };
+
+                reader.onerror = function () {
+                    return done(false, "Error al convertir la imagen a Base64.", null, null);
+                };
+
+                reader.readAsDataURL(xhr.response);
+            };
+
+            xhr.onerror = function () {
+                return done(false, "Error de red al traer la imagen (XHR).", null, null);
+            };
+
+            xhr.send();
+        }
+
+        $(function () {
+            var urlSource = $publicAsset+'/uploads/frontend/templateBySource/1750454099_logo-one.png';
+            setIconFromUrl(urlSource, function (res) {
+
+            });
+        });
+    </script>
     <?php
     $jsPartial = $configPartial["moduleMain"] . "." . $configPartial["moduleFolder"] . ".assets.js.index";
     $paramsWizard = [

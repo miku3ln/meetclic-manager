@@ -207,7 +207,10 @@ Vue.component('business-by-gamification-component', {
             var urlCurrent = this.gridConfig.url;
             var paramsFilters = new Object();
             var filters = new Object();
-            filters[this.manager_key_name] = this.manager_id;
+
+            let business_id=this.manager_id==null?$businessManager.id:this.manager_id;
+
+            filters[this.manager_key_name] =business_id;
             paramsFilters = filters;
             var structure = $scope.model.structure;
             var formatters = {

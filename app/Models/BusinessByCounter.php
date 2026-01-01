@@ -258,7 +258,7 @@ business.id as business_id
     }
 
 //COUNTER-001
-    public function managerCounter($params)
+    public function managerCounter($params)//CMS TRACKING
     {
 
         $counterBusiness = $this->getCounterBusiness($params);
