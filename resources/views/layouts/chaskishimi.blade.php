@@ -85,6 +85,9 @@
             color: #445EF2 !important;
         }
     </style>
+
+    @include('cityBook.web.partials.bootgrid.assets.css.source')
+
     @if(env('allowCustomerCss'))
         <link href="{{ asset($resourcePathServer.'templates/webion/StyleWebion.css') }}" rel="stylesheet"
               type="text/css">

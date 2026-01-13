@@ -17,8 +17,10 @@ class AccountGamification extends ModelManager
         'updated_at',
         'deleted_at',
         'user_id',//*
-        'balance_available_bee',//*
-        'balance_available_queen'//*
+
+        'business_id',//*
+        'type_money',//*
+        'state'//*
 
     );
     protected $attributesData = [
@@ -26,8 +28,9 @@ class AccountGamification extends ModelManager
         ['column' => 'updated_at', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
         ['column' => 'deleted_at', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
         ['column' => 'user_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
-        ['column' => 'balance_available_bee', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
-        ['column' => 'balance_available_queen', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true']
+        ['column' => 'business_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'type_money', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'state', 'type' => 'string', 'defaultValue' => 'ACTIVE', 'required' => 'true'],
 
     ];
     public $timestamps = true;
@@ -37,8 +40,8 @@ class AccountGamification extends ModelManager
     public static function getRulesModel()
     {
         $rules = ["user_id" => "required|numeric",
-            "balance_available_bee" => "required|numeric",
-            "balance_available_queen" => "required|numeric"
+            "type_money" => "required|numeric",
+            "business_id" => "required|numeric"
         ];
         return $rules;
     }
@@ -243,7 +246,7 @@ $this->table.balance_available_queen";
     public function getAllowAddMovementRegisterUser($params)
     {
         $user_id = $params['filters']['user_id'];
-        $textValue = "$this->table.id," . $this->table . '.balance_available_bee,' . $this->table . '.balance_available_queen';
+        $textValue = "$this->table.id," . $this->table . '.id balance_available_bee,' . $this->table . '.id balance_available_queen';
         $query = DB::table($this->table);
         $selectString = "$this->table.id,$textValue";
         $select = DB::raw($selectString);

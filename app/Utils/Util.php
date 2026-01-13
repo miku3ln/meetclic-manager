@@ -329,6 +329,7 @@ class Util
         $year = date('Y');
         return date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
     }
+
     public static function getGamificationSectionsData($userData, $isProduction)
     {
         $roles = $userData['roles'] ?? [];
@@ -338,8 +339,10 @@ class Util
         // ✅ IDs de secciones (puedes crecerlos sin romper compatibilidad)
         $SECTIONS = [
             'BUSINESS_PUBLIC' => 0, // Perfil empresarial (público)
-            'CMS'             => 2, // CMS / Admin (solo GOD)
-            'PRODUCTS'     => 1, // Tienda (público)
+            'CMS' => 2, // CMS / Admin (solo GOD)
+            'PRODUCTS' => 1, // Tienda (público)
+            'BUSINESS_FORM' => 3, // Tienda (público)
+            'BUSINESS_CHAQUI' => 4, // Tienda (público)
 
         ];
 
@@ -347,17 +350,31 @@ class Util
         $publicSections = [
             [
                 'value' => $SECTIONS['BUSINESS_PUBLIC'],
-                'text'  => 'Empresa',
-                'type'  => 'business',
-                'icon'  => 'fa fa-building',
+                'text' => 'Empresa',
+                'type' => 'business',
+                'icon' => 'fa fa-building',
                 'description' => 'Perfil, calificación, sugerencias y acciones del negocio',
             ],
             [
                 'value' => $SECTIONS['PRODUCTS'],
-                'text'  => 'Productos - Servicios',
-                'type'  => 'shop',
-                'icon'  => 'fa fa-store',
+                'text' => 'Productos - Servicios',
+                'type' => 'shop',
+                'icon' => 'fa fa-store',
                 'description' => 'Productos y servicios del negocio',
+            ],
+            [
+                'value' => $SECTIONS['BUSINESS_FORM'],
+                'text' => 'Empresa- Buzon Sugerencias',
+                'type' => 'shop',
+                'icon' => 'fa fa-store',
+                'description' => 'Genera Formularios Dinamicos para obtener datos',
+            ],
+            [
+                'value' => $SECTIONS['BUSINESS_CHAQUI'],
+                'text' => 'Empresa-Chaquiñanes',
+                'type' => 'shop',
+                'icon' => 'fa fa-store',
+                'description' => 'Genera Rutas Dinamicos para obtener datos',
             ],
         ];
 
@@ -365,9 +382,9 @@ class Util
         $cmsSections = [
             [
                 'value' => $SECTIONS['CMS'],
-                'text'  => 'CMS / Administración',
-                'type'  => 'cms',
-                'icon'  => 'fa fa-shield-alt',
+                'text' => 'CMS / Administración',
+                'type' => 'cms',
+                'icon' => 'fa fa-shield-alt',
                 'description' => 'Panel, páginas, cultura, configuraciones',
             ],
         ];
@@ -394,15 +411,17 @@ class Util
 
         $slugBusiness = '{slug_business}';
         $slugProductService = '{slug_product_service}';
+        $slugForm = '{slug_form}';
+        $slugChaqui = '{slug_chaqui}';
 
         // ✅ IDs de secciones (deben coincidir con getGamificationSectionsData)
         $SECTIONS = [
             'BUSINESS_PUBLIC' => 0,
-            'SHOP_PUBLIC'     => 4,
-            'GAMING_PUBLIC'   => 2,
-            'REWARDS_PUBLIC'  => 3,
-            'CMS'             => 10,
-            'PRODUCTS'     => 1,
+            'SHOP_PUBLIC' => 4,
+            'GAMING_PUBLIC' => 2,
+            'REWARDS_PUBLIC' => 3,
+            'CMS' => 10,
+            'PRODUCTS' => 1,
 
         ];
 
@@ -415,15 +434,15 @@ class Util
             // EMPRESA (perfil y acciones empresariales)
             // -------------------------
             [
-                'id'         => $routeRoot."businessDetails/$slugBusiness",
-                'text'       => 'Perfil del negocio',
-                'type'       => 'business-details',
+                'id' => $routeRoot . "businessDetails/$slugBusiness",
+                'text' => 'Perfil del negocio(Negocio ñawpa)',
+                'type' => 'business-details',
                 'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
             ],
             [
-                'id'         => $routeRoot."suggestionsMailBoxByBusiness/$slugBusiness", // si es público cámbialo; si es login muévelo a CMS/LOGIN
-                'text'       => 'Buzón de sugerencias',
-                'type'       => 'suggestions-business',
+                'id' =>route('chasqui-routes') ."/".$slugChaqui, // si es público cámbialo; si es login muévelo a CMS/LOGIN
+                'text' => 'Rutas- Chasquiñanes',
+                'type' => 'chaqui-business',
                 'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
                 'requires_auth' => true, // normalmente esto es login
             ],
@@ -431,15 +450,15 @@ class Util
             // TIENDA
             // -------------------------
             [
-                'id'         => $routeRoot."shopByBusiness/$slugBusiness",
-                'text'       => 'Tienda del negocio',
-                'type'       => 'shop-business',
+                'id' =>  route('shop-business') ."/".$slugBusiness,
+                'text' => 'Tienda del negocio(Katuna)',
+                'type' => 'shop-business',
                 'section_id' => $SECTIONS['SHOP_PUBLIC'],
             ],
             [
-                'id'         => $routeRoot."productDetailsByBusiness/$slugProductService",
-                'text'       => 'Detalle de producto/servicio',
-                'type'       => 'product-details-business',
+                'id' => $routeRoot . "productDetailsByBusiness/$slugProductService",
+                'text' => 'Detalle de producto/servicio(Willay)',
+                'type' => 'product-details-business',
                 'section_id' => $SECTIONS['PRODUCTS'],
             ],
 
@@ -447,9 +466,34 @@ class Util
             // TAREAS (gamificación empresa)
             // -------------------------
             [
-                'id'         => $routeRoot."businessPullkay/$slugBusiness",
-                'text'       => 'Tareas del negocio',
-                'type'       => 'gaming-business',
+                'id' => $routeRoot . "businessPullkay/$slugBusiness",
+                'text' => 'Tareas del negocio(Pullkay)',
+                'type' => 'gaming-business',
+                'section_id' => $SECTIONS['GAMING_PUBLIC'],
+            ],
+            [
+                'id' => route('rimay-business') ."/".$slugForm,
+                'text' => 'Realizar sugerencia(Yanapana rimaykuna))',
+                'type' => 'suggestions-business',
+                'section_id' => $SECTIONS['GAMING_PUBLIC'],
+            ],
+            [
+                'id' => route('rimay-registers-business') ."/".$slugBusiness,
+                'text' => 'Ver sugerencias',
+                'type' => 'suggestions-registers-business',
+                'section_id' => $SECTIONS['GAMING_PUBLIC'],
+            ],
+
+            [
+                'id' =>  route('rates-registers-business') ."/".$slugBusiness,
+                'text' => 'Calificaciones Registros',
+                'type' => 'chanichina-registers-business',
+                'section_id' => $SECTIONS['GAMING_PUBLIC'],
+            ],
+            [
+                'id' =>  route('rate-register-business') ."/".$slugBusiness,
+                'text' => 'Calificacion Registro Rate',
+                'type' => 'rate-business',
                 'section_id' => $SECTIONS['GAMING_PUBLIC'],
             ],
             // -------------------------
@@ -458,9 +502,9 @@ class Util
             //    Ej: rewards, redemptions, exchange, prizeStore, etc.
             // -------------------------
             [
-                'id'         => $routeRoot."rewardsByBusiness/$slugBusiness", // <- CREA ESTA RUTA EN TU WEB / FRONT
-                'text'       => 'Premios y canjes',
-                'type'       => 'rewards-business',
+                'id' => route('rewards-business') ."/".$slugBusiness, // <- CREA ESTA RUTA EN TU WEB / FRONT
+                'text' => 'Premios y canjes',
+                'type' => 'rewards-business',
                 'section_id' => $SECTIONS['REWARDS_PUBLIC'],
             ],
         ];
@@ -472,97 +516,97 @@ class Util
         $godRoutes = [
             // -------- CMS / Login
             [
-                'id'         => $routeRoot.'account',
-                'text'       => 'Tablero',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'account',
+                'text' => 'Tablero',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'myProfile',
-                'text'       => 'Mi perfil',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'myProfile',
+                'text' => 'Mi perfil',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'password',
-                'text'       => 'Cambiar contraseña',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'password',
+                'text' => 'Cambiar contraseña',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'business',
-                'text'       => 'Mis empresas',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'business',
+                'text' => 'Mis empresas',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'businessEmployer',
-                'text'       => 'Mis empleos',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'businessEmployer',
+                'text' => 'Mis empleos',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'orders',
-                'text'       => 'Órdenes',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'orders',
+                'text' => 'Órdenes',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'pointsSales',
-                'text'       => 'Puntos de venta',
-                'type'       => 'cms-login',
+                'id' => $routeRoot . 'pointsSales',
+                'text' => 'Puntos de venta',
+                'type' => 'cms-login',
                 'section_id' => $SECTIONS['CMS'],
             ],
 
             // -------- CMS / Páginas
             [
-                'id'         => $routeRoot.'aboutUsBee',
-                'text'       => 'Conócenos',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'aboutUsBee',
+                'text' => 'Conócenos',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'howItWorks',
-                'text'       => 'Preguntas',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'howItWorks',
+                'text' => 'Preguntas',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'homeBackLine',
-                'text'       => 'Equipo y alianzas',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'homeBackLine',
+                'text' => 'Equipo y alianzas',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'homeChaski',
-                'text'       => 'Cultura',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'homeChaski',
+                'text' => 'Cultura',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'yachaSun',
-                'text'       => 'Aprender Kichwa',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'yachaSun',
+                'text' => 'Aprender Kichwa',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'diccionario',
-                'text'       => 'Diccionario Kichwa',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'diccionario',
+                'text' => 'Diccionario Kichwa',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id'         => $routeRoot.'traductor',
-                'text'       => 'Traductor',
-                'type'       => 'cms-pages',
+                'id' => $routeRoot . 'traductor',
+                'text' => 'Traductor',
+                'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
 
             // -------- CMS / Core
             [
-                'id'         => $routeRoot.'search',
-                'text'       => 'Búsqueda de empresas',
-                'type'       => 'cms-core',
+                'id' => $routeRoot . 'search',
+                'text' => 'Búsqueda de empresas',
+                'type' => 'cms-core',
                 'section_id' => $SECTIONS['CMS'],
             ],
         ];

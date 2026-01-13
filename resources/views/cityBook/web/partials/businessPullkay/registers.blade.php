@@ -21,11 +21,10 @@
 
                             <div class="shop-product-wrap shop-product-wrap--with-sidebar row grid">
                                 <div class="col-lg-12 col-md-12 not-view" id="content-products">
-                                    <div class=" custom-scroll-admin-grid table-responsive list-main-wrap fl-wrap card-listing">
-                                        <input type="hidden" id="category" value="">
-                                        <input type="hidden" id="subcategory" value="">
+                                    <div class=" custom-scroll-admin-grid table-responsive">
+
                                         <table id="product-grid" v-init-bootgrid="{initMethod:initGridShop}"
-                                               class="listing-items"
+                                               class="grid-pullkay-data"
                                            >
                                             <thead>
                                             <tr>

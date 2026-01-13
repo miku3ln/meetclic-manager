@@ -1041,7 +1041,43 @@
     "frontend.web.customer.login.footer.registerTwo": "Crear Cuenta",
     "account.filters.sort.one": "Ninguno",
     "account.filters.sort.two": "Ingreso-Egreso",
-    "account.filters.sort.three": "Descripción"
+    "account.filters.sort.three": "Descripción",
 
+    "gamification.what_to_do": "Qué hacer",
+    "gamification.what_is_it_for": "Para qué sirve",
+    "gamification.what_you_get": "Qué ganas",
+
+    "gamification.avoid": "Evita",
+    "gamification.note": "Nota",
+    "gamification.tip": "Tip",
+    "gamification.important": "Importante",
+
+    "gamification.always_available": "Siempre disponible",
+    "gamification.available_from": "Disponible desde",
+    "gamification.available_until": "Disponible hasta",
+    "gamification.available_between": "Disponible del",
+
+    "gamification.unlimited": "Sin límite (las veces que quieras)",
+    "gamification.only_once": "Solo 1 vez (una única vez)",
+    "gamification.per_day": "Vez/veces por día (se reinicia cada día)",
+    "gamification.per_week": "Vez/veces por semana (se reinicia cada semana)",
+    "gamification.per_month": "Vez/veces por mes (se reinicia cada mes)",
+    "gamification.total_limit": "Vez/veces en total (cuando llegas al límite ya no se repite)",
+    "gamification.not_defined": "No definida (revisar configuración)",
+
+    "gamification.physical": "FÍSICO",
+    "gamification.digital": "DIGITAL",
+
+    "gamification.you_earn": "Tú ganas",
+    "gamification.have_questions": "¿Tienes preguntas?",
+    "gamification.on_the_map": "En el mapa",
+
+    "gamification.all_rights_reserved": "Todos los derechos reservados",
+    "gamification.showing": "Mostrando",
+    "gamification.your_search": "Tu búsqueda",
+    "gamification.no_results": "Sin resultados",
+    "gamification.loading": "Cargando",
+    "gamification.results": "resultados",
+    "gamification.do_it_now": "Hazlo ahora"
 
 }

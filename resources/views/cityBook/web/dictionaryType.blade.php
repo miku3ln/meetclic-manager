@@ -79,10 +79,6 @@ $allowContact = false;
             color: #e5bf4e;
         }
 
-        input.search-field.form-control {
-            height: calc(1.5em + 2.75rem + 2px);
-            /* width: 100%; */
-        }
 
         .search{
             width: 45% !important; ;

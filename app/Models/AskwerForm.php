@@ -226,10 +226,6 @@ class AskwerForm extends ModelManager
             $query->orWhere($this->table . '.description', 'like', '%' . $likeSet . '%');
             $query->orWhere($this->table . '.welcome_msg', 'like', '%' . $likeSet . '%');
             $query->orWhere($this->table . '.leave_msg', 'like', '%' . $likeSet . '%');
-            $query->orWhere($this->table . '.creation_date', 'like', '%' . $likeSet . '%');
-            $query->orWhere($this->table . '.creation_user_id', 'like', '%' . $likeSet . '%');
-            $query->orWhere($this->table . '.last_update_date', 'like', '%' . $likeSet . '%');
-            $query->orWhere($this->table . '.update_user_id', 'like', '%' . $likeSet . '%');;
 
         }
 

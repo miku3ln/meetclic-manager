@@ -303,6 +303,84 @@ class BusinessByRoutesMap extends Model
         return $result;
 
     }
+    public function getRoutesListSelect2($params)
+    {
+        $business_id = $params["filters"]['business_id'];
+        $selectString = "$this->table.routes_map_id,$this->table.status,$this->table.type_shortcut
+        ,routes_map.id ,routes_map.name,routes_map.name text,routes_map.description,routes_map.options_map,routes_map.src";
+        $query = DB::table($this->table);
+
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('routes_map', 'business_by_routes_map.routes_map_id', '=', 'routes_map.id');
+        if ($business_id) {
+            $query->where("business_id", $business_id);
+        }
+        $query->where("$this->table.status", "ACTIVE");
+        if (isset($params["filters"]['search_value']["term"])) {
+
+            $likeSet = $params["filters"]['search_value']["term"];
+            $query->where(function ($query) use ($likeSet
+            ) {
+                $query->orWhere($this->table . '.id', 'like', '%' . $likeSet . '%');
+                $query->orWhere("routes_map.name", 'like', '%' . $likeSet . '%');
+                $query->orWhere("routes_map.description", 'like', '%' . $likeSet . '%');
+
+            });;
+
+        }
+
+        $query->limit(10)->orderBy('routes_map.name', 'asc');
+        $resultData = $query->get()->toArray();
+
+        $modelRMBRD = new RoutesMapByRoutesDrawing;
+        $modelRMBAT = new RouteMapByAdventureTypes();
+        $modelBBP = new \App\Models\BusinessByPanorama();
+        $result=[];
+        foreach ($resultData as $key => $row) {
+
+
+            $setPush = (array)$row;
+
+            $routes_map_id = $row->routes_map_id;
+            $business_by_routes_map_id = $row->id;
+            $adventure_type_data = $modelRMBAT->getAdventureTypes(array("business_by_routes_map_id" => $business_by_routes_map_id));
+            $routes_drawing_data_management = $modelRMBRD->getRoutesDrawing(array("routes_map_id" => $routes_map_id));
+            $routes_drawing_data = [];
+
+            foreach ($routes_drawing_data_management as $key => $value) {
+                $setPushRoute = (array)$value;
+                if ($value->rd_type == 'marker') {
+                    $routes_map_id = $value->routes_map_id;
+                    $routes_drawing_id = $value->routes_drawing_id;
+                    $dataMarkerMultimedia = $modelBBP->getMultimedia([
+                        'filters' => [
+                            'routes_map_id' => $routes_map_id,
+                            'routes_drawing_id' => $routes_drawing_id,
+
+                        ]
+                    ]);
+                    if (count($dataMarkerMultimedia)) {
+
+                        $setPushRoute['data'] = $dataMarkerMultimedia;
+                    }
+                }
+                $routes_drawing_data[] = $setPushRoute;
+
+
+            }
+            $setPush["routes_drawing_data"]=$routes_drawing_data ;
+            $setPush["adventure_type_data"] =$adventure_type_data;
+
+            $result[] = $setPush;
+
+
+        }
+
+
+        return $result;
+
+    }
 
     public function getDataRoute($params)
     {

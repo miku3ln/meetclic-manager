@@ -1,4 +1,18 @@
 var latLngCurrent = {lat: 0.2314799, lng: -78.271874};
+
+var footer_bst2 =
+    "<div id='data-pagination'  id=\"{{ctx.id}}\" class=\"{{css.footer}}\">\n\
+                    <div class='col-md-6'>\n\
+                        <div  class='pagination'>\n\
+                            <p class=\"{{css.pagination}}\"></p>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class=\"col-md-6 infoBar \">\n\
+                        <p class=\"{{css.infos}}\"></p>\n\
+                    </div>\n\
+    </div>";
+
+var footerGrid =footer_bst2;
 var $managerTitlesProcess = {
     'popupManagerGoogleMaps': {//TODO CHASQUI-MANAGEMENT
         'details': {
@@ -544,7 +558,7 @@ function formInvalidFeedback(params) {
 function getClassErrorForm(nameElement, objValidate) {
     var result = null;
     var isError = objValidate.$error;
-    if (objValidate.$model == null) {
+    if ([null,'',"" ].includes(objValidate.$model)) {
         isError = true;
     } else {
         isError = false;

@@ -87,6 +87,7 @@ class AccountGamificationByMovement extends ModelManager
             }
             $result = $resultData;
         } else {
+            $result = $resultData;
 
         }
         return $result;

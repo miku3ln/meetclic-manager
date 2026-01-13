@@ -61,14 +61,14 @@ switch ($languageCurrent) {
 
 
             <li class="option">
-                <a href="{{url('/homePage/es')}}" class="manager-language__item {{$selectEs}}">
+                <a href="{{url('/homePage/es')}}" class="manager-language__item {{$selectEs}}" language="es">
                     <img src="{{URL::asset($resourcePathServer.'images/frontend/translator/spanish.svg')}}"
                          alt="Spanish" class="manager-language__img" title="Spanish"
                     >
                 </a>
             </li>
             <li>
-                <a href="{{url('/homePage/ki')}}" class="manager-language__item {{$selectKi}}">
+                <a href="{{url('/homePage/ki')}}" class="manager-language__item {{$selectKi}}" language="ki">
                     <img src="{{URL::asset($resourcePathServer.'images/frontend/translator/kichwa.svg')}}"
                          alt="Kichwa" class="manager-language__img" title="Kichwa"
 
@@ -76,7 +76,7 @@ switch ($languageCurrent) {
                 </a>
             </li>
             <li>
-                <a href="{{url('/homePage/en')}}" class="manager-language__item {{$selectEn}}">
+                <a href="{{url('/homePage/en')}}" class="manager-language__item {{$selectEn}}" language="en">
                     <img src="{{URL::asset($resourcePathServer.'images/frontend/translator/english.svg')}}"
                          alt="Spanish" class="manager-language__img" title="English">
                 </a>

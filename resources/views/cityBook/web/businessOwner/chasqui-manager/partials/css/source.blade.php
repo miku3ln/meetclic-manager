@@ -7,10 +7,11 @@
     body {
         margin: 0;
         font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-        background: #111;
         color: #eee;
     }
-
+    .leaflet-top.leaflet-left {
+        top: 15%;
+    }
     #map {
         position: fixed;
         inset: 0;

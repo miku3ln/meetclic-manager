@@ -749,3 +749,457 @@ Vue.component('menu-admin-grid', {
 
 });
 
+Vue.component("date-time-picker-bs4", {
+    model: {prop: "value", event: "input"},
+
+    props: {
+        value: {type: String, default: ""},
+        label: {type: String, default: "Fecha y hora"},
+        required: {type: Boolean, default: true},
+        emitOnChange: {type: Boolean, default: true},
+
+        // ✅ límites simples (solo fecha)
+        minDate: {type: String, default: ""}, // "YYYY-MM-DD"
+        maxDate: {type: String, default: ""}, // "YYYY-MM-DD"
+
+        // ✅ límites completos (fecha+hora) - acepta Date | ISO | timestamp
+        minDateTime: {type: [Date, String, Number], default: null},
+        maxDateTime: {type: [Date, String, Number], default: null},
+
+        // ✅ atajo: no permitir pasado (min = ahora)
+        disablePast: {type: Boolean, default: false}
+    },
+
+    data() {
+        return {
+            datePart: "",
+            timePart: "",
+            touched: false,
+            lastCompleteEmitted: ""
+        };
+    },
+
+    computed: {
+        // ===== helpers para límites datetime =====
+        minDT() {
+            if (this.disablePast) return new Date();
+            if (!this.minDateTime) return null;
+            const d = this.minDateTime instanceof Date ? this.minDateTime : new Date(this.minDateTime);
+            return isNaN(d.getTime()) ? null : d;
+        },
+        maxDT() {
+            if (!this.maxDateTime) return null;
+            const d = this.maxDateTime instanceof Date ? this.maxDateTime : new Date(this.maxDateTime);
+            return isNaN(d.getTime()) ? null : d;
+        },
+
+        // min/max para el input date
+        dateMinAttr() {
+            // prioridad: minDT -> minDate
+            if (this.minDT) return this.formatDate(this.minDT);
+            return this.minDate || "";
+        },
+        dateMaxAttr() {
+            if (this.maxDT) return this.formatDate(this.maxDT);
+            return this.maxDate || "";
+        },
+
+        // min/max para el input time (depende del día seleccionado)
+        timeMinAttr() {
+            // Si hay minDT y el usuario eligió el MISMO día => restringir hora
+            if (this.minDT && this.datePart === this.formatDate(this.minDT)) {
+                return this.formatTime(this.minDT); // "HH:mm"
+            }
+            return "";
+        },
+        timeMaxAttr() {
+            if (this.maxDT && this.datePart === this.formatDate(this.maxDT)) {
+                return this.formatTime(this.maxDT);
+            }
+            return "";
+        },
+
+        pickedDateObj() {
+            if (!this.datePart || !this.timePart) return null;
+            const d = new Date(`${this.datePart}T${this.timePart}:00`);
+            return isNaN(d.getTime()) ? null : d;
+        },
+
+        isOutOfRange() {
+            if (!this.pickedDateObj) return false;
+
+            // valida vs minDT/maxDT
+            if (this.minDT && this.pickedDateObj.getTime() < this.minDT.getTime()) return true;
+            if (this.maxDT && this.pickedDateObj.getTime() > this.maxDT.getTime()) return true;
+
+            // valida vs minDate/maxDate (solo fecha)
+            if (this.minDate && this.datePart < this.minDate) return true;
+            if (this.maxDate && this.datePart > this.maxDate) return true;
+
+            // valida vs time min/max del día (cuando aplica)
+            if (this.timeMinAttr && this.timePart < this.timeMinAttr) return true;
+            if (this.timeMaxAttr && this.timePart > this.timeMaxAttr) return true;
+
+            return false;
+        },
+
+        status() {
+            if (!this.required && (!this.datePart && !this.timePart)) return "warning";
+            if (!this.datePart || !this.timePart) return "warning";
+
+            if (!this.pickedDateObj) return "error";
+            if (this.isOutOfRange) return "error";
+
+            return "success";
+        },
+
+        statusMessage() {
+            if (this.status === "success") return "OK";
+            if (this.status === "error") {
+                // mensaje más útil
+                if (this.isOutOfRange) return "Fuera de rango permitido";
+                return "Formato inválido";
+            }
+            return "Seleccione fecha y hora";
+        },
+
+        isValid() {
+            return this.status === "success";
+        },
+
+        isoValue() {
+            if (!this.isValid || !this.pickedDateObj) return "";
+            return this.toIsoWithOffset(this.pickedDateObj);
+        },
+
+        badgeClass() {
+            if (this.status === "success") return "badge-success";
+            if (this.status === "error") return "badge-danger";
+            return "badge-warning";
+        }
+    },
+
+    watch: {
+        value: {
+            immediate: true,
+            handler(v) {
+                if (!v) {
+                    this.datePart = "";
+                    this.timePart = "";
+                    this.emitStatus(true);
+                    return;
+                }
+                const d = new Date(v);
+                if (isNaN(d.getTime())) {
+                    this.emitStatus(true);
+                    return;
+                }
+                this.datePart = this.formatDate(d);
+                this.timePart = this.formatTime(d);
+                this.emitStatus(true);
+            }
+        },
+
+        datePart() {
+            // si cambia el día, puede cambiar el min/max del time
+            this.emitStatus(true);
+            if (this.emitOnChange) this.emitIfComplete();
+        },
+
+        timePart() {
+            this.emitStatus(true);
+            if (this.emitOnChange) this.emitIfComplete();
+        },
+
+        isoValue(v) {
+            this.$emit("input", v);
+        }
+    },
+
+    methods: {
+        emitStatus() {
+            this.$emit("status-change", {
+                status: this.status,
+                message: this.statusMessage,
+                isValid: this.isValid,
+                iso: this.isoValue || "",
+                datePart: this.datePart,
+                timePart: this.timePart,
+
+                // ✅ extra data para que el padre sepa el rango
+                limits: {
+                    minDate: this.dateMinAttr || null,
+                    maxDate: this.dateMaxAttr || null,
+                    minTime: this.timeMinAttr || null,
+                    maxTime: this.timeMaxAttr || null
+                }
+            });
+        },
+
+        emitIfComplete() {
+            if (!this.isValid) return;
+            if (!this.isoValue) return;
+
+            if (this.lastCompleteEmitted === this.isoValue) return;
+            this.lastCompleteEmitted = this.isoValue;
+
+            this.$emit("change-complete", {
+                iso: this.isoValue,
+                datePart: this.datePart,
+                timePart: this.timePart,
+                dateObj: this.pickedDateObj,
+                status: this.status,
+                message: this.statusMessage,
+                isValid: this.isValid
+            });
+        },
+
+        formatDate(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            return `${y}-${m}-${day}`;
+        },
+
+        formatTime(d) {
+            const hh = String(d.getHours()).padStart(2, "0");
+            const mm = String(d.getMinutes()).padStart(2, "0");
+            return `${hh}:${mm}`;
+        },
+
+        toIsoWithOffset(date) {
+            const pad = (n) => String(n).padStart(2, "0");
+            const y = date.getFullYear();
+            const m = pad(date.getMonth() + 1);
+            const d = pad(date.getDate());
+            const hh = pad(date.getHours());
+            const mm = pad(date.getMinutes());
+            const ss = pad(date.getSeconds());
+
+            const offsetMin = -date.getTimezoneOffset();
+            const sign = offsetMin >= 0 ? "+" : "-";
+            const offH = pad(Math.floor(Math.abs(offsetMin) / 60));
+            const offM = pad(Math.abs(offsetMin) % 60);
+
+            return `${y}-${m}-${d}T${hh}:${mm}:${ss}${sign}${offH}:${offM}`;
+        }
+    },
+
+    template: `
+        <div class=" shadow-sm border-0">
+        <div class="">
+            <label class="font-weight-bold mb-2">{{ label }}</label>
+
+            <div class="form-row">
+                <div class="form-group col-md-7">
+                    <label class="small text-muted">Fecha</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        :min="dateMinAttr"
+                        :max="dateMaxAttr"
+                        :class="[
+                touched && (!datePart || status==='error') ? 'is-invalid' : '',
+                touched && datePart && status==='success' ? 'is-valid' : ''
+              ]"
+                        v-model="datePart"
+                        @blur="touched=true"
+                        @input="emitStatus(true)"
+                    />
+                    <div class="invalid-feedback">
+                        {{ status === 'error' ? statusMessage : 'Selecciona una fecha.' }}
+                    </div>
+                </div>
+
+                <div class="form-group col-md-5">
+                    <label class="small text-muted">Hora</label>
+                    <input
+                        type="time"
+                        class="form-control"
+                        :min="timeMinAttr"
+                        :max="timeMaxAttr"
+                        :class="[
+                touched && (!timePart || status==='error') ? 'is-invalid' : '',
+                touched && timePart && status==='success' ? 'is-valid' : ''
+              ]"
+                        v-model="timePart"
+                        @blur="touched=true"
+                        @input="emitStatus(true)"
+                    />
+                    <div class="invalid-feedback">
+                        {{ status === 'error' ? statusMessage : 'Selecciona una hora.' }}
+                    </div>
+                </div>
+            </div>
+
+            <span class="badge badge-pill not-view" :class="badgeClass">
+          {{ statusMessage }}
+        </span>
+        </div>
+        </div>
+    `
+});
+
+Vue.component("frequency-limit-type-bs4", {
+    model: {prop: "value", event: "input"},
+
+    props: {
+        // v-model (string) -> 'NONE' | 'ONCE' | ...
+        value: {type: String, default: ""},
+
+        label: {type: String, default: "Límite de frecuencia"},
+
+        // ✅ array de opciones { value, text }
+        options: {
+            type: Array,
+            default: () => ([
+                //  {value: "NONE", text: "Sin límite"},
+                {value: "ONCE", text: "Una vez"},
+                {value: "DAILY", text: "Diario"},
+                {value: "WEEKLY", text: "Semanal"},
+                {value: "MONTHLY", text: "Mensual"},
+                {value: "TOTAL_LIMIT", text: "Límite total (cantidad)"}
+            ])
+        },
+
+        // ✅ 'vertical' | 'horizontal'
+        layout: {type: String, default: "vertical"},
+
+        required: {type: Boolean, default: true},
+
+        // nombre del group radio (por si tienes varios componentes)
+        name: {type: String, default: "frequency_limit_type"},
+
+        // auto emitir complete cuando ya es válido
+        emitOnChange: {type: Boolean, default: true}
+    },
+
+    data() {
+        return {
+            localValue: "",
+            touched: false,
+            lastComplete: ""
+        };
+    },
+
+    computed: {
+        status() {
+            if (!this.required) return "success";
+            if (!this.localValue) return "warning";
+            return "success";
+        },
+
+        isValid() {
+            return this.status === "success";
+        },
+
+        statusMessage() {
+            if (this.isValid) return "OK";
+            return "Seleccione una opción";
+        },
+
+        badgeClass() {
+            return this.isValid ? "badge-success" : "badge-warning";
+        },
+
+        isHorizontal() {
+            return (this.layout || "").toLowerCase() === "horizontal";
+        }
+    },
+
+    watch: {
+        value: {
+            immediate: true,
+            handler(v) {
+                this.localValue = v || "";
+                this.emitStatus(); // siempre notifica estado actual
+            }
+        },
+
+        localValue() {
+            this.touched = true;
+
+            // v-model
+            this.$emit("input", this.localValue);
+
+            // status-change siempre en cambios mínimos
+            this.emitStatus();
+
+            // change-complete solo si ya está válido
+            if (this.emitOnChange) this.emitCompleteIfOk();
+        }
+    },
+
+    methods: {
+        emitStatus() {
+            const selected = this.options.find(o => o.value === this.localValue) || null;
+
+            this.$emit("status-change", {
+                status: this.status,                 // warning | success
+                isValid: this.isValid,
+                message: this.statusMessage,
+                selectedValue: this.localValue,      // value seleccionado
+                selectedText: selected ? selected.text : null,
+                selectedOption: selected,            // {value,text} o null
+                layout: this.layout,                 // vertical | horizontal
+                options: this.options                // array completo
+            });
+        },
+
+        emitCompleteIfOk() {
+            if (!this.isValid) return;
+
+            // evita emitir repetido si no cambió
+            if (this.lastComplete === this.localValue) return;
+            this.lastComplete = this.localValue;
+
+            const selected = this.options.find(o => o.value === this.localValue) || null;
+
+            this.$emit("change-complete", {
+                status: this.status,
+                isValid: this.isValid,
+                message: this.statusMessage,
+                selectedValue: this.localValue,
+                selectedText: selected ? selected.text : null,
+                selectedOption: selected,
+                layout: this.layout,
+                options: this.options
+            });
+        }
+    },
+
+    template: `
+        <div class=" shadow-sm border-0">
+        <div class="">
+            <label class="font-weight-bold mb-2">{{ label }}</label>
+
+            <div class="d-flex flex-wrap" :class="isHorizontal ? 'align-items-center' : 'flex-column'">
+                <div
+                    v-for="(opt, idx) in options"
+                    :key="opt.value"
+                    class="custom-control custom-radio"
+                    :class="isHorizontal ? 'custom-control-inline mr-3 mb-2' : 'mb-2'"
+                >
+                    <input
+                        class="custom-control-input"
+                        type="radio"
+                        :id="name + '_' + idx"
+                        :name="name"
+                        :value="opt.value"
+                        v-model="localValue"
+                    />
+                    <label class="custom-control-label" :for="name + '_' + idx">
+                        {{ opt.text }}
+                    </label>
+                </div>
+            </div>
+
+            <span class="badge badge-pill not-view" :class="badgeClass">
+          {{ statusMessage }}
+        </span>
+        </div>
+        </div>
+    `
+});
+
+

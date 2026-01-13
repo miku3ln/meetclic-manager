@@ -187,7 +187,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
         }
 
         legend.legend--section {
-            color: #445EF2 !important;
+            color: #0e2bcf  !important;
             font-size: 18px;
         }
 

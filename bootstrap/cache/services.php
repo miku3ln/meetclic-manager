@@ -42,6 +42,7 @@
     38 => 'App\\Providers\\FrontendProvider',
     39 => 'Laravel\\Passport\\PassportServiceProvider',
     40 => 'App\\Providers\\ChasquiProvider',
+    41 => 'App\\Infrastructure\\Cms\\Infrastructure\\Providers\\GamificationRepositoryServiceProvider',
   ),
   'eager' => 
   array (
@@ -70,6 +71,7 @@
     22 => 'App\\Providers\\FrontendProvider',
     23 => 'Laravel\\Passport\\PassportServiceProvider',
     24 => 'App\\Providers\\ChasquiProvider',
+    25 => 'App\\Infrastructure\\Cms\\Infrastructure\\Providers\\GamificationRepositoryServiceProvider',
   ),
   'deferred' => 
   array (

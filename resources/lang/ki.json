@@ -1011,5 +1011,44 @@
 
     "account.filters.sort.one": "Manammi",
     "account.filters.sort.two": "Ñukanchik riksishka - Ñukanchik kawsay",
-    "account.filters.sort.three": "Ñukanchik kawsay"
+    "account.filters.sort.three": "Ñukanchik kawsay",
+
+
+
+    "gamification.what_to_do": "Imata rurana",
+    "gamification.what_is_it_for": "Imapa sirve",
+    "gamification.what_you_get": "Imata gananki",
+
+    "gamification.avoid": "Mana ruray",
+    "gamification.note": "Yuyay",
+    "gamification.tip": "Yachachina",
+    "gamification.important": "Hatun yuyay",
+
+    "gamification.always_available": "Siempre kanmi shinalla",
+    "gamification.available_from": "Kaymanta kanmi",
+    "gamification.available_until": "Kaykama kanmi",
+    "gamification.available_between": "Kaypura kanmi",
+
+    "gamification.unlimited": "Mana tukuy kutillakuna",
+    "gamification.only_once": "Shuk kutilla shuklla",
+    "gamification.per_day": "Puncha kutillakuna (cada puncha kutin kallarin)",
+    "gamification.per_week": "Semana kutillakuna (cada semana kutin kallarin)",
+    "gamification.per_month": "Killa kutillakuna (cada killa kutin kallarin)",
+    "gamification.total_limit": "Tukuy kutillakuna (chay tukurishka mana kutin rurarinchu)",
+    "gamification.not_defined": "Mana rikchashka (configuraciónta rikuy)",
+
+    "gamification.physical": "Físico",
+    "gamification.digital": "Digital",
+
+    "gamification.you_earn": "Kanka gananki",
+    "gamification.have_questions": "Tapuykunata charinki?",
+    "gamification.on_the_map": "Mapapi kanki",
+    "gamification.all_rights_reserved": "Tukuy derechokuna waqaychishka",
+    "gamification.showing": "Rikuchishpa",
+    "gamification.your_search": "Kanka maskay",
+    "gamification.no_results": "Mana rikurinchu",
+    "gamification.loading": "Apamushpa",
+    "gamification.results": "Rikurinkuna",
+    "gamification.do_it_now": "Kunan ruray"
+
 }

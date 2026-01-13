@@ -48,7 +48,7 @@ class MaritimeDepartures extends ModelManager
         return $rules;
     }
 
-    public function saveMaritimeDepartureApi($params)
+    public function saveMaritimeDepartureApi($params)//API EMBARQUE Y ZARPE
     {
         DB::beginTransaction();
         try {

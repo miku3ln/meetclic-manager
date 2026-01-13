@@ -3,10 +3,27 @@
 namespace App\Utils;
 
 use App;
+
+
+use App\Infrastructure\Cms\Application\Gamification\Routing\UseCases\ResolveRouteContextUseCase;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\DTOs\FindProcessInputDTO;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\DTOs\TaskPreviewInputDTO;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\FindProcessForBusinessTrackingUseCase;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\PreviewTaskRewardUseCase;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\RewardUserByTaskUseCase;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\DTOs\TaskRewardInputDTO;
+use App\Infrastructure\Cms\Domain\Gamification\Routing\DTOs\RouteResolveInputDTO;
+use App\Models\Gamification\GamificationByProcessTracking;
+use App\Models\GamificationByProcess;
 use App\Services\GeoIpLocalService;
+
+use Carbon\Carbon;
+use Cassandra\Date;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Request;
+
 use Cookie;
+
 
 class TrackingUtil
 {
@@ -85,6 +102,70 @@ class TrackingUtil
         'FAQ',
     ];
 
+    public function validateActionsTrackingGaming($request, $next, $type)
+    {
+        $result = [
+            "success" => false,
+            "message" => "Algun error .!",
+            "type" => -1,
+            "data" => null
+        ];
+        // tracking type / source / campaign
+        $typeProcess = $request->query('typeProcess', '');     // 'share', 'click', 'view', 'referral', 'web_tracking'
+        $sourceProcess = $request->query('sourceProcess', '');   // 'facebook', 'whatsapp', 'meetclick', etc.
+        $campaign_code = $request->query('campaign_code', '');   // 'fb_234', 'campaign-00-web-tracking'
+        $codeProcess = $request->query('codeProcess', '');   // 'fb_234', 'campaign-00-web-tracking'
+
+        if ($typeProcess == "" && $sourceProcess == "" && $campaign_code == "" && $codeProcess == "") {
+            $result["success"] = false;
+            $result["message"] = "No existe datos que procesar de tracking.!";
+        } else if ($typeProcess !== "" && $sourceProcess !== "" && $campaign_code !== "" && $codeProcess !== "") {
+            $result["success"] = true;
+            $result["message"] = "Datos Obtenidos desde tracking!";
+            $referer = $request->headers->get('referer') ?: 'internal';
+            // SOURCE
+            $modelSource = new \App\Models\Tracking\TrackingSources();
+            $source_origin = $sourceProcess;
+            $resultSource = $modelSource->findByAttribute('code', $source_origin);
+            if (!$resultSource) {
+                $result["success"] = false;
+                $result["message"] = "Source no existe informacion!";
+                return $result;
+            }
+            $source_id = $resultSource->id;
+            // TYPE
+            $modelTypes = new \App\Models\Tracking\TrackingClickTypes();
+            $type_process = $typeProcess;
+            $resultTypes = $modelTypes->findByAttribute('code', $type_process);
+            $click_type_id = $resultTypes->id;
+            if (!$resultTypes) {
+                $result["success"] = false;
+                $result["message"] = "Type no existe informacion!";
+                return $result;
+            }
+            $referer_url = $request->headers->get('referer');
+            $managerClick = [
+                'type' => $typeProcess,
+                'type_process' => $typeProcess,
+                'click_type_id' => $click_type_id,
+                'id' => $source_id, // OJO: este es el id de la fuente
+                'source_origin' => $sourceProcess,
+                'source_id' => $source_id,
+                'referer' => $referer,
+                'referer_url' => $referer_url ?: 'not-referral',
+                'campaign_code' => $campaign_code,
+                'code_process' => $codeProcess,
+
+
+            ];
+            $result["data"]["managerClick"] = $managerClick;
+
+        }
+
+
+        return $result;
+
+    }
     // =========================================
     //  PUBLIC: MANAGER ALLOW ROUTES
     // =========================================
@@ -92,6 +173,7 @@ class TrackingUtil
     {
         // type == 1  => lógica vieja con segments + permisos + casos 1..8
         // type != 1  => lógica de tracking por route name / action name
+        $this->managerGamingTask($request, $next, $type);
         if ($type == 1) {
             return $this->handleTypeOneRoutes($request);
         }
@@ -100,6 +182,134 @@ class TrackingUtil
         return $result;
     }
 
+    public function managerSaveRegisterGamingTaskLog($userId, $processId, $reference_code = null)
+    {
+        $useCase = app(PreviewTaskRewardUseCase::class);
+        $dto = new TaskPreviewInputDTO(
+            processId: $processId,
+            nowEpochSeconds: time(),   // o el que tú envíes
+            userId: (int)$userId,
+        );
+
+        return $useCase->execute($dto);
+
+
+    }
+
+    public function resolveRouteParamsForGamification($request)
+    {
+        $route = $request->route();
+        $routeName = $route ? (string)$route->getName() : '';
+        $routeParams = $route ? (array)$route->parameters() : [];
+        $queryParams = (array)$request->query();
+
+        $useCase = app(ResolveRouteContextUseCase::class);
+
+        $dto = new RouteResolveInputDTO(
+            routeName: $routeName,
+            routeParams: $routeParams,
+            queryParams: $queryParams,
+
+        );
+        return $useCase->execute($dto);
+    }
+
+    public function findProcess($params)
+    {
+        $useCase = app(FindProcessForBusinessTrackingUseCase::class);
+
+        $dto = new FindProcessInputDTO(
+            businessId: $params['business_id'],
+            trackingSourceId: $params['tracking_source_id'],
+            trackingClickTypeId: $params['tracking_click_type_id'],
+            campaignCode: $params['campaign_code'],
+            codeProcess: $params['code_process'],
+
+        );
+
+        return $useCase->execute($dto);
+    }
+
+    public function managerGamingTask($request, $next, $type)
+    {
+
+        $resultDataByParams = $this->resolveRouteParamsForGamification($request, $type);
+
+        $res = $resultDataByParams;
+        if ($res->success) {
+
+            $routingData = $res->data["routing"];
+            $relationManager = $res->data["relationManager"];
+            $typeProcess = $relationManager["typeProcess"];
+            $resultManager = $this->validateActionsTrackingGaming($request, $next, $type);
+            $user = $request->user();
+            if ($resultManager["success"] && $typeProcess == "business") {
+                $managerClick = $resultManager["data"]["managerClick"];
+                $dataRelation = $relationManager["relation"];
+                $business_id = $dataRelation["business_id"];
+                $tracking_source_id = $managerClick["source_id"];
+                $campaign_code = $managerClick["campaign_code"];
+                $tracking_click_type_id = $managerClick["click_type_id"];
+
+                $code_process = $managerClick["code_process"];
+                $findParamsProcess = [
+                    "business_id" => $business_id,
+                    "tracking_source_id" => $tracking_source_id,
+                    "tracking_click_type_id" => $tracking_click_type_id,
+                    "campaign_code" => $campaign_code,
+                    "code_process" => $code_process,
+
+                ];
+
+                $processDataGet = $this->findProcess($findParamsProcess);
+                if ($processDataGet->success) {
+                    $rowDataProcess = $processDataGet->data["row"];
+                    $userId = 1;
+                    $processId = $rowDataProcess["id"];
+                    $resultAllowDepositLog = $this->managerSaveRegisterGamingTaskLog($userId, $processId);
+                    dd($resultAllowDepositLog);
+                    if ($resultAllowDepositLog->success) {
+                        $model = new GamificationByProcessTracking();
+                        $tz = 'America/Guayaquil';
+                        $now = Carbon::now($tz)->format('Y-m-d H:i:s');
+                        $assigned_at = $now;
+                        $completed_at = $now;
+
+                        $attributesSet = [
+                            "user_id" => $userId,
+                            "gamification_by_process_id" => $processId,
+                            "status" => $model::STATE_COMPLETED,
+                            "assigned_at" => $assigned_at,
+                            "completed_at" => $completed_at,
+                        ];
+                        $model->fill($attributesSet);
+                        $success = $model->save();
+                        $processData = $rowDataProcess;
+                        $processManager = $processData;
+                        $typeMoney = 0;
+                        $reference_code = "business-code";
+                        $performed_by_id = null;
+                        $amount = $processData["points"];
+                        $useCase = app(RewardUserByTaskUseCase::class);
+                        $dto = new TaskRewardInputDTO(
+                            userId: $userId,
+                            process: $processManager,
+                            amount: $amount,
+                            typeMoney: $typeMoney,
+                            referenceCode: $reference_code,
+                            performedById: $performed_by_id
+                        );
+
+                        $result = $useCase->execute($dto);
+
+                    }
+                }
+
+
+            }
+
+        }
+    }
     // =========================================
     //  PUBLIC: MANAGER COUNTERS
     // =========================================
@@ -226,9 +436,7 @@ class TrackingUtil
         // tracking (tipo, source, location, etc.)
         $tracking = $this->buildTrackingContext($request, $typeProcess, $sourceProcess, $campaign_code);
         $managerClick = $tracking['managerClick'];
-        $typeProcess = $tracking['typeProcess'];
-        $sourceProcess = $tracking['sourceProcess'];
-        $campaign_code = $tracking['campaign_code'];
+
 
         $typeUrl = $this->getUrlType($url);
 
@@ -490,20 +698,7 @@ class TrackingUtil
         $referer = $request->headers->get('referer') ?: 'internal';
         $agent = $request->userAgent() ?: 'unknown';
         $ip = $request->ip() ?: 'unknown';
-
-        // Si viene 'device', se intentan leer lat/lon/device de cookies o query (compatibilidad)
-        if ($request->has('device')) {
-            $latCookie = $request->cookie('lat');
-            $lonCookie = $request->cookie('lon');
-            $deviceCookie = $request->cookie('device');
-
-            $latQuery = $request->query('lat');
-            $lonQuery = $request->query('lon');
-            $deviceQuery = $request->query('device');
-        }
-
         $geo = new GeoIpLocalService();
-
         // SOURCE
         $modelSource = new \App\Models\Tracking\TrackingSources();
         $source_origin = $sourceProcess;

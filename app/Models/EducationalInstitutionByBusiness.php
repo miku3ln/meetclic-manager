@@ -211,20 +211,17 @@ $this->table.create_user_id";
         $textValue = $this->table . '.' . $this->field_main;
         $field = $textValue;
         $query = DB::table($this->table);
-        $selectString = "$this->table.id,$textValue as text";
+        $selectString = "askwer_form.id,askwer_form.name as text";
         $select = DB::raw($selectString);
         $query->select($select);
         $query->join('educational_institution_askwer_type', 'educational_institution_askwer_type.id', '=', $this->table . '.educational_institution_askwer_type_id');
         $query->join('business', 'business.id', '=', $this->table . '.business_id');
         $query->join('askwer_form', 'askwer_form.id', '=', $this->table . '.askwer_form_id');
         if (isset($params["filters"]['search_value']["term"])) {
-
             $likeSet = $params["filters"]['search_value']["term"];
-            $query->orWhere($this->table . '.id', 'like', '%' . $likeSet . '%');
             $query->orWhere("educational_institution_askwer_type.value", 'like', '%' . $likeSet . '%');
             $query->orWhere("business.title", 'like', '%' . $likeSet . '%');
             $query->orWhere("askwer_form.name", 'like', '%' . $likeSet . '%');
-            $query->orWhere($this->table . '.create_user_id', 'like', '%' . $likeSet . '%');;
 
         }
 

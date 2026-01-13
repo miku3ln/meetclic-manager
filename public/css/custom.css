@@ -2286,7 +2286,7 @@ span.title-info-data-empty {
 
 /*---TBODY*/
 .xywer-tbl-admin > tbody > tr {
-    background-color: #e6e6e6;
+    background-color: #ffffff;
     color: #7e8c8d;
     font-size: 12px;
     font-weight: 200;
@@ -2295,13 +2295,13 @@ span.title-info-data-empty {
 
 .xywer-tbl-admin > tbody > tr:hover {
     color: #fff;
-    background-color: #7e8c8dd9;
+    background-color: #445ef27d ;
     cursor: pointer;
 }
 
 .xywer-tbl-admin > tbody > tr.selected {
     color: #fff;
-    background-color: #7e8c8d;
+    background-color: #445ef27d;
 
 }
 
@@ -2628,9 +2628,6 @@ tr.tr-action-type-method {
 
 }
 
-.xywer-tbl-admin > tbody > tr {
-
-}
 
 
 *, :after, :before {

@@ -987,4 +987,13 @@ class BusinessByRoutesMapController extends MyBaseController
         $result = $model->getListSelect2($attributesPost);
         return Response::json($result);
     }
+    public function getRoutesListSelect2()
+    {
+
+        $attributesPost = Request::all();
+        $model = new  BusinessByRoutesMap();
+        $result = $model->getRoutesListSelect2($attributesPost);
+        return Response::json($result);
+    }
+
 }

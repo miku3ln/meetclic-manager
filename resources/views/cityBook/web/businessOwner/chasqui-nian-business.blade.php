@@ -6,12 +6,14 @@
 @endphp
 @extends('layouts.bootstrap5')
 @section('additional-styles')
+
     @include('cityBook.web.businessOwner.chasqui-manager.partials.css.source')
 @endsection
 @section('additional-scripts')
     @include('cityBook.web.businessOwner.chasqui-manager.partials.js.source')
 @endsection
 @section('content')
+
     @include('cityBook.web.businessOwner.chasqui-manager.partials.html.joystick-zone')
 
     <!-- Mensajes de estado -->

@@ -62,7 +62,7 @@ function GridManager(params) {
         css: {
             header: headerCSS,
             table: tableCSS,
-            footer: 'pagination-wrapper'
+            footer: 'pagination-wrapper pagination-wrapper--events'
         },
         templates: templates,
         formatters: formattersCurrent

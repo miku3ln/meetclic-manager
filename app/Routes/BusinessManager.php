@@ -425,6 +425,8 @@ class BusinessManager
             /*ROUTES BUSINESS*/
             Route::post('business/routes/adminBusiness', 'Routes\BusinessByRoutesMapController@getAdminBusiness'); //
             Route::post('business/routes/saveBusiness', 'Routes\BusinessByRoutesMapController@saveBusiness'); //
+            Route::get('business/routes/getRoutesListSelect2', 'Routes\BusinessByRoutesMapController@getRoutesListSelect2')->name("getRoutesListSelect2"); //
+
             Route::post('business/multimedia/uploadResourceBusiness', 'Multimedia\MultimediaController@uploadResourceBusiness'); //
             Route::get('business/routes/markers/select', 'Routes\RoutesMapByRoutesDrawingController@getListSelect2'); //
             /* PANORAMA MANAGER*/
@@ -557,13 +559,15 @@ class BusinessManager
 
             Route::post("business/educationalInstitutionByBusiness/save", "EducationalInstitution\EducationalInstitutionByBusinessController@saveData");
             Route::post("business/educationalInstitutionByBusiness/admin", "EducationalInstitution\EducationalInstitutionByBusinessController@getAdmin");
-            Route::get("business/educationalInstitutionByBusiness/listSelect2", "EducationalInstitution\EducationalInstitutionByBusinessController@getListSelect2");
+            Route::get("business/educationalInstitutionByBusiness/listSelect2", "EducationalInstitution\EducationalInstitutionByBusinessController@getListSelect2")->name("getAskwersListSelect2");
             Route::post("business/educationalInstitutionByBusiness/dataAskwer", "EducationalInstitution\EducationalInstitutionByBusinessController@getDataAskwer");
             Route::post("business/educationalInstitutionByBusiness/dataAskwerForm", "EducationalInstitution\EducationalInstitutionByBusinessController@getDataAskwerForm");
             Route::post("business/askwerFieldValue/dataAskwerResults", "Askwer\AskwerFieldValueController@getDataAskwerResults");
 
             Route::post("business/askwerForm/saveAskwer", "Askwer\AskwerFormController@saveAskwer");
             Route::post("business/askwerForm/getDataSolutionsAskwer", "Askwer\AskwerFormController@getDataSolutionsAskwer");
+
+
 
             //EVENTS TRAILS
             Route::post("eventsTrailsTypes/save", "EventsTrails\EventsTrailsTypesController@saveData");

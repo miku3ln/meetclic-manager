@@ -8,9 +8,34 @@
     $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
     $themePath = $resourcePathServer . 'templates/cityBookHtml/';
     ?>
-            <!--=============== basic  ===============-->
+        <!--=============== basic  ===============-->
     @include('layouts.partials.headMeta')
     @include('layouts.cityBook.typeHtml.styles')
+    <style id="main-colors">
+        /* =========================================================
+      PULLKAY (MeetClic) - Bootstrap 3.3.5 UI/UX
+      Palette:
+      azulClic: #4C4CFF
+      amarilloVital: #FFCC00
+      blanco: #FFFFFF
+      grisOscuro: #2C2C2C
+      moradoSuave: #5C5CFF
+      ========================================================= */
+
+        :root {
+            --mc-azulClic: #4C4CFF;
+            --mc-amarilloVital: #FFCC00;
+            --mc-blanco: #FFFFFF;
+            --mc-grisOscuro: #2C2C2C;
+            --mc-moradoSuave: #5C5CFF;
+
+            --mc-border: rgba(44, 44, 44, 0.12);
+            --mc-muted: rgba(44, 44, 44, 0.68);
+            --mc-soft-bg: rgba(76, 76, 255, 0.06);
+            --mc-shadow: 0 8px 20px rgba(44, 44, 44, 0.08);
+            --mc-radius: 14px;
+        }
+    </style>
     <style>
         li.menu-top__li-points span {
             margin-left: 4%;
@@ -53,6 +78,7 @@
                 top: 66px !important;
                 margin-right: -13% !important;
             }
+
             .nav-button-wrap--menu-mobiles {
                 top: 45px !important;
                 margin-right: -109px !important;
@@ -63,8 +89,6 @@
         @media only screen and (max-width: 375px) {
             /* Teléfonos muy pequeños */
         }
-
-
 
 
         .img-fluid {
@@ -145,9 +169,23 @@
             float: left;
             position: relative;
             top: 0px !important;
-            height: 81px!important;
+            height: 81px !important;
+        }
+
+        .card-listing .geodir-category-location a.map-item:before {
+            content: '  {{__('gamification.on_the_map')}}' !important;
+
+        }
+
+        img#img-loading {
+            position: absolute;
+            width: 45px;
+            top: 46%;
+            left: 49%;
         }
     </style>
+    @include('cityBook.web.partials.bootgrid.assets.css.source')
+
     @if(env('allowCustomerCss'))
         <link href="{{ asset($resourcePathServer.'templates/webion/StyleWebion.css') }}" rel="stylesheet"
               type="text/css">
@@ -157,16 +195,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-            href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:ital,wght@0,1;0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,1;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap"
-            rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:ital,wght@0,1;0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,1;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap"
+        rel="stylesheet">
 
 </head>
 <body>
 <!--loader-->
-<div class="loader-wrap">
-    <div class="pin"></div>
-    <div class="pulse"></div>
-</div>
+
+<?php
+$htmlLoad = '<div class="loader-wrap">';
+
+if (isset($dataManagerPage['logoMainData'])) {
+    $urlLogo=URL($resourcePathServer . $dataManagerPage['logoMainData']->source) ;
+    $htmlLoad .= '<div>';
+    $htmlLoad .= '  <img id="img-loading" src="'.$urlLogo.'" class="" alt="">';
+    $htmlLoad .= '</div>';
+    $htmlLoad .= '<div class="pulse"></div>';
+} else {
+    $htmlLoad .= '<div class="pin"></div>';
+    $htmlLoad .= '<div class="pulse"></div>';
+}
+$htmlLoad .= '</div>';
+
+?>
+{!! $htmlLoad!!}
+
 <!--loader end-->
 <!-- Main  -->
 
@@ -174,7 +227,7 @@
 
 $urlManagerPage = '';
 if (env('allowAllInOne')) {
-  //  $urlManagerPage = route('urlBase');
+    //  $urlManagerPage = route('urlBase');
 } else {
     $urlManagerPage = route('homeIndexFrontendWeb', app()->getLocale());
 
@@ -203,7 +256,7 @@ if (env('allowAllInOne')) {
                                     <img src="{{ URL::asset($themePath.'images/logo-light.png')}}" alt="">
                                 @else
                                     <div class="content-name-business ">{{env('userNameFirst')}}<span
-                                                class="content-name-business__second">{{env('userNameSecond')}}</span>
+                                            class="content-name-business__second">{{env('userNameSecond')}}</span>
                                     </div>
                                 @endif
 
@@ -260,7 +313,7 @@ if (env('allowAllInOne')) {
                     $activePages = 'not-active';
                     $activeDictionary = 'not-active';
                     $dictionaryKichwaToCastilian = '';
-                    $chaskishimi= '';
+                    $chaskishimi = '';
 
                     $dictionaryCastilianToKichwa = '';
 
@@ -298,15 +351,15 @@ if (env('allowAllInOne')) {
                         if ($dataManagerPage['type'] == 1) {
                             $classWrapper = 'no-padding';
                         }
-                    }  else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
-                        $activeDictionary= 'act-link';
-                        if($paramsRequest['type']==1){
+                    } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
+                        $activeDictionary = 'act-link';
+                        if ($paramsRequest['type'] == 1) {
                             $dictionaryKichwaToCastilian = 'act-link';
-                        }else{
+                        } else {
                             $dictionaryCastilianToKichwa = 'act-link';
                         }
 
-                    }else if ($nameRoute == 'shopBee') {
+                    } else if ($nameRoute == 'shopBee') {
                         $activeShop = 'act-link';
 
                     } else if ($nameRoute == 'aboutUs') {
@@ -318,10 +371,10 @@ if (env('allowAllInOne')) {
                         $activePages = 'act-link';
                         $activeHowItWorks = 'act-link';
 
-                    }elseif ($nameRoute == 'homeBackLine') {
+                    } elseif ($nameRoute == 'homeBackLine') {
 
                         $activePages = 'act-link';
-                        $activeBackLine= 'act-link';
+                        $activeBackLine = 'act-link';
 
                     } elseif ($nameRoute == 'contactUs') {
                         $activeContactUs = 'act-link';
@@ -455,14 +508,14 @@ if (env('allowAllInOne')) {
 
                                 @else
                                     <div class="content-name-business ">{{env('userNameFirst')}}<span
-                                                class="content-name-business__second">{{env('userNameSecond')}}</span>
+                                            class="content-name-business__second">{{env('userNameSecond')}}</span>
                                     </div>
                                 @endif
                             @else
 
                                 <img
-                                        src="{{ URL::asset($resourcePathServer.'uploads/web/backend-profile/sections/logo-header-backend.png')}}"
-                                        alt="">
+                                    src="{{ URL::asset($resourcePathServer.'uploads/web/backend-profile/sections/logo-header-backend.png')}}"
+                                    alt="">
 
                             @endif
                         @endif
@@ -481,15 +534,15 @@ if (env('allowAllInOne')) {
                             <div class="footer-social">
                                 <ul>
                                     <li><a href="{{env('footerCopyRightFacebook')}}" target="_blank"><i
-                                                    class="fa fa-facebook-official"></i></a></li>
+                                                class="fa fa-facebook-official"></i></a></li>
                                     <li><a id="manager-whatsapp-copy-right" href="#" target="_blank"><i
-                                                    class="fa fa-whatsapp"></i></a></li>
+                                                class="fa fa-whatsapp"></i></a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="copyright"> &#169;<a class="a--link" href="{{env('footerCopyRightPage')}}"
-                                                             target="_blank"> {{env('footerCopyRightName')}} </a>{{ date('Y') }}  {{env('footerCopyRightRight')}}
+                                                             target="_blank"> {{env('footerCopyRightName')}} </a>{{ date('Y') }}  {{__('gamification.all_rights_reserved')}}
                                 .
                             </div>
                         </div>
@@ -529,14 +582,14 @@ if (env('allowAllInOne')) {
 
                                         @else
                                             <div class="content-name-business ">{{env("userNameFirst")}}<span
-                                                        class="content-name-business__second">{{env("userNameSecond")}}</span>
+                                                    class="content-name-business__second">{{env("userNameSecond")}}</span>
                                             </div>
                                         @endif
                                     @else
 
                                         <img
-                                                src="{{ URL::asset($resourcePathServer.'uploads/web/backend-profile/sections/logo-header-backend.png')}}"
-                                                alt="">
+                                            src="{{ URL::asset($resourcePathServer.'uploads/web/backend-profile/sections/logo-header-backend.png')}}"
+                                            alt="">
 
                                     @endif
                                 @endif
@@ -545,18 +598,18 @@ if (env('allowAllInOne')) {
                         </div>
                         <div class="col-md-4">
                             <div class="copyright"> &#169;<a class="a--link" href="{{env('footerCopyRightPage')}}"
-                                                             target="_blank"> {{env('footerCopyRightName')}} </a>{{ date('Y') }}  {{env('footerCopyRightRight')}}
+                                                             target="_blank"> {{env('footerCopyRightName')}} </a>{{ date('Y') }}  {{__('gamification.all_rights_reserved')}}
                                 .
                             </div>
                             <div class="footer-social">
                                 <ul>
                                     <li><a href="{{env('footerCopyRightFacebook')}}" target="_blank"><i
-                                                    class="fa fa-facebook-official"></i></a></li>
+                                                class="fa fa-facebook-official"></i></a></li>
 
                                     @if($businessMainInformation['allow'])
                                         <!--CMS-TEMPLATE-WHATSAPP-SEND-TEMPLATE -->
                                         <li><a id="manager-whatsapp-copy-right" target="_blank"><i
-                                                        class="fa fa-whatsapp"></i></a></li>
+                                                    class="fa fa-whatsapp"></i></a></li>
                                     @endif
                                 </ul>
                             </div>
@@ -652,7 +705,8 @@ if (env('allowAllInOne')) {
 
     @if($businessMainInformation['allow'])
         <!--CMS-TEMPLATE-WHATSAPP-SEND-TEMPLATE-->
-        <a class=" to-top--contact-whatsapp chat-widget-button-content" target="_blank" id="manager-contact-whatsapp-main">
+        <a class=" to-top--contact-whatsapp chat-widget-button-content" target="_blank"
+           id="manager-contact-whatsapp-main">
             <div class="chat-widget-button chat-widget-button--bee">
                 <i class="fa fa-whatsapp"></i>
 
@@ -664,9 +718,64 @@ if (env('allowAllInOne')) {
            value="{{ route("categoriesSearchBee",app()->getLocale()) }}"/>
 </div>
 @include('layouts.partials.shop.cart',array('typeManagerButton'=>1))
-
+@include('cityBook.web.partials.bootgrid.assets.js.source')
 @include('layouts.cityBook.typeHtml.scripts')
+
+
 <script>
+    function onChangeLanguage() {
+        var supportedLangs = ["ki", "es", "en"];
+
+        $(".manager-language__item").on("click", function (e) {
+            e.preventDefault();
+
+
+            var newLang = String($(this).attr("language") || "").trim().toLowerCase();
+            if (!newLang || supportedLangs.indexOf(newLang) === -1) return;
+
+            var url = new URL(window.location.href);
+            var path = url.pathname; // solo path, sin query/hash
+
+            // 1) buscar idioma existente en el path
+            var currentLang = null;
+
+            for (var i = 0; i < supportedLangs.length; i++) {
+                var lang = supportedLangs[i];
+
+                // match: "/es/" o "/es" al final
+                if (path.indexOf("/" + lang + "/") !== -1 || path.endsWith("/" + lang)) {
+                    currentLang = lang;
+                    break;
+                }
+            }
+
+            // 2) si existe => reemplaza
+            if (currentLang) {
+                if (currentLang === newLang) return;
+
+                // reemplaza "/es/" si existe, si no reemplaza el final "/es"
+                if (path.indexOf("/" + currentLang + "/") !== -1) {
+                    path = path.replace("/" + currentLang + "/", "/" + newLang + "/");
+                } else {
+                    path = path.replace(new RegExp("\\/" + currentLang + "$"), "/" + newLang);
+                }
+
+                url.pathname = path;
+                window.location.href = url.toString();
+                return;
+            }
+
+            // 3) si NO existe => agregar al final (antes de ? y # automáticamente por URL)
+            // asegura no duplicar slash
+            if (!path.endsWith("/")) path += "/";
+            url.pathname = path + newLang;
+
+            window.location.href = url.toString();
+
+        });
+
+    }
+
     function esMovil() {
         return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
@@ -698,6 +807,7 @@ if (env('allowAllInOne')) {
     }
 
     $(function () {
+        onChangeLanguage();
         $nameRoute = '{{$nameRoute}}';
         initWhatsAppSend();
 
@@ -711,7 +821,7 @@ if (env('allowAllInOne')) {
     });
 
     if (esMovil() && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
             // Cookies (pueden leerse en Laravel)
             document.cookie = "lat=" + position.coords.latitude;
             document.cookie = "lon=" + position.coords.longitude;
@@ -726,7 +836,7 @@ if (env('allowAllInOne')) {
             urlConQuery.searchParams.set('device', 'movil');
 
             // Redirecciona automáticamente con los parámetros
-          //  window.location.href = urlConQuery.toString();
+            //  window.location.href = urlConQuery.toString();
         });
     }
 </script>

@@ -1054,5 +1054,45 @@
 
     "account.filters.sort.one": "None",
     "account.filters.sort.two": "Income-Expense",
-    "account.filters.sort.three": "Description"
+    "account.filters.sort.three": "Description",
+
+    "gamification.what_to_do": "What to do",
+    "gamification.what_is_it_for": "What is it for",
+    "gamification.what_you_get": "What you earn",
+
+    "gamification.avoid": "Avoid",
+    "gamification.note": "Note",
+    "gamification.tip": "Tip",
+    "gamification.important": "Important",
+
+    "gamification.always_available": "Always available",
+    "gamification.available_from": "Available from",
+    "gamification.available_until": "Available until",
+    "gamification.available_between": "Available between",
+
+    "gamification.unlimited": "Unlimited (as many times as you want)",
+    "gamification.only_once": "Only once (a single time)",
+    "gamification.per_day": "Time(s) per day (resets every day)",
+    "gamification.per_week": "Time(s) per week (resets every week)",
+    "gamification.per_month": "Time(s) per month (resets every month)",
+    "gamification.total_limit": "Time(s) in total (once the limit is reached it does not repeat)",
+    "gamification.not_defined": "Not defined (check configuration)",
+
+    "gamification.physical": "PHYSICAL",
+    "gamification.digital": "DIGITAL",
+
+    "gamification.you_earn": "You earn",
+    "gamification.have_questions": "Do you have questions?",
+    "gamification.on_the_map": "On the map",
+
+    "gamification.all_rights_reserved": "All rights reserved",
+    "gamification.showing": "Showing",
+    "gamification.your_search": "Your search",
+
+    "gamification.no_results": "No results",
+    "gamification.loading": "Loading",
+    "gamification.results": "Results",
+    "gamification.do_it_now": "Do it now"
+
+
 }

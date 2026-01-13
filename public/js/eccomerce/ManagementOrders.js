@@ -1307,17 +1307,7 @@ function GridManager(params) {
             console.log(row);
         }
     };
-    var footer_bst2 =
-        "<div id='data-pagination'  id=\"{{ctx.id}}\" class=\"{{css.footer}}\">\n\
-                        <div class='col-md-6'>\n\
-                            <div  class='pagination'>\n\
-                                <p class=\"{{css.pagination}}\"></p>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class=\"col-md-6\">\n\
-                            <p class=\"{{css.infos}}\"></p>\n\
-                        </div>\n\
-        </div>";
+
     var templates = {
         footer: footer_bst2
     };
@@ -1341,7 +1331,7 @@ function GridManager(params) {
         css: {
             header: headerCSS,
             table: tableCSS,
-            footer: 'pagination-wrapper'
+            footer: 'pagination-wrapper pagination-wrapper--management-or'
         },
         templates: templates,
         formatters: formattersCurrent

@@ -725,7 +725,7 @@
                 <div class="listsearch-options fl-wrap" id="lisfw">
                     <div class="container">
                         <div class="listsearch-header fl-wrap">
-                            <h3>{{__('frontend.menu.search.filters.title')}} <span> Tu busqueda</span></h3>
+                            <h3>{{__('frontend.menu.search.filters.title')}} <span>{{__('gamification.your_search')}} </span></h3>
                             <div class="listing-view-layout">
                                 <ul>
                                     <li><a class="grid active" href="#"><i class="fa fa-th-large"></i></a></li>
@@ -851,7 +851,7 @@
                             </div>
                             <div class="col-sm-6 infoBar">
 
-                                <div class="infos">Mostrando <?php echo '{{configPagination.view.init}}'?>
+                                <div class="infos">{{__('gamification.showing')}} <?php echo '{{configPagination.view.init}}'?>
                                     - <?php echo '{{configPagination.view.to}}'?>
                                     de <?php echo '{{configPagination.totalData}}'?> </div>
                             </div>

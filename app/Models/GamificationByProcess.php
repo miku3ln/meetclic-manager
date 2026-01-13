@@ -14,7 +14,65 @@ class GamificationByProcess extends ModelManager
     const STATE_ACTIVE = 'ACTIVE';
     const STATE_INACTIVE = 'INACTIVE';
     protected $table = 'gamification_by_process';
+    public function pointsRelation()
+    {
+        // gamification_by_points.gamification_by_process_id -> gamification_by_process.id
+        return $this->hasOne(GamificationByPoints::class, 'gamification_by_process_id', 'id');
+    }
+    public static function  findProcessWithPointsAndBusiness(int $processId): ?array
+    {
+        $row = DB::table('gamification_by_process as p')
+            ->join('gamification_by_points as pts', 'pts.gamification_by_process_id', '=', 'p.id')
+            ->join('business_by_gamification as bg', 'bg.gamification_id', '=', 'p.gamification_id')
+            ->join('business as b', 'b.id', '=', 'bg.business_id')
+            ->leftJoin('tracking_click_types as tct', 'tct.id', '=', 'p.tracking_click_type_id')
+            ->leftJoin('tracking_sources as ts', 'ts.id', '=', 'p.tracking_source_id')
+            ->where('p.id', $processId)
+            ->select([
+                // --- process base ---
+                'p.id',
+                'p.source',
+                'p.title',
+                'p.subtitle',
+                'p.description',
+                'p.state',
+                'p.valid_from',
+                'p.valid_until',
+                'p.frequency_limit_type',
+                'p.frequency_limit_value',
+                'p.has_source',
+                'p.entity',
+                'p.entity_id',
+                'p.url_manager',
+                'p.gamification_id',
+                'p.gamification_type_activity_id',
+                'p.is_url',
+                'p.type_manager',
+                'p.execution_channel',
+                'p.user_id',
+                'p.unique_code',
+                'p.allow_golden',
+                'p.icon_class',
+                'p.campaign_code_template',
+                'p.tracking_click_type_id',
+                'p.tracking_source_id',
 
+                // --- points ---
+                'pts.id as gamification_by_points_id',
+                'pts.points as points',
+
+                // --- business ---
+                'b.id as business_id',
+                'b.title as business_name',
+
+                // --- tracking (opcional pero útil) ---
+                'tct.code as tracking_type_code',
+                'ts.code as tracking_source_code',
+            ])
+            ->first();
+
+        return $row ? (array) $row : null;
+    }
     protected $fillable = array(
         'source',//*
         'title',//*
@@ -33,6 +91,9 @@ class GamificationByProcess extends ModelManager
         'unique_code',//*
         'allow_golden',//*
         'icon_class',//*
+        'tracking_click_type_id',
+        'tracking_source_id',
+        'execution_channel',
 
 
 
@@ -56,10 +117,17 @@ class GamificationByProcess extends ModelManager
         ['column' => 'allow_golden', 'type' => 'integer', 'allow_golden' => '1', 'required' => 'true'],
         ['column' => 'icon_class', 'type' => 'integer', 'icon_class' => 'fa fa', 'required' => 'true'],
 
+        ['column' => 'tracking_click_type_id', 'type' => 'integer', 'icon_class' => 'fa fa', 'required' => 'true'],
+        ['column' => 'tracking_source_id', 'type' => 'integer', 'icon_class' => 'fa fa', 'required' => 'true'],
+        ['column' => 'execution_channel', 'type' => 'string', 'icon_class' => 'fa fa', 'required' => 'true'],
+
+
+
+
     ];
     public $timestamps = false;
 
-    protected $field_main = 'source';
+    protected $field_main = 'id';
 
     public static function getRulesModel()
     {
@@ -79,6 +147,9 @@ class GamificationByProcess extends ModelManager
             "unique_code" => "required",
             "allow_golden" => "required",
             "icon_class" => "required",
+            "tracking_click_type_id" => "required",
+            "tracking_source_id" => "required",
+            "execution_channel" => "required",
 
         ];
         return $rules;
@@ -89,7 +160,7 @@ class GamificationByProcess extends ModelManager
 
     public function getAdmin($params)
     {
-        $sort = 'asc';
+        $sort = 'desc';
         $field = $this->field_main;
         $query = DB::table($this->table);
 
@@ -103,17 +174,31 @@ class GamificationByProcess extends ModelManager
         $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
 
         $selectString = "$this->table.id,$this->table.source,$this->table.title,$this->table.subtitle,$this->table.description,$this->table.state,$this->table.has_source,$this->table.entity,$this->table.entity_id,$this->table.url_manager,gamification.value as gamification,
-    $this->table.valid_from,$this->table.valid_until,$this->table.expiration_type,$this->table.expiration_value,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.is_repetitive,$this->table.max_times_per_user,$this->table.execution_channel,
+    $this->table.valid_from,$this->table.valid_until,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.execution_channel,
  $this->table.campaign_code_template,
-tracking_click_types.id tracking_type_code,tracking_click_types.uid tracking_type_name,
-tracking_sources.id tracking_source_code,tracking_sources.uid tracking_source_name,
+tracking_click_types.id tracking_type_code,tracking_click_types.code tracking_type_code_view,CONCAT(tracking_click_types.code,'-',tracking_click_types.uid) tracking_type_name,
+tracking_sources.id tracking_source_code,tracking_sources.code tracking_source_code_view,CONCAT(tracking_sources.code ,'-',tracking_sources.uid) tracking_source_name,
 
 gamification.id as gamification_id,
 gamification_type_activity.title as gamification_type_activity,
 gamification_type_activity.id as gamification_type_activity_id,
 gamification_by_points.points,gamification_by_points.id gamification_by_points_id,
-$this->table.is_url,$this->table.type_manager,$this->table.unique_code
-,product.id product_id,product.name product_name";
+$this->table.is_url,$this->table.type_manager,$this->table.unique_code";
+        $selectString .= ",
+CASE
+  WHEN $this->table.entity = 1 THEN 'product'
+  WHEN $this->table.entity = 3 THEN 'business_form'
+  WHEN $this->table.entity = 4 THEN 'business_route'
+  ELSE 'none'
+END as entity_table,
+
+CASE
+  WHEN $this->table.entity = 1 THEN product.name
+  WHEN $this->table.entity = 3 THEN business_form.name
+  WHEN $this->table.entity = 4 THEN business_route.name
+  ELSE NULL
+END as entity_name
+";
         $select = DB::raw($selectString);
         $query->select($select);
         $query->join('gamification', 'gamification.id', '=', $this->table . '.gamification_id');
@@ -148,7 +233,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
 
             });
         }
-        $tableRelation = 'product';
+        $tableRelation = 'product as product';
         $tableRelationMain = 'gamification_by_process';
         $paramsCurrent = [
             'tableRelation' => $tableRelation,
@@ -158,11 +243,41 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
         use (
             $paramsCurrent
         ) {
-            $tableRelation = $paramsCurrent['tableRelation'];
+            $tableRelation ="product";
             $tableRelationMain = $paramsCurrent['tableRelationMain'];
             $query->on($tableRelation . '.id', '=', $tableRelationMain . '.entity_id');
         });
 
+
+        $tableRelation = 'askwer_form as business_form';
+        $tableRelationMain = 'gamification_by_process';
+        $paramsCurrent = [
+            'tableRelation' => $tableRelation,
+            'tableRelationMain' => $tableRelationMain
+        ];
+        $query->leftJoin($tableRelation, function ($query)
+        use (
+            $paramsCurrent
+        ) {
+            $tableRelation = "business_form";
+            $tableRelationMain = $paramsCurrent['tableRelationMain'];
+            $query->on($tableRelation . '.id', '=', $tableRelationMain . '.entity_id');
+        });
+
+        $tableRelation = 'routes_drawing as business_route';
+        $tableRelationMain = 'gamification_by_process';
+        $paramsCurrent = [
+            'tableRelation' => $tableRelation,
+            'tableRelationMain' => $tableRelationMain
+        ];
+        $query->leftJoin($tableRelation, function ($query)
+        use (
+            $paramsCurrent
+        ) {
+            $tableRelation = "business_route";
+            $tableRelationMain = $paramsCurrent['tableRelationMain'];
+            $query->on($tableRelation . '.id', '=', $tableRelationMain . '.entity_id');
+        });
         $recordsTotal = $query->get()->count();
         $pages = 1;
         $total = $recordsTotal; // total items in array
@@ -255,6 +370,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
 
                 $validateResult = $this->validateModel($paramsValidate);
                 $success = $validateResult["success"];
+                $data=[];
                 if ($success) {
 
 
@@ -267,6 +383,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
                         'points' => $attributesPost['points'],
 
                     ];
+                    $data['processModel']=$model;
                     $paramsValidate = array(
                         'modelAttributes' => $attributesSet,
                         'rules' => GamificationByPoints::getRulesModel(),
@@ -277,6 +394,8 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
                     if ($success) {
                         $modelChildren->fill($attributesSet);
                         $success = $modelChildren->save();
+                        $data['pointsModel']=$modelChildren;
+
                     } else {
                         $success = false;
                         $msj = "Problemas al guardar  Points.";
@@ -298,6 +417,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
                 $result = [
                     "errors" => $errors,
                     "msj" => $msj,
+                    'data'=>$data,
                     "success" => $success
                 ];
 
@@ -378,8 +498,11 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
         $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
 
         $selectString = "$this->table.id,$this->table.source,$this->table.title,$this->table.subtitle,$this->table.description,$this->table.state,$this->table.has_source,$this->table.entity,$this->table.entity_id,$this->table.url_manager
-        ,$this->table.valid_from,$this->table.valid_until,$this->table.expiration_type,$this->table.expiration_value,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.is_repetitive,$this->table.max_times_per_user,$this->table.execution_channel
-,business.title business_name, business.id business_id
+        ,$this->table.valid_from,$this->table.valid_until,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.execution_channel,
+
+        tracking_click_types.id tracking_type_code,tracking_click_types.code tracking_type_code_view,CONCAT(tracking_click_types.code,'-',tracking_click_types.uid) tracking_type_name,
+tracking_sources.id tracking_source_code,tracking_sources.code tracking_source_code_view,CONCAT(tracking_sources.code ,'-',tracking_sources.uid) tracking_source_name,
+business.title business_name, business.id business_id
         ,gamification.value as gamification,
 gamification.id as gamification_id,
 gamification_type_activity.title as gamification_type_activity,
@@ -394,6 +517,8 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
         $query->join('gamification_by_points', $this->table . '.id', '=', 'gamification_by_points.gamification_by_process_id');
         $query->join('business_by_gamification',  'gamification.id', '=', 'business_by_gamification.gamification_id');
         $query->join('business',  'business.id', '=', 'business_by_gamification.business_id');
+        $query->join('tracking_click_types', $this->table . '.tracking_click_type_id', '=', 'tracking_click_types.id');
+        $query->join('tracking_sources', $this->table . '.tracking_source_id', '=', 'tracking_sources.id');
 
         $business_id = ($params['filters']['business_id']);
         $query->where( 'business_by_gamification.business_id', '=', $business_id);

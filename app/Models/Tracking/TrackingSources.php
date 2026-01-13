@@ -112,7 +112,7 @@ class TrackingSources extends ModelManager
     {
         $field = $this->table . '.' . $this->field_main;
         $query = DB::table($this->table);
-        $selectString = "$this->table.id, $this->table.description as text, $this->table.uid, $this->table.code";
+        $selectString = "$this->table.id, CONCAT($this->table.description ,'-',$this->table.code)as text, $this->table.uid, $this->table.code";
         $query->select(DB::raw($selectString));
         $allowAll = true;
         $limit = 0;

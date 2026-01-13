@@ -1,4 +1,4 @@
-:root { --b:#e2e8f0; --bg:#f8fafc; --text:#334155; }
+:root { --b:#e2e8f0; --bg: #e3e9ef; --text:#334155; }
 * { box-sizing: border-box; }
 body { font-family: system-ui, Arial; margin: 20px; background: var(--bg); color: var(--text); }
 .row { display:flex; gap:12px; align-items:center; margin: 8px 0; flex-wrap: wrap; }

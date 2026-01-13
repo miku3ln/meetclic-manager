@@ -120,6 +120,7 @@ class FrontendCityBookMiddleware
         $utilTracking = new App\Utils\TrackingUtil();
 
         $response = $next($request);
+
         $result = $utilTracking->managerAllowRoutes($request, $next,1);//CMS TRACKING
 //dd($result);
         $allowView = $result['success'];

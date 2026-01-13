@@ -26,7 +26,7 @@ class FrontendCmsCityBook
             return redirect()->route('homeEatPura', ['language' => $lang]);
         })->name('homePage');
         Route::group(['prefix' => '{language}', 'middleware' => ['frontendCityBook']], function () {
-            Route::get('/search', 'Frontend\FrontendCityBookController@search')->name('search');
+            Route::get('/search', 'Frontend\FrontendCityBookController@search')->name('search');//GAMIFICATION ROUTE
             Route::get('/listing5', 'Frontend\FrontendCityBookController@listing5')->name('listing5');
             Route::get('/listingSingle/{id?}', 'Frontend\FrontendCityBookController@listingSingle')->name('listingSingle');
             Route::get('/listingSingle2', 'Frontend\FrontendCityBookController@listingSingle2')->name('listingSingle2');
@@ -42,7 +42,7 @@ class FrontendCmsCityBook
 //CMS-TEMPLATE-MENU-ACTION
             Route::get('/comingSoon', 'Frontend\FrontendCityBookController@comingSoon')->name('comingSoon');
             Route::get('/contactUsBee', 'Frontend\FrontendCityBookController@contactUsBee')->name('contactUsBee');
-            Route::get('/aboutUsBee', 'Frontend\FrontendCityBookController@aboutUsBee')->name('aboutUsBee');
+            Route::get('/aboutUsBee', 'Frontend\FrontendCityBookController@aboutUsBee')->name('aboutUsBee');//GAMIFICATION ROUTE
             Route::get('/ourServicesBee', 'Frontend\FrontendCityBookController@ourServicesBee')->name('ourServicesBee');
             Route::get('/shopBee', 'Frontend\FrontendCityBookController@shopBee')->name('shopBee');
             Route::get('/dictionary/{type}', 'Frontend\FrontendCityBookController@getDictionaryType')->name('dictionaryType');//CMS-TEMPLATE-MENU-ACTION---KICHWA-CASTILIAN
@@ -70,43 +70,41 @@ class FrontendCmsCityBook
             Route::get('/pricing', 'Frontend\FrontendCityBookController@pricing')->name('pricing');
 
             Route::post("/business/adminBee", "Business\BusinessController@getAdminBee");
-            Route::get('/businessDetails/{id?}/{type?}', 'Frontend\FrontendCityBookController@businessDetails')->name('businessDetails');
-            Route::get('/businessPullkay/{id?}', 'Frontend\FrontendCityBookController@businessPullkay')->name('businessPullkay');
+            Route::get('/businessDetails/{id?}/{type?}', 'Frontend\FrontendCityBookController@businessDetails')->name('businessDetails');//GAMIFICATION ROUTE
+            Route::get('/businessPullkay/{id?}', 'Frontend\FrontendCityBookController@businessPullkay')->name('businessPullkay');//GAMIFICATION ROUTE
 
             Route::get('/authorSingle/{id?}', 'Frontend\FrontendCityBookController@authorSingle')->name('authorSingle');
 
 
             Route::get('/categoriesSearchBee', 'Frontend\FrontendCityBookController@categoriesSearchBee')->name('categoriesSearchBee');
             Route::post('/searchBusinessBee', 'Frontend\FrontendCityBookController@searchBusinessBee')->name('searchBusinessBee');
-            Route::get('/howItWorks', 'Frontend\FrontendCityBookController@howItWorks')->name('howItWorks');
+            Route::get('/howItWorks', 'Frontend\FrontendCityBookController@howItWorks')->name('howItWorks');//GAMIFICATION ROUTE
             Route::get('/prices', 'Frontend\FrontendCityBookController@prices')->name('prices');
 
-            Route::get('/account/', 'Frontend\FrontendCityBookController@account')->name('profileAccount');
-            Route::get('/orders/', 'Frontend\FrontendCityBookController@orders')->name('orders');
+            Route::get('/account/', 'Frontend\FrontendCityBookController@account')->name('profileAccount');//GAMIFICATION ROUTE
+            Route::get('/orders/', 'Frontend\FrontendCityBookController@orders')->name('orders');//GAMIFICATION ROUTE
 
-            Route::get('/myProfile', 'Frontend\FrontendCityBookController@myProfile')->name('myProfile');//CMS-TEMPLATE-MY-PROFILE-ROUTES
-            Route::get('/suggestionsMailBox', 'Frontend\FrontendCityBookController@suggestionsMailBox')->name('suggestionsMailBox');
-            Route::get('/password', 'Frontend\FrontendCityBookController@password')->name('password');
-            Route::get('/business', 'Frontend\FrontendCityBookController@business')->name('business');
-            Route::get('/businessEmployer', 'Frontend\FrontendCityBookController@businessEmployer')->name('businessEmployer');
+            Route::get('/myProfile', 'Frontend\FrontendCityBookController@myProfile')->name('myProfile');//GAMIFICATION ROUTE
+            Route::get('/suggestionsMailBox', 'Frontend\FrontendCityBookController@suggestionsMailBox')->name('suggestionsMailBox');//GAMIFICATION ROUTE
+            Route::get('/password', 'Frontend\FrontendCityBookController@password')->name('password');//GAMIFICATION ROUTE
+            Route::get('/business', 'Frontend\FrontendCityBookController@business')->name('business');//GAMIFICATION ROUTE
+            Route::get('/businessEmployer', 'Frontend\FrontendCityBookController@businessEmployer')->name('businessEmployer');//GAMIFICATION ROUTE
 
             Route::get('/bee', 'Frontend\FrontendCityBookController@bee')->name('bee');
             Route::get('/reviewsTo', 'Frontend\FrontendCityBookController@reviewsTo')->name('reviewsTo');
             Route::get('/listingsQueen', 'Frontend\FrontendCityBookController@listingsQueen')->name('listingsQueen');
 
-            Route::get('/pointsSales/', 'Frontend\FrontendCityBookController@pointsSales')->name('pointsSales');
+            Route::get('/pointsSales/', 'Frontend\FrontendCityBookController@pointsSales')->name('pointsSales');//GAMIFICATION ROUTE
 
 
             Route::get('/presentationCard/{id?}/{type?}', 'Frontend\FrontendCityBookController@presentationCard')->name('presentationCard');
 
-            Route::get('/homeChaski', 'Frontend\ChaskishimiController@index')->name('homeChaski');
-            Route::get('/yachaSun', 'Frontend\ChaskishimiController@yachaSun')->name('yachaSun');
-            Route::get('/apuntes', 'Frontend\ChaskishimiController@apuntes')->name('apuntes');
-            Route::get('/diccionario', 'Frontend\ChaskishimiController@diccionario')->name('diccionario');
-            Route::get('/traductor', 'Frontend\ChaskishimiController@traductor')->name('traductor');
-
-
-            Route::get('/homeBackLine', 'Frontend\BackLineController@index')->name('homeBackLine');
+            Route::get('/homeChaski', 'Frontend\ChaskishimiController@index')->name('homeChaski');//GAMIFICATION ROUTE
+            Route::get('/yachaSun', 'Frontend\ChaskishimiController@yachaSun')->name('yachaSun');//GAMIFICATION ROUTE
+            Route::get('/apuntes', 'Frontend\ChaskishimiController@apuntes')->name('apuntes');//GAMIFICATION ROUTE
+            Route::get('/diccionario', 'Frontend\ChaskishimiController@diccionario')->name('diccionario');//GAMIFICATION ROUTE
+            Route::get('/traductor', 'Frontend\ChaskishimiController@traductor')->name('traductor');//GAMIFICATION ROUTE
+            Route::get('/homeBackLine', 'Frontend\BackLineController@index')->name('homeBackLine');//GAMIFICATION ROUTE
 
 
 

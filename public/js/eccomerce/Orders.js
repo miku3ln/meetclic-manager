@@ -1184,7 +1184,7 @@ function GridManager(params) {
         css: {
             header: headerCSS,
             table: tableCSS,
-            footer: 'pagination-wrapper'
+            footer: 'pagination-wrapper pagination-wrapper--orders'
         },
         templates: templates,
         formatters: formattersCurrent

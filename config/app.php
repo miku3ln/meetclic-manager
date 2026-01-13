@@ -193,6 +193,7 @@ return [
 
       //  Stevebauman\Location\LocationServiceProvider::class,//LOCATION
 
+        App\Infrastructure\Cms\Infrastructure\Providers\GamificationRepositoryServiceProvider::class,
 
     ],
 

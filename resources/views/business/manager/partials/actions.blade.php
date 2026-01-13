@@ -340,7 +340,10 @@
        value="{{action("Products\ProductController@getBusinessProductsListSelect2")}}"/>
 <input id="action-products-getBusinessProductsServicesListSelect2" type="hidden"
        value="{{route("getBusinessProductsServicesListSelect2")}}"/>
-
+<input id="action-products-getAskwersListSelect2" type="hidden"
+       value="{{route("getAskwersListSelect2")}}"/>
+<input id="action-products-getRoutesListSelect2" type="hidden"
+       value="{{route("getRoutesListSelect2")}}"/>
 <!--HOSPITAL-->
 <input id="action-allergies-saveData" type="hidden"
        value="{{action("Hospital\AllergiesController@saveData")}}"/>

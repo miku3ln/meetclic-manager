@@ -2,6 +2,8 @@
 $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 $pathTemplate = $resourcePathServer . 'templates/citybook/';
 ?>
+
+
 <style id="kirki-inline-styles">
     body {
         font-family: Quicksand;

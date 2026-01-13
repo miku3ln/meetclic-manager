@@ -10,6 +10,7 @@ use App\Models\BusinessByRoutesMap;
 use App\Models\RouteMapByAdventureTypes;
 use App\Models\RoutesMap;
 use App\Models\RoutesMapByRoutesDrawing;
+use App\Models\TemplateBySource;
 use App\Models\Whatsapp\WhatsappConfigs;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,26 @@ class FrontendPagesOwnerCmsController extends Controller
         $allow = false;
         $dataBusiness = null;
         $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+              "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
         if ($dataModelBRR) {
             $business_id = $dataModelBRR->business_id;
             $routes_map_id = $dataModelBRR->routes_map_id;
@@ -82,14 +103,555 @@ class FrontendPagesOwnerCmsController extends Controller
                 "routes_drawing_data" => $routes_drawing_data,
                 "routesDrawingGroup" => $routesDrawingGroup,
                 "adventure_type_data" => $adventure_type_data,
-                "routesDrawingGroupHtml" => $routesDrawingGroupHtml
+                "routesDrawingGroupHtml" => $routesDrawingGroupHtml,
+
             );
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
 
-        return view('cityBook.web.businessOwner.muelle-catalina', [
+        return view('cityBook.web.businessOwner.chasqui-nian-business', [
             'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function rimayByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.rimay-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function suggestionsMailBoxByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.rimay-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function shopByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.shop-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function rimayRegistersByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.rimay-registers-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function rewardsRegistersByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.rewards-registers-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function ratesRegistersByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.rates-registers-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            'section' => $section,
+            'dataManager' => [
+                'allow' => $allow,
+                'business' => $dataBusiness,
+                'dataRoute' => $dataRoute,
+
+            ]
+        ]);
+    }
+    public function rateRegisterByBusiness($id = null)
+    {
+        $slug = "";
+        $section = "";
+
+        $dataModelBRR = true;
+
+        $business_id = null;
+        $routes_map_id = null;
+        $allow = false;
+        $dataBusiness = null;
+        $dataRoute = null;
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        $logoHtmlMeetclic="";
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
+        if ($dataModelBRR) {
+            $business_id = 1;
+            $allow = true;
+            $model = new Business();
+            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
+            $variables = [
+                'nameForm' =>"hol" ,
+            ];
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
+            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $modelManager = new \App\Models\InformationSocialNetwork();
+            $entity_id = $business_id;
+            $resultCurrentData = $modelManager->getInformationData([
+                'filters' => [
+                    'state' => $modelManager::STATE_ACTIVE,
+                    'main' => $modelManager::MAIN,
+                    'entity_type' => $modelManager::ENTITY_TYPE_BUSINESS,
+                    //    'information_social_network_type_id' => \App\Models\InformationSocialNetworkType::TYPE_FACEBOOK_ID,
+                    'entity_id' => $entity_id,
+                ]
+            ]);
+            $dataRoute = array(
+
+                'socialNetwork' => $resultCurrentData,
+
+            );
+            $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
+        }
+
+
+        return view('cityBook.web.businessOwner.rate-register-business', [
+            'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,

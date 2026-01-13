@@ -30,7 +30,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-bootgrid@1.3.1/dist/jquery.bootgrid.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #e3e9ef !important;
+        }
+        .main-header {
+            padding-top: 15px;
+            padding-left: 2%;
+            z-index: 15000;
+            position: absolute;
 
+        }
+        img#main-header__logo {
+            width: 117px;
+        }
+    </style>
     <script>
 
         var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
@@ -54,8 +71,9 @@
 
 </head>
 <body id="app-manager">
+{!!  $logoHtmlMeetclic!!}
 <div id="app">
-    <main class="py-4">
+    <main id="render-main" class="py-4 ">
         @yield('content')
     </main>
 </div>

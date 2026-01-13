@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 //use Firebase\Auth\Token\Verifier;
+use App\Infrastructure\Cms\Domain\Gamification\Routing\Ports\BusinessReadPort;
+use App\Infrastructure\Cms\Domain\Gamification\Wallet\Ports\ProcessReadPort;
+use App\Infrastructure\Cms\Domain\Gamification\Wallet\Ports\ProcessTrackingPort;
+use App\Infrastructure\Cms\Infrastructure\Adapters\Persistence\Repositories\DbBusinessReadRepository;
+use App\Infrastructure\Cms\Infrastructure\Adapters\Persistence\Repositories\DbProcessReadRepository;
+use App\Infrastructure\Cms\Infrastructure\Adapters\Persistence\Repositories\DbProcessTrackingRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,7 +21,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //GAMING NEW
+        $this->app->bind(ProcessReadPort::class, DbProcessReadRepository::class);
+        $this->app->bind(ProcessTrackingPort::class, DbProcessTrackingRepository::class);
+        $this->app->bind(BusinessReadPort::class, DbBusinessReadRepository::class);
+        $this->app->bind(ProcessReadPort::class, DbProcessReadRepository::class);
+
+
     }
 
     /**

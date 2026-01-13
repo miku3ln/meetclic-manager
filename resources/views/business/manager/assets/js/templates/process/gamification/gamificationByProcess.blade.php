@@ -53,7 +53,8 @@
                                        v-bind:id="getNameAttribute('id')"
                                        v-bind:name="getNameAttribute('id')"
                                 >
-                                <legend class="h6 mb-2 legend--section">Publicación</legend>
+                                <legend
+                                    class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.one}}" ?></legend>
                                 <b-row>
                                     <b-col md="4">
                                         <div class="form-group"
@@ -114,7 +115,93 @@
 
 
                                 </b-row>
-                                <legend class="h6 mb-2 legend--section">Identificación</legend>
+                                <b-row>
+
+                                    <b-col lg="3">
+
+                                        <div class="form-group"
+                                             :class="getClassErrorForm('vigencia',$v.model.attributes.vigencia)">
+                                            <label class="form__label"
+                                                   v-bind:for="getNameAttribute('vigencia')"
+                                                   v-html='getLabelForm("vigencia")'></label>
+                                            <div class="toggle">
+                                                <input
+                                                    v-model="$v.model.attributes.vigencia.$model"
+                                                    type="checkbox"
+                                                    v-bind:id="getNameAttribute('vigencia')"
+                                                    v-bind:name="getNameAttribute('vigencia')"
+                                                    @change="_setValueForm('vigencia',$v.model.attributes.vigencia.$model)"
+                                                    v-focus-select
+                                                >
+                                                <label v-bind:for="getNameAttribute('vigencia')">
+                                                    <div class="toggle__switch"></div>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </b-col>
+                                    <b-col lg="4" v-if="$v.model.attributes.vigencia.$model">
+
+                                        <date-time-picker-bs4
+                                            v-model="$v.model.attributes.valid_from.$model"
+                                            label="Valido desde"
+                                            :disablePast="true"
+                                            @status-change="onValidFrom"
+                                        />
+                                    </b-col>
+                                    <b-col lg="4" v-if="$v.model.attributes.vigencia.$model">
+
+                                        <date-time-picker-bs4
+                                            v-model="$v.model.attributes.valid_until.$model"
+                                            label="Válido hasta"
+                                            :minDateTime="$v.model.attributes.valid_from.$model"
+                                        @status-change="onValidUntil"
+                                        />
+                                    </b-col>
+                                </b-row>
+                                <b-row>
+                                    <b-col lg="8" v-bind:info="$v.model.attributes.frequency_limit_type.$model">
+                                        <frequency-limit-type-bs4
+                                            v-model="$v.model.attributes.frequency_limit_type.$model"
+                                            :options="model.structure.frequency_limit_type.frequencyOptions"
+                                            layout="horizontal"
+                                            @status-change="onFreqStatus"
+                                        />
+                                    </b-col>
+
+                                    <b-col lg="4" v-if="$v.model.attributes.frequency_limit_type.$model=='TOTAL_LIMIT'" >
+                                        <div class="form-group"
+
+                                             :class="getClassErrorForm('frequency_limit_value',$v.model.attributes.frequency_limit_value)">
+                                            <label
+                                                class="form__label "
+                                                v-html='getLabelForm("frequency_limit_value")'></label>
+                                            <div class="content-element-form">
+                                                <input
+                                                    v-model.trim="$v.model.attributes.frequency_limit_value.$model"
+                                                    type="number"
+                                                    min="1"
+
+                                                    v-bind:id="getNameAttribute('frequency_limit_value')"
+                                                    v-bind:name="getNameAttribute('frequency_limit_value')"
+                                                    class="form-control m-input"
+                                                    @change="_setValueForm('frequency_limit_value', $v.model.attributes.frequency_limit_value.$model)"
+                                                    v-focus-select
+                                                >
+                                            </div>
+                                            <div class="content-message-errors">
+                                                <b-form-invalid-feedback
+                                                    :state="!$v.model.attributes.frequency_limit_value.$error">
+                                                      <span v-if="!$v.model.attributes.frequency_limit_value.required">
+       <?php echo "{{model.structure.frequency_limit_value.required.msj}}" ?>
+      </span>
+                                                </b-form-invalid-feedback>
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                </b-row>
+                                <legend
+                                    class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.two}}" ?></legend>
                                 <b-row>
                                     <b-col md="4">
                                         <div class="form-group"
@@ -202,17 +289,16 @@
                                         </div>
                                     </b-col>
                                 </b-row>
-                                <legend class="h6 mb-2 legend--section">Recompensa (Gamificación)</legend>
+                                <legend
+                                    class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.three}}" ?></legend>
 
                                 <b-row>
-                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1?'4':'0'"
-                                           v-if="$v.model.attributes.entity.$model==1">
-
+                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'0'"
+                                           v-if="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4">
                                         <div class="form-group"
-
                                              :class="getClassErrorForm('entity_id_data',$v.model.attributes.entity_id_data)">
                                             <label
-                                                class="form__label " v-html='getLabelForm("entity_id_data")'></label>
+                                                class="form__label " v-html='getLabelFormByEntity($v.model.attributes.entity.$model)'></label>
                                             <div class="content-element-form">
                                                 <input
                                                     v-model="$v.model.attributes.entity_id_data.model"
@@ -223,11 +309,26 @@
                                                     v-reset-field="{form:$v.model.attributes,fieldName:'entity_id_data'}"
 
                                                 >
-                                                <select id="entity_id_data"
-                                                        class="form-control m-select2 "
-                                                        v-initS2Manager="{rowId:model.attributes.id,_initS2Manager:_managerS2Products}"
-                                                >
-                                                </select>
+                                                <select
+                                                    :key="`entity_id_data_${$v.model.attributes.entity.$model}_1`"
+                                                    class="form-control m-select2"
+                                                    v-if="$v.model.attributes.entity.$model==1"
+                                                    v-init-s2-manager="{ rowId:model.attributes.id, _initS2Manager:_managerS2Products }"
+                                                ></select>
+
+                                                <select
+                                                    :key="`entity_id_data_${$v.model.attributes.entity.$model}_3`"
+                                                    class="form-control m-select2"
+                                                    v-if="$v.model.attributes.entity.$model==3"
+                                                    v-init-s2-manager="{ rowId:model.attributes.id, _initS2Manager:_managerS2Forms }"
+                                                ></select>
+
+                                                <select
+                                                    :key="`entity_id_data_${$v.model.attributes.entity.$model}_4`"
+                                                    class="form-control m-select2"
+                                                    v-if="$v.model.attributes.entity.$model==4"
+                                                    v-init-s2-manager="{ rowId:model.attributes.id, _initS2Manager:_managerS2Routes }"
+                                                ></select>
                                             </div>
                                             <div class="content-message-errors">
                                                 <b-form-invalid-feedback
@@ -240,7 +341,7 @@
                                         </div>
 
                                     </b-col>
-                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1?'4':'6'">
+                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'6'">
                                         <div class="form-group"
 
                                              :class="getClassErrorForm('gamification_type_activity_id_data',$v.model.attributes.gamification_type_activity_id_data)">
@@ -273,7 +374,7 @@
 
                                     </b-col>
 
-                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1?'4':'6'">
+                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'6'">
                                         <div class="form-group"
 
                                              :class="getClassErrorForm('points',$v.model.attributes.points)">
@@ -301,7 +402,8 @@
                                     </b-col>
 
                                 </b-row>
-                                <legend class="h6 mb-2 legend--section">Contenido</legend>
+                                <legend
+                                    class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.four}}" ?></legend>
                                 <b-row>
                                     <b-col md="6">
                                         <div class="form-group"
@@ -385,7 +487,8 @@
 
                                     </b-col>
                                 </b-row>
-                                <legend class="h6 mb-2 legend--section">Enlace</legend>
+                                <legend
+                                    class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.five}}" ?></legend>
                                 <b-row>
                                     <b-col md="3">
                                         <div class="form-group"
@@ -436,7 +539,8 @@
                                     </b-col>
                                 </b-row>
 
-                                <legend class="h6 mb-2 legend--section">Tracking de campaña</legend>
+                                <legend
+                                    class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.six}}" ?></legend>
                                 <b-row>
                                     <b-col md="3" v-if="$v.model.attributes.is_url.$model">
                                         <div class="form-group"
@@ -558,6 +662,10 @@
                                                     :state="!$v.model.attributes.tracking_source_id_data.$error">
       <span v-if="!$v.model.attributes.tracking_source_id_data.required">
        <?php echo "{{model.structure.tracking_source_id_data.required.msj}}" ?>
+
+
+
+
       </span>
                                                 </b-form-invalid-feedback>
                                             </div>

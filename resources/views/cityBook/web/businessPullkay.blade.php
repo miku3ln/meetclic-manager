@@ -4,11 +4,7 @@
     @include('cityBook.web.partials.businessPullkay.assets.css.grid-style',array())
 
     <style>
-        .pagination > .active > a {
-            color: #e4e4e4;
-            background-color: #f08124 !important;
-            border-color: #f08124 !important;
-        }
+
 
         .section--full-img {
             padding: 0 0;
@@ -28,12 +24,6 @@
         }
 
 
-
-
-
-        .btn {
-            color: #f08124 !important;
-        }
 
         .text-left {
 
@@ -76,20 +66,7 @@
             text-decoration: none !important;
         }
 
-        span.content-description__title {
-            color: #4d4c4c;
-            font-size: 22px;
-            font-weight: bold;
-        }
 
-        span.word--fonetic {
-            color: #f08124;
-        }
-
-        input.search-field.form-control {
-            height: calc(1.5em + 2.75rem + 2px);
-            /* width: 100%; */
-        }
 
         .search {
             width: 45% !important;;
@@ -112,8 +89,8 @@
         .input-group-addon {
             font-size: 26px !important;
             color: #fff !important;;
-            background-color: #f08124 !important;
-            border: 0 solid #f08124 !important;;
+            background-color: var(--mc-azulClic) !important;
+            border: 0 solid  var(--mc-azulClic) !important;
             border-radius: 0 !important;;
         }
 
@@ -181,7 +158,62 @@
         }
 
     </style>
+    <style id="grid-pullkay-data">
 
+        /* Block */
+        .limitations {
+            text-align: right;
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        /* Elements */
+        .limitations__row {
+            display: block;
+            margin: 6px 0;
+            line-height: 1.3;
+        }
+
+        .limitations__icon {
+            margin-right: 8px;
+            opacity: 0.85;
+        }
+
+        /* Badge base */
+        .limitations__badge {
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Modifiers */
+        .limitations__badge--ok {
+            background: #e8f7ee;
+            color: #1d6b3a;
+        }
+
+        .limitations__badge--info {
+            background: #eaf2ff;
+            color: #1b4d9b;
+        }
+
+        .limitations__badge--warn {
+            background: #fff5e6;
+            color: #8a5a00;
+        }
+
+        .limitations__badge--danger {
+            background: #ffe9e9;
+            color: #8a1f1f;
+        }
+
+        .grid-pullkay-data tbody tr td.text-left {
+
+        }
+    </style>
 
     <link href="{{ asset($resourcePathServer."plugins/bootgrid-2024/bootstrap.css") }}" rel="stylesheet"
           type="text/css">
@@ -197,7 +229,7 @@
           href="{{asset($resourcePathServer.'plugins/jquery-confirm/jquery-confirm.min.css')}}">
     @include('partials.plugins.resourcesCss',['bootgrid'=>true])
     @include('partials.plugins.resourcesCss',['toast'=>true])
-   <style>
+    <style>
 
 
         .btn-sm {
@@ -206,6 +238,7 @@
             line-height: 1.5 !important;;
             border-radius: 3px !important;;
         }
+
         img.content-description__photos--img {
             height: 140px;
             width: 140px;
@@ -269,13 +302,8 @@
             color: #e5bf4e;
         }
 
-        input.search-field.form-control {
-            height: calc(1.5em + 2.75rem + 2px);
-            /* width: 100%; */
-        }
-
-        .search{
-            width: 45% !important; ;
+        .search {
+            width: 45% !important;;
         }
 
         .container--manager-dictionary {
@@ -291,41 +319,50 @@
             overflow-y: scroll;
             overflow-x: hidden;
         }
-        @media screen and (min-width: 300px) and (max-width: 768px){
+
+        @media screen and (min-width: 300px) and (max-width: 768px) {
             .table-responsive {
                 width: 100% !important;
                 margin-bottom: 0px !important;
                 overflow-y: unset !important;
             }
+
             .search.form-group {
                 width: 100% !important;
             }
+
             .hero-section .intro-item h2 {
                 font-size: 54px !important;
 
             }
+
             .intro-item.fl-wrap {
                 padding-top: 35% !important;
             }
+
             .infoBar {
                 margin-top: 54px !important;
                 padding-right: 0 !important;
                 padding-left: 0 !important;
                 position: initial !important;
             }
+
             span.content-description__title {
 
                 font-size: 11px !important;
 
             }
+
             .word--description {
                 display: block !important;
                 align-items: center !important;
             }
+
             img.content-description__photos--img {
                 height: 70px !important;
                 width: 70px !important;
             }
+
             .nav-button-wrap {
 
                 margin-right: -27% !important;

@@ -1,4 +1,17 @@
 var componentThisGamificationByProcess;
+var footerGrid =
+    "<div id='data-pagination'  id=\"{{ctx.id}}\" class=\"{{css.footer}}\">\n\
+        <div class='col-md-6'>\n\
+            <div  class='pagination'>\n\
+                <p class=\"{{css.pagination}}\"></p>\n\
+            </div>\n\
+        </div>\n\
+        <div class=\"col-md-6 infoBar\">\n\
+            <p class=\"{{css.infos}}\"></p>\n\
+        </div>\n\
+</div>";
+
+var emptyData = [null, undefined, '', ""];
 Vue.component('gamification-by-process-component', {
     template: '#gamification-by-process-template',
     directives: {
@@ -17,11 +30,34 @@ Vue.component('gamification-by-process-component', {
                 });
             }
         }, initS2Manager: {
-            inserted: function (el, binding, vnode, vm, arg) {
-                var paramsInput = binding.value;
-                paramsInput._initS2Manager({
-                    objSelector: el, rowId: paramsInput.rowId
+            inserted: function (el, binding, vnode) {
+                var paramsInput = binding.value || {};
+                var ctx = vnode.context;
+
+                // espera a que el DOM esté estable
+                ctx.$nextTick(function () {
+                    // evita doble init si el nodo se reusa
+                    var $el = $(el);
+                    if ($el.hasClass("select2-hidden-accessible")) {
+                        $el.select2("destroy");
+                    }
+
+                    if (typeof paramsInput._initS2Manager === "function") {
+                        paramsInput._initS2Manager({
+                            objSelector: el,
+                            rowId: paramsInput.rowId
+                        });
+                    } else {
+                        console.warn("initS2Manager: _initS2Manager no es función", paramsInput);
+                    }
                 });
+            },
+
+            unbind: function (el) {
+                var $el = $(el);
+                if ($el.hasClass("select2-hidden-accessible")) {
+                    $el.select2("destroy");
+                }
             }
         },
         initS2Entity: {
@@ -83,7 +119,15 @@ Vue.component('gamification-by-process-component', {
             "is_url": {},
             "type_manager": {},
             "points": {required},
-            gamification_by_points_id: {}
+            gamification_by_points_id: {},
+
+            vigencia: {
+                required
+            },
+            valid_from: {},
+            valid_until: {},
+            frequency_limit_type: {},
+            frequency_limit_value: {},
         };
         if (this.model.attributes.has_source) {
             attributes['source'] = {required};
@@ -95,6 +139,20 @@ Vue.component('gamification-by-process-component', {
         }
         if (this.model.attributes.entity == 1) {
             attributes['entity_id_data'] = {required};
+
+        }
+
+        if (this.model.attributes.vigencia) {
+            attributes['valid_until'] = {required};
+            attributes['valid_from'] = {required};
+
+        }
+        if (this.model.attributes.frequency_limit_type == 'TOTAL_LIMIT') {
+            attributes['frequency_limit_value'] = {
+                required,
+                minValue: Validators.minValue(0)
+            };
+
 
         }
         var result = {
@@ -167,12 +225,14 @@ Vue.component('gamification-by-process-component', {
                     'text': 'Tus clientes al Comprar,Referir,Compartir un producto o servicio  obtiene puntos configurados . '
                 },
                 2: {
-                    'text': 'Tus clientes al Referir,Compartir una noticia obtiene puntos configurados . '
+                    'text': 'Tus clientes al Referir,Compartir una seccion de tu CMS obtiene puntos configurados . '
                 },
                 3: {
-                    'text': 'Tus clientes al Compartir la  tienda obtiene puntos configurados . '
+                    'text': 'Tus clientes al Compartir ,visualizar procesos como Buzon de sugerencias obtiene puntos  . '
                 },
-
+                4: {
+                    'text': 'Tus clientes al Compartir ,visualizar procesos como Chaquiñanes Virtuales de tu empresa gana yapitas . '
+                },
             },
             allowManagerUrl: {
                 view: false,
@@ -186,10 +246,26 @@ Vue.component('gamification-by-process-component', {
                 element: null,
                 generateAllow: false
             },
-            managementSection:{
-                business:['business-details', 'suggestions-business', 'shop-business','gaming-business','rewards-business'],
+            managementSection: {
+                business: ['business-details', 'shop-business', 'gaming-business', 'rewards-business', 'rimay-kuna-business', 'chanichina-registers-business','suggestions-registers-business','rate-business'],
                 product: ['product-details-business'],
-                cms:['cms-login', 'cms-pages', 'cms-core']
+                business_form: ['suggestions-business'],
+                business_route: ['chaqui-business'],
+                cms: ['cms-login', 'cms-pages', 'cms-core']
+            },
+            sectionsProcess: {
+                one: 'Publicación',
+                two: 'Identificación',
+                three: 'Recompensa (Gamificación)',
+                four: 'Contenido',
+                five: 'Enlace',
+                six: 'Tracking de campaña',
+            },
+            selected: null,
+            entityManager: {
+                names: {
+                    0: {'name': ''}
+                }
             }
         };
 
@@ -227,6 +303,10 @@ Vue.component('gamification-by-process-component', {
                 this.allowManagerUrl.message = msg;
                 this.allowManagerUrl.dataQr.text = url;
                 this.allowManagerUrl.generateAllow = allow;
+                this.allowManagerUrl.url = url;
+                this.model.attributes.url_manager = url;
+                this.$v.model.attributes.url_manager.$model = url;
+
                 // opcional: guarda lista detallada para UI (si quieres)
                 // this.allowManagerUrl.missing = missingList || [];
             }.bind(this);
@@ -313,15 +393,15 @@ Vue.component('gamification-by-process-component', {
                 urlCurrent = buildTrackedUrl(urlBase);
                 return ok(urlCurrent);
             }
-
+            var missingEntity = [];
             if (entityCode === "1") {
                 // necesita entity_id_data.id
-                var missingEntity = [];
+                missingEntity = [];
 
                 if (isNil(entity_id_data) || isNil(entity_id_data.id)) {
                     missingEntity.push("Producto/Servicio asociado");
                 }
-                if (type !== "product-details") {
+                if (type !== "product-details-business") {
                     missingEntity.push("Destino correcto (product-details)");
                 }
 
@@ -342,7 +422,46 @@ Vue.component('gamification-by-process-component', {
                 urlCurrent = buildTrackedUrl(urlBase);
                 return ok(urlCurrent);
             }
+            if (entityCode === "3") {
+                // necesita entity_id_data.id
+                missingEntity = [];
 
+                if (isNil(entity_id_data) || isNil(entity_id_data.id)) {
+                    missingEntity.push("Formulario no Asignado");
+                }
+                if (type !== "suggestions-business") {
+                    missingEntity.push("No se ha seleccionado correctamente la url");
+                }
+
+                if (missingEntity.length > 0) {
+                    return failConsolidated(missingEntity);
+                }
+
+                urlBase = removePlaceholders(id) + "/" + entity_id_data.id;
+                urlCurrent = buildTrackedUrl(urlBase);
+                return ok(urlCurrent);
+
+            }
+            if (entityCode === "4") {
+                // necesita entity_id_data.id
+                missingEntity = [];
+
+                if (isNil(entity_id_data) || isNil(entity_id_data.id)) {
+                    missingEntity.push("Chaquiña o Ruta no Seleccionada.!");
+                }
+                if (type !== "chaqui-business") {
+                    missingEntity.push("No se ha seleccionado correctamente la url");
+                }
+
+                if (missingEntity.length > 0) {
+                    return failConsolidated(missingEntity);
+                }
+
+                urlBase = removePlaceholders(id) + "/" + entity_id_data.id;
+                urlCurrent = buildTrackedUrl(urlBase);
+                return ok(urlCurrent);
+
+            }
             return failConsolidated(["Entidad no soportada para generar enlace"]);
         },
         initCurrentComponent: function () {
@@ -351,7 +470,174 @@ Vue.component('gamification-by-process-component', {
             this.initDataModal();
             this.$refs.refGamificationByProcessModal.show();
         },
+        _managerS2Products: function (params) {
+            var el = params.objSelector;
+            var valueCurrentRowId = params.rowId;
+            var dataCurrent = [];
+            var $el = $(el);
+            destroyS2($el);
 
+            if (valueCurrentRowId) {
+
+                dataCurrent = this.model.attributes.entity_id_data_aux;
+                this.model.attributes.entity_id_data = dataCurrent;
+                var textCurrent = dataCurrent.text;
+                var idCurrent = dataCurrent.id;
+                var option = new Option(textCurrent, idCurrent, true, true);
+                $(el).append(option).trigger('change');
+            }
+            var _this = this;
+            var elementInit = $(el).select2({
+                allow: true,
+                placeholder: "Seleccione",
+                data: dataCurrent,
+                ajax: {
+                    url: $("#action-products-getBusinessProductsServicesListSelect2").val(),
+                    type: 'get',
+                    dataType: 'json',
+                    data: function (term, page) {
+
+                        var paramsFilters = {
+                            filters: {
+                                search_value: term,
+                                business_id: _this.business_id
+                            }
+                        };
+                        return paramsFilters;
+                    },
+                    processResults: function (data, page) {
+                        return {results: data};
+                    }
+                },
+                allowClear: true,
+                multiple: true,
+                maximumSelectionLength: 1,
+
+                width: '100%'
+            });
+
+            elementInit.on('select2:select', function (e) {
+                var data = e.params.data;
+                _this.model.attributes.entity_id_data = data;
+                _this.setManagerUrl(_this.getValuesManagerUrl());
+            }).on("select2:unselecting", function (e) {
+                _this.model.attributes.entity_id_data = null;
+                _this._setValueForm('entity_id_data', null);
+            }).on("select2:open", function (e) {
+                managerModalSelect2();
+            });
+        },
+        _managerS2Forms: function (params) {
+            var el = params.objSelector;
+            var valueCurrentRowId = params.rowId;
+            var dataCurrent = [];
+            var $el = $(el);
+            destroyS2($el);
+            if (valueCurrentRowId) {
+
+                dataCurrent = this.model.attributes.entity_id_data_aux;
+                this.model.attributes.entity_id_data = dataCurrent;
+                var textCurrent = dataCurrent.text;
+                var idCurrent = dataCurrent.id;
+                var option = new Option(textCurrent, idCurrent, true, true);
+                $(el).append(option).trigger('change');
+            }
+            var _this = this;
+            var elementInit = $(el).select2({
+                allow: true,
+                placeholder: "Seleccione",
+                data: dataCurrent,
+                ajax: {
+                    url: $("#action-products-getAskwersListSelect2").val(),
+                    type: 'get',
+                    dataType: 'json',
+                    data: function (term, page) {
+
+                        var paramsFilters = {
+                            filters: {
+                                search_value: term,
+                                business_id: _this.business_id
+                            }
+                        };
+                        return paramsFilters;
+                    },
+                    processResults: function (data, page) {
+                        return {results: data};
+                    }
+                },
+                allowClear: true,
+                multiple: true,
+                maximumSelectionLength: 1,
+
+                width: '100%'
+            });
+
+            elementInit.on('select2:select', function (e) {
+                var data = e.params.data;
+                _this.model.attributes.entity_id_data = data;
+                _this.setManagerUrl(_this.getValuesManagerUrl());
+            }).on("select2:unselecting", function (e) {
+                _this.model.attributes.entity_id_data = null;
+                _this._setValueForm('entity_id_data', null);
+            }).on("select2:open", function (e) {
+                managerModalSelect2();
+            });
+        },
+        _managerS2Routes: function (params) {
+            var el = params.objSelector;
+            var valueCurrentRowId = params.rowId;
+            var dataCurrent = [];
+            var $el = $(el);
+            destroyS2($el);
+            if (valueCurrentRowId) {
+                dataCurrent = this.model.attributes.entity_id_data_aux;
+                this.model.attributes.entity_id_data = dataCurrent;
+                var textCurrent = dataCurrent.text;
+                var idCurrent = dataCurrent.id;
+                var option = new Option(textCurrent, idCurrent, true, true);
+                $(el).append(option).trigger('change');
+            }
+            var _this = this;
+            var elementInit = $(el).select2({
+                allow: true,
+                placeholder: "Seleccione",
+                data: dataCurrent,
+                ajax: {
+                    url: $("#action-products-getRoutesListSelect2").val(),
+                    type: 'get',
+                    dataType: 'json',
+                    data: function (term, page) {
+
+                        var paramsFilters = {
+                            filters: {
+                                search_value: term,
+                                business_id: _this.business_id
+                            }
+                        };
+                        return paramsFilters;
+                    },
+                    processResults: function (data, page) {
+                        return {results: data};
+                    }
+                },
+                allowClear: true,
+                multiple: true,
+                maximumSelectionLength: 1,
+
+                width: '100%'
+            });
+
+            elementInit.on('select2:select', function (e) {
+                var data = e.params.data;
+                _this.model.attributes.entity_id_data = data;
+                _this.setManagerUrl(_this.getValuesManagerUrl());
+            }).on("select2:unselecting", function (e) {
+                _this.model.attributes.entity_id_data = null;
+                _this._setValueForm('entity_id_data', null);
+            }).on("select2:open", function (e) {
+                managerModalSelect2();
+            });
+        },
         /*modal events*/
         _showModal: function () {
             this.resetForm();
@@ -419,7 +705,31 @@ Vue.component('gamification-by-process-component', {
 
             });
         },
-
+        getDataFiltersUrlByEntity: function (entity) {
+            var paramsFilter = null;
+            if (entity == '0') {
+                paramsFilter = {
+                    types: this.managementSection.business
+                };
+            } else if (entity == '1') {
+                paramsFilter = {
+                    types: this.managementSection.product
+                };
+            } else if (entity == '3') {
+                paramsFilter = {
+                    types: this.managementSection.business_form
+                };
+            } else if (entity == '4') {
+                paramsFilter = {
+                    types: this.managementSection.business_route
+                };
+            } else if (entity == '2') {
+                paramsFilter = {
+                    types: this.managementSection.cms
+                };
+            }
+            return paramsFilter;
+        },
         _managerRowGrid: function (params) {
             var rowCurrent = params.row;
             var rowId = params.id;
@@ -442,10 +752,14 @@ Vue.component('gamification-by-process-component', {
                 this.model.attributes.entity_id = rowCurrent.entity_id;
                 var row = rowCurrent;
                 var entity = row.entity;
-                if (row.entity == 1) {
+                if (!emptyData.includes(row.entity)) {
                     this.model.attributes.entity_id_data_aux = {
                         id: rowCurrent.entity_id,
-                        text: rowCurrent.product_name
+                        text: rowCurrent.entity_name
+                    };
+                    this.model.attributes.entity_id_data = {
+                        id: rowCurrent.entity_id,
+                        text: rowCurrent.entity_name
                     };
                 }
 
@@ -454,16 +768,19 @@ Vue.component('gamification-by-process-component', {
                 this.model.attributes.url_manager_data = {};
                 this.model.attributes.gamification_type_activity_id_data = {
                     id: rowCurrent.gamification_type_activity_id,
-                    text: rowCurrent.gamification_type_activity
+                    text: rowCurrent.gamification_type_activity,
+
                 };
 
                 this.model.attributes.tracking_type_id_data = {
                     id: rowCurrent.tracking_type_code,
-                    text: rowCurrent.tracking_type_name
+                    text: rowCurrent.tracking_type_name,
+                    code: rowCurrent.tracking_type_code_view,
                 };
                 this.model.attributes.tracking_source_id_data = {
                     id: rowCurrent.tracking_source_code,
-                    text: rowCurrent.tracking_source_name
+                    text: rowCurrent.tracking_source_name,
+                    code: rowCurrent.tracking_source_code_view,
                 };
 
                 var is_url = rowCurrent.is_url == 1 ? true : false;
@@ -474,20 +791,7 @@ Vue.component('gamification-by-process-component', {
                 this.model.attributes.unique_code = (rowCurrent.unique_code);
 
                 if (is_url) {
-                    var paramsFilter = null;
-                    if (entity == '0') {
-                        paramsFilter = {
-                            types: this.managementSection.business
-                        };
-                    } else if (entity == '1') {
-                        paramsFilter = {
-                            types: this.managementSection.product
-                        };
-                    } else {
-                        paramsFilter = {
-                            types: this.managementSection.cms
-                        };
-                    }
+                    var paramsFilter = this.getDataFiltersUrlByEntity(entity);
                     var dataCurrent = this.getUrlData(paramsFilter);
                     var keyManagerNeedle = 'url_manager';
                     var dataCurrentLink = this.model.attributes[keyManagerNeedle];
@@ -497,8 +801,16 @@ Vue.component('gamification-by-process-component', {
 
                     this.setManagerUrl(this.getValuesManagerUrl({type: 1}));
                 }
+                var vigencia = false;
 
-
+                if (!emptyData.includes(rowCurrent.valid_from) && !emptyData.includes(rowCurrent.valid_until)) {
+                    vigencia = true;
+                }
+                if (rowCurrent.frequency_limit_type == "TOTAL_LIMIT") {
+                    this.model.attributes.frequency_limit_value = rowCurrent.frequency_limit_value;
+                }
+                this.model.attributes.frequency_limit_type = rowCurrent.frequency_limit_type;
+                this.model.attributes.vigencia = vigencia;
             }
         },
         initGridManager: function ($scope) {
@@ -507,35 +819,23 @@ Vue.component('gamification-by-process-component', {
             var paramsFilters = new Object();
             var filters = new Object();
             filters[this.manager_key_name] = this.manager_id;
+            var $this = this;
             paramsFilters = filters;
             var structure = $scope.model.structure;
+            var haystackSections = this.model.structure.entity.options;
+            var dataFrequencyData = this.model.structure.frequency_limit_type.frequencyOptions;
+
             var formatters = {
                 'description': function (column, row) {
+                    var rowCurrent = row;
                     var activityName = '';
+                    var itemSection = haystackSections.find(x => (x.value) == row.entity) || null;
 
-                    if (row.entity == 1) {
-                        activityName = '"' + row.product_name + '"';
-                    } else if (row.entity == 0) {
-                        activityName = '"' + "Sección Pagina Web" + '"';
+                    var itemFrequency = dataFrequencyData.find(x => (x.value) == row.frequency_limit_type) || null;
 
-                    } else if (row.entity == 2) {
-                        activityName = '"' + "Sección Noticias" + '"';
-
-                    } else if (row.entity == 3) {
-                        activityName = '"' + "Sección Tienda" + '"';
-
-                    } else if (row.entity == 4) {
-                        activityName = '"' + "Sección Descuentos" + '"';
-
-                    } else if (row.entity == 5) {
-                        activityName = '"' + "Sección Gana con Nosotros" + '"';
-
-                    } else if (row.entity == 6) {
-                        activityName = '"' + "Sección Contáctanos" + '"';
-
+                    if (itemSection) {
+                        activityName = itemSection.text;
                     }
-
-                    activityName = activityName + ' y acumula ' + "<span class='badge badge--size-large  badge-info '>" + row.points + "</span> " + structure.points.label;
                     var classStatus = "badge-success";
                     if (row.state == "INACTIVE") {
                         classStatus = "badge-warning";
@@ -545,6 +845,55 @@ Vue.component('gamification-by-process-component', {
                     if (row.execution_channel == "DIGITAL") {
                         classStatusChannel = "badge-warning";
                     }
+                    var entityData = [];
+                    var vigencia = false;
+                    var vigenciaData = [];
+                    if (!emptyData.includes(rowCurrent.valid_from) && !emptyData.includes(rowCurrent.valid_until)) {
+
+                        vigenciaData = [
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>¿Esta tarea tiene vigencia?:</span><span class='content-description__value'><span class='badge badge--size-large  badge-success'>SI</span> </span>",
+                            "</div>",
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>Valido desde</span><span class='content-description__value'>24-07-1987 18:58 PM</span>",
+                            "</div>",
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>Valido hasta</span><span class='content-description__value'>24-07-1987 18:58 PM</span>",
+                            "</div>",
+                        ];
+                    } else {
+                        vigenciaData = ["<div class='content-description__information'>",
+                            "   <span class='content-description__title'>¿Esta tarea tiene vigencia?:</span><span class='content-description__value'><span class='badge badge--size-large  badge-warning'>NO</span> </span>",
+                            "</div>"];
+                    }
+                    var limitVigenciaData = [];
+                    if (rowCurrent.frequency_limit_type == "TOTAL_LIMIT") {
+
+                        limitVigenciaData = [
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>Limite de Frecuencia:</span><span class='content-description__value'> " + itemFrequency.text + "</span>",
+                            "</div>",
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>Cantidad Veces:</span><span class='content-description__value'><span class='badge badge--size-large  badge-info'>" + rowCurrent.frequency_limit_value + "</span></span>",
+                            "</div>",
+                        ];
+                    } else {
+                        limitVigenciaData = [
+                            "<div class='content-description__information'>",
+                            "   <span class='content-description__title'>Limite de Frecuencia:</span><span class='content-description__value'> " + itemFrequency.text + "</span>",
+                            "</div>",
+                        ];
+                    }
+
+                    if (!['0', 0, -1, null, undefined].includes(row.entity_id)) {
+                     var labelCurrent=   $this.getLabelFormByEntity(row.entity);
+                        entityData = [
+                            "<div class='content-description__information'>",
+                            "   <span relation class='content-description__title'>" + labelCurrent + ":</span><span class='content-description__value'>"+rowCurrent.entity_name+"</span>",
+                            "</div>",
+
+                        ];
+                    }
                     var imgView = row.has_source ? [
                         "<div class='content-description__information'>",
                         "   <img class='content-description__image' src='" + $publicAsset + row.source + "'> ",
@@ -553,33 +902,43 @@ Vue.component('gamification-by-process-component', {
                     ] : [];
                     imgView = imgView.join('');
                     var urlView = row.is_url ? [
+                        '<legend class="h6 mb-2 legend--section">' + $this.sectionsProcess.five + '</legend>',
                         "<div class='content-description__information'>",
                         "   <span class='content-description__title'>" + structure.url_manager.label + ":</span><span class='content-description__value'><a href='" + row.url_manager + "' target='_blank'>Pagina vista.</a></span>",
                         "</div>",
 
                     ] : [];
                     urlView = urlView.join('');
+
                     var result = [
                         "<div class='content-description'>",
+                        '<legend class="h6 mb-2 legend--section">' + $this.sectionsProcess.one + '</legend>',
                         "<div class='content-description__information'>",
                         "   <span class='content-description__title'>" + structure.state.label + ":</span><span class='content-description__value'><span class='badge badge--size-large " + classStatus + " '>" + row.state + "</span></span>",
                         "</div>",
                         "<div class='content-description__information'>",
                         "   <span class='content-description__title'>" + structure.execution_channel.label + ":</span><span class='content-description__value'><span class='badge badge--size-large " + classStatusChannel + " '>" + row.execution_channel + "</span></span>",
                         "</div>",
+                        vigenciaData.join(""),
+                        limitVigenciaData.join(""),
+                        '<legend class="h6 mb-2 legend--section">' + $this.sectionsProcess.two + '</legend>',
                         "<div class='content-description__information'>",
-                        "   <span relation class='content-description__title'>" + structure.gamification_type_activity_id_data.label + ":</span><span class='content-description__value'>" + row.gamification_type_activity + ' : ' + activityName + "</span>",
+                        "   <span class='content-description__title'>" + structure.unique_code.label + ":</span><span class='content-description__value'>" + row.unique_code + "</span>",
                         "</div>",
 
                         "<div class='content-description__information'>",
-                        "   <span relation class='content-description__title'>" + structure.tracking_type_id_data.label + ":</span><span class='content-description__value'>" + row.tracking_type_name+ "</span>",
+                        "   <span relation class='content-description__title'>" + structure.entity.label + ":</span><span class='content-description__value'>" + activityName + "</span>",
+                        "</div>",
+                        imgView,
+                        '<legend class="h6 mb-2 legend--section">' + $this.sectionsProcess.three + '</legend>',
+                        entityData.join(''),
+                        "<div class='content-description__information'>",
+                        "   <span class='content-description__title'>" + structure.gamification_type_activity_id_data.label + ":</span><span class='content-description__value'>" + row.gamification_type_activity + "</span>",
                         "</div>",
                         "<div class='content-description__information'>",
-                        "   <span relation class='content-description__title'>" + structure.tracking_source_id_data.label + ":</span><span class='content-description__value'>" + row.tracking_source_name + "</span>",
+                        "   <span class='content-description__title'>" + structure.points.label + ":</span><span class='content-description__value'>" + "<span class='badge badge--size-large  badge-info '>" + row.points + "</span> " + "</span>",
                         "</div>",
-                        "<div class='content-description__information'>",
-                        "   <span relation class='content-description__title'>" + structure.campaign_code_template.label + ":</span><span class='content-description__value'>" + row.campaign_code_template + "</span>",
-                        "</div>",
+                        '<legend class="h6 mb-2 legend--section">' + $this.sectionsProcess.four + '</legend>',
                         "<div class='content-description__information'>",
                         "   <span class='content-description__title'>" + structure.title.label + ":</span><span class='content-description__value'>" + row.title + "</span>",
                         "</div>",
@@ -587,12 +946,24 @@ Vue.component('gamification-by-process-component', {
                         "<div class='content-description__information'>",
                         "   <span class='content-description__title'>" + structure.subtitle.label + ":</span><span class='content-description__value'>" + row.subtitle + "</span>",
                         "</div>",
-                        imgView,
+
                         "<div class='content-description__information'>",
                         "   <span class='content-description__title'>" + structure.description.label + ":</span><span class='content-description__value'>" + row.description + "</span>",
                         "</div>",
 
                         urlView,
+
+                        '<legend class="h6 mb-2 legend--section">' + $this.sectionsProcess.six + '</legend>',
+                        "<div class='content-description__information'>",
+                        "   <span relation class='content-description__title'>" + structure.campaign_code_template.label + ":</span><span class='content-description__value'>" + row.campaign_code_template + "</span>",
+                        "</div>",
+                        "<div class='content-description__information'>",
+                        "   <span relation class='content-description__title'>" + structure.tracking_type_id_data.label + ":</span><span class='content-description__value'>" + row.tracking_type_name + "</span>",
+                        "</div>",
+                        "<div class='content-description__information'>",
+                        "   <span relation class='content-description__title'>" + structure.tracking_source_id_data.label + ":</span><span class='content-description__value'>" + row.tracking_source_name + "</span>",
+                        "</div>",
+
 
                         "</div>"];
 
@@ -777,7 +1148,7 @@ Vue.component('gamification-by-process-component', {
                 "gamification_type_activity_id_data": {
                     "id": "gamification_type_activity_id_data",
                     "name": "gamification_type_activity_id_data",
-                    "label": "Acción que gana puntos",
+                    "label": "Tipo de interacción",
                     "required": {
                         "allow": true,
                         "msj": "Campo requerido.",
@@ -855,7 +1226,7 @@ Vue.component('gamification-by-process-component', {
                     },
                     "id": "entity_id_data",
                     "name": "entity_id_data",
-                    "label": "Product/Servicio",
+                    "label": "Productos /Servicios ",
                     "required": {
                         "allow": false,
                         "msj": "Campo requerido.",
@@ -863,6 +1234,66 @@ Vue.component('gamification-by-process-component', {
                     },
                 },
 
+                "vigencia": {
+
+                    "id": "vigencia",
+                    "name": "vigencia",
+                    "label": "¿Esta tarea tiene vigencia?",
+                    "required": {
+                        "allow": true,
+                        "msj": "Campo requerido.",
+                        "error": false
+                    },
+                },
+
+                valid_from: {
+                    "id": "valid_from",
+                    "name": "valid_from",
+                    "label": "Fecha Inicio",
+                    "required": {
+                        "allow": true,
+                        "msj": "Campo requerido.",
+                        "error": false
+                    },
+                },
+                valid_until: {
+                    "id": "valid_until",
+                    "name": "valid_until",
+                    "label": "Fecha Fin",
+                    "required": {
+                        "allow": true,
+                        "msj": "Campo requerido.",
+                        "error": false
+                    },
+                },
+                frequency_limit_type: {
+                    "id": "frequency_limit_type",
+                    "name": "frequency_limit_type",
+                    "label": "Frecuencia",
+                    "required": {
+                        "allow": true,
+                        "msj": "Campo requerido.",
+                        "error": false
+                    },
+                    frequencyOptions: [
+                        //     {value: "NONE", text: "Sin límite"},
+                        {value: "ONCE", text: "Una vez"},
+                        {value: "DAILY", text: "Diario"},
+                        {value: "WEEKLY", text: "Semanal"},
+                        {value: "MONTHLY", text: "Mensual"},
+                        {value: "TOTAL_LIMIT", text: "Límite total (cantidad)"}
+                    ]
+                },
+                frequency_limit_value: {
+                    "id": "frequency_limit_value",
+                    "name": "frequency_limit_value",
+                    "label": "Cantidad",
+                    "required": {
+                        "allow": true,
+                        "msj": "Campo requerido.",
+                        "error": false
+                    },
+                },
             };
             return result;
         },
@@ -905,13 +1336,56 @@ Vue.component('gamification-by-process-component', {
                 "points": 1,
                 "gamification_by_points_id": null,
                 "entity_id_data": null,
-                entity_id_data_aux: null
+                entity_id_data_aux: null,
+                vigencia: false,
+                valid_from: null,
+                valid_until: null,
+                frequency_limit_type: 'ONCE',
+                frequency_limit_value: null,
             };
             return result;
         },
 
         getNameAttribute: getNameAttribute,
         getLabelForm: viewGetLabelForm,
+        getLabelFormByEntity: function (entity) {
+            var result = "";
+            var label = "";
+            if (entity == 0) {
+                label = "Empresas";
+            } else if (entity == 1) {
+                label = "Productos / Servicios";
+
+            } else if (entity == 2) {
+                label = "CMS SECTIONS";
+
+            } else if (entity == 3) {
+                label = "Formularios";
+
+            } else if (entity == 4) {
+                label = "Chaquiñanes(Caminos)";
+
+            }
+            result = label + "" + "<span class='form__label--required'>*</span>";
+            return result;
+
+        },
+        onValidUntil: function (payload) {
+            console.log("✅ OK:", payload);
+        },
+        onValidFrom: function (payload) {
+            console.log("✅ OK:", payload);
+        },
+        onFreqStatus(p) {
+            // p.status: warning|error|success
+            // p.data: { type, value }
+            console.log("status", p.status, p.data);
+
+            if (this.$v.model.attributes.frequency_limit_value.$model) {
+                this.$v.model.attributes.frequency_limit_value.$model = null;
+                this.$v["model"]["attributes"].frequency_limit_value.$reset();
+            }
+        },
         getValuesManagerUrl: function (params) {
             var typeGet = params && params.hasOwnProperty('type') ? params.type : null;
 
@@ -977,7 +1451,11 @@ Vue.component('gamification-by-process-component', {
                 }
 
             }
-
+            if ("frequency_limit_value" == name) {
+                if (parseInt(value) < 1) {
+                    value = value * -1;
+                }
+            }
             this.model.attributes[name] = value;
             this.$v["model"]["attributes"][name].$model = value;
             this.$v["model"]["attributes"][name].$touch();
@@ -992,7 +1470,7 @@ Vue.component('gamification-by-process-component', {
             });
         },
         getValuesSave: function () {
-
+            var isUrl = this.$v.model.attributes.is_url.$model == null ? 0 : (this.$v.model.attributes.is_url.$model ? 1 : 0);
             var result = {
                     "id": this.$v.model.attributes.id.$model ? this.$v.model.attributes.id.$model : -1,
                     change: this.$v.model.attributes.change.$model,
@@ -1004,19 +1482,20 @@ Vue.component('gamification-by-process-component', {
                     "has_source": this.$v.model.attributes.has_source.$model == null ? 0 : (this.$v.model.attributes.has_source.$model ? 1 : 0),
                     "entity": this.$v.model.attributes.entity.$model,
                     "entity_id": this.$v.model.attributes.entity_id_data.$model == null ? 0 : (this.$v.model.attributes.entity_id_data.$model.id),
-                    "url_manager": this.$v.model.attributes.url_manager.$model,
+                    "url_manager": isUrl == 1 ? this.$v.model.attributes.url_manager.$model : 'not-url',
                     "gamification_id": this.manager_id,
                     "gamification_type_activity_id": this.$v.model.attributes.gamification_type_activity_id_data.$model.id,
-                    "tracking_type_code": this.$v.model.attributes.tracking_type_id_data.$model.id,
-                    "tracking_source_code": this.$v.model.attributes.tracking_source_id_data.$model.id,
+                    "tracking_click_type_id": this.$v.model.attributes.tracking_type_id_data.$model.id,
+                    "tracking_source_id": this.$v.model.attributes.tracking_source_id_data.$model.id,
                     "campaign_code_template": this.$v.model.attributes.campaign_code_template.$model,
 
                     "execution_channel": this.$v.model.attributes.execution_channel.$model,
-                    "is_url": this.$v.model.attributes.is_url.$model == null ? 0 : (this.$v.model.attributes.is_url.$model ? 1 : 0),
+                    "is_url": isUrl,
                     "type_manager": this.$v.model.attributes.type_manager.$model == null ? 0 : (this.$v.model.attributes.type_manager.$model ? 1 : 0),
                     "points": this.$v.model.attributes.points.$model,
                     "unique_code": this.$v.model.attributes.unique_code.$model,
                     "gamification_by_points_id": this.$v.model.attributes.gamification_by_points_id.$model
+
 
                 }
             ;
@@ -1286,23 +1765,11 @@ Vue.component('gamification-by-process-component', {
         _managerS2UrlManager: function (params) {
             var el = params.objSelector;
             var valueCurrentRowId = params.rowId;
-            var paramsFilter = null;
-
             var dataUrlManager = this.getValuesManagerUrl();
             var entity = dataUrlManager['entity'];
-            if (entity == '0') {
-                paramsFilter = {
-                    types: this.managementSection.business
-                };
-            } else if (entity == '1') {
-                paramsFilter = {
-                    types: this.managementSection.product
-                };
-            } else {
-                paramsFilter = {
-                    types: this.managementSection.cms
-                };
-            }
+            var paramsFilter = this.getDataFiltersUrlByEntity(entity);
+
+
             var dataCurrent = this.getUrlData(paramsFilter);
             var keyManager = 'url_manager_data';
             if (valueCurrentRowId) {
@@ -1368,63 +1835,10 @@ Vue.component('gamification-by-process-component', {
 
             return formInvalidFeedback({objValidate: objValidate});
         },
-        _managerS2Products: function (params) {
-            var el = params.objSelector;
-            var valueCurrentRowId = params.rowId;
-            var dataCurrent = [];
-            if (valueCurrentRowId) {
-
-                dataCurrent = this.model.attributes.entity_id_data_aux;
-                this.model.attributes.entity_id_data = dataCurrent;
-                var textCurrent = dataCurrent.text;
-                var idCurrent = dataCurrent.id;
-                var option = new Option(textCurrent, idCurrent, true, true);
-                $(el).append(option).trigger('change');
-            }
-            var _this = this;
-            var elementInit = $(el).select2({
-                allow: true,
-                placeholder: "Seleccione",
-                data: dataCurrent,
-                ajax: {
-                    url: $("#action-products-getBusinessProductsServicesListSelect2").val(),
-                    type: 'get',
-                    dataType: 'json',
-                    data: function (term, page) {
-
-                        var paramsFilters = {
-                            filters: {
-                                search_value: term,
-                                business_id: _this.business_id
-                            }
-                        };
-                        return paramsFilters;
-                    },
-                    processResults: function (data, page) {
-                        return {results: data};
-                    }
-                },
-                allowClear: true,
-                multiple: true,
-                maximumSelectionLength: 1,
-
-                width: '100%'
-            });
-
-            elementInit.on('select2:select', function (e) {
-                var data = e.params.data;
-                _this.model.attributes.entity_id_data = data;
-                _this.setManagerUrl(_this.getValuesManagerUrl());
-            }).on("select2:unselecting", function (e) {
-                _this.model.attributes.entity_id_data = null;
-                _this._setValueForm('entity_id_data', null);
-            }).on("select2:open", function (e) {
-                managerModalSelect2();
-            });
-        },
         getClassMessage: function (modelData) {
             var entity = modelData.entity.$model;
             var result = '';
+            result = {"alert-info": true};
             if (entity == 0) {
 
                 result = {"alert-warning": true};
@@ -1442,4 +1856,9 @@ Vue.component('gamification-by-process-component', {
 
 function removePlaceholders(url) {
     return url.replace(/\{[^}]*\}/g, '').replace(/\/$/, '');
+}
+
+function destroyS2($el) {
+    if ($el.data('select2')) $el.select2('destroy');
+    $el.empty();
 }

@@ -19,7 +19,13 @@
     @include('partials.plugins.resourcesCss',['bootgrid'=>true])
     @include('partials.plugins.resourcesCss',['toast'=>true])
 
-
+    <style>
+        @media only screen and (max-width: 768px) {
+            .listing-item-grid .listing-counter, .time-line-container:before, .time-line-container:after, .scroll-nav-wrapper, .cs-countdown-item:before, .show-search-button span, .show-reg-form:before, .listing-view-layout {
+                display: block !important;
+            }
+        }
+    </style>
     <style>
 
         .icon-hover{
@@ -448,6 +454,12 @@
             .not-view {
                 display: none !important;
             }
+
+
+
+
+
+
 
         </style>
         @include('partials.plugins.resourcesCss',['select2'=>true])
