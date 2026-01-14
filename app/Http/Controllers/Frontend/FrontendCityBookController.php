@@ -152,7 +152,23 @@ class FrontendCityBookController extends FrontendBaseController
 
         return view($renderView, $paramsSend);
     }
+    public function boardingEmbarkation($language = 'es')
+    {
 
+        $renderView = self::LAYOUT_MAIN . '.management.boardingEmbarkation.index';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => 'boardingEmbarkation',
+            'paramsRequest' => $paramsRequest
+
+        ]);
+
+        return view($renderView, $paramsSend);
+    }
     public function myProfile($language = 'es')//CMS-TEMPLATE-MY-PROFILE-ACTION
     {
 

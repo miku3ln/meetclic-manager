@@ -327,7 +327,24 @@ class FrontendCityBookManager extends ModelManager
 
             ];
             $dataManagerPage['allowVue'] = true;
-        } else if ($page == 'howItWorks') {
+        }else if ($page == 'boardingEmbarkation') {
+
+            $dataManagerPage['breadcrumb']['active'] = __('frontend.account.menu.my-business');
+
+            $dataCatalogue = array();
+            $pathCurrentResources = 'cityBook/management/boardingEmbarkation';
+            $configPartial = [
+                'moduleFolder' => 'boardingEmbarkation',
+                'moduleCamel' => 'boardingEmbarkation',
+                'moduleMain' => 'management',
+                'managementNameCurrent' => 'BoardingEmbarkation',
+
+                'dataCatalogue' => $dataCatalogue,
+                'moduleResource' => 'boardingEmbarkation',
+
+            ];
+            $dataManagerPage['allowVue'] = true;
+        }  else if ($page == 'howItWorks') {
 
         } else if ($page == 'dictionaryType') {//CMS-TEMPLATE-MENU-DATA---KICHWA-CASTILIAN
 

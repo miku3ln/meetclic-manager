@@ -1371,7 +1371,7 @@ function getCSSCurrentBootGrid() {
     var result = {
         header: "bootgrid-header",
         table: "xywer-tbl-admin",
-        iconRefresh: "remixicon-refresh-line",
+        iconRefresh: "remixicon-refresh-line icon glyphicon glyphicon glyphicon-refresh",
         iconDown: "fa-sort-down",
         iconUp: "fa-sort-up",
 

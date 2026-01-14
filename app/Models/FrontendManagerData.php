@@ -62,7 +62,13 @@ class FrontendManagerData extends ModelManager
                 'icon' => 'fa fa-calendar-times-o',
                 'allowManager' => env('allowMenuLeftMyPointOfSaleFrontEnd'),
                 'active' => false,
-            ],
+            ],'boardingEmbarkation' => [
+                'text' => __('frontend.account.menu.records.three'),
+                'link' => route('boardingEmbarkation', app()->getLocale()),
+                'icon' => 'fa fa-ship',
+                'allowManager' => env('allowMenuLeftMyPointOfSaleFrontEnd'),
+                'active' => false,
+            ]
         ];
     }
     public function getArrayByData($params)
@@ -106,6 +112,7 @@ class FrontendManagerData extends ModelManager
         $data = [];
 
         $pageConfig = [
+            "boardingEmbarkation",
             'account', 'myProfile', 'password', 'business', 'businessEmployer', 'orders', 'suggestionsMailBox', 'listings', 'bee', 'reviewsTo', 'pointsSales'
         ];
         $profileConfig = $params;

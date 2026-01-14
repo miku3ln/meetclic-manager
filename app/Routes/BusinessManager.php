@@ -1311,6 +1311,13 @@ class BusinessManager
 
             Route::post('profile/user/accountGamificationByMovementAdmin', 'Gamification\AccountGamificationByMovementController@getAdmin')->name('accountGamificationByMovementAdmin'); //
 
+
+
+            Route::post("boardingEmbarkation/adminMaritimeDepartures", "MaritimeOperationsManagement\MaritimeDeparturesController@adminMaritimeDepartures")->name('adminMaritimeDepartures');
+            Route::post("boardingEmbarkation/maritimeDeparturesSave", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesSave")->name('maritimeDeparturesSave');
+            Route::post("boardingEmbarkation/maritimeDeparturesReports", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesReports")->name('maritimeDeparturesReports');
+
+
         });
     }
 }
