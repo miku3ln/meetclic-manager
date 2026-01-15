@@ -14,3 +14,8 @@
 
 <input id="action-management-reports" type="hidden"
        value="{{ route("maritimeDeparturesReports")}}"/>
+<input id="action-management-business-by-maritime" type="hidden"
+       value="{{ route("maritimeDeparturesAssign")}}"/>
+
+
+

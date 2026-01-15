@@ -180,7 +180,7 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
         },
         mounted: function () {
             componentThisEventsTrailsProject = this;
-
+            this.managerCurrentBusiness = this.params.data;
             this.startClockInterval();
         },
         beforeDestroy: function () {
@@ -261,25 +261,7 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
                     attributes: this.getAttributesForm(),
                     structure: this.getStructureForm(),
                 },
-                managerCurrentBusiness: {
-                    user_management_id: 1,
-                    arrival_time: "14/01/2026 11:04 AM",
-
-                    responsible: {
-                        fullName: "Cesar Iban Alba",
-                        document: "1002954889",
-
-                    },
-                    time: {
-                        date: "",
-                        hour: ""
-                    },
-                    maritimeInformation: {
-                        name: "Embarcaciòn Taita Imbabura",
-                        business_id: 5,
-                        source: "https://meetclic.com/public/uploads/business/information/logomuellecatalina.png"
-                    },
-                },
+                managerCurrentBusiness: null,
                 clockIntervalId: null,
             };
 
@@ -306,9 +288,7 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 
             },
 
-            getSourceMaritime: function () {
-                return this.managerCurrentBusiness.maritimeInformation.source;
-            },
+
             _updateClockNow: function () {
                 var now = new Date();
 
@@ -854,7 +834,6 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
     var reportData = {
         success: false, data: []
     };
-
 
 
 </script>

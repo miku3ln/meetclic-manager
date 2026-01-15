@@ -34,8 +34,9 @@ Vue.component('points-sales-component', {
     },
     mounted: function () {
         componentThisEventsTrailsProject = this;
-        this.initCurrentComponent();
 
+        this.managerCurrentBusiness = this.params.data;
+        this.initCurrentComponent();
     },
     computed: {},
 
@@ -88,9 +89,10 @@ Vue.component('points-sales-component', {
             loadPage: false,
             configModalManagementFormEvent: {
                 viewAllow: false
-            },   configModalManagementFormEventDetails: {
+            }, configModalManagementFormEventDetails: {
                 viewAllow: false
-            }
+            },
+            managerCurrentBusiness: null,
 
         };
 
@@ -155,7 +157,7 @@ Vue.component('points-sales-component', {
 
                 var dataSend = {
                     filters: {
-                        events_trails_registration_points_id:rowCurrent.events_trails_registration_points_id
+                        events_trails_registration_points_id: rowCurrent.events_trails_registration_points_id
                     }
                 };
                 var tabCurrentSelector = '#modal-management-form-event';
@@ -186,7 +188,12 @@ Vue.component('points-sales-component', {
         initGridManager: function (vmCurrent) {
             var gridName = this.gridConfig.selectorCurrent;
             var urlCurrent = this.gridConfig.url;
-            var paramsFilters = {};
+            var business_id = -1;
+            var maritimeInformation = this.managerCurrentBusiness.maritimeInformation;
+            var paramsFilters = {
+                business_id: maritimeInformation.business_id
+
+            };
             let gridInit = $(gridName);
             gridInit.bootgrid({
                 ajaxSettings: {

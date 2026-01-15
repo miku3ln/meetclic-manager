@@ -367,11 +367,12 @@ $select="
     {
         $sort = 'asc';
         $field = $this->table . '.id'; // default seguro
-
+        $businessId=$params["filters"]["business_id"];
         $query = DB::table($this->table)
             ->join('business as b', 'b.id', '=', $this->table . '.business_id')
             ->leftJoin('business_subcategories as sc', 'sc.id', '=', 'b.business_subcategories_id')
             ->leftJoin('business_categories as c', 'c.id', '=', 'sc.business_categories_id');
+        $query->where($this->table . '.business_id', $businessId);
 
         // Sort
         if (isset($params['sort']) && is_array($params['sort']) && count($params['sort']) > 0) {
@@ -433,6 +434,7 @@ $select="
                     ->orWhere('c.title', 'like', '%' . $likeSet . '%');
             });
         }
+        $query->where($this->table . '.business_id', $businessId);
 
         // ✅ count eficiente
         $recordsTotal = (clone $query)->count();

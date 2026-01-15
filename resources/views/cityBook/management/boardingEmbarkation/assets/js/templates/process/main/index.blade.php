@@ -3,64 +3,7 @@
 
         <b-form id="LodgingForm" v-on:submit.prevent="_submitForm">
 
-            <div class="mc-ticket-card-view">
-                <div class="mc-ticket-card-view__inner">
-                    <div class="row mc-ticket-card-view__header">
-                        <!-- Logo -->
-                        <div class="col-xs-3 col-md-3 col-12 mc-ticket-card-view__logo-col">
-                            <div class="mc-ticket-card-view__logo">
-                                <img
-                                    class="mc-ticket-card-view__logo-img"
-                                    src="https://meetclic.com/public/uploads/business/information/logomuellecatalina.png"
-                                    alt="Logo"
-                                />
-                            </div>
-                        </div>
 
-                        <!-- Title + Meta -->
-                        <div class="col-xs-9 col-md-9 col-12 mc-ticket-card-view__title-col">
-                            <div class="mc-ticket-card-view__title-wrap">
-                                <div class="mc-ticket-card-view__maritime-name">
-                                    <?php echo "{{managerCurrentBusiness.maritimeInformation.name}}" ?>
-                                </div>
-
-                                <div class="mc-ticket-card-view__meta">
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-12">
-                                            <div class="mc-ticket-card-view__item">
-                                                <span class="mc-ticket-card-view__item-label">FECHA:</span>
-                                                <span class="mc-ticket-card-view__item-value"><?php echo "{{managerCurrentBusiness.time.date}}" ?></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-12">
-                                            <div class="mc-ticket-card-view__item">
-                                                <span class="mc-ticket-card-view__item-label">HORA:</span>
-                                                <span class="mc-ticket-card-view__item-value"><?php echo "{{managerCurrentBusiness.time.hour}}" ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-12">
-                                            <div class="mc-ticket-card-view__item">
-                                                <span class="mc-ticket-card-view__item-label">RESPONSABLE:</span>
-                                                <span class="mc-ticket-card-view__item-value"><?php echo "{{managerCurrentBusiness.responsible.fullName}}" ?></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-12">
-                                            <div class="mc-ticket-card-view__item">
-                                                <span class="mc-ticket-card-view__item-label">IDENTIFICACIÓN:</span>
-                                                <span class="mc-ticket-card-view__item-value"><?php echo "{{managerCurrentBusiness.responsible.document}}" ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
 
 
             <b-row>

@@ -1,5 +1,11 @@
+function destroyS2($el) {
+    if ($el.data('select2')) $el.select2('destroy');
+    $el.empty();
+}
+
 var appInit = new Vue(
     {
+
         mounted: function () {
             this.initCurrentComponent();
             appThis = this;
@@ -17,10 +23,46 @@ var appInit = new Vue(
             // 4) validar
             this.validateReportFilters();
 
+            if (this.managerCurrentBusiness.allowView) {
 
-            this.initReports();
 
+                this.initReports();
 
+            }
+
+        },
+        directives: {
+            initS2Manager: {
+                inserted: function (el, binding, vnode) {
+                    var paramsInput = binding.value || {};
+                    var ctx = vnode.context;
+
+                    // espera a que el DOM esté estable
+                    ctx.$nextTick(function () {
+                        // evita doble init si el nodo se reusa
+                        var $el = $(el);
+                        if ($el.hasClass("select2-hidden-accessible")) {
+                            $el.select2("destroy");
+                        }
+
+                        if (typeof paramsInput._initS2Manager === "function") {
+                            paramsInput._initS2Manager({
+                                objSelector: el,
+                                rowId: paramsInput.rowId
+                            });
+                        } else {
+                            console.warn("initS2Manager: _initS2Manager no es función", paramsInput);
+                        }
+                    });
+                },
+
+                unbind: function (el) {
+                    var $el = $(el);
+                    if ($el.hasClass("select2-hidden-accessible")) {
+                        $el.select2("destroy");
+                    }
+                }
+            }
         },
         watch: {
             'reportConfig.filters.startDate': function () {
@@ -56,7 +98,7 @@ var appInit = new Vue(
             menuCurrent: [],
             configDataPointsSales: {
                 title: "Registro de Habitaciones",
-                data: [],
+                data: null,
                 titleEvent: "",
                 business_id: null
             },
@@ -88,7 +130,7 @@ var appInit = new Vue(
             },
             configDataRegisterForm: {
                 title: "Registro de Habitaciones",
-                data: [],
+                data: null,
                 titleEvent: "",
                 business_id: null
             },
@@ -120,49 +162,149 @@ var appInit = new Vue(
                     startAfterEnd: '"Desde" no puede ser mayor que "Hasta".',
                     endAfterToday: '"Hasta" no puede ser mayor que hoy.',
                 },
+
             },
+            managerCurrentBusiness: {
+                allowView: false,
+                user_management_id: 1,
+                arrival_time: "14/01/2026 11:04 AM",
+
+                responsible: {
+                    fullName: "Cesar Iban Alba",
+                    document: "1002954889",
+
+                },
+                time: {
+                    date: "",
+                    hour: ""
+                },
+                maritimeInformation: {
+                    name: "Embarcaciòn Taita Imbabura",
+                    business_id: 5,
+                    source: "https://meetclic.com/public/uploads/business/information/logomuellecatalina.png"
+                },
+                dataSelect: null
+            }
         },
         methods: {
             ...$methodsFormValid,
             ...$methodsProcessCurrent,
             /*FORM*/
-            tabTitle:function(icon, text) {
-                // FontAwesome 4
-                console.log(icon,text);
-                return `<i class="fa fa-${icon}"></i> <strong>${text}</strong>`;
-            },
+
             initCurrentComponent: function () {
 
             }, initManagement: function () {
                 console.log("init app");
             },
+            viewSelectInformation: function () {
+                this.managerCurrentBusiness.allowView = true;
+            },
             /*---EVENTS CHILDREN to Parent COMPONENTS----*/
             _updateParentByChildren: function (params) {
                 console.log(params);
+
+
+            },
+            setDataManagerMaritime: function (params) {
+                this.managerProcessCurrent.type = 0;
+                this.managerCurrentBusiness.allowView = false;
+                this.managerCurrentBusiness.maritimeInformation.name = params.text;
+                this.managerCurrentBusiness.maritimeInformation.business_id = params.id;
+                this.managerCurrentBusiness.maritimeInformation.source = $publicAsset + params.source;
+                this.configDataRegisterForm.data = this.managerCurrentBusiness;
+                this.configDataPointsSales.data = this.managerCurrentBusiness;
+
+
+                setTimeout(() => {
+                    console.log('Esto se ejecuta una sola vez después de 2 segundos');
+                    this.managerCurrentBusiness.allowView = true;
+                }, 0);
+
+            },
+            _managerS2Products: function (params) {
+                var el = params.objSelector;
+                var dataSelect = this.managerCurrentBusiness.dataSelect;
+                var valueCurrentRowId = null;
+                if (dataSelect) {
+                    valueCurrentRowId = this.managerCurrentBusiness.dataSelect.id;
+                }
+                var dataCurrent = [];
+                var $el = $(el);
+                destroyS2($el);
+                if (valueCurrentRowId) {
+                    dataCurrent = dataSelect;
+                    var textCurrent = dataCurrent.text;
+                    var idCurrent = dataCurrent.id;
+                    var option = new Option(textCurrent, idCurrent, true, true);
+                    $(el).append(option).trigger('change');
+                }
+                var _this = this;
+                var elementInit = $(el).select2({
+                    allow: true,
+                    placeholder: "Seleccione la Embarcaciòn",
+                    data: dataCurrent,
+                    ajax: {
+                        url: $("#action-management-business-by-maritime").val(),
+                        type: 'get',
+                        dataType: 'json',
+                        data: function (term, page) {
+
+                            var paramsFilters = {
+                                filters: {
+                                    search_value: term,
+                                }
+                            };
+                            return paramsFilters;
+                        },
+                        processResults: function (data, page) {
+                            return {results: data};
+                        }
+                    },
+                    allowClear: false,
+                    multiple: false,
+                    width: '100%'
+                });
+
+                elementInit.on('select2:select', function (e) {
+                    var data = e.params.data;
+                    console.log("select", data);
+                    _this.setDataManagerMaritime(data);
+
+                }).on("select2:unselecting", function (e) {
+                    console.log("null");
+                }).on("select2:open", function (e) {
+                    console.log("abierto");
+
+                });
+            },
+            getSourceMaritime: function () {
+                return this.managerCurrentBusiness.maritimeInformation.source;
             },
             setInitReports: function (params) {
                 if (params.success) {
                     var data = params.data;
 
-
                     var dataInterval = data.dataIntervalTypePeople;
                     var dayGroups = {};
                     var dates = [...new Set(dataInterval.map(i => i.label))];
+
                     dataInterval.forEach(i => {
                         if (!dayGroups[i.type]) dayGroups[i.type] = {};
-                        dayGroups[i.type][i.label] = i.total;
+                        if (!dayGroups[i.type][i.label]) dayGroups[i.type][i.label] = 0;
+
+                        dayGroups[i.type][i.label] += i.total;
                     });
+                    console.log(dayGroups);
                     var dailySeries = Object.keys(dayGroups).map(type => ({
                         name: type,
                         data: dates.map(date => dayGroups[type][date] || 0)
                     }));
+
                     Highcharts.chart('chart-sources', {
-                        title: {
-                            text: 'Clasificación por edad en el Periodo'
-                        },
+                        title: {text: 'Clasificación por edad en el Periodo'},
                         chart: {type: 'area'},
                         xAxis: {categories: dates},
-                        yAxis: {title: {text: '#Personas '}},
+                        yAxis: {title: {text: '#Personas'}},
                         series: dailySeries
                     });
                     // 3. Daily interactions
@@ -183,7 +325,7 @@ var appInit = new Vue(
                         },
                         chart: {type: 'area'},
                         xAxis: {categories: dates},
-                        yAxis: {title: {text: '#Personas '}},
+                        yAxis: {title: {text: '#Personas'}},
                         series: dailySeries
                     });
 
@@ -225,24 +367,28 @@ var appInit = new Vue(
 
             },
             initReports: function () {
-                var $this=this;
-                var dataSend={
-                    date_from:this.reportConfig.filters.startDate,
-                    date_to:this.reportConfig.filters.endDate,
+                var $this = this;
+                var dataSend = {
+                    date_from: this.reportConfig.filters.startDate,
+                    date_to: this.reportConfig.filters.endDate,
+                    business_id: this.managerCurrentBusiness.maritimeInformation.business_id,
 
                 };
+
                 ajaxRequestManager($("#action-management-reports").val(), {
                     type: 'POST',
                     data: dataSend,
                     blockElement: ".tabs",//opcional: es para bloquear el elemento
                     loading_message: "Cargando Datos.!",
-                    error_message: "Error al cargar datos.!",
+                    error_message: "No Existe Datos!",
                     success_message: "Datos Cargados.!",
                     success_callback: function (response) {
                         if (response.success) {
+                            $(".report-tracking-web").removeClass("not-view");
+
                             $this.setInitReports(response);
                         } else {
-
+                            $(".report-tracking-web").addClass("not-view");
                         }
                     }
                 });
@@ -252,7 +398,10 @@ var appInit = new Vue(
                 var vCurrent = this;
 
                 if (type == 0) {
-                    this.initReports();
+                    if (this.managerCurrentBusiness.allowView) {
+
+                        this.initReports();
+                    }
                 }
 
 
