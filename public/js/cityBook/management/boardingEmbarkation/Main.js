@@ -1,4 +1,49 @@
 var componentThisEventsTrailsProject;
+function fullName(row) {
+    const n = (row.people_name || '').trim();
+    const l = (row.people_last_name || '').trim();
+    return (n + ' ' + l).trim();
+}
+
+function passengerTypeLabel(type) {
+    var map = {
+        ADULT: 'Adulto',
+        SENIOR: 'Adulto mayor',
+        CHILD: 'Niño',
+        BABY: 'Bebé'
+    };
+    return map[type] || type || 'No definido';
+}
+function buildPassengerTable(rows) {
+    if (!Array.isArray(rows) || rows.length === 0) {
+        return '<p class="text-muted">Sin registros</p>';
+    }
+
+    var thead = `
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Tipo</th>
+      </tr>
+    </thead>
+  `;
+
+    var tbody = rows.map(r => `
+    <tr>
+      <td>${fullName(r)}</td>
+      <td>${r.passenger_age ?? ''}</td>
+      <td>${passengerTypeLabel(r.passenger_type)}</td>
+    </tr>
+  `).join('');
+
+    return `
+    <table class="table table-bordered table-striped table-hover">
+      ${thead}
+      <tbody>${tbody}</tbody>
+    </table>
+  `;
+}
 
 Vue.component('points-sales-component', {
     components: {},
@@ -220,7 +265,7 @@ Vue.component('points-sales-component', {
                         var $languageCurrent = null;
                         var nameProduct = $languageCurrent == null ? data['name'] : (data.hasOwnProperty('name_lang') && data['name_lang'] ? data['name_lang'] : data['name']);
                         var descriptionProduct = $languageCurrent == null ? data['description'] : (data.hasOwnProperty('description_lang') && data['description_lang'] ? data['description_lang'] : data['description']);
-
+                     var passager=   buildPassengerTable(data.details);
                         var result = [
                             "<div class='content-management-rows'>",
 
@@ -233,7 +278,7 @@ Vue.component('points-sales-component', {
                             "  <div class='content-description__information'>",
                             "   <span class='content-description__title'>Responsable  :</span><span class='content-description__value'>" + (data['responsible_name']) + "</span>",
                             "  </div>",
-
+                            passager,
                             "</div>",
 
 
