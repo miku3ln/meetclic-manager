@@ -18,92 +18,102 @@
                     {{--ITERACTION INIT PEOPLE--}}
                     <div v-if="getViewPeopleProcess()">
                         <div v-for="(v, index) in $v.model.attributes.people.$each.$iter">
-                            <b-row class="content-badge-information-type-guest">
+                            <div class="content-badge-information-type-guest">
+                                <b-row >
 
-                                <b-col class="col-md-3 col-12" v-bind:id="getIdManagerGuest(index,v)+'-document_number'">
-
-                                    <div class="form-group"
-                                         :class="getClassErrorForm('document_number',v.document_number)">
-                                        <label class="form__label "
-                                               v-html='getLabelForm("document_number")'></label>
-                                        <div class="content">
-                                            <input
-                                                v-model.trim="v.document_number.$model"
-                                                v-bind:id="getNameAttributePeople(index,'document_number')"
-                                                v-bind:name="getNameAttributePeople(index,'document_number')"
-                                                class="form-control m-input"
-                                                @change="_setValueForm('document_number', $event.target.value,index,v.document_number)"
-                                                v-focus-select
-                                            >
-                                        </div>
-                                        <div class="content-message-errors ">
-                                            <b-form-invalid-feedback
-                                                :state="!getViewErrorForm('document_number',v.document_number)">
+                                    <b-col class="col-md-4 col-8" v-bind:id="getIdManagerGuest(index,v)+'-document_number'">
+                                        <div class="form-group"
+                                             :class="getClassErrorForm('document_number',v.document_number)">
+                                            <label class="form__label "
+                                                   v-html='getLabelForm("document_number")'></label>
+                                            <div class="content">
+                                                <input
+                                                    v-model.trim="v.document_number.$model"
+                                                    v-bind:id="getNameAttributePeople(index,'document_number')"
+                                                    v-bind:name="getNameAttributePeople(index,'document_number')"
+                                                    class="form-control m-input"
+                                                    @change="_setValueForm('document_number', $event.target.value,index,v.document_number)"
+                                                    v-focus-select
+                                                >
+                                            </div>
+                                            <div class="content-message-errors ">
+                                                <b-form-invalid-feedback
+                                                    :state="!getViewErrorForm('document_number',v.document_number)">
                                             <span v-if="getViewErrorForm('document_number',v.document_number)">
                                 <?php echo "{{model.structure.document_number.required.msj}}" ?>
                             </span>
 
-                                            </b-form-invalid-feedback>
+                                                </b-form-invalid-feedback>
+                                            </div>
                                         </div>
-                                    </div>
-                                </b-col>
-                                <b-col class="col-md-5 col-8" v-bind:id="getIdManagerGuest(index,v)+'-full_name'">
-                                    <div class="form-group"
-                                         :class="getClassErrorForm('full_name',v.full_name)">
-                                        <label class="form__label" v-html='getLabelForm("full_name")'></label>
-                                        <div class="content ">
-                                            <input
-                                                v-model.trim="v.full_name.$model"
-                                                v-bind:id="getNameAttributePeople(index,'full_name')"
-                                                v-bind:name="getNameAttributePeople(index,'full_name')"
-                                                class="form-control m-input"
-                                                @change="_setValueForm('full_name', $event.target.value,index,v.full_name)"
-                                                v-focus-select
-                                            >
-                                        </div>
-                                        <div class="content-message-errors ">
-                                            <b-form-invalid-feedback
-                                                :state="!getViewErrorForm('full_name',v.full_name)">
-                                            <span v-if="getViewErrorForm('full_name',v.full_name)">
-                                <?php echo "{{model.structure.last_name.required.msj}}" ?>
-                            </span>
+                                    </b-col>
 
-                                            </b-form-invalid-feedback>
-                                        </div>
-                                    </div>
-                                </b-col>
-                                <b-col class="col-md-2 col-4" v-bind:id="getIdManagerGuest(index,v)+'-age'">
-                                    <div class="form-group"
-                                         :class="getClassErrorForm('age',v.age)">
-                                        <label class="form__label " v-html='getLabelForm("age")'></label>
-                                        <div class="content ">
-                                            <input
-                                                type="number"
-                                                v-model.trim="v.age.$model"
-                                                v-bind:id="getNameAttributePeople(index,'age')"
-                                                v-bind:name="getNameAttributePeople(index,'age')"
-                                                class="form-control m-input"
-                                                @change="_setValueForm('age', $event.target.value,index,v.age)"
-                                                v-focus-select
-                                            >
-                                        </div>
-                                        <div class="content-message-errors ">
-                                            <b-form-invalid-feedback :state="!getViewErrorForm('age',v.age)">
+                                    <b-col class="col-md-2 col-4" v-bind:id="getIdManagerGuest(index,v)+'-age'">
+                                        <div class="form-group"
+                                             :class="getClassErrorForm('age',v.age)">
+                                            <label class="form__label " v-html='getLabelForm("age")'></label>
+                                            <div class="content ">
+                                                <input
+                                                    type="number"
+                                                    v-model.trim="v.age.$model"
+                                                    v-bind:id="getNameAttributePeople(index,'age')"
+                                                    v-bind:name="getNameAttributePeople(index,'age')"
+                                                    class="form-control m-input"
+                                                    @change="_setValueForm('age', $event.target.value,index,v.age)"
+                                                    v-focus-select
+                                                >
+                                            </div>
+                                            <div class="content-message-errors ">
+                                                <b-form-invalid-feedback :state="!getViewErrorForm('age',v.age)">
                                             <span v-if="getViewErrorForm('age',v.age)">
                                 <?php echo "{{model.structure.age.required.msj}}" ?>
                             </span>
 
-                                            </b-form-invalid-feedback>
+                                                </b-form-invalid-feedback>
+                                            </div>
                                         </div>
-                                    </div>
-                                </b-col>
+                                    </b-col>
+
+                                    <b-col class="col-md-6 col-8" v-bind:id="getIdManagerGuest(index,v)+'-full_name'">
+                                        <div class="form-group"
+                                             :class="getClassErrorForm('full_name',v.full_name)">
+                                            <label class="form__label" v-html='getLabelForm("full_name")'></label>
+                                            <div class="content ">
+                                                <input
+                                                    v-model.trim="v.full_name.$model"
+                                                    v-bind:id="getNameAttributePeople(index,'full_name')"
+                                                    v-bind:name="getNameAttributePeople(index,'full_name')"
+                                                    class="form-control m-input"
+                                                    @change="_setValueForm('full_name', $event.target.value,index,v.full_name)"
+                                                    v-focus-select
+                                                >
+                                            </div>
+                                            <div class="content-message-errors ">
+                                                <b-form-invalid-feedback
+                                                    :state="!getViewErrorForm('full_name',v.full_name)">
+                                            <span v-if="getViewErrorForm('full_name',v.full_name)">
+                                <?php echo "{{model.structure.last_name.required.msj}}" ?>
+                            </span>
+
+                                                </b-form-invalid-feedback>
+                                            </div>
+                                        </div>
+                                    </b-col>
+
+
+                                </b-row>
+                                <b-row>
+
+                                </b-row>
+
 
                                 <div class="div-manager-process">
                                     <a @click="_removePeople(index,v)" class="btn btn--delete btn-xs"
                                        data-toggle="tooltip"
                                        data-placement="top" title="Eliminar"><i class="fa fa-trash"></i></a>
                                 </div>
-                            </b-row>
+                            </div>
+
 
                         </div>
                     </div>

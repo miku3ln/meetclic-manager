@@ -14,6 +14,7 @@ use App\Models\PeopleProfession;
 use App\Models\PeopleTypeIdentification;
 use App\Models\RucType;
 use App\Utils\Util;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -51,7 +52,157 @@ class MaritimeDepartures extends ModelManager
         return $rules;
     }
 
-    public function saveMaritimeDepartureApi($params)//API EMBARQUE Y ZARPE
+    private function createDeparture(array $departureData): MaritimeDepartures
+    {
+        $departure = new MaritimeDepartures();
+        $departure->business_id = $departureData['business_id'];
+
+        $user_id = $departureData['user_id'] ?? (Auth::user()->id ?? -1);
+
+        $departure->user_id = $user_id;
+        $departure->arrival_time = $departureData['arrival_time'];
+        $departure->responsible_name = $departureData['responsible_name'];
+        $departure->status = MaritimeDepartures::STATUS_DRAFT;
+        $departure->save();
+
+        return $departure;
+    }
+
+    private function upsertCustomerBundle(array $customerData): array
+    {
+        // 1) Buscar si existe customer por documento
+        $existingCustomer = Customer::where('identification_document', $customerData['document_number'])->first();
+
+        $customerId = $existingCustomer?->id;
+        $peopleId = $existingCustomer?->people_id;
+
+        // 2) People (siempre intentamos upsert)
+        // Si existe peopleId lo pasamos para actualizar, si no, se crea nuevo
+        if ($peopleId) {
+            $customerData['people_id'] = $peopleId;
+        } else {
+            unset($customerData['people_id']);
+        }
+
+        $peopleResult = $this->saveOrUpdatePerson($customerData);
+
+        if (!$peopleResult['success']) throw new \Exception($peopleResult['msj']);
+        $peopleId = $peopleResult['data']['id'];
+
+        // 3) Customer (upsert)
+        if ($customerId) {
+            $customerData['customer_id'] = $customerId;
+        } else {
+            unset($customerData['customer_id']);
+        }
+
+        $customerResult = $this->saveOrUpdateCustomer($customerData, $peopleId);
+
+        if (!$customerResult['success']) throw new \Exception($customerResult['msj']);
+        $customerId = $customerResult['data']['id'];
+
+        // 4) Info adicional (upsert)
+        $customerInfoResult = $this->saveOrUpdateCustomerInformation($customerData, $customerId);
+        if (!$customerInfoResult['success']) throw new \Exception($customerInfoResult['msj']);
+
+        // 5) Dirección (si viene info)
+        if (isset($customerData['information_address_id']) || isset($customerData['information_address_location_current'])) {
+            $addressResult = $this->saveOrUpdateAddress($customerData, $customerId);
+            if (!$addressResult['success']) throw new \Exception($addressResult['msj']);
+        }
+
+        // 6) Teléfono (si viene info)
+        if (isset($customerData['information_phone_id']) || isset($customerData['information_phone_value'])) {
+            $phoneResult = $this->saveOrUpdatePhone($customerData, $customerId);
+            if (!$phoneResult['success']) throw new \Exception($phoneResult['msj']);
+        }
+
+        return [
+            'customer_id' => $customerId,
+            'people_id' => $peopleId,
+        ];
+    }
+
+    public function departureCustomers()
+    {
+        return $this->hasMany(MaritimeDeparturesCustomers::class, 'maritime_departures_id');
+    }
+
+    private function attachDepartureCustomer(int $departureId, array $customerData, int $customerId): void
+    {
+
+        $departureCustomer = new MaritimeDeparturesCustomers();
+        $departureCustomer->maritime_departures_id = $departureId;
+        $departureCustomer->type = $customerData['type'];
+        $departureCustomer->age = $customerData['age'];
+        $departureCustomer->customer_id = $customerId;
+        $departureCustomer->save();
+    }
+
+    public function saveMaritimeDepartureApi($params)
+    {
+        DB::beginTransaction();
+
+        try {
+            $departureData = $params['MaritimeDepartures'] ?? [];
+            $customers = $params['Customers'] ?? [];
+
+            // 1) Crear departure
+            $departure = $this->createDeparture($departureData);
+
+            // 2) Procesar clientes y crear pivots
+            foreach ($customers as $customerData) {
+                $bundle = $this->upsertCustomerBundle($customerData); // { customer_id, people_id }
+                $this->attachDepartureCustomer($departure->id, $customerData, $bundle['customer_id']);
+            }
+
+            DB::commit();
+
+            // 3) Retornar todo (departure + pivots con data)
+            $departure = MaritimeDepartures::query()
+                ->with([
+                    // relación: departure -> departureCustomers (pivots)
+                    'departureCustomers' => function ($q) {
+                        $q->with([
+                            // pivot -> customer
+                            'customer' => function ($q2) {
+                                $q2->with([
+                                    // customer -> people
+                                    'people',
+                                    // customer -> info adicional
+                                    'information',
+                                    // customer -> addresses
+                                    'addresses',
+                                    // customer -> phones
+                                    'phones',
+                                ]);
+                            }
+                        ]);
+                    }
+                ])
+                ->find($departure->id);
+
+            return [
+                'success' => true,
+                'message' => 'Registrados con Exito.',
+                'data' => [
+                    'departure' => $departure,
+                    'customers' => $departure->departureCustomers ?? [],
+                ]
+            ];
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'errors' => []
+            ];
+        }
+    }
+
+    public function saveMaritimeDepartureApi2($params)//API EMBARQUE Y ZARPE
     {
         DB::beginTransaction();
         try {
@@ -87,6 +238,35 @@ class MaritimeDepartures extends ModelManager
                 if ($existingCustomer) {
                     $customerId = $existingCustomer->id;
                     $peopleId = $existingCustomer->people_id;
+
+                    // 1) Actualizar People si existe people_id
+                    if ($peopleId) {
+                        $customerData['people_id'] = $peopleId;
+                        $peopleResult = $this->saveOrUpdatePerson($customerData);
+                        if (!$peopleResult['success']) throw new \Exception($peopleResult['msj']);
+                        $peopleId = $peopleResult['data']['id'];
+                    }
+                    // 2) Actualizar Customer (mismo id)
+                    $customerData['customer_id'] = $customerId;
+                    $customerResult = $this->saveOrUpdateCustomer($customerData, $peopleId);
+                    if (!$customerResult['success']) throw new \Exception($customerResult['msj']);
+                    $customerId = $customerResult['data']['id'];
+
+                    // 3) Customer information (siempre)
+                    $customerInfoResult = $this->saveOrUpdateCustomerInformation($customerData, $customerId);
+                    if (!$customerInfoResult['success']) throw new \Exception($customerInfoResult['msj']);
+
+                    // 4) Dirección si aplica
+                    if (isset($customerData['information_address_id']) || isset($customerData['information_address_location_current'])) {
+                        $addressResult = $this->saveOrUpdateAddress($customerData, $customerId);
+                        if (!$addressResult['success']) throw new \Exception($addressResult['msj']);
+                    }
+
+                    // 5) Teléfono si aplica
+                    if (isset($customerData['information_phone_id']) || isset($customerData['information_phone_value'])) {
+                        $phoneResult = $this->saveOrUpdatePhone($customerData, $customerId);
+                        if (!$phoneResult['success']) throw new \Exception($phoneResult['msj']);
+                    }
                 } else {
 
                     // 2. Actualizar/Crear la Persona (People)
@@ -174,17 +354,12 @@ class MaritimeDepartures extends ModelManager
         }
 
         $attributes = [
-            'last_name' => $data["last_name"] ?? null,
-            'name' => $data["name"] ?? null,
-            'type_document' => $data["people_type_identification_id"] ?? PeopleTypeIdentification::TYPE_IDENTIFICATION_OTHERS,
-            'document_number' => $data["document_number"] ?? null,
-
+            'last_name' => $data["last_name"],
+            'name' => $data["name"],
             // ✅ birthdate final calculado/normalizado
             'birthdate' => $birthdate->format('Y-m-d'),
-
             // ✅ age final calculado/normalizado (nunca 0 si venía birthdate)
             'age' => $age,
-
             'gender' => $data["gender"] ?? 3,
         ];
 
@@ -194,20 +369,31 @@ class MaritimeDepartures extends ModelManager
 
     private function saveOrUpdateCustomer($data, $peopleId)
     {
-        $customer = (isset($data['customer_id']) && $data['customer_id'] != 'null' && $data['customer_id'] != '-1')
+        $isUpdate = (isset($data['customer_id']) && $data['customer_id'] != 'null' && $data['customer_id'] != '-1');
+
+        $customer = $isUpdate
             ? Customer::find($data['customer_id'])
             : new Customer();
 
         $attributes = [
-            'identification_document' => $data["document_number"],
+            // SOLO en CREATE
             'people_type_identification_id' => $data["people_type_identification_id"] ?? PeopleTypeIdentification::TYPE_IDENTIFICATION_OTHERS,
             'people_id' => $peopleId,
             'business_name' => $data["business_name"] ?? "",
             'business_reason' => $data["business_reason"] ?? "",
             'ruc_type_id' => $data["ruc_type_id"] ?? RucType::RUC_TYPE_ANY,
+
         ];
 
-        return $this->validateAndSaveModel($customer, $attributes, 'Cliente');
+        if (!$isUpdate) {
+            $attributes['identification_document'] = $data["document_number"];
+        } else {
+            $attributes['customer_id'] = $data['customer_id'];
+
+        }
+        $validate = $this->validateAndSaveModel($customer, $attributes, 'Cliente');
+
+        return $validate;
     }
 
     private function saveOrUpdateCustomerInformation($data, $customerId)
@@ -268,7 +454,10 @@ class MaritimeDepartures extends ModelManager
 
     private function validateAndSaveModel($model, $attributes, $entityName)
     {
-        $validation = $model::validateModel($attributes);
+        $id = $model->id ?? null; // si existe, es update
+
+        $validation = $model::validateModel($attributes, $id);
+
         if (!$validation['success']) {
             return [
                 'success' => false,
@@ -288,16 +477,17 @@ class MaritimeDepartures extends ModelManager
             'data' => $attributes
         ];
     }
+
     public function getDeparturesCustomersResumeByType(array $params): array
     {
         $businessId = (int)($params['business_id'] ?? 0);
         $from = $params['date_from'] ?? null; // '2026-01-01 00:00:00'
-        $to   = $params['date_to']   ?? null; // '2026-01-31 23:59:59'
+        $to = $params['date_to'] ?? null; // '2026-01-31 23:59:59'
 
         if ($businessId <= 0 || empty($from) || empty($to)) {
             return [];
         }
-$select="
+        $select = "
         b.title as companyName,
         b.id as companyId,
 
@@ -313,7 +503,7 @@ $select="
         END as type
     ";
         // ✅ 1 sola consulta, agrupada, usando created_at de maritime_departures
-        $rows  = DB::table('maritime_departures as md')
+        $rows = DB::table('maritime_departures as md')
             ->join('business as b', 'b.id', '=', 'md.business_id')
             ->join('maritime_departures_customers as mdc', 'mdc.maritime_departures_id', '=', 'md.id')
             ->where('md.business_id', $businessId)
@@ -325,6 +515,7 @@ $select="
 
         return $rows;
     }
+
     public function getByDetailsMaritime($params)
     {
         $departureId = $params["departureId"];
@@ -337,7 +528,7 @@ $select="
             ->where('mdc.maritime_departures_id', $departureId)
             ->select([
                 // pivot
-                'mdc.id as pivot_id',
+                'mdc.id as id',
                 'mdc.type as passenger_type',
                 'mdc.age as passenger_age',
                 'mdc.customer_id',
@@ -358,6 +549,8 @@ $select="
                 'p.last_name as people_last_name',
                 'p.birthdate',
                 'p.gender',
+                //customer
+                'c.identification_document'
             ])
             ->orderBy('mdc.id', 'asc')
             ->get()->toArray();
@@ -365,9 +558,9 @@ $select="
 
     public function getAdmin($params)
     {
-        $sort = 'asc';
+        $sort = 'desc';
         $field = $this->table . '.id'; // default seguro
-        $businessId=$params["filters"]["business_id"];
+        $businessId = $params["filters"]["business_id"];
         $query = DB::table($this->table)
             ->join('business as b', 'b.id', '=', $this->table . '.business_id')
             ->leftJoin('business_subcategories as sc', 'sc.id', '=', 'b.business_subcategories_id')

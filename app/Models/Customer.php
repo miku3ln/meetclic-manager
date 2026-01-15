@@ -62,27 +62,58 @@ class Customer extends Model
     {
         return $this->belongsTo(People::class, 'people_id');
     }
+
+
+
+    public function information()
+    {
+        return $this->hasOne(CustomerByInformation::class, 'customer_id');
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(InformationAddress::class, 'entity_id')
+            ->where('entity_type', Util::INFORMATION_CUSTOMER_TYPE);
+    }
+
+    public function phones()
+    {
+        return $this->hasMany(InformationPhone::class, 'entity_id')
+            ->where('entity_type', Util::INFORMATION_CUSTOMER_TYPE);
+    }
+
+
     public static function getRulesModel($params)
     {
         $id = null;
         if (isset($params['customer_id']) && $params['customer_id'] != null) {
-            $id = $params['customer_id'];
+            $id = (int)$params['customer_id'];
         }
-
 
         $rules = [
             "people_type_identification_id" => 'required',
             "people_id" => 'required',
             "ruc_type_id" => 'required',
         ];
-        if ($id == null) {
-            $rules['identification_document'] = ['required', 'unique:customer', new DocumentIdentification($params)];
+
+        // 🔥 ajusta el nombre real de tu tabla aquí:
+        $table = 'customers'; // o 'customer' si así se llama en tu BD
+
+        if ($id === null) {
+            // ✅ CREATE: requerido + unique
+            $rules['identification_document'] = [
+                'required',
+                "unique:$table,identification_document",
+                new DocumentIdentification($params)
+            ];
         } else {
-
-            $ruleCurrent = 'unique:customer,identification_document,' . $id . ',id';
-            $rules['identification_document'] = ['required', $ruleCurrent, new DocumentIdentification($params)];
+            // ✅ UPDATE: NO requerido (solo valida si viene)
+            $rules['identification_document'] = [
+                'sometimes', // <- clave
+                "unique:$table,identification_document,$id,id",
+                new DocumentIdentification($params)
+            ];
         }
-
 
         return $rules;
     }
@@ -90,16 +121,14 @@ class Customer extends Model
 
     public static function validateModel($modelAttributes)
     {
-        $rules = self::getRulesModel($modelAttributes);
+        // Detectar update por customer_id (viene en $modelAttributes)
         $id = null;
         if (isset($modelAttributes['customer_id']) && $modelAttributes['customer_id'] != null) {
-            $id = $modelAttributes['customer_id'];
-        }
-
-        if ($id) {
-
+            $id = (int)$modelAttributes['customer_id'];
             $modelAttributes['id'] = $id;
         }
+
+        $rules = self::getRulesModel($modelAttributes);
 
         $validation = Validator::make($modelAttributes, $rules, Customer::MESSAGES_ERROR);
 
@@ -109,11 +138,8 @@ class Customer extends Model
             $errors = $validation->errors()->all();
         }
 
-        $result = array("success" => $success, "errors" => $errors);
-
-        return $result;
+        return ["success" => $success, "errors" => $errors];
     }
-
 
     public function getAdminEmails($params)
     {
@@ -3539,6 +3565,7 @@ class Customer extends Model
             if (!$peopleResult['success']) return $this->rollbackWithError($peopleResult);
 
             $customerResult = $this->saveOrUpdateCustomer($customerData, $peopleResult['data']['id']);
+
             if (!$customerResult['success']) return $this->rollbackWithError($customerResult);
 
             $customerInfoResult = $this->saveOrUpdateCustomerInformation($customerData, $customerResult['data']['id']);

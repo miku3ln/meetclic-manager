@@ -2,7 +2,9 @@ var componentThisEventsTrailsProject;
 function fullName(row) {
     const n = (row.people_name || '').trim();
     const l = (row.people_last_name || '').trim();
-    return (n + ' ' + l).trim();
+    const d = (row.identification_document || '').trim();
+
+    return (""+d+": "+n + ' ' + l).trim();
 }
 
 function passengerTypeLabel(type) {

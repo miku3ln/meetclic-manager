@@ -117,7 +117,7 @@ class MaritimeDeparturesController extends MyBaseController
         $resultTypes = $model->getDeparturesCustomersResumeByType(
             [
                 'business_id' => $business_id,
-                'date_from' => '2025-01-01 00:00:00',
+                'date_from' => $date_from,
                 'date_to' => $date_to]
         );
 
