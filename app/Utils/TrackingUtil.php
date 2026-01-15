@@ -495,7 +495,35 @@ class TrackingUtil
         // -------------------------
         // CONTROL DE ACCESO POR ROL
         // -------------------------
+
         if ($success) {
+            if ($this->isProtectedUserAction($actionCurrent)) {
+
+                $allowManager = false; // comportamiento actual
+
+                if ($user) {
+                    if ($user->id == 1) {
+                        // super admin
+                        $success = true;
+                        $case = 6;
+                    } else {
+                        $band = $this->userHasAccessToAction($user, $actionCurrent, $allowManager);
+
+                        if ($band == 0) {
+                            // no tiene permiso
+                            $typeRender = '401';
+                            $success = false;
+                            $case = 7;
+                        }
+                    }
+                } else {
+                    // no autenticado, mandar a login
+                    $typeRender = 'login';
+                    $success = false;
+                    $case = 8;
+                }
+            }
+        }else{
             if ($this->isProtectedUserAction($actionCurrent)) {
 
                 $allowManager = false; // comportamiento actual
@@ -643,6 +671,7 @@ class TrackingUtil
             'listingsQueen',
             'orders',
             'pointsSales',
+            'boardingEmbarkation'
         ];
 
         return in_array($actionCurrent, $actionsUserLogin);

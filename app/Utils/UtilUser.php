@@ -545,9 +545,9 @@ class UtilUser
                 } else {
                     $modelCBP = new CustomerByProfile();
                     $modelCBP->fill($attributesSet);
-                    $allowSave=  $modelCBP->save();
-                    $attributesSet["id"]=$modelCBP->id;
-                    $customerByProfile =$attributesSet;
+                    $allowSave = $modelCBP->save();
+                    $attributesSet["id"] = $modelCBP->id;
+                    $customerByProfile = $attributesSet;
                 }
                 $data['Customer'] = $customerData;
                 $data['User'] = $user;
@@ -613,16 +613,16 @@ class UtilUser
                 } else {
                     $modelCBP = new CustomerByProfile();
                     $modelCBP->fill($attributesSet);
-                  $allowSave=  $modelCBP->save();
-                    $attributesSet["id"]=$modelCBP->id;
-                    $customerByProfile =$attributesSet;
+                    $allowSave = $modelCBP->save();
+                    $attributesSet["id"] = $modelCBP->id;
+                    $customerByProfile = $attributesSet;
 
                 }
                 $data['Customer'] = $customerData;
                 $data['User'] = $user;
                 $data['CustomerByProfile'] = $customerByProfile;
-                $data['CustomerByProfile']["errors"] =  $validateResult["errors"];
-                $data['CustomerByProfile']["msj"] =  $msj;
+                $data['CustomerByProfile']["errors"] = $validateResult["errors"];
+                $data['CustomerByProfile']["msj"] = $msj;
 
                 $result = [
                     'success' => $success,
@@ -941,11 +941,18 @@ class UtilUser
     public function getDataUserRBAC($user)
     {
 
-        $rolesId = $user->roles->pluck('id')->toArray();
-        $roleManager = new Role();
+        $roles = [];
+        $actions = [];
+        if ($user) {
+
+            $rolesId = $user->roles->pluck('id')->toArray();
+            $roleManager = new Role();
+            $roles = $user->roles;
+            $actions = $roleManager->getActionsByRoles(['rolesId' => $rolesId]);
+        }
         $result = [
-            'roles' => $user->roles,
-            'actions' => $roleManager->getActionsByRoles(['rolesId' => $rolesId]),
+            'roles' => $roles,
+            'actions' => $actions,
 
         ];
         return $result;
@@ -958,15 +965,19 @@ class UtilUser
 
         $getDataRBAC = $this->getDataUserRBAC($user);
         $allowAction = false;
-        if ($user->id == 1) {
-            $allowAction = true;
-        } else {
-            foreach ($getDataRBAC['actions'] as $key => $value) {
-                if ($value->link == $actionCurrent) {
-                    $allowAction = true;
-                    break;
-                }
+        if ($user) {
 
+
+            if ($user->id == 1) {
+                $allowAction = true;
+            } else {
+                foreach ($getDataRBAC['actions'] as $key => $value) {
+                    if ($value->link == $actionCurrent) {
+                        $allowAction = true;
+                        break;
+                    }
+
+                }
             }
         }
 
