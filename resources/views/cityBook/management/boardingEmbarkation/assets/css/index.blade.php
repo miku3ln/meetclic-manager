@@ -498,6 +498,32 @@
         .mc-ticket-card-view__logo-col{
             padding-bottom: 14%;
         }
+        a.to-top.to-top--bee {
+
+            display: none !important;
+        }
+        .embark-actions{
+            bottom: 5%!important;
+        }
+        label.form__label {
+            color: #225278;
+            font-size: 18px;
+        }
+        span.content-description__value {
+            font-size: 18px;
+        }
+        td {
+            font-size: 13px;
+        }
+        th {
+            font-size: 18px;
+        }
+        .div-manager-process{
+            position: absolute;
+            right: 0;
+            margin-top: -43px;
+
+        }
     }
 
     @media (max-width: 767px) {
@@ -525,6 +551,32 @@
         .mc-ticket-card-view__logo-col{
             padding-bottom: 14%;
         }
+        a.to-top.to-top--bee {
+
+            display: none !important;
+        }
+        .embark-actions{
+            bottom: 5%!important;
+        }
+        label.form__label {
+            color: #225278;
+            font-size: 18px;
+        }
+        span.content-description__value {
+            font-size: 18px;
+        }
+        td {
+            font-size: 13px;
+        }
+        th {
+            font-size: 18px;
+        }
+        .div-manager-process{
+            position: absolute;
+            right: 0;
+            margin-top: -43px;
+
+        }
     }
     @media (min-width: 321px) and (max-width: 480px) {
         /* SOLO 321 a 480 */
@@ -549,6 +601,32 @@
         .mc-ticket-card-view__logo-col{
             padding-bottom: 14%;
         }
+        a.to-top.to-top--bee {
+
+            display: none !important;
+        }
+        .embark-actions{
+            bottom: 5%!important;
+        }
+        label.form__label {
+            color: #225278;
+            font-size: 18px;
+        }
+        span.content-description__value {
+            font-size: 18px;
+        }
+        td {
+            font-size: 13px;
+        }
+        th {
+            font-size: 18px;
+        }
+        .div-manager-process{
+            position: absolute;
+            right: 0;
+            margin-top: -43px;
+
+        }
     }
     @media (max-width: 320px) {
         /* SOLO <= 320 */
@@ -572,6 +650,32 @@
         }
         .mc-ticket-card-view__logo-col{
             padding-bottom: 14%;
+        }
+        a.to-top.to-top--bee {
+
+            display: none !important;
+        }
+        .embark-actions{
+            bottom: 5%!important;
+        }
+        label.form__label {
+            color: #225278;
+            font-size: 18px;
+        }
+        span.content-description__value {
+            font-size: 18px;
+        }
+        td {
+            font-size: 13px;
+        }
+        th {
+            font-size: 18px;
+        }
+        .div-manager-process{
+            position: absolute;
+            right: 0;
+            margin-top: -43px;
+
         }
     }
     @media (min-width: 1025px) {

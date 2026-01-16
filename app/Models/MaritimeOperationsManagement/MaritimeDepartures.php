@@ -73,29 +73,19 @@ class MaritimeDepartures extends ModelManager
         // 1) Buscar si existe customer por documento
         $existingCustomer = Customer::where('identification_document', $customerData['document_number'])->first();
 
-        $customerId = $existingCustomer?->id;
-        $peopleId = $existingCustomer?->people_id;
-
-        // 2) People (siempre intentamos upsert)
-        // Si existe peopleId lo pasamos para actualizar, si no, se crea nuevo
-        if ($peopleId) {
+        $customerId = null;
+        if ($existingCustomer) {
+            $customerId = $existingCustomer?->id;
+            $peopleId = $existingCustomer?->people_id;
             $customerData['people_id'] = $peopleId;
-        } else {
-            unset($customerData['people_id']);
+            $customerData['customer_id'] = $customerId;
+
         }
 
         $peopleResult = $this->saveOrUpdatePerson($customerData);
 
         if (!$peopleResult['success']) throw new \Exception($peopleResult['msj']);
         $peopleId = $peopleResult['data']['id'];
-
-        // 3) Customer (upsert)
-        if ($customerId) {
-            $customerData['customer_id'] = $customerId;
-        } else {
-            unset($customerData['customer_id']);
-        }
-
         $customerResult = $this->saveOrUpdateCustomer($customerData, $peopleId);
 
         if (!$customerResult['success']) throw new \Exception($customerResult['msj']);
@@ -324,10 +314,28 @@ class MaritimeDepartures extends ModelManager
             ];
         }
     }
+    private function normalizeUtf8($value): string
+    {
+        $value = (string)$value;
 
+        // Si llega como "PeÃ‘a" (mojibake), intenta corregirlo
+        $fixed = @iconv('UTF-8', 'ISO-8859-1//IGNORE', $value);
+        if ($fixed !== false && $fixed !== $value) {
+            $value = $fixed;
+        }
+
+        // Quita caracteres de control invisibles
+        $value = preg_replace('/[^\P{C}\n]+/u', '', $value);
+
+        // Reemplaza comillas tipográficas raras por comillas simples normales
+        $value = str_replace(["\u{2018}", "\u{2019}", "\u{201C}", "\u{201D}"], ["'", "'", '"', '"'], $value);
+
+        return trim($value);
+    }
     private function saveOrUpdatePerson($data)
     {
-        $person = (isset($data['people_id']) && $data['people_id'] != 'null' && $data['people_id'] != '-1')
+        $isUpdate = (isset($data['people_id']) && $data['people_id'] != 'null' && $data['people_id'] != '-1');
+        $person = $isUpdate
             ? People::find($data['people_id'])
             : new People();
 
@@ -339,25 +347,43 @@ class MaritimeDepartures extends ModelManager
 
 // ✅ Regla: si hay birthdate, calcular age (no dejar 0)
 // ✅ Si no hay birthdate pero hay age, calcular birthdate
-        if ($birthdateInput) {
-            $birthdate = $birthdateInput->copy();
-            $age = $birthdate->age; // edad real basada en hoy
-        } elseif ($ageInput !== null) {
-            $age = max(0, $ageInput);
+        $age=0;
+        $birthdateValue = "";
+        if ($isUpdate) {
+            $birthdateValue = $person->birthdate;
+            if ($ageInput !== null) {
+                $age = max(0, $ageInput);
+                // Calcula una fecha aproximada de nacimiento:
+                // (mismo día/mes de hoy, pero restando años)
+                $birthdate = Carbon::now()->subYears($age);
+                $birthdateValue = $birthdate->format('Y-m-d');
+            } else {
+                $age = 0;
+                $birthdate = Carbon::now();
+                $birthdateValue = $birthdate->format('Y-m-d');
 
-            // Calcula una fecha aproximada de nacimiento:
-            // (mismo día/mes de hoy, pero restando años)
-            $birthdate = Carbon::now()->subYears($age);
+            }
         } else {
-            $age = 0;
-            $birthdate = Carbon::now();
+            if ($ageInput !== null) {
+                $age = max(0, $ageInput);
+                // Calcula una fecha aproximada de nacimiento:
+                // (mismo día/mes de hoy, pero restando años)
+                $birthdate = Carbon::now()->subYears($age);
+                $birthdateValue = $birthdate->format('Y-m-d');
+            } else {
+                $age = 0;
+                $birthdate = Carbon::now();
+                $birthdateValue = $birthdate->format('Y-m-d');
+
+            }
         }
 
+
         $attributes = [
-            'last_name' => $data["last_name"],
-            'name' => $data["name"],
+            'last_name' => $this->normalizeUtf8($data["last_name"] ?? ''),
+            'name'      => $this->normalizeUtf8($data["name"] ?? ''),
             // ✅ birthdate final calculado/normalizado
-            'birthdate' => $birthdate->format('Y-m-d'),
+            'birthdate' => $birthdateValue,
             // ✅ age final calculado/normalizado (nunca 0 si venía birthdate)
             'age' => $age,
             'gender' => $data["gender"] ?? 3,
@@ -391,6 +417,7 @@ class MaritimeDepartures extends ModelManager
             $attributes['customer_id'] = $data['customer_id'];
 
         }
+
         $validate = $this->validateAndSaveModel($customer, $attributes, 'Cliente');
 
         return $validate;

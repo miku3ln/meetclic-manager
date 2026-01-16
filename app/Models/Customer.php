@@ -97,7 +97,7 @@ class Customer extends Model
         ];
 
         // 🔥 ajusta el nombre real de tu tabla aquí:
-        $table = 'customers'; // o 'customer' si así se llama en tu BD
+        $table = 'customer'; // o 'customer' si así se llama en tu BD
 
         if ($id === null) {
             // ✅ CREATE: requerido + unique
