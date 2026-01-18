@@ -62,6 +62,7 @@ class MaritimeDepartures extends ModelManager
         $departure->user_id = $user_id;
         $departure->arrival_time = $departureData['arrival_time'];
         $departure->responsible_name = $departureData['responsible_name'];
+        $departure->user_management_id = $departureData['user_management_id'];
         $departure->status = MaritimeDepartures::STATUS_DRAFT;
         $departure->save();
 
@@ -192,128 +193,7 @@ class MaritimeDepartures extends ModelManager
         }
     }
 
-    public function saveMaritimeDepartureApi2($params)//API EMBARQUE Y ZARPE
-    {
-        DB::beginTransaction();
-        try {
-            $attributesPost = $params;
-            $departureData = $attributesPost["MaritimeDepartures"];
-            $customers = $attributesPost["Customers"];
 
-            $departure = new MaritimeDepartures();
-            $departure->business_id = $departureData["business_id"];
-            $user_id = -1;
-
-            if (isset($departureData["user_id"])) {
-                $user_id = $departureData["user_id"];
-            } else {
-                $user = Auth::user();
-                if ($user) {
-                    $user_id = $user->id;
-                }
-            }
-            $departure->user_id = $user_id;
-            //$departure->user_management_id = $departureData["user_management_id"];
-            $departure->arrival_time = $departureData["arrival_time"];
-            $departure->responsible_name = $departureData["responsible_name"];
-            $departure->status = MaritimeDepartures::STATUS_DRAFT;
-            $departure->save();
-
-            foreach ($customers as $customerData) {
-
-                // 1. Buscar si existe Customer por document_number
-                $existingCustomer = Customer::where('identification_document', $customerData['document_number'])->first();
-                $customerId = null;
-                $peopleId = null;
-                if ($existingCustomer) {
-                    $customerId = $existingCustomer->id;
-                    $peopleId = $existingCustomer->people_id;
-
-                    // 1) Actualizar People si existe people_id
-                    if ($peopleId) {
-                        $customerData['people_id'] = $peopleId;
-                        $peopleResult = $this->saveOrUpdatePerson($customerData);
-                        if (!$peopleResult['success']) throw new \Exception($peopleResult['msj']);
-                        $peopleId = $peopleResult['data']['id'];
-                    }
-                    // 2) Actualizar Customer (mismo id)
-                    $customerData['customer_id'] = $customerId;
-                    $customerResult = $this->saveOrUpdateCustomer($customerData, $peopleId);
-                    if (!$customerResult['success']) throw new \Exception($customerResult['msj']);
-                    $customerId = $customerResult['data']['id'];
-
-                    // 3) Customer information (siempre)
-                    $customerInfoResult = $this->saveOrUpdateCustomerInformation($customerData, $customerId);
-                    if (!$customerInfoResult['success']) throw new \Exception($customerInfoResult['msj']);
-
-                    // 4) Dirección si aplica
-                    if (isset($customerData['information_address_id']) || isset($customerData['information_address_location_current'])) {
-                        $addressResult = $this->saveOrUpdateAddress($customerData, $customerId);
-                        if (!$addressResult['success']) throw new \Exception($addressResult['msj']);
-                    }
-
-                    // 5) Teléfono si aplica
-                    if (isset($customerData['information_phone_id']) || isset($customerData['information_phone_value'])) {
-                        $phoneResult = $this->saveOrUpdatePhone($customerData, $customerId);
-                        if (!$phoneResult['success']) throw new \Exception($phoneResult['msj']);
-                    }
-                } else {
-
-                    // 2. Actualizar/Crear la Persona (People)
-                    $customerData['people_id'] = $peopleId; // Inyectamos el ID si ya existe
-                    $peopleResult = $this->saveOrUpdatePerson($customerData);
-                    if (!$peopleResult['success']) throw new \Exception($peopleResult['msj']);
-
-                    // 3. Actualizar/Crear el Customer
-                    $customerData['customer_id'] = $customerId; // Inyectamos el ID si ya existe
-                    $customerResult = $this->saveOrUpdateCustomer($customerData, $peopleResult['data']['id']);
-                    if (!$customerResult['success']) throw new \Exception($customerResult['msj']);
-
-                    // 4. Información Adicional del Customer
-                    $customerInfoResult = $this->saveOrUpdateCustomerInformation($customerData, $customerResult['data']['id']);
-                    if (!$customerInfoResult['success']) throw new \Exception($customerInfoResult['msj']);
-
-                    // 5. Dirección si aplica
-                    if (isset($customerData['information_address_id'])) {
-                        $addressResult = $this->saveOrUpdateAddress($customerData, $customerResult['data']['id']);
-                        if (!$addressResult['success']) throw new \Exception($addressResult['msj']);
-                    }
-
-                    // 6. Teléfono si aplica
-                    if (isset($customerData['information_phone_id'])) {
-                        $phoneResult = $this->saveOrUpdatePhone($customerData, $customerResult['data']['id']);
-                        if (!$phoneResult['success']) throw new \Exception($phoneResult['msj']);
-                    }
-                    $customerId = $customerResult['data']['id'];
-                }
-                // 7. Registrar en MaritimeDeparturesCustomers
-                $departureCustomer = new MaritimeDeparturesCustomers();
-                $departureCustomer->maritime_departures_id = $departure->id;
-                $departureCustomer->type = $customerData['type'];
-                $departureCustomer->age = $customerData['age'];
-                $departureCustomer->customer_id = $customerId;
-                $departureCustomer->save();
-            }
-
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Registrados con Exito.',
-                'data' => []
-            ];
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return [
-                'success' => false,
-                'message' => $e->getMessage(),
-                'errors' => []
-            ];
-        }
-    }
     private function normalizeUtf8($value): string
     {
         $value = (string)$value;
@@ -332,6 +212,7 @@ class MaritimeDepartures extends ModelManager
 
         return trim($value);
     }
+
     private function saveOrUpdatePerson($data)
     {
         $isUpdate = (isset($data['people_id']) && $data['people_id'] != 'null' && $data['people_id'] != '-1');
@@ -347,7 +228,7 @@ class MaritimeDepartures extends ModelManager
 
 // ✅ Regla: si hay birthdate, calcular age (no dejar 0)
 // ✅ Si no hay birthdate pero hay age, calcular birthdate
-        $age=0;
+        $age = 0;
         $birthdateValue = "";
         if ($isUpdate) {
             $birthdateValue = $person->birthdate;
@@ -381,7 +262,7 @@ class MaritimeDepartures extends ModelManager
 
         $attributes = [
             'last_name' => $this->normalizeUtf8($data["last_name"] ?? ''),
-            'name'      => $this->normalizeUtf8($data["name"] ?? ''),
+            'name' => $this->normalizeUtf8($data["name"] ?? ''),
             // ✅ birthdate final calculado/normalizado
             'birthdate' => $birthdateValue,
             // ✅ age final calculado/normalizado (nunca 0 si venía birthdate)
@@ -507,11 +388,11 @@ class MaritimeDepartures extends ModelManager
 
     public function getDeparturesCustomersResumeByType(array $params): array
     {
-        $businessId = (int)($params['business_id'] ?? 0);
+        $businessId = $params['business_id'];
         $from = $params['date_from'] ?? null; // '2026-01-01 00:00:00'
         $to = $params['date_to'] ?? null; // '2026-01-31 23:59:59'
 
-        if ($businessId <= 0 || empty($from) || empty($to)) {
+        if (empty($from) || empty($to)) {
             return [];
         }
         $select = "
@@ -530,16 +411,24 @@ class MaritimeDepartures extends ModelManager
         END as type
     ";
         // ✅ 1 sola consulta, agrupada, usando created_at de maritime_departures
-        $rows = DB::table('maritime_departures as md')
-            ->join('business as b', 'b.id', '=', 'md.business_id')
+
+        $query = DB::table('maritime_departures as md');
+
+
+        $query
+            ->join('maritime_vessels as mv', 'md.user_management_id', '=', 'mv.id')
+            ->join('business as b', 'b.id', '=', 'mv.business_id')
             ->join('maritime_departures_customers as mdc', 'mdc.maritime_departures_id', '=', 'md.id')
-            ->where('md.business_id', $businessId)
+
             ->whereBetween('md.created_at', [$from, $to])
             ->whereNotNull('mdc.type')
-            ->selectRaw($select)
-            ->get()
-            ->toArray();
+            ->selectRaw($select);
 
+        if ($businessId) {
+            $query->where('md.business_id', $businessId);
+        }
+        $rows = $query->get()
+            ->toArray();
         return $rows;
     }
 
@@ -587,12 +476,13 @@ class MaritimeDepartures extends ModelManager
     {
         $sort = 'desc';
         $field = $this->table . '.id'; // default seguro
-        $businessId = $params["filters"]["business_id"];
+        $user_management_id = $params["filters"]["user_management_id"];
         $query = DB::table($this->table)
             ->join('business as b', 'b.id', '=', $this->table . '.business_id')
             ->leftJoin('business_subcategories as sc', 'sc.id', '=', 'b.business_subcategories_id')
             ->leftJoin('business_categories as c', 'c.id', '=', 'sc.business_categories_id');
-        $query->where($this->table . '.business_id', $businessId);
+
+        $query->where($this->table . '.user_management_id', $user_management_id);
 
         // Sort
         if (isset($params['sort']) && is_array($params['sort']) && count($params['sort']) > 0) {
@@ -654,7 +544,8 @@ class MaritimeDepartures extends ModelManager
                     ->orWhere('c.title', 'like', '%' . $likeSet . '%');
             });
         }
-        $query->where($this->table . '.business_id', $businessId);
+        $query->where($this->table . '.user_management_id', $user_management_id);
+
 
         // ✅ count eficiente
         $recordsTotal = (clone $query)->count();

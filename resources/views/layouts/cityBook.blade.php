@@ -35,6 +35,25 @@
             --mc-shadow: 0 8px 20px rgba(44, 44, 44, 0.08);
             --mc-radius: 14px;
         }
+
+
+        legend.legend--section {
+            color: var(--mc-azulClic) !important;
+            font-size: 18px;
+            text-align: left;
+
+            padding-bottom: 16px;
+        }
+
+        .inline-data {
+            display: inline;
+        }
+        h1.title-main {
+            color: var(--mc-azulClic) !important;
+            text-align: left;
+            margin-left: 8%;
+            margin-bottom: 2%;
+        }
     </style>
     <style>
         li.menu-top__li-points span {

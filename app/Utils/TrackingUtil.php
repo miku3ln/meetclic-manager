@@ -671,7 +671,10 @@ class TrackingUtil
             'listingsQueen',
             'orders',
             'pointsSales',
-            'boardingEmbarkation'
+            'boardingEmbarkation',
+            'boardingEmbarkationManagement',
+
+
         ];
 
         return in_array($actionCurrent, $actionsUserLogin);

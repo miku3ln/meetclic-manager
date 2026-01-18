@@ -123,7 +123,7 @@
             <div class="embark-actions" role="group" aria-label="Acciones de embarque">
 
                 <button type="button"
-                        class="embark-actions__btn embark-actions__btn--send"
+                        class="btn btn-success"
                         :disabled="!validateForm()"
                         v-on:click="_saveModel()"
 

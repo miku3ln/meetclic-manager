@@ -3517,11 +3517,49 @@ class Customer extends Model
         return $result;
     }
 
+    public function listS2CustomerResponsibles($params)
+    {
+
+        $query = DB::table($this->table);
+        //  $business_id = $params['filters']['business_id'];
+        $selectString = "$this->table.id ,$this->table.identification_document ,$this->table.people_id ,$this->table.src,$this->table.people_type_identification_id,$this->table.people_id,$this->table.business_name,$this->table.business_reason,$this->table.ruc_type_id
+  ,people_type_identification.name people_type_identification
+  ,people.last_name ,people.name ,people.birthdate,people.age,people.gender
+  ,ruc_type.name ruc_type
+  ,customer_by_information.id customer_by_information_id,customer_by_information.customer_id,customer_by_information.people_nationality_id,customer_by_information.people_profession_id
+  ,people_nationality.name people_nationality
+  ,people_profession.name people_profession
+  ,CONCAT($this->table.identification_document,' ',people.name,' ',people.last_name)  text ";
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('people_type_identification', $this->table . '.people_type_identification_id', '=', 'people_type_identification.id');
+        $query->join('people', $this->table . '.people_id', '=', 'people.id');
+        $query->join('ruc_type', $this->table . '.ruc_type_id', '=', 'ruc_type.id');
+
+
+        $query->join('customer_by_information', "customer_by_information.customer_id", '=', $this->table . '.id');
+        $query->join('people_nationality', "customer_by_information.people_nationality_id", '=', 'people_nationality.id');
+        $query->join('people_profession', "customer_by_information.people_profession_id", '=', 'people_profession.id');
+        if (isset($params["filters"]['search_value']["term"])) {
+
+            $likeSearch = $params["filters"]['search_value']["term"];
+            $query->where($this->table . '.identification_document', 'like', '%' . $likeSearch . '%');
+            $query->orWhere('people.last_name', 'like', '%' . $likeSearch . '%');
+            $query->orWhere('people.name', 'like', '%' . $likeSearch . '%');
+
+        }
+
+        $query->limit(10)->orderBy('people.name', 'asc');
+        $result = $query->get()->toArray();
+        return $result;
+
+    }
+
     public function getListS2Customer($params)
     {
 
         $query = DB::table($this->table);
-        $business_id = $params['filters']['business_id'];
+      //  $business_id = $params['filters']['business_id'];
         $selectString = "$this->table.id ,$this->table.identification_document ,$this->table.people_id ,$this->table.src,$this->table.people_type_identification_id,$this->table.people_id,$this->table.business_name,$this->table.business_reason,$this->table.ruc_type_id
   ,people_type_identification.name people_type_identification
   ,people.last_name ,people.name ,people.birthdate,people.age,people.gender

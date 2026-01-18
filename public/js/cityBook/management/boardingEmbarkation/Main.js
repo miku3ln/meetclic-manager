@@ -238,8 +238,8 @@ Vue.component('points-sales-component', {
             var business_id = -1;
             var maritimeInformation = this.managerCurrentBusiness.maritimeInformation;
             var paramsFilters = {
-                business_id: maritimeInformation.business_id
-
+                business_id: maritimeInformation.business_id,
+                user_management_id:maritimeInformation.user_management_id,
             };
             let gridInit = $(gridName);
             gridInit.bootgrid({

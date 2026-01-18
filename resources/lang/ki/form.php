@@ -1,0 +1,108 @@
+<?php
+
+return [
+
+    'labels-configuration' => [],
+
+    'actions' => [
+        'back' => 'Kutiy',
+        'close' => 'Wichay',
+        'cancel' => 'Tukuchiy',
+        'confirm' => 'Takyachiy',
+        'accept' => 'Chaskiy',
+        'continue' => 'Katichiy',
+        'create' => 'Wallpay',
+        'register' => 'Killkay',
+        'save' => 'Wakichiy',
+        'update' => 'Mushukyachiy',
+        'edit' => 'Allichiy',
+        'delete' => 'Pichay',
+        'send' => 'Apachiy',
+        'search' => 'Maskay',
+        'clear' => 'Pichay',
+        'refresh' => 'Mushukchiy',
+        'retry' => 'Kutichiy',
+        'view' => 'Rikuy',
+        'download' => 'Urayachiy',
+        'upload' => 'Wichay',
+        'select' => 'Akllay',
+        'add' => 'Yapay',
+        'remove' => 'Anchuchiy',
+        "generate"=>"Wallpay"
+
+    ],
+
+    'titles' => [
+        'create' => 'Mushuk killkay wallpay',
+        'register' => 'Willayta killkay',
+        'update' => 'Killkayta mushukyachiy',
+        'edit' => 'Willayta allichiy',
+        'details' => 'Willayta rikuy',
+        'delete' => 'Killkayta pichay',
+        'confirmation' => 'Takyachina',
+        'warning' => 'Pakta rikuy',
+        'information' => 'Willay',
+        "report"=> "Willay"
+
+    ],
+
+    'status' => [
+        'label' => 'Kawsay',
+        'active' => 'Kawsak',
+        'inactive' => 'Mana kawsak',
+        'pending' => 'Shuyashka',
+        'draft' => 'Ñawpa killkay',
+        'confirmed' => 'Takyachishka',
+        'cancelled' => 'Tukuchishka',
+        'approved' => 'Chaskishka',
+        'rejected' => 'Mana chaskishka',
+        'completed' => 'Tukuchishka',
+        'processing' => 'Rurashka',
+        'error' => 'Pantay',
+    ],
+
+    'process' => [
+        'create' => 'Wallpay',
+        'registration' => 'Killkay',
+        'update' => 'Mushukyachiy',
+        'validation' => 'Takyachina',
+        'loading' => 'Churashka',
+        'search' => 'Maskay',
+        'deletion' => 'Pichay',
+        'upload' => 'Wichay',
+        'download' => 'Urayachiy',
+        'synchronization' => 'Shuklla tukuy',
+        'authorization' => 'Sakiy',
+        'authentication' => 'Rikuchiy',
+    ],
+
+    'messages' => [
+        'loading' => 'Churashka...',
+        'processing' => 'Willayta rurashka...',
+        'saving' => 'Wakichishka...',
+        'updating' => 'Mushukyachishka...',
+        'deleting' => 'Pichashka...',
+        'sending' => 'Apachishka...',
+        'searching' => 'Maskashka...',
+        'uploading' => 'Wichashka...',
+        'downloading' => 'Urayachishka...',
+        'no_results' => 'Mana tarishka',
+        'select_option' => 'Shuk akllayta akllay',
+        'required_fields' => 'Muntashka chakra kunata huntachiy',
+        'confirm_action' => 'Katichun?',
+        'confirm_delete' => 'Kay killkayta pichankichu?',
+        'unsaved_changes' => 'Mana wakichishka tikraykuna tiyan',
+        'connection_error' => 'Tinkiy pantay. Yapaykuna ruray',
+        'operation_error' => 'Pantay tiyan. Yapaykuna ruray',
+        'validation_error' => 'Formulariopi pantaykuna tiyan',
+        'save_success' => 'Alli wakichishka',
+        'update_success' => 'Alli mushukyachishka',
+        'delete_success' => 'Alli pichashka',
+        'send_success' => 'Alli apachishka',
+        'upload_success' => 'Archivo alli wichashka',
+        'download_ready' => 'Urayachina alli',
+        'permission_denied' => 'Mana sakishka kay rurayta',
+        'session_expired' => 'Tinkiy tukurishka. Yapay yaykuy',
+    ],
+
+];

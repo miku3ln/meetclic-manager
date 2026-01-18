@@ -677,8 +677,8 @@ class CustomerByProfile extends ModelManager
             } else {
                 $gaming = [
                     'success' => false,
-                    'bee' => 80000,
-                    'queen' => 150000000,
+                    'bee' => 0,
+                    'queen' => 0,
                 ];
             }
             $avatarManager = false;
@@ -888,8 +888,8 @@ class CustomerByProfile extends ModelManager
             } else {
                 $gaming = [
                     'success' => false,
-                    'bee' => 80000,
-                    'queen' => 150000000,
+                    'bee' => 0,
+                    'queen' => 0,
                 ];
             }
             $avatarManager = false;

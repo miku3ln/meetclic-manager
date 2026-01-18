@@ -215,4 +215,13 @@ class CustomerController extends MyBaseController
         $result = $model->getListS2Customer($attributesPost);
         return Response::json($result);
     }
+    public function listS2CustomerResponsibles()
+    {
+
+        $attributesPost = Request::all();
+        $model = new Customer();
+        $result = $model->listS2CustomerResponsibles($attributesPost);
+        return Response::json($result);
+    }
+
 }

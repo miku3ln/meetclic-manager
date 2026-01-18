@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
 use App\Utils\FrontendPageSections;
+use App\Utils\LanguageUtil;
 use App\Utils\Util;
 use Auth;
 use Frontend;
@@ -279,7 +280,6 @@ class FrontendCityBookManager extends ModelManager
             }
 
 
-
         } else if ($page == 'businessPullkay') {
 
             $resultBusinessDetails = Util::getDataBusinessPullkay($params);
@@ -327,7 +327,7 @@ class FrontendCityBookManager extends ModelManager
 
             ];
             $dataManagerPage['allowVue'] = true;
-        }else if ($page == 'boardingEmbarkation') {
+        } else if ($page == 'boardingEmbarkation') {
 
             $dataManagerPage['breadcrumb']['active'] = __('frontend.account.menu.my-business');
 
@@ -344,7 +344,21 @@ class FrontendCityBookManager extends ModelManager
 
             ];
             $dataManagerPage['allowVue'] = true;
-        }  else if ($page == 'howItWorks') {
+        } else if ($page == 'boardingEmbarkationManagement') {
+            $dataManagerPage['breadcrumb']['active'] = __('frontend.account.menu.my-business');
+            $dataCatalogue = array();
+            $pathCurrentResources = 'cityBook/management/boardingEmbarkationManagement';
+            $configPartial = [
+                'moduleFolder' => 'boardingEmbarkationManagement',
+                'moduleCamel' => 'boardingEmbarkationManagement',
+                'moduleMain' => 'management',
+                'managementNameCurrent' => 'BoardingEmbarkationManagement',
+                'dataCatalogue' => $dataCatalogue,
+                'moduleResource' => 'boardingEmbarkationManagement',
+
+            ];
+            $dataManagerPage['allowVue'] = true;
+        } else if ($page == 'howItWorks') {
 
         } else if ($page == 'dictionaryType') {//CMS-TEMPLATE-MENU-DATA---KICHWA-CASTILIAN
 
@@ -1568,6 +1582,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
             }
 
         }
+        $formLanguageManagement = LanguageUtil:: getValidationLangFlat();
+        $dataManagerPage['formLanguageManagement'] = $formLanguageManagement;
         $result['dataManagerPage'] = $dataManagerPage;
 
         $result['pageSectionsConfig'] = $pageSectionsConfig;
@@ -1592,6 +1608,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
         $result['publicAsset'] = $publicAsset;
         $resourcePathServer = asset($this->resourcePathServer);
         $result['rootAssets'] = $resourcePathServer;
+
+
         return $result;
     }
 

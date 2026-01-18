@@ -8,6 +8,7 @@ use App\Models\MaritimeOperationsManagement\MaritimeDepartures;
 use App\Utils\DateIntervals;
 use App\Utils\UtilHighcharts;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -49,7 +50,7 @@ class MaritimeDeparturesController extends MyBaseController
         return Response::json($result);
     }
 
-    public function maritimeDeparturesAssign()
+    public function businessManager()
     {
         $table = "business";
         $params = Request::all();
@@ -66,6 +67,68 @@ class MaritimeDeparturesController extends MyBaseController
         $query = Business::query()->select($select);
         $query->join('business_subcategories', $table . ".business_subcategories_id", '=', 'business_subcategories.id');
         $query->join('business_categories', "business_subcategories.business_categories_id", '=', 'business_categories.id');
+        $query->leftJoin('business_location', function ($query)
+        use (
+            $selectString
+
+        ) {
+            $query->on('business_location.business_id', '=', 'business.id');
+            $query->join('zones', "business_location.zones_id", '=', 'zones.id');
+            $query->join('cities', "zones.city_id", '=', 'cities.id');
+            $query->join('provinces', "cities.province_id", '=', 'provinces.id');
+            $query->join('countries', "provinces.country_id", '=', 'countries.id');
+
+        });
+        $business_subcategories_data=[76];
+        $query->whereIn($table.'.business_subcategories_id', $business_subcategories_data);
+
+
+        if (isset($params["filters"]['search_value']["term"])) {
+            $likeSearch = $params["filters"]['search_value']["term"];
+            $query->where($table . '.title', 'like', '%' . $likeSearch . '%');
+
+
+        }
+
+        $query->limit(50);
+        $result = $query->get()->toArray();
+
+        return Response::json($result);
+
+    }
+
+    public function maritimeDeparturesAssign()
+    {
+        $table = "business";
+        $params = Request::all();
+        $user = Auth::user();
+        $userId = $user->id;
+        $selectString = "$table.description ,$table.id business_id,$table.title business_alt,$table.email,$table.page_url,$table.phone_value,$table.street_1,$table.street_2,$table.street_lat,$table.street_lng,$table.user_id owner_user_business_id,$table.business_subcategories_id,$table.status,$table.qualification,$table.source
+ ,business_subcategories.name business_subcategories
+ ,business_categories.name business_categories,business_categories.id business_categories_id
+ ,countries.name countries,countries.id countries_id
+         ,zones.name zone,zones.id zones_id
+        ,cities.name city,cities.id cities_id
+ ,provinces.name province,provinces.id
+ ,users.id users_id,users.name users_name
+,maritime_vessels.name text,maritime_vessels.id id,
+maritime_vessel_responsibles.customer_id,maritime_vessel_responsibles.id maritime_vessel_responsibles_id
+,CONCAT(people.name,' ',people.last_name)  responsible_name,customer.identification_document
+
+ ";
+        $select = DB::raw($selectString);
+        $query = Business::query()->select($select);
+        $query->join('business_subcategories', $table . ".business_subcategories_id", '=', 'business_subcategories.id');
+        $query->join('maritime_vessels', $table . ".id", '=', 'maritime_vessels.id');
+        $query->join('maritime_vessel_responsibles', "maritime_vessels.id", '=', 'maritime_vessel_responsibles.maritime_vessel_id');
+        $query->join('customer_by_profile', "maritime_vessel_responsibles.customer_id", '=', 'customer_by_profile.customer_id');
+        $query->join('customer', "customer_by_profile.customer_id", '=', 'customer.id');
+        $query->join('people', "customer.people_id", '=', 'people.id');
+
+        $query->join('users', "customer_by_profile.user_id", '=', 'users.id');
+        $query->join('business_categories', "business_subcategories.business_categories_id", '=', 'business_categories.id');
+        $query->where('users.id', '=', $userId);
+
         $query->leftJoin('business_location', function ($query)
         use (
             $selectString
@@ -98,14 +161,11 @@ class MaritimeDeparturesController extends MyBaseController
 
         $attributesPost = Request::all();
         $date_from = $attributesPost["date_from"] . ' 00:00:00';
-
         $date_to = "";
-
         $tz = 'America/Guayaquil';
-
         $dateToInput = $attributesPost['date_to']; // 'YYYY-MM-DD'
         $today = Carbon::now($tz)->toDateString(); // 'YYYY-MM-DD'
-        $business_id = $attributesPost['business_id'];
+        $business_id = isset($attributesPost['business_id']) ? $attributesPost['business_id'] : null;
         if ($dateToInput === $today) {
             // Si es hoy → usar hora actual
             $date_to = Carbon::now($tz)->toDateTimeString(); // 'YYYY-MM-DD HH:MM:SS'
@@ -188,7 +248,7 @@ class MaritimeDeparturesController extends MyBaseController
             ]
         );
         $data = [
-            "all"=>$resultTypes,
+            "all" => $resultTypes,
             "dataInterval" => $dataInterval,
             "attributesPost" => $attributesPost,
             "resultTypes" => $summary, "intervals" => $intervalPack, "dataIntervalCompany" => $dataIntervalCompany, "dataIntervalTypePeople" => $dataIntervalTypePeople];

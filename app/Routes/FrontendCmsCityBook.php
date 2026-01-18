@@ -96,6 +96,7 @@ class FrontendCmsCityBook
 
             Route::get('/pointsSales/', 'Frontend\FrontendCityBookController@pointsSales')->name('pointsSales');//GAMIFICATION ROUTE
             Route::get('/boardingEmbarkation/', 'Frontend\FrontendCityBookController@boardingEmbarkation')->name('boardingEmbarkation');//GAMIFICATION ROUTE
+            Route::get('/boardingEmbarkationManagement', 'Frontend\FrontendCityBookController@boardingEmbarkationManagement')->name('boardingEmbarkationManagement');//GAMIFICATION ROUTE
 
 
             Route::get('/presentationCard/{id?}/{type?}', 'Frontend\FrontendCityBookController@presentationCard')->name('presentationCard');

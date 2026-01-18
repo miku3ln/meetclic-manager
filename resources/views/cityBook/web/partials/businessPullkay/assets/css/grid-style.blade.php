@@ -383,7 +383,7 @@
     }
 
     .text-left a {
-        color: #4d4c4c !important;
+        color: #4d4c4c ;
     }
 
     .form-group {
@@ -584,5 +584,20 @@
     .content-management-rows {
         padding-bottom: 15px;
         padding-top: 15px;
+        border-bottom: 2px solid #445ef2;
     }
+
+
+
+    table [data-column-id="description"] {
+        padding-top: 1.1%;
+        padding-bottom: 1%;
+        padding-left: 2%;
+        background: var(--mc-azulClic);
+    }
+    th.text-left a {
+        color: var(--mc-blanco) !important;
+    }
+
+
 </style>

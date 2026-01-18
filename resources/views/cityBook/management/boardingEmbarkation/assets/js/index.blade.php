@@ -238,22 +238,14 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
                     nameModel: "Lodging"
                 },
                 labelsConfig: {
-                    "guest": "Huespedes Ingreso",
-                    button: {
-                        "guest": "Crear Huesped",
+                    buttons: {
                         cancel: "Cancelar",
-                        viewRoomsState: "Habitaciones",
-                    },
-                    manager: {
-                        guest: "Huesped #  "
-                    },
-                    process: {
-                        information: "Información Hospedaje",
-                        guests: "Huespedes Ingreso",
-                        address: "Dirección",
-                        payment: "Pago Gestión",
+                        create: "Cancelar",
+                        update: "Cancelar",
+                        delete: "Cancelar",
 
-                    }
+                    },
+
                 },
                 lblBtnSave: "Guardar",
                 lblBtnClose: "Cerrar",
@@ -577,9 +569,12 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
             getValuesSave: function () {
 
                 var People = this.getValuesPeopleAll(this.$v.model.attributes.people.$each.$iter);
+                var data = this.managerCurrentBusiness;
+                console.log("data",data);
                 var result = {
                     MaritimeDepartures: {
                         business_id: this.managerCurrentBusiness.maritimeInformation.business_id,
+                        user_management_id: this.managerCurrentBusiness.maritimeInformation.user_management_id,
                         arrival_time: formatDateTimeForDB(new Date()),
                         responsible_name: this.managerCurrentBusiness.responsible.fullName,
                     },

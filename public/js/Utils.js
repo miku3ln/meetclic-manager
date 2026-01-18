@@ -3337,3 +3337,8 @@ function getDataLocationMap(params) {
 
     return result;
 }
+var $labelsGridConfigDefault=  {
+    loading: "Cargando...",
+    noResults: "Sin Resultados!",
+    infos: "Mostrando {{ctx.start}} - {{ctx.end}} de {{ctx.total}} resultados"
+};

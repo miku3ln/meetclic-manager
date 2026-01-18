@@ -21,7 +21,7 @@ class FrontendManagerData extends ModelManager
 
     public function getItemsManagerFrontend()
     {
-        return [
+        $result= [
             'business' => [//Mis Negocios Manager
                 'text' => __('frontend.account.menu.my-business'),
                 'link' => route('business', app()->getLocale()),
@@ -68,8 +68,17 @@ class FrontendManagerData extends ModelManager
                 'icon' => 'fa fa-ship',
                 'allowManager' => env('allowMenuLeftMyPointOfSaleFrontEnd'),
                 'active' => false,
+            ],
+            'boardingEmbarkationManagement' => [
+                'text' => __('frontend.account.menu.records.four'),
+                'link' => route('boardingEmbarkationManagement', app()->getLocale()),
+                'icon' => 'fa fa-ship',
+                'allowManager' => env('allowMenuLeftMyPointOfSaleFrontEnd'),
+                'active' => false,
             ]
         ];
+
+        return $result;
     }
     public function getArrayByData($params)
     {
@@ -112,7 +121,7 @@ class FrontendManagerData extends ModelManager
         $data = [];
 
         $pageConfig = [
-            "boardingEmbarkation",
+            "boardingEmbarkation","boardingEmbarkationManagement",
             'account', 'myProfile', 'password', 'business', 'businessEmployer', 'orders', 'suggestionsMailBox', 'listings', 'bee', 'reviewsTo', 'pointsSales'
         ];
         $profileConfig = $params;

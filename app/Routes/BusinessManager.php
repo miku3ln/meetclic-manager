@@ -478,6 +478,8 @@ class BusinessManager
             Route::post('business/customer/save', 'Crm\CustomerController@saveData')->name('customerDataSave');
             Route::post('business/customer/saveFix', 'Crm\CustomerController@saveDataFix');
             Route::post('business/customer/admin', 'Crm\CustomerController@getAdmin');
+            Route::post('business/customer/getList', 'Crm\CustomerController@getAdmin');
+
             Route::post('business/customer/adminEmails', 'Crm\CustomerController@getAdminEmails'); //NEW
 
             Route::get('business/customer/listS2InformationAddress', 'Crm\CustomerController@getListS2InformationAddress'); //--
@@ -1305,7 +1307,8 @@ class BusinessManager
             //BUSINESS-MANAGER-CRM-CUSTOMER-PRESENTATION-ROUTES
             Route::post('business/secretaryProcessesByCustomerPresentation/admin', 'ProsecutorOffice\SecretaryProcessesByCustomerPresentationController@getAdmin')->name('secretaryProcessesByCustomerPresentationAdmin');
             Route::post('business/secretaryProcessesByCustomerPresentation/save', 'ProsecutorOffice\SecretaryProcessesByCustomerPresentationController@saveData')->name('secretaryProcessesByCustomerPresentationSave');
-            Route::get('business/customer/listS2Customer', 'Crm\CustomerController@getListS2Customer'); //--
+            Route::get('business/customer/listS2Customer', 'Crm\CustomerController@getListS2Customer')->name("listS2Customer"); //--
+            Route::get('business/customer/listS2CustomerResponsibles', 'Crm\CustomerController@getListS2Customer')->name("listS2CustomerResponsibles"); //--
 
 //RantiApp
 
@@ -1317,6 +1320,20 @@ class BusinessManager
             Route::post("boardingEmbarkation/maritimeDeparturesSave", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesSave")->name('maritimeDeparturesSave');
             Route::post("boardingEmbarkation/maritimeDeparturesReports", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesReports")->name('maritimeDeparturesReports');
             Route::get("boardingEmbarkation/maritimeDeparturesAssign", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesAssign")->name('maritimeDeparturesAssign');
+            Route::get("boardingEmbarkation/businessManager", "MaritimeOperationsManagement\MaritimeDeparturesController@businessManager")->name('businessManager');
+
+
+
+
+            Route::post("boardingEmbarkation/maritimeVesselsAdmin", "MaritimeOperationsManagement\MaritimeVesselsController@maritimeVesselsAdmin")->name('maritimeVesselsAdmin');
+            Route::post("boardingEmbarkation/saveMaritimeVesselApi", "MaritimeOperationsManagement\MaritimeVesselsController@saveMaritimeVesselApi")->name('saveMaritimeVesselApi');
+            Route::get("boardingEmbarkation/vesselTypesList", "MaritimeOperationsManagement\MaritimeVesselTypesController@vesselTypesList")->name('vesselTypesList');
+
+
+
+            Route::post("boardingEmbarkation/maritimeVesselsResposiblesAdmin", "MaritimeOperationsManagement\MaritimeVesselResponsiblesController@maritimeVesselsResposiblesAdmin")->name('maritimeVesselsResposiblesAdmin');
+            Route::post("boardingEmbarkation/saveMaritimeVesselResponsiblesApi", "MaritimeOperationsManagement\MaritimeVesselResponsiblesController@saveMaritimeVesselResponsiblesApi")->name('saveMaritimeVesselResponsiblesApi');
+
 
         });
     }
