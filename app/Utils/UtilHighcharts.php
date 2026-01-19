@@ -11,6 +11,95 @@ use Illuminate\Support\Carbon;
 
 class UtilHighcharts
 {
+    public static function isValidCedulaEcuador(?string $doc): bool
+    {
+        $doc = preg_replace('/\D+/', '', (string)$doc); // solo dígitos
+
+        if (strlen($doc) !== 10) return false;
+
+        $prov = intval(substr($doc, 0, 2));
+        if ($prov < 1 || $prov > 24) return false;
+
+        $third = intval($doc[2]);
+        if ($third < 0 || $third > 5) return false;
+
+        $coeffs = [2,1,2,1,2,1,2,1,2];
+        $sum = 0;
+
+        for ($i = 0; $i < 9; $i++) {
+            $val = intval($doc[$i]) * $coeffs[$i];
+            if ($val >= 10) $val -= 9;
+            $sum += $val;
+        }
+
+        $checkDigit = (10 - ($sum % 10)) % 10;
+        return $checkDigit === intval($doc[9]);
+    }
+
+    public static function  buildMatrixByCompanyId($rows, string $tz = 'America/Guayaquil'): array
+    {
+
+        $rows = collect($rows);
+
+        $months = [
+            1=>'ENE',2=>'FEB',3=>'MAR',4=>'ABR',5=>'MAY',6=>'JUN',
+            7=>'JUL',8=>'AGO',9=>'SEP',10=>'OCT',11=>'NOV',12=>'DIC'
+        ];
+        $days = [
+            'Sunday'=>'Domingo','Monday'=>'Lunes','Tuesday'=>'Martes','Wednesday'=>'Miércoles',
+            'Thursday'=>'Jueves','Friday'=>'Viernes','Saturday'=>'Sábado'
+        ];
+
+        $grouped = $rows->groupBy(fn($r) => (int) $r->companyId);
+
+        $matrix = [];
+
+        foreach ($grouped as $companyId => $items) {
+
+            // último registro por created_at (para dia/horario)
+            $last = $items->sortByDesc(function ($r) use ($tz) {
+                return Carbon::parse($r->created_at, $tz)->timestamp;
+            })->first();
+
+            $dt = Carbon::parse($last->created_at, $tz);
+
+            $weekdayEs = $days[$dt->format('l')] ?? $dt->format('l');
+            $day = str_pad((string)$dt->day, 2, '0', STR_PAD_LEFT);
+            $mon = $months[(int)$dt->month] ?? $dt->format('M');
+            $yy  = $dt->format('y');
+            $diaLabel = "{$weekdayEs} {$day}-{$mon}-{$yy}";
+
+            // ✅ contar nacionales vs extranjeros (según validación cédula)
+            $nationalCount = 0;
+            $localCount = 0;
+
+            foreach ($items as $row) {
+                $doc = $row->identification_document ?? null;
+                if (UtilHighcharts::isValidCedulaEcuador($doc)) {
+                    $nationalCount++;
+                } else {
+                    $localCount++;
+                }
+            }
+
+            $matrix[] = [
+                'codigo_embarcacion' => (int) $companyId,
+                'nombre_embarcacion' => (string) ($last->vessel_name ?? ''),
+                'dia' => $diaLabel,
+                'cant_pasajeros' => $items->count(),
+                'horario' => $dt->format('H:i:s'),
+
+                // ✅ nuevos
+                'national' => $nationalCount, // cédula válida
+                'local' => $localCount,       // NO cédula (extranjeros según tu definición)
+                'dataFull' => $items->values()->all(), // todas las filas del grupo
+            ];
+        }
+
+        usort($matrix, fn($a, $b) => $a['codigo_embarcacion'] <=> $b['codigo_embarcacion']);
+
+        return $matrix;
+    }
     /**
      * Agrupa data por una columna y calcula total (COUNT).
      *

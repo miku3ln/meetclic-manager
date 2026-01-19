@@ -8,7 +8,7 @@
     <meta content="{{env('APP_NAME_BACKEND_CONTENT')}}" name="description" />
     <meta content="{{env('APP_NAME_BACKEND_AUTHOR')}}" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    @include('layouts.minton.head')
+    @include('layouts.minton.header')
     <style>
         .danger {
             color: red;

@@ -4,6 +4,7 @@ namespace App\Models;
 namespace App\Models\ExportExcel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Excel;
 
 class ActionsDataExport implements FromCollection, WithHeadings
 {

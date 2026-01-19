@@ -5,7 +5,7 @@
                 <div class="col-md-6">
                     <button @click="createRegisterForm()" class="btn btn-success" v-form-text="'actions.create'">
                     </button>
-                    <button @click="reportsForm()" class="btn btn-warning"   >
+                    <button @click="reportsForm()" class="btn btn-warning">
                         <span v-form-text="'titles.report'"></span>
                         <i class="fa fa-bar-chart"></i>
 
@@ -38,7 +38,8 @@
                     </div>
 
                     <div class="panel-body">
-                        <form >
+
+                        <form>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mc-ticket-card-view">
@@ -63,7 +64,7 @@
 
                                                             <select
                                                                 class="form-control m-select2"
-                                                                v-init-s2-manager="{  _initS2Manager:_managerS2Products }"
+                                                                v-init-s2-manager="{  _initS2Manager:_managementVesselList }"
                                                             ></select>
 
                                                         </div>
@@ -114,37 +115,46 @@
                                     </div>
                                 </div>
                             </div>
-                           <div class="row">
-                               <div class="col-md-3">
-                                   <div class="form-group">
-                                       <label for="startDate">Desde:</label>
-                                       <input
-                                           type="date"
-                                           class="form-control"
-                                           id="startDate"
-                                           v-model="reportConfig.filters.startDate"
-                                           :max="reportConfig.limits.maxDate"
-                                       >
-                                   </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="startDate">Desde:</label>
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            id="startDate"
+                                            v-model="reportConfig.filters.startDate"
+                                            :max="reportConfig.limits.maxDate"
+                                        >
+                                    </div>
 
 
-                               </div>
-                               <div class="col-md-3">
-                                   <div class="form-group" style="margin-left: 15px;">
-                                       <label for="endDate">Hasta:</label>
-                                       <input
-                                           type="date"
-                                           class="form-control"
-                                           id="endDate"
-                                           v-model="reportConfig.filters.endDate"
-                                           :min="reportConfig.filters.startDate"
-                                           :max="reportConfig.limits.maxDate"
-                                       >
-                                   </div>
-                               </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-left: 15px;">
+                                        <label for="endDate">Hasta:</label>
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            id="endDate"
+                                            v-model="reportConfig.filters.endDate"
+                                            :min="reportConfig.filters.startDate"
+                                            :max="reportConfig.limits.maxDate"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button"
+                                            class="btn btn-success"
+                                            v-if="reportConfig.state.canApply"
+                                            v-on:click="downloadData()"
+                                            title="Descargar Excel"
+                                    >
+                                        <i class="fa fa-file-excel-o embark-actions__icon" aria-hidden="true"></i>
 
-                           </div>
-
+                                    </button>
+                                </div>
+                            </div>
 
 
                         </form>
@@ -185,7 +195,6 @@
                 </div>
 
 
-
                 <div class="embark-actions" role="group" aria-label="Acciones de embarque">
 
                     <button type="button"
@@ -197,12 +206,13 @@
                         <i class="fa fa fa-bar-chart embark-actions__icon" aria-hidden="true"></i>
                         <span class="embark-actions__text" v-form-text="'actions.generate'"></span>
                     </button>
+
                     <button type="button"
                             class="embark-actions__btn btn btn-warning"
                             v-on:click="onReturnMain()"
                     >
                         <i class="fa fa-arrow-left embark-actions__icon" aria-hidden="true"></i>
-                        <span class="embark-actions__text"  v-form-text="'actions.back'"></span>
+                        <span class="embark-actions__text" v-form-text="'actions.back'"></span>
                     </button>
 
 

@@ -35,7 +35,7 @@ class MaritimeDepartures extends ModelManager
     protected $table = 'maritime_departures';
     protected $modelNameEntity = 'MaritimeDepartures';
 
-    protected $fillable = array('business_id', "user_id", 'arrival_time', 'responsible_name', "status", "user_management_id");
+    protected $fillable = array('business_id', "user_id", 'arrival_time', 'responsible_name', "status", "maritime_vessels_id");
 
     public $timestamps = true;
 
@@ -62,7 +62,7 @@ class MaritimeDepartures extends ModelManager
         $departure->user_id = $user_id;
         $departure->arrival_time = $departureData['arrival_time'];
         $departure->responsible_name = $departureData['responsible_name'];
-        $departure->user_management_id = $departureData['user_management_id'];
+        $departure->maritime_vessels_id = $departureData['maritime_vessels_id'];
         $departure->status = MaritimeDepartures::STATUS_DRAFT;
         $departure->save();
 
@@ -388,7 +388,7 @@ class MaritimeDepartures extends ModelManager
 
     public function getDeparturesCustomersResumeByType(array $params): array
     {
-        $businessId = $params['business_id'];
+        $maritime_vessels_id = isset($params['maritime_vessels_id'])?$params['maritime_vessels_id']:null;
         $from = $params['date_from'] ?? null; // '2026-01-01 00:00:00'
         $to = $params['date_to'] ?? null; // '2026-01-31 23:59:59'
 
@@ -398,10 +398,12 @@ class MaritimeDepartures extends ModelManager
         $select = "
         b.title as companyName,
         b.id as companyId,
+mv.name vessel_name,
 
         md.created_at,
         mdc.id row_manager_id,
         mdc.age as passenger_age,
+c.identification_document,
         CASE mdc.type
             WHEN 'INFANT' THEN 'Bebé'
             WHEN 'CHILD'  THEN 'Niño / Niña'
@@ -416,16 +418,17 @@ class MaritimeDepartures extends ModelManager
 
 
         $query
-            ->join('maritime_vessels as mv', 'md.user_management_id', '=', 'mv.id')
+            ->join('maritime_vessels as mv', 'md.maritime_vessels_id', '=', 'mv.id')
             ->join('business as b', 'b.id', '=', 'mv.business_id')
             ->join('maritime_departures_customers as mdc', 'mdc.maritime_departures_id', '=', 'md.id')
-
+            ->join('customer as c', 'mdc.customer_id', '=', 'c.id')
+            ->join('people as p', 'c.people_id', '=', 'p.id')
             ->whereBetween('md.created_at', [$from, $to])
             ->whereNotNull('mdc.type')
             ->selectRaw($select);
 
-        if ($businessId) {
-            $query->where('md.business_id', $businessId);
+        if ($maritime_vessels_id) {
+           $query->where('mv.id', $maritime_vessels_id);
         }
         $rows = $query->get()
             ->toArray();
@@ -476,13 +479,13 @@ class MaritimeDepartures extends ModelManager
     {
         $sort = 'desc';
         $field = $this->table . '.id'; // default seguro
-        $user_management_id = $params["filters"]["user_management_id"];
+        $maritime_vessels_id = $params["filters"]["maritime_vessels_id"];
         $query = DB::table($this->table)
             ->join('business as b', 'b.id', '=', $this->table . '.business_id')
             ->leftJoin('business_subcategories as sc', 'sc.id', '=', 'b.business_subcategories_id')
             ->leftJoin('business_categories as c', 'c.id', '=', 'sc.business_categories_id');
 
-        $query->where($this->table . '.user_management_id', $user_management_id);
+        $query->where($this->table . '.maritime_vessels_id', $maritime_vessels_id);
 
         // Sort
         if (isset($params['sort']) && is_array($params['sort']) && count($params['sort']) > 0) {
@@ -544,7 +547,7 @@ class MaritimeDepartures extends ModelManager
                     ->orWhere('c.title', 'like', '%' . $likeSet . '%');
             });
         }
-        $query->where($this->table . '.user_management_id', $user_management_id);
+        $query->where($this->table . '.maritime_vessels_id', $maritime_vessels_id);
 
 
         // ✅ count eficiente

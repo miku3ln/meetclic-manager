@@ -19,3 +19,6 @@
 
 
 
+
+<input id="action-management-reports-download" type="hidden"
+       value="{{ route('maritimeDeparturesReportsDownload', ['dateFrom' => "dateFrom", 'dateTo' => 'dateTo', 'businessId' => 'businessId'])}}"/>

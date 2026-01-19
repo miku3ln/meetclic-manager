@@ -25,8 +25,11 @@
        value="{{ route("maritimeDeparturesReports")}}"/>
 <input id="action-management-business-by-maritime" type="hidden"
        value="{{ route("businessManager")}}"/>
+<input id="action-management-business-by-vessel" type="hidden"
+       value="{{ route("maritimeDeparturesVesselList")}}"/>
 
-
+<input id="action-management-reports-download" type="hidden"
+       value="{{ route('maritimeDeparturesReportsDownload', ['dateFrom' => "dateFrom", 'dateTo' => 'dateTo', 'businessId' => 'businessId'])}}"/>
 
 <input id="action-management-responsibles-admin" type="hidden"
        value="{{ route("maritimeVesselsResposiblesAdmin") }}"/>

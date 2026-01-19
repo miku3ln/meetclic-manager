@@ -903,12 +903,13 @@ class Customer extends Model
                 $createUpdate = true;
 
             }
+            $identification_document=isset($postData["document_number"])?$postData["document_number"]:(isset($postData["identification_document"])?$postData["identification_document"]:'100');
             $postData = $attributesPost["Customer"];
             $attributesSet = array(
                 "last_name" => $postData["last_name"],
                 "name" => $postData["name"],
                 "type_document" => $postData["type_document"] ?? PeopleTypeIdentification::TYPE_IDENTIFICATION_OTHERS,
-                "document_number" => $postData["document_number"],
+                "document_number" => $identification_document,
                 "birthdate" => $postData["birthdate"],
                 "age" => $postData["age"],
                 "gender" => $postData["gender"],

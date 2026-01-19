@@ -260,7 +260,7 @@ return [
 
         'Inputs' => Illuminate\Support\Facades\Request::class,
 
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'ExcelManager' => Maatwebsite\Excel\Facades\Excel::class,
 
         'FPDI' => setasign\Fpdi\Fpdi::class,
         'UtilCustomProvider' => App\Providers\UtilProvider::class,

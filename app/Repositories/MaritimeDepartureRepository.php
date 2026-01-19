@@ -29,7 +29,7 @@ class MaritimeDepartureRepository
                 return [
                     'business_id' => $departure->business_id,
                     'user_id' => $departure->user_id,
-                    'user_management_id' => $departure->user_management_id,
+                    'maritime_vessels_id' => $departure->maritime_vessels_id,
                     'arrival_time' => $departure->arrival_time,
                     'responsible_name' => $departure->responsible_name,
                     'customers' => $departure->customers->map(function ($departureCustomer) {

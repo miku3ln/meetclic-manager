@@ -11,7 +11,7 @@ CREATE TABLE maritime_departures
     id                 INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     business_id        INT UNSIGNED NOT NULL,
     user_id            INT UNSIGNED NOT NULL,
-    user_management_id INT UNSIGNED NULL,
+    maritime_vessels_id INT UNSIGNED NULL,
     arrival_time       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     responsible_name   VARCHAR(255) NOT NULL,
     created_at         TIMESTAMP NULL DEFAULT NULL,

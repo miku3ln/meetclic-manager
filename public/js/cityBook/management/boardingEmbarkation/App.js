@@ -166,7 +166,7 @@ var appInit = new Vue(
             },
             managerCurrentBusiness: {
                 allowView: false,
-                user_management_id: 1,
+                maritime_vessels_id: 1,
                 arrival_time: "14/01/2026 11:04 AM",
 
                 responsible: {
@@ -179,7 +179,7 @@ var appInit = new Vue(
                     hour: ""
                 },
                 maritimeInformation: {
-                    user_management_id:null,
+                    maritime_vessels_id:null,
                     name: "Embarcaciòn Taita Imbabura",
                     business_id: 5,
                     source: "https://meetclic.com/public/uploads/business/information/logomuellecatalina.png"
@@ -212,7 +212,7 @@ var appInit = new Vue(
                 this.managerCurrentBusiness.maritimeInformation.name = params.text;
                 this.managerCurrentBusiness.maritimeInformation.business_id = params.id;
                 this.managerCurrentBusiness.maritimeInformation.source = $publicAsset + params.source;
-                this.managerCurrentBusiness.maritimeInformation.user_management_id = params.id;//vessel
+                this.managerCurrentBusiness.maritimeInformation.maritime_vessels_id = params.id;//vessel
                 this.managerCurrentBusiness.responsible.fullName = params.responsible_name;//vessel
                 this.managerCurrentBusiness.responsible.document = params.identification_document;//vessel
 

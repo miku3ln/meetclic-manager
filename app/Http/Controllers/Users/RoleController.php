@@ -12,7 +12,7 @@ use Exception;
 use DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
+
 use View;
 use Form;
 use Validator;

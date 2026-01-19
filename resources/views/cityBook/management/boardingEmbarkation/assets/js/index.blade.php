@@ -147,6 +147,7 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
         return check === parseInt(cedula.charAt(9), 10);
     }
 
+    var registerFormComponent = null;
     Vue.component('register-form-component', {
         components: {},
         template: '#register-form-template',
@@ -171,7 +172,7 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
             this.$root.$on("_pointsSales", function (emitValue) {
                 vmCurrent._managerTypes(emitValue);
             });
-
+            registerFormComponent = vmCurrent;
 
         },
         beforeMount: function () {
@@ -570,11 +571,11 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 
                 var People = this.getValuesPeopleAll(this.$v.model.attributes.people.$each.$iter);
                 var data = this.managerCurrentBusiness;
-                console.log("data",data);
+                console.log("data", data);
                 var result = {
                     MaritimeDepartures: {
                         business_id: this.managerCurrentBusiness.maritimeInformation.business_id,
-                        user_management_id: this.managerCurrentBusiness.maritimeInformation.user_management_id,
+                        maritime_vessels_id: this.managerCurrentBusiness.maritimeInformation.maritime_vessels_id,
                         arrival_time: formatDateTimeForDB(new Date()),
                         responsible_name: this.managerCurrentBusiness.responsible.fullName,
                     },
@@ -671,7 +672,6 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
                     // 1) Set Vuelidate
                     model["$model"] = value;
                     model.$touch();
-
                     // 2) Set DATA real
                     if (this.model.attributes.people[position]) {
                         this.$set(this.model.attributes.people[position], name, value);
@@ -695,9 +695,9 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 
                                     // apellidos
                                     this.$set(this.model.attributes.people[position], "last_name", d.last_name);
+                                    this.$set(this.model.attributes.people[position], "name", d.name);
                                     this.$set(this.model.attributes.people[position], "full_name", d.full_name);
                                     // nombres
-                                    this.$set(this.model.attributes.people[position], "name", d.name);
                                 }
 
                             } finally {
@@ -708,6 +708,13 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
                         }
 
 
+                    } else if (name == "full_name") {
+
+                        var document_number = this.model.attributes.people[position].document_number;
+                        if (!isCedulaEC(document_number)) {
+                            this.$set(this.model.attributes.people[position], "last_name",value);
+                            this.$set(this.model.attributes.people[position], "name",value);
+                        }
                     }
 
                     return;

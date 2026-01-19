@@ -1321,6 +1321,8 @@ class BusinessManager
             Route::post("boardingEmbarkation/maritimeDeparturesReports", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesReports")->name('maritimeDeparturesReports');
             Route::get("boardingEmbarkation/maritimeDeparturesAssign", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesAssign")->name('maritimeDeparturesAssign');
             Route::get("boardingEmbarkation/businessManager", "MaritimeOperationsManagement\MaritimeDeparturesController@businessManager")->name('businessManager');
+            Route::get("boardingEmbarkation/maritimeDeparturesReportsDownload/{dateFrom}/{dateTo}/{businessId}", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesReportsDownload")->name('maritimeDeparturesReportsDownload');
+            Route::get("boardingEmbarkation/maritimeDeparturesVesselList", "MaritimeOperationsManagement\MaritimeDeparturesController@maritimeDeparturesVesselList")->name('maritimeDeparturesVesselList');
 
 
 
