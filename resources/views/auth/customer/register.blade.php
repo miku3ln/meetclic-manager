@@ -1,5 +1,9 @@
 @extends('layouts.frontend.master-blank')
+<?php
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
 
+?>
 <?php
 $modelUtil = new \App\Utils\UtilUser();
 $redirectTo = $modelUtil->getDataEmployerBusiness();
@@ -71,7 +75,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                     <div class="alert alert-danger">{{ session('error') }}</div><br>@endif
                                 <div class="alert alert-success">{{ session('success') }}</div><br>@endif
 
-                            <form method="POST" action="{{ route('register',app()->getLocale()) }}"
+                            <form method="POST" action="{{ $rootUrlRegister }}"
                                   class="management--form">
                                 @csrf
                                 <div class="row">
@@ -249,7 +253,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
 
                     <div class="row mt-3">
                         <div class="col-12 text-center">
-                            <p class="text-muted">{{__("frontend.web.customer.register.footer.registerOne")}}<a href="login" class="font-weight-medium ml-1">
+                            <p class="text-muted">{{__("frontend.web.customer.register.footer.registerOne")}}<a href="{{$rootUrlLogin}}" class="font-weight-medium ml-1">
                                     {{__("frontend.web.customer.register.footer.registerTwo")}}
                                 </a></p>
                         </div> <!-- end col -->

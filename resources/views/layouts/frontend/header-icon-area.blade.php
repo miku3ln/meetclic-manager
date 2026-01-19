@@ -4,6 +4,9 @@ $dataManagerPageSet=[];
 if(isset($dataManagerPage)){
     $dataManagerPageSet= $dataManagerPage;
 }
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+
 ?>
 <div class="header-icon-area">
     <div class="account-dropdown">
@@ -17,11 +20,11 @@ if(isset($dataManagerPage)){
             @if(Auth::check())
                 <li><a href="{{route('profileAccount',app()->getLocale())}}">{{__('header.account-dropdown.account')}} </a></li>
             @else
-                <li><a href="{{route('login',app()->getLocale())}}">{{__('header.account-dropdown.sign-in')}}</a></li>
+                <li><a href="{{$rootUrlLogin}}">{{__('header.account-dropdown.sign-in')}}</a></li>
             @endif
 
             @if(Auth::check())
-                <li><a href="{{route('logout',app()->getLocale())}}">{{__('header.account-dropdown.logout')}}</a></li>
+                <li><a href="{{$rootUrlLogout}}">{{__('header.account-dropdown.logout')}}</a></li>
 
             @endif
         </ul>

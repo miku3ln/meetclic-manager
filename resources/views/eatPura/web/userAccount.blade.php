@@ -4,6 +4,7 @@
     $themePath = $resourcePathServer . 'templates/eatPura/';
         $assetsRoot = $resourcePathServer . 'assets/backline/';
 $urlCurrentSearch=route('search',app()->getLocale());
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
 
 @endphp
 @extends('layouts.eatPura')
@@ -1336,7 +1337,7 @@ $urlCurrentSearch=route('search',app()->getLocale());
                                 aria-controls="v-pills-my-wallet" aria-selected="false">
                             <i class="lni lni-wallet"></i>My Wallet
                         </button>
-                        <a class="nav-link d-flex flex-column" href="{{route('logout', app()->getLocale())}}"><i
+                        <a class="nav-link d-flex flex-column" href="{{$rootUrlLogout}}"><i
                                 class="lni lni-key"></i>{{__('frontend.buttons.logout')}}</a>
                     </div>
                 </div>

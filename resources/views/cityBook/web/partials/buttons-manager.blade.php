@@ -1,3 +1,7 @@
+<?php
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+
+?>
 <div class="profile-edit-page-header">
     <h2>{{__('frontend.account.breadcrumb.left')}}</h2>
     <div class="breadcrumbs">
@@ -11,7 +15,7 @@
            class="log-out-btn"> {{__('frontend.buttons.manager-admin')}}</a>
 
     @endif
-    <a href="{{route('logout',app()->getLocale())}}"
+    <a href="{{$rootUrlLogout}}"
        class="log-out-btn"> {{__('frontend.buttons.logout')}}</a>
 
 

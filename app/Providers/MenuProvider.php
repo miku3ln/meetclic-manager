@@ -291,8 +291,10 @@ class MenuProvider extends ServiceProvider
 
 
             }
+            $rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+
             $menuConfig .= '<div class="dropdown-divider"></div>';
-            $menuConfig .= '<a href="' . route('logout', app()->getLocale()) . '" class="dropdown-item notify-item">';
+            $menuConfig .= '<a href="' . $rootUrlLogout . '" class="dropdown-item notify-item">';
             $menuConfig .= '    <i class="remixicon-logout-box-line"></i>';
             $menuConfig .= '     <span> ' . __('frontend.buttons.logout') . ' </span>';
             $menuConfig .= '</a>';

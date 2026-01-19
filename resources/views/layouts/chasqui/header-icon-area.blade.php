@@ -1,4 +1,7 @@
+<?php
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
 
+?>
 <div class="header-icon-area">
     <div class="account-dropdown">
         @if(Auth::check())
@@ -15,7 +18,7 @@
             @endif
 
             @if(Auth::check())
-                <li><a href="{{route('logout',app()->getLocale())}}">{{__('header.account-dropdown.logout')}}</a></li>
+                <li><a href="{{$rootUrlLogout}}">{{__('header.account-dropdown.logout')}}</a></li>
 
             @endif
         </ul>

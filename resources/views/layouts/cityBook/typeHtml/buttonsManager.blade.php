@@ -2,6 +2,7 @@
 $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 $themePath = $resourcePathServer . 'templates/cityBookHtml/';
 $isUser = Auth::check();
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
 
 $languageCurrent = app()->getLocale();
 $selectEs = '';
@@ -87,7 +88,7 @@ switch ($languageCurrent) {
     </div>
 
     @if(!$isUser)
-        <div class="show-reg-form show-reg-form--login"><a href="{{route('login',app()->getLocale())}}"><i
+        <div class="show-reg-form show-reg-form--login"><a href="{{$rootUrlLogin}}"><i
                     class="fa fa-sign-in"></i>Sign In</a>
         </div>
     @else

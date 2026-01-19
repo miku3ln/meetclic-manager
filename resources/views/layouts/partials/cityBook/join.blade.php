@@ -1,3 +1,8 @@
+<?php
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+
+?>
+
 @if(isset($typeJoin))
     @if($typeJoin==1)
 
@@ -30,7 +35,7 @@
                         <div class="color-bg-text">
                             <h3 class="join-title join-title--home">{{__('frontend.menu.home.join.title')}}</h3>
                             <p>{{__('frontend.menu.home.join.description')}}</p>
-                            <a href="{{route('register',app()->getLocale())}}" class="color-bg-link ">{{__('frontend.menu.home.join.button')}}</a>
+                            <a href="{{$rootUrlRegister}}" class="color-bg-link ">{{__('frontend.menu.home.join.button')}}</a>
                         </div>
                     </div>
                 </div>

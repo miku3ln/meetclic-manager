@@ -142,7 +142,9 @@ class FrontendCityBookMiddleware
             } else if ($typeRender == '202') {
                 return redirect()->route($result['data']['url'], $result['data']['params']);
             } else if ($typeRender == 'login') {
-                return redirect()->route('login', app()->getLocale());
+                $rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+
+                return redirect()->route($rootUrlLogin);
             } else if ($typeRender == '401') {
                 abort(401);
             } else if ($typeRender == '') {

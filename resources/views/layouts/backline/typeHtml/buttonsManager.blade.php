@@ -9,6 +9,9 @@ $selectKi = '';
 $selectEn = '';
 $languageCurrentText='Español';
 $languageCurrentImg=URL::asset($resourcePathServer.'images/frontend/translator/spanish.svg');
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+
+
 switch ($languageCurrent) {
     case 'es':
         $selectEs = 'selected';
@@ -87,7 +90,7 @@ switch ($languageCurrent) {
     </div>
 
     @if(!$isUser)
-        <div class="show-reg-form "><a href="{{route('login',app()->getLocale())}}"><i
+        <div class="show-reg-form "><a href="{{$rootUrlLogin}}"><i
                     class="fa fa-sign-in"></i>Sign In</a>
         </div>
     @else

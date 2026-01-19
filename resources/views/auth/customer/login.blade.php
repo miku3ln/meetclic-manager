@@ -2,6 +2,9 @@
 <?php
 $modelUtil = new \App\Utils\UtilUser();
 $redirectTo = $modelUtil->getDataEmployerBusiness();
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlResetPassword=route("homePage")."/".app()->getLocale()."/password/reset";
 
 ?>
 @section('additional-styles')
@@ -76,7 +79,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                             @if(session('success'))
                                 <div class="alert alert-success">{{ session('success') }}</div><br>@endif
 
-                            <form action="{{ route('login',app()->getLocale()) }}" method="post"
+                            <form action="{{$rootUrlLogin}}" method="post"
                                   class="management--form">
                                 @csrf
 
@@ -186,7 +189,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                             <p>
                                 @if (Route::has('password.request'))
                                     <a class="text-muted ml-1"
-                                       href="{{ route('password.request',app()->getLocale()) }}">
+                                       href="{{$rootUrlResetPassword}}">
 
                                         {{__('frontend.web.customer.login.footer.forgetPassword')}}
                                     </a>
@@ -194,7 +197,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                             </p>
                             <p class="text-muted">
                                 {{__('frontend.web.customer.login.footer.registerOne')}}
-                                  <a href="{{ route('register',app()->getLocale()) }}"
+                                  <a href="{{$rootUrlRegister }}"
                                    class="text-primary font-weight-medium ml-1">
 
                                     {{__('frontend.web.customer.login.footer.registerTwo')}}

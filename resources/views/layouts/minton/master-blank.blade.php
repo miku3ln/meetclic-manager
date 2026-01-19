@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<head>
+<head id="minton-header">
     <meta charset="utf-8" />
     <title>{{env('APP_NAME_BACKEND')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

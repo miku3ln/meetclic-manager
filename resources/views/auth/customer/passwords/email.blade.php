@@ -4,6 +4,9 @@
 $modelUtil = new \App\Utils\UtilUser();
 $redirectTo = $modelUtil->getDataEmployerBusiness();
 
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlResetPassword=route("homePage")."/".app()->getLocale()."/password/reset";
 ?>
 @section('content')
     <div class="breadcrumb-area section-space--breadcrumb">
@@ -65,7 +68,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
 
                 <div class="row mt-3">
                     <div class="col-12 text-center">
-                        <p class="text-muted">Back to <a href="{{route('login', app()->getLocale())}}" class="text-muted font-weight-medium ml-1">Log in</a></p>
+                        <p class="text-muted">Back to <a href="{{$rootUrlLogin}}" class="text-muted font-weight-medium ml-1">Log in</a></p>
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->

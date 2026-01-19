@@ -146,7 +146,9 @@ class CustomerByProfile extends ModelManager
             }
 
             $liCloseAccount = '<li>';
-            $liCloseAccount .= '  <a href="' . route('logout', app()->getLocale()) . '">';
+            $rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+
+            $liCloseAccount .= '  <a href="' . $rootUrlLogout . '">';
             $liCloseAccount .= ' ' . __('frontend.buttons.logout');
             $liCloseAccount .= '  </a>';
             $liCloseAccount .= '</li>';
