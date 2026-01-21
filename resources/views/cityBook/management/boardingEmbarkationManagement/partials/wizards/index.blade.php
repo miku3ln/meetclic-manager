@@ -198,7 +198,7 @@
                 <div class="embark-actions" role="group" aria-label="Acciones de embarque">
 
                     <button type="button"
-                            class="btn btn-success"
+                            class="btn btn-warning"
                             :disabled="!reportConfig.state.canApply"
                             v-on:click="initReports()"
 

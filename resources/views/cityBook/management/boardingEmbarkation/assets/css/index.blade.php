@@ -521,7 +521,8 @@
         .div-manager-process{
             position: absolute;
             right: 0;
-            margin-top: -43px;
+            margin-right: 34px;
+            margin-top: -39px !important;;
 
         }
     }
@@ -574,8 +575,8 @@
         .div-manager-process{
             position: absolute;
             right: 0;
-            margin-top: -43px;
-
+            margin-right: 34px;
+            margin-top: -39px !important;;
         }
     }
     @media (min-width: 321px) and (max-width: 480px) {
@@ -624,7 +625,8 @@
         .div-manager-process{
             position: absolute;
             right: 0;
-            margin-top: -43px;
+            margin-right: 34px;
+            margin-top: -39px !important;;
 
         }
     }
@@ -674,7 +676,8 @@
         .div-manager-process{
             position: absolute;
             right: 0;
-            margin-top: -43px;
+            margin-right: 34px;
+            margin-top: -39px !important;;
 
         }
     }
@@ -862,5 +865,10 @@
     }
     .bootgrid-header{
         display: block !important;
+    }
+    .div-manager-process {
+        margin-right: 34px;
+        margin-top: -92px;
+        position: absolute;
     }
 </style>

@@ -148,37 +148,17 @@ class MaritimeDepartures extends ModelManager
             }
 
             DB::commit();
-
+            $model = new MaritimeDepartures();
             // 3) Retornar todo (departure + pivots con data)
-            $departure = MaritimeDepartures::query()
-                ->with([
-                    // relación: departure -> departureCustomers (pivots)
-                    'departureCustomers' => function ($q) {
-                        $q->with([
-                            // pivot -> customer
-                            'customer' => function ($q2) {
-                                $q2->with([
-                                    // customer -> people
-                                    'people',
-                                    // customer -> info adicional
-                                    'information',
-                                    // customer -> addresses
-                                    'addresses',
-                                    // customer -> phones
-                                    'phones',
-                                ]);
-                            }
-                        ]);
-                    }
-                ])
-                ->find($departure->id);
-
+            $departureId = $departure->id;
+            $departure = $model->getRowRegister(["id" => $departureId]);
+            $details = $model->getByDetailsMaritime(["departureId" => $departureId]);
             return [
                 'success' => true,
                 'message' => 'Registrados con Exito.',
                 'data' => [
                     'departure' => $departure,
-                    'customers' => $departure->departureCustomers ?? [],
+                    'customers' => $details,
                 ]
             ];
 
@@ -388,7 +368,7 @@ class MaritimeDepartures extends ModelManager
 
     public function getDeparturesCustomersResumeByType(array $params): array
     {
-        $maritime_vessels_id = isset($params['maritime_vessels_id'])?$params['maritime_vessels_id']:null;
+        $maritime_vessels_id = isset($params['maritime_vessels_id']) ? $params['maritime_vessels_id'] : null;
         $from = $params['date_from'] ?? null; // '2026-01-01 00:00:00'
         $to = $params['date_to'] ?? null; // '2026-01-31 23:59:59'
 
@@ -428,7 +408,7 @@ c.identification_document,
             ->selectRaw($select);
 
         if ($maritime_vessels_id) {
-           $query->where('mv.id', $maritime_vessels_id);
+            $query->where('mv.id', $maritime_vessels_id);
         }
         $rows = $query->get()
             ->toArray();
@@ -577,5 +557,45 @@ c.identification_document,
         ];
     }
 
+    public function getRowRegister($params)
+    {
 
+        $id = $params["id"];
+
+        $query = DB::table($this->table)
+            ->join('business as b', 'b.id', '=', $this->table . '.business_id')
+            ->join('maritime_vessels as ves', 'ves.id', '=', $this->table . '.business_id')
+            ->leftJoin('business_subcategories as sc', 'sc.id', '=', 'b.business_subcategories_id')
+            ->leftJoin('business_categories as c', 'c.id', '=', 'sc.business_categories_id');
+        // ✅ SELECT: tabla principal + business + categoría/subcategoría
+        $selectString = "
+        {$this->table}.id,
+        {$this->table}.business_id,
+        {$this->table}.user_id,
+        {$this->table}.arrival_time,
+        {$this->table}.created_at,
+        {$this->table}.responsible_name,
+        ves.name  vessel_name,
+
+  CASE {$this->table}.status
+    WHEN 'DRAFT' THEN 'En navegación'
+    WHEN 'CONFIRMED' THEN 'Confirmado'
+    WHEN 'CANCELLED' THEN 'Cancelado'
+    ELSE {$this->table}.status
+  END AS status,
+        b.title as business_title,
+        b.document as business_document,
+        b.email as business_email,
+
+        sc.name as business_subcategory,
+        c.name as business_category
+    ";
+
+        $query->select(DB::raw($selectString));
+        $query->where($this->table . '.id', $id);
+
+        $data = $query->get()->first();
+
+        return $data;
+    }
 }

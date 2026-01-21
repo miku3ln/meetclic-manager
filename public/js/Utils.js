@@ -3342,3 +3342,114 @@ var $labelsGridConfigDefault=  {
     noResults: "Sin Resultados!",
     infos: "Mostrando {{ctx.start}} - {{ctx.end}} de {{ctx.total}} resultados"
 };
+
+
+function fillTemplate(template, vars) {
+    return template.replace(/{{\s*([A-Z0-9_]+)\s*}}/g, function (match, key) {
+        return (vars[key] !== undefined && vars[key] !== null) ? String(vars[key]) : match;
+    });
+}
+
+function splitDateTimeEC(value) {
+    // value: "YYYY-MM-DD HH:MM:SS"
+    value = $.trim(value || "");
+    if (!value) return {date: "", time: ""};
+
+    var parts = value.split(" ");
+    var ymd = parts[0] || "";
+    var hms = parts[1] || "";
+
+    // fecha: DD-MM-YYYY
+    var ymdParts = ymd.split("-");
+    var yyyy = ymdParts[0] || "";
+    var mm = ymdParts[1] || "";
+    var dd = ymdParts[2] || "";
+    var date = (dd && mm && yyyy) ? (dd + "-" + mm + "-" + yyyy) : "";
+
+    // hora: HH:MM:SS AM/PM
+    var time = "";
+    if (hms) {
+        var tParts = hms.split(":");
+        var hh = parseInt(tParts[0] || "0", 10);
+        var mi = tParts[1] || "00";
+        var ss = tParts[2] || "00";
+
+        var ampm = (hh >= 12) ? "PM" : "AM";
+        var hh12 = hh % 12;
+        if (hh12 === 0) hh12 = 12;
+
+        // pad 2 dígitos
+        var hhStr = (hh12 < 10) ? ("0" + hh12) : ("" + hh12);
+
+        time = hhStr + ":" + mi + ":" + ss + " " + ampm;
+    }
+
+    return {date: date, time: time};
+}
+
+function formatDateTimeDMY(datetimeStr) {
+    if (!datetimeStr) return '';
+
+    var parts = datetimeStr.split(' ');
+    var datePart = parts[0]; // 2025-08-06
+    var timePart = parts[1] || '';
+
+    var d = datePart.split('-'); // [2025, 08, 06]
+
+    return d[2] + '/' + d[1] + '/' + d[0] + (timePart ? ' ' + timePart : '');
+}
+
+function formatDateTimeForDB(dateObj) {
+    var d = dateObj instanceof Date ? dateObj : new Date(dateObj);
+
+    var yyyy = d.getFullYear();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+
+    var HH = String(d.getHours()).padStart(2, '0');
+    var ii = String(d.getMinutes()).padStart(2, '0');
+    var ss = String(d.getSeconds()).padStart(2, '0');
+
+    return yyyy + "-" + mm + "-" + dd + " " + HH + ":" + ii + ":" + ss;
+}
+function buildCedulaDefaultResponse() {
+    return {
+        success: false,
+        message: "",
+        data: {
+            full_name: null,
+            last_name: null,
+            name: null,
+            document: null
+        }
+    };
+}
+
+
+function normalizeDigits(value) {
+    return String(value || "").replace(/\D/g, "");
+}
+
+function isCedulaEC(value) {
+    var cedula = normalizeDigits(value);
+    if (cedula.length !== 10) return false;
+
+    var prov = parseInt(cedula.substring(0, 2), 10);
+    if (prov < 1 || prov > 24) return false;
+
+    var third = parseInt(cedula.charAt(2), 10);
+    if (third < 0 || third > 5) return false;
+
+    var total = 0;
+    for (var i = 0; i < 9; i++) {
+        var d = parseInt(cedula.charAt(i), 10);
+        if (i % 2 === 0) {
+            d = d * 2;
+            if (d > 9) d -= 9;
+        }
+        total += d;
+    }
+
+    var check = (10 - (total % 10)) % 10;
+    return check === parseInt(cedula.charAt(9), 10);
+}

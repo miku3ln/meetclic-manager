@@ -863,4 +863,5 @@
     .bootgrid-header{
         display: block !important;
     }
+
 </style>

@@ -87,10 +87,11 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                         @endif
                         <div class="footer-payment-logo">
                             @if(isset($dataManagerPage['shopConfig']['allow']))
-
+                                @if(isset($dataManagerPage['shopConfig']['source']))
                                 <img src="{{ $dataManagerPage['shopConfig']['source']}}"
                                      class="img-fluid"
                                      alt="">
+                                @endif
                             @else
                                 <div class="not-methods-payment">
 

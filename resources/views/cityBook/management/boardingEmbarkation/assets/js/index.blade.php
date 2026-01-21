@@ -32,17 +32,6 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
     type="text/javascript"></script>
 
 <script type="text/javascript">
-    function formatDateTimeDMY(datetimeStr) {
-        if (!datetimeStr) return '';
-
-        var parts = datetimeStr.split(' ');
-        var datePart = parts[0]; // 2025-08-06
-        var timePart = parts[1] || '';
-
-        var d = datePart.split('-'); // [2025, 08, 06]
-
-        return d[2] + '/' + d[1] + '/' + d[0] + (timePart ? ' ' + timePart : '');
-    }
 
     var $configPartial = <?php echo json_encode($configPartial) ?>;
     var $allowAllInOne = '<?php echo env('allowAllInOne') ? '1' : '0' ?>';
@@ -58,19 +47,6 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
     };
     var $allowShop = '{{$allowShop}}';
 
-    function formatDateTimeForDB(dateObj) {
-        var d = dateObj instanceof Date ? dateObj : new Date(dateObj);
-
-        var yyyy = d.getFullYear();
-        var mm = String(d.getMonth() + 1).padStart(2, '0');
-        var dd = String(d.getDate()).padStart(2, '0');
-
-        var HH = String(d.getHours()).padStart(2, '0');
-        var ii = String(d.getMinutes()).padStart(2, '0');
-        var ss = String(d.getSeconds()).padStart(2, '0');
-
-        return yyyy + "-" + mm + "-" + dd + " " + HH + ":" + ii + ":" + ss;
-    }
 </script>
 
 @include('cityBook.management.'.$managementNameProcess.'.assets.js.templateVue')
@@ -106,46 +82,6 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/Main.js') }}"
         type="text/javascript"></script>
 <script>
-    function buildCedulaDefaultResponse() {
-        return {
-            success: false,
-            message: "",
-            data: {
-                full_name: null,
-                last_name: null,
-                name: null,
-                document: null
-            }
-        };
-    }
-
-    function normalizeDigits(value) {
-        return String(value || "").replace(/\D/g, "");
-    }
-
-    function isCedulaEC(value) {
-        var cedula = normalizeDigits(value);
-        if (cedula.length !== 10) return false;
-
-        var prov = parseInt(cedula.substring(0, 2), 10);
-        if (prov < 1 || prov > 24) return false;
-
-        var third = parseInt(cedula.charAt(2), 10);
-        if (third < 0 || third > 5) return false;
-
-        var total = 0;
-        for (var i = 0; i < 9; i++) {
-            var d = parseInt(cedula.charAt(i), 10);
-            if (i % 2 === 0) {
-                d = d * 2;
-                if (d > 9) d -= 9;
-            }
-            total += d;
-        }
-
-        var check = (10 - (total % 10)) % 10;
-        return check === parseInt(cedula.charAt(9), 10);
-    }
 
     var registerFormComponent = null;
     Vue.component('register-form-component', {
@@ -256,6 +192,12 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
                 },
                 managerCurrentBusiness: null,
                 clockIntervalId: null,
+                managementWhatsappZarpe: {
+                    config: $dataManagerPage.dataPhoneWhatsapp,
+                    urlSend: "",
+                    allowSend: false,
+                    sendGo: false
+                }
             };
 
             dataManager.apiCedula = {cache: {}, inflight: {}, timers: {}};
@@ -571,7 +513,6 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 
                 var People = this.getValuesPeopleAll(this.$v.model.attributes.people.$each.$iter);
                 var data = this.managerCurrentBusiness;
-                console.log("data", data);
                 var result = {
                     MaritimeDepartures: {
                         business_id: this.managerCurrentBusiness.maritimeInformation.business_id,
@@ -584,6 +525,7 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 
                 return result;
             },
+
             _saveModel: function () {
                 var dataSendResult = this.getValuesSave();
                 var dataSend = dataSendResult;
@@ -602,12 +544,52 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
                         error_message: vCurrent.formConfig.errorMessage,
                         success_message: vCurrent.formConfig.successMessage,
                         success_callback: function (response) {
+
+
                             if (response.success) {
+                                vCurrent.configDataSendWhatsapp(response);
                                 vCurrent.resetForm();
                             }
                         }
                     });
                 }
+            },
+            configDataSendWhatsapp: function (params) {
+                var sendData = "";
+                var dataSave = params["data"];
+                var departure = dataSave["departure"];
+                var customers = dataSave["customers"];
+
+                var managementWhatsapp = this.managementWhatsappZarpe.config;
+                var template = managementWhatsapp.default_message;
+
+                var out = splitDateTimeEC(departure.arrival_time);
+
+                console.log(out.date); // "20-01-2026"
+                console.log(out.time);
+                let vars = {
+                    DATE: out.date,
+                    TIME: out.time,
+                    PIER_NAME: departure.business_title,
+                    VESSEL_NAME: departure.vessel_name,
+                    RESPONSIBLE_NAME: departure.responsible_name,
+                    CODE: departure.id,
+                    // ✅ variable extra agregada
+                    PASSENGERS: 28
+                };
+
+                let result = fillTemplate(template, vars);
+                var phoneCurrent = managementWhatsapp.number_current;
+                var paramsSend = {
+                    dataParams: {
+                        phone: phoneCurrent,
+                        text: result,
+                    }
+                };
+                let urlCurrent = getUrlWhatsApp() + 'send?' + getStringParamsGet(paramsSend);
+                console.log("result",result,"vars",vars)
+                this.managementWhatsappZarpe.urlSend = urlCurrent;
+                this.managementWhatsappZarpe.allowSend = true;
             },
             _fetchCedula: function (cedula) {
                 var vm = this;
@@ -712,8 +694,8 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
 
                         var document_number = this.model.attributes.people[position].document_number;
                         if (!isCedulaEC(document_number)) {
-                            this.$set(this.model.attributes.people[position], "last_name",value);
-                            this.$set(this.model.attributes.people[position], "name",value);
+                            this.$set(this.model.attributes.people[position], "last_name", value);
+                            this.$set(this.model.attributes.people[position], "name", value);
                         }
                     }
 
@@ -798,6 +780,30 @@ if ($dataManagerPage['shopConfig']['allow'] == true) {
             _addPeople: function () {
                 let initValue = this.getModelInitPeople();
                 this.model.attributes.people.push(initValue);
+            },
+
+            sendWhatsappZarpe: function (params) {
+
+                this.managementWhatsappZarpe.urlSend
+
+                var url = this.managementWhatsappZarpe.urlSend;
+                ///   window.open(url, 'reportWindow', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+                // window.open(url, '_blank');
+                var win = window.open(url, '_blank');
+                if (!win) {
+                    this.managementWhatsappZarpe.sendGo = false;
+                    this.managementWhatsappZarpe.allowSend = false;
+
+                    alert('El navegador bloqueó el envio de datos. Por favor habilita las ventanas emergentes.');
+                    return;
+                } else {
+                    this.managementWhatsappZarpe.sendGo = true;
+                    this.managementWhatsappZarpe.allowSend = false;
+
+
+                }
+                win.focus();
+
             },
             getModelInitPeople: function () {
                 return {

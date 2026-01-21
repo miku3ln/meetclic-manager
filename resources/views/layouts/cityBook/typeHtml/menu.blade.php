@@ -68,8 +68,8 @@
                     @endif
                     @if (env('allowSectionGamingActivities'))
 
-                        <li class="li-{{ $activeActivities }}"><a class="{{ $activeActivities }}  menu__a"
-                                                                  href="{{ route('activities', app()->getLocale()) }}">{{ __('frontend.menu.gamification.activities') }}</a>
+                        <li class="li-{{ $activeHowItWorks }}"><a class="{{ $activeHowItWorks }}  menu__a"
+                                                                  href="{{ route('howItWorks', app()->getLocale()) }}">{{ __('frontend.menu.gamification.activities') }}</a>
                         </li>
                     @endif
                     <li class="li-has-children-{{ $activePages }}">
@@ -83,10 +83,6 @@
                             </li>
 
 
-                            <li class="li-children-{{ $activeHowItWorks }}"><a
-                                    class="a-{{ $activeHowItWorks }}  menu__a-children"
-                                    href="{{ route('howItWorks', app()->getLocale()) }}">{{ __('frontend.menu.howItWorks') }}</a>
-                            </li>
                             <li class="li-children-{{ $activeBackLine }}"><a
                                     class="a-{{ $activeBackLine }}  menu__a-children"
                                     href="{{ route('homeBackLine', app()->getLocale()) }}">{{ __('frontend.menu.backLine') }}</a>

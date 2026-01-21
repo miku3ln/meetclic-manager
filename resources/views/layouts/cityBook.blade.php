@@ -387,7 +387,7 @@ if (env('allowAllInOne')) {
 
                     } elseif ($nameRoute == 'howItWorks') {
 
-                        $activePages = 'act-link';
+
                         $activeHowItWorks = 'act-link';
 
                     } elseif ($nameRoute == 'homeBackLine') {

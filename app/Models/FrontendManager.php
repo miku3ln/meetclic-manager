@@ -1360,7 +1360,7 @@ class FrontendManager extends ModelManager
 
             if ($gamificationData) {
                 $modelGBP = new \App\Models\GamificationByProcess();
-                $activitiesData = $modelGBP->getActivitiesGamificationFrontend(
+               /* $activitiesData = $modelGBP->getActivitiesGamificationFrontend(
                     [
 
                         'filters' => [
@@ -1368,8 +1368,8 @@ class FrontendManager extends ModelManager
                         ]
                     ]
                 );
-
-
+*/
+                $activitiesData=null;
                 if ($activitiesData) {
 
                     $bannerTwoColumnMain = Frontend::getBannerColumnTwo([

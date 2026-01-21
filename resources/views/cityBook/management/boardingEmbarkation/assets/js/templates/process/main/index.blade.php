@@ -123,14 +123,22 @@
             <div class="embark-actions" role="group" aria-label="Acciones de embarque">
 
                 <button type="button"
-                        class="btn btn-success"
+                        class="btn btn-warning"
                         :disabled="!validateForm()"
                         v-on:click="_saveModel()"
 
                 >
                     <i class="fa fa-floppy-o embark-actions__icon" aria-hidden="true"></i>
-                    <span class="embark-actions__text">Enviar Registro Embarque</span>
+                    <span class="embark-actions__text">Registrar Zarpe</span>
                 </button>
+                <button type="button"
+                        class="embark-actions__btn embark-actions__btn--add"
+                        @click="sendWhatsappZarpe()"
+                        v-if="managementWhatsappZarpe.allowSend"
+                        aria-label="Enviar Registro ">
+                    <i class="fa fa-whatsapp embark-actions__icon" aria-hidden="true"></i>
+                </button>
+
                 <button type="button"
                         class="embark-actions__btn embark-actions__btn--add"
                         @click="_addPeople()"

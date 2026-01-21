@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
+use App\Models\Whatsapp\WhatsappConfigs;
 use App\Utils\FrontendPageSections;
 use App\Utils\LanguageUtil;
 use App\Utils\Util;
@@ -328,6 +329,9 @@ class FrontendCityBookManager extends ModelManager
             ];
             $dataManagerPage['allowVue'] = true;
         } else if ($page == 'boardingEmbarkation') {
+            $modelWhats = new WhatsappConfigs();
+            $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 10]);
+            $dataManagerPage["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
 
             $dataManagerPage['breadcrumb']['active'] = __('frontend.account.menu.my-business');
 

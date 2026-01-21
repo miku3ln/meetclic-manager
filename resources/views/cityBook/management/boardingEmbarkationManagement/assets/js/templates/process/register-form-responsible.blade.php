@@ -78,7 +78,7 @@
                     <div class="embark-actions" role="group" aria-label="Acciones de embarque">
 
                         <button type="button"
-                                class="btn btn-success"
+                                class="btn btn-warning"
                                 :disabled="!validateForm()"
                                 v-on:click="_saveModel()"
 

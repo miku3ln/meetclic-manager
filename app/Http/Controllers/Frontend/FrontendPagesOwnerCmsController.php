@@ -21,8 +21,30 @@ class FrontendPagesOwnerCmsController extends Controller
         $slug = $request->route('slug');
         $section = $request->route('section');
 
+        $dataModelBRR = BusinessByRoutesMap::find(1);
+        $logoHtmlMeetclic="";
+        $modelTBS = new TemplateBySource();
+        $template_information_id=1;
+        $filtersManager=[
+            'filters'=>[
+                "template_information_id"=>$template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        if($resultResources["logoMain"]){
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+
+            $data=  $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl=route("homePage");
+            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+
+        }
         return view('cityBook.web.businessOwner.mikuy-yachak', [
             'slug' => $slug,
+            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            
             'section' => $section
         ]);
     }

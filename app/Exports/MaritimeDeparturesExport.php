@@ -41,7 +41,7 @@ class MaritimeDeparturesExport implements FromArray, WithEvents, WithCustomStart
                 (string)($r['dia'] ),
                 (int)($r['cant_pasajeros'] ),
                 ($r['national']==0?'0': $r['national']),
-                (int)($r['local'] ),
+                ($r['local']==0?'0': $r['local'] ),
                 (string)($r['horario'] ),
             ];
             return $result;
