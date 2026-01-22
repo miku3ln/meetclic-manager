@@ -383,55 +383,86 @@ $urlRouteUser= route('authorSingle', app()->getLocale());
     function mcParseTaskDescriptionUI(descriptionText) {
         if (!descriptionText) return '';
 
-        // Normaliza: convierte <br> a \n y limpia
+        // Normaliza: convierte <br> a \n, limpia \r
         var raw = String(descriptionText)
             .replace(/<br\s*\/?>/gi, '\n')
             .replace(/\r/g, '')
             .trim();
 
-        // Mapa de íconos reconocidos => etiqueta UI
-        // (puedes agregar más sin romper nada)
-        var iconMap = [
-            { icon: '🟢', key: 'do',     label: '{{__('gamification.what_to_do')}}',       bs: 'label-success' },
-            { icon: '🟡', key: 'why',    label:  '{{__('gamification.what_is_it_for')}}',  bs: 'label-warning' },
-            { icon: '🎁', key: 'gain',   label: '{{__('gamification.what_you_get')}}',       bs: 'label-primary' },
+        // Helpers
+        function mcFindMetaByIcon(icon, iconMap) {
+            for (var i = 0; i < iconMap.length; i++) {
+                if (iconMap[i].icon === icon) return iconMap[i];
+            }
+            return null;
+        }
 
-            // Opcionales útiles
-            { icon: '🔴', key: 'avoid',  label: '{{__('gamification.avoid')}}',           bs: 'label-danger' },
-            { icon: '🔵', key: 'note',   label: '{{__('gamification.note')}}',            bs: 'label-info' },
-            { icon: '🟣', key: 'tip',    label:  '{{__('gamification.tip')}}',             bs: 'label-info' },
-            { icon: '⚠️', key: 'warn',   label: '{{__('gamification.important')}}',      bs: 'label-danger' }
+        // Mapa de íconos => etiqueta UI + badge
+        // Incluye nuevos: 🎁 (gain), ⚙️ (validation), ⚠️ (rules/warn)
+        // Nota: ⚠️ a veces llega como "⚠" sin variante emoji
+        var iconMap = [
+            { icon: '🟢', key: 'do',         label: '{{__('gamification.what_to_do')}}',           bs: 'label-success' },
+            { icon: '🎁', key: 'gain',       label: '{{__('gamification.what_you_get')}}',         bs: 'label-primary' },
+            { icon: '🟡', key: 'why',        label: '{{__('gamification.what_is_it_for')}}',      bs: 'label-warning' },
+            { icon: '⚙️', key: 'validation', label: '{{__('gamification.validation')}}',          bs: 'label-info' },
+            { icon: '⚠️', key: 'rules',      label: '{{__('gamification.rules')}}',               bs: 'label-danger' },
+            { icon: '⚠',  key: 'rules',      label: '{{__('gamification.rules')}}',               bs: 'label-danger' },
+
+            // Opcionales legacy (si aún existen descripciones viejas)
+            { icon: '🔴', key: 'avoid',      label: '{{__('gamification.avoid')}}',               bs: 'label-danger' },
+            { icon: '🔵', key: 'note',       label: '{{__('gamification.note')}}',                bs: 'label-info' },
+            { icon: '🟣', key: 'tip',        label: '{{__('gamification.tip')}}',                 bs: 'label-info' }
         ];
 
-        // Regex: captura "🟢 ...texto..." hasta antes del siguiente ícono o fin
-        // Nota: armamos el grupo dinámico con los íconos definidos arriba
+        // Para Regex: escapar iconos
         var iconsPattern = iconMap
-            .map(function(x){ return x.icon.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); })
+            .map(function (x) { return x.icon.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); })
             .join('|');
 
-        var re = new RegExp('(^|\\n)(' + iconsPattern + ')\\s*([^\\n]*)([\\s\\S]*?)(?=(\\n(' + iconsPattern + ')\\s*)|$)', 'g');
+        // Captura: (inicio o salto de línea) + icono + resto hasta el siguiente icono o fin
+        var re = new RegExp(
+            '(^|\\n)(' + iconsPattern + ')\\s*([^\\n]*)([\\s\\S]*?)(?=(\\n(' + iconsPattern + ')\\s*)|$)',
+            'g'
+        );
 
         var items = [];
         var match;
 
+        // Limpieza de encabezados típicos (si vienen escritos)
+        // Incluye nuevos: Validación, Reglas, Importante
+        function stripKnownPrefixes(text) {
+            return String(text)
+                .replace(/^(qué\s*hacer|para\s*qué\s*sirve|qué\s*ganas|validaci[oó]n|reglas|importante|nota|tip|evita)\s*:\s*/i, '')
+                .trim();
+        }
+
         while ((match = re.exec(raw)) !== null) {
-            var icon = match[2];
+            var icon = (match[2] || '').trim();
             var head = (match[3] || '').trim();
             var tail = (match[4] || '').trim();
 
-            // Une cabecera + cola (por si el texto está en varias líneas)
-            var content = (head + ' ' + tail)
-                .replace(/\s+/g, ' ')
-                .trim();
+            // Une cabecera + cola
+            var content = (head + '\n' + tail).trim();
 
-            // Limpia "Qué hacer:" / "Para qué sirve:" / "Qué ganas:" si ya vienen escritos
-            content = content
-                .replace(/^(qué\s*hacer|para\s*qué\s*sirve|qué\s*ganas)\s*:\s*/i, '')
-                .trim();
+            // Normaliza espacios pero conserva saltos de línea para reglas con bullets
+            // (1) colapsa espacios múltiples
+            content = content.replace(/[ \t]+/g, ' ').trim();
 
-            var meta = iconMap.find(function(x){ return x.icon === icon; }) || {
-                icon: icon, label: 'Info', bs: 'label-default'
-            };
+            // Limpia prefijo textual si ya viene "Qué hacer:"
+            content = stripKnownPrefixes(content);
+
+            // Si reglas viene con bullets, intenta formatear bonito (separar por saltos)
+            // - Acepta: "•", "-", "*"
+            if (icon === '⚠️' || icon === '⚠') {
+                // Si todo viene en una sola línea con puntos, intenta partir por ". "
+                // Solo si NO hay bullets.
+                var hasBullets = /(^|\n)\s*(•|-|\*)\s+/.test(content);
+                if (!hasBullets && content.indexOf('. ') > -1) {
+                    content = content.split('. ').join('.\n');
+                }
+            }
+
+            var meta = mcFindMetaByIcon(icon, iconMap) || { icon: icon, label: 'Info', bs: 'label-default' };
 
             items.push({
                 icon: meta.icon,
@@ -440,30 +471,48 @@ $urlRouteUser= route('authorSingle', app()->getLocale());
                 text: content
             });
         }
-        // Si NO encontró íconos, devuelve un bloque simple
+
+        // Si NO encontró íconos, devuelve bloque simple
         if (!items.length) {
-            return [
-                '',
-                '',
-                '' + mcEscapeHtml(raw) + '',
-                ''
-            ].join('');
+            return mcEscapeHtml(raw);
         }
 
-        // Construye HTML: un “row” por item + <br> entre items (como pediste)
-        var html = '';
-        items.forEach(function(it, idx){
-            html += [
-                '' + it.icon + ' ',
-                mcEscapeHtml(it.label)+": ",
-                '',
-                '' + mcEscapeHtml(it.text) + '',
-                ''
-            ].join('');
+        // Orden recomendado (tu nuevo template)
+        var order = { 'do': 1, 'gain': 2, 'why': 3, 'validation': 4, 'rules': 5, 'avoid': 6, 'note': 7, 'tip': 8 };
 
-            if (idx < items.length - 1) html += '<br>'; // <br> por cada uno
+        // Asigna key para ordenar (si hay duplicados se respeta aparición)
+        for (var k = 0; k < items.length; k++) {
+            var metaK = mcFindMetaByIcon(items[k].icon, iconMap);
+            items[k]._order = metaK && order[metaK.key] ? order[metaK.key] : 99;
+            items[k]._idx = k;
+        }
+
+        // Ordena: primero por template, luego por orden original
+        items.sort(function (a, b) {
+            if (a._order === b._order) return a._idx - b._idx;
+            return a._order - b._order;
         });
 
+        // Construye HTML con <br> entre items
+        var html = '';
+        for (var j = 0; j < items.length; j++) {
+            var it = items[j];
+
+            // Si el contenido tiene saltos (reglas), convertir a <br> interno
+            var safeText = mcEscapeHtml(it.text).replace(/\n/g, '<br>');
+
+            html += [
+                '<span class="', it.bs, '" style="display:inline-block;margin-right:6px;">',
+                mcEscapeHtml(it.icon),
+                '</span>',
+                '<strong>',
+                mcEscapeHtml(it.label),
+                ':</strong> ',
+                safeText
+            ].join('');
+
+            if (j < items.length - 1) html += '<br>'; // separador entre bloques
+        }
 
         return html;
     }
