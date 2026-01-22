@@ -142,11 +142,21 @@ class FrontendCityBookMiddleware
             } else if ($typeRender == '202') {
                 return redirect()->route($result['data']['url'], $result['data']['params']);
             } else if ($typeRender == 'login') {
-                $rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+              //  $urlLogin=route('homePage',app()->getLocale())
+                return response()->view('errors.401', [
+                    'message' => 'Acceso no autorizado.!',
+                    'type'    => 'managerProcess',
+                    'reason'  => 'TOKEN_INVALID',
+                    'urlLogin'  => 'TOKEN_INVALID',
 
-                return redirect()->route($rootUrlLogin);
+                ], 401);
             } else if ($typeRender == '401') {
-                abort(401);
+
+                return response()->view('errors.401', [
+                    'message' => 'Acceso no autorizado.!',
+                    'type'    => 'managerProcess',
+                    'reason'  => 'TOKEN_INVALID',
+                ], 401);
             } else if ($typeRender == '') {
                 $utilTracking->managerCounters([
                     'type' => $actionUrlManagement,

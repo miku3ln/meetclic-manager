@@ -35,8 +35,9 @@ Route::middleware('publicApi')->group(function () {
     Route::get('/setKichwaText', 'MintonPages\MintonPagesController@setKichwaText')->name('setKichwaText');
     Route::get('/setTxtDataCastellano', 'MintonPages\MintonPagesController@setTxtDataCastellano')->name('setCastellanoText');
     Route::post('/traductor/getDictionaryByLanguage', 'Api\CustomerAppController@getDictionaryByLanguage')->name('getDictionaryByLanguage');
-
     Route::post("/gamification/GamificationByProcess/getAdminGamificationFrontend", "Gamification\GamificationByProcessController@getAdminGamificationFrontend")->name('getAdminGamificationFrontend');
+
+    Route::post("/gamification/GamificationByProcess/getAdminGamificationFrontendHome", "Gamification\GamificationByProcessController@getAdminGamificationFrontendHome")->name('getAdminGamificationFrontendHome');
 
     Route::get('/test/json', function (Request $request) {
         return response()->json([

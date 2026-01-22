@@ -113,7 +113,7 @@
 
 
 
-                    <li class="li-{{ $activeSearch }}"><a class="{{ $activeSearch }}  menu__a"
+                    <li class="li-{{ $activeSearch }} not-view"><a class="{{ $activeSearch }}  menu__a"
                                                               href="{{ route('search', app()->getLocale()) }}">{{ __('frontend.menu.search')}}</a>
                     </li>
                     <li class="li-{{ $activeContactUs }}"><a class="{{ $activeContactUs }}  menu__a"

@@ -61,20 +61,8 @@ class FrontendController extends FrontendBaseController
         $paramsRequest['language'] = $language;
         $paramsRequest['type'] = $type;
         $project = "managerSystemTest";
-
-
-        if (env('allowRoutes')) {
-            $renderView = self::LAYOUT_MAIN . '.web.homeRoutes';
-        } elseif (env('allowBusinessOwner')) {
-            $renderView = self::LAYOUT_MAIN . '.web.homeArquitechos';
-
-        } elseif (env('allowAllInOne')) {
-            $renderView = 'cityBook.web.homePage';
-            $modelPage = new \App\Models\FrontendCityBookManager();
-
-        }
-
-        $renderView = self::LAYOUT_MAIN . '.web.' . $project . '.homePage';
+        $modelPage = new \App\Models\FrontendCityBookManager();
+        $renderView = self::LAYOUT_MAIN . '.web.' . '.homePage';
         $paramsSend = $modelPage->getParamsPage([
             'page' => 'home',
             'paramsRequest' => $paramsRequest

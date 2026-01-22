@@ -678,6 +678,7 @@
 
         }
     }
+
     @media (min-width: 1025px) {
         /* SOLO desktop */
     }

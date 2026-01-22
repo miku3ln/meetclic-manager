@@ -39,8 +39,6 @@
                 <div ref="map" class="map-container" id="map-container"></div>
             </section>
         </div>
-
-
     </script>
     <script>
         function simulateBounce(marker) {

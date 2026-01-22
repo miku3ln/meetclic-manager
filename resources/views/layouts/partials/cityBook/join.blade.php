@@ -55,7 +55,7 @@ $rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
                             <p>{{__('frontend.menu.home.join.description')}}</p>
                         </div>
                         <div class="col-md-4">
-                            <a href="{{route('register',app()->getLocale())}}"
+                            <a href="{{$rootUrlRegister}}"
                                                  class="color-bg-link"
                             >{{__('frontend.menu.home.join.button')}} <i
                                     class="fa fa-sign-in"></i></a>
@@ -78,7 +78,7 @@ $rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
                         <p>{{__('frontend.menu.home.join.description')}}</p>
                     </div>
                     <div class="col-md-4">
-                        <a href="{{route('register',app()->getLocale())}}"
+                        <a href="{{$rootUrlRegister}}"
                                              class="color-bg-link">{{__('frontend.menu.home.join.button')}}<i
                                 class="fa fa-sign-in"></i></a></div>
                 </div>

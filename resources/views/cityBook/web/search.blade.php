@@ -864,7 +864,11 @@
                 <!-- list-main-wrap end-->
 
             </div>
+
+
             <!--col-list-wrap -->
+
+
             <div class="limit-box fl-wrap"></div>
             <!--section -->
             @if(!Auth::check())
@@ -872,6 +876,8 @@
 
             @endif
         </div>
+
+
     </div>
     <input id="action-business-searchBusinessBee" type="hidden"
            value="{{ route("searchBusinessBee",app()->getLocale()) }}"/>

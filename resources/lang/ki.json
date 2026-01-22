@@ -1051,6 +1051,9 @@
     "gamification.no_results": "Mana rikurinchu",
     "gamification.loading": "Apamushpa",
     "gamification.results": "Rikurinkuna",
-    "gamification.do_it_now": "Kunan ruray"
+    "gamification.do_it_now": "Kunan ruray",
 
+
+    "location.find_here": "Kaypi taripaychik",
+"play_learn_and_earn_yapitas": "Pukllay, yachay chaymanta Yapitakunata ganay"
 }

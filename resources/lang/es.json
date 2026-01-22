@@ -1080,6 +1080,8 @@
     "gamification.no_results": "Sin resultados",
     "gamification.loading": "Cargando",
     "gamification.results": "resultados",
-    "gamification.do_it_now": "Hazlo ahora"
+    "gamification.do_it_now": "Hazlo ahora",
+    "location.find_here": "Encuéntranos aquí",
+    "play_learn_and_earn_yapitas": "Juega, aprende y gana Yapitas"
 
 }

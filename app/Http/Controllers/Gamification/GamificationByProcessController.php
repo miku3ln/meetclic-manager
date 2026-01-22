@@ -31,6 +31,16 @@ class GamificationByProcessController extends MyBaseController
             $result
         );
     }
+    public function getAdminGamificationFrontendHome()
+    {
+        $dataPost = Request::all();
+        $model = new GamificationByProcess();
+        $result = $model->getAdminGamificationFrontendHome($dataPost);
+
+        return Response::json(
+            $result
+        );
+    }
     public function saveData()
     {
 

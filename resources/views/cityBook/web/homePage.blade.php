@@ -23,14 +23,6 @@
     </script>
 @endsection
 
-
-
-@if(  $dataManagerPage['type']==1)
-@section('content-manager')
-    @if(isset($dataManagerPage['sliderMainManager']))
-        @include('cityBook.web.partials.home.sliderMain')
-    @endif
-@endsection
 @section('content')
     <div id="app-management">
         @if(isset($dataManagerPage['categoriesBusiness']))

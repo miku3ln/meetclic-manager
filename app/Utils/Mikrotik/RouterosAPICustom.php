@@ -419,7 +419,7 @@ class RouterosAPICustom extends RouterosAPI
                                         $this->write($valueCurrent, $allowParam);
                                     }
                                 }
-                                dd(69);
+
                                 $READView = $this->read(false);
                                 $ARRAYView = $this->parse_response($READView);
                                 if (count($ARRAYView) > 0) {

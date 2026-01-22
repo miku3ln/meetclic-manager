@@ -364,11 +364,11 @@ if (env('allowAllInOne')) {
                     $activeProductBox = 'not-active';
                     $activeProductProducts = 'not-active';
 
-                    if ($nameRoute == 'homePage') {
+                    if ($nameRoute == 'homePage' ||$nameRoute=="homeIndexFrontend") {
                         $activeHome = 'act-link';
                         $classWrapper = '';
                         if ($dataManagerPage['type'] == 1) {
-                            $classWrapper = 'no-padding';
+                          //  $classWrapper = 'no-padding';
                         }
                     } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
@@ -381,7 +381,7 @@ if (env('allowAllInOne')) {
                     } else if ($nameRoute == 'shopBee') {
                         $activeShop = 'act-link';
 
-                    } else if ($nameRoute == 'aboutUs') {
+                    } else if ($nameRoute == 'aboutUs'|| $nameRoute=="aboutUsBee") {
                         $activeAboutUs = 'act-link';
                         $activePages = 'act-link';
 
@@ -395,7 +395,7 @@ if (env('allowAllInOne')) {
                         $activePages = 'act-link';
                         $activeBackLine = 'act-link';
 
-                    } elseif ($nameRoute == 'contactUs') {
+                    } elseif ($nameRoute == 'contactUs'||$nameRoute =="contactUsBee") {
                         $activeContactUs = 'act-link';
 
 

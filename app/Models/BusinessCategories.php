@@ -122,25 +122,28 @@ class BusinessCategories extends ModelManager
 
     public function getCategoriesSearchBee($params)
     {
-        $textValue = $this->table . '.name';
+        $textValue = 'c.name';
         $field = $textValue;
-        $query = DB::table($this->table);
+        $query = DB::table($this->table." as c");
 
-        $selectString = "$this->table.id,$this->table.name as text";
+        $selectString = "c.id,c.name as text";
 
         $select = DB::raw($selectString);
         $query->select($select);
-        $query->where($this->table . '.status', '=', 'ACTIVE');
+        $query->join('business_subcategories as sc', 'sc.business_categories_id', '=', 'c.id')
+        ->join('business as b', 'b.business_subcategories_id', '=', 'sc.id');
+        $query->where( 'c.status', '=', 'ACTIVE');
         if (isset($params["filters"]['search_value']["term"])) {
             $likeSet = $params["filters"]['search_value']["term"];
             $query->where(function ($query) use (
                 $likeSet
             ) {
-                $query->where($this->table . '.name', 'like', '%' . $likeSet . '%');
+                $query->where('c.name', 'like', '%' . $likeSet . '%');
 
 
             });
         }
+        $query ->groupBy('c.id', 'c.name');
         $query->limit(10)->orderBy($field, 'asc');
         $result = $query->get()->toArray();
         return $result;

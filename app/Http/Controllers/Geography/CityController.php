@@ -188,7 +188,7 @@ class CityController extends MyBaseController
 
         } catch (Exception $e) {
             $msj = $e->getMessage();
-            dd($msj);
+
             $result=[];
         }
         return $result;
