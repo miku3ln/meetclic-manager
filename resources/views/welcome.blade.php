@@ -1,4 +1,14 @@
+<?php
+
+
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+
+
+?>
 <!DOCTYPE html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -70,10 +80,10 @@
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login',app()->getLocale()) }}">Login</a>
+                        <a href="{{ $rootUrlLogin }}">Login</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{$rootUrlRegister}}">Register</a>
                         @endif
                     @endauth
                 </div>

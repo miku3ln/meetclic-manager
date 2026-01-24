@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App;
+use Couchbase\View;
 use Request;
 use Cookie;
 use App\Services\FirebaseService;
@@ -118,18 +119,10 @@ class FrontendCityBookMiddleware
     function handle($request, Closure $next, $plan = null)
     {
         $utilTracking = new App\Utils\TrackingUtil();
-
         $response = $next($request);
-
         $result = $utilTracking->managerAllowRoutes($request, $next,1);//CMS TRACKING
-//dd($result);
         $allowView = $result['success'];
         $actionUrlManagement = $result['data']['url'];
-        $this->managementCookies([
-            '$response' => $response,
-            '$request' => $request,
-
-        ]);
         if ($allowView) {
             $utilTracking->managerCounters([
                 'type' => $actionUrlManagement,
@@ -164,6 +157,7 @@ class FrontendCityBookMiddleware
                 ]);
             }
         }
+
 
         if (!$request->secure() && env('APP_ENV') === 'production') {
             if (env('ssl_secure')) {

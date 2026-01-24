@@ -1,5 +1,9 @@
 
-
+<?php
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+?>
 <div class="footer bg-white shadow mt-auto border-top">
     @if(isset($dataManagerPage['isUserMenu']) && !$dataManagerPage['isUserMenu'])
         <div
@@ -27,7 +31,7 @@
                     <p class="small m-0 pt-1">{{__('frontend.web.eatPura.frontend.menu.fourth')}}</p>
                 </a>
             @else
-                <a href="{{route('login', app()->getLocale())}}" class="text-muted text-center col py-2 p-1">
+                <a href="{{$rootUrlLogin}}" class="text-muted text-center col py-2 p-1">
                     <i class="bi bi-person h3 m-0"></i>
                     <p class="small m-0 pt-1">{{__('frontend.web.eatPura.frontend.menu.eleven')}}</p>
                 </a>

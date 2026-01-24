@@ -18,16 +18,22 @@ use App\Models\GamificationByProcess;
 use App\Services\GeoIpLocalService;
 
 use Carbon\Carbon;
-use Cassandra\Date;
+
+
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-
-use Cookie;
 
 
 class TrackingUtil
 {
     public $cookies = [];
+    const TYPE_ERROR_BUSINESS_GAMIFICATION = -2;
+    const TYPE_ERROR_PARAMS_LINK_GAMIFICATION = -3;
+    const TYPE_ERROR_PARAMS_PROCESS_GAMIFICATION = -4;
+    const TYPE_ERROR_NOT_LOGIN_GAMIFICATION = -6;
+
+    const TYPE_ERROR_SAVE_GAMIFICATION = -5;
 
     const URL_MANY = 1;
     const URL_NOT_MANY = 2;
@@ -63,6 +69,19 @@ class TrackingUtil
         'signPdf',
         'signPdfF',
     ];
+
+    public static function getDataGamificationTypesError()
+    {
+        $result =
+            [
+                ["id" => self:: TYPE_ERROR_BUSINESS_GAMIFICATION, "text" => "TYPE_ERROR_BUSINESS_GAMIFICATION"],
+                ["id" => self:: TYPE_ERROR_PARAMS_LINK_GAMIFICATION, "text" => "TYPE_ERROR_PARAMS_LINK_GAMIFICATION"],
+                ["id" => self:: TYPE_ERROR_PARAMS_PROCESS_GAMIFICATION, "text" => "TYPE_ERROR_PARAMS_PROCESS_GAMIFICATION"],
+                ["id" => self:: TYPE_ERROR_NOT_LOGIN_GAMIFICATION, "text" => "TYPE_ERROR_NOT_LOGIN_GAMIFICATION"],
+                ["id" => self:: TYPE_ERROR_SAVE_GAMIFICATION, "text" => "TYPE_ERROR_SAVE_GAMIFICATION"]
+            ];
+        return $result;
+    }
 
     public $actionsAllows2 = [
         'homePage',
@@ -102,7 +121,7 @@ class TrackingUtil
         'FAQ',
     ];
 
-    public function validateActionsTrackingGaming($request, $next, $type)
+    public function validateActionsTrackingGaming($request)
     {
         $result = [
             "success" => false,
@@ -137,12 +156,12 @@ class TrackingUtil
             $modelTypes = new \App\Models\Tracking\TrackingClickTypes();
             $type_process = $typeProcess;
             $resultTypes = $modelTypes->findByAttribute('code', $type_process);
-            $click_type_id = $resultTypes->id;
             if (!$resultTypes) {
                 $result["success"] = false;
                 $result["message"] = "Type no existe informacion!";
                 return $result;
             }
+            $click_type_id = $resultTypes->id;
             $referer_url = $request->headers->get('referer');
             $managerClick = [
                 'type' => $typeProcess,
@@ -171,14 +190,11 @@ class TrackingUtil
     // =========================================
     public function managerAllowRoutes($request, $next, $type)//CMS TRACKING
     {
-        // type == 1  => lógica vieja con segments + permisos + casos 1..8
-        // type != 1  => lógica de tracking por route name / action name
-        $this->managerGamingTask($request, $next, $type);
         if ($type == 1) {
             return $this->handleTypeOneRoutes($request);
         }
-        $result = $this->handleNonTypeOneRoutes($request);//CMS TRACKING
 
+        $result = $this->handleNonTypeOneRoutes($request);//CMS TRACKING
         return $result;
     }
 
@@ -230,85 +246,153 @@ class TrackingUtil
         return $useCase->execute($dto);
     }
 
-    public function managerGamingTask($request, $next, $type)
+    public function managerGamingTask($request, $typeMiddleware)
     {
 
-        $resultDataByParams = $this->resolveRouteParamsForGamification($request, $type);
 
+        $resultDataByParams = $this->resolveRouteParamsForGamification($request, $typeMiddleware);
+        $type = -1;
+        $success = false;
+        $message = "";
+        $resultTask = [
+            "success" => $success,
+            "message" => $message,
+            "type" => $type,
+            "typeMiddleware" => $typeMiddleware
+
+        ];
         $res = $resultDataByParams;
         if ($res->success) {
 
             $routingData = $res->data["routing"];
             $relationManager = $res->data["relationManager"];
             $typeProcess = $relationManager["typeProcess"];
-            $resultManager = $this->validateActionsTrackingGaming($request, $next, $type);
-            $user = $request->user();
+            $resultManager = $this->validateActionsTrackingGaming($request);
+
             if ($resultManager["success"] && $typeProcess == "business") {
-                $managerClick = $resultManager["data"]["managerClick"];
-                $dataRelation = $relationManager["relation"];
-                $business_id = $dataRelation["business_id"];
-                $tracking_source_id = $managerClick["source_id"];
-                $campaign_code = $managerClick["campaign_code"];
-                $tracking_click_type_id = $managerClick["click_type_id"];
 
-                $code_process = $managerClick["code_process"];
-                $findParamsProcess = [
-                    "business_id" => $business_id,
-                    "tracking_source_id" => $tracking_source_id,
-                    "tracking_click_type_id" => $tracking_click_type_id,
-                    "campaign_code" => $campaign_code,
-                    "code_process" => $code_process,
+                $user = $request->user();
+                if ($user) {
+                    $managerClick = $resultManager["data"]["managerClick"];
+                    $dataRelation = $relationManager["relation"];
+                    $business_id = $dataRelation["business_id"];
+                    $tracking_source_id = $managerClick["source_id"];
+                    $campaign_code = $managerClick["campaign_code"];
+                    $tracking_click_type_id = $managerClick["click_type_id"];
+                    $code_process = $managerClick["code_process"];
+                    $findParamsProcess = [
+                        "business_id" => $business_id,
+                        "tracking_source_id" => $tracking_source_id,
+                        "tracking_click_type_id" => $tracking_click_type_id,
+                        "campaign_code" => $campaign_code,
+                        "code_process" => $code_process,
 
-                ];
+                    ];
+                    $processDataGet = $this->findProcess($findParamsProcess);
+                    if ($processDataGet->success) {
 
-                $processDataGet = $this->findProcess($findParamsProcess);
-                if ($processDataGet->success) {
-                    $rowDataProcess = $processDataGet->data["row"];
-                    $userId = 1;
-                    $processId = $rowDataProcess["id"];
-                    $resultAllowDepositLog = $this->managerSaveRegisterGamingTaskLog($userId, $processId);
-                    dd($resultAllowDepositLog);
-                    if ($resultAllowDepositLog->success) {
-                        $model = new GamificationByProcessTracking();
-                        $tz = 'America/Guayaquil';
-                        $now = Carbon::now($tz)->format('Y-m-d H:i:s');
-                        $assigned_at = $now;
-                        $completed_at = $now;
-
-                        $attributesSet = [
-                            "user_id" => $userId,
-                            "gamification_by_process_id" => $processId,
-                            "status" => $model::STATE_COMPLETED,
-                            "assigned_at" => $assigned_at,
-                            "completed_at" => $completed_at,
-                        ];
-                        $model->fill($attributesSet);
-                        $success = $model->save();
-                        $processData = $rowDataProcess;
-                        $processManager = $processData;
-                        $typeMoney = 0;
-                        $reference_code = "business-code";
-                        $performed_by_id = null;
-                        $amount = $processData["points"];
-                        $useCase = app(RewardUserByTaskUseCase::class);
-                        $dto = new TaskRewardInputDTO(
-                            userId: $userId,
-                            process: $processManager,
-                            amount: $amount,
-                            typeMoney: $typeMoney,
-                            referenceCode: $reference_code,
-                            performedById: $performed_by_id
-                        );
-
-                        $result = $useCase->execute($dto);
-
+                        $rowDataProcess = $processDataGet->data["row"];
+                        $userId = $user->id;
+                        $processId = $rowDataProcess["id"];
+                        $resultAllowDepositLog = $this->managerSaveRegisterGamingTaskLog($userId, $processId);
+                        if ($resultAllowDepositLog->success) {
+                            $model = new GamificationByProcessTracking();
+                            $tz = 'America/Guayaquil';
+                            $now = Carbon::now($tz)->format('Y-m-d H:i:s');
+                            $assigned_at = $now;
+                            $completed_at = $now;
+                            $attributesSet = [
+                                "user_id" => $userId,
+                                "gamification_by_process_id" => $processId,
+                                "status" => $model::STATE_COMPLETED,
+                                "assigned_at" => $assigned_at,
+                                "completed_at" => $completed_at,
+                            ];
+                            $model->fill($attributesSet);
+                            $success = $model->save();
+                            $processData = $rowDataProcess;
+                            $processManager = $processData;
+                            $typeMoney = 0;
+                            $reference_code = "business-code";
+                            $performed_by_id = null;
+                            $amount = $processData["points"];
+                            $useCase = app(RewardUserByTaskUseCase::class);
+                            $dto = new TaskRewardInputDTO(
+                                userId: $userId,
+                                process: $processManager,
+                                amount: $amount,
+                                typeMoney: $typeMoney,
+                                referenceCode: $reference_code,
+                                performedById: $performed_by_id
+                            );
+                            $result = $useCase->execute($dto);
+                            $type = $result["success"] ? 420 : self::TYPE_ERROR_SAVE_GAMIFICATION;
+                            $resultTask["success"] = $result["success"];
+                            $resultTask["message"] = $result["success"] ? 'Tarea realizada' : 'Tarea no realizada algun problema en el registro comuniquese con el area de soporte';
+                            $resultTask["type"] = $type;
+                        }
+                    } else {
+                        $resultTask["success"] = false;
+                        $resultTask["message"] = $processDataGet->message;
+                        $resultTask["type"] = self::TYPE_ERROR_PARAMS_PROCESS_GAMIFICATION;
                     }
+                } else {
+                    $resultTask["success"] = false;
+                    $resultTask["message"] = "Es necesario registrarse para poder realizar la tarea y ganar YAPITAS";
+                    $resultTask["type"] = self::TYPE_ERROR_NOT_LOGIN_GAMIFICATION;
                 }
+            } else {
 
+                $resultTask["success"] = false;
+                $resultTask["message"] = $resultManager["message"];
+                $resultTask["type"] = self::TYPE_ERROR_PARAMS_LINK_GAMIFICATION;
 
             }
 
+        } else {
+            $resultTask["success"] = false;
+            $resultTask["message"] = $res->message;
+            $resultTask["type"] = self::TYPE_ERROR_BUSINESS_GAMIFICATION;
+
         }
+
+        return $resultTask;
+    }
+
+    public static function getPageCookiesSGamification()
+    {
+
+
+        $mc_gamification_result = Cookie::get('mc_gamification_result');
+        $result = $mc_gamification_result;
+        return $result;
+    }
+
+    public function mcSetGamificationResult(array $data): void
+    {
+        $payload = [
+            'success' => $data['success'],
+            'message' => $data['message'],
+            'type' => $data['type'], // success|warning|error
+            'typeMiddleware' => $data['typeMiddleware'],
+            'ts' => time(),
+        ];
+
+
+        if (Cookie::get('mc_gamification_result') == null) {
+
+        } else {
+            //  Cookie::queue(Cookie::forget('mc_gamification_result'));
+        }
+        Cookie::queue(cookie(
+            'mc_gamification_result',
+            json_encode($payload),
+            1,     // minutos
+            '/',    // path
+            null,   // domain
+            false,  // secure (true en https)
+            false   // httpOnly false para leer en JS
+        ));
     }
     // =========================================
     //  PUBLIC: MANAGER COUNTERS
@@ -523,7 +607,7 @@ class TrackingUtil
                     $case = 8;
                 }
             }
-        }else{
+        } else {
             if ($this->isProtectedUserAction($actionCurrent)) {
 
                 $allowManager = false; // comportamiento actual

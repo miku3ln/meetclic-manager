@@ -2,6 +2,8 @@
 <?php
 $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 $rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 
 ?>
 @php
@@ -96,11 +98,11 @@ $rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login',app()->getLocale()) }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ $rootUrlLogin}}">{{ __('Login') }}</a>
                         </li>
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="nav-link" href="{{ $rootUrlRegister }}">{{ __('Register') }}</a>
                             </li>
                         @endif
                     @else

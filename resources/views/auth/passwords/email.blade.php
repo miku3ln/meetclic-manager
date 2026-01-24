@@ -1,3 +1,13 @@
+<?php
+
+
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+
+
+?>
+
 @extends('layouts.frontend.master-blank')
 
 @section('content')
@@ -42,7 +52,7 @@
 
                 <div class="row mt-3">
                     <div class="col-12 text-center">
-                        <p class="text-muted">Back to <a href="{{route('login', app()->getLocale())}}" class="text-muted font-weight-medium ml-1">Log in</a></p>
+                        <p class="text-muted">Back to <a href="{{$rootUrlLogin}}" class="text-muted font-weight-medium ml-1">Log in</a></p>
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->

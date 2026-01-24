@@ -113,9 +113,9 @@ class ResolveRouteContextUseCase
         if ($routeName === '') {
             return RouteResolveResultDTO::fail("No se pudo obtener route_name.");
         }
+        $dataActions = self::ROUTE_PARAM_MAP;
 
-        if (!isset(self::ROUTE_PARAM_MAP[$routeName])) {
-
+        if (!isset($dataActions[$routeName])) {
             return RouteResolveResultDTO::fail("No esta permitido para gestion de Gamificaciòn: '{$routeName}'.");
         }
 
@@ -160,6 +160,19 @@ class ResolveRouteContextUseCase
                 return RouteResolveResultDTO::fail("No se pudo resolver business: falta id.");
             }
             $fieldComparate = $relation["business"];
+            if (in_array($routeName, [ "rimay-business", "suggestion-mail-business", "rates-registers-business"])) {
+                $fieldComparate = "id";
+            } else if ("chasqui-routes" == $routeName) {
+
+            }else if("rate-register-business"==$routeName){
+
+            }else if( "rimay-registers-business" ==$routeName){
+
+            }else if(  "rewards-business"==$routeName){
+
+            }else if(  "shop-business"==$routeName){
+
+            }
             $business = $this->businessRead->findById($businessId, $fieldComparate);
             if (!$business) {
                 return RouteResolveResultDTO::fail("Empresa no existe para id='{$businessId}'.");

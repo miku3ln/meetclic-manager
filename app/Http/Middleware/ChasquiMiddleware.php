@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App;
+use http\Cookie;
 use Request;
-use Cookie;
+
 
 use Illuminate\Contracts\Cookie\Factory;
 

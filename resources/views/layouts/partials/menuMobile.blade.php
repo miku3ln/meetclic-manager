@@ -6,6 +6,9 @@ $dataManagerPageSet=[];
 if(isset($pageSectionsConfig)){
     $pageSectionsConfigSet=$pageSectionsConfig;
 }
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 ?>
 <div class="offcanvas-mobile-menu" id="offcanvas-mobile-menu">
     <a href="javascript:void(0)" class="offcanvas-menu-close" id="offcanvas-menu-close-trigger">
@@ -38,7 +41,7 @@ if(isset($pageSectionsConfig)){
             <div class="offcanvas-widget-area">
                 @if(!Auth::check())
                     <ul class="header-contact-info__list">
-                        <li><a href="{{ route('login',app()->getLocale()) }}">{{ __('header.account-dropdown.sign-in') }} </a></li>
+                        <li><a href="{{ $rootUrlLogin }}">{{ __('header.account-dropdown.sign-in') }} </a></li>
 
                     </ul>
             @endif

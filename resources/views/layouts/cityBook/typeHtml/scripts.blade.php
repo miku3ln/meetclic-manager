@@ -1,11 +1,18 @@
-<script  type="text/javascript">
-    var $routesManager={
-        "businessDetails":"{{route('businessDetails', app()->getLocale())}}",
-        "authorSingle":"{{route('authorSingle', app()->getLocale())}}",
+@php
+    $mcGamification =$dataManagerPage['gamificationDataTask'];
+
+    // Garantiza estructura para que NUNCA sea undefined
+    $mcGamification = $mcGamification ;
+@endphp
+
+<script type="text/javascript">
+    var $routesManager = {
+        "businessDetails": "{{route('businessDetails', app()->getLocale())}}",
+        "authorSingle": "{{route('authorSingle', app()->getLocale())}}",
 
     }
-
-
+    var $gamification_result =@json($mcGamification);
+    window.GAMIFICATION_RESULT = $gamification_result;
 </script>
 <?php
 $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
@@ -15,12 +22,12 @@ $themePath = $resourcePathServer . 'templates/cityBookHtml/';
 $publicAsset = asset(env('APP_IS_SERVER') ? "public" : '');
 $rootPage = '';
 
-$allowShop="-1";
+$allowShop = "-1";
 
-if($dataManagerPage['shopConfig']['allow']==false){
-    $allowShop="0";
-}else{
-    $allowShop="1";
+if ($dataManagerPage['shopConfig']['allow'] == false) {
+    $allowShop = "0";
+} else {
+    $allowShop = "1";
 }
 ?>
 
@@ -28,24 +35,24 @@ if($dataManagerPage['shopConfig']['allow']==false){
 
 <script id="manager_frontend_js">
 
-    var $dataManagerPage = <?php echo json_encode($dataManagerPage)?>;
-var $allowShop;
+    var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
+    var $allowShop;
 
-    var $language = <?php echo json_encode(isset($dataManagerPage['language']) ? $dataManagerPage['language'] : 'none')?>;
+    var $language = <?php echo json_encode(isset($dataManagerPage['language']) ? $dataManagerPage['language'] : 'none') ?>;
     var $allowUser = "{{isset($dataManagerPage['profileConfig']['success'])?$dataManagerPage['profileConfig']['success']:false}}";
     var $resourceRoot = "{{URL::asset($themePath)}}/";
     var $resourceManagementRoot = "{{URL::asset($publicAsset)}}";
 
-    var $resourcePathServer = "<?php echo(isset($resourcePathServer) ? $resourcePathServer : '')?>";
-    var $publicAsset = "<?php echo($publicAsset)?>";
+    var $resourcePathServer = "<?php echo(isset($resourcePathServer) ? $resourcePathServer : '') ?>";
+    var $publicAsset = "<?php echo($publicAsset) ?>";
 
-    var $cookiesManager = <?php echo json_encode(isset($pageSectionsConfig['cookies']) ? $pageSectionsConfig['cookies'] : [])?>;
+    var $cookiesManager = <?php echo json_encode(isset($pageSectionsConfig['cookies']) ? $pageSectionsConfig['cookies'] : []) ?>;
     var $routeRoot = "{{route('urlBase', app()->getLocale())}}";
     var $managerProductBusiness = "{{route('managerProductBusiness', app()->getLocale())}}";
-    var $currentPage = <?php echo json_encode(isset($dataManagerPage['currentPage']) ? $dataManagerPage['currentPage'] : 'not-defined')?>;
+    var $currentPage = <?php echo json_encode(isset($dataManagerPage['currentPage']) ? $dataManagerPage['currentPage'] : 'not-defined') ?>;
     var $allowAllInOne = '{{env('allowAllInOne')}}';
 
-    var $shopConfig = <?php echo json_encode($dataManagerPage['shopConfig'])?>;
+    var $shopConfig = <?php echo json_encode($dataManagerPage['shopConfig']) ?>;
 
     var $rootPage = "{{asset($rootPage)}}";
     var $rootUrl = '{{URL('').'/'.app()->getLocale()}}';
@@ -76,8 +83,9 @@ var $allowShop;
     };
 
     function initDataShopping() {
-        $allowShop=  $shopConfig['allow']?1:0;
+        $allowShop = $shopConfig['allow'] ? 1 : 0;
     }
+
     initDataShopping();
 </script>
 

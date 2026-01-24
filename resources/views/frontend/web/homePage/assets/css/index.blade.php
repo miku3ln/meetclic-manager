@@ -3,6 +3,12 @@
 
 @include('partials.bootstrap-05',["allowCss"=>true])
 <style>
+    div#listing-items {
+        margin-top: 2%;
+    }
+    footer.main-footer{
+        z-index: 0 !important;
+    }
     /* =========================
    BEM: filters-sheet
    Solo lo que BS5 no cubre
@@ -106,6 +112,12 @@
     }
     .view-value {
         color: #445ef2 !important;
+    }
+    .filters__item-subcategory {
+        padding-bottom: 13px;
+    }
+    .chat-widget-button-content{
+        display:none;
     }
 </style>
 

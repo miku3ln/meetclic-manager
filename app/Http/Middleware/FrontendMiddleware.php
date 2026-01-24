@@ -138,6 +138,7 @@ class FrontendMiddleware
         $utilTracking = new App\Utils\TrackingUtil();
         $response = $next($request);
         $result = $utilTracking->managerAllowRoutes($request, $next, 2);
+        $request->attributes->set('mcGamification', ["a","b"]);
         $allowView = $result['success'];
         $actionUrlManagement = $result['data']['url'];
         $utilTracking->managerCounters([
@@ -191,6 +192,8 @@ class FrontendMiddleware
 
             }
         }
+
+
         return $response;
 
     }

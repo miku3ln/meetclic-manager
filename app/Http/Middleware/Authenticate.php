@@ -22,9 +22,8 @@ class Authenticate extends Middleware
         $requestManager = $request->expectsJson();
         $language = $request->language ? (($request->language != 'es' || $request->language != 'eng' || $request->language != 'ki') ? $request->language : 'es') : 'es';
         if (!$requestManager) {
-            $routeGet= route('login',app()->getLocale());
 
-            return $routeGet;
+            return route("homePage")."/".app()->getLocale()."/login";
         }
     }
 }

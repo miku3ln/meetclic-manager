@@ -472,6 +472,9 @@
                         var executionModeIcon = isPhysical ? "📍" : "💻"; // simple, claro
                         var locationLabel = '{{__('location.find_here')}}' + ": " + params["zones_name"] + "," + params["business_street_one"] + "," + params["business_street_two"] + "," + params["cities_name"] + "," + params["provinces_name"];
                         var currentIde = params.id + "-" + params.business_id;
+                        var business_lng = params.business_lng;
+                        var business_lat = params.business_lat;
+
                         const task = {
                             coverUrl: coverImageUrl, // obligatorio según tu regla (deberías asegurar en data)
                             businessUrl: $urlRouteBusiness + '/' + params.business_name,
@@ -560,7 +563,7 @@
                         ].join('');
 
                         const buildAvatar = () => [
-                            `<div class="listing-avatar">`,
+                            `<div class="listing-avatar not-view">`,
                             `  <a href="${$urlRouteUser + "/" + task.user_id}" alt="">`,
                             `     <img src="${task.avatarImgUser}" alt="" server="">`,
                             `  </a>`,
@@ -581,7 +584,7 @@
                         const locationData = isPhysical ? [
                             '<div class="geodir-category-options fl-wrap">',
                             '   <div class="geodir-category-location">',
-                            `    <a class="map-item" href="#${currentIde}">`,
+                            `    <a class="map-item" href="#${currentIde}" lat="${business_lat}" lng="${business_lng}">`,
                             '     <i class="fa fa-map-marker" aria-hidden="true"></i> ',
                             '         <span class="geodir-category-location__location">' + `${task.locationLabel}`,
                             '          </span>',
@@ -631,12 +634,10 @@
                             var taskBusinessData = currentManagement[1];
                             var taskBusinessInfo = taskBusinessData.split("-");
                             var businessId = taskBusinessInfo[1];
-                            console.log("currentManagement", currentManagement)
-
-                            var marker_index = parseInt($(this).attr('href').split('#')[1], 10);
-                            //             google.maps.event.trigger($configManagerMap.markers[marker_index], "click");
-
-
+                            var lat = parseFloat($(this).attr('lat'));
+                            var lng= parseFloat($(this).attr('lng'));
+console.log("lat",lat)
+                            openGoogleMaps({ lat: lat, lng:lng }, { zoom: 21 });
                             $this.sendDataChildren({
                                 "nameChild": 'map-manager',
                                 "type": 'click-map-item',

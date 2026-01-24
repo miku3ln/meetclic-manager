@@ -47,7 +47,9 @@ class VerificationController extends Controller
         $user = $request->user();
 
         if ($user->hasVerifiedEmail()) {
-            return redirect()->route('login')->with('status', 'Ya habías verificado tu correo.');
+            $urlLogin = url('/' . app()->getLocale() . '/login');
+
+            return redirect($urlLogin)->with('status', 'Ya habías verificado tu correo.');
         }
 
         // Verifica que el ID y hash coincidan con el usuario autenticado
@@ -63,7 +65,8 @@ class VerificationController extends Controller
             event(new Verified($user)); // <- Aquí Laravel dispara el evento
         }
 
-        return redirect()->route('login')->with('status', 'Correo verificado con éxito. Ya puedes iniciar sesión.');
+        return redirect()->to(url('/' . app()->getLocale() . '/login'))
+            ->with('status', 'Correo verificado con éxito. Ya puedes iniciar sesión.');
     }
     public function verifyApp(Request $request)
     {

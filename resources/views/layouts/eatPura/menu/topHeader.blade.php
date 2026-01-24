@@ -1,4 +1,8 @@
 <?php
+
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 $managerBusinessMenu = [];
 if ($isUser) {
     $modelFrontendManager = new  \App\Models\FrontendManagerData;
@@ -177,12 +181,12 @@ if ($isUser) {
                         <ul class="dropdown-menu">
                             @if(!$isUser)
                                 <li><a class="dropdown-item"
-                                       href="{{route('login',app()->getLocale())}}">
+                                       href="{{$rootUrlLogin}}">
                                         {{__('frontend.web.eatPura.frontend.menu.eleven')}}
                                     </a>
                                 </li>
                                 <li><a class="dropdown-item"
-                                       href="{{route('register',app()->getLocale())}}">
+                                       href="{{$rootUrlRegister}}">
                                         {{__('frontend.web.eatPura.frontend.menu.ten')}}
                                     </a>
                                 </li>

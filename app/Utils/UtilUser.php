@@ -409,10 +409,10 @@ class UtilUser
         if ($typeSave == UtilUser::TYPE_SAVE_NORMAL) {
 
             if ($this->create($dataPost)) {
-                $result = redirect()->route('login', app()->getLocale())
-                    ->with(['success' => 'Congratulations! your account is registered.']);
+
                 DB::commit();
-                return $result;
+                return redirect()->to(url('/' . app()->getLocale() . '/login'))
+                    ->with('success', 'Congratulations! your account is registered.');
             } else {
                 DB::rollBack();
 

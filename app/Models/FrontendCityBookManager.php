@@ -7,6 +7,7 @@ use App\Models\Products\Product;
 use App\Models\Whatsapp\WhatsappConfigs;
 use App\Utils\FrontendPageSections;
 use App\Utils\LanguageUtil;
+use App\Utils\TrackingUtil;
 use App\Utils\Util;
 use Auth;
 use Frontend;
@@ -68,6 +69,23 @@ class FrontendCityBookManager extends ModelManager
             'path' => $this->resourcePathServer,
             "business_id" => $business_id
         ]);
+
+
+        $type = 1;
+        $request = request();
+        $route = $request->route();
+        $routeName = $route->getName();
+        $tracking = new TrackingUtil();
+
+        $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
+        if (!in_array($routeName, ["contactUsBee","traductor","diccionario","apuntes","yachaSun","homeChaski","howItWorks","homeBackLine","bee","aboutUsBee","reviewsTo","pointsSales","boardingEmbarkation","boardingEmbarkationManagement","orders","listingsQueen","businessEmployer","business","managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile","profileAccount","password","suggestionsMailBox"])) {
+            if ($request->isMethod('get')) {
+                $resultTracking = $tracking->managerGamingTask($request, $type);
+                $gamificationData=$resultTracking;
+            }
+        }else{
+
+        }
 
 
         $shopConfig = $this->modelFMD->getShopConfig([
@@ -1588,6 +1606,9 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
         }
         $formLanguageManagement = LanguageUtil:: getValidationLangFlat();
         $dataManagerPage['formLanguageManagement'] = $formLanguageManagement;
+        $dataManagerPage['gamificationDataTask'] = $gamificationData;
+
+
         $result['dataManagerPage'] = $dataManagerPage;
 
         $result['pageSectionsConfig'] = $pageSectionsConfig;

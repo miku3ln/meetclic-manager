@@ -6,6 +6,7 @@ if(isset($dataManagerPage)){
 }
 $rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
 $rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 
 ?>
 <div class="header-icon-area">
@@ -13,7 +14,7 @@ $rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
         @if(Auth::check())
             <a href="javascript:void(0)">{{__('header.account-dropdown.sign-up')}} <i class="pe-7s-angle-down"></i></a>
         @else
-            <a href="{{route('register',app()->getLocale())}}">{{__('header.account-dropdown.sign-up-guest')}}  <i class="pe-7s-angle-down"></i></a>
+            <a href="{{$rootUrlRegister}}">{{__('header.account-dropdown.sign-up-guest')}}  <i class="pe-7s-angle-down"></i></a>
 
         @endif
         <ul class="account-dropdown__list">

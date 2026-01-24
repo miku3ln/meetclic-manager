@@ -73,6 +73,9 @@ $urlManagerPage = route('homeEatPura', app()->getLocale());
 
 $urlShopPage = route('shopPage', app()->getLocale());
 $addClassManagerHeader = $nameRoute == 'homeEatPura' ? '' : 'dark-header--back-line';
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 
 ?>
 <div class="loading-resources loading-resources--view">
@@ -248,12 +251,12 @@ $addClassManagerHeader = $nameRoute == 'homeEatPura' ? '' : 'dark-header--back-l
                                     </a>
                                     <ul class="dropdown-menu">
                                         @if(!$isUser)
-                                            <li><a class="dropdown-item" href="{{route('login',app()->getLocale())}}">
+                                            <li><a class="dropdown-item" href="{{$rootUrlLogin}}">
                                                     {{__('frontend.web.eatPura.frontend.menu.eleven')}}
                                                 </a>
                                             </li>
                                             <li><a class="dropdown-item"
-                                                   href="{{route('register',app()->getLocale())}}">
+                                                   href="{{$rootUrlRegister}}">
                                                     {{__('frontend.web.eatPura.frontend.menu.ten')}}
                                                 </a>
                                             </li>
@@ -463,7 +466,7 @@ $addClassManagerHeader = $nameRoute == 'homeEatPura' ? '' : 'dark-header--back-l
                     <p class="small m-0 pt-1">{{__('frontend.web.eatPura.frontend.menu.fourth')}}</p>
                 </a>
             @else
-                <a href="{{route('login', app()->getLocale())}}" class="text-muted text-center col py-2 p-1">
+                <a href="{{$rootUrlLogin}}" class="text-muted text-center col py-2 p-1">
                     <i class="bi bi-person h3 m-0"></i>
                     <p class="small m-0 pt-1">{{__('frontend.web.eatPura.frontend.menu.eleven')}}</p>
                 </a>

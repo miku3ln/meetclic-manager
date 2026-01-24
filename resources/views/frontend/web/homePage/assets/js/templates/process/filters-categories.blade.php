@@ -114,7 +114,7 @@
                         <div
                             v-for="sub in cat.children"
                             :key="'sub-'+sub.id"
-                            class="d-flex align-items-center justify-content-between "
+                            class="d-flex align-items-center justify-content-between filters__item-subcategory "
                         >
                             <div class="d-flex align-items-center">
                                 <div class="filters-sheet__icon-wrap me-3" style="width:36px;height:36px;">

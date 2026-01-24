@@ -51,7 +51,7 @@
             </div>
 
             <!-- CTA -->
-            <div class="mc-soon__cta">
+            <div class="mc-soon__cta not-view">
                 <a class="mc-soon__btn mc-soon__btn--primary" href="javascript:void(0)">
                     Quiero ser de los primeros
                 </a>

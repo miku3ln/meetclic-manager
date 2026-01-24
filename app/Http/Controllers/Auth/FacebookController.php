@@ -155,8 +155,13 @@ class FacebookController extends Controller
 
     protected function sendFailedResponse($msg = null)
     {
-        return redirect()->route('login', ['language' => 'es', 'error' => $msg])
-            ->withErrors(['msg' => $msg ?: 'Unable to login, try with another provider to login.']);
+
+        $message = $msg ?: 'Unable to login, try with another provider to login.';
+
+        $rootUrlLogin = url('/' . app()->getLocale() . '/login');
+
+        return redirect()->to($rootUrlLogin . '?error=' . urlencode($message))
+            ->withErrors(['msg' => $message]);
     }
 
     /**

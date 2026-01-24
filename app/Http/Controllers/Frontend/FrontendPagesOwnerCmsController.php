@@ -12,6 +12,7 @@ use App\Models\RoutesMap;
 use App\Models\RoutesMapByRoutesDrawing;
 use App\Models\TemplateBySource;
 use App\Models\Whatsapp\WhatsappConfigs;
+use App\Utils\TrackingUtil;
 use Illuminate\Http\Request;
 
 class FrontendPagesOwnerCmsController extends Controller
@@ -22,31 +23,34 @@ class FrontendPagesOwnerCmsController extends Controller
         $section = $request->route('section');
 
         $dataModelBRR = BusinessByRoutesMap::find(1);
-        $logoHtmlMeetclic="";
+        $logoHtmlMeetclic = "";
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        if($resultResources["logoMain"]){
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
-        return view('cityBook.web.businessOwner.mikuy-yachak', [
+
+        $paramsSend = [
+            "gamificationDataTask" => [],
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
-            
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section
-        ]);
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        return view('cityBook.web.businessOwner.mikuy-yachak', $paramsSend);
     }
 
     public function chasqui($id = null)
@@ -62,22 +66,22 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-              "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
 
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -104,10 +108,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'name_chasqui' =>$information["name"] ,
+                'name_chasqui' => $information["name"],
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -131,10 +135,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
-
-        return view('cityBook.web.businessOwner.chasqui-nian-business', [
+        $paramsSend = [
+            "gamificationDataTask" => [],
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -142,8 +146,33 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+        ];
+
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+
+        return view('cityBook.web.businessOwner.chasqui-nian-business', $paramsSend);
     }
+
+    public function getParamsPage($params)
+    {
+        $type = 1;
+        $request = request();
+        $route = $request->route();
+        $routeName = $route->getName();
+        $tracking = new TrackingUtil();
+
+        $gamificationDataTask = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
+        if (!in_array($routeName, ["contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
+            if ($request->isMethod('get')) {
+                $resultTracking = $tracking->managerGamingTask($request, $type);
+                $gamificationDataTask = $resultTracking;
+            }
+        } else {
+
+        }
+        return $gamificationDataTask;
+    }
+
     public function rimayByBusiness($id = null)
     {
         $slug = "";
@@ -157,21 +186,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -185,10 +214,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -208,10 +237,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
-
-        return view('cityBook.web.businessOwner.rimay-business', [
+        $paramsSend = [
+            "gamificationDataTask" => [],
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -219,8 +248,13 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+
+        return view('cityBook.web.businessOwner.rimay-business', $paramsSend);
     }
+
     public function suggestionsMailBoxByBusiness($id = null)
     {
         $slug = "";
@@ -234,21 +268,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -262,10 +296,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -286,9 +320,10 @@ class FrontendPagesOwnerCmsController extends Controller
         }
 
 
-        return view('cityBook.web.businessOwner.rimay-business', [
+        $paramsSend = [
+            "gamificationDataTask" => [],
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -296,8 +331,13 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+
+        return view('cityBook.web.businessOwner.rimay-business', $paramsSend);
     }
+
     public function shopByBusiness($id = null)
     {
         $slug = "";
@@ -311,21 +351,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -339,10 +379,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -363,9 +403,10 @@ class FrontendPagesOwnerCmsController extends Controller
         }
 
 
-        return view('cityBook.web.businessOwner.shop-business', [
+        $paramsSend = [
+            "gamificationDataTask" => [],
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -373,8 +414,14 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+
+        return view('cityBook.web.businessOwner.shop-business', $paramsSend);
     }
+
     public function rimayRegistersByBusiness($id = null)
     {
         $slug = "";
@@ -388,21 +435,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -416,10 +463,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -439,10 +486,11 @@ class FrontendPagesOwnerCmsController extends Controller
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
+        $paramsSend = [
+            "gamificationDataTask" => [],
 
-        return view('cityBook.web.businessOwner.rimay-registers-business', [
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -450,8 +498,13 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        return view('cityBook.web.businessOwner.rimay-registers-business', $paramsSend);
     }
+
     public function rewardsRegistersByBusiness($id = null)
     {
         $slug = "";
@@ -465,21 +518,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -493,10 +546,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -516,10 +569,11 @@ class FrontendPagesOwnerCmsController extends Controller
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
+        $paramsSend = [
+            "gamificationDataTask" => [],
 
-        return view('cityBook.web.businessOwner.rewards-registers-business', [
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -527,8 +581,13 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        return view('cityBook.web.businessOwner.rewards-registers-business', $paramsSend);
     }
+
     public function ratesRegistersByBusiness($id = null)
     {
         $slug = "";
@@ -542,21 +601,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -570,10 +629,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -594,9 +653,11 @@ class FrontendPagesOwnerCmsController extends Controller
         }
 
 
-        return view('cityBook.web.businessOwner.rates-registers-business', [
+        $paramsSend = [
+            "gamificationDataTask" => [],
+
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -604,8 +665,13 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        return view('cityBook.web.businessOwner.rates-registers-business', $paramsSend);
     }
+
     public function rateRegisterByBusiness($id = null)
     {
         $slug = "";
@@ -619,21 +685,21 @@ class FrontendPagesOwnerCmsController extends Controller
         $dataBusiness = null;
         $dataRoute = null;
         $modelTBS = new TemplateBySource();
-        $template_information_id=1;
-        $filtersManager=[
-            'filters'=>[
-                "template_information_id"=>$template_information_id
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
             ]
         ];
         $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
-        $logoHtmlMeetclic="";
-        if($resultResources["logoMain"]){
+        $logoHtmlMeetclic = "";
+        if ($resultResources["logoMain"]) {
             $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
-            $data=  $resultResources["logoMain"];
+            $data = $resultResources["logoMain"];
             $logoHtmlMeetclic .= '<div class="main-header">';
-            $rootUrl=route("homePage");
-            $logoHtmlMeetclic .= ' <a href="'.$rootUrl.'">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
             $logoHtmlMeetclic .= '</div>';
 
         }
@@ -647,10 +713,10 @@ class FrontendPagesOwnerCmsController extends Controller
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
-                'nameForm' =>"hol" ,
+                'nameForm' => "hol",
             ];
-            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp,$variables);
-            $dataPhoneWhatsapp["urlWhatsapp"]=$urlWhatsapp;
+            $urlWhatsapp = $modelWhats->generateFromConfig($dataPhoneWhatsapp, $variables);
+            $dataPhoneWhatsapp["urlWhatsapp"] = $urlWhatsapp;
             $modelManager = new \App\Models\InformationSocialNetwork();
             $entity_id = $business_id;
             $resultCurrentData = $modelManager->getInformationData([
@@ -670,10 +736,11 @@ class FrontendPagesOwnerCmsController extends Controller
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }
 
+        $paramsSend = [
+            "gamificationDataTask" => [],
 
-        return view('cityBook.web.businessOwner.rate-register-business', [
             'slug' => $slug,
-            "logoHtmlMeetclic"=>$logoHtmlMeetclic,
+            "logoHtmlMeetclic" => $logoHtmlMeetclic,
             'section' => $section,
             'dataManager' => [
                 'allow' => $allow,
@@ -681,6 +748,11 @@ class FrontendPagesOwnerCmsController extends Controller
                 'dataRoute' => $dataRoute,
 
             ]
-        ]);
+
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        return view('cityBook.web.businessOwner.rate-register-business', $paramsSend
+        );
     }
 }

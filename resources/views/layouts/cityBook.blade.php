@@ -48,6 +48,7 @@
         .inline-data {
             display: inline;
         }
+
         h1.title-main {
             color: var(--mc-azulClic) !important;
             text-align: left;
@@ -204,7 +205,7 @@
         }
     </style>
     @include('cityBook.web.partials.bootgrid.assets.css.source')
-
+    @include('partials.toast-meetclic',["allowCss"=>true])
     @if(env('allowCustomerCss'))
         <link href="{{ asset($resourcePathServer.'templates/webion/StyleWebion.css') }}" rel="stylesheet"
               type="text/css">
@@ -225,9 +226,9 @@
 $htmlLoad = '<div class="loader-wrap">';
 
 if (isset($dataManagerPage['logoMainData'])) {
-    $urlLogo=URL($resourcePathServer . $dataManagerPage['logoMainData']->source) ;
+    $urlLogo = URL($resourcePathServer . $dataManagerPage['logoMainData']->source);
     $htmlLoad .= '<div>';
-    $htmlLoad .= '  <img id="img-loading" src="'.$urlLogo.'" class="" alt="">';
+    $htmlLoad .= '  <img id="img-loading" src="' . $urlLogo . '" class="" alt="">';
     $htmlLoad .= '</div>';
     $htmlLoad .= '<div class="pulse"></div>';
 } else {
@@ -244,7 +245,7 @@ $htmlLoad .= '</div>';
 
 <?php
 
-$urlManagerPage = '';
+$urlManagerPage = $urlManagerPage = route('urlBase');
 if (env('allowAllInOne')) {
     //  $urlManagerPage = route('urlBase');
 } else {
@@ -364,11 +365,11 @@ if (env('allowAllInOne')) {
                     $activeProductBox = 'not-active';
                     $activeProductProducts = 'not-active';
 
-                    if ($nameRoute == 'homePage' ||$nameRoute=="homeIndexFrontend") {
+                    if ($nameRoute == 'homePage' || $nameRoute == "homeIndexFrontend") {
                         $activeHome = 'act-link';
                         $classWrapper = '';
                         if ($dataManagerPage['type'] == 1) {
-                          //  $classWrapper = 'no-padding';
+                            //  $classWrapper = 'no-padding';
                         }
                     } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
@@ -381,7 +382,7 @@ if (env('allowAllInOne')) {
                     } else if ($nameRoute == 'shopBee') {
                         $activeShop = 'act-link';
 
-                    } else if ($nameRoute == 'aboutUs'|| $nameRoute=="aboutUsBee") {
+                    } else if ($nameRoute == 'aboutUs' || $nameRoute == "aboutUsBee") {
                         $activeAboutUs = 'act-link';
                         $activePages = 'act-link';
 
@@ -395,7 +396,7 @@ if (env('allowAllInOne')) {
                         $activePages = 'act-link';
                         $activeBackLine = 'act-link';
 
-                    } elseif ($nameRoute == 'contactUs'||$nameRoute =="contactUsBee") {
+                    } elseif ($nameRoute == 'contactUs' || $nameRoute == "contactUsBee") {
                         $activeContactUs = 'act-link';
 
 
@@ -739,9 +740,61 @@ if (env('allowAllInOne')) {
 @include('layouts.partials.shop.cart',array('typeManagerButton'=>1))
 @include('cityBook.web.partials.bootgrid.assets.js.source')
 @include('layouts.cityBook.typeHtml.scripts')
+@include('partials.toast-meetclic',["allowJs"=>true])
 
 
-<script>
+<script id="main-data-script-head">
+    /**
+     * Abre Google Maps en una nueva pestaña/ventana centrado en lat/lng con zoom cercano.
+     * @param {number} lat - Latitud (ej: 0.2320724)
+     * @param {number} lng - Longitud (ej: -78.2658406)
+     * @param {object} [options]
+     * @param {number} [options.zoom=21] - Zoom (cercano: 18-21)
+     * @param {boolean} [options.satellite=false] - true para vista satélite
+     * @param {string} [options.windowTarget='_blank'] - destino de window.open
+     */
+    function openGoogleMaps({ lat, lng }, options = {}) {
+        const {
+            zoom = 21,
+            satellite = false,
+            windowTarget = '_blank',
+        } = options;
+
+        validateLatLng(lat, lng);
+
+        const mapLayer = satellite ? 'k' : ''; // 'k' = satélite (Maps params)
+        const url = buildGoogleMapsUrl(lat, lng, zoom, mapLayer);
+
+        window.open(url, windowTarget, 'noopener,noreferrer');
+    }
+
+    function buildGoogleMapsUrl(lat, lng, zoom, layer = '') {
+        const safeZoom = clampInt(zoom, 0, 21); // 21 suele ser lo más cercano en web
+        // Formato similar al que pegaste: /@lat,lng,21z
+        return `https://www.google.com/maps/@${lat},${lng},${safeZoom}z${layer ? `?t=${layer}` : ''}`;
+    }
+
+    function validateLatLng(lat, lng) {
+        if (!isFiniteNumber(lat) || !isFiniteNumber(lng)) {
+            throw new Error('Lat/Lng inválidos: deben ser números.');
+        }
+        if (lat < -90 || lat > 90) {
+            throw new Error('Latitud inválida: debe estar entre -90 y 90.');
+        }
+        if (lng < -180 || lng > 180) {
+            throw new Error('Longitud inválida: debe estar entre -180 y 180.');
+        }
+    }
+
+    function isFiniteNumber(value) {
+        return typeof value === 'number' && Number.isFinite(value);
+    }
+
+    function clampInt(value, min, max) {
+        const n = Math.round(Number(value));
+        if (!Number.isFinite(n)) return min;
+        return Math.min(max, Math.max(min, n));
+    }
     function onChangeLanguage() {
         var supportedLangs = ["ki", "es", "en"];
 
@@ -802,7 +855,6 @@ if (env('allowAllInOne')) {
     var $businessMainInformation = <?php echo json_encode($businessMainInformation) ?>;
 
     function initWhatsAppSend() {//CMS-TEMPLATE-WHATSAPP-SEND-JS
-        console.log('initWhatsAppSend');
         if ($businessMainInformation.allow) {
             var informationBusiness = $businessMainInformation.data.information;
             var phoneCurrent = informationBusiness.phone_code + informationBusiness.phone_value;
@@ -829,7 +881,6 @@ if (env('allowAllInOne')) {
         onChangeLanguage();
         $nameRoute = '{{$nameRoute}}';
         initWhatsAppSend();
-
         if ($nameRoute == 'cart') {
             if ($('#manager-shop-products').hasClass('not-view')) {
                 var heightWrap = $('body').height() - $('header').height();
@@ -837,6 +888,9 @@ if (env('allowAllInOne')) {
             }
 
         }
+        initToastLoad();
+
+
     });
 
     if (esMovil() && navigator.geolocation) {

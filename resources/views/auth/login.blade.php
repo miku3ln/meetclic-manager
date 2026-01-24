@@ -1,3 +1,10 @@
+<?php
+
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
+
+?>
 @extends('layouts.minton.master-blank')
 
 @section('content')
@@ -17,7 +24,7 @@
                         @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div><br>@endif
                         @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div><br>@endif
 
-                        <form action="{{ route('login',app()->getLocale()) }}" method="post" class="management--form">
+                        <form action="{{$rootUrlLogin}}" method="post" class="management--form">
                             @csrf
 
                             <div class="form-group mb-3">

@@ -3,6 +3,15 @@
     $dataManagerPage=[
         'public-root'=>URL::asset($resourcePathServer),
 ];
+$themePath = $resourcePathServer . 'templates/cityBookHtml/';
+
+
+@endphp
+@php
+    $mcGamification =$gamificationDataTask;
+
+    // Garantiza estructura para que NUNCA sea undefined
+    $mcGamification = $mcGamification ;
 @endphp
     <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -18,6 +27,7 @@
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="{{ URL::asset($themePath.'css/plugins.css')}}">
 
 
     <!-- jQuery (necesario si usas Bootgrid u otros plugins) -->
@@ -30,6 +40,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-bootgrid@1.3.1/dist/jquery.bootgrid.min.js"></script>
+    @include('partials.toast-meetclic',["allowCss"=>true])
+
     <style>
         html, body {
             margin: 0;
@@ -47,12 +59,23 @@
         img#main-header__logo {
             width: 117px;
         }
+        .not-view{
+            display:none;
+        }
     </style>
     <script>
-
+        var $gamification_result =@json($mcGamification);
+        window.GAMIFICATION_RESULT = $gamification_result;
         var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
     </script>
 
+    @include('partials.toast-meetclic',["allowJs"=>true])
+    <script>
+        $(function () {
+            initToastLoad();
+
+        });
+    </script>
     <meta property="og:title" content="Chasqui- Ñan by Meetclic">
     <meta property="og:description" content="Explora rutas dinámicas, tótems vivos y turismo aumentado en AR con MeetClic.">
     <meta property="og:image" content="{{ $dataManagerPage['public-root'] }}/simi-rura/header/meta.png">
@@ -70,6 +93,8 @@
     @yield('additional-scripts')
 
 </head>
+
+
 <body id="app-manager">
 {!!  $logoHtmlMeetclic!!}
 <div id="app">

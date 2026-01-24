@@ -30,7 +30,9 @@ switch ($languageCurrent) {
 
         break;
 }
-
+$rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 ?>
 
 @if($type=='managerUserTop')
@@ -87,7 +89,7 @@ switch ($languageCurrent) {
     </div>
 
     @if(!$isUser)
-        <div class="show-reg-form "><a href="{{route('login',app()->getLocale())}}"><i
+        <div class="show-reg-form "><a href="{{$rootUrlLogin}}"><i
                     class="fa fa-sign-in"></i>Sign In</a>
         </div>
     @else
