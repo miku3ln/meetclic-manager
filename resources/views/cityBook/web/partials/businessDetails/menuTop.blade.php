@@ -1,5 +1,7 @@
 <?php
 $urlGamification=route('businessPullkay', app()->getLocale())."/".$dataManagerPage['business']['information']->title;
+$urlShop=route('shop-business')."/".$dataManagerPage['business']['information']->title;
+
 ?>
 
 <div class="scroll-nav-wrapper fl-wrap business__menu-top">
@@ -14,11 +16,11 @@ $urlGamification=route('businessPullkay', app()->getLocale())."/".$dataManagerPa
                     </li>
                 @endif
                 @if(count($dataManagerPage['categories'])>0)
-                    <li class="ul-list__li">
+                    <li class="ul-list__li" id="menu-shop-li">
                         @if($dataManagerPage['typeShopView']==1)
                             <a href="#business__categories">{{__('frontend.business-details.menu-top.four.title')}}</a>
                         @else
-                            <a href="#shop">{{__('frontend.business-details.menu-top.four.title')}}</a>
+                            <a href="{{$urlShop}}">{{__('frontend.business-details.menu-top.four.title')}}</a>
                         @endif
                     </li>
                 @endif

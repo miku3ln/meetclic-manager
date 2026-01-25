@@ -2,9 +2,11 @@
 @include('cityBook.web.partials.businessDetails.menuTop')
 
 @if(count($dataManagerPage['categories'])>0)
-    <div class="management-shop">
-        @include('cityBook.web.partials.businessDetails.shop')
-    </div>
+    @if(env("allowShopDetailsBusiness"))
+        <div class="management-shop">
+            @include('cityBook.web.partials.businessDetails.shop')
+        </div>
+    @endif
 @endif
 <section class="gray-section no-top-padding">
     <div class="container">
@@ -12,13 +14,13 @@
         <div class="row" id="management-options-business">
             <div class="col-md-8">
                 <div class="list-single-main-wrapper fl-wrap" id="details">
-                @include('cityBook.web.partials.businessDetails.breadCrumbs')
-                @include('cityBook.web.partials.businessDetails.countersDashboard')
-                @include('cityBook.web.partials.businessDetails.video')
-                @include('cityBook.web.partials.businessDetails.aboutUs')
-                @include('cityBook.web.partials.businessDetails.descriptions')
-                @include('cityBook.web.partials.businessDetails.gallery')
-                <!-- list-single-main-item end -->
+                    @include('cityBook.web.partials.businessDetails.breadCrumbs')
+                    @include('cityBook.web.partials.businessDetails.countersDashboard')
+                    @include('cityBook.web.partials.businessDetails.video')
+                    @include('cityBook.web.partials.businessDetails.aboutUs')
+                    @include('cityBook.web.partials.businessDetails.descriptions')
+                    @include('cityBook.web.partials.businessDetails.gallery')
+                    <!-- list-single-main-item end -->
                     <!-- list-single-main-item -->
                     @if( isset($dataManagerPage['business']['reviews']))
 
@@ -88,8 +90,8 @@
                     @endif
                     @if (env('allowProcessSuggestions'))
 
-                    @include('cityBook.web.partials.businessDetails.addReviews')
-                @endif
+                        @include('cityBook.web.partials.businessDetails.addReviews')
+                    @endif
 
                 </div>
             </div>
@@ -97,8 +99,8 @@
             <div class="col-md-4">
 
                 <div class="box-widget-wrap">
-                @include('cityBook.web.partials.businessDetails.workingHours')
-                <!--box-widget-item end -->
+                    @include('cityBook.web.partials.businessDetails.workingHours')
+                    <!--box-widget-item end -->
                     <!--box-widget-item -->
                     @if( isset($dataManagerPage['business']['booking']))
 
@@ -158,7 +160,7 @@
         </div>
 
 
-            <div class="limit-box fl-wrap"></div>
+        <div class="limit-box fl-wrap"></div>
 
     </div>
 </section>

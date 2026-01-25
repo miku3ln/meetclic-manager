@@ -28,18 +28,20 @@
     </style>
     <style>
 
-        .icon-hover{
+        .icon-hover {
             font-size: 40px; /* Tamaño del ícono opcional */
             animation: changeColor 1s infinite alternate;
         }
+
         .wcs_popup_input input[type="text"] {
-            height: 100px;          /* Simula múltiples líneas */
-            white-space: pre-wrap;  /* Permite simular salto de línea visual */
+            height: 100px; /* Simula múltiples líneas */
+            white-space: pre-wrap; /* Permite simular salto de línea visual */
             overflow-y: auto;
             padding: 10px;
             line-height: 1.4;
             box-shadow: 0px 0px 0px 2px rgb(145 148 165);
         }
+
         /* Animación que cambia de un color a otro */
         @keyframes changeColor {
             from {
@@ -49,12 +51,15 @@
                 color: #445EF2;
             }
         }
-        .fa-whatsapp--set{
+
+        .fa-whatsapp--set {
             animation: changeColorWhatsapp 1s infinite alternate;
         }
+
         .wcs_popup_input .fa {
             font-size: 30px;
         }
+
         @keyframes changeColorWhatsapp {
             from {
                 color: #f0f0ee;
@@ -63,12 +68,15 @@
                 color: #445EF2;
             }
         }
-        #manager-contact-whatsapp-main{
-            display:none;
+
+        #manager-contact-whatsapp-main {
+            display: none;
         }
-        a.to-top.to-top--bee{
+
+        a.to-top.to-top--bee {
             bottom: 10% !important;
         }
+
         .slick-dots li button:before {
             color: #a9a9a900 !important;
         }
@@ -346,6 +354,7 @@
                 display: block !important;
             }
         }
+
         .about__description {
             text-align: justify;
         }
@@ -456,14 +465,8 @@
             }
 
 
-
-
-
-
-
         </style>
         @include('partials.plugins.resourcesCss',['select2'=>true])
-
 
     @endif
 @endsection
@@ -799,7 +802,7 @@
             }
 
             var single_map = document.getElementById('singleMap');
-            if (typeof(single_map) != 'undefined' && single_map != null) {
+            if (typeof (single_map) != 'undefined' && single_map != null) {
                 google.maps.event.addDomListener(window, 'load', singleMap);
             }
             this._eventsMapCurrent();
@@ -1152,20 +1155,29 @@
 
     <script>
         $productDetailsRoute = "{{ route('productDetails', ['id' => 'change', 'language' => app()->getLocale()]) }}";
-        function initEvents(){
-            $(".fa-whatsapp--set").on("click",function(){
+
+        function initEvents() {
+            $(".fa-whatsapp--set").on("click", function () {
                 $(".fa.fa-play.icon-hover").click();
             });
         }
-        function initMenuGamification(){
-            $('#menu-gamification-li').on('click',function(e){
+
+        function initMenuGamification() {
+            $('#menu-gamification-li').on('click', function (e) {
+                e.preventDefault();
+
+                const href = $(this).find('a').attr('href');
+                window.open(href, '_blank');
+            });
+            $('#menu-shop-li').on('click', function (e) {
                 e.preventDefault();
 
                 const href = $(this).find('a').attr('href');
                 window.open(href, '_blank');
             })
         }
-        $(function(){
+
+        $(function () {
             initMenuGamification();
             initEvents();
         });
@@ -1220,21 +1232,21 @@
         <input id="action-manager-business" type="hidden"
                value="{{ route('managerProductBusiness', app()->getLocale()) }}"/>
 
-    @if (isset($dataManagerPage['type']))
-        @if ($dataManagerPage['type'] == 2)
-            @include('cityBook.web.listingView.single2')
-        @elseif($dataManagerPage['type']==1)
-            @include('cityBook.web.listingView.single')
-        @elseif($dataManagerPage['type']==3)
-            @include('cityBook.web.listingView.single3')
-        @elseif($dataManagerPage['type']==4)
-            @include('cityBook.web.listingView.single4')
+        @if (isset($dataManagerPage['type']))
+            @if ($dataManagerPage['type'] == 2)
+                @include('cityBook.web.listingView.single2')
+            @elseif($dataManagerPage['type']==1)
+                @include('cityBook.web.listingView.single')
+            @elseif($dataManagerPage['type']==3)
+                @include('cityBook.web.listingView.single3')
+            @elseif($dataManagerPage['type']==4)
+                @include('cityBook.web.listingView.single4')
 
+            @endif
         @endif
-    @endif
 
 
-    <!--section -->
+        <!--section -->
         @if (!Auth::check())
             @include('layouts.partials.cityBook.join')
         @endif
@@ -1243,35 +1255,36 @@
 
         @endsection
     </div>
-@section('buttonsManagerFooter')
+    @section('buttonsManagerFooter')
 
-    <div class="whatsapp_chat_support wcs_fixed_right" id="example_4">
-        <div class="wcs_button">
-            <span class="fa fa-whatsapp"></span> {{__("frontend.business-details.support.chat.questions")}}
-        </div>
-
-        <div class="wcs_popup">
-            <div class="wcs_popup_close">
-                <span class="fa fa-close"></span>
+        <div class="whatsapp_chat_support wcs_fixed_right" id="example_4">
+            <div class="wcs_button">
+                <span class="fa fa-whatsapp"></span> {{__("frontend.business-details.support.chat.questions")}}
             </div>
-            <div class="wcs_popup_header">
-                <span class="fa fa-whatsapp fa-whatsapp--set"></span>
-                <strong>{{__("frontend.business-details.support.chat.customer-support")}}</strong>
 
-                <div class="wcs_popup_header_description">
+            <div class="wcs_popup">
+                <div class="wcs_popup_close">
+                    <span class="fa fa-close"></span>
+                </div>
+                <div class="wcs_popup_header">
+                    <span class="fa fa-whatsapp fa-whatsapp--set"></span>
+                    <strong>{{__("frontend.business-details.support.chat.customer-support")}}</strong>
 
-                    {{__("frontend.business-details.support.chat.need-help")}}
+                    <div class="wcs_popup_header_description">
 
+                        {{__("frontend.business-details.support.chat.need-help")}}
+
+                    </div>
+                </div>
+                <div class="wcs_popup_input" data-number="528123861273">
+                    <input type="text" placeholder="Ask anything!"/>
+                    <i class="fa fa-play icon-hover"></i>
+                </div>
+                <div class="wcs_popup_avatar">
+                    <img src="{{ asset($resourcePathServer . 'plugins/whatsapp-chat-support/img/person_4.jpg') }}"
+                         alt="">
                 </div>
             </div>
-            <div class="wcs_popup_input" data-number="528123861273">
-                <input type="text" placeholder="Ask anything!"/>
-                <i class="fa fa-play icon-hover"></i>
-            </div>
-            <div class="wcs_popup_avatar">
-                <img src="{{ asset($resourcePathServer . 'plugins/whatsapp-chat-support/img/person_4.jpg') }}" alt="">
-            </div>
         </div>
-    </div>
 
-@endsection
+    @endsection

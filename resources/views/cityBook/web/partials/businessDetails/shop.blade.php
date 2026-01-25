@@ -14,7 +14,7 @@
                                 </div>
                             </div>
 
-                            <div class="row not-view" id="content-manager-products-services">
+                            <div class="row not-view" id="content-manager-products-services-">
 
 
                                 <aside class="col-md-3">
