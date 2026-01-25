@@ -4,8 +4,8 @@
         <div class="filters-sheet__container py-3">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="filters-sheet__actions">
-                    <a @click="applyFilters()"  class="filters-sheet__action filters-sheet__action--search">Buscar</a>
-                    <a @click="resetAll()"   class="filters-sheet__action filters-sheet__action--reset">Restablecer</a>
+                    <a @click="applyFilters()"  class="filters-sheet__action filters-sheet__action--search"><?php echo "{{labelsProcessConfig.filters.btnSearchTasks}}"?></a>
+                    <a @click="resetAll()"   class="filters-sheet__action filters-sheet__action--reset"><?php echo "{{labelsProcessConfig.filters.btnReset}}"?></a>
                 </div>
             </div>
         </div>
@@ -20,25 +20,25 @@
                     @change="onChangeLocation"
                 >
                 <label class="form-check-label fw-bold" for="locationCheck" style="color:#4C4CFF;">
-                    Ubicación
+                    <?php echo "{{labelsProcessConfig.filters.toggleNearMe}}"?>
                 </label>
             </div>
             <!-- LOCATION CARD (por ahora estático, luego lo conectamos a params) -->
             <div class="location" v-if="locationCheck">
                 <div class="card filters-sheet__card">
                     <div class="card-body">
-                        <div class="d-flex align-items-start">
-                            <div class="filters-sheet__icon-wrap me-3">
+                        <div class="d-flex align-items-start" v-if="!locationManagement.view">
+                            <div class="filters-sheet__icon-wrap me-3" @click="managementViewLocation()">
 
-                                <i class="bi bi-geo-alt" style="font-size:1.2rem;"></i>
+                                <i class="bi bi-geo-fill" style="font-size:1.2rem;"></i>
                             </div>
 
                             <div class="flex-grow-1">
                                 <div class="fw-bold mb-1" style="color:#4C4CFF; font-size:1.25rem;">
-                                    Ubicación de búsqueda
+                                    <?php echo "{{labelsProcessConfig.filters.location.title}}"?>
                                 </div>
                                 <div class="mb-1" style="font-size:1.1rem;">
-                                    <span class="view-label">Calle:</span> <span
+                                    <span class="view-label">  <?php echo "{{labelsProcessConfig.filters.location.streetLabel}}"?>:</span> <span
                                         class="fw-bold text-uppercase view-value"><?php echo "{{addressInformation.streetView}}" ?></span>
                                 </div>
                                 <div
@@ -51,15 +51,30 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="d-flex align-items-start" v-if="locationManagement.view">
+                            <div class="filters-sheet__icon-wrap me-3" @click="returnViewLocation()">
+
+                                <i class="bi bi-arrow-return-left" style="font-size:1.2rem;"></i>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <div v-init-map-manager="{  functionInit:viewMap }"  ref="map" class="map-container-view" id="map-main-view">
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
                 <!-- DISTANCIA -->
-                <div class="filters-sheet__section-title">Distancia</div>
-                <p class="filters-sheet__help">Muestra negocios dentro de un radio seleccionado.</p>
+                <div class="filters-sheet__section-title"> <?php echo "{{labelsProcessConfig.filters.distance.title}}"?></div>
+                <p class="filters-sheet__help"> <?php echo "{{labelsProcessConfig.filters.distance.helper}}"?></p>
 
                 <div class="text-center my-3">
-                    <span class="filters-sheet__badge-km"><?php echo '{{distanceKm}}' ?> km</span>
+                    <span class="filters-sheet__badge-km"><?php echo '{{getDistance()}}' ?> km</span>
                 </div>
 
                 <div class="d-flex justify-content-between text-muted mb-2" style="font-size:1.1rem;">
@@ -78,8 +93,8 @@
 
 
             <!-- CATEGORÍAS -->
-            <div class="filters-sheet__section-title mt-4">Categorías</div>
-            <p class="filters-sheet__help">Selecciona categorías y subcategorías para filtrar los negocios.</p>
+            <div class="filters-sheet__section-title mt-4"> <?php echo "{{labelsProcessConfig.filters.categories.title}}"?></div>
+            <p class="filters-sheet__help"> <?php echo "{{labelsProcessConfig.filters.categories.helper}}"?></p>
 
             <div class="list-group">
                 <div

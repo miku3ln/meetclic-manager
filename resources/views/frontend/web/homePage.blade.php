@@ -111,7 +111,7 @@ $managementNameProcess = "homePage";
                :class="{ 'filters-drawer--open': isFiltersOpen }"
                aria-label="Panel de filtros">
             <div class="filters-drawer__header" >
-                <h4 class="filters-drawer__title">Filtros</h4>
+                <h4 class="filters-drawer__title">Filtros para ganar YAPITAS</h4>
                 <button type="button" class="filters-drawer__close" @click="isFiltersOpen = false">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>

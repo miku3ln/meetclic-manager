@@ -6,9 +6,11 @@
     div#listing-items {
         margin-top: 2%;
     }
-    footer.main-footer{
+
+    footer.main-footer {
         z-index: 0 !important;
     }
+
     /* =========================
    BEM: filters-sheet
    Solo lo que BS5 no cubre
@@ -96,6 +98,7 @@
     .filters-sheet__range::-moz-range-thumb {
         background: #4C4CFF;
     }
+
     button.button__category {
         color: #445ef2;
     }
@@ -103,21 +106,25 @@
     .filters-sheet__sublist.mt-3 {
         padding-left: 4%;
     }
-    ul.manager-ul a ,.listing-geodir-category,.map-item{
+
+    ul.manager-ul a, .listing-geodir-category, .map-item {
         text-decoration: none !important;
     }
 
     .view-label {
         color: #ffc700;
     }
+
     .view-value {
         color: #445ef2 !important;
     }
+
     .filters__item-subcategory {
         padding-bottom: 13px;
     }
-    .chat-widget-button-content{
-        display:none;
+
+    .chat-widget-button-content {
+        display: none;
     }
 </style>
 
@@ -441,31 +448,33 @@
         max-width: 46vw;
         min-width: 320px;
     }
+
     h4.filters-drawer__title {
         font-weight: bold;
         font-size: 29px;
         color: #445ef2;
     }
-    .filters-sheet__content-actions{
+
+    .filters-sheet__content-actions {
         width: 100%;
     }
 
     /* 👇 ahora van uno al lado del otro */
-    .filters-sheet__actions{
+    .filters-sheet__actions {
         display: flex;
-        flex-direction: row;      /* ✅ antes estaba column */
+        flex-direction: row; /* ✅ antes estaba column */
         align-items: center;
         gap: 12px;
-        flex-wrap: wrap;          /* ✅ por si en móvil ya no caben */
+        flex-wrap: wrap; /* ✅ por si en móvil ya no caben */
     }
 
     /* Botón base */
-    .filters-sheet__action{
+    .filters-sheet__action {
         display: inline-flex;
         align-items: center;
         justify-content: center;
 
-        width: fit-content;       /* ✅ se ajusta al texto */
+        width: fit-content; /* ✅ se ajusta al texto */
         padding: 10px 14px;
 
         border-radius: 12px;
@@ -481,7 +490,7 @@
     }
 
     /* Hover general MeetClic (lineal/gradiente) */
-    .filters-sheet__action:hover{
+    .filters-sheet__action:hover {
         background: linear-gradient(135deg, var(--azulClic), var(--moradoSuave));
         color: var(--blanco);
         border-color: transparent;
@@ -490,23 +499,24 @@
     }
 
     /* Accesibilidad al navegar con teclado */
-    .filters-sheet__action:focus-visible{
+    .filters-sheet__action:focus-visible {
         outline: 3px solid rgba(255, 204, 0, 0.65); /* AmarilloVital */
         outline-offset: 2px;
     }
 
     /* Modificador opcional: Reset distinto (sin salir de paleta) */
-    .filters-sheet__action--reset{
+    .filters-sheet__action--reset {
         border-color: rgba(44, 44, 44, 0.18); /* GrisOscuro suave */
         color: var(--grisOscuro);
     }
 
-    .filters-sheet__action--reset:hover{
+    .filters-sheet__action--reset:hover {
         background: linear-gradient(135deg, var(--amarilloVital), var(--blanco));
         color: var(--grisOscuro);
         border-color: transparent;
         box-shadow: 0 5px 18px rgba(255, 204, 0, 0.22);
     }
+
     .filters-drawer--right {
         right: 0;
     }
@@ -696,15 +706,38 @@
             top: 10% !important;
         }
 
-        .filters-drawer{
-            width: 100vw!important;
-            max-width: 100vw!important;
+        .filters-drawer {
+            width: 100vw !important;
+            max-width: 100vw !important;
 
         }
-        .filters-sheet{
+
+        .filters-sheet {
             margin-left: 12px;
-            width: 100vw!important;
-            max-width: 92vw!important;
+            width: 100vw !important;
+            max-width: 92vw !important;
         }
     }
+</style>
+<style>
+
+    #locationCheck {
+        height: 3em;
+        width: 5em !important;
+    }
+    .form-switch .form-check-input {
+        width: 5em!important;
+    }
+
+
+
+    .map-container-view #map-main-view {
+        height: 100vh !important;
+
+    }
+
+    .map-container-view {
+        height: 50vh !important;
+    }
+
 </style>

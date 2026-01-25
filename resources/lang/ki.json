@@ -1057,5 +1057,29 @@
 
 
     "location.find_here": "Kaypi taripaychik",
-"play_learn_and_earn_yapitas": "Pukllay, yachay chaymanta Yapitakunata ganay"
+"play_learn_and_earn_yapitas": "Pukllay, yachay chaymanta Yapitakunata ganay",
+    "filters.titleEarnYapitas": "YAPITAS chaskinkapak akllaykuna",
+    "filters.btnSearchTasks": "Ruraykunata maskay",
+    "filters.btnReset": "Mushukmanta kallariy",
+    "filters.toggleNearMe": "Kay kashkapi ruraykunata rikuy",
+    "filters.location.title": "Maskaypa kashka",
+    "filters.location.streetLabel": "Kalli",
+    "filters.location.cityLine": "{city}, {state}, {country}",
+    "filters.location.latLabel": "Lat",
+    "filters.location.lngLabel": "Lng",
+    "filters.distance.title": "Karuyay",
+    "filters.distance.helper": "Akllashka karuyay ukupi ruraykunata rikuchin.",
+    "filters.distance.km": "{value} km",
+    "filters.distance.from": "{min} km",
+    "filters.distance.to": "{max} km",
+    "filters.categories.title": "Katigoriakuna",
+    "filters.categories.helper": "👉 Huk katigoriata akllay chaymanta YAPITAS chaskiy",
+    "filters.categories.empty": "Katigoriata akllay ruraykunata rikunkapak.",
+    "filters.subcategories.empty": "Ashtawan alli ruraykunata maskankapak uchilla katigoriata akllay.",
+    "filters.actions.apply": "Akllaykunata churay",
+    "filters.actions.close": "Wichay"
+
+
+
+
 }

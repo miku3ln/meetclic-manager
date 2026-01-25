@@ -192,6 +192,7 @@
 
 
             },
+
             initLeafletMap: function (params) {
                 $this = this;
                 var dataCurrent = this.params.data.tasks;

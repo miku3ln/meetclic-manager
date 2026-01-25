@@ -1094,12 +1094,27 @@
     "gamification.showing": "Showing",
     "gamification.your_search": "Your search",
 
-    "gamification.no_results": "No results",
-    "gamification.loading": "Loading",
-    "gamification.results": "Results",
-    "gamification.do_it_now": "Do it now",
-    "location.find_here": "Find us here",
-    "play_learn_and_earn_yapitas": "Play, learn and earn Yapitas"
+    "filters.titleEarnYapitas": "Filters to earn YAPITAS",
+    "filters.btnSearchTasks": "Search tasks",
+    "filters.btnReset": "Start over",
+    "filters.toggleNearMe": "Show tasks near me",
+    "filters.location.title": "Search location",
+    "filters.location.streetLabel": "Street",
+    "filters.location.cityLine": "{city}, {state}, {country}",
+    "filters.location.latLabel": "Lat",
+    "filters.location.lngLabel": "Lng",
+    "filters.distance.title": "Distance",
+    "filters.distance.helper": "Shows tasks within the selected radius.",
+    "filters.distance.km": "{value} km",
+    "filters.distance.from": "{min} km",
+    "filters.distance.to": "{max} km",
+    "filters.categories.title": "Categories",
+    "filters.categories.helper": "👉 Pick a category and start earning YAPITAS.",
+    "filters.categories.empty": "Select a category to see available tasks.",
+    "filters.subcategories.empty": "Select a subcategory to refine your tasks.",
+    "filters.actions.apply": "Apply filters",
+    "filters.actions.close": "Close"
+
 
 
 }

@@ -28,7 +28,7 @@
                     },
                 },
                 mounted: async function () {
-                    var once ={
+                    var once = {
                         lat: defaultLatLng[0],
                         lng: defaultLatLng[1]
                     };
@@ -119,7 +119,7 @@
                         data: {
                             latLng: defaultLatLng,
                             distanceKm: 2,
-                            locationCheck:false,
+                            locationCheck: false,
                             categories: $dataManagerPage.categoriesData
                         }
                     },
@@ -177,8 +177,9 @@
                                 console.log("params", params)
                             }
                         } else if (params.child == 'filters-categories') {
-                            if (params.action == "applyFilters") {
+                            if (["resetAll", "applyFilters"].includes(params.action)) {
                                 var dataSend = params.data;
+                                this.model.attributes.check = dataSend.locationCheck;
                                 this.model.attributes.distance = dataSend.distance;
                                 this.model.attributes.location = {
                                     ...this.model.attributes.location,
@@ -186,11 +187,8 @@
                                     lng: dataSend.lng
                                 };
                                 this.model.attributes.subCategoryIdsString = dataSend.subCategoryIdsString;
-
-
                                 this.paginationState = {
                                     ...this.paginationState,
-                                    // estado del api
                                     total: 0,          // response.total
                                     rowCount: 10,      // response.rowCount
                                     current: 0,        // response.current (página actual que ya cargaste)
@@ -213,7 +211,6 @@
                                 this.configGridAdmin.data = [];
                                 this.configGridAdmin.isEmpty = true;
                                 this.onInfiniteScroll(true);
-
                             }
                         }
                     },

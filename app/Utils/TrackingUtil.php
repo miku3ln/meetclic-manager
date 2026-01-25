@@ -137,6 +137,8 @@ class TrackingUtil
 
         if ($typeProcess == "" && $sourceProcess == "" && $campaign_code == "" && $codeProcess == "") {
             $result["success"] = false;
+            $result["type"] = -420;
+
             $result["message"] = "No existe datos que procesar de tracking.!";
         } else if ($typeProcess !== "" && $sourceProcess !== "" && $campaign_code !== "" && $codeProcess !== "") {
             $result["success"] = true;
@@ -345,7 +347,7 @@ class TrackingUtil
 
                 $resultTask["success"] = false;
                 $resultTask["message"] = $resultManager["message"];
-                $resultTask["type"] = self::TYPE_ERROR_PARAMS_LINK_GAMIFICATION;
+                $resultTask["type"] = $resultManager["type"]!=-420? self::TYPE_ERROR_PARAMS_LINK_GAMIFICATION: $resultManager["type"];
 
             }
 
