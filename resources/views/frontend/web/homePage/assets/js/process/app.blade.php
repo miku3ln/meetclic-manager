@@ -28,16 +28,17 @@
                     },
                 },
                 mounted: async function () {
-
-                    const once = await GeoManager.getBrowserCoordinatesAsync({
-                        enableHighAccuracy: true,
-                        timeout: 15000,
-                        fallbackLat: defaultLatLng[0],
-                        fallbackLng: defaultLatLng[1]
-                    });
+                    var once ={
+                        lat: defaultLatLng[0],
+                        lng: defaultLatLng[1]
+                    };
                     this.configDataMapManager.data.latLng = [once.lat, once.lng];
-                    console.log("once",once)
-                    this.configDataFiltersCategories.data.latLng = [once.lat, once.lng];
+                    this.model.attributes.location = {
+                        ...this.model.attributes.location,
+                        lat: once.lat,
+                        lng: once.lng,
+                    };
+                    this.configDataFiltersCategories.data.latLng = [defaultLatLng[0], defaultLatLng[1]];
                     this.configDataFiltersCategories.allow = true;
                     this.initCurrentComponent();
                     appThis = this;
@@ -97,10 +98,10 @@
                     model: {
                         attributes: {
                             'keywords': null,
-                            'address-google': null,
-                            'country': null,
-                            'category': null,
-                            'distance': 0,
+                            'location': {lat: defaultLatLng[0], lng: defaultLatLng[1]},
+                            'country_id': null,
+                            'subCategoryIdsString': null,
+                            'distance': 2,
                             'check': false,
                             currentPage: 0
                         }
@@ -117,140 +118,9 @@
                         allow: false,
                         data: {
                             latLng: defaultLatLng,
-                            categories: [
-                                {
-                                    id: 1,
-                                    text: "Comida y Bebida",
-                                    icon: "bi bi-cup-straw",
-                                    children: [
-                                        {id: 1, text: "Restaurantes", icon: "bi bi-shop"},
-                                        {id: 2, text: "Cafeterias", icon: "bi bi-cup-hot"},
-                                        {id: 3, text: "Heladerias", icon: "bi bi-snow"},
-                                        {id: 4, text: "Reposteria", icon: "bi bi-cake2"},
-                                        {id: 5, text: "Bar", icon: "bi bi-cup-straw"},
-                                        {id: 6, text: "Vegetariana", icon: "bi bi-flower1"},
-                                        {id: 7, text: "Carnes al Carbon", icon: "bi bi-fire"},
-                                        {id: 8, text: "Mariscos", icon: "bi bi-water"},
-                                        {id: 9, text: "Italiana", icon: "bi bi-egg-fried"},
-                                        {id: 10, text: "Peruana", icon: "bi bi-geo-alt"},
-                                        {id: 11, text: "Francesas", icon: "bi bi-bag-heart"},
-                                        {id: 12, text: "Mexicanas", icon: "bi bi-pepper-hot"},
-                                        {id: 13, text: "Chifas", icon: "bi bi-bowl-hot"},
-                                        {id: 14, text: "Fast Food", icon: "bi bi-lightning-charge"},
-                                        {id: 15, text: "Arabe", icon: "bi bi-moon-stars"},
-                                        {id: 16, text: "Otros", icon: "bi bi-three-dots"}
-                                    ]
-                                },
-                                {
-                                    id: 2,
-                                    text: "Ocio",
-                                    icon: "bi bi-emoji-laughing",
-                                    children: [
-                                        {id: 17, text: "Parques", icon: "bi bi-tree"},
-                                        {id: 18, text: "Gimnasio", icon: "bi bi-heart-pulse"},
-                                        {id: 19, text: "Galeria de Arte", icon: "bi bi-palette"},
-                                        {id: 20, text: "Atracciones", icon: "bi bi-stars"},
-                                        {id: 21, text: "Musica en Vivo", icon: "bi bi-music-note-beamed"},
-                                        {id: 22, text: "Cine", icon: "bi bi-film"},
-                                        {id: 23, text: "Museo", icon: "bi bi-bank"},
-                                        {id: 24, text: "Naturaleza", icon: "bi bi-mountain"},
-                                        {id: 25, text: "Bibliotecas", icon: "bi bi-book"},
-                                        {id: 26, text: "Otros", icon: "bi bi-three-dots"},
-                                        {id: 76, text: "Turismo Náutico", icon: "bi bi-sailboat"}
-                                    ]
-                                },
-                                {
-                                    id: 3,
-                                    text: "Comercios / Establecimientos",
-                                    icon: "bi bi-shop",
-                                    children: [
-                                        {id: 27, text: "Limpieza e higiene", icon: "bi bi-droplet"},
-                                        {id: 28, text: "Estetica y belleza", icon: "bi bi-scissors"},
-                                        {id: 29, text: "Tiendas y bazares", icon: "bi bi-bag"},
-                                        {id: 30, text: "Papelerias", icon: "bi bi-journal-text"},
-                                        {id: 31, text: "Supermercados", icon: "bi bi-cart4"},
-                                        {id: 32, text: "Electrodomesticos", icon: "bi bi-plug"},
-                                        {id: 33, text: "Mobiliario", icon: "bi bi-lamp"},
-                                        {id: 34, text: "Abarrotes", icon: "bi bi-basket"},
-                                        {id: 35, text: "Motos/Bicicletas", icon: "bi bi-bicycle"},
-                                        {id: 36, text: "Automotriz", icon: "bi bi-car-front"},
-                                        {id: 37, text: "Calzado", icon: "bi bi-boot"},
-                                        {id: 38, text: "Agricultura", icon: "bi bi-seedling"},
-                                        {id: 39, text: "Otros", icon: "bi bi-three-dots"},
-                                        {id: 70, text: "Escuelas", icon: "bi bi-backpack"},
-                                        {id: 71, text: "Colegios", icon: "bi bi-mortarboard-fill"},
-                                        {id: 72, text: "Educacion Inicial", icon: "bi bi-emoji-smile"},
-                                        {id: 73, text: "Educacion Inicial 2", icon: "bi bi-emoji-smile-fill"},
-                                        {id: 74, text: "Universidades", icon: "bi bi-building"},
-                                        {id: 75, text: "Universidad de 4 Nivel", icon: "bi bi-award"}
-                                    ]
-                                },
-                                {
-                                    id: 4,
-                                    text: "Oficios / Servicios",
-                                    icon: "bi bi-tools",
-                                    children: [
-                                        {id: 40, text: "Oficios", icon: "bi bi-tools"},
-                                        {id: 41, text: "Hospedaje", icon: "bi bi-house-door"},
-                                        {id: 42, text: "Servicios financieros", icon: "bi bi-cash-coin"},
-                                        {id: 43, text: "Servicios profesionales", icon: "bi bi-briefcase"},
-                                        {id: 44, text: "Servicios empresariales", icon: "bi bi-building"},
-                                        {id: 45, text: "Logistica", icon: "bi bi-box-seam"},
-                                        {id: 46, text: "Educacion", icon: "bi bi-mortarboard"},
-                                        {id: 47, text: "Otros", icon: "bi bi-three-dots"}
-                                    ]
-                                },
-                                {
-                                    id: 5,
-                                    text: "Salud",
-                                    icon: "bi bi-heart-pulse",
-                                    children: [
-                                        {id: 48, text: "Hospitales", icon: "bi bi-hospital"},
-                                        {id: 49, text: "Industria Farmaceutica", icon: "bi bi-capsule"},
-                                        {id: 50, text: "Consultorio medico", icon: "bi bi-clipboard2-pulse"},
-                                        {id: 51, text: "Clinicas", icon: "bi bi-hospital-fill"},
-                                        {id: 52, text: "Veterinaria", icon: "bi bi-bug"},
-                                        {id: 53, text: "Otros", icon: "bi bi-three-dots"}
-                                    ]
-                                },
-                                {
-                                    id: 6,
-                                    text: "Construccion",
-                                    icon: "bi bi-hammer",
-                                    children: [
-                                        {id: 54, text: "Ferreterias", icon: "bi bi-wrench"},
-                                        {id: 55, text: "Materiales de construccion", icon: "bi bi-bricks"},
-                                        {id: 56, text: "Maquinaria pesada", icon: "bi bi-truck"},
-                                        {id: 57, text: "Constructoras", icon: "bi bi-building-gear"},
-                                        {id: 58, text: "Otros", icon: "bi bi-three-dots"}
-                                    ]
-                                },
-                                {
-                                    id: 7,
-                                    text: "Textil",
-                                    icon: "bi bi-scissors",
-                                    children: [
-                                        {id: 59, text: "Empresa textil", icon: "bi bi-patch-check"},
-                                        {id: 60, text: "Venta de ropa", icon: "bi bi-bag-check"},
-                                        {id: 61, text: "Venta de telas", icon: "bi bi-layers"},
-                                        {id: 62, text: "Boutique", icon: "bi bi-stars"},
-                                        {id: 63, text: "Produccion textil", icon: "bi bi-gear"},
-                                        {id: 64, text: "Ropa y complementos", icon: "bi bi-person"},
-                                        {id: 65, text: "Otros", icon: "bi bi-three-dots"}
-                                    ]
-                                },
-                                {
-                                    id: 8,
-                                    text: "Transporte",
-                                    icon: "bi bi-bus-front",
-                                    children: [
-                                        {id: 66, text: "Terrestre", icon: "bi bi-truck-front"},
-                                        {id: 67, text: "Aereo", icon: "bi bi-airplane"},
-                                        {id: 68, text: "Acuatico", icon: "bi bi-water"},
-                                        {id: 69, text: "Otros", icon: "bi bi-three-dots"}
-                                    ]
-                                }
-                            ]
+                            distanceKm: 2,
+                            locationCheck:false,
+                            categories: $dataManagerPage.categoriesData
                         }
                     },
                     paginationState: {
@@ -276,7 +146,6 @@
                     },
                     initViewProcess: function () {
                         var isDesktop = isDesktopOnly();
-                        console.log("isDesktop", isDesktop)
                         if (isDesktop) {
                             if ($("#view-expand a").hasClass("active")) {
                                 $("#view-expand a").click();
@@ -307,6 +176,45 @@
                             if (params.action == "whenReady") {
                                 console.log("params", params)
                             }
+                        } else if (params.child == 'filters-categories') {
+                            if (params.action == "applyFilters") {
+                                var dataSend = params.data;
+                                this.model.attributes.distance = dataSend.distance;
+                                this.model.attributes.location = {
+                                    ...this.model.attributes.location,
+                                    lat: dataSend.lat,
+                                    lng: dataSend.lng
+                                };
+                                this.model.attributes.subCategoryIdsString = dataSend.subCategoryIdsString;
+
+
+                                this.paginationState = {
+                                    ...this.paginationState,
+                                    // estado del api
+                                    total: 0,          // response.total
+                                    rowCount: 10,      // response.rowCount
+                                    current: 0,        // response.current (página actual que ya cargaste)
+                                    // control de infinito
+                                    loading: false,    // lock anti-paralelo
+                                    hasMore: true,     // cortar cuando ya no hay más
+                                    throttleMs: 300,   // anti overload
+                                    lastFireAt: 0,     // throttle timestamp
+                                    // control: cuántos items ya tengo en UI
+                                    loadedCount: 0     // this.configGridAdmin.data.length
+                                };
+                                this.configDataMapManager.allow = false;
+                                this.configDataMapManager.data = {
+                                    ...this.configDataMapManager.data,
+                                    data: {
+                                        tasks: [],
+
+                                    }
+                                };
+                                this.configGridAdmin.data = [];
+                                this.configGridAdmin.isEmpty = true;
+                                this.onInfiniteScroll(true);
+
+                            }
                         }
                     },
                     sendDataChildren: function (params) {
@@ -315,46 +223,6 @@
                     },
                     _element: function (e) {
                         console.log(e);
-                    },
-                    getDataBusinessGamesTask: function (params) {
-                        var $this = params["this"];
-                        var current = this.model.attributes.currentPage;
-                        var searchPhrase = this.model.attributes.keywords;
-                        var distance = this.model.attributes.distance;
-                        var check = this.model.attributes.check;
-                        var country_id = this.model.attributes.country;
-                        var category_id = this.model.attributes.category;
-                        var addressGoogleCountry = this.model.attributes['address-google'];
-                        var dataSend = {
-                            searchPhrase: searchPhrase,
-                            current: current,
-                            filters: {
-                                check: check,
-                                distance: distance,
-                                country_id: country_id,
-                                category_id: category_id,
-                                addressGoogleCountry: addressGoogleCountry
-                            }
-                        };
-                        $scope = this;
-                        var url = $('#action-manager-business-gamification-home').val();
-                        /*  $configManagerMap.markers*/
-                        getAjaxRequest({
-                            type: 'POST',
-                            'url': url,
-                            data: dataSend,
-                            successCallback: function (response) {
-                                $this._managerGrid(response);
-                                $this.managerLoading.data.view = false;
-                                $this.managerLoading.page.view = false;
-                                // $scope._resetManagerMaps(response.items);
-                            },
-                            beforeSend: function () {
-                                $this.managerLoading.data.view = true;
-                                $this.managerLoading.page.view = true;
-                            },
-
-                        });
                     },
                     initCategories: function (params) {
                         var el = params.elementInit
@@ -635,9 +503,9 @@
                             var taskBusinessInfo = taskBusinessData.split("-");
                             var businessId = taskBusinessInfo[1];
                             var lat = parseFloat($(this).attr('lat'));
-                            var lng= parseFloat($(this).attr('lng'));
-console.log("lat",lat)
-                            openGoogleMaps({ lat: lat, lng:lng }, { zoom: 21 });
+                            var lng = parseFloat($(this).attr('lng'));
+                            console.log("lat", lat)
+                            openGoogleMaps({lat: lat, lng: lng}, {zoom: 21});
                             $this.sendDataChildren({
                                 "nameChild": 'map-manager',
                                 "type": 'click-map-item',
@@ -683,19 +551,20 @@ console.log("lat",lat)
                             var searchPhrase = $this.model.attributes.keywords;
                             var distance = $this.model.attributes.distance;
                             var check = $this.model.attributes.check;
-                            var country_id = $this.model.attributes.country;
-                            var category_id = $this.model.attributes.category;
-                            var addressGoogleCountry = $this.model.attributes['address-google'];
+                            var country_id = $this.model.attributes.country_id;
+                            var subCategoryIdsString = $this.model.attributes.subCategoryIdsString;
 
                             var dataSend = {
                                 searchPhrase: searchPhrase,
                                 current: current,
                                 filters: {
+                                    lat: $this.model.attributes.location.lat,
+                                    lng: $this.model.attributes.location.lng,
                                     check: check,
                                     distance: distance,
                                     country_id: country_id,
-                                    category_id: category_id,
-                                    addressGoogleCountry: addressGoogleCountry
+                                    subCategoryIdsString: subCategoryIdsString,
+
                                 }
                             };
 

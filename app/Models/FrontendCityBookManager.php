@@ -78,12 +78,12 @@ class FrontendCityBookManager extends ModelManager
         $tracking = new TrackingUtil();
 
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
-        if (!in_array($routeName, ["contactUsBee","traductor","diccionario","apuntes","yachaSun","homeChaski","howItWorks","homeBackLine","bee","aboutUsBee","reviewsTo","pointsSales","boardingEmbarkation","boardingEmbarkationManagement","orders","listingsQueen","businessEmployer","business","managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile","profileAccount","password","suggestionsMailBox"])) {
+        if (!in_array($routeName, ["contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
                 $resultTracking = $tracking->managerGamingTask($request, $type);
-                $gamificationData=$resultTracking;
+                $gamificationData = $resultTracking;
             }
-        }else{
+        } else {
 
         }
 
@@ -170,11 +170,15 @@ class FrontendCityBookManager extends ModelManager
         }
 
         if ($page == 'homePage' || $page == 'home') {
+            $modelProcess = new GamificationByProcess();
+            $categoriesData = $modelProcess->getSubcategoriesDataByProcess();
             $dataManagerPage['allowPlugins']['leafletMaps'] = true;
             $dataManagerPage['allowVue'] = true;
 
+            $dataManagerPage['categoriesData'] = $categoriesData;
             $dataManagerPage['type'] = $paramsRequest['type'];
-            $dataManagerPage['allowPlugins']['googleMaps'] = true;
+
+            //  $dataManagerPage['allowPlugins']['googleMaps'] = true;
 
             if ($allowTemplate) {
                 $modelParent = new  \App\Models\TemplateSlider();

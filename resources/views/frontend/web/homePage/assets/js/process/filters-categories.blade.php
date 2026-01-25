@@ -25,13 +25,21 @@
             });
             this.initDataByParent();
             this.sendDataParent({action: 'created', child: this.nameComponent});
-            var latLng = this.params.data.latLng;
-            var latLngCurrent = {
+            var dataParent = this.params.data;
+            var latLng = dataParent.latLng;
+            var locationCheck = dataParent.locationCheck;
+            var latLngData = {
                 lat: latLng[0],
                 lng: latLng[1],
-
             }
-            await this.getAddressInformation(latLngCurrent);
+
+            this.addressInformation.lat = latLngData.lat;
+            this.addressInformation.lng = latLngData.lng;
+            this.distanceKm = dataParent.distanceKm;
+            this.locationCheck = locationCheck;
+            if (locationCheck) {
+                await this.getAddressInformation(latLngCurrent);
+            }
 
         },
         beforeMount: function () {
@@ -47,7 +55,8 @@
                 selectedCategoryIds: [],     // [1,2,3]
                 selectedSubcategoryIds: [],  // [10,11]
                 openCategoryIds: [],         // categorías expandidas
-                distanceKm: 10,
+                distanceKm: -1,
+                locationCheck: false,
                 addressInformation: {
                     country: "S/N",
                     state: "S/N",
@@ -55,34 +64,54 @@
                     district: "S/N",
                     street: "S/N",
                     houseNumber: "S/N",
-                    formattedAddress:"S/N",
-                    formattedAddressView:"S/N",
-                    streetView:"S/N",
-                    lat:0,
-                    lng:0,
+                    formattedAddress: "S/N",
+                    formattedAddressView: "S/N",
+                    streetView: "S/N",
+                    lat: 0,
+                    lng: 0,
 
                 }
             };
             return dataManager;
         },
         methods: {
+            onChangeLocation: async function () {
+                if (this.locationCheck) {
+                    // Se activó: aquí puedes pedir ubicación o cargar datos
+                    // this.getCurrentLocation();
+                } else {
+                    await this.getInitLocation();
+                    var latLngCurrent = {lat: this.addressInformation.lat, lng: this.addressInformation.lng};
+
+                    await this.getAddressInformation(latLngCurrent);
+                }
+
+            },
+            getInitLocation: async function () {
+                const once = await GeoManager.getBrowserCoordinatesAsync({
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    fallbackLat: this.addressInformation.lat,
+                    fallbackLng: this.addressInformation.lng
+                });
+
+                this.addressInformation.lat = once.lat;
+                this.addressInformation.lng = once.lng;
+
+            },
             getAddressInformation: async function (params) {
 
                 const result = await reverseGeocodeNominatim(params);
-                this.addressInformation.country=result.data.country;
-                this.addressInformation.state=result.data.state;
-                this.addressInformation.city=result.data.city;
-                this.addressInformation.district=result.data.district;
-                this.addressInformation.street=result.data.street;
-                this.addressInformation.houseNumber=result.data.houseNumber;
-                this.addressInformation.formattedAddress=result.data.formattedAddress;
-                this.addressInformation.formattedAddressView=result.data.street+","+result.data.city+","+result.data.state+","+result.data.country;
-                this.addressInformation.streetView=result.data.street;
+                this.addressInformation.country = result.data.country;
+                this.addressInformation.state = result.data.state;
+                this.addressInformation.city = result.data.city;
+                this.addressInformation.district = result.data.district;
+                this.addressInformation.street = result.data.street;
+                this.addressInformation.houseNumber = result.data.houseNumber;
+                this.addressInformation.formattedAddress = result.data.formattedAddress;
+                this.addressInformation.formattedAddressView = result.data.street + "," + result.data.city + "," + result.data.state + "," + result.data.country;
+                this.addressInformation.streetView = result.data.street;
 
-
-
-                this.addressInformation.lat=params.lat;
-                this.addressInformation.lng=params.lng;
 
             },
             ...$methodsFormValid,
@@ -157,7 +186,9 @@
                     this.unselectAllChildren(category);
                 }
 
-                this.emitFilters();
+
+                this.emitFilters({action: "change", "data": {element: "category"}});
+
             },
 
 // ✅ Checkbox subcategory: si marco 1 => categoría se marca; si no queda ninguna => categoría se desmarca
@@ -178,31 +209,48 @@
                     this.openCategoryIds.push(category.id);
                 }
 
-                this.emitFilters();
+                this.emitFilters({action: "change", "data": {element: "subcategory"}});
+
             },
 
             setDistance: function (km) {
                 this.distanceKm = parseInt(km, 10) || 1;
-                this.emitFilters();
+                this.emitFilters({action: "change", "data": {element: "distance"}});
             },
 
             resetAll: function () {
                 this.selectedCategoryIds = [];
                 this.selectedSubcategoryIds = [];
                 this.openCategoryIds = [];
-                this.distanceKm = 10;
-                this.emitFilters();
+                this.distanceKm = 1;
+                this.emitFilters({action: "resetAll", "data": {element: "all"}});
+
             },
 
-            emitFilters: function () {
+            applyFilters: function () {
+                this.emitFilters({action: "applyFilters", "data": {}});
+
+            },
+            emitFilters: function (params) {
+                var actionName = params.action;
+                var dataCurrent = params.data;
+                const subCategoryIdsString = this.selectedSubcategoryIds.join(',');
+                const categoryIdsString = this.selectedCategoryIds.join(',');
+                var dataSend = {
+                    distance: this.distanceKm,
+                    lat: this.addressInformation.lat,
+                    lng: this.addressInformation.lng,
+                    categories: categoryIdsString,
+                    subCategoryIdsString: subCategoryIdsString
+                };
+                const mergedData = {
+                    ...dataCurrent,
+                    ...dataSend
+                };
                 this.sendDataParent({
-                    action: "change",
+                    action: actionName,
                     child: this.nameComponent,
-                    data: {
-                        distanceKm: this.distanceKm,
-                        categories: this.selectedCategoryIds,
-                        subcategories: this.selectedSubcategoryIds
-                    }
+                    data: mergedData
                 });
             }
         }

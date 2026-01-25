@@ -420,7 +420,7 @@
 
 
     :root {
-        --main-header-height: 64px; /* ajusta a tu header principal */
+        --main-header-height: 81px; /* ajusta a tu header principal */
         --drawer-width: 100%;
     }
 
@@ -441,7 +441,72 @@
         max-width: 46vw;
         min-width: 320px;
     }
+    h4.filters-drawer__title {
+        font-weight: bold;
+        font-size: 29px;
+        color: #445ef2;
+    }
+    .filters-sheet__content-actions{
+        width: 100%;
+    }
 
+    /* 👇 ahora van uno al lado del otro */
+    .filters-sheet__actions{
+        display: flex;
+        flex-direction: row;      /* ✅ antes estaba column */
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;          /* ✅ por si en móvil ya no caben */
+    }
+
+    /* Botón base */
+    .filters-sheet__action{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: fit-content;       /* ✅ se ajusta al texto */
+        padding: 10px 14px;
+
+        border-radius: 12px;
+        border: 1px solid rgba(76, 76, 255, 0.35); /* AzulClic suave */
+        background: var(--blanco);
+        color: var(--azulClic);
+
+        text-decoration: none;
+        font-weight: 600;
+        line-height: 1;
+
+        transition: transform .12s ease, box-shadow .12s ease, background .12s ease, color .12s ease, border-color .12s ease;
+    }
+
+    /* Hover general MeetClic (lineal/gradiente) */
+    .filters-sheet__action:hover{
+        background: linear-gradient(135deg, var(--azulClic), var(--moradoSuave));
+        color: var(--blanco);
+        border-color: transparent;
+        box-shadow: 0 5px 18px rgba(76, 76, 255, 0.18);
+        transform: translateY(-1px);
+    }
+
+    /* Accesibilidad al navegar con teclado */
+    .filters-sheet__action:focus-visible{
+        outline: 3px solid rgba(255, 204, 0, 0.65); /* AmarilloVital */
+        outline-offset: 2px;
+    }
+
+    /* Modificador opcional: Reset distinto (sin salir de paleta) */
+    .filters-sheet__action--reset{
+        border-color: rgba(44, 44, 44, 0.18); /* GrisOscuro suave */
+        color: var(--grisOscuro);
+    }
+
+    .filters-sheet__action--reset:hover{
+        background: linear-gradient(135deg, var(--amarilloVital), var(--blanco));
+        color: var(--grisOscuro);
+        border-color: transparent;
+        box-shadow: 0 5px 18px rgba(255, 204, 0, 0.22);
+    }
     .filters-drawer--right {
         right: 0;
     }
