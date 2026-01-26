@@ -205,8 +205,8 @@ Vue.component('grid-manager-component', {
                 formatters: {
                     'description': function (column, row) {
 
-                        var classInputOutput = row.input_movement == 1 ? "badge-points--success" : "badge-points--danger";
-                        var classInputOutputIconView = row.input_movement == 1 ? "fa fa-plus-circle" : "fa fa-minus";
+                        var classInputOutput = row.direction_default =="IN" ? "badge-points--success" : "badge-points--danger";
+                        var classInputOutputIconView = row.icon_class;
                         var typeEntity = [
 
                             row.business_id ? '                 <a target="_blank" href="'+($routesManager.businessDetails+"/"+ row.business_name )+'" > by ' + row.business_name + '</a>' :'                 <a target="_blank" href="'+($routesManager.authorSingle+"/"+ row.user_id )+'" > by ' + row.user_name + '</a>'

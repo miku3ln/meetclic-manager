@@ -102,9 +102,6 @@ class CustomerByProfile extends ModelManager
                     $menuCurrentItemsCurrent = $menuCurrentItemsManagement;
                 }
             }
-
-            $resourcePathServer = $params['resourcePathServer'];
-
             $urlCurrentImage = URL::asset($profileConfig['data']['user']['urlAvatar']);
             $userProfileMenu = ' <div class="header-user-menu">';
             $userProfileMenu .= '      <div class="header-user-name">';
@@ -117,9 +114,14 @@ class CustomerByProfile extends ModelManager
             $userProfileMenu .= '      </div>';
             $pointsManagement = '';
             if (env('allowMenuTopPoints')) {
-                $pointsManagement = '         <li class="menu-top__li-points"><span
-                            class="badge badge--size-large badge--bee-points">' . $profileConfig['data']['user']['gaming']['bee'] . '</span>
-                        ' . env('namePointsOne') . ' <i class="fa  fa-star-o"></i></li>';
+                $dashboardView = route("homePage") . "/" . app()->getLocale() . "/account";
+
+                $linkCurrent = '<a href="' . $dashboardView . '" class="dropdown-item notify-item">';
+                $linkCurrent .= '<span class="badge badge--size-large badge--bee-points">' . $profileConfig['data']['user']['gaming']['bee'] . '</span>';
+                $linkCurrent .= env('namePointsOne') ;
+                $linkCurrent .= ' </a>';
+
+                $pointsManagement = '         <li class="menu-top__li-points"> ' . $linkCurrent . '</li>';
             }
             if (env('allowViewPointsTwo')) {
                 $pointsManagement .= '         <li class="menu-top__li-points"><span
@@ -146,7 +148,7 @@ class CustomerByProfile extends ModelManager
             }
 
             $liCloseAccount = '<li>';
-            $rootUrlLogout=route("homePage")."/".app()->getLocale()."/logout";
+            $rootUrlLogout = route("homePage") . "/" . app()->getLocale() . "/logout";
 
             $liCloseAccount .= '  <a href="' . $rootUrlLogout . '">';
             $liCloseAccount .= ' ' . __('frontend.buttons.logout');
@@ -663,18 +665,18 @@ class CustomerByProfile extends ModelManager
             $avatar = Auth::user()->avatar;
 
             $modelMovement = new \App\Models\AccountGamification();
-            $resultAllow = $modelMovement->getAllowAddMovementRegisterUser([
-                'filters' => [
-                    'user_id' => $user_id
-                ]
-            ]);
+
+
+            $resultAllow = AccountGamification::getUserBalancesGroupedByBusiness($user_id);
+
             $gaming = [];
-            if ($resultAllow) {
+            if ($resultAllow["success"]) {
+
                 $gaming = [
                     'success' => true,
-                    'id' => $resultAllow->id,
-                    'bee' => $resultAllow->balance_available_bee,
-                    'queen' => $resultAllow->balance_available_queen,
+                    'id' => -1,
+                    'bee' => $resultAllow["total"],
+                    'queen' => 0,//TODO WALLET
                 ];
             } else {
                 $gaming = [

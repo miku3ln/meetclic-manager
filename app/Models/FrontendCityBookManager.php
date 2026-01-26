@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Gamification\ConfigurationGamificationUtil;
 use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
 use App\Models\Whatsapp\WhatsappConfigs;
@@ -299,6 +300,18 @@ class FrontendCityBookManager extends ModelManager
             $resultBusinessDetails = Util::getDataBusinessAll($params);
             $dataManagerPage = array_merge($dataManagerPage, $resultBusinessDetails);
             if ($resultBusinessDetails["viewPage"]) {
+                $gamificationAllow = $resultBusinessDetails["gamification"]["allow"];
+
+                if ($gamificationAllow) {
+                    $gamification_id = $resultBusinessDetails["gamification"]["data"]->id;
+                    $business_id = $resultBusinessDetails["business_id"];
+
+                    $modelGamification = new GamificationByProcess();
+                    $business = $params["paramsRequest"]["id"];
+                    $dataConfigGamificationBusiness = $modelGamification->getProcessDefaultByBusinessData(["business"=>$business,"business_id" => $business_id, "gamification_id" => $gamification_id]);
+                    $dataManagerPage["dataConfigGamificationBusiness"] = $dataConfigGamificationBusiness;
+                    //    dd($dataConfigGamification);
+                }
                 $pageSectionsConfig['head_custom']['business']['data'] = $resultBusinessDetails["pageSectionsConfig"];
             }
 
@@ -534,11 +547,9 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
         } //MANAGER BUSINESS
         else if ($page == 'business' || $page == 'businessEmployer') {
             $dataManagerPage['breadcrumb']['active'] = __('frontend.account.menu.my-business');
-
             $modelS = new \App\Models\BusinessSubcategories();
             $modelC = new \App\Models\Country();
             $modelB = new \App\Models\Bank();
-
             $subcategories = $modelS->getSubcategories();
             $countriesData = $modelC->getCountries();
             $locationData = $modelC->getStructureLocation($countriesData);
@@ -558,6 +569,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
 
             ];
             $dataManagerPage['allowVue'] = true;
+
+
         } /* OWNER BUSINESS*/ else if ($page == 'aboutUs') {
             $pageCurrent = "about-us";
             $sourceImageCurrent = "/uploads/web/" . $pageCurrent . "/not-manager/background-our.jpg";

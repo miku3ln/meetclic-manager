@@ -1832,6 +1832,7 @@ class Util
                 'business_id' => $paramId
             ]
         ]);
+
         $pageSectionsConfig = [];
         if ($information) {
             $viewPage = true;
@@ -1876,6 +1877,7 @@ class Util
                 'counters' => $counters,
                 'networkSocial' => $networkSocial,
             ];
+
             $dataManagerPage['business'] = Util::getStructureBusiness($informationAll, $resourcePathServer);
             $modelCounter = new \App\Models\Tracking\TrackingEvents();
 

@@ -160,18 +160,23 @@ class ResolveRouteContextUseCase
                 return RouteResolveResultDTO::fail("No se pudo resolver business: falta id.");
             }
             $fieldComparate = $relation["business"];
-            if (in_array($routeName, [ "rimay-business", "suggestion-mail-business", "rates-registers-business"])) {
+            $isStringWithLetters = is_string($businessId) && preg_match('/[a-zA-Z]/', $businessId);
+
+            if (in_array($routeName, ["rimay-business", "suggestion-mail-business"])) {
                 $fieldComparate = "id";
             } else if ("chasqui-routes" == $routeName) {
 
-            }else if("rate-register-business"==$routeName){
+            } else if ("rate-register-business" == $routeName) {
 
-            }else if( "rimay-registers-business" ==$routeName){
+            } else if ("rimay-registers-business" == $routeName) {
+                $fieldComparate = "id";
+            } else if ("rewards-business" == $routeName) {
 
-            }else if(  "rewards-business"==$routeName){
+            } else if ("shop-business" == $routeName) {
 
-            }else if(  "shop-business"==$routeName){
-
+            }
+            if (!$isStringWithLetters) {
+                $fieldComparate = "id";
             }
             $business = $this->businessRead->findById($businessId, $fieldComparate);
             if (!$business) {

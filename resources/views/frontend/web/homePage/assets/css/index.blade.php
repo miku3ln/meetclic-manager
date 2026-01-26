@@ -750,5 +750,11 @@
     .map-container-view {
         height: 50vh !important;
     }
+    h4.by-business {
+        font-weight: bold;
+        text-align: right;
+        color: #445ef2;
+        font-size: 13px;
+    }
 
 </style>

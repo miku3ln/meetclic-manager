@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
@@ -440,7 +441,6 @@ $this->table.balance_available_queen";
                 }
 
 
-
             } else {
                 $success = false;
                 $msj = "Problemas al guardar  Cuenta Qulqui.";
@@ -478,5 +478,110 @@ $this->table.balance_available_queen";
             return ($result);
         }
 
+    }
+
+
+    /**
+     * Devuelve balances agrupados por empresa para un usuario, sumando todas sus wallets por empresa.
+     *
+     * Params soportados (opcionales):
+     * - business_id (int)        -> filtra una empresa específica
+     * - type_money (int)         -> filtra tipo de moneda (Bee/Queen)
+     * - wallet_id (int)          -> filtra una wallet específica
+     * - date_from (string|Carbon)-> filtra desde (created_at)
+     * - date_to (string|Carbon)  -> filtra hasta (created_at)
+     * - include_inactive (bool)  -> incluye wallets INACTIVE (default false)
+     * - include_deleted (bool)   -> incluye movimientos borrados lógicamente (default false)
+     *
+     * Retorna:
+     * [
+     *   'total' => float,
+     *   'by_business' => [
+     *      ['business_id'=>1, 'balance'=>123.0],
+     *      ...
+     *   ]
+     * ]
+     */
+    public static function getUserBalancesGroupedByBusiness(int $userId, array $params = []): array
+    {
+        $includeInactive = (bool)($params['include_inactive'] ?? false);
+        $includeDeleted = (bool)($params['include_deleted'] ?? false);
+
+        $query = DB::table('account_gamification as w')
+            ->join('account_gamification_by_movement as m', 'm.wallet_destination_id', '=', 'w.id')
+            ->join('account_gamification_movement_type as t', 't.id', '=', 'm.movement_type_id')
+            ->where('w.user_id', $userId)
+            ->whereNull('w.deleted_at')
+            ->where('t.state', 'ACTIVE');
+
+        // Wallet state
+        if (!$includeInactive) {
+            $query->where('w.state', 'ACTIVE');
+        }
+
+        // Soft deletes movements
+        if (!$includeDeleted) {
+            $query->whereNull('m.deleted_at');
+        }
+
+        // Validate direction against catalog default
+        $query->where(function (Builder $q) {
+            $q->where('t.direction_default', 'NA')
+                ->orWhereColumn('t.direction_default', 'm.direction');
+        });
+
+        // Filters (params)
+        if (!empty($params['business_id'])) {
+            $query->where('w.business_id', (int)$params['business_id']);
+        }
+
+        if (!empty($params['type_money'])) {
+            $query->where('w.type_money', (int)$params['type_money']);
+        }
+
+        if (!empty($params['wallet_id'])) {
+            $query->where('w.id', (int)$params['wallet_id']);
+        }
+
+        if (!empty($params['date_from'])) {
+            $query->where('m.created_at', '>=', $params['date_from']);
+        }
+
+        if (!empty($params['date_to'])) {
+            $query->where('m.created_at', '<=', $params['date_to']);
+        }
+
+        // Group by business_id (sum all wallets of that business)
+        $rows = $query
+            ->groupBy('w.business_id')
+            ->selectRaw("
+                w.business_id as business_id,
+                COALESCE(SUM(
+                    CASE
+                        WHEN m.direction = 'IN'  THEN m.amount
+                        WHEN m.direction = 'OUT' THEN -m.amount
+                        ELSE 0
+                    END
+                ), 0) as balance
+            ")
+            ->get();
+
+        $byBusiness = [];
+        $total = 0.0;
+
+        foreach ($rows as $row) {
+            $balance = (float)$row->balance;
+            $byBusiness[] = [
+                'business_id' => (int)$row->business_id,
+                'balance' => $balance,
+            ];
+            $total += $balance;
+        }
+        $success = count($byBusiness) > 0;
+        return [
+            "success" => $success,
+            'total' => $total,
+            'by_business' => $byBusiness,
+        ];
     }
 }

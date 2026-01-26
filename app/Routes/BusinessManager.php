@@ -1312,7 +1312,7 @@ class BusinessManager
 
 //RantiApp
 
-            Route::post('profile/user/accountGamificationByMovementAdmin', 'Gamification\AccountGamificationByMovementController@getAdmin')->name('accountGamificationByMovementAdmin'); //
+            Route::post('profile/user/accountGamificationByMovementAdmin', 'Gamification\AccountGamificationByMovementController@accountGamificationByMovementAdmin')->name('accountGamificationByMovementAdmin'); //
 
 
 

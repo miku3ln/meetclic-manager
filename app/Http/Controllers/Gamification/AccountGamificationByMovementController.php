@@ -12,11 +12,11 @@ use App\Models\AccountGamificationByMovement;
 class AccountGamificationByMovementController extends MyBaseController
 {
 
-    public function getAdmin()
+    public function accountGamificationByMovementAdmin()
     {
         $dataPost = Request::all();
         $model = new AccountGamificationByMovement();
-        $result = $model->getAdminData($dataPost);
+        $result = $model->accountGamificationByMovementAdmin($dataPost);
 
         return Response::json(
             $result

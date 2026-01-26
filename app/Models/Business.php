@@ -1050,11 +1050,13 @@ class Business extends ModelManager
                 'params' => $params
             ]
         );
+
         $query = $managerQuery['query'];
         $query->where($this->table . '.id', "=", $businessId);
         $query->orWhere($this->table . '.title', "=", $businessId);
         $query->orderBy($field, $sort);
         $data = $query->get()->first();
+
         $result = $data;
         return $result;
     }
@@ -1094,7 +1096,7 @@ class Business extends ModelManager
         $query->join('users', $this->table . ".user_id", '=', 'users.id');
 
         $query = $params['query'];
-        return $result = [
+        return [
             'getSelectBeeString' => $getSelectBeeString,
             'query' => $query
         ];

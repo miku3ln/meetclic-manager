@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Auth;
-
+use Illuminate\Database\Query\Builder;
 
 class AccountGamificationByMovement extends ModelManager
 {
@@ -76,115 +76,11 @@ class AccountGamificationByMovement extends ModelManager
 
 
     /*MANAGER MAINS*/
-    public function getAdminData($params)
+    public function accountGamificationByMovementAdmin($params)
     {
         $resultData = $this->getAdmin($params);
-        $result = [];
-        if ($resultData['total'] > 0) {
 
-            foreach ($resultData['rows'] as $key => $value) {
-
-            }
-            $result = $resultData;
-        } else {
-            $result = $resultData;
-
-        }
-        return $result;
-    }
-
-    public function getAdmin($params)
-    {
-        $sort = 'asc';
-        $field = $this->field_main;
-        $query = DB::table($this->table);
-        $user = Auth::user();
-        $user_id = $user->id;
-        if (isset($params['sort'])) {
-            $field = $column = array_keys($params['sort']);
-            $field = $field[0];
-            $sort = $params['sort'][$column[0]];
-        }
-
-        $page = isset($params['current']) ? (int)$params['current'] : 0;
-        $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
-
-        $selectString = "$this->table.id,$this->table.created_at,$this->table.updated_at,$this->table.deleted_at,account_gamification.created_at as account_gamification,
-account_gamification.id as account_gamification_id,
-$this->table.amount,$this->table.type,$this->table.input_movement,$this->table.description,$this->table.user_transaction_id,$this->table.type_money
-,gamification_by_process.icon_class icon_class
-,business.id business_id ,business.title business_name
-,users.id user_id ,users.name user_name";
-
-        $select = DB::raw($selectString);
-        $query->select($select);
-        $query->join('account_gamification', 'account_gamification.id', '=', $this->table . '.account_gamification_id');
-        $query->join('gamification_by_process', 'gamification_by_process.id', '=', $this->table . '.gamification_by_process_id');
-
-        $query->leftJoin(
-            'account_gamification_movement_by_business',
-            'account_gamification_by_movement.id',
-            '=',
-            'account_gamification_movement_by_business.account_gamification_by_movement_id'
-        );
-        $query->leftJoin(
-            'business',
-            'account_gamification_movement_by_business.business_id',
-            '=',
-            'business.id'
-        );
-
-        $query->leftJoin(
-            'users',
-            'account_gamification_by_movement.user_transaction_id',
-            '=',
-            'users.id'
-        );
-
-        $query->where('account_gamification.user_id', '=', $user_id);
-
-        if ($params['searchPhrase'] != null) {
-            $searchValue = $params['searchPhrase'];
-            $likeSet = $searchValue;
-            $query->where(function ($query) use ($likeSet
-            ) {
-                $query->orWhere($this->table . '.id', 'like', '%' . $likeSet . '%');
-                $query->orWhere($this->table . '.amount', 'like', '%' . $likeSet . '%');
-                $query->orWhere($this->table . '.type', 'like', '%' . $likeSet . '%');
-                $query->orWhere($this->table . '.input_movement', 'like', '%' . $likeSet . '%');
-                $query->orWhere($this->table . '.description', 'like', '%' . $likeSet . '%');
-                $query->orWhere($this->table . '.type_money', 'like', '%' . $likeSet . '%');
-            });;
-
-        }
-
-        $recordsTotal = $query->get()->count();
-        $pages = 1;
-        $total = $recordsTotal; // total items in array
-// sort
-        $query->orderBy($field, $sort);
-// Pagination: $perpage 0; get all data
-        if ($perpage > 0) {
-            $pages = ceil($total / $perpage); // calculate total pages
-            $page = max($page, 1); // get 1 page when $_REQUEST['page'] <= 0
-            $page = min($page, $pages); // get last page when $_REQUEST['page'] > $totalPages
-            $offset = ($page - 1) * $perpage;
-            if ($offset < 0) {
-                $offset = 0;
-            }
-            $query->offset((int)$offset);
-            $query->limit((int)$perpage);
-        }
-        $current_page = isset($params['current']) ? (int)$params['current'] : 0;
-        $data = $query->get()->toArray();
-
-        $result['total'] = $total;
-        $result['rows'] = $data;
-        $result['current'] = $current_page;
-        $limit = isset($params['rowCount']) ? $params['rowCount'] : 10;
-        $result['rowCount'] = $limit;
-
-        return $result;
+        return $resultData;
     }
 
 
@@ -288,4 +184,221 @@ $this->table.amount,$this->table.type,$this->table.input_movement,$this->table.d
 
     }
 
+
+    public function getAdmin(array $params): array
+    {
+        $userId = (int)Auth::id();
+
+        [$page, $perPage] = $this->resolvePagination($params);
+        [$sortField, $sortDir] = $this->resolveSort($params); // default: m.created_at desc
+
+        $baseQuery = $this->buildMovementQuery($userId, $params);
+
+        // Total rows (sin paginación)
+        $totalRows = (clone $baseQuery)->count('m.id');
+
+        // Total balance (IN - OUT) aplicando los mismos filtros
+       // $totalBalance = $this->calculateBalance($userId, $params);
+
+        // Data paginada
+        $rows = $this->applySortAndPagination($baseQuery, $sortField, $sortDir, $page, $perPage)
+            ->get()
+            ->toArray();
+
+        return [
+            'total' => $totalRows,
+            'rows' => $rows,
+            'current' => $page,
+            'rowCount' => $perPage,
+           // 'totalBalance' => (float)$totalBalance,
+        ];
+    }
+
+    /**
+     * Query base del log: account_gamification_by_movement (m)
+     * filtrado por wallet (w.user_id obligatorio y w.business_id opcional)
+     */
+    private function buildMovementQuery(int $userId, array $params): Builder
+    {
+        $query = DB::table('account_gamification_by_movement as m')
+            ->join('account_gamification as w', 'w.id', '=', 'm.wallet_destination_id')
+            ->join('account_gamification_movement_type as mt', 'mt.id', '=', 'm.movement_type_id')
+            ->leftJoin('gamification_by_process as gp', 'gp.id', '=', 'm.gamification_by_process_id')
+            ->join('account_gamification as ag', 'ag.id', '=', 'gp.gamification_id')
+            ->join('business as b', 'b.id', '=', 'ag.business_id')
+
+            ->whereNull('m.deleted_at')
+            ->where('w.user_id', '=', $userId);
+
+        // filtro opcional por business_id (en la wallet)
+        if (!empty($params['business_id'])) {
+            $query->where('w.business_id', '=', (int)$params['business_id']);
+        }
+
+        // filtro opcional por type_money
+        if (!empty($params['type_money'])) {
+            $query->where('w.type_money', '=', (int)$params['type_money']);
+        }
+
+        // filtro opcional por movement_type_id
+        if (!empty($params['movement_type_id'])) {
+            $query->where('m.movement_type_id', '=', (int)$params['movement_type_id']);
+        }
+
+        // validar direction_default vs direction
+        $query->where('mt.state', '=', 'ACTIVE')
+            ->where(function (Builder $q) {
+                $q->where('mt.direction_default', 'NA')
+                    ->orWhereColumn('mt.direction_default', 'm.direction');
+            });
+
+        // search
+        $this->applySearch($query, $params);
+
+        // select (limpio)
+        $query->select([
+            'm.id',
+            'm.created_at',
+            'm.updated_at',
+            'm.deleted_at',
+
+            'm.wallet_destination_id',
+            'm.wallet_origin_id',
+
+            'm.performed_by',
+            'm.performed_by_id',
+            'm.reference_code',
+            'm.movement_group_id',
+
+            'm.direction',
+            'm.business_context_id',
+            'm.created_source',
+
+            'm.amount',
+            'm.movement_type_id',
+            'mt.code as movement_type_code',
+            'mt.title as movement_type_title',
+            'mt.direction_default',
+            'mt.icon_class',
+
+
+            'm.description',
+            'm.expire_at',
+            'm.type_money',
+            'm.gamification_by_process_id',
+            'w.id as wallet_id',
+            'w.user_id',
+            'w.business_id',
+            'w.state as wallet_state',
+            'b.title as business_name',
+
+        ]);
+
+        return $query;
+    }
+
+    private function applySearch(Builder $query, array $params): void
+    {
+        $phrase = $params['searchPhrase'] ?? null;
+        if ($phrase === null || trim((string)$phrase) === '') return;
+
+        $like = '%' . trim((string)$phrase) . '%';
+
+        $query->where(function (Builder $q) use ($like) {
+            $q->orWhere('m.description', 'like', $like);
+        });
+    }
+
+    /**
+     * Balance total del usuario (y opcionalmente por business_id) sumando IN y restando OUT.
+     * Usa las MISMAS reglas de validación del catálogo.
+     */
+    private function calculateBalance(int $userId, array $params): float
+    {
+        $query = DB::table('account_gamification_by_movement as m')
+            ->join('account_gamification as w', 'w.id', '=', 'm.wallet_destination_id')
+            ->join('account_gamification_movement_type as mt', 'mt.id', '=', 'm.movement_type_id')
+            ->whereNull('m.deleted_at')
+            ->where('w.user_id', '=', $userId)
+            ->where('mt.state', '=', 'ACTIVE')
+            ->where(function (Builder $q) {
+                $q->where('mt.direction_default', 'NA')
+                    ->orWhereColumn('mt.direction_default', 'm.direction');
+            });
+
+        if (!empty($params['business_id'])) {
+            $query->where('w.business_id', '=', (int)$params['business_id']);
+        }
+        if (!empty($params['type_money'])) {
+            $query->where('w.type_money', '=', (int)$params['type_money']);
+        }
+        if (!empty($params['movement_type_id'])) {
+            $query->where('m.movement_type_id', '=', (int)$params['movement_type_id']);
+        }
+
+        $balance = $query->selectRaw("
+        COALESCE(SUM(
+            CASE
+                WHEN m.direction = 'IN'  THEN m.amount
+                WHEN m.direction = 'OUT' THEN -m.amount
+                ELSE 0
+            END
+        ), 0) as balance
+    ")->value('balance');
+
+        return (float)$balance;
+    }
+
+    private function resolvePagination(array $params): array
+    {
+        $page = isset($params['current']) ? (int)$params['current'] : 1;
+        $perPage = isset($params['rowCount']) ? (int)$params['rowCount'] : 10;
+
+        return [$page, $perPage];
+    }
+
+    private function resolveSort(array $params): array
+    {
+        // default: creación del movimiento
+        $defaultField = 'm.created_at';
+        $defaultDir = 'desc';
+
+        if (empty($params['sort']) || !is_array($params['sort'])) {
+            return [$defaultField, $defaultDir];
+        }
+
+        $requestedField = array_key_first($params['sort']);
+        $requestedDir = strtolower((string)($params['sort'][$requestedField] ?? $defaultDir));
+        $dir = $requestedDir === 'asc' ? 'asc' : 'desc';
+
+        // whitelist para evitar ordenar por columnas no permitidas
+        $allowed = [
+            'm.created_at' => 'm.created_at',
+            'm.amount' => 'm.amount',
+            'm.id' => 'm.id',
+            'm.direction' => 'm.direction',
+            'mt.code' => 'mt.code',
+            'w.business_id' => 'w.business_id',
+        ];
+
+        return [$allowed[$requestedField] ?? $defaultField, $dir];
+    }
+
+    private function applySortAndPagination(
+        Builder $query,
+        string  $sortField,
+        string  $sortDir,
+        int     $page,
+        int     $perPage
+    ): Builder
+    {
+        $query->orderBy($sortField, $sortDir);
+
+        if ($perPage <= 0) return $query;
+
+        $page = max($page, 1);
+        $offset = ($page - 1) * $perPage;
+
+        return $query->offset($offset)->limit($perPage);
+    }
 }

@@ -442,6 +442,11 @@
                             `  <a >${params.title}</a>`,
                             '</h3>',
                         ].join('');
+                        const buildBusiness = () => [
+                            '<h4 class="by-business">',
+                            `  <a href="${$urlRouteBusiness + "/" + task.businessName}">${params.business_name}</a>`,
+                            '</h4>',
+                        ].join('');
 
                         const buildDescription = () => [
                             '<p class="pullkay__desc">' + task.description + '</p>',
@@ -469,6 +474,8 @@
                             buildCategory(),
                             buildAvatar(),
                             buildTitle(),
+                            buildBusiness(),
+
                             rewardHtml,
                             buildLimitationsBadgesUI(paramsLimitations),
                             buildDescription(),

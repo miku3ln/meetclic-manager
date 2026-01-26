@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Gamification\ConfigurationGamificationUtil;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -728,12 +729,12 @@ END as entity_name
             ->map(function ($items) {
                 $first = $items->first();
                 return [
-                    'id' => (int) $first->category_id,
+                    'id' => (int)$first->category_id,
                     'text' => $first->category_name,
                     'icon' => $first->category_icon_class, // aquí luego mapeas icono por categoría si quieres
                     'children' => $items->map(function ($row) {
                         return [
-                            'id' => (int) $row->subcategory_id,
+                            'id' => (int)$row->subcategory_id,
                             'text' => $row->subcategory_name,
                             'icon' => $row->subcategory_icon_class, // aquí luego mapeas icono por subcategoría si quieres
                         ];
@@ -802,11 +803,8 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
                 $query->orWhere($this->table . '.description', 'like', '%' . $likeSet . '%');
                 $query->orWhere($this->table . '.url_manager', 'like', '%' . $likeSet . '%');
                 $query->orWhere($this->table . '.unique_code', 'like', '%' . $likeSet . '%');
-
                 $query->orWhere("gamification.value", 'like', '%' . $likeSet . '%');
                 $query->orWhere("gamification_by_points.points", 'like', '%' . $likeSet . '%');
-
-
             });
         }
         $tableRelation = 'product';
@@ -823,7 +821,6 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
             $tableRelationMain = $paramsCurrent['tableRelationMain'];
             $query->on($tableRelation . '.id', '=', $tableRelationMain . '.entity_id');
         });
-
         $recordsTotal = $query->get()->count();
         $pages = 1;
         $total = $recordsTotal; // total items in array
@@ -851,6 +848,193 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
         $result['rowCount'] = $limit;
 
         return $result;
+    }
+
+    public function getProcessDefaultByBusinessData($params)
+    {
+        $gamification_id = $params["gamification_id"];
+        $business_id = $params["business_id"];
+        $business = $params["business"];
+
+        $SHARE_PROFILE_WHATSAPP_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("SHARE_PROFILE_WHATSAPP_MC");
+
+        $currentInformation = ["gamification_id" => $gamification_id, "business_id" => $business_id];
+        $paramsProcess = array_merge($SHARE_PROFILE_WHATSAPP_MC, $currentInformation);
+        $SHARE_PROFILE_WHATSAPP_MC = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+        $VIEW_RATE_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_RATE_WEB_MC");
+        $paramsProcess = array_merge($VIEW_RATE_WEB_MC, $currentInformation);
+        $VIEW_RATE_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+        $VIEW_REWARDS_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REWARDS_WEB_MC");
+        $paramsProcess = array_merge($VIEW_REWARDS_WEB_MC, $currentInformation);
+        $VIEW_REWARDS_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+
+        $REGISTER_PROFILE_FORM_SUBMIT_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_PROFILE_FORM_SUBMIT_MC");
+        $paramsProcess = array_merge($REGISTER_PROFILE_FORM_SUBMIT_MC, $currentInformation);
+        $REGISTER_PROFILE_FORM_SUBMIT_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+        $REGISTER_RATE_FORM_SUBMIT_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_RATE_FORM_SUBMIT_MC");
+        $paramsProcess = array_merge($REGISTER_RATE_FORM_SUBMIT_MC, $currentInformation);
+        $REGISTER_RATE_FORM_SUBMIT_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+        $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC");
+        $paramsProcess = array_merge($VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC, $currentInformation);
+        $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+        $REGISTER_SUGGESTION_SUBMIT_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_SUGGESTION_SUBMIT_MC");
+        $paramsProcess = array_merge($REGISTER_SUGGESTION_SUBMIT_MC, $currentInformation);
+        $REGISTER_SUGGESTION_SUBMIT_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+        $VIEW_SUGGESTION_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_SUGGESTION_WEB_MC");
+        $paramsProcess = array_merge($VIEW_SUGGESTION_WEB_MC, $currentInformation);
+        $VIEW_SUGGESTION_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+        $VIEW_REGISTERS_SUGGESTION_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REGISTERS_SUGGESTION_WEB_MC");
+        $paramsProcess = array_merge($VIEW_REGISTERS_SUGGESTION_WEB_MC, $currentInformation);
+        $VIEW_REGISTERS_SUGGESTION_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+        $VIEW_TASK_QR_SCAN_TICKET_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_TASK_QR_SCAN_TICKET_MC");
+        $paramsProcess = array_merge($VIEW_TASK_QR_SCAN_TICKET_MC, $currentInformation);
+        $VIEW_TASK_QR_SCAN_TICKET_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+        $VIEW_TASK_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_TASK_WEB_MC");
+        $paramsProcess = array_merge($VIEW_TASK_WEB_MC, $currentInformation);
+        $VIEW_TASK_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+        $AYNI_YACHAY_SHOP_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("AYNI_YACHAY_SHOP_WEB_MC");
+        $paramsProcess = array_merge($AYNI_YACHAY_SHOP_WEB_MC, $currentInformation);
+        $AYNI_YACHAY_SHOP_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+
+
+        $VIEW_PROFILE_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_PROFILE_WEB_MC");
+        $paramsProcess = array_merge($VIEW_PROFILE_WEB_MC, $currentInformation);
+        $VIEW_PROFILE_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+        return [
+            "SHARE_PROFILE_WHATSAPP_MC" => [
+                "success" => $SHARE_PROFILE_WHATSAPP_MC !== null,
+                "data" => $SHARE_PROFILE_WHATSAPP_MC,
+                "urlDefault"=>route("rate-register-business")
+            ],
+            "VIEW_REWARDS_WEB_MC"=>[
+                "success" => $VIEW_REWARDS_WEB_MC_DATA !== null,
+                "data" => $VIEW_REWARDS_WEB_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+
+            ],
+            "AYNI_YACHAY_SHOP_WEB_MC"=>[
+                "success" => $AYNI_YACHAY_SHOP_WEB_MC_DATA !== null,
+                "data" => $AYNI_YACHAY_SHOP_WEB_MC_DATA,
+                "urlDefault"=>route("shop-business",$business)
+
+            ],
+            "VIEW_TASK_WEB_MC"=>[
+                "success" => $VIEW_TASK_WEB_MC_DATA !== null,
+                "data" => $VIEW_TASK_WEB_MC_DATA,
+                "urlDefault"=>route('businessPullkay', app()->getLocale())."/".$business
+            ],
+            "VIEW_TASK_QR_SCAN_TICKET_MC"=>[
+                "success" => $VIEW_TASK_QR_SCAN_TICKET_MC_DATA !== null,
+                "data" => $VIEW_TASK_QR_SCAN_TICKET_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "VIEW_REGISTERS_SUGGESTION_WEB_MC"=>[
+                "success" => $VIEW_REGISTERS_SUGGESTION_WEB_MC_DATA !== null,
+                "data" => $VIEW_REGISTERS_SUGGESTION_WEB_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "VIEW_SUGGESTION_WEB_MC"=>[
+                "success" => $VIEW_SUGGESTION_WEB_MC_DATA !== null,
+                "data" => $VIEW_SUGGESTION_WEB_MC_DATA,
+                "urlDefault"=>route("rates-registers-business",$business)
+            ],
+            "REGISTER_SUGGESTION_SUBMIT_MC"=>[
+                "success" => $REGISTER_SUGGESTION_SUBMIT_MC_DATA !== null,
+                "data" => $REGISTER_SUGGESTION_SUBMIT_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC"=>[
+                "success" => $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC_DATA !== null,
+                "data" => $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "VIEW_RATE_WEB_MC"=>[
+                "success" => $VIEW_RATE_WEB_MC_DATA !== null,
+                "data" => $VIEW_RATE_WEB_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "REGISTER_RATE_FORM_SUBMIT_MC"=>[
+                "success" => $REGISTER_RATE_FORM_SUBMIT_MC_DATA !== null,
+                "data" => $REGISTER_RATE_FORM_SUBMIT_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "REGISTER_PROFILE_FORM_SUBMIT_MC"=>[
+                "success" => $REGISTER_PROFILE_FORM_SUBMIT_MC_DATA !== null,
+                "data" => $REGISTER_PROFILE_FORM_SUBMIT_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+            "VIEW_PROFILE_WEB_MC"=>[
+                "success" => $VIEW_PROFILE_WEB_MC_DATA !== null,
+                "data" => $VIEW_PROFILE_WEB_MC_DATA,
+                "urlDefault"=>route("rate-register-business",$business)
+            ],
+        ];
+
+    }
+
+    public function getTypeProcessDefaultByBusiness($params)
+    {
+        $gamification_id = $params["gamification_id"];
+        $business_id = $params["business_id"];
+        $unique_code = $params["unique_code"];
+        $tracking_source_id = $params["tracking_source_id"];
+        $gamification_type_activity_id = $params["gamification_type_activity_id"];
+        $execution_channel = $params["execution_channel"];
+        $sort = 'asc';
+        $field = $this->field_main;
+        $query = DB::table($this->table);
+        $selectString = "$this->table.id,$this->table.source,$this->table.title,$this->table.subtitle,$this->table.description,$this->table.state,$this->table.has_source,$this->table.entity,$this->table.entity_id,$this->table.url_manager
+        ,$this->table.valid_from,$this->table.valid_until,$this->table.frequency_limit_type,$this->table.frequency_limit_value,$this->table.execution_channel,
+
+        tracking_click_types.id tracking_type_code,tracking_click_types.code tracking_type_code_view,CONCAT(tracking_click_types.code,'-',tracking_click_types.uid) tracking_type_name,
+tracking_sources.id tracking_source_code,tracking_sources.code tracking_source_code_view,CONCAT(tracking_sources.code ,'-',tracking_sources.uid) tracking_source_name,
+business.title business_name, business.id business_id
+        ,gamification.value as gamification,
+gamification.id as gamification_id,
+gamification_type_activity.title as gamification_type_activity,
+gamification_type_activity.id as gamification_type_activity_id,
+gamification_by_points.points,gamification_by_points.id gamification_by_points_id,
+$this->table.is_url,$this->table.type_manager,$this->table.unique_code";
+        $select = DB::raw($selectString);
+        $query->select($select);
+        $query->join('gamification', 'gamification.id', '=', $this->table . '.gamification_id');
+        $query->join('gamification_type_activity', 'gamification_type_activity.id', '=', $this->table . '.gamification_type_activity_id');
+        $query->join('gamification_by_points', $this->table . '.id', '=', 'gamification_by_points.gamification_by_process_id');
+        $query->join('business_by_gamification', 'gamification.id', '=', 'business_by_gamification.gamification_id');
+        $query->join('business', 'business.id', '=', 'business_by_gamification.business_id');
+        $query->join('tracking_click_types', $this->table . '.tracking_click_type_id', '=', 'tracking_click_types.id');
+        $query->join('tracking_sources', $this->table . '.tracking_source_id', '=', 'tracking_sources.id');
+        $query->where('gamification_by_process.gamification_id', '=', $gamification_id);
+        $query->where('business_by_gamification.business_id', '=', $business_id);
+        $query->where('gamification_by_process.unique_code', '=', $unique_code);
+        $query->where('gamification_by_process.tracking_source_id', '=', $tracking_source_id);
+        $query->where('gamification_by_process.gamification_type_activity_id', '=', $gamification_type_activity_id);
+        $query->where('gamification_by_process.execution_channel', '=', $execution_channel);
+
+
+        $query->orderBy($field, $sort);
+
+        $data = $query->first();
+
+
+        return $data;
     }
 
 }

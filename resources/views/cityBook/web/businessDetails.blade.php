@@ -1163,18 +1163,11 @@
         }
 
         function initMenuGamification() {
-            $('#menu-gamification-li').on('click', function (e) {
+            $('.ul-list--link-custom').on('click', function (e) {
                 e.preventDefault();
-
                 const href = $(this).find('a').attr('href');
                 window.open(href, '_blank');
             });
-            $('#menu-shop-li').on('click', function (e) {
-                e.preventDefault();
-
-                const href = $(this).find('a').attr('href');
-                window.open(href, '_blank');
-            })
         }
 
         $(function () {
