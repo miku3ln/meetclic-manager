@@ -284,7 +284,8 @@
                     var latLngCurrent = {lat: this.addressInformation.lat, lng: this.addressInformation.lng};
                     await this.getAddressInformation(latLngCurrent);
                 } else {
-
+                    this.destroyLeafletMap();
+                    this.locationManagement.view = false;
                 }
 
                 this.emitFilters({action: "change", "data": {element: "locationCheck"}});

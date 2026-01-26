@@ -178,6 +178,7 @@
                             }
                         } else if (params.child == 'filters-categories') {
                             if (["resetAll", "applyFilters"].includes(params.action)) {
+                                this.isFiltersOpen=false;
                                 var dataSend = params.data;
                                 this.model.attributes.check = dataSend.locationCheck;
                                 this.model.attributes.distance = dataSend.distance;

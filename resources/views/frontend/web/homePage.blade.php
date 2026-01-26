@@ -110,7 +110,7 @@ $managementNameProcess = "homePage";
         <aside class="filters-drawer filters-drawer--right"
                :class="{ 'filters-drawer--open': isFiltersOpen }"
                aria-label="Panel de filtros">
-            <div class="filters-drawer__header" >
+            <div class="filters-drawer__header">
                 <h4 class="filters-drawer__title">Filtros para ganar YAPITAS</h4>
                 <button type="button" class="filters-drawer__close" @click="isFiltersOpen = false">
                     <i class="fa fa-times" aria-hidden="true"></i>
@@ -139,8 +139,9 @@ $managementNameProcess = "homePage";
                     <div class="listing-view-layout not-view ">
                         <ul>
                             <li id="view-grid"><a class="grid" href="#"><i class="fa fa-th-large"></i></a></li>
-                            <li  id="view-list"><a class="list " href="#"><i class="fa fa-list-ul"></i></a></li>
-                            <li  id="view-2"><a href="#" class="expand-listing-view active"><i class="fa fa-expand"></i></a></li>
+                            <li id="view-list"><a class="list " href="#"><i class="fa fa-list-ul"></i></a></li>
+                            <li id="view-2"><a href="#" class="expand-listing-view active"><i class="fa fa-expand"></i></a>
+                            </li>
                         </ul>
                     </div>
                     <button type="button" class="listsearch__filter-btn"
@@ -165,26 +166,21 @@ $managementNameProcess = "homePage";
                              :key="rowTask.id + '-' + index"
                              v-html="getRowGameTaskHtml(rowTask)"
                              v-init-listing-items="{initMethod:_managerDataItemsMap}">
-
-                        </div>
-                        <!-- ✅ LOADER PARA INFINITE SCROLL -->
-                        <div class="listings-loader"
-                             v-if="paginationState.loading && paginationState.hasMore">
-                            <i class="fa fa-spinner fa-pulse fa-3x"></i>
-                            <div class="loader-text">Cargando más resultados...</div>
-                        </div>
-
-                        <!-- ✅ MENSAJE FIN -->
-                        <div class="end-results"
-                             v-if="!paginationState.hasMore && configGridAdmin.data.length > 0">
-                            <span>✅ Ya no hay más resultados.</span>
                         </div>
                     </div>
-                    <!-- ✅ EMPTY -->
-                    <div class="class"
-                         v-if="!managerLoading.data.view && configGridAdmin.isEmpty"
-                         v-html="configGridAdmin.msj.empty">
+                    <div v-if="(configGridAdmin.isEmpty && configGridAdmin.data.length==0) && (!paginationState.loading && !paginationState.hasMore)" class="listing-items__empty">
+                        <div v-html="configGridAdmin.msj.empty"></div>
                     </div>
+                    <div class="listings-loader"
+                         v-if="paginationState.loading && paginationState.hasMore">
+                        <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                        <div class="loader-text">Cargando más resultados...</div>
+                    </div>
+                    <div class="end-results"
+                         v-if="!paginationState.hasMore && configGridAdmin.data.length > 0">
+                        <span>✅ Ya no hay más resultados.</span>
+                    </div>
+
 
                 </div>
             </div>

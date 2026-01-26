@@ -640,7 +640,7 @@
 
         .pullkay__cta.btn {
 
-            padding: 13px 38% !important;
+            padding: 13px 27% !important;
 
         }
 
@@ -713,9 +713,20 @@
         }
 
         .filters-sheet {
-            margin-left: 12px;
+            margin-left: 0px;
             width: 100vw !important;
             max-width: 92vw !important;
+        }
+
+        .filters-sheet__card{
+            width: 100%;
+        }
+        .location {
+            padding-top: 17px;
+        }
+        .d-flex.align-items-start.management-view-location {
+            align-items: normal !important;
+            display: block!important;
         }
     }
 </style>

@@ -27,8 +27,8 @@
             <div class="location" v-if="locationCheck">
                 <div class="card filters-sheet__card">
                     <div class="card-body">
-                        <div class="d-flex align-items-start" v-if="!locationManagement.view">
-                            <div class="filters-sheet__icon-wrap me-3" @click="managementViewLocation()">
+                        <div class="d-flex align-items-start" v-if="!locationManagement.view"  @click="managementViewLocation()">
+                            <div class="filters-sheet__icon-wrap me-3">
 
                                 <i class="bi bi-geo-fill" style="font-size:1.2rem;"></i>
                             </div>
@@ -51,13 +51,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-start" v-if="locationManagement.view">
-                            <div class="filters-sheet__icon-wrap me-3" @click="returnViewLocation()">
+                        <div class="d-flex align-items-start management-view-location" v-if="locationManagement.view">
+                            <div class="filters-sheet__icon-wrap me-3 action__button" @click="returnViewLocation()">
 
                                 <i class="bi bi-arrow-return-left" style="font-size:1.2rem;"></i>
                             </div>
 
-                            <div class="flex-grow-1">
+                            <div class="flex-grow-1 location__map">
                                 <div v-init-map-manager="{  functionInit:viewMap }"  ref="map" class="map-container-view" id="map-main-view">
 
 
