@@ -79,7 +79,7 @@ class FrontendCityBookManager extends ModelManager
         $tracking = new TrackingUtil();
 
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
-        if (!in_array($routeName, ["contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
+        if (!in_array($routeName, ["authorSingle","contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
                 $resultTracking = $tracking->managerGamingTask($request, $type);
                 $gamificationData = $resultTracking;
