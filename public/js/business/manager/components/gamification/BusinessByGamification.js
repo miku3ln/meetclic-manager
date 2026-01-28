@@ -17,7 +17,7 @@ Vue.component('business-by-gamification-component', {
     },
     beforeMount: function () {
         this.configParams = this.params;
-        this.business_id =  $businessManager.id;//this.configParams.business_id;
+        this.business_id = $businessManager.id;//this.configParams.business_id;
     },
     mounted: function () {
         componentThisBusinessByGamification = this;
@@ -114,7 +114,7 @@ Vue.component('business-by-gamification-component', {
                 "viewAllow": false,
                 "data": []
             },
-            configModalGamificationByRewards:{
+            configModalGamificationByRewards: {
                 "title": "Title",
                 "viewAllow": false,
                 "data": []
@@ -208,14 +208,22 @@ Vue.component('business-by-gamification-component', {
             var paramsFilters = new Object();
             var filters = new Object();
 
-            let business_id=this.manager_id==null?$businessManager.id:this.manager_id;
+            let business_id = this.manager_id == null ? $businessManager.id : this.manager_id;
 
-            filters[this.manager_key_name] =business_id;
+            filters[this.manager_key_name] = business_id;
             paramsFilters = filters;
             var structure = $scope.model.structure;
             var formatters = {
                 'description': function (column, row) {
-
+                    var yapitas=100;
+                    var resultConversion = GamificationCountryReference.convertYapitasToMoney(
+                        window.GamificationCountryReferenceData,
+                        yapitas,
+                        2
+                    );
+                    var valueConversion = [
+                        yapitas," YAPITA",(yapitas>1?"S":"")," es igual ",resultConversion.unit_label," ",resultConversion.money
+                    ].join("");
                     var classStatus = "badge-success";
                     if (row.state == "INACTIVE") {
                         classStatus = "badge-warning";
@@ -224,14 +232,14 @@ Vue.component('business-by-gamification-component', {
                     var classBadgeCashPoint = "badge-success";
                     var textBadgeCashPoint = "SI";
 
-                    if (row.allow_exchange ==0) {
+                    if (row.allow_exchange == 0) {
                         classBadgeCashPoint = "badge-warning";
                         textBadgeCashPoint = "NO";
                     }
                     var classBadgeCashPointBusiness = "badge-success";
                     var textBadgeCashPointBusiness = "SI";
 
-                    if (row.allow_exchange_business ==0) {
+                    if (row.allow_exchange_business == 0) {
                         classBadgeCashPointBusiness = "badge-warning";
                         textBadgeCashPointBusiness = "NO";
                     }
@@ -246,17 +254,17 @@ Vue.component('business-by-gamification-component', {
                         "   <span relation class='content-description__title'>" + structure.value.label + ":</span><span class='content-description__value'>" + hrefManagerMain + "</span>",
                         "</div>",
                         "<div class='content-description__information'>",
-                        "   <span relation class='content-description__title'>" + structure.value_unit.label + ":</span><span class='content-description__value'>" + row.value_unit + "</span>",
+                        "   <span relation class='content-description__title'>" + structure.value_unit.label + ":</span><span class='content-description__value'><span class='badge badge--size-large badge-info '>" + valueConversion + "</span></span>",
                         "</div>",
                         "<div class='content-description__information'>",
                         "   <span relation class='content-description__title'>" + structure.description.label + ":</span><span class='content-description__value'>" + row.description + "</span>",
                         "</div>",
 
                         "<div class='content-description__information'>",
-                        "   <span class='content-description__title'>" + structure.allow_exchange.label + ":</span><span class='content-description__value'>" +"<span class='badge badge--size-large "+classBadgeCashPoint+"'>  " +textBadgeCashPoint + "</span></span>",
+                        "   <span class='content-description__title'>" + structure.allow_exchange.label + ":</span><span class='content-description__value'>" + "<span class='badge badge--size-large " + classBadgeCashPoint + "'>  " + textBadgeCashPoint + "</span></span>",
                         "</div>",
-                        "<div class='content-description__information'>",
-                        "   <span class='content-description__title'>" + structure.allow_exchange_business.label + ":</span><span class='content-description__value'>" +"<span class='badge badge--size-large "+classBadgeCashPointBusiness+"'>  " +textBadgeCashPointBusiness + "</span></span>",
+                        "<div class='content-description__information not-view'>",
+                        "   <span class='content-description__title'>" + structure.allow_exchange_business.label + ":</span><span class='content-description__value'>" + "<span class='badge badge--size-large " + classBadgeCashPointBusiness + "'>  " + textBadgeCashPointBusiness + "</span></span>",
                         "</div>",
                         "</div>"];
 
@@ -385,7 +393,7 @@ Vue.component('business-by-gamification-component', {
 //Manager Model
 
         getValuesSave: function () {
-let business_id=$businessManager.id;
+            let business_id = $businessManager.id;
             var result = {
                 BusinessByGamification:
                     {

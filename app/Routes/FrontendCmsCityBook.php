@@ -79,6 +79,8 @@ class FrontendCmsCityBook
             Route::get('/categoriesSearchBee', 'Frontend\FrontendCityBookController@categoriesSearchBee')->name('categoriesSearchBee');
             Route::post('/searchBusinessBee', 'Frontend\FrontendCityBookController@searchBusinessBee')->name('searchBusinessBee');
             Route::get('/howItWorks', 'Frontend\FrontendCityBookController@howItWorks')->name('howItWorks');//GAMIFICATION ROUTE
+            Route::get('/ourAllies', 'Frontend\FrontendCityBookController@ourAllies')->name('ourAllies');//GAMIFICATION ROUTE
+
             Route::get('/prices', 'Frontend\FrontendCityBookController@prices')->name('prices');
 
             Route::get('/account/', 'Frontend\FrontendCityBookController@account')->name('profileAccount');//GAMIFICATION ROUTE

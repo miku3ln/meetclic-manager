@@ -2,11 +2,8 @@
 
 namespace App\Models;
 namespace App\Models\Gamification;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Auth;
-use Illuminate\Support\Facades\Validator;
+
 use App\Models\ModelManager;
 class GamificationByProcessTracking extends ModelManager
 {

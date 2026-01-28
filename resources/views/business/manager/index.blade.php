@@ -754,6 +754,119 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 @section('script-down')
     {{--scripts GESTION--}}
     <script>
+        var GamificationCountryReference = (function ($) {
+            "use strict";
+
+            function _toNumber(val, fallback) {
+                // Soporta: 1, "1", "1.00", "  1.00  "
+                if (val === null || val === undefined) return fallback;
+                if (typeof val === "number") return isFinite(val) ? val : fallback;
+                var s = String(val).trim().replace(",", "."); // por si llega con coma decimal
+                if (s === "") return fallback;
+                var n = parseFloat(s);
+                return isNaN(n) ? fallback : n;
+            }
+
+            function _round(n, decimals) {
+                var d = _toNumber(decimals, 2);
+                var p = Math.pow(10, d);
+                return Math.round(n * p) / p;
+            }
+
+            function _assertRef(ref) {
+                if (!ref || typeof ref !== "object") {
+                    return { ok: false, message: "Referencia inválida (objeto vacío)." };
+                }
+                if (!ref.country_id) {
+                    return { ok: false, message: "Falta country_id en la referencia." };
+                }
+
+                var ppu = _toNumber(ref.yapitas_per_unit, 0);
+                var unitValue = _toNumber(ref.unit_value, 0);
+
+                if (ppu <= 0) return { ok: false, message: "yapitas_per_unit inválido." };
+                if (unitValue <= 0) return { ok: false, message: "unit_value inválido." };
+
+                return { ok: true };
+            }
+
+            /**
+             * yapitas -> money
+             * Fórmula: money = (yapitas / yapitas_per_unit) * unit_value
+             */
+            function convertYapitasToMoney(ref, yapitas, decimals) {
+                var check = _assertRef(ref);
+                if (!check.ok) return $.extend({ country_id: ref && ref.country_id, yapitas: yapitas }, check);
+
+                var y = Math.max(0, Math.floor(_toNumber(yapitas, 0)));
+                var ppu = _toNumber(ref.yapitas_per_unit, 100);
+                var unitValue = _toNumber(ref.unit_value, 1);
+
+                var money = (y / ppu) * unitValue;
+
+                return {
+                    ok: true,
+                    country_id: _toNumber(ref.country_id, 0),
+                    yapitas: y,
+                    money: _round(money, decimals === undefined ? 2 : decimals),
+                    currency: String(ref.currency || "").trim(),
+                    unit_label: String(ref.unit_label || "").trim(),
+                    // valor de 1 yapita en moneda
+                    rate: _round(unitValue / ppu, 8)
+                };
+            }
+
+            /**
+             * money -> yapitas
+             * Fórmula: yapitas = (money / unit_value) * yapitas_per_unit
+             */
+            function convertMoneyToYapitas(ref, money) {
+                var check = _assertRef(ref);
+                if (!check.ok) return $.extend({ country_id: ref && ref.country_id, money: money }, check);
+
+                var m = Math.max(0, _toNumber(money, 0));
+                var ppu = _toNumber(ref.yapitas_per_unit, 100);
+                var unitValue = _toNumber(ref.unit_value, 1);
+
+                var yapitas = (m / unitValue) * ppu;
+
+                return {
+                    ok: true,
+                    country_id: _toNumber(ref.country_id, 0),
+                    money: m,
+                    yapitas: Math.round(yapitas), // entero
+                    currency: String(ref.currency || "").trim(),
+                    unit_label: String(ref.unit_label || "").trim(),
+                    // cuántas yapitas valen 1 unidad de moneda
+                    rate: _round(ppu / unitValue, 8)
+                };
+            }
+
+            /**
+             * Helpers rápidos (por si quieres usar exactamente tu objeto global)
+             * Ej:
+             *   GamificationCountryReference.yapitasToMoney(250)
+             *   GamificationCountryReference.moneyToYapitas(3.5)
+             */
+            function yapitasToMoney(yapitas, decimals) {
+                return convertYapitasToMoney(window.GamificationCountryReferenceData || null, yapitas, decimals);
+            }
+
+            function moneyToYapitas(money) {
+                return convertMoneyToYapitas(window.GamificationCountryReferenceData || null, money);
+            }
+
+            return {
+                convertYapitasToMoney: convertYapitasToMoney,
+                convertMoneyToYapitas: convertMoneyToYapitas,
+
+                // shortcuts opcionales si guardas tu ref en window.GamificationCountryReferenceData
+                yapitasToMoney: yapitasToMoney,
+                moneyToYapitas: moneyToYapitas
+            };
+        })(jQuery);
+    </script>
+    <script>
 
         var $allowRoutes = '<?php echo env('allowRoutes') ?>';
         var $managerDefaultData =<?php echo json_encode($managerDefaultData) ?>;

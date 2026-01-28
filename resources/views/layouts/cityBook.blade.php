@@ -415,6 +415,8 @@ if (env('allowAllInOne')) {
                     $activeProductFruits = 'not-active';
                     $activeProductBox = 'not-active';
                     $activeProductProducts = 'not-active';
+                    $activeOurAllies = 'not-active';
+
 
                     if ($nameRoute == 'homePage' || $nameRoute == "homeIndexFrontend") {
                         $activeHome = 'act-link';
@@ -422,6 +424,9 @@ if (env('allowAllInOne')) {
                         if ($dataManagerPage['type'] == 1) {
                             //  $classWrapper = 'no-padding';
                         }
+                    } if ($nameRoute == 'ourAllies') {
+                        $activeOurAllies = 'act-link';
+
                     } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
                         if ($paramsRequest['type'] == 1) {
@@ -536,6 +541,7 @@ if (env('allowAllInOne')) {
                         'activeShop' => $activeShop,
                         'activePages' => $activePages,
                         'activeBackLine' => $activeBackLine,
+                        'activeOurAllies' => $activeOurAllies,
 
 
                     ];

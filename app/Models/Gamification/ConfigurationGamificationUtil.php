@@ -449,7 +449,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 20,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -484,7 +484,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -519,7 +519,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -553,7 +553,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 20,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -588,7 +588,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 20,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -623,7 +623,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -658,7 +658,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -693,7 +693,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -728,7 +728,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -763,7 +763,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -798,7 +798,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -833,7 +833,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -868,7 +868,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -903,7 +903,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -938,7 +938,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -973,7 +973,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -1008,7 +1008,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -1043,7 +1043,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 40,
                     "gamification_by_process_id" => null,
                 ]
             ],
@@ -1078,7 +1078,7 @@ class ConfigurationGamificationUtil
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
                 'gamification_by_points' => ["id" => -1,
-                    "points" => 100,
+                    "points" => 10,
                     "gamification_by_process_id" => null,
                 ]
             ],

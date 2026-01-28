@@ -22,7 +22,8 @@
     "login.form.remember": "Recordar",
     "login.form.button-submit": "Login",
 
-    "frontend.menu.home": "HOME",
+    "frontend.menu.home": "Gana Yapitas",
+    "frontend.menu.allies": "Nuestros Aliados",
     "frontend.menu.project.one.home": "Pachamama",
     "frontend.menu.project.one.kichwa": "Kichwa",
     "frontend.menu.project.one.elements": "Elementos",
@@ -109,7 +110,7 @@
     "frontend.menu.policies": "Politicas de Privacidad",
     "frontend.menu.terms": "Terminos y condiciones de uso",
     "frontend.menu.gamification.rewards": "Premios",
-    "frontend.menu.gamification.activities": "gana con nosotros",
+    "frontend.menu.gamification.activities": "Cómo funciona",
     "frontend.gamification.activities": "Gana :value punto:singular",
     "frontend.gamification.rewards": "Canjea :value punto:singular",
     "frontend.menu.search.filters.title": "Resultados para :",

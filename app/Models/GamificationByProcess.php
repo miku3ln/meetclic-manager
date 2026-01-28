@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Gamification\ConfigurationGamificationUtil;
 use Illuminate\Support\Facades\DB;
 use Auth;
+
 class GamificationByProcess extends ModelManager
 {
     const STATE_ACTIVE = 'ACTIVE';
@@ -128,7 +129,6 @@ class GamificationByProcess extends ModelManager
         ['column' => 'allow_golden', 'type' => 'integer', 'defaultValue' => '1', 'required' => 'true'],
         ['column' => 'icon_class', 'type' => 'integer', 'defaultValue' => 'fa fa', 'required' => 'true'],
         ['column' => 'campaign_code_template', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
-
 
 
     ];
@@ -594,6 +594,9 @@ END as entity_name
                 });
             }
         }
+        $baseQuery->where('business.status', "=", 'ACTIVE');
+
+
         // ✅ Filtros
         $filters = $params['filters'] ?? [];
         $allowLocation = isset($filters["check"]) && ($filters["check"] == "true");
@@ -882,118 +885,117 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
         $VIEW_REWARDS_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
 
-
-        $REGISTER_PROFILE_FORM_SUBMIT_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_PROFILE_FORM_SUBMIT_MC");
+        $REGISTER_PROFILE_FORM_SUBMIT_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_PROFILE_FORM_SUBMIT_MC");
         $paramsProcess = array_merge($REGISTER_PROFILE_FORM_SUBMIT_MC, $currentInformation);
         $REGISTER_PROFILE_FORM_SUBMIT_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
 
-        $REGISTER_RATE_FORM_SUBMIT_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_RATE_FORM_SUBMIT_MC");
+        $REGISTER_RATE_FORM_SUBMIT_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_RATE_FORM_SUBMIT_MC");
         $paramsProcess = array_merge($REGISTER_RATE_FORM_SUBMIT_MC, $currentInformation);
         $REGISTER_RATE_FORM_SUBMIT_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
-        $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC");
+        $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC");
         $paramsProcess = array_merge($VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC, $currentInformation);
         $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
 
-        $REGISTER_SUGGESTION_SUBMIT_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_SUGGESTION_SUBMIT_MC");
+        $REGISTER_SUGGESTION_SUBMIT_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("REGISTER_SUGGESTION_SUBMIT_MC");
         $paramsProcess = array_merge($REGISTER_SUGGESTION_SUBMIT_MC, $currentInformation);
         $REGISTER_SUGGESTION_SUBMIT_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
-        $VIEW_SUGGESTION_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_SUGGESTION_WEB_MC");
+        $VIEW_SUGGESTION_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_SUGGESTION_WEB_MC");
         $paramsProcess = array_merge($VIEW_SUGGESTION_WEB_MC, $currentInformation);
         $VIEW_SUGGESTION_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
-        $VIEW_REGISTERS_SUGGESTION_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REGISTERS_SUGGESTION_WEB_MC");
+        $VIEW_REGISTERS_SUGGESTION_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_REGISTERS_SUGGESTION_WEB_MC");
         $paramsProcess = array_merge($VIEW_REGISTERS_SUGGESTION_WEB_MC, $currentInformation);
         $VIEW_REGISTERS_SUGGESTION_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
 
-        $VIEW_TASK_QR_SCAN_TICKET_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_TASK_QR_SCAN_TICKET_MC");
+        $VIEW_TASK_QR_SCAN_TICKET_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_TASK_QR_SCAN_TICKET_MC");
         $paramsProcess = array_merge($VIEW_TASK_QR_SCAN_TICKET_MC, $currentInformation);
         $VIEW_TASK_QR_SCAN_TICKET_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
-        $VIEW_TASK_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_TASK_WEB_MC");
+        $VIEW_TASK_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_TASK_WEB_MC");
         $paramsProcess = array_merge($VIEW_TASK_WEB_MC, $currentInformation);
         $VIEW_TASK_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
 
-        $AYNI_YACHAY_SHOP_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("AYNI_YACHAY_SHOP_WEB_MC");
+        $AYNI_YACHAY_SHOP_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("AYNI_YACHAY_SHOP_WEB_MC");
         $paramsProcess = array_merge($AYNI_YACHAY_SHOP_WEB_MC, $currentInformation);
         $AYNI_YACHAY_SHOP_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
 
 
-        $VIEW_PROFILE_WEB_MC= ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_PROFILE_WEB_MC");
+        $VIEW_PROFILE_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_PROFILE_WEB_MC");
         $paramsProcess = array_merge($VIEW_PROFILE_WEB_MC, $currentInformation);
         $VIEW_PROFILE_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
         return [
             "SHARE_PROFILE_WHATSAPP_MC" => [
                 "success" => $SHARE_PROFILE_WHATSAPP_MC !== null,
                 "data" => $SHARE_PROFILE_WHATSAPP_MC,
-                "urlDefault"=>route("rate-register-business")
+                "urlDefault" => route("rate-register-business")
             ],
-            "VIEW_REWARDS_WEB_MC"=>[
+            "VIEW_REWARDS_WEB_MC" => [
                 "success" => $VIEW_REWARDS_WEB_MC_DATA !== null,
                 "data" => $VIEW_REWARDS_WEB_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
 
             ],
-            "AYNI_YACHAY_SHOP_WEB_MC"=>[
+            "AYNI_YACHAY_SHOP_WEB_MC" => [
                 "success" => $AYNI_YACHAY_SHOP_WEB_MC_DATA !== null,
                 "data" => $AYNI_YACHAY_SHOP_WEB_MC_DATA,
-                "urlDefault"=>route("shop-business",$business)
+                "urlDefault" => route("shop-business", $business)
 
             ],
-            "VIEW_TASK_WEB_MC"=>[
+            "VIEW_TASK_WEB_MC" => [
                 "success" => $VIEW_TASK_WEB_MC_DATA !== null,
                 "data" => $VIEW_TASK_WEB_MC_DATA,
-                "urlDefault"=>route('businessPullkay', app()->getLocale())."/".$business
+                "urlDefault" => route('businessPullkay', app()->getLocale()) . "/" . $business
             ],
-            "VIEW_TASK_QR_SCAN_TICKET_MC"=>[
+            "VIEW_TASK_QR_SCAN_TICKET_MC" => [
                 "success" => $VIEW_TASK_QR_SCAN_TICKET_MC_DATA !== null,
                 "data" => $VIEW_TASK_QR_SCAN_TICKET_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "VIEW_REGISTERS_SUGGESTION_WEB_MC"=>[
+            "VIEW_REGISTERS_SUGGESTION_WEB_MC" => [
                 "success" => $VIEW_REGISTERS_SUGGESTION_WEB_MC_DATA !== null,
                 "data" => $VIEW_REGISTERS_SUGGESTION_WEB_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "VIEW_SUGGESTION_WEB_MC"=>[
+            "VIEW_SUGGESTION_WEB_MC" => [
                 "success" => $VIEW_SUGGESTION_WEB_MC_DATA !== null,
                 "data" => $VIEW_SUGGESTION_WEB_MC_DATA,
-                "urlDefault"=>route("rates-registers-business",$business)
+                "urlDefault" => route("rates-registers-business", $business)
             ],
-            "REGISTER_SUGGESTION_SUBMIT_MC"=>[
+            "REGISTER_SUGGESTION_SUBMIT_MC" => [
                 "success" => $REGISTER_SUGGESTION_SUBMIT_MC_DATA !== null,
                 "data" => $REGISTER_SUGGESTION_SUBMIT_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC"=>[
+            "VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC" => [
                 "success" => $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC_DATA !== null,
                 "data" => $VIEW_REGISTERS_RATE_QR_SCAN_TICKET_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "VIEW_RATE_WEB_MC"=>[
+            "VIEW_RATE_WEB_MC" => [
                 "success" => $VIEW_RATE_WEB_MC_DATA !== null,
                 "data" => $VIEW_RATE_WEB_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "REGISTER_RATE_FORM_SUBMIT_MC"=>[
+            "REGISTER_RATE_FORM_SUBMIT_MC" => [
                 "success" => $REGISTER_RATE_FORM_SUBMIT_MC_DATA !== null,
                 "data" => $REGISTER_RATE_FORM_SUBMIT_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "REGISTER_PROFILE_FORM_SUBMIT_MC"=>[
+            "REGISTER_PROFILE_FORM_SUBMIT_MC" => [
                 "success" => $REGISTER_PROFILE_FORM_SUBMIT_MC_DATA !== null,
                 "data" => $REGISTER_PROFILE_FORM_SUBMIT_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
-            "VIEW_PROFILE_WEB_MC"=>[
+            "VIEW_PROFILE_WEB_MC" => [
                 "success" => $VIEW_PROFILE_WEB_MC_DATA !== null,
                 "data" => $VIEW_PROFILE_WEB_MC_DATA,
-                "urlDefault"=>route("rate-register-business",$business)
+                "urlDefault" => route("rate-register-business", $business)
             ],
         ];
 

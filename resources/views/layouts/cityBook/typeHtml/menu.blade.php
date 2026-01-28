@@ -4,11 +4,12 @@
     @if (env('allowAllInOne'))
 
         @if (!env('allowCustomerMenuTop'))
-            <ul type-menu="{{$typeMenu}}">
+            <ul type-menu="{{$typeMenu}}" class="right">
                 <li class="li-{{ $activeHome }}">
                     <a class="{{ $activeHome }}  menu__a"
                        href="{{ route('urlBase') }}/">{{ __('frontend.menu.home') }}</a>
                 </li>
+
                 <li class="li-{{ $activeAboutUs }}">
                     <a class="{{ $activeAboutUs }}  menu__a"
                        href="{{ route('aboutUsBee', app()->getLocale()) }}">{{ __('frontend.menu.about-us') }}</a>
@@ -58,7 +59,10 @@
                         <a class="{{ $activeHome }}  menu__a"
                            href="{{ route('urlBase')}}">{{ __('frontend.menu.home') }}</a>
                     </li>
-
+                    <li class="li-{{ $activeOurAllies }}">
+                        <a class="{{ $activeOurAllies }}  menu__a"
+                           href="{{ route('ourAllies', app()->getLocale()) }}/">{{ __('frontend.menu.allies') }}</a>
+                    </li>
                     @if ($dataManagerPage['shopConfig']['allow'])
 
                         <li class="li-{{ $activeShop }}">

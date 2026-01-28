@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\BusinessBySchedule;
-use App\Models\PeopleNationality;
-use App\Models\PeopleProfession;
+use App\Models\Gamification\GamificationCountryReference;
 use App\Utils\Util;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Support\Facades\DB;
 use Auth;
 
@@ -240,7 +238,9 @@ class Business extends ModelManager
     function getBusinessByIdManager($params)
     {
         $selectString = "business.id,business.options_map,business.description,business.title,business.email,business.page_url,business.phone_value,business.street_1,business.street_2,business.street_lat,business.street_lng,business.user_id,business.business_subcategories_id,business.status,business.qualification,business.source
-        ,countries.name countries
+        ,countries.name countries,
+        countries.id countries_id
+
                 ,zones.name zone,zones.id zone_id
         ,cities.name city,cities.id city_id
  ,provinces.name province,provinces.id province_id
@@ -322,14 +322,22 @@ class Business extends ModelManager
         $business = $this->getBusinessByIdManager(array("id" => $id));
         $schedules = array();
         $success = false;
+        $gamificationCountryReferenceData=[];
         if (count($business) > 0) {
-            $business_id = $business[0]->id;
+            $dataBusiness= $business[0];
+            $business_id = $dataBusiness->id;
+
             $schedules = $modelBBS->getStructureSchedulesBusiness(array("business_id" => $business_id));
             $success = true;
+
+            $gamificationCountryReferenceData= GamificationCountryReference::findActiveByCountryId($dataBusiness->countries_id);
         }
         $peopleNationalityData = $modelPN->getDataListAll();
         $peopleProfessionData = $modelPP->getDataListAll();
         $dateCurrentData = array("format" => Util::DateCurrent('America/Guayaquil'), "not-format" => Util::DateCurrent('America/Guayaquil', "H:i:s d/m/Y"));
+
+
+
 
         return array(
             "business" => $business,
@@ -338,6 +346,7 @@ class Business extends ModelManager
             "peopleNationalityData" => $peopleNationalityData,
             "peopleProfessionData" => $peopleProfessionData,
             "dateCurrentData" => $dateCurrentData,
+            "gamificationCountryReferenceData"=>$gamificationCountryReferenceData,
             'user'=>$user,
             "userData"=>[
                 'model'=>$user,

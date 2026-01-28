@@ -95,6 +95,7 @@ Vue.component('gamification-by-process-component', {
         this.initCurrentComponent();
     },
     validations: function () {
+        var integerManager=Validators.integer;
         var attributes = {
             "id": {}, "change": {},
             "source": {required},
@@ -118,7 +119,8 @@ Vue.component('gamification-by-process-component', {
             "campaign_code_template": {required},
             "is_url": {},
             "type_manager": {},
-            "points": {required},
+            "points": {required , integerManager,
+                minValue: minValue(0)},
             gamification_by_points_id: {},
 
             vigencia: {
@@ -526,6 +528,21 @@ Vue.component('gamification-by-process-component', {
             }).on("select2:open", function (e) {
                 managerModalSelect2();
             });
+        },
+        getConversion:function(){
+            var yapitas=this.$v.model.attributes.points.$model;
+            var resultConversion = GamificationCountryReference.convertYapitasToMoney(
+                window.GamificationCountryReferenceData,
+                yapitas,
+                2
+            );
+            var valueConversion = [
+                "<span class='badge badge--size-large badge-info'>", yapitas," YAPITA",(yapitas>1?"S":"")," es igual ",resultConversion.unit_label," ",resultConversion.money,
+                "</span>"
+            ].join("");
+
+
+            return valueConversion;
         },
         _managerS2Forms: function (params) {
             var el = params.objSelector;
@@ -1036,7 +1053,7 @@ Vue.component('gamification-by-process-component', {
                 "points": {
                     "id": "points",
                     "name": "points",
-                    "label": "Puntos otorgados",
+                    "label": "Yapitas otorgadas",
                     "required": {
                         "allow": true,
                         "msj": "Campo requerido.",

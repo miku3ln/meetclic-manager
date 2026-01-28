@@ -21,7 +21,8 @@
     "login.form.remember": "Yuyariy",
     "login.form.button-submit": "Yaykuy",
 
-    "frontend.menu.home": "Wasi",
+    "frontend.menu.home": "Yapitakunata chaskiy",
+    "frontend.menu.allies": "Ñukanchik Mashikuna",
     "frontend.menu.project.one.home": "Pachamama",
     "frontend.menu.project.one.kichwa": "Kichwa",
     "frontend.menu.project.one.elements": "Sullu",
@@ -109,7 +110,7 @@
     "frontend.menu.policies": "Kawsay ñawpakunata riksichina",
     "frontend.menu.terms": "Kamachikuykuna uk ñawpakuna",
     "frontend.menu.gamification.rewards": "Ruruykunawan tarpuy",
-    "frontend.menu.gamification.activities": "Ñukanchikwan kuyaykuy",
+    "frontend.menu.gamification.activities": "Imashnalla ruran",
     "frontend.gamification.activities": "Kuyan: :value puntu",
     "frontend.gamification.rewards": "Tarpuy: :value puntu",
 

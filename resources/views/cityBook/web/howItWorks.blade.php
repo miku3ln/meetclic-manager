@@ -57,7 +57,7 @@
 @section('content')
     <div id="app-management">
 
-        <section id="sec2">
+        <section id="sec2" class="not-view">
             <div class="container">
                 <div class="section-title">
                     <h2>{{__('frontend.menu.home.how-it-works.business.title')}}</h2>
@@ -75,7 +75,6 @@
                                 <i class="fa fa-map-o"></i>
                             </div>
                             <h3 class="tl-text--title">
-
 
                                 <a href="{{route('business', app()->getLocale())}}">{{__('frontend.menu.home.how-it-works.business.one.title')}}</a>
 

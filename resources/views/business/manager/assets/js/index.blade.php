@@ -9,7 +9,7 @@ $managerOptionsPlugins['bootgrid']=true;
 
 @endphp
 <?php
-$assetsTemplateMintonUpdate='templates/minton/';
+$assetsTemplateMintonUpdate = 'templates/minton/';
 $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 ?>
 <?php
@@ -19,18 +19,19 @@ $dataPanorama = array(
     array("src" => $imgExample)
 );
 $dateCurrentData = $modelDataManager["dateCurrentData"];
+$gamificationCountryReferenceData = $modelDataManager["gamificationCountryReferenceData"];
 ?>
 {{-- INIT CONFIG GET JS-PROCESS  VM-006 --}}
 
 {{--scripts GESTION--}}
 <script type="text/javascript">
-    var $wulpyme_user_id ={{($user->id)}};
+    var $wulpyme_user_id = {{($user->id)}};
     var model_entity = "{{$model_entity}}";
-    var $modelDataManager = <?php echo json_encode($modelDataManager)?>;
-    var $dataPanorama = <?php echo json_encode($dataPanorama)?>;
-    var $dateCurrentData = <?php echo json_encode($dateCurrentData)?>;
-    var $configPartial = <?php echo json_encode($configPartial)?>;
-    var $dataManagerPage = <?php echo json_encode($dataManagerPage)?>;
+    var $modelDataManager = <?php echo json_encode($modelDataManager) ?>;
+    var $dataPanorama = <?php echo json_encode($dataPanorama) ?>;
+    var $dateCurrentData = <?php echo json_encode($dateCurrentData) ?>;
+    var $configPartial = <?php echo json_encode($configPartial) ?>;
+    var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
 
     var dateStringCurrent = $dateCurrentData["format"].split(" ")[0];
     var tomorrow = new Date();
@@ -39,8 +40,8 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
         date: tomorrow,
         status: 'full'
     }];
-    var $businessManager=<?php echo (isset($modelDataManager["business"]) && count($modelDataManager["business"])>0) ?json_encode($modelDataManager["business"][0]):[]?>;
-
+    var $businessManager =<?php echo (isset($modelDataManager["business"]) && count($modelDataManager["business"]) > 0) ? json_encode($modelDataManager["business"][0]) : [] ?>;
+    window.GamificationCountryReferenceData =<?php echo json_encode($gamificationCountryReferenceData) ?>;
 </script>
 
 <script src="{{ asset($resourcePathServer.'js/' .$pathCurrent.'/UtilCustom.js') }}" type="text/javascript"></script>
@@ -77,16 +78,16 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
     @endif
     @include('partials.plugins.resourcesJs',['sweetAlert'=>true])
     {{--ALERTS--}}
-    <?php
-    $wizards_route = $configPartial["moduleMain"] . "." . $configPartial["moduleFolder"] . ".assets.js.templateVue";
-    $paramsWizard = [
-        "model_entity" => $model_entity,
-        "pathCurrent" => $pathCurrent,
-        "user" => $user,
-        "configPartial" => $configPartial,
-        'configProcess'=> $configProcess
-    ];
-    ?>
+        <?php
+        $wizards_route = $configPartial["moduleMain"] . "." . $configPartial["moduleFolder"] . ".assets.js.templateVue";
+        $paramsWizard = [
+            "model_entity" => $model_entity,
+            "pathCurrent" => $pathCurrent,
+            "user" => $user,
+            "configPartial" => $configPartial,
+            'configProcess' => $configProcess
+        ];
+        ?>
     @include($wizards_route,$paramsWizard)
     <script src="{{ asset($resourcePathServer.'js/vue/directives/main.js')}}" type='text/javascript'></script>
     <script src="{{ asset($resourcePathServer.'js/vue/components/main.js')}}" type='text/javascript'></script>
@@ -200,9 +201,11 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
         @include('partials.plugins.resourcesJs',['axios'=>true])
 
         {{--BUSINESS-MANAGER-CRM-DELIVERY-JS--}}
-        <script src="{{ asset($resourcePathServer.'plugins/code-bar/jquery-barcode.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'plugins/code-bar/jquery-barcode.js') }}"
+                type="text/javascript"></script>
 
-        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}"
+                type="text/javascript"></script>
         <script
             src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/deliveryByBusinessManager/deliveryByBusinessManager.js') }}"
             type="text/javascript"></script>
@@ -226,13 +229,17 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
         @include('partials.plugins.resourcesJs',['axios'=>true])
 
         {{--BUSINESS-MANAGER-CRM-CUSTOMER-PRESENTATION-JS--}}
-        <script src="{{ asset($resourcePathServer.'plugins/code-bar/jquery-barcode.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'plugins/code-bar/jquery-barcode.js') }}"
+                type="text/javascript"></script>
 
-        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}" type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/prosecutorOffice/AddDataCustomer.js') }}"
+        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}"
                 type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/prosecutorOffice/CustomerPresentation.js') }}"
-                type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/prosecutorOffice/AddDataCustomer.js') }}"
+            type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/prosecutorOffice/CustomerPresentation.js') }}"
+            type="text/javascript"></script>
     @elseif ($configPartial['typeManager'] === 'managerCustomerData')
         <script
             src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/information/InformationAddress.js') }}"
@@ -413,33 +420,45 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
     @elseif($configPartial['typeManager'] === 'managerProductManager')
         <!--BUSINESS-MANAGER-IMPORT-JS--PRODUCT-MANAGER-->
 
-        <script src="{{ asset($resourcePathServer.'/templates/minton/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js')}}"></script>
+        <script
+            src="{{ asset($resourcePathServer.'/templates/minton/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js')}}"></script>
 
-        <script src="{{ asset($resourcePathServer.$assetsTemplateMintonUpdate.'assets/libs/quill/quill.min.js')}}"></script>
-        <script src="{{ asset($resourcePathServer.$assetsTemplateMintonUpdate.'assets/libs/dropzone/dropzone.js')}}"></script>
-        <script src="{{ asset($resourcePathServer.$assetsTemplateMintonUpdate.'assets/js/pages/form-fileuploads.init.js')}}"></script>
+        <script
+            src="{{ asset($resourcePathServer.$assetsTemplateMintonUpdate.'assets/libs/quill/quill.min.js')}}"></script>
+        <script
+            src="{{ asset($resourcePathServer.$assetsTemplateMintonUpdate.'assets/libs/dropzone/dropzone.js')}}"></script>
+        <script
+            src="{{ asset($resourcePathServer.$assetsTemplateMintonUpdate.'assets/js/pages/form-fileuploads.init.js')}}"></script>
 
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/BusinessByProductsParent.js') }}"
-                type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/BusinessByProductsParent.js') }}"
+            type="text/javascript"></script>
 
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParent.js') }}"
                 type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParentByPackageParams.js') }}"
-                type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParentByPrices.js') }}"
-                type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByMetaData.js') }}"
-                type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParentByPackageParams.js') }}"
+            type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParentByPrices.js') }}"
+            type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByMetaData.js') }}"
+            type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductManager.js') }}"
                 type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByLogInventory.js') }}"
-                type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParentByProduct.js') }}"
-                type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByRouteMap.js') }}"
-                type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByMultimedia.js') }}"
-                type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByLogInventory.js') }}"
+            type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductParentByProduct.js') }}"
+            type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByRouteMap.js') }}"
+            type="text/javascript"></script>
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/ProductByMultimedia.js') }}"
+            type="text/javascript"></script>
         <script
             src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/productManager/language/LanguageProduct.js') }}"
             type="text/javascript"></script>
@@ -498,7 +517,6 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
         <script
             src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/gamification/BusinessByGamification.js') }}"
             type="text/javascript"></script>
-
 
     @elseif ($configPartial['typeManager'] === 'managerGamificationTypeActivity')
         <script
@@ -633,13 +651,15 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
                 type="text/javascript"></script>
 
     @elseif($configPartial['typeManager'] === 'managerPointOfSale')
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/UtilManager.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/UtilManager.js') }}"
+                type="text/javascript"></script>
         @include('partials.plugins.resourcesJs',$managerOptionsPlugins)
         @include('partials.angular.mangerResourcesJs',[
             "uiGrid"=>true,
             "toogle"=>true,
             "s2Angular"=>true])
-        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}"
+                type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'js/UtilInvoice.js') }}" type="text/javascript"></script>
 
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/pointOfSale/Grids.js') }}"
@@ -655,17 +675,20 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/pointOfSale/App.js') }}"
                 type="text/javascript"></script>
     @elseif($configPartial['typeManager'] === 'managerInvoiceSale')
-        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/UtilManager.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/UtilManager.js') }}"
+                type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'plugins/ladda/js/spin.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'plugins/ladda/js/ladda.min.js') }}" type="text/javascript"></script>
-        <script src="{{ asset($resourcePathServer.'plugins/ladda/js/ladda.jquery.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'plugins/ladda/js/ladda.jquery.min.js') }}"
+                type="text/javascript"></script>
 
         @include('partials.plugins.resourcesJs',$managerOptionsPlugins)
         @include('partials.angular.mangerResourcesJs',[
             "uiGrid"=>true,
             "toogle"=>true,
             "s2Angular"=>true])
-        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}" type="text/javascript"></script>
+        <script src="{{ asset($resourcePathServer.'plugins/printjs/demo/jquery.PrintArea.js') }}"
+                type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/invoice/Bootgrid.js') }}"
                 type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/invoice/Grids.js') }}"
@@ -674,7 +697,6 @@ $dateCurrentData = $modelDataManager["dateCurrentData"];
                 type="text/javascript"></script>
         <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/sales/invoice/App.js') }}"
                 type="text/javascript"></script>
-
 
     @endif
 

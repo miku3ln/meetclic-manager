@@ -37,6 +37,8 @@ Vue.component('gamification-by-rewards-component', {
         this.initCurrentComponent();
     },
     validations: function () {
+        var integerManager=Validators.integer;
+
         var attributes = {
             "id": {}, "change": {},
             "source": {},
@@ -45,7 +47,8 @@ Vue.component('gamification-by-rewards-component', {
             "description": {required},
             "state": {required},
             "has_source": {},
-            "points": {required},
+            "points": {required , integerManager,
+                minValue: minValue(0)},
             "entity": {},
             "entity_id_data": {},
             "percentage": {between: between(0, 100)},
@@ -470,13 +473,13 @@ Vue.component('gamification-by-rewards-component', {
                     "field-options": {
                         "elementType": 6,
                         "elementTypeText": "Input Number",
-                        "min": 0,
+                        "min": 1,
                         "required": true,
                         "name": "points"
                     },
                     "id": "points",
                     "name": "points",
-                    "label": "Puntos Canjeo",
+                    "label": "Yapitas Canjeo",
                     "required": {
                         "allow": true,
                         "msj": "Campo requerido.",
@@ -599,7 +602,7 @@ Vue.component('gamification-by-rewards-component', {
                 "description": null,
                 "state": "ACTIVE",
                 "has_source": true,
-                "points": 0,
+                "points": 1,
                 "entity": 0,
                 "entity_id_data": null,
                 "percentage": 0,
@@ -639,6 +642,38 @@ Vue.component('gamification-by-rewards-component', {
             ;
 
             return result;
+        },
+        getConversion:function(){
+            var yapitas=this.$v.model.attributes.points.$model;
+            var resultConversion = GamificationCountryReference.convertYapitasToMoney(
+                window.GamificationCountryReferenceData,
+                yapitas,
+                2
+            );
+            var valueConversion = [
+                "<span class='badge badge--size-large badge-info'>", yapitas," YAPITA",(yapitas>1?"S":"")," es igual ",resultConversion.unit_label," ",resultConversion.money,
+                "</span>"
+            ].join("");
+
+
+            return valueConversion;
+        },
+        getValueDiscount:function(){
+          var discount=  this.$v.model.attributes.percentage.$model;
+            var yapitas=this.$v.model.attributes.points.$model;
+           var dataProduct= this.$v.model.attributes.entity_id_data.$model;
+           var valueDiscount=0;
+           if(dataProduct){
+
+           }
+           console.log(dataProduct);
+            var valueConversion = [
+                "<span class='badge badge--size-large badge-info'>", discount," %"," (",valueDiscount,")",
+                "</span>"
+            ].join("");
+
+
+            return valueConversion;
         },
         _saveModel: function () {
 

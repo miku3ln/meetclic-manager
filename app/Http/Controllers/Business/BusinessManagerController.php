@@ -157,18 +157,18 @@ class BusinessManagerController extends BusinessBaseController
                         'processName' => $typeManager
                     ]);
 
-if($typeManager =="managerBusinessByGamification"){
+                    if ($typeManager == "managerBusinessByGamification") {
 
-    $userData=$modelDataManager['userData'];
-    $urlTrackingData=Util::getGamificationUrlData($userData,env('APP_ENV')=='production');
-    $sectionsData=Util::getGamificationSectionsData($userData,env('APP_ENV')=='production');
+                        $userData = $modelDataManager['userData'];
+                        $urlTrackingData = Util::getGamificationUrlData($userData, env('APP_ENV') == 'production');
+                        $sectionsData = Util::getGamificationSectionsData($userData, env('APP_ENV') == 'production');
 
-    $modelDataManager['processData']=[
-        'urlTracking'=>$urlTrackingData,
-        'sections'=>$sectionsData,
+                        $modelDataManager['processData'] = [
+                            'urlTracking' => $urlTrackingData,
+                            'sections' => $sectionsData,
 
-    ];
-}
+                        ];
+                    }
 
                     $paramsSend = [
                         "configPartial" => array(
@@ -454,7 +454,6 @@ if($typeManager =="managerBusinessByGamification"){
                     $paramsSend['menuConfigByRole'] = $menuConfigByRole;
                     $paramsSend['configProcess'] = $configProcess;
                     $paramsSend['allowPlugins'] = $allowPlugins;
-
 
 
                     return view($renderView, $paramsSend);

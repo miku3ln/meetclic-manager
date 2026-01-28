@@ -655,6 +655,23 @@ class FrontendCityBookController extends FrontendBaseController
 
         return view($renderView, $paramsSend);
     }
+    public function ourAllies($language = 'es')
+    {
+        $nameProcess = 'ourAllies';
+        $renderView = self::LAYOUT_MAIN . '.web.ourAllies';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => $nameProcess,
+            'paramsRequest' => $paramsRequest
+
+        ]);
+
+        return view($renderView, $paramsSend);
+    }
 
     public function getDictionaryType($language = 'es', $type = -1)//CMS-TEMPLATE-MENU-CONTROLLER---KICHWA-CASTILIAN
     {

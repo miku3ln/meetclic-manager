@@ -241,11 +241,17 @@
                                             <div class="content-element-form">
                                                 <input
                                                     v-model.trim="$v.model.attributes.points.$model"
-                                                    type="number"
-                                                    min="0"
                                                     v-bind:id="getNameAttribute('points')"
                                                     v-bind:name="getNameAttribute('points')"
                                                     class="form-control m-input"
+                                                    type="number"
+                                                    step="1"
+                                                    inputmode="numeric"
+                                                    pattern="[0-9]*"
+                                                    @input="
+    $v.model.attributes.points.$model =
+      Math.max(0, parseInt($v.model.attributes.points.$model || 0, 10))
+  "
                                                     @change="_setValueForm('points', $v.model.attributes.points.$model)"
                                                     v-focus-select
                                                 >
@@ -253,8 +259,15 @@
                                             <div class="content-message-errors">
                                                 <b-form-invalid-feedback
                                                     :state="!$v.model.attributes.points.$error">
+                                                    <div v-if="!$v.model.attributes.points.integer">Solo se permiten números enteros</div>
+                                                    <div v-if="!$v.model.attributes.points.minValue">Debe ser mayor o igual a 0</div>
                                                 </b-form-invalid-feedback>
+
+                                                <div class="manager-conversion" v-html="getConversion()">
+
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </b-col>
@@ -320,6 +333,9 @@
 
 
                                                 </b-form-invalid-feedback>
+                                                <div class="manager-conversion" v-html="getValueDiscount()">
+
+                                                </div>
                                             </div>
                                         </div>
 

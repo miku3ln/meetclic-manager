@@ -155,7 +155,7 @@
                                             v-model="$v.model.attributes.valid_until.$model"
                                             label="Válido hasta"
                                             :minDateTime="$v.model.attributes.valid_from.$model"
-                                        @status-change="onValidUntil"
+                                            @status-change="onValidUntil"
                                         />
                                     </b-col>
                                 </b-row>
@@ -169,7 +169,7 @@
                                         />
                                     </b-col>
 
-                                    <b-col lg="4" v-if="$v.model.attributes.frequency_limit_type.$model=='TOTAL_LIMIT'" >
+                                    <b-col lg="4" v-if="$v.model.attributes.frequency_limit_type.$model=='TOTAL_LIMIT'">
                                         <div class="form-group"
 
                                              :class="getClassErrorForm('frequency_limit_value',$v.model.attributes.frequency_limit_value)">
@@ -293,12 +293,14 @@
                                     class="h6 mb-2 legend--section">    <?php echo "{{sectionsProcess.three}}" ?></legend>
 
                                 <b-row>
-                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'0'"
-                                           v-if="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4">
+                                    <b-col
+                                        v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'0'"
+                                        v-if="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4">
                                         <div class="form-group"
                                              :class="getClassErrorForm('entity_id_data',$v.model.attributes.entity_id_data)">
                                             <label
-                                                class="form__label " v-html='getLabelFormByEntity($v.model.attributes.entity.$model)'></label>
+                                                class="form__label "
+                                                v-html='getLabelFormByEntity($v.model.attributes.entity.$model)'></label>
                                             <div class="content-element-form">
                                                 <input
                                                     v-model="$v.model.attributes.entity_id_data.model"
@@ -341,7 +343,8 @@
                                         </div>
 
                                     </b-col>
-                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'6'">
+                                    <b-col
+                                        v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'6'">
                                         <div class="form-group"
 
                                              :class="getClassErrorForm('gamification_type_activity_id_data',$v.model.attributes.gamification_type_activity_id_data)">
@@ -374,7 +377,8 @@
 
                                     </b-col>
 
-                                    <b-col v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'6'">
+                                    <b-col
+                                        v-bind:md="$v.model.attributes.entity.$model==1||$v.model.attributes.entity.$model==3||$v.model.attributes.entity.$model==4?'4':'6'">
                                         <div class="form-group"
 
                                              :class="getClassErrorForm('points',$v.model.attributes.points)">
@@ -383,11 +387,17 @@
                                             <div class="content-element-form">
                                                 <input
                                                     v-model.trim="$v.model.attributes.points.$model"
-                                                    type="number"
-                                                    min="0"
                                                     v-bind:id="getNameAttribute('points')"
                                                     v-bind:name="getNameAttribute('points')"
                                                     class="form-control m-input"
+                                                    type="number"
+                                                    step="1"
+                                                    inputmode="numeric"
+                                                    pattern="[0-9]*"
+                                                    @input="
+    $v.model.attributes.points.$model =
+      Math.max(0, parseInt($v.model.attributes.points.$model || 0, 10))
+  "
                                                     @change="_setValueForm('points', $v.model.attributes.points.$model)"
                                                     v-focus-select
                                                 >
@@ -395,8 +405,15 @@
                                             <div class="content-message-errors">
                                                 <b-form-invalid-feedback
                                                     :state="!$v.model.attributes.points.$error">
+                                                    <div v-if="!$v.model.attributes.points.integer">Solo se permiten números enteros</div>
+                                                    <div v-if="!$v.model.attributes.points.minValue">Debe ser mayor o igual a 0</div>
                                                 </b-form-invalid-feedback>
+
+                                                <div class="manager-conversion" v-html="getConversion()">
+
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </b-col>
