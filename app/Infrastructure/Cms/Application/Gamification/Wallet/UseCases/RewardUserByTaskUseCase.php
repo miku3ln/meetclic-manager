@@ -16,17 +16,15 @@ class RewardUserByTaskUseCase
 
     public function execute(TaskRewardInputDTO $dto): array
     {
-        // process esperado como array con id, gamification_id, etc.
+
         $processId = (int) ($dto->process['id'] ?? 0);
+        $businessContextId = ($dto->business_id);
         if ($processId <= 0) {
             return ['success' => false, 'msj' => 'Proceso inválido', 'data' => null];
         }
-
         // ✅ Para tareas, el business contexto normalmente es el negocio del proceso
         // En tu dump: business está en entity_id, o en URL; por ahora tú dijiste MEETCLIC=1
         // Ajusta aquí tu regla real.
-        $businessContextId = 1; // MEETCLIC por ahora
-
         return DB::transaction(function () use ($dto, $businessContextId, $processId) {
 
             // 1) Get or Create wallet destino (subcuenta del usuario)

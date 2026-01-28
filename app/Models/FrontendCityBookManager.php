@@ -178,9 +178,6 @@ class FrontendCityBookManager extends ModelManager
 
             $dataManagerPage['categoriesData'] = $categoriesData;
             $dataManagerPage['type'] = $paramsRequest['type'];
-
-            //  $dataManagerPage['allowPlugins']['googleMaps'] = true;
-
             if ($allowTemplate) {
                 $modelParent = new  \App\Models\TemplateSlider();
                 $dataSlider = $modelParent->getSliderMainFrontend(array(
@@ -310,7 +307,6 @@ class FrontendCityBookManager extends ModelManager
                     $business = $params["paramsRequest"]["id"];
                     $dataConfigGamificationBusiness = $modelGamification->getProcessDefaultByBusinessData(["business"=>$business,"business_id" => $business_id, "gamification_id" => $gamification_id]);
                     $dataManagerPage["dataConfigGamificationBusiness"] = $dataConfigGamificationBusiness;
-                    //    dd($dataConfigGamification);
                 }
                 $pageSectionsConfig['head_custom']['business']['data'] = $resultBusinessDetails["pageSectionsConfig"];
             }

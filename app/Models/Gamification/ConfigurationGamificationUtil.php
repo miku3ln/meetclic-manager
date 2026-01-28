@@ -5,6 +5,7 @@ namespace App\Models;
 namespace App\Models\Gamification;
 
 
+
 class ConfigurationGamificationUtil
 {
 // --------------------------------------------------
@@ -353,12 +354,77 @@ class ConfigurationGamificationUtil
         ];
     }
 
+    public static function getDataManagementSetBusiness($params)
+    {
+
+        $business = $params["business"];
+        $urlBase = $params["urlBase"];
+        $user_id = $params["user_id"];
+
+        $business_by_gamification = [
+            "id" => -1, "gamification_id" => -1,
+            "business_id" => $business["id"],
+            "allow_exchange" => 1,
+            "allow_exchange_business" => 0,
+            "state"=>"ACTIVE"
+        ];
+        $gamification = [
+            "description" => "Configuracion",
+            "value" => "Configuracion Inicial Gamificacion",
+            "value_unit" => 0,
+            "state" => "ACTIVE",
+            "id" => null,
+            "business_by_gamification" => $business_by_gamification,
+            "gamification_by_process" => []
+        ];
+
+        $dataProcess = ConfigurationGamificationUtil::gamificationByProcessHaystack();
+        $dataProcess = array_reverse($dataProcess);
+
+        foreach ($dataProcess as &$process) {
+            $channel = $process['execution_channel'] ?? null;
+            $url = $process['url_manager'];
+            if ($url == "not-url") {
+
+            }else{
+
+                $urlNew = str_replace('{urlProject}', $urlBase, $url);
+                $process['url_manager'] = str_replace('MEETCLIC?', $business["id"] . "?", $urlNew);
+            }
+
+            $process['user_id'] = $user_id;
+
+        }
+        unset($process);
+        $gamification["gamification_by_process"] = $dataProcess;
+        return $gamification;
+    }
+
+    public static function generateManagementDataGamificationBusiness($params)
+    {
+        $businessData = $params["businessData"];
+        $urlBase = $params["urlBase"];
+        $user_id = $params["user_id"];
+        $result = [];
+        foreach ($businessData as $business) {
+            $sendParams = array_merge(["business"=>$business], ["urlBase" => $urlBase, "user_id" => $user_id]);
+            $setPush = ConfigurationGamificationUtil:: getDataManagementSetBusiness($sendParams);
+            $result[] = $setPush;
+
+        }
+        return $result;
+
+    }
+
     public static function gamificationByProcessHaystack(): array
     {
         return [
 
             // (1)
             [
+
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/ayni-reciprocidad-04.png',
                 'title' => '📲 Comparte este negocio por WhatsApp',
                 'subtitle' => '📤 wakina (compartir) para yanapay (ayudar)',
@@ -371,12 +437,10 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/es/businessDetails/MEETCLIC?typeProcess=whatsapp_click&sourceProcess=whatsapp&campaign_code=campaign-00-web-tracking&codeProcess=1',
-
+                'url_manager' => '{urlProject}es/businessDetails/MEETCLIC?typeProcess=whatsapp_click&sourceProcess=whatsapp&campaign_code=campaign-00-web-tracking&codeProcess=69',
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_FOLLOW, // 13
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WHATSAPP, // 5
                 'gamification_type_activity_id' => self::ACTIVITY_ECOMMERCE, // 1
-
                 'is_url' => 1,
                 'type_manager' => 0,
                 'execution_channel' => 'DIGITAL',
@@ -384,10 +448,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (2)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-07.png',
                 'title' => '👤 Explora el perfil del negocio',
                 'subtitle' => '👀 rikuy (mirar) y conocer lo que ofrece',
@@ -400,7 +470,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/es/businessDetails/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=2',
+                'url_manager' => '{urlProject}es/businessDetails/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -413,10 +483,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (3)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-08.png',
                 'title' => '📍 Escanea el QR del tótem y registra tu visita',
                 'subtitle' => '🏪 kaypi (aquí) rikuy (registrar) presencia real',
@@ -429,7 +505,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/es/businessDetails/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=3',
+                'url_manager' => '{urlProject}es/businessDetails/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -442,10 +518,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (4)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-03.png',
                 'title' => '⭐ Agrega este negocio a tus Mashis',
                 'subtitle' => '🤝 masichiy (hacerse cercano) con el negocio',
@@ -459,7 +541,6 @@ class ConfigurationGamificationUtil
                 'entity' => '0',
                 'entity_id' => '0',
                 'url_manager' => 'not-url',
-
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_PURCHASE, // 11
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
                 'gamification_type_activity_id' => self::ACTIVITY_BRAND_PROMOTION, // 11
@@ -471,10 +552,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (5)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/ayni-reciprocidad-02.png',
                 'title' => '⭐ Califica tu experiencia (estrellas)',
                 'subtitle' => '🌟 chanichiy (valorar) para mejorar calidad',
@@ -500,10 +587,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (6)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/ayni-reciprocidad-03.png',
                 'title' => '⭐ Entra a calificar desde la web',
                 'subtitle' => '🌐 yaykuy (ingresar) a calificaciones',
@@ -516,7 +609,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/rate/register/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=6',
+                'url_manager' => '{urlProject}rate/register/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -529,10 +622,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (7)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-06.png',
                 'title' => '🧾 Escanea el QR del ticket y entra al formulario',
                 'subtitle' => '📍 post-compra: ingreso validado por QR',
@@ -545,7 +644,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => 'undefined',
-                'url_manager' => '{urlProject}/rate/register/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=7',
+                'url_manager' => '{urlProject}rate/register/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -558,10 +657,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (8)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/sumka-kawsay-comunidad-invita-05.png',
                 'title' => '⭐ Mira calificaciones y opiniones',
                 'subtitle' => '🔍 rikuy (mirar) experiencias reales',
@@ -574,7 +679,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/rates/registers/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=8',
+                'url_manager' => '{urlProject}rates/registers/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -587,10 +692,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (9)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/randi-dar-recibir-01.png',
                 'title' => '💬 Escribe una sugerencia con respeto',
                 'subtitle' => '🗣️ rimay (hablar) para mejorar juntos',
@@ -616,10 +727,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (10)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-05.png',
                 'title' => '📝 Entra al buzón de sugerencias',
                 'subtitle' => '🌐 yaykuy (ingresar) al formulario',
@@ -632,7 +749,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '3',
                 'entity_id' => '1',
-                'url_manager' => '{urlProject}/rimay/registers/business/1?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=10',
+                'url_manager' => '{urlProject}rimay/registers/business/1?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -645,10 +762,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (11)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-05.png',
                 'title' => '📍 (QR) Entra al buzón de sugerencias',
                 'subtitle' => '🏪 desde el local: ingreso validado por QR',
@@ -661,7 +784,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '3',
                 'entity_id' => '1',
-                'url_manager' => '{urlProject}/rimay/registers/business/1?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=11',
+                'url_manager' => '{urlProject}rimay/registers/business/1?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -674,10 +797,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (12)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-04.png',
                 'title' => '📊 (QR) Revisa sugerencias y opiniones de otros',
                 'subtitle' => '👀 rikuy (mirar) aportes de la comunidad',
@@ -690,7 +819,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/rimay/registers/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=12',
+                'url_manager' => '{urlProject}rimay/registers/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -703,10 +832,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (13)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/tinkuy-encuentro-06.png',
                 'title' => '📊 Revisa opiniones de otros desde la web',
                 'subtitle' => '🌐 rikuy (mirar) experiencias antes de decidir',
@@ -719,7 +854,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/rimay/registers/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=13',
+                'url_manager' => '{urlProject}rimay/registers/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -732,10 +867,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (14)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-14.png',
                 'title' => '🎁 (QR) Descubre los premios y canjes del local',
                 'subtitle' => '📍 descubrir beneficios estando aquí',
@@ -748,7 +889,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/rewards/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=14',
+                'url_manager' => '{urlProject}rewards/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -761,10 +902,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (15)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-13.png',
                 'title' => '🎁 Descubre premios y canjes desde la web',
                 'subtitle' => '🧭 rikuy (mirar) y planear tu canje',
@@ -777,7 +924,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/rewards/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=15',
+                'url_manager' => '{urlProject}rewards/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -790,10 +937,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (16)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-11.png',
                 'title' => '📍 (QR) Descubre la lista de tareas del negocio',
                 'subtitle' => '🧭 guía rápida para ganar YAPITAS',
@@ -806,7 +959,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/es/businessPullkay/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=16',
+                'url_manager' => '{urlProject}es/businessPullkay/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -819,10 +972,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (17)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-12.png',
                 'title' => '🧭 Descubre las tareas y aprende cómo ganar YAPITAS',
                 'subtitle' => '👀 rikuy (mirar) paso a paso',
@@ -835,7 +994,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/es/businessPullkay/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=17',
+                'url_manager' => '{urlProject}es/businessPullkay/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -848,10 +1007,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (18)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-07.png',
                 'title' => '🏪 (QR) Entra a la tienda desde el local',
                 'subtitle' => '📍 físico → digital: visita verificada',
@@ -864,7 +1029,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/shop/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=18',
+                'url_manager' => '{urlProject}shop/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -877,10 +1042,16 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
 
             // (19)
             [
+                "id" => -1, "gamification_id" => -1,
+                "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/tinkuy-encuentro-08.png',
                 'title' => '🛍️ Entra a la tienda y revisa el catálogo',
                 'subtitle' => '🛒 rikuy (mirar) productos y servicios',
@@ -893,7 +1064,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}/shop/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=19',
+                'url_manager' => '{urlProject}shop/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -906,6 +1077,10 @@ class ConfigurationGamificationUtil
                 'allow_golden' => 1,
                 'icon_class' => 'fa fa-data',
                 'campaign_code_template' => 'campaign-00-web-tracking',
+                'gamification_by_points' => ["id" => -1,
+                    "points" => 100,
+                    "gamification_by_process_id" => null,
+                ]
             ],
         ];
 

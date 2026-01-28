@@ -34,6 +34,7 @@ class DbProcessReadRepository implements ProcessReadPort
 
     public function findProcessByBusinessAndTracking(ProcessFilter $filter): ?array
     {
+
         $q = DB::table('business_by_gamification as bg')
             ->join('gamification as g', 'g.id', '=', 'bg.gamification_id')
             ->join('business as b', 'b.id', '=', 'bg.business_id')

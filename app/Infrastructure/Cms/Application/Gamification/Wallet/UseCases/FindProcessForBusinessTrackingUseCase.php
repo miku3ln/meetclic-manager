@@ -30,6 +30,7 @@ final class FindProcessForBusinessTrackingUseCase
             codeProcess:$dto->codeProcess
         );
 
+
         $row = $this->processRead->findProcessByBusinessAndTracking($filter);
 
         if (!$row) {

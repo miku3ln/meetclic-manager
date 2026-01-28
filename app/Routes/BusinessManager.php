@@ -21,6 +21,7 @@ class BusinessManager
 
 
             Route::get('dashboardManager', 'HomeController@index')->name('dashboardManager');
+            Route::post('initConfigurationBusinessGamification', 'HomeController@initConfigurationBusinessGamification')->name('initConfigurationBusinessGamification');
 
             /*    Route::get('home', 'DashboardController@index');*/
             Route::get('/dashboardManager', 'HomeController@index')->name('dashboardManager');

@@ -10,6 +10,9 @@ class TaskRewardInputDTO
         public int $amount,
         public int $typeMoney = 0,  // 0=BEE, 1=QUEEN
         public ?string $referenceCode = null,
-        public ?int $performedById = null
+        public ?int $performedById = null,
+        public int $business_id ,
+
+
     ) {}
 }

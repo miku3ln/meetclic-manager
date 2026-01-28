@@ -342,8 +342,9 @@
                         var business_lat = params.business_lat;
 
                         const task = {
+                            business_id:params.business_id,
                             coverUrl: coverImageUrl, // obligatorio según tu regla (deberías asegurar en data)
-                            businessUrl: $urlRouteBusiness + '/' + params.business_name,
+                            businessUrl: $urlRouteBusiness + '/' + params.business_id,
                             categoryText: "Commerce / Establishments",
                             businessName: params.business_name,
                             user_id: params.user_id,
@@ -398,7 +399,7 @@
                             allowLink = true;
                         } else {
                             if ([undefined, 'undefined', 'null', null, 0, -1, '-1', '0'].includes(task.entityProcessId) && !isPhysical) {
-                                urlCurrent = $urlRouteBusiness + "/" + task.businessName;
+                                urlCurrent = $urlRouteBusiness + "/" + task.business_id;
                                 allowLink = true;
                             }
                         }
@@ -442,9 +443,10 @@
                             `  <a >${params.title}</a>`,
                             '</h3>',
                         ].join('');
+                        var informationBusiness=params.business_name+(" - "+params.business_subcategories_name+"");
                         const buildBusiness = () => [
                             '<h4 class="by-business">',
-                            `  <a href="${$urlRouteBusiness + "/" + task.businessName}">${params.business_name}</a>`,
+                            `  <a href="${$urlRouteBusiness + "/" + task.business_id}">${informationBusiness}</a>`,
                             '</h4>',
                         ].join('');
 

@@ -40,13 +40,14 @@
         <div class="statistic-item-wrap">
             <div class="statistic-item gradient-bg fl-wrap">
                 <i class="fa fa fa fa-star-o"></i>
+                <span class="statistic-item-title">Saldo Disponible</span>
                 <div
                     class="statistic-item-numder">{{$dataManagerPage['profileConfig']['data']['user']['gaming']['bee']}}</div>
                 <h5>{{env('namePointsOne') }} </h5>
-
-
             </div>
         </div>
+
+
         @if(env('allowViewPointsTwo'))
             <div class="statistic-item-wrap ">
                 <div class="statistic-item gradient-bg fl-wrap">
@@ -110,4 +111,5 @@
         v-on:_actions-emit="_updateParentByChildren($event)"
 
     ></grid-manager-component>
+
 </div>

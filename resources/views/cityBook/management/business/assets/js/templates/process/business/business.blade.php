@@ -2,8 +2,9 @@
     <div>
 
 
-        <b-container class="bv-example-row">
+        <b-container class="bv-example-row business-template-cms">
             <div class="content-row-manager-buttons">
+
 
                 <button
                     v-if="!managerMenuConfig.view"
@@ -11,15 +12,22 @@
                     class="btn btn--manager "
                     :class="{'btn-success':!showManager,'btn-danger':showManager}"
                     v-on:click="_viewManager(showManager?2:1)">
-                    <?php echo "{{showManager?'Regresar':'Nuevo'}}"?>
+                    <?php echo "{{showManager?'Regresar':'Nuevo'}}" ?>
                 </button>
 
 
                 <button v-if="showManager" type="button"
                         :disabled="!validateForm()"
                         class="btn btn--manager btn-success" v-on:click="_saveModel()">
-                    <?php echo "{{lblBtnSave}}"?>
+                    <?php echo "{{lblBtnSave}}" ?>
                 </button>
+                @if($profileConfig['utilUser']->allowActionByUser(['actionCurrent'=>'initConfigurationBusinessGamification','user'=>$profileConfig['user']]))
+                    <button type="button"
+
+                            class="btn btn--manager btn-success" v-on:click="generateAllBusinessGamification()">
+                        Configurar Empresas Gamificacion
+                    </button>
+                @endif
                 <div v-if="!showManager">
                     <div class="content-manager-buttons-grid ready" v-if="managerMenuConfig.view">
                         <div v-for="(menu, key) in managerMenuConfig.menuCurrent" class="inline-data">
@@ -173,7 +181,7 @@
                             <div class="col-md-4">
                                 <div class=""
                                      :class="getClassErrorForm('business_subcategories_id',$v.model.attributes.business_subcategories_id)">
-                                    <label v-html='getLabelForm("business_subcategories_id")' ></label>
+                                    <label v-html='getLabelForm("business_subcategories_id")'></label>
                                     <select
 
                                         v-bind:id="getNameAttribute('business_subcategories_id')"
@@ -199,7 +207,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.business_subcategories_id.$error">
                                             <span v-if="!$v.model.attributes.business_subcategories_id.required">
-                                <?php  echo "{{model.structure.business_subcategories_id.required.msj}}"?>
+                                <?php echo "{{model.structure.business_subcategories_id.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -209,7 +217,7 @@
                             <div class="col-md-3">
                                 <div class=""
                                      :class="getClassErrorForm('type_business',$v.model.attributes.type_business)">
-                                    <label v-html='getLabelForm("type_business")' ></label>
+                                    <label v-html='getLabelForm("type_business")'></label>
                                     <select
 
                                         v-bind:id="getNameAttribute('type_business')"
@@ -228,7 +236,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.business_subcategories_id.$error">
                                             <span v-if="!$v.model.attributes.business_subcategories_id.required">
-                                <?php  echo "{{model.structure.business_subcategories_id.required.msj}}"?>
+                                <?php echo "{{model.structure.business_subcategories_id.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -237,7 +245,7 @@
                             </div>
                             <div class="col-md-5">
                                 <div class="" :class="getClassErrorForm('title',$v.model.attributes.title)">
-                                    <label v-html='getLabelForm("title")' ><i
+                                    <label v-html='getLabelForm("title")'><i
                                             class="fa fa-briefcase"></i></label>
                                     <input
                                         v-model.trim="$v.model.attributes.title.$model"
@@ -252,7 +260,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.title.$error">
                                             <span v-if="!$v.model.attributes.title.required">
-                                <?php  echo "{{model.structure.title.required.msj}}"?>
+                                <?php echo "{{model.structure.title.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -266,7 +274,8 @@
                                 <div class="form-group"
                                      :class="getClassErrorForm('business_by_amenities_data',$v.model.attributes.business_by_amenities_data)">
                                     <label
-                                        class="form__label " v-html='getLabelForm("business_by_amenities_data")' ></label>
+                                        class="form__label "
+                                        v-html='getLabelForm("business_by_amenities_data")'></label>
                                     <div class="content-element-form">
 
                                         <select id="business_by_amenities_data"
@@ -279,7 +288,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.business_by_amenities_data.$error">
       <span v-if="!$v.model.attributes.business_by_amenities_data.required">
-       <?php  echo "{{model.structure.business_by_amenities_data.required.msj}}"?>
+       <?php echo "{{model.structure.business_by_amenities_data.required.msj}}" ?>
       </span>
                                         </b-form-invalid-feedback>
                                     </div>
@@ -298,7 +307,7 @@
                             <div class="col-md-3">
                                 <div class=""
                                      :class="getClassErrorForm('countries_id',$v.model.attributes.countries_id)">
-                                    <label v-html='getLabelForm("countries_id")' ></label>
+                                    <label v-html='getLabelForm("countries_id")'></label>
                                     <select
 
                                         v-bind:id="getNameAttribute('countries_id')"
@@ -317,7 +326,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.countries_id.$error">
                                             <span v-if="!$v.model.attributes.countries_id.required">
-                                <?php  echo "{{model.structure.countries_id.required.msj}}"?>
+                                <?php echo "{{model.structure.countries_id.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -328,7 +337,7 @@
                                  v-if="$v.model.attributes.countries_id.$model">
                                 <div class=""
                                      :class="getClassErrorForm('provinces_id',$v.model.attributes.provinces_id)">
-                                    <label v-html='getLabelForm("provinces_id")' ></label>
+                                    <label v-html='getLabelForm("provinces_id")'></label>
                                     <select
 
                                         v-bind:id="getNameAttribute('provinces_id')"
@@ -347,7 +356,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.provinces_id.$error">
                                             <span v-if="!$v.model.attributes.provinces_id.required">
-                                <?php  echo "{{model.structure.provinces_id.required.msj}}"?>
+                                <?php echo "{{model.structure.provinces_id.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -357,7 +366,7 @@
                             <div class="col-md-3" v-if="$v.model.attributes.provinces_id.$model ">
                                 <div class=""
                                      :class="getClassErrorForm('cities_id',$v.model.attributes.cities_id)">
-                                    <label v-html='getLabelForm("cities_id")' ></label>
+                                    <label v-html='getLabelForm("cities_id")'></label>
                                     <select
 
                                         v-bind:id="getNameAttribute('cities_id')"
@@ -376,7 +385,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.cities_id.$error">
                                             <span v-if="!$v.model.attributes.cities_id.required">
-                                <?php  echo "{{model.structure.cities_id.required.msj}}"?>
+                                <?php echo "{{model.structure.cities_id.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -386,7 +395,7 @@
                             <div class="col-md-3" v-if="$v.model.attributes.cities_id.$model ">
                                 <div class=""
                                      :class="getClassErrorForm('zones_id',$v.model.attributes.zones_id)">
-                                    <label v-html='getLabelForm("zones_id")' ></label>
+                                    <label v-html='getLabelForm("zones_id")'></label>
                                     <select
 
                                         v-bind:id="getNameAttribute('zones_id')"
@@ -405,7 +414,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.zones_id.$error">
                                             <span v-if="!$v.model.attributes.zones_id.required">
-                                <?php  echo "{{model.structure.zones_id.required.msj}}"?>
+                                <?php echo "{{model.structure.zones_id.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -434,7 +443,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="" :class="getClassErrorForm('street_1',$v.model.attributes.street_1)">
-                                    <label v-html='getLabelForm("street_1")' ><i
+                                    <label v-html='getLabelForm("street_1")'><i
                                             class="fa fa-map-marker"></i></label>
                                     <input
                                         v-model.trim="$v.model.attributes.street_1.$model"
@@ -449,7 +458,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.street_1.$error">
                                             <span v-if="!$v.model.attributes.street_1.required">
-                                <?php  echo "{{model.structure.street_1.required.msj}}"?>
+                                <?php echo "{{model.structure.street_1.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -458,7 +467,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="" :class="getClassErrorForm('street_2',$v.model.attributes.street_2)">
-                                    <label v-html='getLabelForm("street_2")' ><i
+                                    <label v-html='getLabelForm("street_2")'><i
                                             class="fa fa-map-marker"></i></label>
                                     <input
                                         v-model.trim="$v.model.attributes.street_2.$model"
@@ -473,7 +482,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.street_2.$error">
                                             <span v-if="!$v.model.attributes.street_2.required">
-                                <?php  echo "{{model.structure.street_2.required.msj}}"?>
+                                <?php echo "{{model.structure.street_2.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -490,7 +499,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="" :class="getClassErrorForm('phone_value',$v.model.attributes.phone_value)">
-                                    <label v-html='getLabelForm("phone_value")' ><i
+                                    <label v-html='getLabelForm("phone_value")'><i
                                             class="fa fa-phone"></i></label>
                                     <input
                                         v-model.trim="$v.model.attributes.phone_value.$model"
@@ -505,7 +514,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.phone_value.$error">
                                             <span v-if="!$v.model.attributes.phone_value.required">
-                                <?php  echo "{{model.structure.phone_value.required.msj}}"?>
+                                <?php echo "{{model.structure.phone_value.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -514,7 +523,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="" :class="getClassErrorForm('email',$v.model.attributes.email)">
-                                    <label v-html='getLabelForm("email")' ><i
+                                    <label v-html='getLabelForm("email")'><i
                                             class="fa fa-envelope-o"></i></label>
                                     <input
                                         v-model.trim="$v.model.attributes.email.$model"
@@ -529,7 +538,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.email.$error">
                                             <span v-if="!$v.model.attributes.email.required">
-                                <?php  echo "{{model.structure.email.required.msj}}"?>
+                                <?php echo "{{model.structure.email.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -538,7 +547,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="" :class="getClassErrorForm('page_url',$v.model.attributes.page_url)">
-                                    <label v-html='getLabelForm("page_url")' ><i
+                                    <label v-html='getLabelForm("page_url")'><i
                                             class="fa fa-globe"></i></label>
                                     <input
                                         v-model.trim="$v.model.attributes.page_url.$model"
@@ -553,7 +562,7 @@
                                         <b-form-invalid-feedback
                                             :state="!$v.model.attributes.page_url.$error">
                                             <span v-if="!$v.model.attributes.page_url.required">
-                                <?php  echo "{{model.structure.page_url.required.msj}}"?>
+                                <?php echo "{{model.structure.page_url.required.msj}}" ?>
                             </span>
 
                                         </b-form-invalid-feedback>
@@ -568,7 +577,7 @@
 
                             <div class="form-group"
                                  :class="getClassErrorForm('description',$v.model.attributes.description)">
-                                <label class="form__label " v-html='getLabelForm("description")' ></label>
+                                <label class="form__label " v-html='getLabelForm("description")'></label>
                                 <div class="content-element-form">
                                     <input
                                         style="display:none;"
@@ -587,7 +596,7 @@
                                     <b-form-invalid-feedback
                                         :state="!$v.model.attributes.description.$error">
       <span v-if="!$v.model.attributes.description.required">
-       <?php  echo "{{model.structure.description.required.msj}}"?>
+       <?php echo "{{model.structure.description.required.msj}}" ?>
       </span>
 
                                     </b-form-invalid-feedback>
@@ -608,7 +617,7 @@
                                 <div class="col-md-4">
                                     <div class=""
                                          :class="getClassErrorForm('type_account',$v.model.attributes.type_account)">
-                                        <label v-html='getLabelForm("type_account")' ></label>
+                                        <label v-html='getLabelForm("type_account")'></label>
                                         <select
 
                                             v-bind:id="getNameAttribute('type_account')"
@@ -626,7 +635,7 @@
                                             <b-form-invalid-feedback
                                                 :state="!$v.model.attributes.type_account.$error">
                                             <span v-if="!$v.model.attributes.type_account.required">
-                                <?php  echo "{{model.structure.type_account.required.msj}}"?>
+                                <?php echo "{{model.structure.type_account.required.msj}}" ?>
                             </span>
 
                                             </b-form-invalid-feedback>
@@ -635,7 +644,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="" :class="getClassErrorForm('bank_id',$v.model.attributes.bank_id)">
-                                        <label v-html='getLabelForm("bank_id")' ></label>
+                                        <label v-html='getLabelForm("bank_id")'></label>
                                         <select
 
                                             v-bind:id="getNameAttribute('bank_id')"
@@ -653,7 +662,7 @@
                                             <b-form-invalid-feedback
                                                 :state="!$v.model.attributes.bank_id.$error">
                                             <span v-if="!$v.model.attributes.bank_id.required">
-                                <?php  echo "{{model.structure.bank_id.required.msj}}"?>
+                                <?php echo "{{model.structure.bank_id.required.msj}}" ?>
                             </span>
 
                                             </b-form-invalid-feedback>
@@ -663,7 +672,7 @@
                                 <div class="col-md-4">
                                     <div class=""
                                          :class="getClassErrorForm('account_number',$v.model.attributes.account_number)">
-                                        <label v-html='getLabelForm("account_number")' ><i
+                                        <label v-html='getLabelForm("account_number")'><i
                                                 class="fa fa-globe"></i></label>
                                         <input
                                             v-model.trim="$v.model.attributes.account_number.$model"
@@ -678,7 +687,7 @@
                                             <b-form-invalid-feedback
                                                 :state="!$v.model.attributes.account_number.$error">
                                             <span v-if="!$v.model.attributes.account_number.required">
-                                <?php  echo "{{model.structure.account_number.required.msj}}"?>
+                                <?php echo "{{model.structure.account_number.required.msj}}" ?>
                             </span>
 
                                             </b-form-invalid-feedback>

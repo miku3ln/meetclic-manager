@@ -32,6 +32,6 @@
 
 <script src="{{ asset($resourcePathServer.'js/vue/directives/main.js')}}" type='text/javascript'></script>
 <script src="{{ asset($resourcePathServer.'js/vue/components/main.js')}}" type='text/javascript'></script>
-<script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/business/Business.js') }}"
-        type="text/javascript"></script>
+@include('cityBook.management.business.assets.js.process.business')
+
 <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/App.js') }}" type="text/javascript"></script>

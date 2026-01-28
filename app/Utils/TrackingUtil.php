@@ -31,6 +31,8 @@ class TrackingUtil
     const TYPE_ERROR_BUSINESS_GAMIFICATION = -2;
     const TYPE_ERROR_PARAMS_LINK_GAMIFICATION = -3;
     const TYPE_ERROR_PARAMS_PROCESS_GAMIFICATION = -4;
+    const TYPE_ERROR_LIMIT_GAMIFICATION = -7;
+
     const TYPE_ERROR_NOT_LOGIN_GAMIFICATION = -6;
 
     const TYPE_ERROR_SAVE_GAMIFICATION = -5;
@@ -278,6 +280,7 @@ class TrackingUtil
                     $managerClick = $resultManager["data"]["managerClick"];
                     $dataRelation = $relationManager["relation"];
                     $business_id = $dataRelation["business_id"];
+
                     $tracking_source_id = $managerClick["source_id"];
                     $campaign_code = $managerClick["campaign_code"];
                     $tracking_click_type_id = $managerClick["click_type_id"];
@@ -291,12 +294,14 @@ class TrackingUtil
 
                     ];
                     $processDataGet = $this->findProcess($findParamsProcess);
+
                     if ($processDataGet->success) {
 
                         $rowDataProcess = $processDataGet->data["row"];
                         $userId = $user->id;
                         $processId = $rowDataProcess["id"];
                         $resultAllowDepositLog = $this->managerSaveRegisterGamingTaskLog($userId, $processId);
+
                         if ($resultAllowDepositLog->success) {
                             $model = new GamificationByProcessTracking();
                             $tz = 'America/Guayaquil';
@@ -325,13 +330,18 @@ class TrackingUtil
                                 amount: $amount,
                                 typeMoney: $typeMoney,
                                 referenceCode: $reference_code,
-                                performedById: $performed_by_id
+                                performedById: $performed_by_id,
+                                business_id: $business_id
                             );
                             $result = $useCase->execute($dto);
                             $type = $result["success"] ? 420 : self::TYPE_ERROR_SAVE_GAMIFICATION;
                             $resultTask["success"] = $result["success"];
                             $resultTask["message"] = $result["success"] ? 'Tarea realizada' : 'Tarea no realizada algun problema en el registro comuniquese con el area de soporte';
                             $resultTask["type"] = $type;
+                        }else{
+                            $resultTask["success"] = false;
+                            $resultTask["message"] = $resultAllowDepositLog->message;
+                            $resultTask["type"] = self::TYPE_ERROR_LIMIT_GAMIFICATION;
                         }
                     } else {
                         $resultTask["success"] = false;

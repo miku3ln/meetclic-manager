@@ -414,9 +414,9 @@ class CustomerByProfile extends ModelManager
             if ($resultAllow) {
                 $gaming = [
                     'success' => true,
-                    'id' => $resultAllow->id,
-                    'bee' => $resultAllow->balance_available_bee,
-                    'queen' => $resultAllow->balance_available_queen,
+                    'id' =>-1,
+                    'bee' => -6,
+                    'queen' =>-9,
                 ];
             } else {
                 $gaming = [
@@ -673,6 +673,7 @@ class CustomerByProfile extends ModelManager
             if ($resultAllow["success"]) {
 
                 $gaming = [
+                    "data"=>$resultAllow["by_business"],
                     'success' => true,
                     'id' => -1,
                     'bee' => $resultAllow["total"],
@@ -680,6 +681,7 @@ class CustomerByProfile extends ModelManager
                 ];
             } else {
                 $gaming = [
+                    "data"=>[],
                     'success' => false,
                     'bee' => 0,
                     'queen' => 0,

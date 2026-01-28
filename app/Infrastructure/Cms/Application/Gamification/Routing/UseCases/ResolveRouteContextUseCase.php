@@ -43,41 +43,41 @@ class ResolveRouteContextUseCase
         self::GAMIFICATION_BUSINESS_DETAILS => [
             'required' => ['id'],
             'optional' => ['type'], // SOLO si tu ruta lo tiene
-            'keyRelation' => ['business' => 'title'], // tabla => campo
+            'keyRelation' => ['business' => 'id'], // tabla => campo
         ],
         self::GAMIFICATION_BUSINESS_CHASQUI => [
             'required' => ['id'], 'optional' => []
         ],
         self::GAMIFICATION_BUSINESS_SHOP => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
         self::GAMIFICATION_BUSINESS_PRODUCT_SERVICE => [
             'required' => ['id'], 'optional' => [],
         ],
         self::GAMIFICATION_BUSINESS_PULLKAY => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
         self::GAMIFICATION_BUSINESS_RIMAY => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
         self::GAMIFICATION_BUSINESS_RIMAY_REGISTERS => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
         self::GAMIFICATION_BUSINESS_RATE_REGISTERS => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
         self::GAMIFICATION_BUSINESS_RATE_REGISTER => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
         self::GAMIFICATION_BUSINESS_REWARDS_REGISTERS => [
             'required' => ['id'], 'optional' => [],
-            'keyRelation' => ['business' => 'title'],
+            'keyRelation' => ['business' => 'id'],
         ],
 
         // CMS sin params
@@ -161,15 +161,14 @@ class ResolveRouteContextUseCase
             }
             $fieldComparate = $relation["business"];
             $isStringWithLetters = is_string($businessId) && preg_match('/[a-zA-Z]/', $businessId);
-
             if (in_array($routeName, ["rimay-business", "suggestion-mail-business"])) {
-                $fieldComparate = "id";
+
             } else if ("chasqui-routes" == $routeName) {
 
             } else if ("rate-register-business" == $routeName) {
 
             } else if ("rimay-registers-business" == $routeName) {
-                $fieldComparate = "id";
+
             } else if ("rewards-business" == $routeName) {
 
             } else if ("shop-business" == $routeName) {

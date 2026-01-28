@@ -510,6 +510,8 @@ $this->table.balance_available_queen";
         $query = DB::table('account_gamification as w')
             ->join('account_gamification_by_movement as m', 'm.wallet_destination_id', '=', 'w.id')
             ->join('account_gamification_movement_type as t', 't.id', '=', 'm.movement_type_id')
+            ->join('business as b', 'b.id', '=', 'w.business_id')
+
             ->where('w.user_id', $userId)
             ->whereNull('w.deleted_at')
             ->where('t.state', 'ACTIVE');
@@ -556,6 +558,8 @@ $this->table.balance_available_queen";
             ->groupBy('w.business_id')
             ->selectRaw("
                 w.business_id as business_id,
+                b.title as business_name,
+
                 COALESCE(SUM(
                     CASE
                         WHEN m.direction = 'IN'  THEN m.amount
@@ -573,6 +577,7 @@ $this->table.balance_available_queen";
             $balance = (float)$row->balance;
             $byBusiness[] = [
                 'business_id' => (int)$row->business_id,
+                'business_name' => $row->business_name,
                 'balance' => $balance,
             ];
             $total += $balance;

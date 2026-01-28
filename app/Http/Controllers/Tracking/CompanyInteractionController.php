@@ -12,7 +12,7 @@ class CompanyInteractionController extends MyBaseController
     public function getDataInteraction()
     {
       $data=  $this->getDataInteraction();
-      dd($data);
+
     }
 
     public function getCompanyInteractionsByLocation(): JsonResponse

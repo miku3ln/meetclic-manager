@@ -30,6 +30,8 @@ $pathCurrent="frontend/account";
 @include('partials.plugins.resourcesJs',['select2'=>true])
 <script src="{{ asset($resourcePathServer.'js/vue/directives/main.js')}}" type='text/javascript'></script>
 <script src="{{ asset($resourcePathServer.'js/vue/components/main.js')}}" type='text/javascript'></script>
-<script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/process/GridManagement.js') }}"
-        type="text/javascript"></script>
+
+
+@include('cityBook.web.partials.profile.assets.js.process.grid-management')
+
 <script src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/App.js') }}" type="text/javascript"></script>

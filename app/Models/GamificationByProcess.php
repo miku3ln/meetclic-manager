@@ -3,13 +3,8 @@
 namespace App\Models;
 
 use App\Models\Gamification\ConfigurationGamificationUtil;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Auth;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Multimedia;
-use App\Models\GamificationByPoints;
-
 class GamificationByProcess extends ModelManager
 {
     const STATE_ACTIVE = 'ACTIVE';
@@ -98,31 +93,42 @@ class GamificationByProcess extends ModelManager
         'tracking_click_type_id',
         'tracking_source_id',
         'execution_channel',
+        'frequency_limit_type',
+        'frequency_limit_value',
+        'valid_from',
+        'valid_until',
+        'campaign_code_template',
 
 
     );
     protected $attributesData = [
         ['column' => 'source', 'type' => 'string', 'defaultValue' => 'nothing', 'required' => 'true'],
         ['column' => 'title', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
-        ['column' => 'subtitle', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'subtitle', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'description', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'state', 'type' => 'string', 'defaultValue' => 'ACTIVE', 'required' => 'true'],
-        ['column' => 'has_source', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true'],
+        ['column' => 'has_source', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'valid_from', 'type' => 'datetime', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'valid_until', 'type' => 'datetime', 'defaultValue' => '', 'required' => 'false'],
+        ['column' => 'frequency_limit_type', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'frequency_limit_value', 'type' => 'int', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'has_source', 'type' => 'int', 'defaultValue' => '0', 'required' => 'true'],
         ['column' => 'entity', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'entity_id', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'url_manager', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'tracking_click_type_id', 'type' => 'int', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'tracking_source_id', 'type' => 'int', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'gamification_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'gamification_type_activity_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'is_url', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true'],
         ['column' => 'type_manager', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true'],
-        ['column' => 'user_id', 'type' => 'integer', 'user_id' => '0', 'required' => 'true'],
-        ['column' => 'unique_code', 'type' => 'string', 'unique_code' => '0', 'required' => 'true'],
-        ['column' => 'allow_golden', 'type' => 'integer', 'allow_golden' => '1', 'required' => 'true'],
-        ['column' => 'icon_class', 'type' => 'integer', 'icon_class' => 'fa fa', 'required' => 'true'],
+        ['column' => 'execution_channel', 'type' => 'string', 'defaultValue' => 'DIGITAL', 'required' => 'true'],
+        ['column' => 'user_id', 'type' => 'integer', 'defaultValue' => '0', 'required' => 'true'],
+        ['column' => 'unique_code', 'type' => 'string', 'defaultValue' => '0', 'required' => 'true'],
+        ['column' => 'allow_golden', 'type' => 'integer', 'defaultValue' => '1', 'required' => 'true'],
+        ['column' => 'icon_class', 'type' => 'integer', 'defaultValue' => 'fa fa', 'required' => 'true'],
+        ['column' => 'campaign_code_template', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
 
-        ['column' => 'tracking_click_type_id', 'type' => 'integer', 'icon_class' => 'fa fa', 'required' => 'true'],
-        ['column' => 'tracking_source_id', 'type' => 'integer', 'icon_class' => 'fa fa', 'required' => 'true'],
-        ['column' => 'execution_channel', 'type' => 'string', 'icon_class' => 'fa fa', 'required' => 'true'],
 
 
     ];
@@ -132,8 +138,10 @@ class GamificationByProcess extends ModelManager
 
     public static function getRulesModel()
     {
-        $rules = ["source" => "required|max:350",
+        $rules = [
+
             "title" => "required",
+            "source" => "required|max:350",
             "description" => "required",
             "state" => "required",
             "has_source" => "required|numeric",
@@ -151,6 +159,8 @@ class GamificationByProcess extends ModelManager
             "tracking_click_type_id" => "required",
             "tracking_source_id" => "required",
             "execution_channel" => "required",
+            "frequency_limit_type" => "required",
+
 
         ];
         return $rules;

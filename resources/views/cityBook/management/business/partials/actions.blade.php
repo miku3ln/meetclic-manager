@@ -15,3 +15,8 @@
        value="{{route('managerBusiness')}}"/>
 
 
+
+
+
+<input id="action-business-initConfigurationBusinessGamification" type="hidden"
+       value="{{route('initConfigurationBusinessGamification')}}"/>

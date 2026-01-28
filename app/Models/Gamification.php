@@ -19,12 +19,16 @@ class Gamification extends ModelManager
         'description',
         'value_unit',//*
         'state',//*
+        'maximum_exchange',//*
+
     );
     protected $attributesData = [
         ['column' => 'value', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'description', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
         ['column' => 'value_unit', 'type' => 'double', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'state', 'type' => 'string', 'defaultValue' => 'ACTIVE', 'required' => 'true'],
+        ['column' => 'maximum_exchange', 'type' => 'string', 'defaultValue' => '0', 'required' => 'true'],
+
 
     ];
     public $timestamps = false;

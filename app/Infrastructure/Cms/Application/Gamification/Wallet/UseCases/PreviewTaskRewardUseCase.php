@@ -25,6 +25,7 @@ class PreviewTaskRewardUseCase
         if ($dto->nowEpochSeconds <= 0) return TaskPreviewResultDTO::fail("now_epoch_seconds inválido.");
 
         $process = $this->processRead->findProcessWithPointsAndBusiness($dto->processId);
+
         if (!$process) return TaskPreviewResultDTO::fail("Proceso no existe o no tiene puntos/negocio asociado.");
 
         $state = strtoupper((string)($process['state'] ?? ''));
