@@ -555,19 +555,18 @@ $this->table.balance_available_queen";
 
         // Group by business_id (sum all wallets of that business)
         $rows = $query
-            ->groupBy('w.business_id')
+            ->groupBy('w.business_id', 'b.title')
             ->selectRaw("
-                w.business_id as business_id,
-                b.title as business_name,
-
-                COALESCE(SUM(
-                    CASE
-                        WHEN m.direction = 'IN'  THEN m.amount
-                        WHEN m.direction = 'OUT' THEN -m.amount
-                        ELSE 0
-                    END
-                ), 0) as balance
-            ")
+        w.business_id as business_id,
+        b.title as business_name,
+        COALESCE(SUM(
+            CASE
+                WHEN m.direction = 'IN'  THEN m.amount
+                WHEN m.direction = 'OUT' THEN -m.amount
+                ELSE 0
+            END
+        ), 0) as balance
+    ")
             ->get();
 
         $byBusiness = [];
