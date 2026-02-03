@@ -200,7 +200,7 @@
     "frontend.business-details.menu-top.three.title": "Sugerencias",
     "frontend.business-details.menu-top.four.title": "Tienda",
     "frontend.business-details.menu-top.five.title": "Acerca de Nosotros",
-    "frontend.business-details.menu-top.six.title": "Jugar",
+    "frontend.business-details.menu-top.six.title": "Juegos / Tareas",
     "frontend.business-details.menu-top.seven.title": "Premios",
     "frontend.business-details.menu-top.eight.title": "Buzón de sugerencias",
 
@@ -1049,6 +1049,10 @@
     "account.filters.sort.three": "Descripción",
 
     "gamification.what_to_do": "Qué hacer",
+    "gamification.explore": "Explorar",
+
+    "gamification.yapitas_use_title": "¿Para qué sirven tus Yapitas?",
+    "gamification.yapitas_use_text": "Cánjealas por cupones y descuentos en productos y servicios.",
     "gamification.what_is_it_for": "Para qué sirve",
     "gamification.what_you_get": "Qué ganas",
     "gamification.validation": "Validación",
@@ -1064,13 +1068,13 @@
     "gamification.available_until": "Disponible hasta",
     "gamification.available_between": "Disponible del",
 
-    "gamification.unlimited": "Sin límite (las veces que quieras)",
-    "gamification.only_once": "Solo 1 vez (una única vez)",
-    "gamification.per_day": "Vez/veces por día (se reinicia cada día)",
-    "gamification.per_week": "Vez/veces por semana (se reinicia cada semana)",
-    "gamification.per_month": "Vez/veces por mes (se reinicia cada mes)",
-    "gamification.total_limit": "Vez/veces en total (cuando llegas al límite ya no se repite)",
-    "gamification.not_defined": "No definida (revisar configuración)",
+    "gamification.unlimited": "Ilimitado (sin límite de uso)",
+    "gamification.only_once": "Solo una vez (un único uso)",
+    "gamification.per_day": ":value uso por día (se reinicia cada día)",
+    "gamification.per_week": ":value uso por semana (se reinicia cada semana)",
+    "gamification.per_month": ":value uso por mes (se reinicia cada mes)",
+    "gamification.total_limit": ":value uso en total (al llegar al límite ya no se repite)",
+    "gamification.not_defined": "No definido (revisar configuración)",
 
     "gamification.physical": "FÍSICO",
     "gamification.digital": "DIGITAL",
@@ -1108,5 +1112,21 @@
     "filters.categories.empty": "Selecciona una categoría para ver tareas disponibles.",
     "filters.subcategories.empty": "Selecciona una subcategoría para afinar tus tareas.",
     "filters.actions.apply": "Aplicar filtros",
-    "filters.actions.close": "Cerrar"
+    "filters.actions.close": "Cerrar",
+    "state": "Estado",
+    "unique": "Único",
+    "channel": "Canal",
+    "tracking": "Seguimiento",
+
+    "details": "Detalles",
+    "complete": "Completar",
+    "open_whatsapp": "Abrir WhatsApp",
+    "scan_qr": "Escanear QR",
+    "open_form": "Abrir formulario",
+
+    "tech": "Datos técnicos",
+
+    "loading_more_results": "Cargando más resultados…",
+    "loading_data": "Cargando datos…",
+    "loading": "Cargando…"
 }

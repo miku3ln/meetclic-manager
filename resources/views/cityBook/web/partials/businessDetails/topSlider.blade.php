@@ -69,14 +69,14 @@ if ($counterHearth > 1) {
 }
 $urlCurrentSearch = route('search', app()->getLocale());
 $htmlLinkRate = "";
-if ($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["success"]) {
+
+if (isset($dataManagerPage["dataConfigGamificationBusiness"])&&$dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["success"]) {
     $htmlLinkRate = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["data"]->url_manager;
 
 } else {
     $htmlLinkRate = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["urlDefault"];
 
 }
-
 
 ?>
 

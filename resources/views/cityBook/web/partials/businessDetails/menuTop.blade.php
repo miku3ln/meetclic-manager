@@ -4,7 +4,8 @@ $urlShop="";
 
 
 $htmlLinkRate = "";
-if ($dataManagerPage["dataConfigGamificationBusiness"]["AYNI_YACHAY_SHOP_WEB_MC"]["success"]) {
+
+if (isset($dataManagerPage["dataConfigGamificationBusiness"]["AYNI_YACHAY_SHOP_WEB_MC"])&&$dataManagerPage["dataConfigGamificationBusiness"]["AYNI_YACHAY_SHOP_WEB_MC"]["success"]) {
     $urlShop = $dataManagerPage["dataConfigGamificationBusiness"]["AYNI_YACHAY_SHOP_WEB_MC"]["data"]->url_manager;
 
 } else {
@@ -13,17 +14,17 @@ if ($dataManagerPage["dataConfigGamificationBusiness"]["AYNI_YACHAY_SHOP_WEB_MC"
 }
 $urlGamification = "";
 
-if ($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_TASK_WEB_MC"]["success"]) {
+if (isset($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_TASK_WEB_MC"])&&$dataManagerPage["dataConfigGamificationBusiness"]["VIEW_TASK_WEB_MC"]["success"]) {
     $urlGamification = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_TASK_WEB_MC"]["data"]->url_manager;
 
 } else {
-    $urlShop = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_TASK_WEB_MC"]["urlDefault"];
+    $urlGamification = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_TASK_WEB_MC"]["urlDefault"];
 
 }
 
 $urlRewards = "";
 
-if ($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REWARDS_WEB_MC"]["success"]) {
+if (isset($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REWARDS_WEB_MC"])&&$dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REWARDS_WEB_MC"]["success"]) {
     $urlRewards = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REWARDS_WEB_MC"]["data"]->url_manager;
 
 } else {
@@ -33,7 +34,7 @@ if ($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REWARDS_WEB_MC"]["s
 
 $urlSuggestion = "";
 
-if ($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUGGESTION_WEB_MC"]["success"]) {
+if (isset($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUGGESTION_WEB_MC"])&&$dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUGGESTION_WEB_MC"]["success"]) {
     $urlSuggestion = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUGGESTION_WEB_MC"]["data"]->url_manager;
 
 } else {

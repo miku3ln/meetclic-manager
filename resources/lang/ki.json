@@ -198,7 +198,7 @@
     "frontend.business-details.menu-top.three.title": "Yuyaykuna",
     "frontend.business-details.menu-top.four.title": "Tienda",
     "frontend.business-details.menu-top.five.title": "Ñukanchik killkakuy",
-    "frontend.business-details.menu-top.six.title": "Pukllay",
+    "frontend.business-details.menu-top.six.title": "Pukllay / Llankay",
     "frontend.business-details.menu-top.seven.title": "Chaninchakuna",
     "frontend.business-details.menu-top.eight.title": "Rimaykuna tantachina",
 
@@ -1021,6 +1021,10 @@
 
 
     "gamification.what_to_do": "Imata rurana",
+    "gamification.explore": "Rikuy",
+
+    "gamification.yapitas_use_title": "¿Imashpa kan Yapitakunaka?",
+    "gamification.yapitas_use_text": "Yapitakunata kanchik kuponkunata chaskinapak, produktukunapi shinallatak serviciukunapi pishiyachinapak.",
     "gamification.what_is_it_for": "Imapa sirve",
     "gamification.what_you_get": "Imata gananki",
     "gamification.validation": "Alli rikuy",
@@ -1036,13 +1040,13 @@
     "gamification.available_until": "Kaykama kanmi",
     "gamification.available_between": "Kaypura kanmi",
 
-    "gamification.unlimited": "Mana tukuy kutillakuna",
-    "gamification.only_once": "Shuk kutilla shuklla",
-    "gamification.per_day": "Puncha kutillakuna (cada puncha kutin kallarin)",
-    "gamification.per_week": "Semana kutillakuna (cada semana kutin kallarin)",
-    "gamification.per_month": "Killa kutillakuna (cada killa kutin kallarin)",
-    "gamification.total_limit": "Tukuy kutillakuna (chay tukurishka mana kutin rurarinchu)",
-    "gamification.not_defined": "Mana rikchashka (configuraciónta rikuy)",
+    "gamification.unlimited": "Mana limitashka (mana riksishka kutin)",
+    "gamification.only_once": "Shuk kutilla (shuklla ruray)",
+    "gamification.per_day": ":value kutin punchapi (tukuy punchami musuqlla)",
+    "gamification.per_week": ":value kutin semanapi (tukuy semanami musuqlla)",
+    "gamification.per_month": ":value kutin killapi (tukuy killami musuqlla)",
+    "gamification.total_limit": ":value kutin tukuy (chayman chayashpaka mana kutin)",
+    "gamification.not_defined": "Mana riksishka (configuraciónta rikuy)",
 
     "gamification.physical": "Físico",
     "gamification.digital": "Digital",
@@ -1080,9 +1084,24 @@
     "filters.categories.empty": "Katigoriata akllay ruraykunata rikunkapak.",
     "filters.subcategories.empty": "Ashtawan alli ruraykunata maskankapak uchilla katigoriata akllay.",
     "filters.actions.apply": "Akllaykunata churay",
-    "filters.actions.close": "Wichay"
+    "filters.actions.close": "Wichay",
 
 
+    "state": "Kashka",
+    "unique": "Shuklla",
+    "channel": "Kanal",
+    "tracking": "Katichiy",
 
+    "details": "Willaykuna",
+    "complete": "Tukuchiy",
+    "open_whatsapp": "WhatsApp kichariy",
+    "scan_qr": "QR rikuchiy",
+    "open_form": "Formulario kichariy",
+
+    "tech": "Tekniku willaykuna",
+
+    "loading_more_results": "Ashtawan rikuchishpa…",
+    "loading_data": "Willaykuna apashpa…",
+    "loading": "Apashpa…"
 
 }

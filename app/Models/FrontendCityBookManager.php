@@ -79,7 +79,7 @@ class FrontendCityBookManager extends ModelManager
         $tracking = new TrackingUtil();
 
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
-        if (!in_array($routeName, ["authorSingle","contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
+        if (!in_array($routeName, ["authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
                 $resultTracking = $tracking->managerGamingTask($request, $type);
                 $gamificationData = $resultTracking;
@@ -298,16 +298,20 @@ class FrontendCityBookManager extends ModelManager
             $dataManagerPage = array_merge($dataManagerPage, $resultBusinessDetails);
             if ($resultBusinessDetails["viewPage"]) {
                 $gamificationAllow = $resultBusinessDetails["gamification"]["allow"];
-
+                $modelGamification = new GamificationByProcess();
+                $dataConfigGamificationBusiness = [];
+                $business = $params["paramsRequest"]["id"];
                 if ($gamificationAllow) {
                     $gamification_id = $resultBusinessDetails["gamification"]["data"]->id;
                     $business_id = $resultBusinessDetails["business_id"];
 
-                    $modelGamification = new GamificationByProcess();
-                    $business = $params["paramsRequest"]["id"];
-                    $dataConfigGamificationBusiness = $modelGamification->getProcessDefaultByBusinessData(["business"=>$business,"business_id" => $business_id, "gamification_id" => $gamification_id]);
-                    $dataManagerPage["dataConfigGamificationBusiness"] = $dataConfigGamificationBusiness;
+                    $dataConfigGamificationBusiness = $modelGamification->getProcessDefaultByBusinessData(["allow" => true, "business" => $business, "business_id" => $business_id, "gamification_id" => $gamification_id]);
+                } else {
+                    $dataConfigGamificationBusiness = $modelGamification->getProcessDefaultByBusinessData(["allow" => false, "business" => $business]);
+
+
                 }
+                $dataManagerPage["dataConfigGamificationBusiness"] = $dataConfigGamificationBusiness;
                 $pageSectionsConfig['head_custom']['business']['data'] = $resultBusinessDetails["pageSectionsConfig"];
             }
 

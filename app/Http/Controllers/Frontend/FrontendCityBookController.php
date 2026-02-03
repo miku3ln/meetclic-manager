@@ -657,15 +657,21 @@ class FrontendCityBookController extends FrontendBaseController
     }
     public function ourAllies($language = 'es')
     {
-        $nameProcess = 'ourAllies';
-        $renderView = self::LAYOUT_MAIN . '.web.ourAllies';
+        $dataPost = Request::all();
+        $search_term = isset($dataPost['keywords']) ? $dataPost['keywords'] : null;
+        $category = isset($dataPost['category']) ? $dataPost['category'] : null;
+
+        $renderView = self::LAYOUT_MAIN . '.web.search';
         $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
         $language = $languageManager['language'];
         $paramsRequest = [];
         $paramsRequest['language'] = $language;
+        $paramsRequest['keywords'] = $search_term;
+        $paramsRequest['category'] = $category;
+
         $modelPage = $this->modelInit;
         $paramsSend = $modelPage->getParamsPage([
-            'page' => $nameProcess,
+            'page' => 'search',
             'paramsRequest' => $paramsRequest
 
         ]);

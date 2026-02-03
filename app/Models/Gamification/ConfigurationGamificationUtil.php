@@ -428,7 +428,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/ayni-reciprocidad-04.png',
                 'title' => '📲 Comparte este negocio por WhatsApp',
                 'subtitle' => '📤 wakina (compartir) para yanapay (ayudar)',
-                'description' => "🟢 Qué hacer: Ingresa al perfil del negocio en MeetClic, toca el botón WhatsApp y comparte este perfil con una persona o grupo.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar la acción.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el perfil oficial del negocio.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio","🟢 Toca el botón WhatsApp.","📤 Comparte este perfil con una persona o grupo."],"helpers":["💡 Comparte desde el botón oficial del perfil para que se valide."],"validation":"Validación automática al completar la acción de compartir.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el perfil oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -437,7 +437,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/businessDetails/MEETCLIC?typeProcess=whatsapp_click&sourceProcess=whatsapp&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-details/MEETCLIC?typeProcess=whatsapp_click&sourceProcess=whatsapp&campaign_code=campaign-00-web-tracking&codeProcess=69',
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_FOLLOW, // 13
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WHATSAPP, // 5
                 'gamification_type_activity_id' => self::ACTIVITY_ECOMMERCE, // 1
@@ -461,7 +461,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-07.png',
                 'title' => '👤 Explora el perfil del negocio',
                 'subtitle' => '👀 rikuy (mirar) y conocer lo que ofrece',
-                'description' => "🟢 Qué hacer: Entra al perfil del negocio y revisa fotos, horarios, ubicación y lo que ofrece.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar la acción.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el perfil oficial del negocio.",
+                'description' => '{"steps":["👤 Entra al perfil del negocio.","🖼️ Revisa fotos, horarios, ubicación y lo que ofrece.","👀 Explora lo que vende o brinda."],"helpers":["Mira horarios y ubicación antes de ir al local."],"validation":"Validación automática al ingresar y explorar el perfil.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el perfil oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -470,7 +470,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/businessDetails/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-details/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -496,7 +496,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-08.png',
                 'title' => '📍 Escanea el QR del tótem y registra tu visita',
                 'subtitle' => '🏪 kaypi (aquí) rikuy (registrar) presencia real',
-                'description' => "🟢 Qué hacer: En el local del negocio, escanea el QR del tótem/stand con tu celular para registrar tu visita.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes estar físicamente en el local y escanear el QR autorizado del negocio.",
+                'description' => '{"steps":["🏪 Estando en el local, ubica el QR del tótem/stand.","📷 Escanea el QR con tu celular.","✅ Abre el enlace para registrar tu visita."],"helpers":["💡 Usa buena luz para escanear más rápido.","🔒 Escanea solo el QR autorizado del negocio."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -505,7 +505,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/businessDetails/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-details/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -531,7 +531,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-03.png',
                 'title' => '⭐ Agrega este negocio a tus Mashis',
                 'subtitle' => '🤝 masichiy (hacerse cercano) con el negocio',
-                'description' => "🟢 Qué hacer: Desde el perfil del negocio, pulsa “Agregar a Mashis” para guardarlo en tu comunidad.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al agregar el negocio a tus Mashis.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Esta acción se puede realizar una sola vez por negocio.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio","Busca el botton de agregar","🤝 Pulsa “Agregar a Mashis”.","✅ Verifica que quedó guardado en tu comunidad."],"helpers":["💡 Esto te ayuda a encontrar el negocio más rápido después."],"validation":"Validación automática al agregar el negocio a tus Mashis.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Esta acción se puede realizar una sola vez por negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -565,7 +565,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/ayni-reciprocidad-02.png',
                 'title' => '⭐ Califica tu experiencia (estrellas)',
                 'subtitle' => '🌟 chanichiy (valorar) para mejorar calidad',
-                'description' => "🟢 Qué hacer: Elige de 1 a 5 estrellas según tu experiencia con el negocio.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al enviar tu calificación.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Solo se valida si envías la calificación de forma completa.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio","⭐ Entra a calificaciones del negocio.","Busca el formulario de registro","⭐ Elige de 1 a 5 estrellas según tu experiencia.","📨 Envía tu calificación."],"helpers":["💡 Calificar con sinceridad ayuda a mejorar la calidad del negocio."],"validation":"Validación automática al enviar tu calificación.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Solo se valida si envías la calificación de forma completa."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -594,48 +594,16 @@ class ConfigurationGamificationUtil
             ],
 
             // (6)
-            [
-                "id" => -1, "gamification_id" => -1,
-                "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/ayni-reciprocidad-03.png',
-                'title' => '⭐ Entra a calificar desde la web',
-                'subtitle' => '🌐 yaykuy (ingresar) a calificaciones',
-                'description' => "🟢 Qué hacer: Abre la sección de calificaciones del negocio desde la web.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar a la sección de calificaciones.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
-                'state' => 'ACTIVE',
-                'valid_from' => null,
-                'valid_until' => null,
-                'frequency_limit_type' => 'DAILY',
-                'frequency_limit_value' => 1,
-                'has_source' => 1,
-                'entity' => '0',
-                'entity_id' => '0',
-                'url_manager' => '{urlProject}rate/register/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
-                'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
-                'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
-                'gamification_type_activity_id' => self::ACTIVITY_BRAND_PROMOTION, // 11
-
-                'is_url' => 1,
-                'type_manager' => 0,
-                'execution_channel' => 'DIGITAL',
-                'unique_code' => 'VIEW_RATE_WEB_MC',
-                'allow_golden' => 1,
-                'icon_class' => 'fa fa-data',
-                'campaign_code_template' => 'campaign-00-web-tracking',
-                'gamification_by_points' => ["id" => -1,
-                    "points" => 10,
-                    "gamification_by_process_id" => null,
-                ]
-            ],
 
             // (7)
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
                 'source' => '/uploads/business/gamification/default/yachay-aprender-06.png',
-                'title' => '🧾 Escanea el QR del ticket y entra al formulario',
+                'title' => '🧾 Escanea el QR y Mira calificaciones y opiniones',
                 'subtitle' => '📍 post-compra: ingreso validado por QR',
-                'description' => "🟢 Qué hacer: Después de comprar o visitar, escanea el QR del ticket para abrir el formulario de calificación.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR del ticket.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes escanear un ticket válido del negocio (QR autorizado).",
+                'description' => '{"steps":["🏪 En el local del negocio, escanea el QR autorizado.","📊 Abre la sección de calificaciones y opiniones","👀 Revisa los aportes disponibles."],"helpers":["💡 El ticket debe ser válido y del negocio.","🔒 Escanea solo QR autorizado."],"validation":"Validación automática al completar el escaneo del QR del ticket.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Debes escanear un ticket válido del negocio (QR autorizado)."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -670,7 +638,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/sumka-kawsay-comunidad-invita-05.png',
                 'title' => '⭐ Mira calificaciones y opiniones',
                 'subtitle' => '🔍 rikuy (mirar) experiencias reales',
-                'description' => "🟢 Qué hacer: Entra a calificaciones y lee estrellas y comentarios de otros clientes.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar a la sección de calificaciones.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio","⭐ Entra a calificaciones del negocio.","🔍 Lee estrellas y comentarios de otros clientes."],"helpers":["💡 Busca patrones: atención, calidad, tiempos y precios."],"validation":"Validación automática al ingresar a la sección de calificaciones.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -705,7 +673,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/randi-dar-recibir-01.png',
                 'title' => '💬 Escribe una sugerencia con respeto',
                 'subtitle' => '🗣️ rimay (hablar) para mejorar juntos',
-                'description' => "🟢 Qué hacer: Escribe una sugerencia clara y respetuosa sobre atención, producto o servicio, y envíala.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al enviar la sugerencia.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Solo se valida si envías la sugerencia desde el formulario oficial.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio","💬 Entra al Buzón de sugerencias","🗣️ Escribe una sugerencia clara y respetuosa.","📨 Envía tu sugerencia"],"helpers":["💡 Describe qué pasó y qué mejorarías.","🧠 Mientras más claro, más útil para el negocio."],"validation":"Validación automática al enviar la sugerencia.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Solo se valida si envías la sugerencia desde el formulario oficial."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -740,7 +708,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-05.png',
                 'title' => '📝 Entra al buzón de sugerencias',
                 'subtitle' => '🌐 yaykuy (ingresar) al formulario',
-                'description' => "🟢 Qué hacer: Abre el buzón de sugerencias del negocio y revisa el formulario.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar al buzón de sugerencias.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio.","💬 Entra al Buzón de sugerencias.","🔍 Revisa comentarios y opiniones."],"helpers":["💡 Si tu sugerencia es larga, primero escríbela en notas y luego pega."],"validation":"Validación automática al ingresar al buzón de sugerencias.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -775,7 +743,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-05.png',
                 'title' => '📍 (QR) Entra al buzón de sugerencias',
                 'subtitle' => '🏪 desde el local: ingreso validado por QR',
-                'description' => "🟢 Qué hacer: En el local del negocio, escanea el QR y abre el buzón de sugerencias.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes estar físicamente en el local y escanear el QR autorizado del negocio.",
+                'description' => '{"steps":["🏪 En el local del negocio, ubica el QR autorizado.","📷 Escanea el QR con tu celular.","📝 Se abrirá el buzón de sugerencias."],"helpers":["🔒 Escanea únicamente el QR autorizado del negocio."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -803,75 +771,6 @@ class ConfigurationGamificationUtil
                 ]
             ],
 
-            // (12)
-            [
-                "id" => -1, "gamification_id" => -1,
-                "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-04.png',
-                'title' => '📊 (QR) Revisa sugerencias y opiniones de otros',
-                'subtitle' => '👀 rikuy (mirar) aportes de la comunidad',
-                'description' => "🟢 Qué hacer: En el local del negocio, escanea el QR y revisa las sugerencias/opiniones disponibles.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes estar físicamente en el local y escanear el QR autorizado del negocio.",
-                'state' => 'ACTIVE',
-                'valid_from' => null,
-                'valid_until' => null,
-                'frequency_limit_type' => 'DAILY',
-                'frequency_limit_value' => 1,
-                'has_source' => 1,
-                'entity' => '0',
-                'entity_id' => '0',
-                'url_manager' => '{urlProject}rimay/registers/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
-
-                'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
-                'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
-                'gamification_type_activity_id' => self::ACTIVITY_NEWS_UPDATES, // 8
-
-                'is_url' => 1,
-                'type_manager' => 0,
-                'execution_channel' => 'PHYSICAL',
-                'unique_code' => 'VIEW_REGISTERS_SUGGESTION_QR_SCAN_TICKET_MC',
-                'allow_golden' => 1,
-                'icon_class' => 'fa fa-data',
-                'campaign_code_template' => 'campaign-00-web-tracking',
-                'gamification_by_points' => ["id" => -1,
-                    "points" => 40,
-                    "gamification_by_process_id" => null,
-                ]
-            ],
-
-            // (13)
-            [
-                "id" => -1, "gamification_id" => -1,
-                "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/tinkuy-encuentro-06.png',
-                'title' => '📊 Revisa opiniones de otros desde la web',
-                'subtitle' => '🌐 rikuy (mirar) experiencias antes de decidir',
-                'description' => "🟢 Qué hacer: Desde la web, entra a opiniones/sugerencias y revisa comentarios de otros clientes.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar a la sección de opiniones.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
-                'state' => 'ACTIVE',
-                'valid_from' => null,
-                'valid_until' => null,
-                'frequency_limit_type' => 'DAILY',
-                'frequency_limit_value' => 1,
-                'has_source' => 1,
-                'entity' => '0',
-                'entity_id' => '0',
-                'url_manager' => '{urlProject}rimay/registers/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
-
-                'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
-                'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
-                'gamification_type_activity_id' => self::ACTIVITY_NEWS_UPDATES, // 8
-
-                'is_url' => 1,
-                'type_manager' => 0,
-                'execution_channel' => 'DIGITAL',
-                'unique_code' => 'VIEW_REGISTERS_SUGGESTION_WEB_MC',
-                'allow_golden' => 1,
-                'icon_class' => 'fa fa-data',
-                'campaign_code_template' => 'campaign-00-web-tracking',
-                'gamification_by_points' => ["id" => -1,
-                    "points" => 10,
-                    "gamification_by_process_id" => null,
-                ]
-            ],
 
             // (14)
             [
@@ -880,7 +779,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-14.png',
                 'title' => '🎁 (QR) Descubre los premios y canjes del local',
                 'subtitle' => '📍 descubrir beneficios estando aquí',
-                'description' => "🟢 Qué hacer: En el local del negocio, escanea el QR del tótem y revisa los premios/canjes disponibles.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes estar físicamente en el local y escanear el QR autorizado del negocio.",
+                'description' => '{"steps":["🏪 En el local del negocio, ubica el tótem/stand con QR.","📷 Escanea el QR con tu celular.","🎁 Revisa premios y canjes disponibles."],"helpers":["Mira qué puedes canjear con tus Yapitas antes de comprar."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -915,7 +814,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-13.png',
                 'title' => '🎁 Descubre premios y canjes desde la web',
                 'subtitle' => '🧭 rikuy (mirar) y planear tu canje',
-                'description' => "🟢 Qué hacer: Entra a premios/canjes del negocio y revisa qué puedes obtener con tus YAPITAS.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar a la sección de premios/canjes.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio.","🎁 Entra a Premios / Canjes.","👀 Revisa qué puedes obtener con tus Yapitas.","🧭 Elige el premio que deseas canjear"],"helpers":["💡 Planifica tu canje antes de ir al local."],"validation":"Validación automática al ingresar a la sección de premios/canjes.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -950,7 +849,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-11.png',
                 'title' => '📍 (QR) Descubre la lista de tareas del negocio',
                 'subtitle' => '🧭 guía rápida para ganar YAPITAS',
-                'description' => "🟢 Qué hacer: En el local del negocio, escanea el QR y abre la lista de tareas disponibles.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes estar físicamente en el local y escanear el QR autorizado del negocio.",
+                'description' => '{"steps":["🏪 En el local del negocio, ubica el QR autorizado.","📷 Escanea el QR con tu celular.","📋 Abre la lista de tareas disponibles."],"helpers":["💡 Úsalo como guía rápida para ganar Yapitas."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -959,7 +858,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/businessPullkay/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-pullkay/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -985,7 +884,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-12.png',
                 'title' => '🧭 Descubre las tareas y aprende cómo ganar YAPITAS',
                 'subtitle' => '👀 rikuy (mirar) paso a paso',
-                'description' => "🟢 Qué hacer: Abre la lista de tareas del negocio en la web y revisa cómo completar cada una.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar a la lista de tareas.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
+                'description' => '{"steps":["🔎 Explora el perfil del negocio.","🎮 Entra a Tareas / Juegos.","✅ Elige una y complétala."],"helpers":["💡 Empieza por las tareas más fáciles para ganar rápido."],"validation":"Validación automática al ingresar a la lista de tareas.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -994,7 +893,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/businessPullkay/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-pullkay/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -1020,7 +919,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/yachay-aprender-07.png',
                 'title' => '🏪 (QR) Entra a la tienda desde el local',
                 'subtitle' => '📍 físico → digital: visita verificada',
-                'description' => "🟢 Qué hacer: En el local del negocio, escanea el QR y abre la tienda/catálogo del negocio.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al completar el escaneo del QR.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. Debes estar físicamente en el local y escanear el QR autorizado del negocio.",
+                'description' => '{"steps":["🏪 En el local del negocio, ubica el QR autorizado.","📷 Escanea el QR con tu celular.","🛍️ Abre la tienda/catálogo del negocio."],"helpers":["💡 Ideal para ver el catálogo mientras estás en el local.","🔒 Escanea únicamente el QR autorizado del negocio."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -1055,7 +954,7 @@ class ConfigurationGamificationUtil
                 'source' => '/uploads/business/gamification/default/tinkuy-encuentro-08.png',
                 'title' => '🛍️ Entra a la tienda y revisa el catálogo',
                 'subtitle' => '🛒 rikuy (mirar) productos y servicios',
-                'description' => "🟢 Qué hacer: Entra a la tienda/catálogo del negocio y explora productos o servicios.\r\n🎁 Qué ganas: Ganas YAPITAS por completar correctamente esta tarea.\r\n🟡 Para qué sirve: Las YAPITAS que ganas te permiten canjear descuentos, premios o beneficios en este mismo negocio, según cómo tenga configurado su sistema de canjes.\r\n⚙️ Validación: Automática al ingresar y navegar el catálogo.\r\n⚠️ Reglas: Debes estar registrado en MeetClic. La acción debe realizarse desde el enlace oficial del negocio.",
+                'description' => '{"steps":["🏪 Explora el perfil del negocio y encuentra su tienda.","🛍️ Entra al catálogo de productos o servicios.","👀 Explora con calma lo que ofrece."],"helpers":["Mira precios y descripciones para elegir mejor."],"validation":"Validación automática al ingresar y navegar el catálogo.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,

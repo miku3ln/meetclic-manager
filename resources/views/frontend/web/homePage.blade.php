@@ -60,7 +60,6 @@ $managementNameProcess = "homePage";
 
 
     <script>
-
         function managementButtons(allow) {
             if (!allow) {
                 $("#view-expand a").click();
@@ -70,7 +69,6 @@ $managementNameProcess = "homePage";
             }
 
         }
-
         function initModePosition() {
             var isDesktop = isDesktopOnly();
             console.log(isDesktop);
@@ -87,13 +85,9 @@ $managementNameProcess = "homePage";
                 $("#manager-list").addClass("left-list");
             }
         }
-
         $(function () {
-
-            // initModePosition();
             managementButtons(isDesktopOnly());
             $('.header-search').show();
-
             $(window).on('resize orientationchange', function () {
                 //      initModePosition();
             });
@@ -111,7 +105,7 @@ $managementNameProcess = "homePage";
                :class="{ 'filters-drawer--open': isFiltersOpen }"
                aria-label="Panel de filtros">
             <div class="filters-drawer__header">
-                <h4 class="filters-drawer__title">Filtros para ganar YAPITAS</h4>
+                <h4 class="filters-drawer__title">{{ __('filters.titleEarnYapitas') }}</h4>
                 <button type="button" class="filters-drawer__close" @click="isFiltersOpen = false">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
@@ -174,11 +168,11 @@ $managementNameProcess = "homePage";
                     <div class="listings-loader"
                          v-if="paginationState.loading && paginationState.hasMore">
                         <i class="fa fa-spinner fa-pulse fa-3x"></i>
-                        <div class="loader-text">Cargando más resultados...</div>
+                        <div class="loader-text">{{ __("loading_data") }}</div>
                     </div>
                     <div class="end-results"
                          v-if="!paginationState.hasMore && configGridAdmin.data.length > 0">
-                        <span>✅ Ya no hay más resultados.</span>
+                        <span>✅ {{ __("gamification.rules") }}.</span>
                     </div>
 
 

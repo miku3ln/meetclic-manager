@@ -197,7 +197,7 @@
     "frontend.business-details.menu-top.three.title": "Suggestions",
     "frontend.business-details.menu-top.four.title": "Store",
     "frontend.business-details.menu-top.five.title": "About Us",
-    "frontend.business-details.menu-top.six.title": "Play",
+    "frontend.business-details.menu-top.six.title": "Games / Tasks",
     "frontend.business-details.menu-top.seven.title": "Rewards",
     "frontend.business-details.menu-top.eight.title": "Suggestion Box",
 
@@ -1063,6 +1063,11 @@
     "account.filters.sort.three": "Description",
 
     "gamification.what_to_do": "What to do",
+    "gamification.explore": "Explore",
+
+    "gamification.yapitas_use_title": "What are your Yapitas for?",
+    "gamification.yapitas_use_text": "Redeem them for coupons and discounts on products and services.",
+
     "gamification.what_is_it_for": "What is it for",
     "gamification.what_you_get": "What you earn",
     "gamification.validation": "Validation",
@@ -1079,12 +1084,12 @@
     "gamification.available_until": "Available until",
     "gamification.available_between": "Available between",
 
-    "gamification.unlimited": "Unlimited (as many times as you want)",
-    "gamification.only_once": "Only once (a single time)",
-    "gamification.per_day": "Time(s) per day (resets every day)",
-    "gamification.per_week": "Time(s) per week (resets every week)",
-    "gamification.per_month": "Time(s) per month (resets every month)",
-    "gamification.total_limit": "Time(s) in total (once the limit is reached it does not repeat)",
+    "gamification.unlimited": "Unlimited (no limit)",
+    "gamification.only_once": "Only once (single use)",
+    "gamification.per_day": "use per day (resets every day)",
+    "gamification.per_week": "use per week (resets every week)",
+    "gamification.per_month": "use per month (resets every month)",
+    "gamification.total_limit": "use in total (once reached it does not repeat)",
     "gamification.not_defined": "Not defined (check configuration)",
 
     "gamification.physical": "PHYSICAL",
@@ -1117,8 +1122,23 @@
     "filters.categories.empty": "Select a category to see available tasks.",
     "filters.subcategories.empty": "Select a subcategory to refine your tasks.",
     "filters.actions.apply": "Apply filters",
-    "filters.actions.close": "Close"
+    "filters.actions.close": "Close",
 
+    "state": "Status",
+    "unique": "Unique",
+    "channel": "Channel",
+    "tracking": "Tracking",
 
+    "details": "Details",
+    "complete": "Complete",
+    "open_whatsapp": "Open WhatsApp",
+    "scan_qr": "Scan QR",
+    "open_form": "Open form",
+
+    "tech": "Technical data",
+
+    "loading_more_results": "Loading more results…",
+    "loading_data": "Loading data…",
+    "loading": "Loading…"
 
 }

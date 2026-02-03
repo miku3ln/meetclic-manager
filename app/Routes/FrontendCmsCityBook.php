@@ -70,8 +70,8 @@ class FrontendCmsCityBook
             Route::get('/pricing', 'Frontend\FrontendCityBookController@pricing')->name('pricing');
 
             Route::post("/business/adminBee", "Business\BusinessController@getAdminBee");
-            Route::get('/businessDetails/{id?}/{type?}', 'Frontend\FrontendCityBookController@businessDetails')->name('businessDetails');//GAMIFICATION ROUTE
-            Route::get('/businessPullkay/{id?}', 'Frontend\FrontendCityBookController@businessPullkay')->name('businessPullkay');//GAMIFICATION ROUTE
+            Route::get('/business-details/{id?}/{type?}', 'Frontend\FrontendCityBookController@businessDetails')->name('businessDetails');//GAMIFICATION ROUTE
+            Route::get('/business-pullkay/{id?}', 'Frontend\FrontendCityBookController@businessPullkay')->name('businessPullkay');//GAMIFICATION ROUTE
 
             Route::get('/authorSingle/{id?}', 'Frontend\FrontendCityBookController@authorSingle')->name('authorSingle');
 
