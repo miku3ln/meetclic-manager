@@ -102,7 +102,6 @@ class DictionaryByWords extends ModelManager
         $selectString = "$this->table.id,$this->table.translation_value,$this->table.usage_context,$this->table.value,$this->table.description,$this->table.status,$this->table.diccionary_language_id,$this->table.letters_of_the_alphabet
         ,dictionary_word_by_class.dictionary_grammatical_class_id
         ,dictionary_grammatical_class.name dictionary_grammatical_class_name ";
-
         $query->where(
             $this->table . '.diccionary_language_id', '=', $entity_manager_id
         );
