@@ -115,6 +115,8 @@ class DictionaryByWords extends ModelManager
             $query->where(function ($query) use ($likeSet
             ) {
                 $query->orWhere($this->table . '.value', 'like', '%' . $likeSet . '%');
+                $query->orWhere( 'dictionary_grammatical_class.name', 'like', '%' . $likeSet . '%');
+
 
             });
 
