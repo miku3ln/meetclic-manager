@@ -108,6 +108,7 @@ class DictionaryByWords extends ModelManager
         $query->where(
             $this->table . '.status', '=', 'ACTIVE'
         );
+
         if (isset($params['searchPhrase'])&&$params['searchPhrase'] != null && $params['searchPhrase'] != '') {
             $searchValue = $params['searchPhrase'];
             $likeSet = $searchValue;
