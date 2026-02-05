@@ -7,6 +7,7 @@ use App\Http\Controllers\FrontendBaseController;
 use App\Models\FrontendCityBookManager;
 use App\Models\FrontendManager;
 use App;
+use App\Support\Dictionary\DictionaryCountsNumbersUtil;
 use Auth;
 use App\Models\TemplateInformation;
 use App\Utils\Util;

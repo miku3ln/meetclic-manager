@@ -6,6 +6,7 @@ use App\Models\Gamification\ConfigurationGamificationUtil;
 use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
 use App\Models\Whatsapp\WhatsappConfigs;
+use App\Support\Dictionary\DictionaryCountsNumbersUtil;
 use App\Utils\FrontendPageSections;
 use App\Utils\LanguageUtil;
 use App\Utils\TrackingUtil;
@@ -1429,7 +1430,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $subtitle = "Diccionarios";
 
                 $dataManagerPage['allowVue'] = true;
-
+                $dataManagerPage['dictionaryCountsNumbersManagement'] = DictionaryCountsNumbersUtil::payload(true);
             } elseif ($page == 'apuntesPage') {
                 $title = "Riksichishun";
                 $subtitle = "Temas de Interes";
