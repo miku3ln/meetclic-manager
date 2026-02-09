@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Gamification\ConfigurationGamificationUtil;
+
 use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
 use App\Models\Whatsapp\WhatsappConfigs;
 use App\Support\Dictionary\DictionaryCountsNumbersUtil;
+use App\Support\Dictionary\PronunciationPayloadUtil;
+use App\Support\Dictionary\LanguageCoursePayloadUtil;
 use App\Utils\FrontendPageSections;
 use App\Utils\LanguageUtil;
 use App\Utils\TrackingUtil;
@@ -80,7 +82,7 @@ class FrontendCityBookManager extends ModelManager
         $tracking = new TrackingUtil();
 
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
-        if (!in_array($routeName, ["authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
+        if (!in_array($routeName, ["ourAllies","authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
                 $resultTracking = $tracking->managerGamingTask($request, $type);
                 $gamificationData = $resultTracking;
@@ -1423,6 +1425,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $subtitle = "Yachasun";
 
                 $dataManagerPage['allowVue'] = true;
+                $payload = LanguageCoursePayloadUtil::buildPayload(1);
+                $dataManagerPage['languageCoursePayload'] = $payload;
 
             } elseif ($page == 'diccionarioPage') {
 
@@ -1431,6 +1435,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
 
                 $dataManagerPage['allowVue'] = true;
                 $dataManagerPage['dictionaryCountsNumbersManagement'] = DictionaryCountsNumbersUtil::payload(true);
+                $dataManagerPage['pronunciationPayManagement'] =PronunciationPayloadUtil::buildPayload();
+
             } elseif ($page == 'apuntesPage') {
                 $title = "Riksichishun";
                 $subtitle = "Temas de Interes";

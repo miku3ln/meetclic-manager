@@ -65,11 +65,11 @@ $rootPage = '';
 <!-- Main end -->
 <!--=============== scripts  ===============-->
 @if( isset($dataManagerPage['allowServer']) &&  (!$dataManagerPage['allowServer']))
-    <script type="text/javascript" src="{{URL::asset($themePath.'jquery.min.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="{{URL::asset($themePath.'js/plugins.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset($themePath.'js/scripts.js')}}"></script>
 @else
-    <script type="text/javascript" src="{{URL::asset($themePath.'jquery.min.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="{{URL::asset($themePath.'js/plugins.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset($themePath.'js/scripts.js')}}"></script>
 @endif
@@ -95,7 +95,11 @@ $rootPage = '';
 <script type="text/javascript" src="{{URL::asset($resourcePathServer.'js/Utils.js')}}"></script>
 <script src="{{ asset($resourcePathServer.'js/eccomerce/ManagementOrders.js') }}" type="text/javascript"></script>
 
-
+<script>
+    if (!jQuery.fn.size) {
+        jQuery.fn.size = function () { return this.length; };
+    }
+</script>
 @yield('additional-scripts')
 @yield('script')
 @yield('script-bottom')
