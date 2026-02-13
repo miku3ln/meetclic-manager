@@ -295,7 +295,7 @@
             display: none;
         }
         span.mc-dropzone__label--answer{
-            display: block;
+            display: none;
         }
         .mc-step {
             border: 1px solid var(--mc-border);
