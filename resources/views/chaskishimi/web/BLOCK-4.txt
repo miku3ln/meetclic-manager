@@ -1,0 +1,918 @@
+        const BLOCK_4_MISHKIMURUKUNA_FRUTAS = [
+            // =========================================================
+            // BLOQUE 4: Mishkimurukuna - Frutas (35)
+            // Tipos (5 c/u): DRAG_MATCH, FILL_BLANK, HAYSTACK_PICK,
+            //                IMAGE_HOTSPOT_PICK, MULTI_SELECT,
+            //                MULTI_SELECT_IMAGE, ORDER_WORDS
+            // =========================================================
+
+            // -------------------------
+            // DRAG_MATCH (5)
+            // -------------------------
+            {
+                step_id: "B4_FRU_DRAG_MATCH_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 01",
+                activity: "RIMAY - Hablar",
+                description: "Empareja fruta (Kichwa) con Español.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_DRAG_MATCH_01_EX",
+                    type: "DRAG_MATCH",
+                    title: "Frutas (Emparejar) 01",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "palta", right: "aguacate"},
+                            {left: "apil", right: "manzana"},
+                            {left: "sara", right: "maíz"},
+                            {left: "limun", right: "limón"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_DRAG_MATCH_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 02",
+                activity: "RIMAY - Hablar",
+                description: "Empareja fruta (Kichwa) con Español.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_DRAG_MATCH_02_EX",
+                    type: "DRAG_MATCH",
+                    title: "Frutas (Emparejar) 02",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "killu limun", right: "limón amarillo"},
+                            {left: "puka apil", right: "manzana roja"},
+                            {left: "wiru", right: "verde (fruta verde)"},
+                            {left: "mishki", right: "dulce"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_DRAG_MATCH_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 03",
+                activity: "RIMAY - Hablar",
+                description: "Empareja fruta con su característica.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_DRAG_MATCH_03_EX",
+                    type: "DRAG_MATCH",
+                    title: "Frutas (Emparejar) 03",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "mishki", right: "dulce"},
+                            {left: "killi", right: "amarillo"},
+                            {left: "puka", right: "rojo"},
+                            {left: "yaku", right: "agua"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_DRAG_MATCH_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 04",
+                activity: "RIMAY - Hablar",
+                description: "Empareja palabras útiles en la fruta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_DRAG_MATCH_04_EX",
+                    type: "DRAG_MATCH",
+                    title: "Frutas (Emparejar) 04",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "miku", right: "comer"},
+                            {left: "mikuna", right: "comida"},
+                            {left: "mishki", right: "dulce"},
+                            {left: "ashka", right: "mucho"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_DRAG_MATCH_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 05",
+                activity: "RIMAY - Hablar",
+                description: "Empareja fruta (Kichwa) con Español.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_DRAG_MATCH_05_EX",
+                    type: "DRAG_MATCH",
+                    title: "Frutas (Emparejar) 05",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "muru", right: "semilla"},
+                            {left: "sacha", right: "monte/bosque"},
+                            {left: "puyu", right: "nube"},
+                            {left: "inti", right: "sol"}
+                        ]
+                    }
+                }
+            },
+
+            // -------------------------
+            // FILL_BLANK (5)
+            // -------------------------
+            {
+                step_id: "B4_FRU_FILL_BLANK_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 01",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la palabra (fruta).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_FILL_BLANK_01_EX",
+                    type: "FILL_BLANK",
+                    title: "Frutas (Completar) 01",
+                    prompt: "Completa:",
+                    payload: {text: "La manzana (Kichwa) es ____", answer: "apil", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B4_FRU_FILL_BLANK_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 02",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la palabra (fruta).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_FILL_BLANK_02_EX",
+                    type: "FILL_BLANK",
+                    title: "Frutas (Completar) 02",
+                    prompt: "Completa:",
+                    payload: {text: "El aguacate (Kichwa) es ____", answer: "palta", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B4_FRU_FILL_BLANK_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 03",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la palabra (concepto).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_FILL_BLANK_03_EX",
+                    type: "FILL_BLANK",
+                    title: "Frutas (Completar) 03",
+                    prompt: "Completa:",
+                    payload: {text: "Dulce (Kichwa) es ____", answer: "mishki", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B4_FRU_FILL_BLANK_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 04",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la palabra (concepto).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_FILL_BLANK_04_EX",
+                    type: "FILL_BLANK",
+                    title: "Frutas (Completar) 04",
+                    prompt: "Completa:",
+                    payload: {text: "Semilla (Kichwa) es ____", answer: "muru", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B4_FRU_FILL_BLANK_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 05",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la palabra (acción).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_FILL_BLANK_05_EX",
+                    type: "FILL_BLANK",
+                    title: "Frutas (Completar) 05",
+                    prompt: "Completa:",
+                    payload: {text: "Comer (Kichwa) es ____", answer: "miku", trim: true, ignoreCase: true}
+                }
+            },
+
+            // -------------------------
+            // HAYSTACK_PICK (5)
+            // -------------------------
+            {
+                step_id: "B4_FRU_HAYSTACK_PICK_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 01",
+                activity: "RIKSINA - Mirar",
+                description: "Elige la fruta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_HAYSTACK_PICK_01_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Frutas (Haystack) 01",
+                    prompt: "Selecciona la fruta correcta en Kichwa:",
+                    payload: {
+                        question: {es: "Manzana", ki: "apil"},
+                        haystack: ["apil", "palta", "wasi", "maki", "rumi", "yaku", "sacha", "inti", "killa", "puyu"],
+                        correct: ["apil"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_HAYSTACK_PICK_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 02",
+                activity: "RIKSINA - Mirar",
+                description: "Elige la fruta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_HAYSTACK_PICK_02_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Frutas (Haystack) 02",
+                    prompt: "Selecciona la fruta correcta en Kichwa:",
+                    payload: {
+                        question: {es: "Aguacate", ki: "palta"},
+                        haystack: ["palta", "apil", "mishki", "muru", "miku", "mikuna", "ashka", "inti", "killa", "puyu"],
+                        correct: ["palta"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_HAYSTACK_PICK_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 03",
+                activity: "RIKSINA - Mirar",
+                description: "Elige el concepto correcto.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_HAYSTACK_PICK_03_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Frutas (Haystack) 03",
+                    prompt: "Selecciona la palabra correcta en Kichwa:",
+                    payload: {
+                        question: {es: "Dulce", ki: "mishki"},
+                        haystack: ["mishki", "muru", "miku", "wasi", "maki", "yaku", "rumi", "sacha", "inti", "puyu"],
+                        correct: ["mishki"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_HAYSTACK_PICK_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 04",
+                activity: "RIKSINA - Mirar",
+                description: "Elige el concepto correcto.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_HAYSTACK_PICK_04_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Frutas (Haystack) 04",
+                    prompt: "Selecciona la palabra correcta en Kichwa:",
+                    payload: {
+                        question: {es: "Semilla", ki: "muru"},
+                        haystack: ["muru", "mishki", "palta", "apil", "miku", "mikuna", "yaku", "rumi", "sacha", "inti"],
+                        correct: ["muru"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_HAYSTACK_PICK_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 05",
+                activity: "RIKSINA - Mirar",
+                description: "Elige la acción correcta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_HAYSTACK_PICK_05_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Frutas (Haystack) 05",
+                    prompt: "Selecciona la palabra correcta en Kichwa:",
+                    payload: {
+                        question: {es: "Comer", ki: "miku"},
+                        haystack: ["miku", "mikuna", "muru", "mishki", "apil", "palta", "yaku", "rumi", "sacha", "inti"],
+                        correct: ["miku"]
+                    }
+                }
+            },
+
+            // -------------------------
+            // IMAGE_HOTSPOT_PICK (5)
+            // Nota: aquí sí lo usamos con "frutas en imagen"
+            // -------------------------
+            {
+                step_id: "B4_FRU_IMAGE_HOTSPOT_PICK_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 01",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO la fruta correcta en la imagen.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_IMAGE_HOTSPOT_PICK_01_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Frutas (Hotspot) 01",
+                    prompt: "Marca SOLO “apil” (manzana):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        mode: "SINGLE",
+                        maxPick: 1,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "apil", xPct: 35, yPct: 55, label: "apil", isCorrect: true},
+                            {id: "palta", xPct: 60, yPct: 55, label: "palta", isCorrect: false},
+                            {id: "wasi", xPct: 50, yPct: 25, label: "wasi", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_IMAGE_HOTSPOT_PICK_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 02",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO la fruta correcta en la imagen.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_IMAGE_HOTSPOT_PICK_02_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Frutas (Hotspot) 02",
+                    prompt: "Marca SOLO “palta” (aguacate):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        mode: "SINGLE",
+                        maxPick: 1,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "palta", xPct: 60, yPct: 55, label: "palta", isCorrect: true},
+                            {id: "apil", xPct: 35, yPct: 55, label: "apil", isCorrect: false},
+                            {id: "muru", xPct: 50, yPct: 25, label: "muru", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_IMAGE_HOTSPOT_PICK_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 03",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO 2 frutas correctas.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_IMAGE_HOTSPOT_PICK_03_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Frutas (Hotspot) 03",
+                    prompt: "Marca SOLO 2: apil y palta",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        mode: "MULTI",
+                        maxPick: 2,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "apil", xPct: 35, yPct: 55, label: "apil", isCorrect: true},
+                            {id: "palta", xPct: 60, yPct: 55, label: "palta", isCorrect: true},
+                            {id: "yaku", xPct: 50, yPct: 25, label: "yaku", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_IMAGE_HOTSPOT_PICK_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 04",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO 3 correctas (conceptos).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_IMAGE_HOTSPOT_PICK_04_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Frutas (Hotspot) 04",
+                    prompt: "Marca SOLO 3: mishki, muru, miku",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        mode: "MULTI",
+                        maxPick: 3,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "mishki", xPct: 25, yPct: 30, label: "mishki", isCorrect: true},
+                            {id: "muru", xPct: 50, yPct: 30, label: "muru", isCorrect: true},
+                            {id: "miku", xPct: 75, yPct: 30, label: "miku", isCorrect: true},
+                            {id: "rumi", xPct: 50, yPct: 70, label: "rumi", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_IMAGE_HOTSPOT_PICK_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 05",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO 1 concepto correcto.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_IMAGE_HOTSPOT_PICK_05_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Frutas (Hotspot) 05",
+                    prompt: "Marca SOLO “mishki” (dulce):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        mode: "SINGLE",
+                        maxPick: 1,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "mishki", xPct: 25, yPct: 30, label: "mishki", isCorrect: true},
+                            {id: "muru", xPct: 50, yPct: 30, label: "muru", isCorrect: false},
+                            {id: "miku", xPct: 75, yPct: 30, label: "miku", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+
+            // -------------------------
+            // MULTI_SELECT (5)
+            // -------------------------
+            {
+                step_id: "B4_FRU_MULTI_SELECT_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 01",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona frutas (Kichwa).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_01_EX",
+                    type: "MULTI_SELECT",
+                    title: "Frutas (Multi) 01",
+                    prompt: "Selecciona SOLO frutas (2 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "apil"},
+                            {id: "b", text: "palta"},
+                            {id: "c", text: "wasi"},
+                            {id: "d", text: "maki"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 02",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona conceptos de fruta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_02_EX",
+                    type: "MULTI_SELECT",
+                    title: "Frutas (Multi) 02",
+                    prompt: "Selecciona conceptos (3 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "mishki"},
+                            {id: "b", text: "muru"},
+                            {id: "c", text: "miku"},
+                            {id: "d", text: "rumi"}
+                        ],
+                        correctIds: ["a", "b", "c"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 03",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona SOLO 1 fruta correcta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_03_EX",
+                    type: "MULTI_SELECT",
+                    title: "Frutas (Multi) 03",
+                    prompt: "Selecciona SOLO 1 fruta:",
+                    payload: {
+                        options: [
+                            {id: "a", text: "apil"},
+                            {id: "b", text: "wasi"},
+                            {id: "c", text: "maki"},
+                            {id: "d", text: "rumi"}
+                        ],
+                        correctIds: ["a"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 04",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona SOLO palabras NO-fruta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_04_EX",
+                    type: "MULTI_SELECT",
+                    title: "Frutas (Multi) 04",
+                    prompt: "Selecciona SOLO NO-fruta (2 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "wasi"},
+                            {id: "b", text: "maki"},
+                            {id: "c", text: "apil"},
+                            {id: "d", text: "palta"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 05",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona solo conceptos correctos.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_05_EX",
+                    type: "MULTI_SELECT",
+                    title: "Frutas (Multi) 05",
+                    prompt: "Selecciona (2 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "mishki"},
+                            {id: "b", text: "muru"},
+                            {id: "c", text: "killa"},
+                            {id: "d", text: "inti"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+
+            // -------------------------
+            // MULTI_SELECT_IMAGE (5)
+            // -------------------------
+            {
+                step_id: "B4_FRU_MULTI_SELECT_IMAGE_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 01",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona frutas (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_IMAGE_01_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Frutas (Imagen Multi) 01",
+                    prompt: "Selecciona las frutas (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        alt: "frutas",
+                        showImageFirst: true,
+                        options: [
+                            {id: "a", text: "apil"},
+                            {id: "b", text: "palta"},
+                            {id: "c", text: "wasi"},
+                            {id: "d", text: "maki"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_IMAGE_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 02",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona conceptos (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_IMAGE_02_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Frutas (Imagen Multi) 02",
+                    prompt: "Selecciona conceptos (3 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        alt: "frutas",
+                        showImageFirst: false,
+                        options: [
+                            {id: "a", text: "mishki"},
+                            {id: "b", text: "muru"},
+                            {id: "c", text: "miku"},
+                            {id: "d", text: "rumi"}
+                        ],
+                        correctIds: ["a", "b", "c"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_IMAGE_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 03",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona SOLO 1 fruta (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_IMAGE_03_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Frutas (Imagen Multi) 03",
+                    prompt: "Selecciona SOLO 1 fruta:",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        alt: "frutas",
+                        showImageFirst: true,
+                        options: [
+                            {id: "a", text: "apil"},
+                            {id: "b", text: "wasi"},
+                            {id: "c", text: "maki"},
+                            {id: "d", text: "rumi"}
+                        ],
+                        correctIds: ["a"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_IMAGE_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 04",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona NO-fruta (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_IMAGE_04_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Frutas (Imagen Multi) 04",
+                    prompt: "Selecciona SOLO NO-fruta (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        alt: "frutas",
+                        showImageFirst: true,
+                        options: [
+                            {id: "a", text: "wasi"},
+                            {id: "b", text: "maki"},
+                            {id: "c", text: "apil"},
+                            {id: "d", text: "palta"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_MULTI_SELECT_IMAGE_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas  • 05",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona conceptos (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_MULTI_SELECT_IMAGE_05_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Frutas (Imagen Multi) 05",
+                    prompt: "Selecciona (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        alt: "frutas",
+                        showImageFirst: false,
+                        options: [
+                            {id: "a", text: "mishki"},
+                            {id: "b", text: "muru"},
+                            {id: "c", text: "killa"},
+                            {id: "d", text: "inti"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+
+            // -------------------------
+            // ORDER_WORDS (5)
+            // -------------------------
+            {
+                step_id: "B4_FRU_ORDER_WORDS_01",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 01",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la frase.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_ORDER_WORDS_01_EX",
+                    type: "ORDER_WORDS",
+                    title: "Frutas (Ordenar) 01",
+                    prompt: "Ordena la frase en Kichwa:",
+                    payload: {
+                        correctOrder: ["Ñuka", "miku", "apil", "."],
+                        items: [".", "apil", "Ñuka", "miku"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_ORDER_WORDS_02",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 02",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la frase.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_ORDER_WORDS_02_EX",
+                    type: "ORDER_WORDS",
+                    title: "Frutas (Ordenar) 02",
+                    prompt: "Ordena la frase en Kichwa:",
+                    payload: {
+                        correctOrder: ["Ñuka", "miku", "palta", "."],
+                        items: ["miku", ".", "palta", "Ñuka"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_ORDER_WORDS_03",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 03",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la frase.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_ORDER_WORDS_03_EX",
+                    type: "ORDER_WORDS",
+                    title: "Frutas (Ordenar) 03",
+                    prompt: "Ordena la frase en Kichwa:",
+                    payload: {
+                        correctOrder: ["Kay", "apil", "mishkimi", "kan", "."],
+                        items: ["kan", "Kay", "mishkimi", ".", "apil"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_ORDER_WORDS_04",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 04",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la frase.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_ORDER_WORDS_04_EX",
+                    type: "ORDER_WORDS",
+                    title: "Frutas (Ordenar) 04",
+                    prompt: "Ordena la frase en Kichwa:",
+                    payload: {
+                        correctOrder: ["Ñuka", "palta", "munani", "."],
+                        items: [".", "munani", "palta", "Ñuka"]
+                    }
+                }
+            },
+            {
+                step_id: "B4_FRU_ORDER_WORDS_05",
+                unidad_seccion_id: 4,
+                unidad_id: 2,
+                configuracion_ui_ux_id: 2,
+                title: "Mishkimurukuna - Frutas • 05",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la frase.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B4_FRU_ORDER_WORDS_05_EX",
+                    type: "ORDER_WORDS",
+                    title: "Frutas (Ordenar) 05",
+                    prompt: "Ordena la frase en Kichwa:",
+                    payload: {
+                        correctOrder: ["Ñukanchik", "mikuna", "mishkimi", "kan", "."],
+                        items: ["kan", "Ñukanchik", "mishkimi", ".", "mikuna"]
+                    }
+                }
+            }
+        ];

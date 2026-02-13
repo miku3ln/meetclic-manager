@@ -7,6 +7,7 @@ use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
 use App\Models\Whatsapp\WhatsappConfigs;
 use App\Support\Dictionary\DictionaryCountsNumbersUtil;
+use App\Support\Dictionary\ExercisePayloadUtil;
 use App\Support\Dictionary\PronunciationPayloadUtil;
 use App\Support\Dictionary\LanguageCoursePayloadUtil;
 use App\Utils\FrontendPageSections;
@@ -1427,6 +1428,21 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $dataManagerPage['allowVue'] = true;
                 $payload = LanguageCoursePayloadUtil::buildPayload(1);
                 $dataManagerPage['languageCoursePayload'] = $payload;
+
+                $unitId =null;
+                $unitSectionId =null;
+                $includeInactive = false;
+                $output=null;
+                $exercisePayload = ExercisePayloadUtil::buildBlocks([
+                    'unit_id' => $unitId !== null ? (int)$unitId : null,
+                    'unit_section_id' => $unitSectionId !== null ? (int)$unitSectionId : null,
+                    'include_inactive' => $includeInactive,
+                    'output' => $output,
+                    'block_prefix' => 'BLOCK_',
+                ]);
+
+                $dataManagerPage['exercisePayload'] = $exercisePayload;
+
 
             } elseif ($page == 'diccionarioPage') {
 

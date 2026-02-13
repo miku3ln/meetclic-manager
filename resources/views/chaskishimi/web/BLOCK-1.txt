@@ -1,0 +1,917 @@
+    const BLOCK_1 = [
+            {
+                "step_id": "PRE_DRAG_MATCH_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 01",
+                "activity": "UYARINA - Escuchar",
+                "description": "Empareja Kichwa con Español (Presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_DRAG_MATCH_01_EX",
+                    "type": "DRAG_MATCH",
+                    "title": "Presentación (Emparejar) 01",
+                    "prompt": "Empareja Kichwa con Español:",
+                    "payload": {
+                        "pairs": [
+                            {"left": "Ñuka", "right": "Yo"},
+                            {"left": "shuti", "right": "nombre"},
+                            {"left": "kan", "right": "soy/eres"},
+                            {"left": "Killa", "right": "Killa (nombre)"}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_DRAG_MATCH_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 02",
+                "activity": "UYARINA - Escuchar",
+                "description": "Empareja Kichwa con Español (Presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_DRAG_MATCH_02_EX",
+                    "type": "DRAG_MATCH",
+                    "title": "Presentación (Emparejar) 02",
+                    "prompt": "Empareja Kichwa con Español:",
+                    "payload": {
+                        "pairs": [
+                            {"left": "Imanalla", "right": "¿Cómo estás?"},
+                            {"left": "Allillachu", "right": "Estoy bien"},
+                            {"left": "Yupay", "right": "Gracias"},
+                            {"left": "Ñuka", "right": "Yo"}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_DRAG_MATCH_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 03",
+                "activity": "UYARINA - Escuchar",
+                "description": "Empareja Kichwa con Español (Presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_DRAG_MATCH_03_EX",
+                    "type": "DRAG_MATCH",
+                    "title": "Presentación (Emparejar) 03",
+                    "prompt": "Empareja Kichwa con Español:",
+                    "payload": {
+                        "pairs": [
+                            {"left": "Alli puncha", "right": "Buenos días"},
+                            {"left": "Alli tuta", "right": "Buenas noches"},
+                            {"left": "Napaykuna", "right": "Saludos"},
+                            {"left": "Yupay", "right": "Gracias"}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_DRAG_MATCH_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 04",
+                "activity": "UYARINA - Escuchar",
+                "description": "Empareja Kichwa con Español (Presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_DRAG_MATCH_04_EX",
+                    "type": "DRAG_MATCH",
+                    "title": "Presentación (Emparejar) 04",
+                    "prompt": "Empareja Kichwa con Español:",
+                    "payload": {
+                        "pairs": [
+                            {"left": "Wasi", "right": "Casa"},
+                            {"left": "Maki", "right": "Mano"},
+                            {"left": "Ñawi", "right": "Ojo"},
+                            {"left": "Simi", "right": "Boca"}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_DRAG_MATCH_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 05",
+                "activity": "UYARINA - Escuchar",
+                "description": "Empareja Kichwa con Español (Presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_DRAG_MATCH_05_EX",
+                    "type": "DRAG_MATCH",
+                    "title": "Presentación (Emparejar) 05",
+                    "prompt": "Empareja Kichwa con Español:",
+                    "payload": {
+                        "pairs": [
+                            {"left": "Inti", "right": "Sol"},
+                            {"left": "Killa", "right": "Luna"},
+                            {"left": "Yaku", "right": "Agua"},
+                            {"left": "Rumi", "right": "Piedra"}
+                        ]
+                    }
+                }
+            },
+
+            {
+                "step_id": "PRE_FILL_BLANK_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 01",
+                "activity": "UYARINA - Escuchar",
+                "description": "Completa la frase de presentación.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_FILL_BLANK_01_EX",
+                    "type": "FILL_BLANK",
+                    "title": "Presentación (Completar) 01",
+                    "prompt": "Completa la frase:",
+                    "payload": {
+                        "text": "Ñuka ____ Killa kan.",
+                        "answer": "shuti",
+                        "trim": true,
+                        "ignoreCase": true
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_FILL_BLANK_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 02",
+                "activity": "UYARINA - Escuchar",
+                "description": "Completa la frase de presentación.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_FILL_BLANK_02_EX",
+                    "type": "FILL_BLANK",
+                    "title": "Presentación (Completar) 02",
+                    "prompt": "Completa la frase:",
+                    "payload": {
+                        "text": "Ñuka ____ kan.",
+                        "answer": "Killa",
+                        "trim": true,
+                        "ignoreCase": true
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_FILL_BLANK_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 03",
+                "activity": "UYARINA - Escuchar",
+                "description": "Completa la frase de presentación.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_FILL_BLANK_03_EX",
+                    "type": "FILL_BLANK",
+                    "title": "Presentación (Completar) 03",
+                    "prompt": "Completa la frase:",
+                    "payload": {
+                        "text": "____ shuti Killa kan.",
+                        "answer": "Ñuka",
+                        "trim": true,
+                        "ignoreCase": true
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_FILL_BLANK_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 04",
+                "activity": "UYARINA - Escuchar",
+                "description": "Completa la frase de presentación.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_FILL_BLANK_04_EX",
+                    "type": "FILL_BLANK",
+                    "title": "Presentación (Completar) 04",
+                    "prompt": "Completa la frase:",
+                    "payload": {
+                        "text": "Ñuka shuti ____ kan.",
+                        "answer": "Killa",
+                        "trim": true,
+                        "ignoreCase": true
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_FILL_BLANK_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 05",
+                "activity": "UYARINA - Escuchar",
+                "description": "Completa la frase de presentación.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_FILL_BLANK_05_EX",
+                    "type": "FILL_BLANK",
+                    "title": "Presentación (Completar) 05",
+                    "prompt": "Completa la frase:",
+                    "payload": {
+                        "text": "Ñuka shuti Killa ____.",
+                        "answer": "kan",
+                        "trim": true,
+                        "ignoreCase": true
+                    }
+                }
+            },
+
+            {
+                "step_id": "PRE_HAYSTACK_PICK_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 01",
+                "activity": "UYARINA - Escuchar",
+                "description": "Escoge la palabra correcta del haystack.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_HAYSTACK_PICK_01_EX",
+                    "type": "HAYSTACK_PICK",
+                    "title": "Presentación (Haystack) 01",
+                    "prompt": "Selecciona la palabra correcta:",
+                    "payload": {
+                        "question": {"es": "¿Dónde?", "ki": "Maypi?"},
+                        "haystack": ["Maypi?", "Ñuka", "shuti", "kan", "Killa", "Alli puncha", "Yupay", "Wasi", "Maki", "Yaku"],
+                        "correct": ["Maypi?"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_HAYSTACK_PICK_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 02",
+                "activity": "UYARINA - Escuchar",
+                "description": "Escoge la palabra correcta del haystack.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_HAYSTACK_PICK_02_EX",
+                    "type": "HAYSTACK_PICK",
+                    "title": "Presentación (Haystack) 02",
+                    "prompt": "Selecciona la palabra correcta:",
+                    "payload": {
+                        "question": {"es": "Gracias", "ki": "Yupay"},
+                        "haystack": ["Yupay", "Maypi?", "Ñuka", "shuti", "kan", "Alli puncha", "Wasi", "Maki", "Yaku", "Rumi"],
+                        "correct": ["Yupay"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_HAYSTACK_PICK_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 03",
+                "activity": "UYARINA - Escuchar",
+                "description": "Escoge la palabra correcta del haystack.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_HAYSTACK_PICK_03_EX",
+                    "type": "HAYSTACK_PICK",
+                    "title": "Presentación (Haystack) 03",
+                    "prompt": "Selecciona la palabra correcta:",
+                    "payload": {
+                        "question": {"es": "Yo", "ki": "Ñuka"},
+                        "haystack": ["Ñuka", "Yupay", "Maypi?", "shuti", "kan", "Killa", "Alli tuta", "Wasi", "Maki", "Inti"],
+                        "correct": ["Ñuka"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_HAYSTACK_PICK_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 04",
+                "activity": "UYARINA - Escuchar",
+                "description": "Escoge la palabra correcta del haystack.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_HAYSTACK_PICK_04_EX",
+                    "type": "HAYSTACK_PICK",
+                    "title": "Presentación (Haystack) 04",
+                    "prompt": "Selecciona la palabra correcta:",
+                    "payload": {
+                        "question": {"es": "Nombre", "ki": "shuti"},
+                        "haystack": ["shuti", "Ñuka", "kan", "Killa", "Yupay", "Maypi?", "Wasi", "Maki", "Yaku", "Rumi"],
+                        "correct": ["shuti"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_HAYSTACK_PICK_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 05",
+                "activity": "UYARINA - Escuchar",
+                "description": "Escoge la palabra correcta del haystack.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_HAYSTACK_PICK_05_EX",
+                    "type": "HAYSTACK_PICK",
+                    "title": "Presentación (Haystack) 05",
+                    "prompt": "Selecciona la palabra correcta:",
+                    "payload": {
+                        "question": {"es": "Casa", "ki": "Wasi"},
+                        "haystack": ["Wasi", "Maki", "Ñawi", "Simi", "Yaku", "Rumi", "Inti", "Killa", "Ñuka", "Yupay"],
+                        "correct": ["Wasi"]
+                    }
+                }
+            },
+
+            {
+                "step_id": "PRE_IMAGE_HOTSPOT_PICK_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 01",
+                "activity": "RIKSINA - Mirar",
+                "description": "Marca puntos correctos en imagen (demo).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_IMAGE_HOTSPOT_PICK_01_EX",
+                    "type": "IMAGE_HOTSPOT_PICK",
+                    "title": "Presentación (Hotspots) 01",
+                    "prompt": "Marca SOLO las partes correctas (Kichwa):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=60",
+                        "mode": "MULTI",
+                        "maxPick": 3,
+                        "showLabels": true,
+                        "hotspots": [
+                            {"id": "maki", "xPct": 70, "yPct": 60, "label": "maki", "isCorrect": true},
+                            {"id": "ñawi", "xPct": 52, "yPct": 20, "label": "ñawi", "isCorrect": true},
+                            {"id": "simi", "xPct": 52, "yPct": 30, "label": "simi", "isCorrect": true},
+                            {"id": "yaku", "xPct": 20, "yPct": 20, "label": "yaku", "isCorrect": false},
+                            {"id": "rumi", "xPct": 80, "yPct": 85, "label": "rumi", "isCorrect": false}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_IMAGE_HOTSPOT_PICK_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 02",
+                "activity": "RIKSINA - Mirar",
+                "description": "Marca puntos correctos en imagen (demo).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_IMAGE_HOTSPOT_PICK_02_EX",
+                    "type": "IMAGE_HOTSPOT_PICK",
+                    "title": "Presentación (Hotspots) 02",
+                    "prompt": "Marca SOLO las partes correctas (Kichwa):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=60",
+                        "mode": "SINGLE",
+                        "maxPick": 1,
+                        "showLabels": true,
+                        "hotspots": [
+                            {"id": "ñawi", "xPct": 52, "yPct": 20, "label": "ñawi", "isCorrect": true},
+                            {"id": "yaku", "xPct": 20, "yPct": 20, "label": "yaku", "isCorrect": false},
+                            {"id": "rumi", "xPct": 80, "yPct": 85, "label": "rumi", "isCorrect": false}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_IMAGE_HOTSPOT_PICK_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 03",
+                "activity": "RIKSINA - Mirar",
+                "description": "Marca puntos correctos en imagen (demo).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_IMAGE_HOTSPOT_PICK_03_EX",
+                    "type": "IMAGE_HOTSPOT_PICK",
+                    "title": "Presentación (Hotspots) 03",
+                    "prompt": "Marca SOLO las partes correctas (Kichwa):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=60",
+                        "mode": "MULTI",
+                        "maxPick": 2,
+                        "showLabels": true,
+                        "hotspots": [
+                            {"id": "maki", "xPct": 70, "yPct": 60, "label": "maki", "isCorrect": true},
+                            {"id": "simi", "xPct": 52, "yPct": 30, "label": "simi", "isCorrect": true},
+                            {"id": "rumi", "xPct": 80, "yPct": 85, "label": "rumi", "isCorrect": false}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_IMAGE_HOTSPOT_PICK_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 04",
+                "activity": "RIKSINA - Mirar",
+                "description": "Marca puntos correctos en imagen (demo).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_IMAGE_HOTSPOT_PICK_04_EX",
+                    "type": "IMAGE_HOTSPOT_PICK",
+                    "title": "Presentación (Hotspots) 04",
+                    "prompt": "Marca SOLO las partes correctas (Kichwa):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=60",
+                        "mode": "MULTI",
+                        "maxPick": 3,
+                        "showLabels": false,
+                        "hotspots": [
+                            {"id": "ñawi", "xPct": 52, "yPct": 20, "label": "ñawi", "isCorrect": true},
+                            {"id": "simi", "xPct": 52, "yPct": 30, "label": "simi", "isCorrect": true},
+                            {"id": "yaku", "xPct": 20, "yPct": 20, "label": "yaku", "isCorrect": false},
+                            {"id": "rumi", "xPct": 80, "yPct": 85, "label": "rumi", "isCorrect": false}
+                        ]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_IMAGE_HOTSPOT_PICK_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 05",
+                "activity": "RIKSINA - Mirar",
+                "description": "Marca puntos correctos en imagen (demo).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_IMAGE_HOTSPOT_PICK_05_EX",
+                    "type": "IMAGE_HOTSPOT_PICK",
+                    "title": "Presentación (Hotspots) 05",
+                    "prompt": "Marca SOLO las partes correctas (Kichwa):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=60",
+                        "mode": "MULTI",
+                        "maxPick": 3,
+                        "showLabels": true,
+                        "hotspots": [
+                            {"id": "maki", "xPct": 70, "yPct": 60, "label": "maki", "isCorrect": true},
+                            {"id": "ñawi", "xPct": 52, "yPct": 20, "label": "ñawi", "isCorrect": true},
+                            {"id": "simi", "xPct": 52, "yPct": 30, "label": "simi", "isCorrect": true},
+                            {"id": "rumi", "xPct": 80, "yPct": 85, "label": "rumi", "isCorrect": false}
+                        ]
+                    }
+                }
+            },
+
+            {
+                "step_id": "PRE_MULTI_SELECT_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 01",
+                "activity": "UYARINA - Escuchar",
+                "description": "Selecciona las opciones correctas.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_01_EX",
+                    "type": "MULTI_SELECT",
+                    "title": "Presentación (Multi) 01",
+                    "prompt": "Selecciona (2 correctas):",
+                    "payload": {
+                        "options": [
+                            {"id": "a", "text": "Ñuka"},
+                            {"id": "b", "text": "shuti"},
+                            {"id": "c", "text": "Wasi"},
+                            {"id": "d", "text": "Rumi"}
+                        ],
+                        "correctIds": ["a", "b"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 02",
+                "activity": "UYARINA - Escuchar",
+                "description": "Selecciona las opciones correctas.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_02_EX",
+                    "type": "MULTI_SELECT",
+                    "title": "Presentación (Multi) 02",
+                    "prompt": "Selecciona SOLO 1 correcta:",
+                    "payload": {
+                        "options": [
+                            {"id": "a", "text": "Yupay"},
+                            {"id": "b", "text": "Maypi?"},
+                            {"id": "c", "text": "Alli puncha"},
+                            {"id": "d", "text": "Sacha"}
+                        ],
+                        "correctIds": ["a"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 03",
+                "activity": "UYARINA - Escuchar",
+                "description": "Selecciona las opciones correctas.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_03_EX",
+                    "type": "MULTI_SELECT",
+                    "title": "Presentación (Multi) 03",
+                    "prompt": "Selecciona (2 correctas):",
+                    "payload": {
+                        "options": [
+                            {"id": "a", "text": "Killa"},
+                            {"id": "b", "text": "Inti"},
+                            {"id": "c", "text": "Yaku"},
+                            {"id": "d", "text": "Maki"}
+                        ],
+                        "correctIds": ["a", "b"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 04",
+                "activity": "UYARINA - Escuchar",
+                "description": "Selecciona las opciones correctas.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_04_EX",
+                    "type": "MULTI_SELECT",
+                    "title": "Presentación (Multi) 04",
+                    "prompt": "Selecciona (2 correctas):",
+                    "payload": {
+                        "options": [
+                            {"id": "a", "text": "Wasi"},
+                            {"id": "b", "text": "Maki"},
+                            {"id": "c", "text": "Rumi"},
+                            {"id": "d", "text": "Simi"}
+                        ],
+                        "correctIds": ["a", "b"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 05",
+                "activity": "UYARINA - Escuchar",
+                "description": "Selecciona las opciones correctas.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_05_EX",
+                    "type": "MULTI_SELECT",
+                    "title": "Presentación (Multi) 05",
+                    "prompt": "Selecciona SOLO 1 correcta:",
+                    "payload": {
+                        "options": [
+                            {"id": "a", "text": "shuti"},
+                            {"id": "b", "text": "maki"},
+                            {"id": "c", "text": "rumi"},
+                            {"id": "d", "text": "yaku"}
+                        ],
+                        "correctIds": ["a"]
+                    }
+                }
+            },
+
+            {
+                "step_id": "PRE_MULTI_SELECT_IMAGE_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 01",
+                "activity": "RIKSINA - Mirar",
+                "description": "Selecciona mirando la imagen.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_IMAGE_01_EX",
+                    "type": "MULTI_SELECT_IMAGE",
+                    "title": "Presentación (Imagen Multi) 01",
+                    "prompt": "Selecciona las frutas (2 correctas):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        "alt": "frutas",
+                        "showImageFirst": true,
+                        "options": [
+                            {"id": "a", "text": "apil"},
+                            {"id": "b", "text": "palta"},
+                            {"id": "c", "text": "wasi"},
+                            {"id": "d", "text": "maki"}
+                        ],
+                        "correctIds": ["a", "b"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_IMAGE_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 02",
+                "activity": "RIKSINA - Mirar",
+                "description": "Selecciona mirando la imagen.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_IMAGE_02_EX",
+                    "type": "MULTI_SELECT_IMAGE",
+                    "title": "Presentación (Imagen Multi) 02",
+                    "prompt": "Selecciona la fruta correcta (1 correcta):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        "alt": "frutas",
+                        "showImageFirst": true,
+                        "options": [
+                            {"id": "a", "text": "apil"},
+                            {"id": "b", "text": "wasi"},
+                            {"id": "c", "text": "rumi"},
+                            {"id": "d", "text": "yaku"}
+                        ],
+                        "correctIds": ["a"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_IMAGE_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 03",
+                "activity": "RIKSINA - Mirar",
+                "description": "Selecciona mirando la imagen.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_IMAGE_03_EX",
+                    "type": "MULTI_SELECT_IMAGE",
+                    "title": "Presentación (Imagen Multi) 03",
+                    "prompt": "Selecciona las frutas (2 correctas):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        "alt": "frutas",
+                        "showImageFirst": false,
+                        "options": [
+                            {"id": "a", "text": "palta"},
+                            {"id": "b", "text": "apil"},
+                            {"id": "c", "text": "sacha"},
+                            {"id": "d", "text": "wasi"}
+                        ],
+                        "correctIds": ["a", "b"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_IMAGE_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 04",
+                "activity": "RIKSINA - Mirar",
+                "description": "Selecciona mirando la imagen.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_IMAGE_04_EX",
+                    "type": "MULTI_SELECT_IMAGE",
+                    "title": "Presentación (Imagen Multi) 04",
+                    "prompt": "Selecciona 1 correcta:",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        "alt": "frutas",
+                        "showImageFirst": true,
+                        "options": [
+                            {"id": "a", "text": "wasi"},
+                            {"id": "b", "text": "maki"},
+                            {"id": "c", "text": "palta"},
+                            {"id": "d", "text": "rumi"}
+                        ],
+                        "correctIds": ["c"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_MULTI_SELECT_IMAGE_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION  • 05",
+                "activity": "RIKSINA - Mirar",
+                "description": "Selecciona mirando la imagen.",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_MULTI_SELECT_IMAGE_05_EX",
+                    "type": "MULTI_SELECT_IMAGE",
+                    "title": "Presentación (Imagen Multi) 05",
+                    "prompt": "Selecciona las frutas (2 correctas):",
+                    "payload": {
+                        "image": "https://images.unsplash.com/photo-1547516508-918a2ad3a107?auto=format&fit=crop&w=1200&q=60",
+                        "alt": "frutas",
+                        "showImageFirst": true,
+                        "options": [
+                            {"id": "a", "text": "apil"},
+                            {"id": "b", "text": "palta"},
+                            {"id": "c", "text": "yaku"},
+                            {"id": "d", "text": "simi"}
+                        ],
+                        "correctIds": ["a", "b"]
+                    }
+                }
+            },
+
+            {
+                "step_id": "PRE_ORDER_WORDS_01",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 01",
+                "activity": "UYARINA - Escuchar",
+                "description": "Ordena palabras (presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_ORDER_WORDS_01_EX",
+                    "type": "ORDER_WORDS",
+                    "title": "Presentación (Ordenar) 01",
+                    "prompt": "Ordena la frase en Kichwa:",
+                    "payload": {
+                        "correctOrder": ["Ñuka", "shuti", "Killa", "kan."],
+                        "items": ["kan.", "Killa", "Ñuka", "shuti"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_ORDER_WORDS_02",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 02",
+                "activity": "UYARINA - Escuchar",
+                "description": "Ordena palabras (presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_ORDER_WORDS_02_EX",
+                    "type": "ORDER_WORDS",
+                    "title": "Presentación (Ordenar) 02",
+                    "prompt": "Ordena la frase en Kichwa:",
+                    "payload": {
+                        "correctOrder": ["Ñuka", "shuti", "Killa", "kan."],
+                        "items": ["shuti", "Ñuka", "kan.", "Killa"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_ORDER_WORDS_03",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 03",
+                "activity": "UYARINA - Escuchar",
+                "description": "Ordena palabras (presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_ORDER_WORDS_03_EX",
+                    "type": "ORDER_WORDS",
+                    "title": "Presentación (Ordenar) 03",
+                    "prompt": "Ordena la frase en Kichwa:",
+                    "payload": {
+                        "correctOrder": ["Alli", "puncha"],
+                        "items": ["puncha", "Alli"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_ORDER_WORDS_04",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 04",
+                "activity": "UYARINA - Escuchar",
+                "description": "Ordena palabras (presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_ORDER_WORDS_04_EX",
+                    "type": "ORDER_WORDS",
+                    "title": "Presentación (Ordenar) 04",
+                    "prompt": "Ordena la frase en Kichwa:",
+                    "payload": {
+                        "correctOrder": ["Yupay", "Killa"],
+                        "items": ["Killa", "Yupay"]
+                    }
+                }
+            },
+            {
+                "step_id": "PRE_ORDER_WORDS_05",
+                "unidad_seccion_id": 1,
+                "unidad_id": 1,
+                "configuracion_ui_ux_id": 1,
+                "title": "RIKISIRISHUN-PRESENTACION • 05",
+                "activity": "UYARINA - Escuchar",
+                "description": "Ordena palabras (presentación).",
+                "status": "ACTIVE",
+                "weight": 10,
+                "source": "",
+                "exercise": {
+                    "exercise_id": "PRE_ORDER_WORDS_05_EX",
+                    "type": "ORDER_WORDS",
+                    "title": "Presentación (Ordenar) 05",
+                    "prompt": "Ordena la frase en Kichwa:",
+                    "payload": {
+                        "correctOrder": ["Imanalla", "?"],
+                        "items": ["?", "Imanalla"]
+                    }
+                }
+            },
+        ];

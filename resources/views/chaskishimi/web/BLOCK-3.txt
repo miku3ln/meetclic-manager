@@ -1,0 +1,919 @@
+   const BLOCK_3_TAPUYKUNA_SALUDOS = [
+            // =========================================================
+            // BLOQUE 3: TAPUYKUNA - SALUDOS (35)
+            // Tipos (5 c/u): DRAG_MATCH, FILL_BLANK, HAYSTACK_PICK,
+            //                IMAGE_HOTSPOT_PICK, MULTI_SELECT,
+            //                MULTI_SELECT_IMAGE, ORDER_WORDS
+            // =========================================================
+
+            // -------------------------
+            // DRAG_MATCH (5)
+            // -------------------------
+            {
+                step_id: "B3_TAP_DRAG_MATCH_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 01",
+                activity: "RIMAY - Hablar",
+                description: "Empareja preguntas Kichwa con Español.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_DRAG_MATCH_01_EX",
+                    type: "DRAG_MATCH",
+                    title: "Tapuykuna (Emparejar) 01",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "Imanalla?", right: "¿Cómo estás?"},
+                            {left: "Maypi?", right: "¿Dónde?"},
+                            {left: "Imashina?", right: "¿Cómo?"},
+                            {left: "Pita?", right: "¿Quién?"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_DRAG_MATCH_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 02",
+                activity: "RIMAY - Hablar",
+                description: "Empareja respuestas rápidas.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_DRAG_MATCH_02_EX",
+                    type: "DRAG_MATCH",
+                    title: "Tapuykuna (Emparejar) 02",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "Arí", right: "Sí"},
+                            {left: "Mana", right: "No"},
+                            {left: "Allillachu", right: "Estoy bien"},
+                            {left: "Yupay", right: "Gracias"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_DRAG_MATCH_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 03",
+                activity: "RIMAY - Hablar",
+                description: "Empareja preguntas de identidad.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_DRAG_MATCH_03_EX",
+                    type: "DRAG_MATCH",
+                    title: "Tapuykuna (Emparejar) 03",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "Iman shuti?", right: "¿Cuál es tu nombre?"},
+                            {left: "Maymanta kanki?", right: "¿De dónde eres?"},
+                            {left: "Pita kanki?", right: "¿Quién eres?"},
+                            {left: "Imanalla kanki?", right: "¿Cómo estás tú?"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_DRAG_MATCH_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 04",
+                activity: "RIMAY - Hablar",
+                description: "Empareja respuestas para presentarse.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_DRAG_MATCH_04_EX",
+                    type: "DRAG_MATCH",
+                    title: "Tapuykuna (Emparejar) 04",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "Ñuka shuti Killa", right: "Mi nombre es Killa"},
+                            {left: "Ñuka shuti Inti", right: "Mi nombre es Inti"},
+                            {left: "Ñuka shuti Sisa", right: "Mi nombre es Sisa"},
+                            {left: "Ñuka shuti Nina", right: "Mi nombre es Nina"}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_DRAG_MATCH_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 05",
+                activity: "RIMAY - Hablar",
+                description: "Empareja preguntas del día a día.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_DRAG_MATCH_05_EX",
+                    type: "DRAG_MATCH",
+                    title: "Tapuykuna (Emparejar) 05",
+                    prompt: "Empareja Kichwa con Español:",
+                    payload: {
+                        pairs: [
+                            {left: "Imatami munanki?", right: "¿Qué quieres?"},
+                            {left: "Imata ruwanki?", right: "¿Qué haces?"},
+                            {left: "Imata mikunki?", right: "¿Qué comes?"},
+                            {left: "Mayman rinki?", right: "¿A dónde vas?"}
+                        ]
+                    }
+                }
+            },
+
+            // -------------------------
+            // FILL_BLANK (5)
+            // -------------------------
+            {
+                step_id: "B3_TAP_FILL_BLANK_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 01",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_FILL_BLANK_01_EX",
+                    type: "FILL_BLANK",
+                    title: "Tapuykuna (Completar) 01",
+                    prompt: "Completa:",
+                    payload: {text: "____?", answer: "Maypi", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B3_TAP_FILL_BLANK_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 02",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_FILL_BLANK_02_EX",
+                    type: "FILL_BLANK",
+                    title: "Tapuykuna (Completar) 02",
+                    prompt: "Completa:",
+                    payload: {text: "____?", answer: "Pita", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B3_TAP_FILL_BLANK_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 03",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_FILL_BLANK_03_EX",
+                    type: "FILL_BLANK",
+                    title: "Tapuykuna (Completar) 03",
+                    prompt: "Completa:",
+                    payload: {text: "____ shuti?", answer: "Iman", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B3_TAP_FILL_BLANK_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 04",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_FILL_BLANK_04_EX",
+                    type: "FILL_BLANK",
+                    title: "Tapuykuna (Completar) 04",
+                    prompt: "Completa:",
+                    payload: {text: "____ kanki?", answer: "Imanalla", trim: true, ignoreCase: true}
+                }
+            },
+            {
+                step_id: "B3_TAP_FILL_BLANK_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 05",
+                activity: "KILLKAY - Escribir",
+                description: "Completa la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_FILL_BLANK_05_EX",
+                    type: "FILL_BLANK",
+                    title: "Tapuykuna (Completar) 05",
+                    prompt: "Completa:",
+                    payload: {text: "Maymanta ____?", answer: "kanki", trim: true, ignoreCase: true}
+                }
+            },
+
+            // -------------------------
+            // HAYSTACK_PICK (5)
+            // -------------------------
+            {
+                step_id: "B3_TAP_HAYSTACK_PICK_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 01",
+                activity: "RIMAY - Hablar",
+                description: "Elige la pregunta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_HAYSTACK_PICK_01_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Tapuykuna (Haystack) 01",
+                    prompt: "Selecciona en Kichwa:",
+                    payload: {
+                        question: {es: "¿Dónde?", ki: "Maypi?"},
+                        haystack: ["Maypi?", "Imanalla?", "Pita?", "Alli puncha", "Yupay", "Wasi", "Maki", "Yaku", "Rumi", "Sacha"],
+                        correct: ["Maypi?"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_HAYSTACK_PICK_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 02",
+                activity: "RIMAY - Hablar",
+                description: "Elige la pregunta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_HAYSTACK_PICK_02_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Tapuykuna (Haystack) 02",
+                    prompt: "Selecciona en Kichwa:",
+                    payload: {
+                        question: {es: "¿Quién?", ki: "Pita?"},
+                        haystack: ["Maypi?", "Imanalla?", "Pita?", "Iman shuti?", "Alli tuta", "Yupay", "Arí", "Mana", "Wasi", "Maki"],
+                        correct: ["Pita?"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_HAYSTACK_PICK_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 03",
+                activity: "RIMAY - Hablar",
+                description: "Elige la pregunta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_HAYSTACK_PICK_03_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Tapuykuna (Haystack) 03",
+                    prompt: "Selecciona en Kichwa:",
+                    payload: {
+                        question: {es: "¿Cómo estás?", ki: "Imanalla?"},
+                        haystack: ["Imanalla?", "Maypi?", "Pita?", "Imashina?", "Allillachu", "Yupay", "Alli puncha", "Alli tuta", "Wasi", "Rumi"],
+                        correct: ["Imanalla?"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_HAYSTACK_PICK_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 04",
+                activity: "RIMAY - Hablar",
+                description: "Elige la pregunta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_HAYSTACK_PICK_04_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Tapuykuna (Haystack) 04",
+                    prompt: "Selecciona en Kichwa:",
+                    payload: {
+                        question: {es: "¿Cuál es tu nombre?", ki: "Iman shuti?"},
+                        haystack: ["Iman shuti?", "Imanalla?", "Maypi?", "Pita?", "Alli puncha", "Yupay", "Arí", "Mana", "Maki", "Yaku"],
+                        correct: ["Iman shuti?"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_HAYSTACK_PICK_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 05",
+                activity: "RIMAY - Hablar",
+                description: "Elige la pregunta correcta en Kichwa.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_HAYSTACK_PICK_05_EX",
+                    type: "HAYSTACK_PICK",
+                    title: "Tapuykuna (Haystack) 05",
+                    prompt: "Selecciona en Kichwa:",
+                    payload: {
+                        question: {es: "¿A dónde vas?", ki: "Mayman rinki?"},
+                        haystack: ["Mayman rinki?", "Maypi?", "Imanalla?", "Pita?", "Yupay", "Allillachu", "Alli tuta", "Wasi", "Maki", "Rumi"],
+                        correct: ["Mayman rinki?"]
+                    }
+                }
+            },
+
+            // -------------------------
+            // IMAGE_HOTSPOT_PICK (5)
+            // Nota: aquí lo usamos como "selecciona la burbuja correcta"
+            // en una imagen (demo). Sirve para UI, aunque el tema sea tapuykuna.
+            // -------------------------
+            {
+                step_id: "B3_TAP_IMAGE_HOTSPOT_PICK_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 01",
+                activity: "RIKSINA - Mirar",
+                description: "Marca la pregunta correcta (hotspot).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_IMAGE_HOTSPOT_PICK_01_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Tapuykuna (Hotspot) 01",
+                    prompt: "Marca SOLO la pregunta “¿Dónde?” (Maypi?):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        mode: "SINGLE",
+                        maxPick: 1,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "maypi", xPct: 30, yPct: 30, label: "Maypi?", isCorrect: true},
+                            {id: "imanalla", xPct: 60, yPct: 30, label: "Imanalla?", isCorrect: false},
+                            {id: "pita", xPct: 45, yPct: 60, label: "Pita?", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_IMAGE_HOTSPOT_PICK_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 02",
+                activity: "RIKSINA - Mirar",
+                description: "Marca la pregunta correcta (hotspot).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_IMAGE_HOTSPOT_PICK_02_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Tapuykuna (Hotspot) 02",
+                    prompt: "Marca SOLO la pregunta “¿Quién?” (Pita?):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        mode: "SINGLE",
+                        maxPick: 1,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "pita", xPct: 50, yPct: 30, label: "Pita?", isCorrect: true},
+                            {id: "maypi", xPct: 25, yPct: 55, label: "Maypi?", isCorrect: false},
+                            {id: "imanalla", xPct: 70, yPct: 60, label: "Imanalla?", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_IMAGE_HOTSPOT_PICK_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 03",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO 2 preguntas correctas.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_IMAGE_HOTSPOT_PICK_03_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Tapuykuna (Hotspot) 03",
+                    prompt: "Marca SOLO 2 preguntas: Maypi? y Pita?",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        mode: "MULTI",
+                        maxPick: 2,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "maypi", xPct: 25, yPct: 35, label: "Maypi?", isCorrect: true},
+                            {id: "pita", xPct: 60, yPct: 35, label: "Pita?", isCorrect: true},
+                            {id: "yupay", xPct: 40, yPct: 65, label: "Yupay", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_IMAGE_HOTSPOT_PICK_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 04",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO 1 pregunta correcta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_IMAGE_HOTSPOT_PICK_04_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Tapuykuna (Hotspot) 04",
+                    prompt: "Marca SOLO “Imanalla?”",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        mode: "SINGLE",
+                        maxPick: 1,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "imanalla", xPct: 50, yPct: 50, label: "Imanalla?", isCorrect: true},
+                            {id: "maypi", xPct: 20, yPct: 30, label: "Maypi?", isCorrect: false},
+                            {id: "pita", xPct: 80, yPct: 30, label: "Pita?", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_IMAGE_HOTSPOT_PICK_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 05",
+                activity: "RIKSINA - Mirar",
+                description: "Marca SOLO 3 preguntas correctas.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_IMAGE_HOTSPOT_PICK_05_EX",
+                    type: "IMAGE_HOTSPOT_PICK",
+                    title: "Tapuykuna (Hotspot) 05",
+                    prompt: "Marca SOLO 3 preguntas: Maypi?, Pita?, Imanalla?",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        mode: "MULTI",
+                        maxPick: 3,
+                        showLabels: true,
+                        hotspots: [
+                            {id: "maypi", xPct: 25, yPct: 30, label: "Maypi?", isCorrect: true},
+                            {id: "pita", xPct: 55, yPct: 30, label: "Pita?", isCorrect: true},
+                            {id: "imanalla", xPct: 40, yPct: 65, label: "Imanalla?", isCorrect: true},
+                            {id: "yupay", xPct: 75, yPct: 65, label: "Yupay", isCorrect: false}
+                        ]
+                    }
+                }
+            },
+
+            // -------------------------
+            // MULTI_SELECT (5)
+            // -------------------------
+            {
+                step_id: "B3_TAP_MULTI_SELECT_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 01",
+                activity: "RIMAY - Hablar",
+                description: "Selecciona SOLO preguntas (tapuykuna).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_01_EX",
+                    type: "MULTI_SELECT",
+                    title: "Tapuykuna (Multi) 01",
+                    prompt: "Selecciona las preguntas (3 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "Maypi?"},
+                            {id: "b", text: "Pita?"},
+                            {id: "c", text: "Imanalla?"},
+                            {id: "d", text: "Alli puncha"}
+                        ],
+                        correctIds: ["a", "b", "c"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 02",
+                activity: "RIMAY - Hablar",
+                description: "Selecciona SOLO respuestas.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_02_EX",
+                    type: "MULTI_SELECT",
+                    title: "Tapuykuna (Multi) 02",
+                    prompt: "Selecciona las respuestas (2 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "Allillachu"},
+                            {id: "b", text: "Arí"},
+                            {id: "c", text: "Maypi?"},
+                            {id: "d", text: "Pita?"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 03",
+                activity: "RIMAY - Hablar",
+                description: "Selecciona la pregunta de identidad.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_03_EX",
+                    type: "MULTI_SELECT",
+                    title: "Tapuykuna (Multi) 03",
+                    prompt: "Selecciona SOLO 1 correcta:",
+                    payload: {
+                        options: [
+                            {id: "a", text: "Iman shuti?"},
+                            {id: "b", text: "Yupay"},
+                            {id: "c", text: "Alli tuta"},
+                            {id: "d", text: "Allillachu"}
+                        ],
+                        correctIds: ["a"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 04",
+                activity: "RIMAY - Hablar",
+                description: "Selecciona preguntas de acción.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_04_EX",
+                    type: "MULTI_SELECT",
+                    title: "Tapuykuna (Multi) 04",
+                    prompt: "Selecciona (2 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "Imata ruwanki?"},
+                            {id: "b", text: "Mayman rinki?"},
+                            {id: "c", text: "Yupay"},
+                            {id: "d", text: "Alli puncha"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 05",
+                activity: "RIMAY - Hablar",
+                description: "Selecciona preguntas básicas.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_05_EX",
+                    type: "MULTI_SELECT",
+                    title: "Tapuykuna (Multi) 05",
+                    prompt: "Selecciona (2 correctas):",
+                    payload: {
+                        options: [
+                            {id: "a", text: "Imashina?"},
+                            {id: "b", text: "Maypi?"},
+                            {id: "c", text: "Arí"},
+                            {id: "d", text: "Mana"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+
+            // -------------------------
+            // MULTI_SELECT_IMAGE (5)
+            // -------------------------
+            {
+                step_id: "B3_TAP_MULTI_SELECT_IMAGE_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 01",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona SOLO preguntas (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_IMAGE_01_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Tapuykuna (Imagen Multi) 01",
+                    prompt: "Selecciona las preguntas (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        alt: "conversation",
+                        showImageFirst: true,
+                        options: [
+                            {id: "a", text: "Maypi?"},
+                            {id: "b", text: "Pita?"},
+                            {id: "c", text: "Yupay"},
+                            {id: "d", text: "Alli puncha"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_IMAGE_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 02",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona SOLO respuestas (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_IMAGE_02_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Tapuykuna (Imagen Multi) 02",
+                    prompt: "Selecciona las respuestas (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        alt: "conversation",
+                        showImageFirst: false,
+                        options: [
+                            {id: "a", text: "Arí"},
+                            {id: "b", text: "Mana"},
+                            {id: "c", text: "Maypi?"},
+                            {id: "d", text: "Pita?"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_IMAGE_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 03",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona SOLO 1 pregunta (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_IMAGE_03_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Tapuykuna (Imagen Multi) 03",
+                    prompt: "Selecciona SOLO 1 correcta:",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        alt: "conversation",
+                        showImageFirst: true,
+                        options: [
+                            {id: "a", text: "Iman shuti?"},
+                            {id: "b", text: "Yupay"},
+                            {id: "c", text: "Alli tuta"},
+                            {id: "d", text: "Allillachu"}
+                        ],
+                        correctIds: ["a"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_IMAGE_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 04",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona preguntas de acción (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_IMAGE_04_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Tapuykuna (Imagen Multi) 04",
+                    prompt: "Selecciona (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        alt: "conversation",
+                        showImageFirst: true,
+                        options: [
+                            {id: "a", text: "Imata ruwanki?"},
+                            {id: "b", text: "Mayman rinki?"},
+                            {id: "c", text: "Yupay"},
+                            {id: "d", text: "Alli puncha"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_MULTI_SELECT_IMAGE_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS  • 05",
+                activity: "RIKSINA - Mirar",
+                description: "Selecciona preguntas básicas (con imagen).",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_MULTI_SELECT_IMAGE_05_EX",
+                    type: "MULTI_SELECT_IMAGE",
+                    title: "Tapuykuna (Imagen Multi) 05",
+                    prompt: "Selecciona (2 correctas):",
+                    payload: {
+                        image: "https://images.unsplash.com/photo-1520975958225-79a7d8a9f2fd?auto=format&fit=crop&w=1200&q=60",
+                        alt: "conversation",
+                        showImageFirst: false,
+                        options: [
+                            {id: "a", text: "Imashina?"},
+                            {id: "b", text: "Maypi?"},
+                            {id: "c", text: "Arí"},
+                            {id: "d", text: "Mana"}
+                        ],
+                        correctIds: ["a", "b"]
+                    }
+                }
+            },
+
+            // -------------------------
+            // ORDER_WORDS (5)
+            // -------------------------
+            {
+                step_id: "B3_TAP_ORDER_WORDS_01",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 01",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_ORDER_WORDS_01_EX",
+                    type: "ORDER_WORDS",
+                    title: "Tapuykuna (Ordenar) 01",
+                    prompt: "Ordena la pregunta:",
+                    payload: {
+                        correctOrder: ["Maypi", "?"],
+                        items: ["?", "Maypi"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_ORDER_WORDS_02",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 02",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_ORDER_WORDS_02_EX",
+                    type: "ORDER_WORDS",
+                    title: "Tapuykuna (Ordenar) 02",
+                    prompt: "Ordena la pregunta:",
+                    payload: {
+                        correctOrder: ["Pita", "?"],
+                        items: ["?", "Pita"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_ORDER_WORDS_03",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 03",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_ORDER_WORDS_03_EX",
+                    type: "ORDER_WORDS",
+                    title: "Tapuykuna (Ordenar) 03",
+                    prompt: "Ordena la pregunta:",
+                    payload: {
+                        correctOrder: ["Imanalla", "?"],
+                        items: ["?", "Imanalla"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_ORDER_WORDS_04",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 04",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_ORDER_WORDS_04_EX",
+                    type: "ORDER_WORDS",
+                    title: "Tapuykuna (Ordenar) 04",
+                    prompt: "Ordena la pregunta:",
+                    payload: {
+                        correctOrder: ["Iman", "shuti", "?"],
+                        items: ["shuti", "?", "Iman"]
+                    }
+                }
+            },
+            {
+                step_id: "B3_TAP_ORDER_WORDS_05",
+                unidad_seccion_id: 3,
+                unidad_id: 1,
+                configuracion_ui_ux_id: 1,
+                title: "TAPUYKUNA-SALUDOS • 05",
+                activity: "KILLKAY - Escribir",
+                description: "Ordena la pregunta.",
+                status: "ACTIVE",
+                weight: 10,
+                source: "",
+                exercise: {
+                    exercise_id: "B3_TAP_ORDER_WORDS_05_EX",
+                    type: "ORDER_WORDS",
+                    title: "Tapuykuna (Ordenar) 05",
+                    prompt: "Ordena la pregunta:",
+                    payload: {
+                        correctOrder: ["Mayman", "rinki", "?"],
+                        items: ["rinki", "?", "Mayman"]
+                    }
+                }
+            }
+        ];
