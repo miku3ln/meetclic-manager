@@ -287,7 +287,7 @@
         ELEMENTS_DATA.forEach(section => {
             const bannerUrl = section.background;
             const $col = $(`
-      <div class="mc-element" data-key="${section.key}" style="--mc-banner: url('${bannerUrl}');">
+      <div id="section-${section.key}" class="mc-element" data-key="${section.key}" style="--mc-banner: url('${bannerUrl}');" >
 
         <div class="mc-element__head">
           <h2 class="mc-element__title">${section.title}</h2>
@@ -358,8 +358,9 @@
       </div>
     `;
                             }
+
                             MC.state.resetProgress();
-                            configModal.configuration  =
+                            configModal.configuration =
                                 openDynamicModal({
                                     id: "dynamicModal", // 👈 importante si tu openDynamicModal soporta id
                                     fullscreen: true,
@@ -435,7 +436,7 @@
                                     }
                                 });
 
-                        }else{
+                        } else {
                             mcToastShow({
                                 type: "warning",
                                 icon: "⚠️ ",
@@ -448,7 +449,15 @@
                 });
             });
         });
+
+        initStickyFromElementsData();
     }
 
+    function initStickyFromElementsData() {
+        MCStickyHeader.destroy();
+        MCStickyHeader.setConfig(MC_STICKY_CONFIG);
 
+        // si tu scroll es window:
+        MCStickyHeader.init();
+    }
 </script>

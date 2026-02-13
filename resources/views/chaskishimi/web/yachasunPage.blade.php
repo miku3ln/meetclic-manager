@@ -15,6 +15,7 @@ $url_path_plugins = "libs/";
 @extends('layouts.chaskishimi')
 @section('additional-styles')
     @include('chaskishimi.web.yacha-sun.assets.css.course-test-management')
+    @include('chaskishimi.web.yacha-sun.assets.css.menu-top-sections')
 
     <style>
         :root {
@@ -42,6 +43,7 @@ $url_path_plugins = "libs/";
             .nav-button-wrap {
 
             }
+
             .main-menu {
                 top: 95px !important;
 
@@ -55,6 +57,8 @@ $url_path_plugins = "libs/";
     @include('partials.bootstrap-05',["allowJs"=>true])
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-management')
+    @include('chaskishimi.web.yacha-sun.assets.js.process.menu-top-sections')
+
     <script src="{{ asset($resourcePathServer.$url_path_plugins."snap-svg/0-5-1/snap.svg-min.js") }}"
             type="text/javascript"></script>
 
@@ -152,7 +156,7 @@ $url_path_plugins = "libs/";
 
 
             const $parent = $toast.parent();
-            var prevZ ="1500";
+            var prevZ = "1500";
             $parent.css("z-index", prevZ);
             // limpiar modificadores previos
             $toast.removeClass("mc-toast--success mc-toast--warning mc-toast--danger");
@@ -183,13 +187,29 @@ $url_path_plugins = "libs/";
 @section('content')
     <div id="app-management">
 
+        <div class="mc-fixedCard not-view"  id="mcFixedCard" role="region" aria-label="Section header">
+            <div class="mc-fixedCard__inner">
+                <button class="mc-fixedCard__col mc-fixedCard__col--left" id="mcFixedCardLeft" type="button">
+                    <div class="mc-fixedCard__meta" id="mcFixedCardMeta"></div>
+                    <div class="mc-fixedCard__title" id="mcFixedCardTitle"></div>
+                </button>
+
+                <button class="mc-fixedCard__col mc-fixedCard__col--right" id="mcFixedCardRight" type="button"
+                        aria-label="Open actions">
+      <span class="mc-fixedCard__iconBox" id="mcFixedCardIconBox">
+        <img class="mc-fixedCard__icon" id="mcFixedCardIcon" alt="icon"/>
+      </span>
+                </button>
+            </div>
+        </div>
+
         <div class="mc-elements" id="app"></div>
 
     </div>
 @endsection
 @section('data-modal')
     <!-- Toasts -->
-    <div class="toast-container position-fixed p-3 mc-toast__container" style="z-index: 15;">
+    <div class="toast-container position-fixed p-3 mc-toast__container" >
         <div id="mcToast" class="toast mc-toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex mc-toast__row">
                 <div class="toast-body mc-toast__body">

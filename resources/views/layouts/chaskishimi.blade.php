@@ -343,8 +343,13 @@ $addClassManagerHeader=$nameRoute == 'homeChaski'?'':'dark-header--chaski-shimi'
                                             <img src="{{ URL::asset($themePath.'images/logo-light.png')}}" alt="">
 
                                         @else
-                                            <div class="content-name-business ">{{env("projectOneNameFirst")}}<span
-                                                    class="content-name-business__second">{{env("projectOneNameSecond")}}</span>
+                                            <div class="content-name-business ">
+                                                <a href="  {{route("homeChaski",app()->getLocale())}}">{{env('projectOneNameFirst')}}
+
+                                                    <span
+                                                        class="content-name-business__second">{{env('projectOneNameSecond')}}</span>
+                                                </a>
+
                                             </div>
                                         @endif
                                     @else
