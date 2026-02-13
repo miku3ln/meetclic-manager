@@ -449,7 +449,7 @@ class FrontendCityBookManager extends ModelManager
                 'title' => $title . '-' . $subtitle,
                 'source' => asset($this->resourcePathServer . '/images/frontend/meta-data/dictionaryType/image-main.png'),
                 'descriptionData' => '
-                Meetclick-Developer(Alex-Alba)
+                Meetclick-Developer
 El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa como un vehículo para la comunicación y la expresión. A través del lenguaje, las personas pueden compartir sus pensamientos, sentimientos y experiencias, fortaleciendo los lazos sociales y fomentando un sentido de pertenencia y comunidad. Además, el idioma es un componente crucial de la identidad cultural, reflejando la historia, el origen y las relaciones de una comunidad. La transmisión de conocimientos, tradiciones y valores se realiza principalmente a través del idioma, utilizando narrativas orales, literatura y otras formas de expresión artística. La diversidad lingüística refleja la diversidad cultural en el mundo y preservar los idiomas minoritarios es fundamental para proteger esta diversidad y promover la tolerancia intercultural. Además, el idioma influye en el desarrollo cognitivo de las personas, afectando su forma de pensar y percibir el mundo. El dominio del idioma puede influir en las oportunidades de educación, empleo y participación en la sociedad, mientras que la preservación de los idiomas tradicionales es crucial para salvaguardar el patrimonio cultural de la humanidad en un mundo globalizado. ',
 
             ];
@@ -1474,7 +1474,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 'title' => $title . '-' . $subtitle,
                 'source' => asset($this->resourcePathServer . '/images/frontend/meta-data/dictionaryType/image-main.png'),
                 'descriptionData' => '
-                Meetclick-Developer(Alex-Alba)
+                Meetclick-Developer(AMALBA)
 El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa como un vehículo para la comunicación y la expresión. A través del lenguaje, las personas pueden compartir sus pensamientos, sentimientos y experiencias, fortaleciendo los lazos sociales y fomentando un sentido de pertenencia y comunidad. Además, el idioma es un componente crucial de la identidad cultural, reflejando la historia, el origen y las relaciones de una comunidad. La transmisión de conocimientos, tradiciones y valores se realiza principalmente a través del idioma, utilizando narrativas orales, literatura y otras formas de expresión artística. La diversidad lingüística refleja la diversidad cultural en el mundo y preservar los idiomas minoritarios es fundamental para proteger esta diversidad y promover la tolerancia intercultural. Además, el idioma influye en el desarrollo cognitivo de las personas, afectando su forma de pensar y percibir el mundo. El dominio del idioma puede influir en las oportunidades de educación, empleo y participación en la sociedad, mientras que la preservación de los idiomas tradicionales es crucial para salvaguardar el patrimonio cultural de la humanidad en un mundo globalizado. ',
 
             ];
