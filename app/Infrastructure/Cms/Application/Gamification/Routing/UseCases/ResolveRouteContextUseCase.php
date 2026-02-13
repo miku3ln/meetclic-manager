@@ -30,8 +30,8 @@ class ResolveRouteContextUseCase
     public const GAMIFICATION_CMS_ABOUT_US = "aboutUsBee";
     public const GAMIFICATION_CMS_HOW_IT_WORKS = "howItWorks";
     public const GAMIFICATION_CMS_TEAM = "homeBackLine";
-    public const GAMIFICATION_CMS_PROJECT_KICHWA = "homeChaski";
-    public const GAMIFICATION_CMS_PROJECT_KICHWA_YACHANA = "yachaSun";
+    public const GAMIFICATION_CMS_PROJECT_KICHWA = "ricksichishun";
+    public const GAMIFICATION_CMS_PROJECT_KICHWA_YACHANA = "yachashun";
     public const GAMIFICATION_CMS_PROJECT_KICHWA_DICCIONARIO = "diccionario";
     public const GAMIFICATION_CMS_PROJECT_KICHWA_TRADUCTOR = "traductor";
     public const GAMIFICATION_CMS_SEARCH = "search";

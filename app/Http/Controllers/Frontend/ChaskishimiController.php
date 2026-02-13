@@ -57,7 +57,7 @@ class ChaskishimiController extends FrontendBaseController
 
         $modelPage = $this->modelInit;
         $paramsSend = $modelPage->getParamsPage([
-            'page' => 'homeChaskiPage',
+            'page' => 'ricksichishun',
             'paramsRequest' => $paramsRequest
         ]);
 
@@ -65,7 +65,7 @@ class ChaskishimiController extends FrontendBaseController
 
     }
 
-    public function yachaSun($language = 'es', $type = 1)//MAIN HOME CMS-TEMPLATE-home
+    public function yachashun($language = 'es', $type = 1)//MAIN HOME CMS-TEMPLATE-home
     {
 
 

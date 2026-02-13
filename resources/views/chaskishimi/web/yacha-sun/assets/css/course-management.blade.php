@@ -17,7 +17,7 @@
         }
 
         .mc-element__stack {
-
+            margin-top: 46px !important;
             gap: 0px !important;
         }
 
@@ -57,7 +57,7 @@
     /* ====== Section (Elemento) ====== */
     .mc-element {
         width: 100%;
-        height: calc((95dvh - var(--mc-nav-h)) * 1);
+        height: calc((100dvh - var(--mc-nav-h)) * 1);
 
         display: flex;
         flex-direction: column;
@@ -88,15 +88,20 @@
         font-weight: 900;
         font-size: clamp(22px, 2.6vw, 40px);
         margin: 0;
-        color: #f1872e;
+        /*color: #f1872e;*/
+        color: #f1872e00;
+
+
     }
 
     .mc-element__subtitle {
         margin-top: 4px;
         font-size: 14px;
         opacity: .75;
-        color: #ffffff;
+
         font-weight: bold;
+        /*color: #ffffff;*/
+        color: #f1872e00;
     }
 
     /* stack de wheels */
@@ -160,6 +165,20 @@
     }
 
     /* ====== Center ====== */
+
+    .mc-wheel__center.mc-wheel__center--exam {
+        background: none !important;
+        width: 100px !important;
+        height: 100px !important;
+
+    }
+
+    img.mc-wheel__center-img.mc-wheel__center-img--exam {
+        width: 100px !important;
+        height: 100px !important;
+        border-radius: 0px !important;
+    }
+
     .mc-wheel__center {
         position: absolute;
         /*    left: 50%;*/

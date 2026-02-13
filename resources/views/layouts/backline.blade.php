@@ -199,11 +199,11 @@ $addClassManagerHeader=$nameRoute == 'homeBackLine'?'':'dark-header--back-line';
 
 
 
-                    if ($nameRoute == 'homeChaski') {
+                    if ($nameRoute == 'ricksichishun') {
 
                         $activePachamama = 'act-link';
 
-                    } else if ($nameRoute == 'yachaSun') {
+                    } else if ($nameRoute == 'yachashun') {
                         $activeYachaSun = 'act-link';
 
 

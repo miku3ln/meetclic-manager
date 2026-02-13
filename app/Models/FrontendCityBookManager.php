@@ -83,7 +83,7 @@ class FrontendCityBookManager extends ModelManager
         $tracking = new TrackingUtil();
 
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
-        if (!in_array($routeName, ["ourAllies","authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachaSun", "homeChaski", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
+        if (!in_array($routeName, ["ourAllies","authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
                 $resultTracking = $tracking->managerGamingTask($request, $type);
                 $gamificationData = $resultTracking;
@@ -1396,14 +1396,14 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
             $sourceImageCurrent = "/uploads/web/" . $pageCurrent . "/not-manager/" . $sectionProduct . "/background-two." . $jpgNameCurrent;
             $urlImageCurrent = URL($this->resourcePathServer . $sourceImageCurrent);
             $dataManagerPage['backgroundTwo'] = $urlImageCurrent;
-        } else if ($page == 'traductorPage' || $page == 'diccionarioPage' || $page == 'yachasunPage' || $page == 'apuntesPage' || $page == 'homeChaskiPage') {
+        } else if ($page == 'traductorPage' || $page == 'diccionarioPage' || $page == 'yachasunPage' || $page == 'apuntesPage' || $page == 'ricksichishun') {
             $dataManagerPage['type'] = $paramsRequest['type'];
 
             $title = '';
             $subtitle = '';
             $dataManagerPage['allowVue'] = true;
 
-            if ($page == 'homeChaskiPage') {
+            if ($page == 'ricksichishun') {
                 $title = "Riksichishun";
                 $subtitle = "Pagina Principal";
 
@@ -1423,7 +1423,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 }
             } elseif ($page == 'yachasunPage') {
                 $title = "Riksichishun";
-                $subtitle = "Yachasun";
+                $subtitle = "Yachashun";
 
                 $dataManagerPage['allowVue'] = true;
                 $payload = LanguageCoursePayloadUtil::buildPayload(1);
@@ -1469,8 +1469,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
 
 
             $informationCurrent = [
-                'urlManagerRoot' => route('homeChaski', app()->getLocale()),
-                'urlManager' => route('homeChaski', app()->getLocale()),
+                'urlManagerRoot' => route('ricksichishun', app()->getLocale()),
+                'urlManager' => route('ricksichishun', app()->getLocale()),
                 'title' => $title . '-' . $subtitle,
                 'source' => asset($this->resourcePathServer . '/images/frontend/meta-data/dictionaryType/image-main.png'),
                 'descriptionData' => '

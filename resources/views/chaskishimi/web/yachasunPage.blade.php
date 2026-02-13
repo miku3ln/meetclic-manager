@@ -2,6 +2,8 @@
 @php
     $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 $assetsRoot = $resourcePathServer . 'assets/chaskishimi/';
+$assetsYapitasRoot = $resourcePathServer . 'yapitas/';
+
 $resources=[
     'header'=>URL::asset($assetsRoot.'yachasun/header.svg'),
    'wayra'=>URL::asset($assetsRoot.'sections/wayra-ready.png'),
@@ -9,13 +11,28 @@ $resources=[
    'yaku'=>URL::asset($assetsRoot.'sections/yaku-ready.png'),
    'allpa'=>URL::asset($assetsRoot.'sections/allpa-ready.png'),
 
+   "gamification"=>[
+       "yapitas"=>URL::asset($assetsYapitasRoot.'assets/gamification/yapitas-premium.png'),
+       "trophy"=>URL::asset($assetsYapitasRoot.'assets/gamification/trophy.png'),
+       "reputation"=>URL::asset($assetsYapitasRoot.'assets/gamification/reputation.png'),
+       "configuration"=>URL::asset($assetsYapitasRoot.'assets/gamification/configuration.png'),
+],
+"top-waka"=>[
+       "nina"=>URL::asset($assetsRoot.'sections/subsection/nina/waka.png'),
+
+]
+
 ];
+
+
+
 $url_path_plugins = "libs/";
 @endphp
 @extends('layouts.chaskishimi')
 @section('additional-styles')
     @include('chaskishimi.web.yacha-sun.assets.css.course-test-management')
     @include('chaskishimi.web.yacha-sun.assets.css.menu-top-sections')
+    @include('chaskishimi.web.yacha-sun.assets.css.menu-top-gamification')
 
     <style>
         :root {
@@ -99,7 +116,34 @@ $url_path_plugins = "libs/";
                         'manager-selector-container': '#section--full-img',
                         'source': $resources.header,
 
-                    }
+                    },
+                    // ✅ items del iconbar
+                    iconItems: [
+                        {
+                            id: "ic-yapitas",
+                            image: ($resources["gamification"]["yapitas"]),
+                            number: 0,
+                            action: "yapitas",
+                            payload: {tab: "yapitas"}
+                        },
+                        {
+                            id: "ic-trophy",
+                            image: $resources["gamification"]["trophy"],
+                            number: 0,
+                            action: "trophy"
+                        },
+                        {
+                            id: "ic-reputation",
+                            image: ($resources["gamification"]["reputation"]),
+                            number: 0,
+                            action: "reputation"
+                        },
+                        {
+                            id: "ic-configuration",
+                            image: ($resources["gamification"]["configuration"]),
+                            action: "configuration"
+                        }
+                    ]
 
                 },
                 methods: {
@@ -120,7 +164,70 @@ $url_path_plugins = "libs/";
                     },
                     resizeSVG: function (params) {
                         adjustment();
+                    },
+
+
+                    // ---------- ICON BAR ----------
+                    hasNumber: function (item) {
+                        return item.number !== undefined && item.number !== null && item.number !== "";
+                    },
+
+                    handleIconClick: function (item) {
+                        // Si el item trae callback propio (opcional), lo ejecuta:
+                        // (pero recomendado: usar action)
+                        if (typeof item.onClick === "function") {
+                            try {
+                                item.onClick(item, this);
+                            } catch (e) {
+                                console.error(e);
+                            }
+                            return;
+                        }
+
+                        // Router simple por action
+                        switch (item.action) {
+                            case "yapitas":
+                                this.goHome(item.payload);
+                                break;
+                            case "trophy":
+                                this.share(item.payload);
+                                break;
+
+                            case "reputation":
+                                this.reload(item.payload);
+                                break;
+                            case "configuration":
+                                console.warn("Action no definida:", item);
+                                break;
+                            default:
+                                console.warn("Action no definida:", item.action, item);
+                        }
+                    },
+
+                    // ---------- ACCIONES ----------
+                    goHome: function (payload) {
+                        console.log("goHome", payload);
+                    },
+
+                    share: function (payload) {
+                        console.log("share", payload);
+                    },
+
+                    reload: function () {
+                        console.log("reload");
+                        // ejemplo: recargar header svg
+                        // this.initSVGManager();
+                    },
+                    // ✅ update dinámico del número (reactivo)
+                    setIconNumber: function (id, numberOrNull) {
+                        var idx = this.iconItems.findIndex(x => x.id === id);
+                        if (idx === -1) return;
+
+                        // Vue2: asegura reactividad si cambias props
+                        var updated = Object.assign({}, this.iconItems[idx], {number: numberOrNull});
+                        this.$set(this.iconItems, idx, updated);
                     }
+
                 }
             });
         appInit.initManagement();
@@ -186,8 +293,24 @@ $url_path_plugins = "libs/";
 @endsection
 @section('content')
     <div id="app-management">
+        <div class="mc-icbar">
+            <button
+                v-for="item in iconItems"
+                :key="item.id"
+                type="button"
+                class="mc-icbar__item"
+                @click="handleIconClick(item)"
+                :title="item.id"
+            >
+                <img class="mc-icbar__img" :src="item.image" :alt="item.id"/>
 
-        <div class="mc-fixedCard not-view"  id="mcFixedCard" role="region" aria-label="Section header">
+                <!-- number opcional -->
+                <span v-if="hasNumber(item)" class="mc-icbar__badge">
+       <?php echo "{{ item.number }}" ?>
+      </span>
+            </button>
+        </div>
+        <div class="mc-fixedCard not-view" id="mcFixedCard" role="region" aria-label="Section header">
             <div class="mc-fixedCard__inner">
                 <button class="mc-fixedCard__col mc-fixedCard__col--left" id="mcFixedCardLeft" type="button">
                     <div class="mc-fixedCard__meta" id="mcFixedCardMeta"></div>

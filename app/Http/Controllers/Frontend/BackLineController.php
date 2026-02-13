@@ -64,7 +64,7 @@ class BackLineController extends FrontendBaseController
 
     }
 
-    public function yachaSun($language = 'es', $type = 1)//MAIN HOME CMS-TEMPLATE-home
+    public function yachashun($language = 'es', $type = 1)//MAIN HOME CMS-TEMPLATE-home
     {
 
 

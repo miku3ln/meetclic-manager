@@ -5,7 +5,7 @@
         /* ====== BEM: mc-fixedCard ====== */
     .mc-fixedCard{
         position: fixed;
-        top: 10px;
+        top: 68px !important;
         left: 0;
         right: 0;
         z-index: 9999;
@@ -32,6 +32,7 @@
     }
 
     .mc-fixedCard__col{
+
         border: 0;
         background: transparent;
         color: inherit;
@@ -67,6 +68,7 @@
     }
 
     .mc-fixedCard__col--right{
+        border-left: 4px solid #f3f7fd !important;
         display: flex;
         align-items: center;
         justify-content: center;

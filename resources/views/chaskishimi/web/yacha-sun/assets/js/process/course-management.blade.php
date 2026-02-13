@@ -298,21 +298,26 @@
     `);
 
             $app.append($col);
-
+console.log("section generate",section)
             const $stack = $col.find("#stack_" + section.key);
 
             section.items.forEach(wheel => {
+                var sectionCurrent=wheel.section;
+var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
+                var classImage="mc-wheel__center-img"+(sectionCurrent.section_type=="FINAL_EXAM"?" mc-wheel__center-img--exam":"");
+                var classContentImage="mc-wheel__center"+(sectionCurrent.section_type=="FINAL_EXAM"?" mc-wheel__center--exam":"");
+
                 $stack.append(`
-        <div class="mc-wheel" id="${wheel.id}">
+        <div class="mc-wheel" id="${wheel.id}" ui_ux_id="${configuracion_ui_ux_id}">
           <svg class="mc-wheel__svg" id="mc-wheel__svg-${wheel.id}"><g class="mc-wheel__sectors"></g></svg>
-          <div class="mc-wheel__center">
-            <img class="mc-wheel__center-img" alt="icon"/>
+          <div class="${classContentImage}">
+            <img class="${classImage}" alt="icon"/>
           </div>
         </div>
       `);
 
                 const finalWheelEnabled = section.enabled && wheel.enabled;
-
+                console.log("hola",wheel);
                 $("#" + wheel.id).mcWheel({
                     section: wheel.section,
                     id: wheel.id,

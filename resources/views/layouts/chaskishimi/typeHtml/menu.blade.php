@@ -6,7 +6,7 @@
         <ul class="manager-ul">
             <li class="li-{{ $activePachamama }}">
                 <a class="{{ $activePachamama }}  menu__a menu__a--local menu__pachamama"
-                   href="{{ route('homeChaski', app()->getLocale()) }}">{{ __('frontend.menu.project.one.home') }}</a>
+                   href="{{ route('ricksichishun', app()->getLocale()) }}">{{ __('frontend.menu.project.one.home') }}</a>
             </li>
             <li class="li-{{ $activeKichwa }}">
                 <a class="{{ $activeKichwa }}  menu__a menu__a--local menu__kichwa"
@@ -22,7 +22,7 @@
             </li>
 
             <li class="li-{{ $activeYachaSun }}"><a class="{{ $activeYachaSun }}  menu__a"
-                                                     href="{{ route('yachaSun', app()->getLocale()) }}">{{ __('frontend.menu.project.one.learn') }}</a>
+                                                     href="{{ route('yachashun', app()->getLocale()) }}">{{ __('frontend.menu.project.one.learn') }}</a>
             </li>
             <li class="li-{{ $activeApuntes }}"><a class="{{ $activeApuntes}}  menu__a "
                                                         href="{{ route('apuntes', app()->getLocale()) }}">{{ __('frontend.menu.project.one.notes') }}</a>

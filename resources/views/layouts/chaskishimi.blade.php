@@ -112,8 +112,8 @@
 
 <?php
 
-$urlManagerPage = route('homeChaski', app()->getLocale());
-$addClassManagerHeader=$nameRoute == 'homeChaski'?'':'dark-header--chaski-shimi';
+$urlManagerPage = route('ricksichishun', app()->getLocale());
+$addClassManagerHeader=$nameRoute == 'ricksichishun'?'':'dark-header--chaski-shimi';
 
 ?>
 <div id="main">
@@ -199,11 +199,11 @@ $addClassManagerHeader=$nameRoute == 'homeChaski'?'':'dark-header--chaski-shimi'
 
 
 
-                    if ($nameRoute == 'homeChaski') {
+                    if ($nameRoute == 'ricksichishun') {
 
                         $activePachamama = 'act-link';
 
-                    } else if ($nameRoute == 'yachaSun') {
+                    } else if ($nameRoute == 'yachashun') {
                         $activeYachaSun = 'act-link';
 
 
@@ -344,7 +344,7 @@ $addClassManagerHeader=$nameRoute == 'homeChaski'?'':'dark-header--chaski-shimi'
 
                                         @else
                                             <div class="content-name-business ">
-                                                <a href="  {{route("homeChaski",app()->getLocale())}}">{{env('projectOneNameFirst')}}
+                                                <a href="  {{route("ricksichishun",app()->getLocale())}}">{{env('projectOneNameFirst')}}
 
                                                     <span
                                                         class="content-name-business__second">{{env('projectOneNameSecond')}}</span>
@@ -490,8 +490,8 @@ $addClassManagerHeader=$nameRoute == 'homeChaski'?'':'dark-header--chaski-shimi'
 
     var $businessMainInformation = <?php echo json_encode($businessMainInformation) ?>;
 
-    var $allowHome = <?php echo($nameRoute == 'homeChaski' ? 1 : 0) ?>;
-    var $urlMain = "<?php echo(route('homeChaski', app()->getLocale())) ?>";
+    var $allowHome = <?php echo($nameRoute == 'ricksichishun' ? 1 : 0) ?>;
+    var $urlMain = "<?php echo(route('ricksichishun', app()->getLocale())) ?>";
 
     function activeMenuPachamama() {
         if ($allowHome) {

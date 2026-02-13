@@ -578,13 +578,13 @@ class Util
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id' => $routeRoot . 'homeChaski',
+                'id' => $routeRoot . 'ricksichishun',
                 'text' => 'Cultura',
                 'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],
             ],
             [
-                'id' => $routeRoot . 'yachaSun',
+                'id' => $routeRoot . 'yachashun',
                 'text' => 'Aprender Kichwa',
                 'type' => 'cms-pages',
                 'section_id' => $SECTIONS['CMS'],

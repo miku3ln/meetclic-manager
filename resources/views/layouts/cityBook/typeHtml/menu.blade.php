@@ -102,7 +102,7 @@
                         <ul>
                             <li class="li-children-{{ $chaskishimi }}"><a
                                     class="a-{{ $chaskishimi }}  menu__a-children"
-                                    href="{{route('homeChaski', app()->getLocale())  }}">{{ __('frontend.menu.project.one') }}</a>
+                                    href="{{route('ricksichishun', app()->getLocale())  }}">{{ __('frontend.menu.project.one') }}</a>
                             </li>
                             <li class="li-children-{{ $dictionaryKichwaToCastilian }} not-view"><a
                                     class="a-{{ $dictionaryKichwaToCastilian }}  menu__a-children"

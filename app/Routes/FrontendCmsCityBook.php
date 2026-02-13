@@ -103,8 +103,8 @@ class FrontendCmsCityBook
 
             Route::get('/presentationCard/{id?}/{type?}', 'Frontend\FrontendCityBookController@presentationCard')->name('presentationCard');
 
-            Route::get('/homeChaski', 'Frontend\ChaskishimiController@index')->name('homeChaski');//GAMIFICATION ROUTE
-            Route::get('/yachaSun', 'Frontend\ChaskishimiController@yachaSun')->name('yachaSun');//GAMIFICATION ROUTE
+            Route::get('/ricksichishun', 'Frontend\ChaskishimiController@index')->name('ricksichishun');//GAMIFICATION ROUTE
+            Route::get('/yachashun', 'Frontend\ChaskishimiController@yachashun')->name('yachashun');//GAMIFICATION ROUTE
             Route::get('/apuntes', 'Frontend\ChaskishimiController@apuntes')->name('apuntes');//GAMIFICATION ROUTE
             Route::get('/diccionario', 'Frontend\ChaskishimiController@diccionario')->name('diccionario');//GAMIFICATION ROUTE
             Route::get('/traductor', 'Frontend\ChaskishimiController@traductor')->name('traductor');//GAMIFICATION ROUTE

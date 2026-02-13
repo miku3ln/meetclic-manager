@@ -156,7 +156,7 @@
             <meta name="fb:app_id" content="{{ env('facebook_client_id') }}">
             <meta name="og:type" content="article">
 
-        @elseif($dataManagerPage['currentPage'] == 'traductorPage'||$dataManagerPage['currentPage'] == 'diccionarioPage'||$dataManagerPage['currentPage'] == 'yachasunPage'||$dataManagerPage['currentPage'] == 'apuntesPage'||$dataManagerPage['currentPage'] == 'homeChaskiPage')
+        @elseif($dataManagerPage['currentPage'] == 'traductorPage'||$dataManagerPage['currentPage'] == 'diccionarioPage'||$dataManagerPage['currentPage'] == 'yachasunPage'||$dataManagerPage['currentPage'] == 'apuntesPage'||$dataManagerPage['currentPage'] == 'ricksichishun')
             <title>{{ $dataManagerPage['dictionaryTypeData']['information']['title'] }}</title>
             <meta name='description' content='Diccionarios'>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
