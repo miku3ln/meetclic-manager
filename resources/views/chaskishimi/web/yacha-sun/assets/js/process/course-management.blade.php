@@ -60,7 +60,7 @@
         }
 
         function buildWheel($root, options) {
-            console.log("hola entro", options, $root);
+
 
             const cfg = $.extend(true, {
                 enabled: options.enabled,
@@ -223,7 +223,7 @@
                 var sectors = [];
                 var parts = valueSection.items.length;
                 $.each(valueSection.items, function (keyData, valueData) {
-                    console.log(valueData);
+
                     var web_config = valueData.ui_ux.web_config;
                     var palettes = web_config.palettes;
                     var setData = {
@@ -240,14 +240,13 @@
                 });
                 var web_config = valueSection.ui_ux.web_config;
                 var palettes = web_config.palettes;
-
                 var viewBox = web_config.svgConfig.viewBox;
                 var setPushItems = {
                     id: valueSection.id,
                     section: valueSection,
                     enabled: true,
                     centerEnabled: true,
-                    size: 100,
+                    size: 90,
                     parts: parts,
                     rOuter: 80,
                     ringThickness: 25,
@@ -298,7 +297,6 @@
     `);
 
             $app.append($col);
-console.log("section generate",section)
             const $stack = $col.find("#stack_" + section.key);
 
             section.items.forEach(wheel => {
@@ -317,7 +315,7 @@ var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
       `);
 
                 const finalWheelEnabled = section.enabled && wheel.enabled;
-                console.log("hola",wheel);
+
                 $("#" + wheel.id).mcWheel({
                     section: wheel.section,
                     id: wheel.id,
@@ -339,15 +337,13 @@ var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
                         // alert(`section=${section.key} wheel=${wheel.id} sector=${sector.id} idx=${idx}`);
                     },
                     onCenterClick: function () {
-                        console.log("adad", this);
+
                         var dataSection = this;
                         var section = dataSection["section"];
                         var language_course_unit_id = section.language_course_unit_id;
                         var language_course_unit_section_id = section.id;
                         var $blocks = $dataManagerPage.exercisePayload["blocks"];
                         var resultBlock = findBlockByUnitAndSection($blocks, language_course_unit_id, language_course_unit_section_id);
-
-                        console.log("resultBlock", resultBlock);
                         if (resultBlock) {
                             function modalTemplate() {
                                 return `

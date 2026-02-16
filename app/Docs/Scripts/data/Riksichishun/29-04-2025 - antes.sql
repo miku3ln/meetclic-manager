@@ -99,9 +99,6 @@ VALUES (1, 'Kichwa - Castellano', 'Kichwa - Castellano', 'ACTIVE', 2, 3),
 
 
 
-
-
-
 INSERT INTO `dictionary_by_words` (`id`, `value`, `dictionary_grammatical_class_id`, `translation_value`, `description`,
                                    `status`, `diccionary_language_id`, `letters_of_the_alphabet`)
 VALUES (1, 'yupaychana', '0', 'yupaychana', '<div class="word--description">             <span class="word--fonetic">[yupayčana]</span>              <p class="word--description">v. agradecer;
@@ -9556,83 +9553,196 @@ VALUES (1, 'KICHWA NIVEL INICIAL', 'KICHWA NIVEL INICIAL', 'ACTIVE', 1);
 
 INSERT INTO `language_course_by_section` (`id`, `value`, `description`, `status`, `language_course_id`, `type`,
                                           `source`)
-VALUES (1, 'HUNKAYPA PUNCHAKUNA - DÍAS DE LA SEMANA', 'HUNKAYPA PUNCHAKUNA - DÍAS DE LA SEMANA.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/1/1.jpg'),
+VALUES
+
+    (1, 'SHUTI RANTIKUNA-PRONOMBRES PERSONALES', 'SHUTI RANTIKUNA-PRONOMBRES PERSONALES\r.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/8/8.jpg'),
        (2, 'TULLPUKUNA-LOS COLORES', 'TULLPUKUNA-LOS COLORES\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/2/2.jpg'),
        (3, 'YUPAYKUNA-LOS NÚMEROS', 'YUPAYKUNA-LOS NÚMEROS.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/3/3.jpg'),
-       (4, 'KICHWA KILLAN LLIKA-ALFABETO', 'KICHWA KILLAN LLIKA-ALFABETO\n.', 'ACTIVE', 1, 0,
+    (4, 'GRAMATICA KICHWA - KICHWA SHIMI KAMACHIKKUNA', 'GRAMATICA KICHWA - KICHWA SHIMI KAMACHIKKUNA\r.', 'ACTIVE',
+     1, 0, '/uploads/Riksichishun/level-initial/32/32.jpg'),
+    (5, 'HUNINAKUYKUNA - CONJUGACIÓN EN TIEMPOS', 'HUNINAKUYKUNA - CONJUGACIÓN EN TIEMPOS\n.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/35/35.jpg'),
+    (6, 'IMACHIKKUNA -VERBOS', 'IMACHIKKUNA -VERBOS\r.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/20/20.jpg'),
+    (7,
+     'SUTI RURAY MORFEMAKUNA – DERIVACIONALES NOMINALES - BLOQUE 1',
+     'ESPAÑOL:
+    ¿Qué es? Morfemas derivacionales que se pegan a raíces nominales para crear nuevos nombres/adjetivos (posesión, abundancia, rol, ubicación, inclusión).
+    ¿Para qué sirve? Para formar palabras nuevas desde sustantivos: “el que tiene”, “lleno de”, “encargado de”, “detrás/encima”, “junto con”.
+    Ejemplo (1): wasiyuk = dueño de casa.
+    Palabras de la sección: -yuk, -sapa, -kamak, -washa, -hawa, -ntin.
+
+    KICHWA:
+    ¿Imata kan? Suti sapikunaman yapakun derivacional morfemakuna; mushuk shimikuna ruran (charik, sinchi/achka, rol, maypi, huñuy).
+    ¿Imapa yanapakun? Runata/kayta sutikunawan sumaklla rikuchin: “charik”, “sinchi”, “kamak”, “washa/hawa”, “ntin”.
+    Ejemplo (1): wasiyuk = wasi + yuk.
+    Shimiyukuna (secciónpi): -yuk, -sapa, -kamak, -washa, -hawa, -ntin.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna01.png'
+    ),
+    (8,
+     'SAPITA TIKRACHIK MORFEMAKUNA – DERIVACIONALES GENERALES - BLOQUE 2',
+     'ESPAÑOL:
+    ¿Qué es? Morfemas derivacionales que pueden funcionar con nombres o verbos (según contexto): afectivo/limitativo, aspecto y formación verbal desde prendas.
+    ¿Para qué sirve? Para expresar cariño/“nomás”, marcar acción en proceso o resultado, y decir “ponerse X”.
+    Ejemplo (1): mikukuni = estoy comiendo.
+    Palabras de la sección: -ku, -lla, -shka, -lli.
+
+    KICHWA:
+    ¿Imata kan? Suti/verboman yapakun morfemakuna: kuyay/limitación (-ku/-lla), ruray ushashka (-shka), punchuta churina (-lli).
+    ¿Imapa yanapakun? Kuyaywan rimay, “lla/nomás” nishpa ñawinchiy, ruray ushachishka nishpa rikuchiy, punchuta churiy.
+    Ejemplo (1): mikukuni = miku + ku + ni.
+    Shimiyukuna (secciónpi): -ku, -lla, -shka, -lli.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna02.png'
+    ),
+    (9,
+     'RURAY TIKRACHIK MORFEMAKUNA – DERIVACIONALES VERBALES - BLOQUE 3',
+     'ESPAÑOL:
+    ¿Qué es? Morfemas derivacionales verbales: se pegan a raíces verbales para crear/modificar verbos (causativo, recíproco, repetición, continuidad, movimiento, cortesía, etc.).
+    ¿Para qué sirve? Para expresar “hacer que”, “entre sí”, “repetidamente”, “seguir”, “venir haciendo”, “por favor”.
+    Ejemplo (1): mikuchi = hace comer.
+    Palabras de la sección: -na, -k, -naku, -paya, -kacha, -raya, -mu, -chi, -ri, -wa.
+
+    KICHWA:
+    ¿Imata kan? Verbosapikunaman yapakun morfemakuna; ruraypa yuyayta tikrachin (causativo, rimanakuy, kutin-kutin, sapa kuti, shamuy, kuyaywan mañay).
+    ¿Imapa yanapakun? Shuk verbo-pi achka yuyayta rikuchin: “rurachiy”, “mutuamente”, “repetición”, “continuidad”, “venir”, “por favor”.
+    Ejemplo (1): mikuchi = miku + chi.
+    Shimiyukuna (secciónpi): -na, -k, -naku, -paya, -kacha, -raya, -mu, -chi, -ri, -wa.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna03.png'
+    ),
+    (10,
+     'KASUKUNA MORFEMAKUNA – FLEXIONALES GENERALES - BLOQUE 4',
+     'ESPAÑOL:
+    ¿Qué es? Morfemas flexionales (inventario cerrado): no crean palabras nuevas; marcan gramática (plural y casos: a/en/desde/con/para/por/entre/como).
+    ¿Para qué sirve? Para construir oraciones correctas marcando relaciones: objeto, dirección, origen, lugar, posesión, destinatario, instrumento/compañía, causa, comparación.
+    Ejemplo (1): wasimanta = desde la casa.
+    Palabras de la sección: -kuna, -nchik, -ta, -man, -manta, -kama, -pi, -pa, -pak, -wan, -rayku, -pura, -shina.
+
+    KICHWA:
+    ¿Imata kan? Flexión morfemakuna: mana mushuk shimi ruranichu; rimaypa gramáticata rikuchin.
+    ¿Imapa yanapakun? “imata?”, “mayman?”, “maymanta?”, “maypi?”, “pipa?”, “pipak?”, “imawan?”, “imaprayku?”, “imapura?”, “imashina?” nishpa alliyachin.
+    Ejemplo (1): wasimanta = wasi + manta.
+    Shimiyukuna (secciónpi): -kuna, -nchik, -ta, -man, -manta, -kama, -pi, -pa, -pak, -wan, -rayku, -pura, -shina.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna04.png'
+    ),
+    (11,
+     'RUNA/PACHA MORFEMAKUNA – FLEXIONALES VERBALES - BLOQUE 5',
+     'ESPAÑOL:
+    ¿Qué es? Morfemas flexionales verbales: conjugan el verbo (persona, número, tiempo y modo) sin cambiar la raíz.
+    ¿Para qué sirve? Para decir quién hace la acción y cuándo: yo/tú/él/nosotros/ustedes/ellos; pasado; progresivo; deseo; infinitivo; invitación “vamos a”.
+    Ejemplo (1): mikuni = yo como.
+    Palabras de la sección: -ni, -nki, -n, -nchik, -nkichik, -nku, -rka, -sha, -chun, -y, -shun.
+
+    KICHWA:
+    ¿Imata kan? Verbota riksichik flexión morfemakuna: runa (persona), achka (número), pacha (tiempo), modo rikuchin.
+    ¿Imapa yanapakun? Pi rurani/tak? imay? imashina? nishpa verbota alliyachin.
+    Ejemplo (1): mikuni = miku + ni.
+    Shimiyukuna (secciónpi): -ni, -nki, -n, -nchik, -nkichik, -nku, -rka, -sha, -chun, -y, -shun.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna05.png'
+    ),
+    (12,
+     'RIMAY TUKURIK MORFEMAKUNA – ENCLÍTICOS INDEPENDIENTES - BLOQUE 6',
+     'ESPAÑOL:
+    ¿Qué es? Enclíticos: van al final de palabra/frase y cierran el sentido; expresan actitud del hablante (certeza, duda, reporte, pregunta, contraste, énfasis, “todavía”, “ya”).
+    ¿Para qué sirve? Para matizar el mensaje: afirmar con evidencia, “dicen que”, suponer, preguntar, contrastar, enfatizar, añadir “también”, marcar continuidad o cambio.
+    Ejemplo (1): Ñuka-mi kani. = Yo sí soy (certeza).
+    Palabras de la sección: -mi/-m, -shi, -cha, -chu, -ka, -lla, -pas, -pish, -taq, -ri, -má, -tak, -rak, -ña.
+
+    KICHWA:
+    ¿Imata kan? Enclítico morfemakuna: shimipa tukuriy-pi yapakun, runapa yuyay/actitudta rikuchin.
+    ¿Imapa yanapakun? Seguro/duda/reportado/tapuy/contrasti/sinchi/“también”/“todavía”/“ya” nishpa rimayta kawsachin.
+    Ejemplo (1): Ñuka-mi kani. = ñuka + mi kani.
+    Shimiyukuna (secciónpi): -mi/-m, -shi, -cha, -chu, -ka, -lla, -pas, -pish, -taq, -ri, -má, -tak, -rak, -ña.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna06.png'
+    ),
+    (13,
+     'RIMAY SINCHIYACHIK – REDUPLICACIÓN EXPRESIVA - BLOQUE 7',
+     'ESPAÑOL:
+    ¿Qué es? En Kichwa Otavalo no hay infijos productivos regulares; lo más cercano es reduplicación/expresión fonológica (fenómeno expresivo).
+    ¿Para qué sirve? Para intensificar sensaciones y emociones (frío, calor, dolor, tristeza) y dar ritmo al habla.
+    Ejemplo (1): Achachay. = ¡Qué frío!
+    Palabras de la sección: achachay, achachaw, araray, ayayay, chikichiki, hatunhatun, sinchisinchi, llakillaki.
+
+    KICHWA:
+    ¿Imata kan? Kichwa shimipi infixokuna mana productivo kanchu; ashtawan “reduplicación/expresivo” rikurin.
+    ¿Imapa yanapakun? Chiri/rupay/nanay/llaki shina rikchayta sinchiyachin, rimayta sumaklla ruray.
+    Ejemplo (1): Achachay. = Achachay!
+    Shimiyukuna (secciónpi): achachay, achachaw, araray, ayayay, chikichiki, hatunhatun, sinchisinchi, llakillaki.',
+     'ACTIVE', 1, 0, '/uploads/Riksichishun/morfemas/morfemakuna07.png'
+    ),
+
+    (14, 'TAPUYKUNA - PREGUNTAS', 'TAPUYKUNA - PREGUNTAS\r.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/30/30.jpg'),
+    (15, 'TAPUYKUNA - PREGUNTAS', 'TAPUYKUNA - PREGUNTAS\r.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/31/31.jpg'),
+    (16, 'RIKSIRISHUN - PRESENTACIÓN\n.', 'RIKSIRISHUN - PRESENTACIÓN\n.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/27/27.jpg'),
+    (17, 'HUNKAYPA PUNCHAKUNA - DÍAS DE LA SEMANA', 'HUNKAYPA PUNCHAKUNA - DÍAS DE LA SEMANA.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/1/1.jpg'),
+    (18, 'WATAPA KILLAKUNA - MESES DEL AÑO', 'WATAPA KILLAKUNA - MESES DEL AÑO\r.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/22/22.jpg'),
+
+       (19, 'KICHWA KILLAN LLIKA-ALFABETO', 'KICHWA KILLAN LLIKA-ALFABETO\n.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/4/4.jpg'),
-       (5, 'MISHKIMURUKUNA-FRUTAS', 'MISHKIMURUKUNA-FRUTAS\r.', 'ACTIVE', 1, 0,
+    (20, 'UYAYWAKUNA - LAS VOCALES', 'UYAYWAKUNA - LAS VOCALES\r.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/16/16.jpg'),
+       (21, 'MISHKIMURUKUNA-FRUTAS', 'MISHKIMURUKUNA-FRUTAS\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/5/5.jpg'),
-       (6, 'CHUYAYANKAPA HILLAYKUNA-IMPLEMENTOS DE ASEO', 'CHUYAYANKAPA HILLAYKUNA-IMPLEMENTOS DE ASEO\r.', 'ACTIVE', 1,
+       (22, 'CHUYAYANKAPA HILLAYKUNA-IMPLEMENTOS DE ASEO', 'CHUYAYANKAPA HILLAYKUNA-IMPLEMENTOS DE ASEO\r.', 'ACTIVE', 1,
         0, '/uploads/Riksichishun/level-initial/6/6.jpg'),
-       (7, 'YACHANAWAKUPA HILLAYKUNA-IMPLEMENTOS DEL AULA', 'YACHANAWAKUPA HILLAYKUNA-IMPLEMENTOS DEL AULA\r.',
+       (23, 'YACHANAWAKUPA HILLAYKUNA-IMPLEMENTOS DEL AULA', 'YACHANAWAKUPA HILLAYKUNA-IMPLEMENTOS DEL AULA\r.',
         'ACTIVE', 1, 0, '/uploads/Riksichishun/level-initial/7/7.jpg'),
-       (8, 'SHUTI RANTIKUNA-PRONOMBRES PERSONALES', 'SHUTI RANTIKUNA-PRONOMBRES PERSONALES\r.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/8/8.jpg'),
-       (9, 'SHUYUTUPUMANYA-FIGURAS GEOMÉTRICAS', 'SHUYUTUPUMANYA-FIGURAS GEOMÉTRICAS.', 'ACTIVE', 1, 0,
+    (24, 'YUPAY UNANCHAKUNA-SÍMBOLOS MATEMÁTICOS', 'YUPAY UNANCHAKUNA-SÍMBOLOS MATEMÁTICOS.', 'ACTIVE', 1, 0,
+     '/uploads/Riksichishun/level-initial/10/10.jpg'),
+       (25, 'SHUYUTUPUMANYA-FIGURAS GEOMÉTRICAS', 'SHUYUTUPUMANYA-FIGURAS GEOMÉTRICAS.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/9/9.jpg'),
-       (10, 'YUPAY UNANCHAKUNA-SÍMBOLOS MATEMÁTICOS', 'YUPAY UNANCHAKUNA-SÍMBOLOS MATEMÁTICOS.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/10/10.jpg'),
-       (11, 'SACHA WIWAKUNA-ANIMALES SALVAJES', 'SACHA WIWAKUNA-ANIMALES SALVAJES\r.', 'ACTIVE', 1, 0,
+
+       (26, 'SACHA WIWAKUNA-ANIMALES SALVAJES', 'SACHA WIWAKUNA-ANIMALES SALVAJES\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/11/11.jpg'),
-       (12, 'RUNAPA UKKU SHUTIKUNA -CUERPO HUMANO', 'RUNAPA UKKU SHUTIKUNA -CUERPO HUMANO\r.', 'ACTIVE', 1, 0,
+       (27, 'RUNAPA UKKU SHUTIKUNA -CUERPO HUMANO', 'RUNAPA UKKU SHUTIKUNA -CUERPO HUMANO\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/12/12.jpg'),
-       (13, 'RUNAPA UKKU SHUTIKUNA-CUERPO HUMANO', 'RUNAPA UKKU SHUTIKUNA-CUERPO HUMANO\r.', 'ACTIVE', 1, 0,
+       (28, 'RUNAPA UKKU SHUTIKUNA-CUERPO HUMANO', 'RUNAPA UKKU SHUTIKUNA-CUERPO HUMANO\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/13/13.jpg'),
-       (14, 'RUNA UKKUPA TULLUKUNA -HUESOS DEL CUERPO HUMANO', 'RUNA UKKUPA TULLUKUNA -HUESOS DEL CUERPO HUMANO\r.',
+       (29, 'RUNA UKKUPA TULLUKUNA -HUESOS DEL CUERPO HUMANO', 'RUNA UKKUPA TULLUKUNA -HUESOS DEL CUERPO HUMANO\r.',
         'ACTIVE', 1, 0, '/uploads/Riksichishun/level-initial/14/14.jpg'),
-       (15, 'APARIYKANCHA- MEDIOS DE TRANSPORTE', 'APARIYKANCHA- MEDIOS DE TRANSPORTE\n.', 'ACTIVE', 1, 0,
+       (30, 'APARIYKANCHA- MEDIOS DE TRANSPORTE', 'APARIYKANCHA- MEDIOS DE TRANSPORTE\n.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/15/15.jpg'),
-       (16, 'UYAYWAKUNA - LAS VOCALES', 'UYAYWAKUNA - LAS VOCALES\r.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/16/16.jpg'),
-       (17, 'ECUADOR MAMALLAKTAPA HAYLLI-HIMNO NACIONAL DEL ECUADOR',
+       (31, 'ECUADOR MAMALLAKTAPA HAYLLI-HIMNO NACIONAL DEL ECUADOR',
         'ECUADOR MAMALLAKTAPA HAYLLI-HIMNO NACIONAL DEL ECUADOR\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/17/17.jpg'),
-       (18, 'CHAYLLATKSHIMI, CHIMPANAKUY YUYAY - SINÓNIMOS Y ANTÓNIMOS',
+       (32, 'CHAYLLATKSHIMI, CHIMPANAKUY YUYAY - SINÓNIMOS Y ANTÓNIMOS',
         'CHAYLLATKSHIMI, CHIMPANAKUY YUYAY - SINÓNIMOS Y ANTÓNIMOS\n.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/18/18.jpg'),
-       (19, 'CHAYLLATAKSHIMI, CHIMPANAKUY YUYAY-SINÓNIMOS Y ANTÓNIMOS',
+       (33, 'CHAYLLATAKSHIMI, CHIMPANAKUY YUYAY-SINÓNIMOS Y ANTÓNIMOS',
         'CHAYLLATAKSHIMI, CHIMPANAKUY YUYAY -  SINÓNIMOS Y ANTÓNIMOS\n.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/19/19.jpg'),
-       (20, 'IMACHIKKUNA -VERBOS', 'IMACHIKKUNA -VERBOS\r.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/20/20.jpg'),
-       (21, 'RUNAWAN KAWSAYK WIWAKUNA - ANIMALES DOMÉSTICOS\n.', 'RUNAWAN KAWSAYK WIWAKUNA - ANIMALES DOMÉSTICOS\n.',
+       (34, 'RUNAWAN KAWSAYK WIWAKUNA - ANIMALES DOMÉSTICOS\n.', 'RUNAWAN KAWSAYK WIWAKUNA - ANIMALES DOMÉSTICOS\n.',
         'ACTIVE', 1, 0, '/uploads/Riksichishun/level-initial/21/21.jpg'),
-       (22, 'WATAPA KILLAKUNA - MESES DEL AÑO', 'WATAPA KILLAKUNA - MESES DEL AÑO\r.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/22/22.jpg'),
-       (23, 'MIKUNA YUYUKUNA - HORTALIZAS', 'MIKUNA YUYUKUNA - HORTALIZAS\r.', 'ACTIVE', 1, 0,
+
+       (35, 'MIKUNA YUYUKUNA - HORTALIZAS', 'MIKUNA YUYUKUNA - HORTALIZAS\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/23/23.jpg'),
-       (24, 'MIKUNA YUYUKUNA - HORTALIZAS', 'MIKUNA YUYUKUNA - HORTALIZAS\r.', 'ACTIVE', 1, 0,
+       (36, 'MIKUNA YUYUKUNA - HORTALIZAS', 'MIKUNA YUYUKUNA - HORTALIZAS\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/24/24.jpg'),
-       (25, 'AYLLUKUNA - LA FAMILIA', 'AYLLUKUNA - LA FAMILIA\r.', 'ACTIVE', 1, 0,
+       (37, 'AYLLUKUNA - LA FAMILIA', 'AYLLUKUNA - LA FAMILIA\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/25/25.jpg'),
-       (26, 'CHAKANAPA YACHAY - CONOCIMIENTOS DE LA CRUZ ANDINA',
+       (38, 'CHAKANAPA YACHAY - CONOCIMIENTOS DE LA CRUZ ANDINA',
         'CHAKANAPA YACHAY - CONOCIMIENTOS DE LA CRUZ ANDINA\n.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/26/26.jpg'),
-       (27, 'RIKSIRISHUN - PRESENTACIÓN\n.', 'RIKSIRISHUN - PRESENTACIÓN\n.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/27/27.jpg'),
-       (28, 'IMASHINAKAY - EMOCIONES', 'IMASHINAKAY - EMOCIONES\r.', 'ACTIVE', 1, 0,
+
+       (39, 'IMASHINAKAY - EMOCIONES', 'IMASHINAKAY - EMOCIONES\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/28/28.jpg'),
-       (29, 'PUÑUNAWKU-DORMITORIO', 'PUÑUNAWKU-DORMITORIO\r.', 'ACTIVE', 1, 0,
+       (40, 'PUÑUNAWKU-DORMITORIO', 'PUÑUNAWKU-DORMITORIO\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/29/29.jpg'),
-       (30, 'TAPUYKUNA - PREGUNTAS', 'TAPUYKUNA - PREGUNTAS\r.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/30/30.jpg'),
-       (31, 'TAPUYKUNA - PREGUNTAS', 'TAPUYKUNA - PREGUNTAS\r.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/31/31.jpg'),
-       (32, 'GRAMATICA KICHWA - KICHWA SHIMI KAMACHIKKUNA', 'GRAMATICA KICHWA - KICHWA SHIMI KAMACHIKKUNA\r.', 'ACTIVE',
-        1, 0, '/uploads/Riksichishun/level-initial/32/32.jpg'),
-       (33, 'YUPAYPA UNACHAKUNA - SÍMBOLOS MATEMÁTICOS', 'YUPAYPA UNACHAKUNA - SÍMBOLOS MATEMÁTICOS.', 'ACTIVE', 1, 0,
+
+       (41, 'YUPAYPA UNACHAKUNA - SÍMBOLOS MATEMÁTICOS', 'YUPAYPA UNACHAKUNA - SÍMBOLOS MATEMÁTICOS.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/33/33.jpg'),
-       (34, 'NAPAYKUNA - SALUDOS', 'NAPAYKUNA - SALUDOS\r.', 'ACTIVE', 1, 0,
+       (42, 'NAPAYKUNA - SALUDOS', 'NAPAYKUNA - SALUDOS\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/34/34.jpg'),
-       (35, 'HUNINAKUYKUNA - CONJUGACIÓN EN TIEMPOS', 'HUNINAKUYKUNA - CONJUGACIÓN EN TIEMPOS\n.', 'ACTIVE', 1, 0,
-        '/uploads/Riksichishun/level-initial/35/35.jpg'),
-       (36, 'UPYANAKUNA - BEBIDAS', 'UPYANAKUNA - BEBIDAS\r.', 'ACTIVE', 1, 0,
+       (43, 'UPYANAKUNA - BEBIDAS', 'UPYANAKUNA - BEBIDAS\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/36/36.jpg'),
-       (37, 'CHURAKUNAKUNA -VESTIMENTA', 'CHURAKUNAKUNA -VESTIMENTA\r.', 'ACTIVE', 1, 0,
+       (44, 'CHURAKUNAKUNA -VESTIMENTA', 'CHURAKUNAKUNA -VESTIMENTA\r.', 'ACTIVE', 1, 0,
         '/uploads/Riksichishun/level-initial/37/37.jpg');
 
 

@@ -1,14 +1,5 @@
         const BLOCK_4_MISHKIMURUKUNA_FRUTAS = [
-            // =========================================================
-            // BLOQUE 4: Mishkimurukuna - Frutas (35)
-            // Tipos (5 c/u): DRAG_MATCH, FILL_BLANK, HAYSTACK_PICK,
-            //                IMAGE_HOTSPOT_PICK, MULTI_SELECT,
-            //                MULTI_SELECT_IMAGE, ORDER_WORDS
-            // =========================================================
 
-            // -------------------------
-            // DRAG_MATCH (5)
-            // -------------------------
             {
                 step_id: "B4_FRU_DRAG_MATCH_01",
                 unidad_seccion_id: 4,
@@ -140,9 +131,6 @@
                 }
             },
 
-            // -------------------------
-            // FILL_BLANK (5)
-            // -------------------------
             {
                 step_id: "B4_FRU_FILL_BLANK_01",
                 unidad_seccion_id: 4,
@@ -239,9 +227,6 @@
                 }
             },
 
-            // -------------------------
-            // HAYSTACK_PICK (5)
-            // -------------------------
             {
                 step_id: "B4_FRU_HAYSTACK_PICK_01",
                 unidad_seccion_id: 4,
@@ -358,10 +343,6 @@
                 }
             },
 
-            // -------------------------
-            // IMAGE_HOTSPOT_PICK (5)
-            // Nota: aquí sí lo usamos con "frutas en imagen"
-            // -------------------------
             {
                 step_id: "B4_FRU_IMAGE_HOTSPOT_PICK_01",
                 unidad_seccion_id: 4,
@@ -509,9 +490,6 @@
                 }
             },
 
-            // -------------------------
-            // MULTI_SELECT (5)
-            // -------------------------
             {
                 step_id: "B4_FRU_MULTI_SELECT_01",
                 unidad_seccion_id: 4,
@@ -648,9 +626,6 @@
                 }
             },
 
-            // -------------------------
-            // MULTI_SELECT_IMAGE (5)
-            // -------------------------
             {
                 step_id: "B4_FRU_MULTI_SELECT_IMAGE_01",
                 unidad_seccion_id: 4,
@@ -802,9 +777,6 @@
                 }
             },
 
-            // -------------------------
-            // ORDER_WORDS (5)
-            // -------------------------
             {
                 step_id: "B4_FRU_ORDER_WORDS_01",
                 unidad_seccion_id: 4,

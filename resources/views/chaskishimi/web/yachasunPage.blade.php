@@ -20,6 +20,23 @@ $resources=[
 "top-waka"=>[
        "nina"=>URL::asset($assetsRoot.'sections/subsection/nina/waka.png'),
 
+],
+"icons"=>[
+       "vocabulary"=>URL::asset($assetsYapitasRoot.'assets/gamification/yapitas-premium.png'),
+       "idioms"=>URL::asset($assetsYapitasRoot.'assets/gamification/trophy.png'),
+       "wordOfDay"=>URL::asset($assetsYapitasRoot.'assets/gamification/reputation.png'),
+       "favorites"=>URL::asset($assetsYapitasRoot.'assets/gamification/configuration.png'),
+       "history"=>URL::asset($assetsYapitasRoot.'assets/gamification/reputation.png'),
+       "random"=>URL::asset($assetsYapitasRoot.'assets/gamification/reputation.png'),
+       "chaski-idioma"=>URL::asset($assetsRoot.'themes-tools/chaski-idioma.png'),
+       "chaski-cosmovision"=>URL::asset($assetsRoot.'themes-tools/chaski-cosmovision.png'),
+       "chaski-apuntes"=>URL::asset($assetsRoot.'themes-tools/chaski-apuntes.png'),
+       "chaski-diccionario"=>URL::asset($assetsRoot.'themes-tools/chaski-diccionario.png'),
+       "chaski-trabalenguas"=>URL::asset($assetsRoot.'themes-tools/chaski-trabalenguas.png'),
+       "chaski-canciones"=>URL::asset($assetsRoot.'themes-tools/chaski-canciones.png'),
+
+
+
 ]
 
 ];
@@ -33,8 +50,10 @@ $url_path_plugins = "libs/";
     @include('chaskishimi.web.yacha-sun.assets.css.course-test-management')
     @include('chaskishimi.web.yacha-sun.assets.css.menu-top-sections')
     @include('chaskishimi.web.yacha-sun.assets.css.menu-top-gamification')
+    @include('utils.conjugation-ki.assets.css.conjugation-kichwa')
 
     <style>
+
         :root {
             --mc-nav-h: 64px; /* ajusta al alto real de tu navbar */
         }
@@ -67,39 +86,130 @@ $url_path_plugins = "libs/";
             }
         }
     </style>
+    <style id="canva">
+
+        /* 1) Fullscreen real + encima de todo */
+        #mcPanel.mc-offcanvas-full {
+            position: fixed !important;
+            inset: 0 !important; /* top:0 right:0 bottom:0 left:0 */
+            width: 100vw !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            transform: none !important; /* por si algún parent mete transform */
+            z-index: 15000 !important;
+        }
+
+        /* 2) Layout interno: header fijo + canvas scrolleable */
+        #mcPanel.mc-offcanvas-full {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        /* header no crece */
+        #mcPanel .mc-offcanvas-header {
+            flex: 0 0 auto;
+        }
+
+        /* ✅ SOLO AQUÍ SCROLL */
+        #mcPanel .mc-offcanvas-canvas {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-height: 0; /* CLAVE en flex para que overflow funcione */
+        }
+
+        /* 3) Backdrop (si lo usas) debajo del panel pero encima del sitio */
+        .offcanvas-backdrop {
+            z-index: 1990 !important;
+        }
+
+    </style>
+    <link href="{{ asset($resourcePathServer."plugins/bootgrid-2024/jquery.bootgrid.min.css") }}" rel="stylesheet"
+          type="text/css">
     @include('partials.bootstrap-05',["allowCss"=>true])
 
 @endsection
 @section('additional-scripts')
     @include('partials.bootstrap-05',["allowJs"=>true])
+    <script>
+        var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
+        var $resources = <?php echo json_encode($resources) ?>;
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-management')
     @include('chaskishimi.web.yacha-sun.assets.js.process.menu-top-sections')
+    @include('utils.conjugation-ki.assets.js.conjugation-kichwa')
+
+    <script src="{{ asset($resourcePathServer."plugins/bootgrid-2024/jquery.bootgrid.min.js") }}"
+            type="text/javascript"></script>
 
     <script src="{{ asset($resourcePathServer.$url_path_plugins."snap-svg/0-5-1/snap.svg-min.js") }}"
             type="text/javascript"></script>
 
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-test-init')
     @include('chaskishimi.web.yacha-sun.assets.js.process.init-modal')
+    @include('chaskishimi.web.yacha-sun.assets.js.process.course-management-tools')
 
     <script>
-        var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
-        var $resources = <?php echo json_encode($resources) ?>;
+
         var appThis = null;
         var appInit = new Vue(
             {
+                el: '#app-management',
+                directives: {
+                    'init-bootgrid': {
+                        mounted: function () {
+                            console.log("init-bootgrid")
+                        },
+                        inserted: function (el, binding, vnode, vm, arg) {
+                            var $this = vnode.context;
+                            var paramsInput = binding.value;
+                            console.log("init-bootgrid inserted")
+                            $this.initCurrentGridApuntesComponent({
+                                elementInit: el,
+                                params: paramsInput
+                            });
+                        }
+                    },
+                    'init-plugin-study': {
+                        mounted: function () {
+                            console.log("init-plugin-study")
+                        },
+                        inserted: function (el, binding, vnode, vm, arg) {
+                            var $this = vnode.context;
+                            var paramsInput = binding.value;
+                            console.log("init-plugin-study inserted", paramsInput)
 
+                        }
+                    },
+
+                },
+                created: function () {
+                    this.$set(this.hub, "filteredCards", []);
+                },
+                computed: {
+                    // filtra por tab + búsqueda
+                    hubFilteredCards: function () {
+
+                        const q = (this.hub.search || "").trim().toLowerCase();
+                        if (!q) return this.hub.cards;
+
+                        return this.hub.cards.filter(c =>
+                            (c.title + " " + c.subtitle).toLowerCase().includes(q)
+                        );
+
+                    }
+                },
                 mounted: function () {
                     this.initCurrentComponent();
                     appThis = this;
                     //this.initSVGManager();
                     $(function () {
                         $(render);
+                        appThis.canvasManager.init = initCanvas();
+                        appThis.initEventsCanvas(appThis.canvasManager.init);
                     });
-                },
-                el: '#app-management',
-                created: function () {
-
+                    this.refreshHubGrid();
                 },
                 beforeMount: function () {
                     this.configParams = this.params;
@@ -110,6 +220,12 @@ $url_path_plugins = "libs/";
 
                 },
                 data: {
+                    canvasManager: {
+                        init: null,
+                        data: {
+                            title: "Hola"
+                        }
+                    },
                     managerHeader: {
                         data: null,
                         'selector': '#svg-full-width',
@@ -143,10 +259,41 @@ $url_path_plugins = "libs/";
                             image: ($resources["gamification"]["configuration"]),
                             action: "configuration"
                         }
-                    ]
+                    ],
+                    ...$courseManagementData,
+                    ...$configApuntesData,
 
                 },
                 methods: {
+
+
+                    initEventsCanvas: function (params) {
+                        const el = params.el;
+
+                        el.addEventListener("show.bs.offcanvas", function () {
+
+
+                            }
+                        );
+                        el.addEventListener("shown.bs.offcanvas", function () {
+
+                                lockOuterScroll();
+
+                                // ✅ asegúrate que el canvas siga con scroll
+                                $(this).find(".mc-offcanvas-canvas").css({
+                                    overflowY: "auto",
+                                    overflowX: "hidden"
+                                });
+                            }
+                        );
+                        el.addEventListener("hide.bs.offcanvas", () => console.log("va a cerrar"));
+                        el.addEventListener("hidden.bs.offcanvas", function () {
+
+                                unlockOuterScroll();
+                            }
+                        );
+                        el.addEventListener("hidePrevented.bs.offcanvas", () => console.log("cierre prevenido"));
+                    },
                     initCurrentComponent: function () {
 
                     }, initManagement: function () {
@@ -197,7 +344,7 @@ $url_path_plugins = "libs/";
                                 this.reload(item.payload);
                                 break;
                             case "configuration":
-                                console.warn("Action no definida:", item);
+                                this.canvasManager.init.canvasOptions.show()
                                 break;
                             default:
                                 console.warn("Action no definida:", item.action, item);
@@ -226,7 +373,9 @@ $url_path_plugins = "libs/";
                         // Vue2: asegura reactividad si cambias props
                         var updated = Object.assign({}, this.iconItems[idx], {number: numberOrNull});
                         this.$set(this.iconItems, idx, updated);
-                    }
+                    },
+                    ...$courseManagementToolsMethods,
+                    ...$configApuntesMethods
 
                 }
             });
@@ -289,10 +438,151 @@ $url_path_plugins = "libs/";
             });
             toast.show();
         }
+
+        function generateMorphemeGlossary(paramns) {
+            return new MorphemeGlossaryPlugin({}).initPayload(paramns.data);
+        }
+
+        function generateData(params) {
+            var mg = generateMorphemeGlossary(params);
+            const data = mg.generateData(params.word);
+            const html = mg.generateHtml(data);
+            return {
+                data: data,
+                html: html,
+
+            };
+        }
+
+    </script>
+    <script>
+        function lockOuterScroll() {
+            const $html = $("html");
+            const $body = $("body");
+
+            $html.data("mc_prev_overflow", $html.css("overflow"));
+            $body.data("mc_prev_overflow", $body.css("overflow"));
+
+            $html.css("overflow", "hidden");  // ✅ oculta scrollbar externo
+            $body.css("overflow", "hidden");  // (por si acaso)
+        }
+
+        function unlockOuterScroll() {
+            const $html = $("html");
+            const $body = $("body");
+
+            $html.css("overflow", $html.data("mc_prev_overflow") ?? "");
+            $body.css("overflow", $body.data("mc_prev_overflow") ?? "");
+        }
+
+        function initCanvas() {
+            const el = document.getElementById('mcPanel');
+            const canvasOptions = new bootstrap.Offcanvas(el, {
+                backdrop: true,
+                keyboard: false,
+                scroll: false
+            });
+            return {el: el, canvasOptions: canvasOptions};
+        }
     </script>
 @endsection
 @section('content')
     <div id="app-management">
+
+
+        <div class="offcanvas offcanvas-start mc-offcanvas-full  w-100"
+             tabindex="-1"
+             id="mcPanel">
+
+            <div class="offcanvas-header mc-offcanvas-header">
+                <div class="mc-hub__search input-group mb-2">
+                    <h1 class="mc-offcanvas-header__title">
+                        <?php echo "   {{canvasManager.data.title}} " ?>
+                    </h1>
+                    <div class="not-view">
+                         <span class="input-group-text bg-white border-end-0 mc-pill-left">
+      <i class="bi bi-search"></i>
+    </span>
+
+                        <input
+                            type="text"
+                            class="form-control border-start-0 border-end-0 mc-pill-mid "
+                            placeholder="Search..."
+                            v-model="hub.search"
+                            @input="hub.onSearchInput"
+                        />
+
+                        <button class="btn btn-outline-secondary bg-white border-start-0 mc-pill-right"
+                                type="button"
+                                @click="openFilters()">
+                            <i class="bi bi-sliders"></i>
+                        </button>
+                    </div>
+
+                </div>
+                <button type="button" class="btn-close btn-close--canvas" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body mc-offcanvas-canvas">
+                <div id="content-body-canvas">
+                    <div class="mc-hub p-3" id="content-all-process">
+                        <ul class="nav nav-underline mc-hub__tabs mb-3 not-view">
+                            <li class="nav-item" v-for="t in hub.tabs" :key="t.id">
+                                <button
+                                    class="nav-link"
+                                    :class="{active: hub.activeTab === t.id}"
+                                    type="button"
+                                    @click="setHubTab(t.id)"
+                                >
+                                    <i :class="t.icon" class="me-1"></i>
+                                    <?php echo "{{ t.label }}" ?>
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="row g-3" v-if="hub.active_process.key==null">
+                            <div class="col-6 col-6" v-for="card in hub.filteredCards" :key="card.id">
+                                <button type="button" class="mc-card card w-100 text-start" @click="openCard(card)">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-end not-view">
+                                            <!-- bookmark corner -->
+                                            <span class="mc-bookmark" :class="{'mc-bookmark--on': card.bookmarked}">
+              <i class="bi" :class="card.bookmarked ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+            </span>
+                                        </div>
+
+                                        <div class="mc-card__icon mb-2">
+                                            <img :src="card.icon" alt=""/>
+                                        </div>
+
+                                        <div class="mc-card__title"><?php echo "{{ card.title }}" ?></div>
+                                        <div class="mc-card__sub text-muted"><?php echo "{{ card.subtitle }}" ?></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row g-3" v-if="hub.active_process.key">
+                            <button class="btn btn-primary" @click="returnMainProcess()" id="btn-return-process">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <div v-if="hub.active_process.key=='chaski-apuntes'">
+
+                                @include('utils.sections.apuntes.template-main')
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div id="other-data">
+                        <h1 style="color:rgb(24 179 26 / 0%)">HOLA SOY </h1>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
         <div class="mc-icbar">
             <button
                 v-for="item in iconItems"
@@ -332,7 +622,7 @@ $url_path_plugins = "libs/";
 @endsection
 @section('data-modal')
     <!-- Toasts -->
-    <div class="toast-container position-fixed p-3 mc-toast__container" >
+    <div class="toast-container position-fixed p-3 mc-toast__container">
         <div id="mcToast" class="toast mc-toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex mc-toast__row">
                 <div class="toast-body mc-toast__body">
@@ -345,7 +635,10 @@ $url_path_plugins = "libs/";
                 </div>
 
                 <button type="button" class="btn-close me-2 m-auto mc-toast__close" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+                        aria-label="Close">
+
+
+                </button>
             </div>
         </div>
     </div>

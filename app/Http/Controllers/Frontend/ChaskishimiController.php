@@ -8,6 +8,8 @@ use App\Models\FrontendCityBookManager;
 use App\Models\FrontendManager;
 use App;
 use App\Support\Dictionary\DictionaryCountsNumbersUtil;
+use App\Support\Dictionary\DictionaryMorphemeCatalog;
+use App\Support\Dictionary\DictionaryPayloadUtil;
 use Auth;
 use App\Models\TemplateInformation;
 use App\Utils\Util;
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailContactUs;
 use App\Models\TemplateConfigMailingByEmails;
 use Illuminate\Support\Facades\Response;
-
+use App\Support\Dictionary\DictionaryGrammaticalClassIds ;
 class ChaskishimiController extends FrontendBaseController
 {
     const LAYOUT_MAIN = 'chaskishimi';
@@ -68,6 +70,34 @@ class ChaskishimiController extends FrontendBaseController
     public function yachashun($language = 'es', $type = 1)//MAIN HOME CMS-TEMPLATE-home
     {
 
+
+        if(false){
+            $langId = 1;
+            $classIds = DictionaryGrammaticalClassIds::CORE_IDS;
+            $perPage = 800; // 0 => todo
+            $page = 1;
+
+            $payload = DictionaryPayloadUtil::buildWords([
+                'diccionary_language_id' => $langId,
+                'class_ids' => $classIds,        // 👈 constantes
+                'include_inactive' => false,
+                'pagination' => $perPage > 0 ? ['page' => $page, 'per_page' => $perPage] : null,
+                'output' => 'array',
+            ]);
+            $date = now()->format('Ymd_His');
+            $fname = "dictionary_words_lang{$langId}_{$date}.json";
+            $words=$payload["words"];
+            return response()->streamDownload(function () use ($words) {
+                echo json_encode(
+                    $words,
+                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+                );
+            }, $fname, [
+                'Content-Type' => 'application/json; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="'.$fname.'"',
+                'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            ]);
+        }
 
 
         $renderView = self::LAYOUT_MAIN . '.web.yachasunPage';

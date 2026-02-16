@@ -7,6 +7,7 @@ use App\Models\ProductDistributions\ProductParentByProduct;
 use App\Models\Products\Product;
 use App\Models\Whatsapp\WhatsappConfigs;
 use App\Support\Dictionary\DictionaryCountsNumbersUtil;
+use App\Support\Dictionary\DictionaryMorphemeCatalog;
 use App\Support\Dictionary\ExercisePayloadUtil;
 use App\Support\Dictionary\PronunciationPayloadUtil;
 use App\Support\Dictionary\LanguageCoursePayloadUtil;
@@ -1442,6 +1443,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 ]);
 
                 $dataManagerPage['exercisePayload'] = $exercisePayload;
+                $dataManagerPage['dictionaryMorphemeCatalog'] = DictionaryMorphemeCatalog::morphemeFunctionsPayload();
 
 
             } elseif ($page == 'diccionarioPage') {
@@ -1452,6 +1454,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $dataManagerPage['allowVue'] = true;
                 $dataManagerPage['dictionaryCountsNumbersManagement'] = DictionaryCountsNumbersUtil::payload(true);
                 $dataManagerPage['pronunciationPayManagement'] =PronunciationPayloadUtil::buildPayload();
+                $dataManagerPage['dictionaryMorphemeCatalog'] = DictionaryMorphemeCatalog::morphemeFunctionsPayload();
 
             } elseif ($page == 'apuntesPage') {
                 $title = "Riksichishun";

@@ -1,0 +1,2718 @@
+{
+    "unit_id": 1,
+    "unit_title": "WAYRA",
+    "themes": [
+        {
+            "language_course_unit_section_id": 1,
+            "theme": "RIKSIRISHUN – Presentación",
+            "total_steps": 18,
+            "steps": [
+                {
+                    "step_id": "PRE_HAYSTACK_PICK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 01",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la palabra correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 10,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_HAYSTACK_PICK_01_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Presentación (Haystack) 01",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Yo", "ki": "¿Cuál es 'Yo'?" },
+                            "haystack": ["Ñuka", "Kan", "Pay", "Wasi", "Allpa", "Wayra", "Inti", "Ama", "Alli", "Ima"],
+                            "correct": ["Ñuka"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_HAYSTACK_PICK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 02",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la palabra correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 20,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_HAYSTACK_PICK_02_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Presentación (Haystack) 02",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Tú (singular)", "ki": "¿Cuál es 'Tú'?" },
+                            "haystack": ["Kan", "Ñukanchik", "Paykuna", "Allku", "Achik", "Amina", "Wayta", "Wiki", "Wiksa", "Willana"],
+                            "correct": ["Kan"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_HAYSTACK_PICK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 03",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la palabra correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 30,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_HAYSTACK_PICK_03_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Presentación (Haystack) 03",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Él/Ella", "ki": "¿Cuál es 'Él/Ella'?" },
+                            "haystack": ["Pay", "Ñuka", "Kankuna", "Allimanta", "Achka", "Wayra", "Inti", "Allpa", "Ama", "Alalay"],
+                            "correct": ["Pay"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "PRE_DRAG_MATCH_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 04",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja Kichwa con Español (pronombres).",
+                    "status": "ACTIVE",
+                    "weight": 40,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_DRAG_MATCH_01_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Presentación (Emparejar) 01",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ñuka", "right": "Yo" },
+                                { "left": "Kan", "right": "Tú" },
+                                { "left": "Pay", "right": "Él/Ella" },
+                                { "left": "Ñukanchik", "right": "Nosotros/as" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_DRAG_MATCH_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 05",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja Kichwa con Español (vocabulario).",
+                    "status": "ACTIVE",
+                    "weight": 50,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_DRAG_MATCH_02_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Presentación (Emparejar) 02",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Alli", "right": "Bueno/Bien" },
+                                { "left": "Ama", "right": "No" },
+                                { "left": "Inti", "right": "Sol" },
+                                { "left": "Allpa", "right": "Tierra" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_DRAG_MATCH_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 06",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja Kichwa con Español (acciones básicas).",
+                    "status": "ACTIVE",
+                    "weight": 60,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_DRAG_MATCH_03_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Presentación (Emparejar) 03",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Willana", "right": "Avisar/Informar" },
+                                { "left": "Wichayana", "right": "Subir/Ascender" },
+                                { "left": "Alliyana", "right": "Sanarse/Curarse" },
+                                { "left": "Akllana", "right": "Elegir/Escoger" }
+                            ]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "PRE_FILL_BLANK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 07",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la frase con pronombre.",
+                    "status": "ACTIVE",
+                    "weight": 70,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_FILL_BLANK_01_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Presentación (Completar) 01",
+                        "prompt": "Completa la frase:",
+                        "payload": {
+                            "text": "____ alli kani.",
+                            "answer": "Ñuka",
+                            "trim": true,
+                            "ignoreCase": true
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_FILL_BLANK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 08",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la frase con pronombre.",
+                    "status": "ACTIVE",
+                    "weight": 80,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_FILL_BLANK_02_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Presentación (Completar) 02",
+                        "prompt": "Completa la frase:",
+                        "payload": {
+                            "text": "____ alli kanki.",
+                            "answer": "Kan",
+                            "trim": true,
+                            "ignoreCase": true
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_FILL_BLANK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 09",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la frase con negación.",
+                    "status": "ACTIVE",
+                    "weight": 90,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_FILL_BLANK_03_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Presentación (Completar) 03",
+                        "prompt": "Completa la frase:",
+                        "payload": {
+                            "text": "____ alli kani.",
+                            "answer": "Ama",
+                            "trim": true,
+                            "ignoreCase": true
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "PRE_MULTI_SELECT_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 10",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona los pronombres (2).",
+                    "status": "ACTIVE",
+                    "weight": 100,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_MULTI_SELECT_01_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Presentación (Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Ñuka" },
+                                { "id": "b", "text": "Kan" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_MULTI_SELECT_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 11",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona palabras de 'naturaleza' (2).",
+                    "status": "ACTIVE",
+                    "weight": 110,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_MULTI_SELECT_02_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Presentación (Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Wayra" },
+                                { "id": "b", "text": "Inti" },
+                                { "id": "c", "text": "Allku" },
+                                { "id": "d", "text": "Wiki" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_MULTI_SELECT_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 12",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona interjecciones (2).",
+                    "status": "ACTIVE",
+                    "weight": 120,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_MULTI_SELECT_03_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Presentación (Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Achachay" },
+                                { "id": "b", "text": "Alalay" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Akllana" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "PRE_MULTI_SELECT_IMAGE_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 13",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona lo que ves (2).",
+                    "status": "ACTIVE",
+                    "weight": 130,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_MULTI_SELECT_IMAGE_01_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Presentación (Imagen Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "paisaje",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Wayra" },
+                                { "id": "b", "text": "Allpa" },
+                                { "id": "c", "text": "Maki" },
+                                { "id": "d", "text": "Wiksa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_MULTI_SELECT_IMAGE_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 14",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona lo que ves (2).",
+                    "status": "ACTIVE",
+                    "weight": 140,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_MULTI_SELECT_IMAGE_02_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Presentación (Imagen Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "cielo y sol",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Inti" },
+                                { "id": "b", "text": "Achik" },
+                                { "id": "c", "text": "Allku" },
+                                { "id": "d", "text": "Aksu" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_MULTI_SELECT_IMAGE_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 15",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona (pronombres) (2).",
+                    "status": "ACTIVE",
+                    "weight": 150,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_MULTI_SELECT_IMAGE_03_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Presentación (Imagen Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1520975693411-b6f6a5d8c0d5?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "personas",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Ñuka" },
+                                { "id": "b", "text": "Kan" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Wayta" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "PRE_ORDER_WORDS_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 16",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la frase (presentación).",
+                    "status": "ACTIVE",
+                    "weight": 160,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_ORDER_WORDS_01_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Presentación (Ordenar) 01",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": {
+                            "correctOrder": ["Ñuka", "alli", "kani."],
+                            "items": ["kani.", "alli", "Ñuka"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_ORDER_WORDS_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 17",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la frase (negación).",
+                    "status": "ACTIVE",
+                    "weight": 170,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_ORDER_WORDS_02_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Presentación (Ordenar) 02",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": {
+                            "correctOrder": ["Ama", "alli", "kani."],
+                            "items": ["kani.", "Ama", "alli"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "PRE_ORDER_WORDS_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 1,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIKSIRISHUN-PRESENTACION • 18",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la frase (tercera persona).",
+                    "status": "ACTIVE",
+                    "weight": 180,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "PRE_ORDER_WORDS_03_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Presentación (Ordenar) 03",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": {
+                            "correctOrder": ["Pay", "alli", "kan."],
+                            "items": ["alli", "Pay", "kan."]
+                        }
+                    }
+                }
+            ]
+        },
+
+        {
+            "language_course_unit_section_id": 2,
+            "theme": "NAPAYKUNA – Saludos",
+            "total_steps": 18,
+            "steps": [
+                {
+                    "step_id": "SAL_HAYSTACK_PICK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 01",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge el saludo correcto del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 10,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_HAYSTACK_PICK_01_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Saludos (Haystack) 01",
+                        "prompt": "Selecciona la palabra/frase correcta:",
+                        "payload": {
+                            "question": { "es": "Buenos días", "ki": "¿Cuál es 'Buenos días'?" },
+                            "haystack": ["Alli puncha", "Achachay", "Ama", "Alli", "Wayra", "Inti", "Maypi?", "Ima?", "Allpa", "Allku"],
+                            "correct": ["Alli puncha"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_HAYSTACK_PICK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 02",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge el saludo correcto del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 20,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_HAYSTACK_PICK_02_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Saludos (Haystack) 02",
+                        "prompt": "Selecciona la palabra/frase correcta:",
+                        "payload": {
+                            "question": { "es": "¿Cómo estás?", "ki": "¿Cuál es '¿Cómo estás?'?" },
+                            "haystack": ["Imanalla kanki?", "Maypi?", "Imamanta?", "Alliyana", "Akllana", "Allimanta", "Alli puncha", "Ama", "Ñuka", "Kan"],
+                            "correct": ["Imanalla kanki?"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_HAYSTACK_PICK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 03",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la respuesta correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 30,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_HAYSTACK_PICK_03_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Saludos (Haystack) 03",
+                        "prompt": "Selecciona la respuesta correcta:",
+                        "payload": {
+                            "question": { "es": "Bien", "ki": "¿Cuál es 'Bien'?" },
+                            "haystack": ["Alli", "Ama", "Achka", "Amina", "Allpa", "Wayra", "Inti", "Wiki", "Wiksa", "Aksu"],
+                            "correct": ["Alli"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "SAL_DRAG_MATCH_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 04",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja saludo con significado.",
+                    "status": "ACTIVE",
+                    "weight": 40,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_DRAG_MATCH_01_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Saludos (Emparejar) 01",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Alli puncha", "right": "Buenos días" },
+                                { "left": "Alli tuta", "right": "Buenas noches" },
+                                { "left": "Alli chishi", "right": "Buenas tardes" },
+                                { "left": "Napaykuna", "right": "Saludos" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_DRAG_MATCH_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 05",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja respuesta con significado.",
+                    "status": "ACTIVE",
+                    "weight": 50,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_DRAG_MATCH_02_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Saludos (Emparejar) 02",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Allimi kani", "right": "Estoy bien" },
+                                { "left": "Ama alli", "right": "No (estoy) bien" },
+                                { "left": "Alliyana", "right": "Sanarse" },
+                                { "left": "Allikana", "right": "Salud/Bienestar" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_DRAG_MATCH_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 06",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja pronombres útiles.",
+                    "status": "ACTIVE",
+                    "weight": 60,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_DRAG_MATCH_03_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Saludos (Emparejar) 03",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ñuka", "right": "Yo" },
+                                { "left": "Kan", "right": "Tú" },
+                                { "left": "Kankuna", "right": "Ustedes" },
+                                { "left": "Paykuna", "right": "Ellos/Ellas" }
+                            ]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "SAL_FILL_BLANK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 07",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa el saludo.",
+                    "status": "ACTIVE",
+                    "weight": 70,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_FILL_BLANK_01_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Saludos (Completar) 01",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Alli ____.", "answer": "puncha", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "SAL_FILL_BLANK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 08",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la respuesta.",
+                    "status": "ACTIVE",
+                    "weight": 80,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_FILL_BLANK_02_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Saludos (Completar) 02",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Allimi ____.", "answer": "kani", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "SAL_FILL_BLANK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 09",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa con negación.",
+                    "status": "ACTIVE",
+                    "weight": 90,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_FILL_BLANK_03_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Saludos (Completar) 03",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____ alli kani.", "answer": "Ama", "trim": true, "ignoreCase": true }
+                    }
+                },
+
+                {
+                    "step_id": "SAL_MULTI_SELECT_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 10",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona saludos (2).",
+                    "status": "ACTIVE",
+                    "weight": 100,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_MULTI_SELECT_01_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Saludos (Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Alli puncha" },
+                                { "id": "b", "text": "Alli tuta" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Wayra" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_MULTI_SELECT_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 11",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona respuestas (2).",
+                    "status": "ACTIVE",
+                    "weight": 110,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_MULTI_SELECT_02_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Saludos (Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Allimi kani" },
+                                { "id": "b", "text": "Ama alli kani" },
+                                { "id": "c", "text": "Achachay" },
+                                { "id": "d", "text": "Aksu" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_MULTI_SELECT_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 12",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona pronombres (2).",
+                    "status": "ACTIVE",
+                    "weight": 120,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_MULTI_SELECT_03_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Saludos (Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Ñuka" },
+                                { "id": "b", "text": "Kan" },
+                                { "id": "c", "text": "Inti" },
+                                { "id": "d", "text": "Allku" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "SAL_MULTI_SELECT_IMAGE_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 13",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona la idea correcta (2).",
+                    "status": "ACTIVE",
+                    "weight": 130,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_MULTI_SELECT_IMAGE_01_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Saludos (Imagen Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1520975590628-d2fdf4b2f6a7?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "saludo personas",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Napaykuna" },
+                                { "id": "b", "text": "Alli puncha" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Wayra" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_MULTI_SELECT_IMAGE_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 14",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona lo correcto (2).",
+                    "status": "ACTIVE",
+                    "weight": 140,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_MULTI_SELECT_IMAGE_02_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Saludos (Imagen Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1520975661595-6453be3f7070?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "personas conversando",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Imanalla kanki?" },
+                                { "id": "b", "text": "Allimi kani" },
+                                { "id": "c", "text": "Achachaw" },
+                                { "id": "d", "text": "Akllana" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "SAL_MULTI_SELECT_IMAGE_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 15",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona saludos (2).",
+                    "status": "ACTIVE",
+                    "weight": 150,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_MULTI_SELECT_IMAGE_03_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Saludos (Imagen Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "noche",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Alli tuta" },
+                                { "id": "b", "text": "Alli chishi" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Wiki" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "SAL_ORDER_WORDS_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 16",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena el saludo.",
+                    "status": "ACTIVE",
+                    "weight": 160,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_ORDER_WORDS_01_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Saludos (Ordenar) 01",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Alli", "puncha."], "items": ["puncha.", "Alli"] }
+                    }
+                },
+                {
+                    "step_id": "SAL_ORDER_WORDS_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 17",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 170,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_ORDER_WORDS_02_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Saludos (Ordenar) 02",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Imanalla", "kanki?"], "items": ["kanki?", "Imanalla"] }
+                    }
+                },
+                {
+                    "step_id": "SAL_ORDER_WORDS_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 2,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "NAPAYKUNA-SALUDOS • 18",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la respuesta.",
+                    "status": "ACTIVE",
+                    "weight": 180,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "SAL_ORDER_WORDS_03_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Saludos (Ordenar) 03",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Allimi", "kani."], "items": ["kani.", "Allimi"] }
+                    }
+                }
+            ]
+        },
+
+        {
+            "language_course_unit_section_id": 3,
+            "theme": "TAPUYKUNA – Preguntas",
+            "total_steps": 18,
+            "steps": [
+                {
+                    "step_id": "TAP_HAYSTACK_PICK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 01",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la pregunta correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 10,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_HAYSTACK_PICK_01_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Preguntas (Haystack) 01",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "¿Qué?", "ki": "Ima?" },
+                            "haystack": ["Ima", "Maypi", "Imamanta", "Alli", "Ama", "Wayra", "Inti", "Allpa", "Ñuka", "Kan"],
+                            "correct": ["Ima"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_HAYSTACK_PICK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 02",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la pregunta correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 20,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_HAYSTACK_PICK_02_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Preguntas (Haystack) 02",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "¿Dónde?", "ki": "Maypi?" },
+                            "haystack": ["Maypi", "Ima", "Imamanta", "Allpa", "Wayra", "Achik", "Allku", "Ama", "Alli", "Inti"],
+                            "correct": ["Maypi"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_HAYSTACK_PICK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 03",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la pregunta correcta del haystack.",
+                    "status": "ACTIVE",
+                    "weight": 30,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_HAYSTACK_PICK_03_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Preguntas (Haystack) 03",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "¿Por qué?", "ki": "Imamanta?" },
+                            "haystack": ["Imamanta", "Maypi", "Ima", "Ama", "Alli", "Allimanta", "Achachay", "Wayra", "Allpa", "Inti"],
+                            "correct": ["Imamanta"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "TAP_DRAG_MATCH_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 04",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja pregunta con significado.",
+                    "status": "ACTIVE",
+                    "weight": 40,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_DRAG_MATCH_01_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Preguntas (Emparejar) 01",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ima?", "right": "¿Qué?" },
+                                { "left": "Maypi?", "right": "¿Dónde?" },
+                                { "left": "Imamanta?", "right": "¿Por qué?" },
+                                { "left": "Pita?", "right": "¿Quién?" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_DRAG_MATCH_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 05",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja palabra con significado.",
+                    "status": "ACTIVE",
+                    "weight": 50,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_DRAG_MATCH_02_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Preguntas (Emparejar) 02",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Alli", "right": "Bien" },
+                                { "left": "Ama", "right": "No" },
+                                { "left": "Willana", "right": "Avisar" },
+                                { "left": "Maskana", "right": "Investigar" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_DRAG_MATCH_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 06",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja pronombres para preguntar.",
+                    "status": "ACTIVE",
+                    "weight": 60,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_DRAG_MATCH_03_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Preguntas (Emparejar) 03",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ñuka", "right": "Yo" },
+                                { "left": "Kan", "right": "Tú" },
+                                { "left": "Pay", "right": "Él/Ella" },
+                                { "left": "Kankuna", "right": "Ustedes" }
+                            ]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "TAP_FILL_BLANK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 07",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 70,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_FILL_BLANK_01_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Preguntas (Completar) 01",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____?", "answer": "Ima", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "TAP_FILL_BLANK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 08",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 80,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_FILL_BLANK_02_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Preguntas (Completar) 02",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____?", "answer": "Maypi", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "TAP_FILL_BLANK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 09",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 90,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_FILL_BLANK_03_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Preguntas (Completar) 03",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____?", "answer": "Imamanta", "trim": true, "ignoreCase": true }
+                    }
+                },
+
+                {
+                    "step_id": "TAP_MULTI_SELECT_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 10",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona preguntas (2).",
+                    "status": "ACTIVE",
+                    "weight": 100,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_MULTI_SELECT_01_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Preguntas (Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Ima?" },
+                                { "id": "b", "text": "Maypi?" },
+                                { "id": "c", "text": "Alli" },
+                                { "id": "d", "text": "Allpa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_MULTI_SELECT_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 11",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona preguntas (2).",
+                    "status": "ACTIVE",
+                    "weight": 110,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_MULTI_SELECT_02_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Preguntas (Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Imamanta?" },
+                                { "id": "b", "text": "Pita?" },
+                                { "id": "c", "text": "Wayra" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_MULTI_SELECT_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 12",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona palabras útiles para preguntar (2).",
+                    "status": "ACTIVE",
+                    "weight": 120,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_MULTI_SELECT_03_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Preguntas (Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Maskana" },
+                                { "id": "b", "text": "Willana" },
+                                { "id": "c", "text": "Achachaw" },
+                                { "id": "d", "text": "Aksu" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "TAP_MULTI_SELECT_IMAGE_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 13",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona la pregunta correcta (2).",
+                    "status": "ACTIVE",
+                    "weight": 130,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_MULTI_SELECT_IMAGE_01_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Preguntas (Imagen Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "persona preguntando",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Ima?" },
+                                { "id": "b", "text": "Maypi?" },
+                                { "id": "c", "text": "Alli puncha" },
+                                { "id": "d", "text": "Allpa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_MULTI_SELECT_IMAGE_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 14",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona preguntas (2).",
+                    "status": "ACTIVE",
+                    "weight": 140,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_MULTI_SELECT_IMAGE_02_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Preguntas (Imagen Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "grupo conversando",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Imamanta?" },
+                                { "id": "b", "text": "Pita?" },
+                                { "id": "c", "text": "Achachay" },
+                                { "id": "d", "text": "Wayra" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "TAP_MULTI_SELECT_IMAGE_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 15",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona pronombres (2).",
+                    "status": "ACTIVE",
+                    "weight": 150,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_MULTI_SELECT_IMAGE_03_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Preguntas (Imagen Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1520975682030-1b1a0b9b9f8a?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "personas",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Ñuka" },
+                                { "id": "b", "text": "Kan" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "TAP_ORDER_WORDS_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 16",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 160,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_ORDER_WORDS_01_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Preguntas (Ordenar) 01",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Ima?"], "items": ["Ima?"] }
+                    }
+                },
+                {
+                    "step_id": "TAP_ORDER_WORDS_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 17",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 170,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_ORDER_WORDS_02_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Preguntas (Ordenar) 02",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Maypi?"], "items": ["Maypi?"] }
+                    }
+                },
+                {
+                    "step_id": "TAP_ORDER_WORDS_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 3,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "TAPUYKUNA-PREGUNTAS • 18",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 180,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "TAP_ORDER_WORDS_03_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Preguntas (Ordenar) 03",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Imamanta?"], "items": ["Imamanta?"] }
+                    }
+                }
+            ]
+        },
+
+        {
+            "language_course_unit_section_id": 4,
+            "theme": "SHIMI RURAYKUNA – Morfemas (-mi/-m, -chu, -ka, -ta)",
+            "total_steps": 18,
+            "steps": [
+                {
+                    "step_id": "MOR_HAYSTACK_PICK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 01",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge el morfema correcto.",
+                    "status": "ACTIVE",
+                    "weight": 10,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_HAYSTACK_PICK_01_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Morfemas (Haystack) 01",
+                        "prompt": "Selecciona el morfema correcto:",
+                        "payload": {
+                            "question": { "es": "Evidencial/afirmación", "ki": "¿Cuál marca afirmación (-mi/-m)?" },
+                            "haystack": ["-mi", "-chu", "-ka", "-ta", "Ñuka", "Alli", "Ama", "Ima", "Wayra", "Inti"],
+                            "correct": ["-mi"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_HAYSTACK_PICK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 02",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge el morfema correcto.",
+                    "status": "ACTIVE",
+                    "weight": 20,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_HAYSTACK_PICK_02_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Morfemas (Haystack) 02",
+                        "prompt": "Selecciona el morfema correcto:",
+                        "payload": {
+                            "question": { "es": "Interrogación/negación", "ki": "¿Cuál marca pregunta/negación (-chu)?" },
+                            "haystack": ["-chu", "-mi", "-ka", "-ta", "Ama", "Alli", "Ima", "Maypi", "Allpa", "Wayra"],
+                            "correct": ["-chu"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_HAYSTACK_PICK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 03",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge el morfema correcto.",
+                    "status": "ACTIVE",
+                    "weight": 30,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_HAYSTACK_PICK_03_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Morfemas (Haystack) 03",
+                        "prompt": "Selecciona el morfema correcto:",
+                        "payload": {
+                            "question": { "es": "Objeto directo", "ki": "¿Cuál marca objeto (-ta)?" },
+                            "haystack": ["-ta", "-ka", "-mi", "-chu", "Allpa", "Inti", "Wayra", "Ñuka", "Kan", "Pay"],
+                            "correct": ["-ta"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "MOR_DRAG_MATCH_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 04",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja morfema con función.",
+                    "status": "ACTIVE",
+                    "weight": 40,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_DRAG_MATCH_01_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Morfemas (Emparejar) 01",
+                        "prompt": "Empareja morfema con función:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "-mi/-m", "right": "Afirmación / evidencia (lo sé)" },
+                                { "left": "-chu", "right": "Pregunta / negación" },
+                                { "left": "-ka", "right": "Tópico (tema)" },
+                                { "left": "-ta", "right": "Objeto directo" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_DRAG_MATCH_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 05",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja ejemplo con morfema.",
+                    "status": "ACTIVE",
+                    "weight": 50,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_DRAG_MATCH_02_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Morfemas (Emparejar) 02",
+                        "prompt": "Empareja ejemplo con morfema:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ñuka-mi", "right": "-mi/-m" },
+                                { "left": "Alli-chu?", "right": "-chu" },
+                                { "left": "Wayra-ka", "right": "-ka" },
+                                { "left": "Allpa-ta", "right": "-ta" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_DRAG_MATCH_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 06",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja con significado (usando vocabulario).",
+                    "status": "ACTIVE",
+                    "weight": 60,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_DRAG_MATCH_03_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Morfemas (Emparejar) 03",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Alli", "right": "Bien" },
+                                { "left": "Ama", "right": "No" },
+                                { "left": "Wayra", "right": "Viento" },
+                                { "left": "Inti", "right": "Sol" }
+                            ]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "MOR_FILL_BLANK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 07",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa con -mi.",
+                    "status": "ACTIVE",
+                    "weight": 70,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_FILL_BLANK_01_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Morfemas (Completar) 01",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Ñuka____ alli kani.", "answer": "-mi", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "MOR_FILL_BLANK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 08",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa con -chu (pregunta).",
+                    "status": "ACTIVE",
+                    "weight": 80,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_FILL_BLANK_02_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Morfemas (Completar) 02",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Alli____?", "answer": "-chu", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "MOR_FILL_BLANK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 09",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa con -ta (objeto).",
+                    "status": "ACTIVE",
+                    "weight": 90,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_FILL_BLANK_03_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Morfemas (Completar) 03",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Ñuka allpa____ rikuni.", "answer": "-ta", "trim": true, "ignoreCase": true }
+                    }
+                },
+
+                {
+                    "step_id": "MOR_MULTI_SELECT_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 10",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona morfemas (2).",
+                    "status": "ACTIVE",
+                    "weight": 100,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_MULTI_SELECT_01_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Morfemas (Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "-mi" },
+                                { "id": "b", "text": "-chu" },
+                                { "id": "c", "text": "Alli" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_MULTI_SELECT_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 11",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona morfemas (2).",
+                    "status": "ACTIVE",
+                    "weight": 110,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_MULTI_SELECT_02_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Morfemas (Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "-ka" },
+                                { "id": "b", "text": "-ta" },
+                                { "id": "c", "text": "Wayra" },
+                                { "id": "d", "text": "Allpa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_MULTI_SELECT_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 12",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona palabras para ejemplos (2).",
+                    "status": "ACTIVE",
+                    "weight": 120,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_MULTI_SELECT_03_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Morfemas (Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Ñuka" },
+                                { "id": "b", "text": "Kan" },
+                                { "id": "c", "text": "Achachay" },
+                                { "id": "d", "text": "Aksu" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "MOR_MULTI_SELECT_IMAGE_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 13",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona morfemas (2).",
+                    "status": "ACTIVE",
+                    "weight": 130,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_MULTI_SELECT_IMAGE_01_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Morfemas (Imagen Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "texto",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "-mi" },
+                                { "id": "b", "text": "-chu" },
+                                { "id": "c", "text": "Wayra" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_MULTI_SELECT_IMAGE_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 14",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona morfemas (2).",
+                    "status": "ACTIVE",
+                    "weight": 140,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_MULTI_SELECT_IMAGE_02_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Morfemas (Imagen Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "pregunta",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "-ka" },
+                                { "id": "b", "text": "-ta" },
+                                { "id": "c", "text": "Ama" },
+                                { "id": "d", "text": "Alli" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_MULTI_SELECT_IMAGE_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 15",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona morfemas (2).",
+                    "status": "ACTIVE",
+                    "weight": 150,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_MULTI_SELECT_IMAGE_03_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Morfemas (Imagen Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1520697222860-7d3f1e833b10?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "apuntes",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "-mi" },
+                                { "id": "b", "text": "-ta" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Wayra" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "MOR_ORDER_WORDS_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 16",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena el ejemplo con -mi.",
+                    "status": "ACTIVE",
+                    "weight": 160,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_ORDER_WORDS_01_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Morfemas (Ordenar) 01",
+                        "prompt": "Ordena la frase:",
+                        "payload": {
+                            "correctOrder": ["Ñuka-mi", "alli", "kani."],
+                            "items": ["kani.", "Ñuka-mi", "alli"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_ORDER_WORDS_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 17",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena el ejemplo con -chu.",
+                    "status": "ACTIVE",
+                    "weight": 170,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_ORDER_WORDS_02_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Morfemas (Ordenar) 02",
+                        "prompt": "Ordena la frase:",
+                        "payload": {
+                            "correctOrder": ["Alli-chu?"],
+                            "items": ["Alli-chu?"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "MOR_ORDER_WORDS_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 4,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "SHIMI-RURAYKUNA • 18",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena el ejemplo con -ta.",
+                    "status": "ACTIVE",
+                    "weight": 180,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "MOR_ORDER_WORDS_03_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Morfemas (Ordenar) 03",
+                        "prompt": "Ordena la frase:",
+                        "payload": {
+                            "correctOrder": ["Ñuka", "allpa-ta", "rikuni."],
+                            "items": ["rikuni.", "allpa-ta", "Ñuka"]
+                        }
+                    }
+                }
+            ]
+        },
+
+        {
+            "language_course_unit_section_id": 5,
+            "theme": "RIMAYKUNA – Frases útiles",
+            "total_steps": 18,
+            "steps": [
+                {
+                    "step_id": "FRA_HAYSTACK_PICK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 01",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la palabra correcta.",
+                    "status": "ACTIVE",
+                    "weight": 10,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_HAYSTACK_PICK_01_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Frases útiles (Haystack) 01",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Viento", "ki": "Wayra" },
+                            "haystack": ["Wayra", "Inti", "Allpa", "Alli", "Ama", "Ima", "Maypi", "Allku", "Wiksa", "Wiki"],
+                            "correct": ["Wayra"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_HAYSTACK_PICK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 02",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la palabra correcta.",
+                    "status": "ACTIVE",
+                    "weight": 20,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_HAYSTACK_PICK_02_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Frases útiles (Haystack) 02",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Sol", "ki": "Inti" },
+                            "haystack": ["Inti", "Wayra", "Allpa", "Alli", "Ama", "Achik", "Achka", "Aksu", "Allku", "Wayta"],
+                            "correct": ["Inti"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_HAYSTACK_PICK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 03",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Escoge la palabra correcta.",
+                    "status": "ACTIVE",
+                    "weight": 30,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_HAYSTACK_PICK_03_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Frases útiles (Haystack) 03",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Tierra", "ki": "Allpa" },
+                            "haystack": ["Allpa", "Wayra", "Inti", "Alli", "Ama", "Wiksa", "Wiki", "Allku", "Amina", "Akllana"],
+                            "correct": ["Allpa"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "FRA_DRAG_MATCH_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 04",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja palabra con significado.",
+                    "status": "ACTIVE",
+                    "weight": 40,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_DRAG_MATCH_01_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Frases útiles (Emparejar) 01",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Wayra", "right": "Viento" },
+                                { "left": "Inti", "right": "Sol" },
+                                { "left": "Allpa", "right": "Tierra" },
+                                { "left": "Achik", "right": "Luz/claridad" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_DRAG_MATCH_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 05",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja verbo con significado.",
+                    "status": "ACTIVE",
+                    "weight": 50,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_DRAG_MATCH_02_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Frases útiles (Emparejar) 02",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Willana", "right": "Avisar" },
+                                { "left": "Wichayana", "right": "Subir" },
+                                { "left": "Alliyana", "right": "Sanarse" },
+                                { "left": "Akllana", "right": "Elegir" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_DRAG_MATCH_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 06",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Empareja sustantivo con significado.",
+                    "status": "ACTIVE",
+                    "weight": 60,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_DRAG_MATCH_03_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Frases útiles (Emparejar) 03",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Allku", "right": "Perro" },
+                                { "left": "Wiksa", "right": "Barriga/estómago" },
+                                { "left": "Wiki", "right": "Lágrima" },
+                                { "left": "Wayta", "right": "Flor" }
+                            ]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "FRA_FILL_BLANK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 07",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la frase.",
+                    "status": "ACTIVE",
+                    "weight": 70,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_FILL_BLANK_01_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Frases útiles (Completar) 01",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Wayra ____.", "answer": "kan", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "FRA_FILL_BLANK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 08",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la frase.",
+                    "status": "ACTIVE",
+                    "weight": 80,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_FILL_BLANK_02_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Frases útiles (Completar) 02",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Inti ____.", "answer": "achik", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "FRA_FILL_BLANK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 09",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Completa la frase con cantidad.",
+                    "status": "ACTIVE",
+                    "weight": 90,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_FILL_BLANK_03_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Frases útiles (Completar) 03",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____ wayta.", "answer": "Achka", "trim": true, "ignoreCase": true }
+                    }
+                },
+
+                {
+                    "step_id": "FRA_MULTI_SELECT_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 10",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona naturaleza (2).",
+                    "status": "ACTIVE",
+                    "weight": 100,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_MULTI_SELECT_01_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Frases útiles (Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Wayra" },
+                                { "id": "b", "text": "Inti" },
+                                { "id": "c", "text": "Allku" },
+                                { "id": "d", "text": "Wiki" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_MULTI_SELECT_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 11",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona verbos (2).",
+                    "status": "ACTIVE",
+                    "weight": 110,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_MULTI_SELECT_02_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Frases útiles (Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Willana" },
+                                { "id": "b", "text": "Akllana" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_MULTI_SELECT_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 12",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Selecciona partes del cuerpo (2).",
+                    "status": "ACTIVE",
+                    "weight": 120,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_MULTI_SELECT_03_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Frases útiles (Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Wiksa" },
+                                { "id": "b", "text": "Akcha" },
+                                { "id": "c", "text": "Wayra" },
+                                { "id": "d", "text": "Allpa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "FRA_MULTI_SELECT_IMAGE_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 13",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona naturaleza (2).",
+                    "status": "ACTIVE",
+                    "weight": 130,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_MULTI_SELECT_IMAGE_01_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Frases útiles (Imagen Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "sol",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Inti" },
+                                { "id": "b", "text": "Achik" },
+                                { "id": "c", "text": "Aksu" },
+                                { "id": "d", "text": "Wiki" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_MULTI_SELECT_IMAGE_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 14",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona naturaleza (2).",
+                    "status": "ACTIVE",
+                    "weight": 140,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_MULTI_SELECT_IMAGE_02_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Frases útiles (Imagen Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "paisaje",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Allpa" },
+                                { "id": "b", "text": "Wayra" },
+                                { "id": "c", "text": "Akcha" },
+                                { "id": "d", "text": "Wiksa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "FRA_MULTI_SELECT_IMAGE_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 15",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Selecciona (2).",
+                    "status": "ACTIVE",
+                    "weight": 150,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_MULTI_SELECT_IMAGE_03_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Frases útiles (Imagen Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "perro",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Allku" },
+                                { "id": "b", "text": "Akcha" },
+                                { "id": "c", "text": "Wayra" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "FRA_ORDER_WORDS_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 16",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la frase.",
+                    "status": "ACTIVE",
+                    "weight": 160,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_ORDER_WORDS_01_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Frases útiles (Ordenar) 01",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Ñuka", "willani."], "items": ["willani.", "Ñuka"] }
+                    }
+                },
+                {
+                    "step_id": "FRA_ORDER_WORDS_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 17",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la frase.",
+                    "status": "ACTIVE",
+                    "weight": 170,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_ORDER_WORDS_02_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Frases útiles (Ordenar) 02",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Kan", "akllanki."], "items": ["akllanki.", "Kan"] }
+                    }
+                },
+                {
+                    "step_id": "FRA_ORDER_WORDS_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 5,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "RIMAYKUNA-FRASES • 18",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Ordena la frase.",
+                    "status": "ACTIVE",
+                    "weight": 180,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "FRA_ORDER_WORDS_03_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Frases útiles (Ordenar) 03",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Pay", "alliyashka."], "items": ["alliyashka.", "Pay"] }
+                    }
+                }
+            ]
+        },
+
+        {
+            "language_course_unit_section_id": 6,
+            "theme": "KUTIN YACHAY – Repaso",
+            "total_steps": 18,
+            "steps": [
+                {
+                    "step_id": "REP_HAYSTACK_PICK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 01",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: elige la palabra correcta.",
+                    "status": "ACTIVE",
+                    "weight": 10,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_HAYSTACK_PICK_01_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Repaso (Haystack) 01",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "¿Qué?", "ki": "Ima?" },
+                            "haystack": ["Ima", "Maypi", "Imamanta", "Alli puncha", "Alli", "Ama", "Wayra", "Inti", "Allpa", "Ñuka"],
+                            "correct": ["Ima"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_HAYSTACK_PICK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 02",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: elige la palabra correcta.",
+                    "status": "ACTIVE",
+                    "weight": 20,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_HAYSTACK_PICK_02_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Repaso (Haystack) 02",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "Viento", "ki": "Wayra" },
+                            "haystack": ["Wayra", "Inti", "Allpa", "Alli", "Ama", "Allku", "Wiksa", "Wiki", "Achik", "Achka"],
+                            "correct": ["Wayra"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_HAYSTACK_PICK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 03",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: elige la palabra correcta.",
+                    "status": "ACTIVE",
+                    "weight": 30,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_HAYSTACK_PICK_03_EX",
+                        "type": "HAYSTACK_PICK",
+                        "title": "Repaso (Haystack) 03",
+                        "prompt": "Selecciona la palabra correcta:",
+                        "payload": {
+                            "question": { "es": "No", "ki": "Ama" },
+                            "haystack": ["Ama", "Alli", "Achachay", "Alalay", "Wayra", "Inti", "Allpa", "Ima", "Kan", "Ñuka"],
+                            "correct": ["Ama"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "REP_DRAG_MATCH_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 04",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: empareja pronombres.",
+                    "status": "ACTIVE",
+                    "weight": 40,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_DRAG_MATCH_01_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Repaso (Emparejar) 01",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ñuka", "right": "Yo" },
+                                { "left": "Kan", "right": "Tú" },
+                                { "left": "Pay", "right": "Él/Ella" },
+                                { "left": "Paykuna", "right": "Ellos/Ellas" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_DRAG_MATCH_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 05",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: empareja preguntas.",
+                    "status": "ACTIVE",
+                    "weight": 50,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_DRAG_MATCH_02_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Repaso (Emparejar) 02",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Ima?", "right": "¿Qué?" },
+                                { "left": "Maypi?", "right": "¿Dónde?" },
+                                { "left": "Imamanta?", "right": "¿Por qué?" },
+                                { "left": "Alli puncha", "right": "Buenos días" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_DRAG_MATCH_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 06",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: empareja naturaleza.",
+                    "status": "ACTIVE",
+                    "weight": 60,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_DRAG_MATCH_03_EX",
+                        "type": "DRAG_MATCH",
+                        "title": "Repaso (Emparejar) 03",
+                        "prompt": "Empareja Kichwa con Español:",
+                        "payload": {
+                            "pairs": [
+                                { "left": "Wayra", "right": "Viento" },
+                                { "left": "Inti", "right": "Sol" },
+                                { "left": "Allpa", "right": "Tierra" },
+                                { "left": "Achik", "right": "Luz" }
+                            ]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "REP_FILL_BLANK_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 07",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: completa la frase.",
+                    "status": "ACTIVE",
+                    "weight": 70,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_FILL_BLANK_01_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Repaso (Completar) 01",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____ alli kani.", "answer": "Ñuka", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "REP_FILL_BLANK_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 08",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: completa la frase.",
+                    "status": "ACTIVE",
+                    "weight": 80,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_FILL_BLANK_02_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Repaso (Completar) 02",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "Alli ____.", "answer": "puncha", "trim": true, "ignoreCase": true }
+                    }
+                },
+                {
+                    "step_id": "REP_FILL_BLANK_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 09",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: completa la frase.",
+                    "status": "ACTIVE",
+                    "weight": 90,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_FILL_BLANK_03_EX",
+                        "type": "FILL_BLANK",
+                        "title": "Repaso (Completar) 03",
+                        "prompt": "Completa la frase:",
+                        "payload": { "text": "____?", "answer": "Maypi", "trim": true, "ignoreCase": true }
+                    }
+                },
+
+                {
+                    "step_id": "REP_MULTI_SELECT_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 10",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: selecciona preguntas (2).",
+                    "status": "ACTIVE",
+                    "weight": 100,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_MULTI_SELECT_01_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Repaso (Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Ima?" },
+                                { "id": "b", "text": "Maypi?" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Alli" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_MULTI_SELECT_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 11",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: selecciona naturaleza (2).",
+                    "status": "ACTIVE",
+                    "weight": 110,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_MULTI_SELECT_02_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Repaso (Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Wayra" },
+                                { "id": "b", "text": "Inti" },
+                                { "id": "c", "text": "Akcha" },
+                                { "id": "d", "text": "Wiksa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_MULTI_SELECT_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 12",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: selecciona interjecciones (2).",
+                    "status": "ACTIVE",
+                    "weight": 120,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_MULTI_SELECT_03_EX",
+                        "type": "MULTI_SELECT",
+                        "title": "Repaso (Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "options": [
+                                { "id": "a", "text": "Achachay" },
+                                { "id": "b", "text": "Achachaw" },
+                                { "id": "c", "text": "Allpa" },
+                                { "id": "d", "text": "Wayra" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "REP_MULTI_SELECT_IMAGE_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 13",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Repaso: selecciona naturaleza (2).",
+                    "status": "ACTIVE",
+                    "weight": 130,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_MULTI_SELECT_IMAGE_01_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Repaso (Imagen Multi) 01",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "sol",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Inti" },
+                                { "id": "b", "text": "Achik" },
+                                { "id": "c", "text": "Aksu" },
+                                { "id": "d", "text": "Allku" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_MULTI_SELECT_IMAGE_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 14",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Repaso: selecciona preguntas (2).",
+                    "status": "ACTIVE",
+                    "weight": 140,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_MULTI_SELECT_IMAGE_02_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Repaso (Imagen Multi) 02",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "pregunta",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Ima?" },
+                                { "id": "b", "text": "Maypi?" },
+                                { "id": "c", "text": "Alli puncha" },
+                                { "id": "d", "text": "Allpa" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+                {
+                    "step_id": "REP_MULTI_SELECT_IMAGE_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 15",
+                    "activity": "RIKSINA - Mirar",
+                    "description": "Repaso: selecciona pronombres (2).",
+                    "status": "ACTIVE",
+                    "weight": 150,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_MULTI_SELECT_IMAGE_03_EX",
+                        "type": "MULTI_SELECT_IMAGE",
+                        "title": "Repaso (Imagen Multi) 03",
+                        "prompt": "Selecciona (2 correctas):",
+                        "payload": {
+                            "image": "https://images.unsplash.com/photo-1520975682030-1b1a0b9b9f8a?auto=format&fit=crop&w=1200&q=60",
+                            "alt": "personas",
+                            "showImageFirst": true,
+                            "options": [
+                                { "id": "a", "text": "Ñuka" },
+                                { "id": "b", "text": "Kan" },
+                                { "id": "c", "text": "Wayra" },
+                                { "id": "d", "text": "Inti" }
+                            ],
+                            "correctIds": ["a", "b"]
+                        }
+                    }
+                },
+
+                {
+                    "step_id": "REP_ORDER_WORDS_01",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 16",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: ordena la frase.",
+                    "status": "ACTIVE",
+                    "weight": 160,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_ORDER_WORDS_01_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Repaso (Ordenar) 01",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Alli", "puncha."], "items": ["puncha.", "Alli"] }
+                    }
+                },
+                {
+                    "step_id": "REP_ORDER_WORDS_02",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 17",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: ordena la frase.",
+                    "status": "ACTIVE",
+                    "weight": 170,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_ORDER_WORDS_02_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Repaso (Ordenar) 02",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Ñuka", "alli", "kani."], "items": ["kani.", "Ñuka", "alli"] }
+                    }
+                },
+                {
+                    "step_id": "REP_ORDER_WORDS_03",
+                    "unidad_id": 1,
+                    "unidad_seccion_id": 6,
+                    "configuracion_ui_ux_id": 1,
+                    "title": "KUTIN-YACHAY • 18",
+                    "activity": "UYARINA - Escuchar",
+                    "description": "Repaso: ordena la pregunta.",
+                    "status": "ACTIVE",
+                    "weight": 180,
+                    "source": "",
+                    "exercise": {
+                        "exercise_id": "REP_ORDER_WORDS_03_EX",
+                        "type": "ORDER_WORDS",
+                        "title": "Repaso (Ordenar) 03",
+                        "prompt": "Ordena la frase en Kichwa:",
+                        "payload": { "correctOrder": ["Maypi?"], "items": ["Maypi?"] }
+                    }
+                }
+            ]
+        }
+    ],
+
+    "pronombres_otavalo_agregados": [
+        { "ki": "Ñuka", "es": "Yo" },
+        { "ki": "Kan", "es": "Tú" },
+        { "ki": "Pay", "es": "Él/Ella" },
+        { "ki": "Ñukanchik", "es": "Nosotros/as" },
+        { "ki": "Ñukayku", "es": "Nosotros/as (excl.)" },
+        { "ki": "Kankuna", "es": "Ustedes" },
+        { "ki": "Paykuna", "es": "Ellos/Ellas" }
+    ]
+}

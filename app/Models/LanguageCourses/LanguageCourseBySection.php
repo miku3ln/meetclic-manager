@@ -69,7 +69,7 @@ class LanguageCourseBySection extends ModelManager
         $recordsTotal = $query->get()->count();
         $pages = 1;
         $total = $recordsTotal; // total items in array
-        $field='value';
+        $field='id';
         $sort='asc';
 
         if (isset($params['sort'])) {

@@ -12,7 +12,7 @@ var footer_bst2 =
                     </div>\n\
     </div>";
 
-var footerGrid =footer_bst2;
+var footerGrid = footer_bst2;
 var $managerTitlesProcess = {
     'popupManagerGoogleMaps': {//TODO CHASQUI-MANAGEMENT
         'details': {
@@ -558,7 +558,7 @@ function formInvalidFeedback(params) {
 function getClassErrorForm(nameElement, objValidate) {
     var result = null;
     var isError = objValidate.$error;
-    if ([null,'',"" ].includes(objValidate.$model)) {
+    if ([null, '', ""].includes(objValidate.$model)) {
         isError = true;
     } else {
         isError = false;
@@ -1383,6 +1383,8 @@ function getCSSCurrentBootGrid() {
 
 function initGridManager(params) {
     var gridNameSelector = params["gridNameSelector"];
+    var typeBS = params["typeBS"];
+
     let gridInit = $(gridNameSelector);
     let paramsFilters = params["paramsFilters"];
     let method = params.hasOwnProperty("ajaxSettings").hasOwnProperty("method")
@@ -1443,23 +1445,38 @@ function initGridManager(params) {
 
         }
     }
-
+    if (typeBS == "bs5") {
+        configCss = {
+            actions: "actions btn-group",
+            dropDownMenu: "dropdown btn-group",
+            dropDownMenuText: "dropdown-text",
+            dropDownMenuItems: "dropdown-menu dropdown-menu-end",
+            dropDownItem: "dropdown-item",
+            dropDownItemButton: "dropdown-item-button",
+            dropDownItemCheckbox: "dropdown-item-checkbox",
+            pagination: "pagination mb-0",
+            paginationButton: "page-link",
+            search: "search",
+            searchField: "search-field form-control",
+            infos: "infos",
+            iconRefresh: "bi bi-arrow-clockwise",
+            // icon system
+            iconSearch: "bi bi-search"
+        };
+    }
 
     var overWritePost = params.hasOwnProperty('overWritePost');
     var requestHandler = null;
     if (overWritePost) {
         requestHandler = params['overWritePost'];
     }
-    var configCurrent = !overWritePost ? {
+
+
+    var configCurrentLoad = {
         ajaxSettings: {
             method: method
         },
         ajax: true,
-        post: function () {
-            return {
-                filters: paramsFilters
-            };
-        },
         url: urlCurrent,
         labels: {
             loading: loadingHtml,
@@ -1471,23 +1488,23 @@ function initGridManager(params) {
         templates: templates,
         css: configCss,
         formatters: formattersCurrent
-    } : {
-        ajaxSettings: {
-            method: method
-        },
-        ajax: true,
-        requestHandler: requestHandler,
-        url: urlCurrent,
-        labels: {
-            loading: loadingHtml,
-            noResults: noResultsHtml,
-            infos: infosHtml
-        },
-        css: configCss,
-        formatters: formattersCurrent
     };
-    gridInit.bootgrid(configCurrent);
+    if (overWritePost) {
+        configCurrent = {
+            ...configCurrentLoad,
+            post: function () {
+                return {
+                    filters: paramsFilters
+                };
+            }
+        };
+    } else {
+        configCurrent = {
+            ...configCurrentLoad,
+        };
+    }
 
+    gridInit.bootgrid(configCurrent);
     return gridInit;
 }
 
@@ -3337,7 +3354,8 @@ function getDataLocationMap(params) {
 
     return result;
 }
-var $labelsGridConfigDefault=  {
+
+var $labelsGridConfigDefault = {
     loading: "Cargando...",
     noResults: "Sin Resultados!",
     infos: "Mostrando {{ctx.start}} - {{ctx.end}} de {{ctx.total}} resultados"
@@ -3412,6 +3430,7 @@ function formatDateTimeForDB(dateObj) {
 
     return yyyy + "-" + mm + "-" + dd + " " + HH + ":" + ii + ":" + ss;
 }
+
 function buildCedulaDefaultResponse() {
     return {
         success: false,
@@ -3453,3 +3472,95 @@ function isCedulaEC(value) {
     var check = (10 - (total % 10)) % 10;
     return check === parseInt(cedula.charAt(9), 10);
 }
+
+var $templatesbs5Bootgrid = {
+    actionButton:
+        '<button class="btn btn-outline-secondary" type="button" title="{{ctx.text}}">{{ctx.content}}</button>',
+
+    actionDropDown:
+        '<div class="{{css.dropDownMenu}}">' +
+        '<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">' +
+        '<span class="{{css.dropDownMenuText}}">{{ctx.content}}</span>' +
+        '</button>' +
+        '<ul class="{{css.dropDownMenuItems}}" role="menu"></ul>' +
+        '</div>',
+
+    actionDropDownItem:
+        '<li><a href="{{ctx.uri}}" class="{{css.dropDownItem}} {{css.dropDownItemButton}}">{{ctx.text}}</a></li>',
+
+    actionDropDownCheckboxItem:
+        '<li>' +
+        '<label class="{{css.dropDownItem}} d-flex align-items-center gap-2 m-0">' +
+        '<input name="{{ctx.name}}" type="checkbox" value="1" class="{{css.dropDownItemCheckbox}} form-check-input m-0" {{ctx.checked}} />' +
+        '<span>{{ctx.label}}</span>' +
+        '</label>' +
+        '</li>',
+
+    actions: '<div class="{{css.actions}}"></div>',
+
+    body: '<tbody></tbody>',
+
+    cell: '<td class="{{ctx.css}}" style="{{ctx.style}}">{{ctx.content}}</td>',
+
+    footer:
+        '<div id="{{ctx.id}}" class="{{css.footer}}">' +
+        '<div class="row align-items-center g-2">' +
+        '<div class="col-12 col-md-6">' +
+        '<nav aria-label="Pagination"><ul class="{{css.pagination}}"></ul></nav>' +
+        '</div>' +
+        '<div class="col-12 col-md-6 text-md-end">' +
+        '<div class="{{css.infos}}"></div>' +
+        '</div>' +
+        '</div>' +
+        '</div>',
+
+    header:
+        '<div id="{{ctx.id}}" class="{{css.header}}">' +
+        '<div class="row">' +
+        '<div class="col-12 actionBar d-flex flex-wrap align-items-center gap-2">' +
+        '<div class="{{css.search}}"></div>' +
+        '<div class="{{css.actions}} ms-auto"></div>' +
+        '</div>' +
+        '</div>' +
+        '</div>',
+
+    headerCell:
+        '<th data-column-id="{{ctx.column.id}}" class="{{ctx.css}}" style="{{ctx.style}}">' +
+        '<a href="javascript:void(0);" class="{{css.columnHeaderAnchor}} {{ctx.sortable}} d-inline-flex align-items-center gap-1">' +
+        '<span class="{{css.columnHeaderText}}">{{ctx.column.text}}</span>{{ctx.icon}}' +
+        '</a>' +
+        '</th>',
+
+    icon: '<i class="{{ctx.iconCss}}"></i>',
+
+    infos: '<div class="{{css.infos}}">{{lbl.infos}}</div>',
+
+    loading:
+        '<tr><td colspan="{{ctx.columns}}" class="loading py-4 text-center">{{lbl.loading}}</td></tr>',
+
+    noResults:
+        '<tr><td colspan="{{ctx.columns}}" class="no-results py-4 text-center">{{lbl.noResults}}</td></tr>',
+
+    pagination: '<ul class="{{css.pagination}}"></ul>',
+
+    paginationItem:
+        '<li class="page-item {{ctx.css}}">' +
+        '<a data-page="{{ctx.uri}}" class="{{css.paginationButton}}" href="javascript:void(0);">{{ctx.text}}</a>' +
+        '</li>',
+
+    rawHeaderCell: '<th class="{{ctx.css}}">{{ctx.content}}</th>',
+
+    row: '<tr{{ctx.attr}}>{{ctx.cells}}</tr>',
+
+    search:
+        '<div class="{{css.search}}">' +
+        '<div class="input-group">' +
+        '<span class="input-group-text"><i class="{{css.iconSearch}}"></i></span>' +
+        '<input type="text" class="{{css.searchField}}" placeholder="{{lbl.search}}" />' +
+        '</div>' +
+        '</div>',
+
+    select:
+        '<input name="select" type="{{ctx.type}}" class="{{css.selectBox}}" value="{{ctx.value}}" {{ctx.checked}} />'
+};
+

@@ -1,11 +1,5 @@
  const BLOCK_2_NAPAYKUN_SALUDOS = [
-            // =========================================================
-            // BLOQUE 2: NAPAYKUN - SALUDOS (35)
-            // =========================================================
 
-            // -------------------------
-            // DRAG_MATCH (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_DRAG_MATCH_01",
                 unidad_seccion_id: 2,
@@ -137,9 +131,6 @@
                 }
             },
 
-            // -------------------------
-            // FILL_BLANK (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_FILL_BLANK_01",
                 unidad_seccion_id: 2,
@@ -236,9 +227,6 @@
                 }
             },
 
-            // -------------------------
-            // HAYSTACK_PICK (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_HAYSTACK_PICK_01",
                 unidad_seccion_id: 2,
@@ -355,9 +343,6 @@
                 }
             },
 
-            // -------------------------
-            // IMAGE_HOTSPOT_PICK (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_IMAGE_HOTSPOT_PICK_01",
                 unidad_seccion_id: 2,
@@ -508,9 +493,6 @@
                 }
             },
 
-            // -------------------------
-            // MULTI_SELECT (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_MULTI_SELECT_01",
                 unidad_seccion_id: 2,
@@ -647,9 +629,6 @@
                 }
             },
 
-            // -------------------------
-            // MULTI_SELECT_IMAGE (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_MULTI_SELECT_IMAGE_01",
                 unidad_seccion_id: 2,
@@ -801,9 +780,6 @@
                 }
             },
 
-            // -------------------------
-            // ORDER_WORDS (5)
-            // -------------------------
             {
                 step_id: "B2_SAL_ORDER_WORDS_01",
                 unidad_seccion_id: 2,

@@ -95,71 +95,122 @@ class DictionaryByWords extends ModelManager
     {
         $sort = 'asc';
         $field = 'value';
-        $query = DB::table($this->table);
+
         $entity_manager_id = isset($params['filters']['entity_manager_id']) ? $params['filters']['entity_manager_id'] : null;
         $page = isset($params['current']) ? (int)$params['current'] : 0;
-        $perpage = isset($params['rowCount']) ? $params['rowCount'] : 10;
-        $selectString = "$this->table.id,$this->table.translation_value,$this->table.usage_context,$this->table.value,$this->table.description,$this->table.status,$this->table.diccionary_language_id,$this->table.letters_of_the_alphabet
-        ,dictionary_word_by_class.dictionary_grammatical_class_id
-        ,dictionary_grammatical_class.name dictionary_grammatical_class_name ";
-        $query->where(
-            $this->table . '.diccionary_language_id', '=', $entity_manager_id
-        );
-        $query->where(
-            $this->table . '.status', '=', 'ACTIVE'
-        );
+        $perpage = isset($params['rowCount']) ? (int)$params['rowCount'] : 10;
 
-        if (isset($params['searchPhrase'])&&$params['searchPhrase'] != null && $params['searchPhrase'] != '') {
+        /**
+         * ✅ BASE QUERY (SIN groupBy, SIN select agregado)
+         * - Aquí van: where + joins + search
+         * - Esto sirve para:
+         *   1) total correcto (count distinct)
+         *   2) clonar para la data
+         */
+        $baseQuery = DB::table($this->table);
+
+        $baseQuery->where($this->table . '.diccionary_language_id', '=', $entity_manager_id);
+        $baseQuery->where($this->table . '.status', '=', 'ACTIVE');
+
+        $baseQuery->join('dictionary_language', 'dictionary_language.id', '=', $this->table . '.diccionary_language_id');
+        $baseQuery->join('dictionary_word_by_class', 'dictionary_word_by_class.dictionary_by_words_id', '=', $this->table . '.id');
+        $baseQuery->join('dictionary_grammatical_class', 'dictionary_word_by_class.dictionary_grammatical_class_id', '=', 'dictionary_grammatical_class.id');
+
+        if (isset($params['searchPhrase']) && $params['searchPhrase'] != null && $params['searchPhrase'] != '') {
             $searchValue = $params['searchPhrase'];
             $likeSet = $searchValue;
-            $query->where(function ($query) use ($likeSet
-            ) {
-                $query->orWhere($this->table . '.value', 'like', '%' . $likeSet . '%');
-                $query->orWhere( 'dictionary_grammatical_class.name', 'like', '%' . $likeSet . '%');
 
-
+            $baseQuery->where(function ($q) use ($likeSet) {
+                $q->orWhere($this->table . '.value', 'like', '%' . $likeSet . '%');
+                $q->orWhere($this->table . '.translation_value', 'like', '%' . $likeSet . '%');
+                $q->orWhere('dictionary_grammatical_class.name', 'like', '%' . $likeSet . '%');
             });
-
         }
-        $select = DB::raw($selectString);
-        $query->select($select);
 
-        $query->join('dictionary_language', 'dictionary_language.id', '=', $this->table . '.diccionary_language_id');
-        $query->join('dictionary_word_by_class', 'dictionary_word_by_class.dictionary_by_words_id', '=', $this->table . '.id');
-        $query->join('dictionary_grammatical_class', 'dictionary_word_by_class.dictionary_grammatical_class_id', '=',  'dictionary_grammatical_class.id');
+        /**
+         * ✅ TOTAL CORRECTO Y RÁPIDO
+         * - Esto cuenta palabras únicas aunque haya múltiples clases gramaticales (joins duplican filas)
+         */
+        $recordsTotal = (clone $baseQuery)
+            ->distinct()
+            ->count($this->table . '.id');
 
-
-        $recordsTotal = $query->get()->count();
         $pages = 1;
-        $total = $recordsTotal; // total items in array
-        if (isset($params['sort'])) {
-            $field = $column = array_keys($params['sort']);
-            $field = $field[0];
-            $sort = $params['sort'][$column[0]];
+        $total = $recordsTotal;
 
+        /**
+         * ✅ DATA QUERY (AQUÍ SÍ: select agregado + groupBy)
+         */
+        $query = clone $baseQuery;
+
+        $selectString = "
+        {$this->table}.id,
+        {$this->table}.translation_value,
+        {$this->table}.usage_context,
+        {$this->table}.value,
+        {$this->table}.description,
+        {$this->table}.status,
+        {$this->table}.diccionary_language_id,
+        {$this->table}.letters_of_the_alphabet,
+        GROUP_CONCAT(DISTINCT dictionary_word_by_class.dictionary_grammatical_class_id
+            ORDER BY dictionary_word_by_class.dictionary_grammatical_class_id SEPARATOR ',') AS dictionary_grammatical_class_id,
+        GROUP_CONCAT(DISTINCT dictionary_grammatical_class.name
+            ORDER BY dictionary_grammatical_class.name SEPARATOR ', ') AS dictionary_grammatical_class_name
+    ";
+
+        $query->select(DB::raw($selectString));
+
+        // ✅ groupBy correcto para NO romper ONLY_FULL_GROUP_BY
+        $query->groupBy(
+            "{$this->table}.id",
+            "{$this->table}.translation_value",
+            "{$this->table}.usage_context",
+            "{$this->table}.value",
+            "{$this->table}.description",
+            "{$this->table}.status",
+            "{$this->table}.diccionary_language_id",
+            "{$this->table}.letters_of_the_alphabet"
+        );
+
+        // sort (igual que tu)
+        if (isset($params['sort'])) {
+            $fieldArr = array_keys($params['sort']);
+            $field = $fieldArr[0];
+            $sort = $params['sort'][$field];
         }
 
-// sort
-        $query->orderBy($field, $sort);
-// Pagination: $perpage 0; get all data
+        // ✅ Si ordenan por los alias agregados, usa raw
+        if (in_array($field, ['dictionary_grammatical_class_id', 'dictionary_grammatical_class_name'], true)) {
+            $query->orderBy(DB::raw($field), $sort);
+        } else {
+            $query->orderBy($field, $sort);
+        }
+
+        // Pagination: $perpage 0; get all data (igual que tu)
         if ($perpage > 0) {
-            $pages = ceil($total / $perpage); // calculate total pages
-            $page = max($page, 1); // get 1 page when $_REQUEST['page'] <= 0
-            $page = min($page, $pages); // get last page when $_REQUEST['page'] > $totalPages
+            $pages = (int)ceil($total / $perpage);
+            $page = max($page, 1);
+            $page = min($page, $pages);
             $offset = ($page - 1) * $perpage;
+
             if ($offset < 0) {
                 $offset = 0;
             }
+
             $query->offset((int)$offset);
             $query->limit((int)$perpage);
         }
+
         $current_page = isset($params['current']) ? (int)$params['current'] : 0;
+
         $data = $query->get()->toArray();
 
+        $result = [];
         $result['total'] = $total;
         $result['rows'] = $data;
         $result['current'] = $current_page;
-        $limit = isset($params['rowCount']) ? $params['rowCount'] : 10;
+
+        $limit = isset($params['rowCount']) ? (int)$params['rowCount'] : 10;
         $result['rowCount'] = $limit;
 
         return $result;

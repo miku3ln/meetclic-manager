@@ -1,14 +1,5 @@
         const BLOCK_5_RUNAPA_UKKU_HOTSPOTS = [
-            // =========================================================
-            // BLOQUE 5: Runapa Ukku (hotspots) (35)
-            // Tipos (5 c/u): DRAG_MATCH, FILL_BLANK, HAYSTACK_PICK,
-            //                IMAGE_HOTSPOT_PICK, MULTI_SELECT,
-            //                MULTI_SELECT_IMAGE, ORDER_WORDS
-            // =========================================================
 
-            // -------------------------
-            // DRAG_MATCH (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_DRAG_MATCH_01",
                 unidad_seccion_id: 5,
@@ -140,9 +131,6 @@
                 }
             },
 
-            // -------------------------
-            // FILL_BLANK (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_FILL_BLANK_01",
                 unidad_seccion_id: 5,
@@ -239,9 +227,6 @@
                 }
             },
 
-            // -------------------------
-            // HAYSTACK_PICK (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_HAYSTACK_PICK_01",
                 unidad_seccion_id: 5,
@@ -358,9 +343,6 @@
                 }
             },
 
-            // -------------------------
-            // IMAGE_HOTSPOT_PICK (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_IMAGE_HOTSPOT_PICK_01",
                 unidad_seccion_id: 5,
@@ -509,9 +491,6 @@
                 }
             },
 
-            // -------------------------
-            // MULTI_SELECT (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_MULTI_SELECT_01",
                 unidad_seccion_id: 5,
@@ -648,9 +627,6 @@
                 }
             },
 
-            // -------------------------
-            // MULTI_SELECT_IMAGE (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_MULTI_SELECT_IMAGE_01",
                 unidad_seccion_id: 5,
@@ -802,9 +778,6 @@
                 }
             },
 
-            // -------------------------
-            // ORDER_WORDS (5)
-            // -------------------------
             {
                 step_id: "B5_UKKU_ORDER_WORDS_01",
                 unidad_seccion_id: 5,

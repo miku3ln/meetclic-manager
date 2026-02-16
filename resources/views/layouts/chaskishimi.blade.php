@@ -17,7 +17,7 @@
         }
 
         .not-view {
-            display: none;
+            display: none !important;
         }
 
         footer.main-footer.dark-footer {

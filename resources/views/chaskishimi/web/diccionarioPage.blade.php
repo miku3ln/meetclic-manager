@@ -1795,7 +1795,7 @@
                 return true;
             })
 
-            var result=items;
+            var result = items;
             console.log(result);
             return result;
         }
@@ -2113,9 +2113,9 @@
 
                                 var word = row.value;
                                 var resultData = getValueConvert(word);
-                                console.log("getValueConvert",resultData)
-                               // var pronunciations = buildPronunciationsFromResult(resultData);
-                                var pronunciations=row.pronunciations;
+                                console.log("getValueConvert", resultData)
+                                // var pronunciations = buildPronunciationsFromResult(resultData);
+                                var pronunciations = row.pronunciations;
                                 $.each(row.examples, function (i, v) {
                                     var value = v.value;
                                     var description = v.description;
@@ -2139,7 +2139,10 @@
                                 ] : [];
 
                                 let itemsPhonetic = [];
-                                var mainPronunciation = pronunciations[0];
+                                var mainPronunciation = null;
+                                if (pronunciations && pronunciations.length > 0) {
+                                    mainPronunciation = pronunciations[0];
+                                }
                                 $.each(pronunciations, function (i, v) {
                                     var phoneticValue = v.phonetic_value;
                                     var notationType = v.notation_type;
@@ -2160,7 +2163,7 @@
                                 itemsGrammaticalClass.push([
                                     '      <li class="word-card__item">' + row.dictionary_grammatical_class_name + '</li>',
                                 ]);
-                                var clasWord = mainPronunciation.isMain ? "word-card__phonetic--main" : "";
+                                var clasWord = mainPronunciation ? (mainPronunciation.isMain ? "word-card__phonetic--main" : "") : "";
                                 let phoneticData = itemsPhonetic.length > 0 ? [
                                     '  <div class="word-card__section word-card__section--pronunciations">',
                                     '    <h3 class="word-card__subtitle"><i class="glyphicon glyphicon-volume-up"></i> Pronuciación</h3>',
@@ -2303,6 +2306,7 @@
                 }
             })
         ;
+
 
     </script>
 @endsection
