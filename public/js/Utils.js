@@ -1470,6 +1470,9 @@ function initGridManager(params) {
     if (overWritePost) {
         requestHandler = params['overWritePost'];
     }
+    if(paramsFilters){
+        overWritePost=true;
+    }
 
 
     var configCurrentLoad = {

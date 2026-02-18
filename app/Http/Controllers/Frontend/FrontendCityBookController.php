@@ -713,7 +713,17 @@ class FrontendCityBookController extends FrontendBaseController
             $result
         );
     }
+    public function getListS2DictionaryKichwaToCastilianAdmin()//CMS-TEMPLATE-MENU-CONTROLLER---KICHWA-CASTILIAN
+    {
 
+        $dataPost = Request::all();
+        $model = new App\Models\Dictionary\DictionaryByWords();
+        $result = $model->getListS2DictionaryData($dataPost);
+
+        return Response::json(
+            $result
+        );
+    }
     public function getApuntesAdmin($language = 'es')//CMS-TEMPLATE-MENU-CONTROLLER---KICHWA-CASTILIAN
     {
 

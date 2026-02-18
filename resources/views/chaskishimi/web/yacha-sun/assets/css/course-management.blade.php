@@ -298,7 +298,7 @@
     }
 
     .mc-card__sub {
-        font-size: 13px;
+        font-size: 10px;
     }
 
     .mc-bookmark {
@@ -335,6 +335,7 @@
     }
     h1.mc-offcanvas-header__title {
         margin-left: 36px;
+        font-weight: bold;
     }
     button#btn-return-process-grid {
         display: block !important;
@@ -351,9 +352,99 @@
         top: 0% !important;
         position: fixed !important;
     }
+
+
+    h1.mc-offcanvas-header__title {
+        font-size: 21px;
+        color: var(--secondary-color);
+    }
 </style>
+<style id="number-convert-kichwa">
+    .container--manager-number-convert {
+        margin-left: 0% !important;
 
+        margin-right: 0%!important;;
+    }
+    @media (max-width: 560px) {
+        .mc-dict__card-head {
+            display: block !important;
+        }
+    }
+</style>
+<style id="score">
+    div#content-data {
+        margin-top: 5px;
+    }
+    button.trophy.manager-score__item {
+        border-left: 4px solid #ffffff !important;
+        border-right: 4px solid #ffffff !important;
+    }
+    /* Contenedor: 2 columnas (4 ítems => 2x2) */
+    .manager-score{
 
+        background: #f08124;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+
+    /* Botón item: 3 elementos en columna */
+    .manager-score__item{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 0;
+        background: transparent;
+        border-radius: 0px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    /* Imagen */
+    .manager-score__img{
+        width: 84px;
+        height: 84px;
+        object-fit: contain;
+        display: block;
+    }
+
+    /* Título debajo del ícono */
+    .manager-score__badge--title{
+        color: #ffffff;
+        display: block;
+        max-width: 120px;          /* ajusta según tu diseño */
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.1;
+
+        /* ✅ evita que se rompa feo */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Cantidad al final */
+    .manager-score__badge{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        min-width: 28px;
+        height: 20px;
+        padding: 0 8px;
+        border-radius: 999px;
+
+        min-width: 28px;
+        font-weight: 700;
+        line-height: 20px;
+    }
+    .manager-score__item{
+        min-height: 110px;
+    }
+</style>
 <style id="grid">
     .btn-close--modal.btn-close {
         background: none !important;

@@ -50,6 +50,7 @@ class FrontendCmsCityBook
             Route::post("/apuntes/admin", "Frontend\FrontendCityBookController@getApuntesAdmin")->name('getApuntesAdmin');
 
 
+            Route::get("/dictionary/dictionaryKichwaToCastilian/listS2admin", "Frontend\FrontendCityBookController@getListS2DictionaryKichwaToCastilianAdmin")->name('getListS2DictionaryKichwaToCastilianAdmin');
 
             Route::get('/contactUs', 'Frontend\FrontendCityBookController@contactUs')->name('contactUs');
             Route::get('/productFlowers', 'Frontend\FrontendCityBookController@productFlowers')->name('productFlowers');

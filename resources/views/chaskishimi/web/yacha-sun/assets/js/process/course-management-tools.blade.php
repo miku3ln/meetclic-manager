@@ -7,6 +7,167 @@
 
 </script>
 <script>
+    var $configSentenceData = {}
+    var $configSentenceMethods = {
+        _managerS2Action: function (params) {
+            var el = params.objSelector;
+
+            function setValueConjugation(paramsConjugation) {
+                var result = null;
+                if (paramsConjugation.word.value == "") {
+                    result = {
+                        html: [
+
+                            '<div class="empty-manager">',
+                            '  <h2  class="empty-manager__title">No ha seleccionado un verbo.</h2>',
+                            ' </div>',
+                        ].join("")
+                    };
+                } else {
+                    result = $.mcConjugate({
+                        ...paramsConjugation,
+                        timeType: ["PRESENTE", "FUTURO", "PASADO"]
+                    });
+                }
+                $('.response-conjugation').html(result.html);
+            }
+
+            var dataCurrent = [];
+            var _this = this;
+            var elementInit = $(el).select2({
+                dropdownParent: $('#mcPanel'),// tu offcanvas o modal
+                allow: true,
+                placeholder: "Busca en kichwa o en español el verbo.!",
+                data: dataCurrent,
+                ajax: {// instead of writing the function to execute the request we use Select2's convenient helper
+                    url: $("#action-getListS2DictionaryKichwaToCastilianAdmin").val(),
+                    type: "get",
+                    dataType: 'json',
+                    data: function (term, page) {
+                        var paramsFilters = {
+                            term: term, page: page
+                        };
+
+                        return paramsFilters;
+                    },
+                    processResults: function (data, page) {
+                        return {results: data};
+                    }
+                },
+                allowClear: true,
+                multiple: false,
+                width: '100%'
+            });
+            elementInit.on('select2:select', function (e) {
+                var data = e.params.data;
+                var translation_value_data = data.translation_value.split(",");
+                var translation_value=translation_value_data[0];
+                var word = {
+                    translation_value: translation_value,
+                    dictionary_grammatical_class_name: data.dictionary_grammatical_class_name,
+                    value: data.value
+                };
+                setValueConjugation({word: word});
+
+            }).on("select2:unselecting", function (e) {
+                var word = {
+                    translation_value: "",
+                    dictionary_grammatical_class_name: "",
+                    value: ""
+                };
+                setValueConjugation({word: word});
+            });
+
+        }
+    }
+    var $configNumberKichwaData = {
+        modelChange: {value: "", type: "numeric"},
+        isLoading: false,
+        lastResponse: null
+    };
+    var $configNumberKichwaComputed = {
+        placeholderText: function () {
+            return (this.modelChange.type === "numeric")
+                ? "Ej: 235"
+                : "Ej: ishkay pachak kimsa chunka pichka";
+        },
+        cardTitleWord: function () {
+            console.log("cardTitleWord", this.lastResponse);
+            if (!this.lastResponse || !this.lastResponse.success) return "";
+            var d = this.lastResponse.data;
+
+            // si entró numeric -> mostrar palabra kichwa
+            if (d.input.type === "numeric") return d.result.kichwa_word;
+
+            // si entró kichwa -> mostrar la misma palabra
+            return d.result.number_value;
+        },
+        cardSubInfo: function () {
+            if (!this.lastResponse || !this.lastResponse.success) return "";
+            var d = this.lastResponse.data;
+
+            if (d.input.type === "numeric") return "resultado en kichwa";
+            return "resultado en número";
+        },
+        cardResultText: function () {
+            if (!this.lastResponse || !this.lastResponse.success) return "";
+            var d = this.lastResponse.data;
+
+            if (d.input.type === "numeric") return "Número: " + d.result.number_value;
+            return "Número: " + d.result.number_value;
+        },
+        pronunciations: function () {
+            if (!this.lastResponse || !this.lastResponse.success) return [];
+            return (this.lastResponse.data.pronunciations || []);
+        },
+        didacticText: function () {
+            if (!this.lastResponse || !this.lastResponse.success) return "";
+            return (this.lastResponse.data.didactic && this.lastResponse.data.didactic.explanation) ? this.lastResponse.data.didactic.explanation : "—";
+        },
+        didacticScopeText: function () {
+            if (!this.lastResponse || !this.lastResponse.success) return "";
+            var s = (this.lastResponse.data.didactic && this.lastResponse.data.didactic.scope) ? this.lastResponse.data.didactic.scope : null;
+            if (!s) return "—";
+            return s.title_es + " (" + s.code + ")";
+        }
+    }
+    var $configNumberKichwaMethods = {
+        onSetValuesForm: function (type, value) {
+            $(this.gridConfig.selectorCurrent).bootgrid("reload");
+
+        },
+        setType: function (type) {
+            this.modelChange.type = type;
+            this.lastResponse = null; // limpia card al cambiar modo
+        },
+        onConvertNumbersKichwa: function () {
+            var value = String(this.modelChange.value || "").trim().toLowerCase();
+            if (!value) {
+                this.lastResponse = {
+                    success: false,
+                    message: "Ingresa un valor para convertir.",
+                    data: null
+                };
+                return;
+            }
+
+            this.isLoading = true;
+
+            try {
+                // ✅ Contrato final: (string, "numeric" | "kichwa")
+                var resp = serviceConvertNumbers.convert(value, this.modelChange.type);
+                this.lastResponse = resp;
+            } catch (e) {
+                this.lastResponse = {
+                    success: false,
+                    message: (e && e.message) ? e.message : "Error inesperado.",
+                    data: null
+                };
+            } finally {
+                this.isLoading = false;
+            }
+        }
+    }
     var $configApuntesData = {
         configModelEntity: {
             "buttonsManagements": [
@@ -140,7 +301,6 @@
             });
         },
         initCurrentGridApuntesComponent: function (params) {
-            console.log(params);
             this.initGridManager(this);
         },
         initGridManager: function (vmCurrent) {
@@ -182,26 +342,7 @@
                 request.filters = paramsFilters;
                 return request;
             };
-            const cssBs5Bootgrid = {
-                actions: "actions btn-group",
-                dropDownMenu: "dropdown btn-group",
-                dropDownMenuText: "dropdown-text",
-                dropDownMenuItems: "dropdown-menu dropdown-menu-end",
-                dropDownItem: "dropdown-item",
-                dropDownItemButton: "dropdown-item-button",
-                dropDownItemCheckbox: "dropdown-item-checkbox",
 
-                pagination: "pagination mb-0",
-                paginationButton: "page-link",
-
-                search: "search",
-                searchField: "search-field form-control",
-
-                infos: "infos",
-
-                // icon system
-                iconSearch: "bi bi-search",
-            };
 
             let gridInit = initGridManager({
                 typeBS: "bs5",
@@ -241,11 +382,11 @@
             this.managerRow.data = null;
             this.managerRow.data = params.rowData;
             this.managerRow.view = false;
-            if(!  $("#btn-return-process").hasClass("not-view")){
+            if (!$("#btn-return-process").hasClass("not-view")) {
 
-            $("#btn-return-process").addClass("not-view");
+                $("#btn-return-process").addClass("not-view");
             }
-            if(!  $(".btn-close--canvas").hasClass("not-view")){
+            if (!$(".btn-close--canvas").hasClass("not-view")) {
 
                 $(".btn-close--canvas").addClass("not-view");
             }
@@ -254,18 +395,13 @@
         closeDataRow: function () {
             this.managerRow.data = null;
             this.managerRow.view = true;
-            if( $("#btn-return-process").hasClass("not-view")){
+            if ($("#btn-return-process").hasClass("not-view")) {
 
                 $("#btn-return-process").removeClass("not-view");
             }
-            if( $(".btn-close--canvas").hasClass("not-view")){
 
-                $(".btn-close--canvas").removeClass("not-view");
-            }
         },
-        returnMainGridProcess: function () {
-            this.closeDataRow();
-        },
+
         getUrlSource: function (params) {
             var sourceCurrent = $publicAsset + params.source;
             return sourceCurrent;
@@ -290,24 +426,27 @@
             cards: [
                 {
                     id: "chaski-idioma",
-                    title: "Nuestro Idioma",
-                    subtitle: "El Chasqui transmite palabras vivas que unen corazón y Pachamama.",
+                    title: "🌬 Wayra – La Voz Ancestral",
+                    subtitle: "La historia, el canto y la fuerza sonora del Kichwa viven en el viento del Chasqui.",
                     icon: $resources.icons["chaski-idioma"],
                     tab: "chaski-idioma",
-                    bookmarked: true
+                    bookmarked: true,
+                    dataView: ["Trabalenguas", "Canciones", "Nuestro Idioma (historia oral)"],
                 },
                 {
                     id: "chaski-apuntes",
-                    title: "Apuntes del Chasqui",
-                    subtitle: "Reflexiones que el Chasqui recoge en su caminar diario.",
+                    title: "🌊 Yaku – El Flujo del Conocimiento",
+                    subtitle: "Aprende la lengua paso a paso como el agua que forma su camino.",
                     icon: $resources.icons["chaski-apuntes"],
                     tab: "chaski-apuntes",
-                    bookmarked: true
+                    bookmarked: true, style: {
+                        background: "#7BD3FF"
+                    }
                 },
                 {
                     id: "chaski-diccionario",
-                    title: "Diccionario Vivo",
-                    subtitle: "El Chasqui siembra palabras que nacen de la Pachamama.",
+                    title: "🌱 Allpa – Raíz de la Palabra",
+                    subtitle: "Cada palabra nace de la tierra y guarda memoria ancestral.",
                     icon: $resources.icons["chaski-diccionario"],
                     tab: "chaski-diccionario",
                     bookmarked: true
@@ -315,29 +454,13 @@
 
                 {
                     id: "chaski-trabalenguas",
-                    title: "Trabalenguas",
-                    subtitle: "El Chasqui fortalece su voz para llevar mensajes con claridad.",
+                    title: "🔥 Nina – Energía del Randi Randi",
+                    subtitle: "El intercambio despierta comunidad y transforma el valor en energía.",
                     icon: $resources.icons["chaski-trabalenguas"],
                     tab: "chaski-trabalenguas",
                     bookmarked: true
                 },
 
-                {
-                    id: "chaski-canciones",
-                    title: "Canciones",
-                    subtitle: "El Chasqui armoniza su paso con el canto de la naturaleza.",
-                    icon: $resources.icons["chaski-canciones"],
-                    tab: "chaski-canciones",
-                    bookmarked: true
-                },
-                {
-                    id: "chaski-cosmovision",
-                    title: "Cosmovisión y Yapitas",
-                    subtitle: "El Chasqui comprende la energía del intercambio y el valor en comunidad.",
-                    icon: $resources.icons["chaski-cosmovision"],
-                    tab: "chaski-cosmovision",
-                    bookmarked: true
-                },
 
             ],
 
@@ -363,10 +486,12 @@
         openCard: function (card) {
             // aquí decides qué pantalla abrir (offcanvas / route / modal)
             this.canvasManager.data.title = card.title;
+            this.canvasManager.data.subtitle = "";
+
             console.log("openCard", card.id);
             this.hub.active_process.data = card;
             this.hub.active_process.key = card.id;
-            if( !$(".btn-close--canvas").hasClass("not-view")){
+            if (!$(".btn-close--canvas").hasClass("not-view")) {
 
                 $(".btn-close--canvas").addClass("not-view");
             }
@@ -374,10 +499,12 @@
         returnMainProcess: function () {
             this.hub.active_process.key = null;
             this.hub.active_process.data = null;
-            this.canvasManager.data.title="PRINCIPAL";
+            var titlesManager = this.getTitleMain();
+            this.canvasManager.data = {
+                ...titlesManager
+            };
 
-
-            if( $(".btn-close--canvas").hasClass("not-view")){
+            if ($(".btn-close--canvas").hasClass("not-view")) {
 
                 $(".btn-close--canvas").removeClass("not-view");
             }

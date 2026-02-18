@@ -219,9 +219,11 @@ END as entity_name
         $query->join('tracking_click_types', $this->table . '.tracking_click_type_id', '=', 'tracking_click_types.id');
         $query->join('tracking_sources', $this->table . '.tracking_source_id', '=', 'tracking_sources.id');
 
-        $gamification_id = ($params['filters']['gamification_id']);
-        $query->where($this->table . '.gamification_id', '=', $gamification_id);
 
+        if (isset($params['filters']['gamification_id'])) {
+            $gamification_id = ($params['filters']['gamification_id']);
+            $query->where($this->table . '.gamification_id', '=', $gamification_id);
+        }
         if ($params['searchPhrase'] != null) {
             $searchValue = $params['searchPhrase'];
             $likeSet = $searchValue;
@@ -867,7 +869,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
     {
 
         $allow = $params["allow"];
-            $business = $params["business"];
+        $business = $params["business"];
         if ($allow) {
             $gamification_id = $params["gamification_id"];
             $business_id = $params["business_id"];

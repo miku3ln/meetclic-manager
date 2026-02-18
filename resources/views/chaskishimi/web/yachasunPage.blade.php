@@ -127,6 +127,8 @@ $url_path_plugins = "libs/";
     <link href="{{ asset($resourcePathServer."plugins/bootgrid-2024/jquery.bootgrid.min.css") }}" rel="stylesheet"
           type="text/css">
     @include('partials.bootstrap-05',["allowCss"=>true])
+    @include('utils.number-kichwa.assets.css.number-convert')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
 
 @endsection
 @section('additional-scripts')
@@ -136,6 +138,7 @@ $url_path_plugins = "libs/";
         var $resources = <?php echo json_encode($resources) ?>;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-management')
     @include('chaskishimi.web.yacha-sun.assets.js.process.menu-top-sections')
     @include('utils.conjugation-ki.assets.js.conjugation-kichwa')
@@ -149,14 +152,33 @@ $url_path_plugins = "libs/";
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-test-init')
     @include('chaskishimi.web.yacha-sun.assets.js.process.init-modal')
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-management-tools')
-
+    @include('chaskishimi.web.yacha-sun.assets.js.process.course-management-tools')
+    @include('utils.number-kichwa.assets.js.number-convert')
     <script>
+        var $dictionaryCountsNumbersManagement = $dataManagerPage.dictionaryCountsNumbersManagement;
 
+        var serviceConvertNumbers = new DictionaryCountsNumbersService($dictionaryCountsNumbersManagement);
         var appThis = null;
         var appInit = new Vue(
             {
                 el: '#app-management',
                 directives: {
+                    "init-select2": {
+                        inserted: function (el, binding, vnode, vm, arg) {
+                            var paramsInput = binding.value;
+                            console.log("init-select2")
+                            paramsInput._managerS2Action({
+                                objSelector: el
+
+                            });
+
+
+                        },
+                        bind: function (el, binding, vnode, vm, arg) {
+
+
+                        }
+                    },
                     'init-bootgrid': {
                         mounted: function () {
                             console.log("init-bootgrid")
@@ -188,6 +210,7 @@ $url_path_plugins = "libs/";
                     this.$set(this.hub, "filteredCards", []);
                 },
                 computed: {
+                    ...$configNumberKichwaComputed,
                     // filtra por tab + búsqueda
                     hubFilteredCards: function () {
 
@@ -223,7 +246,8 @@ $url_path_plugins = "libs/";
                     canvasManager: {
                         init: null,
                         data: {
-                            title: "Hola"
+                            title: "El Camino del Chasqui",
+                            "subtitle":"Recorre las cuatro energías del saber ancestral."
                         }
                     },
                     managerHeader: {
@@ -234,6 +258,33 @@ $url_path_plugins = "libs/";
 
                     },
                     // ✅ items del iconbar
+                    iconItemsScore: [
+                        {
+                            id: "ic-yapitas",
+                            image: ($resources["gamification"]["yapitas"]),
+                            number: 0,
+                            action: "yapitas manager-score__item",
+                            actionName: "Yapitas",
+
+                        },
+                        {
+                            id: "ic-trophy",
+                            image: $resources["gamification"]["trophy"],
+                            number: 0,
+                            action: "trophy manager-score__item",
+                            actionName: "Premios",
+
+                        },
+                        {
+                            id: "ic-reputation",
+                            image: ($resources["gamification"]["reputation"]),
+                            number: 0,
+                            action: "reputation manager-score__item",
+                            actionName: "Reputaciòn",
+
+                        },
+
+                    ],
                     iconItems: [
                         {
                             id: "ic-yapitas",
@@ -262,11 +313,14 @@ $url_path_plugins = "libs/";
                     ],
                     ...$courseManagementData,
                     ...$configApuntesData,
-
+                    ...$configNumberKichwaData
                 },
                 methods: {
 
+                    getItemClass(item) {
 
+                        return item.action;
+                    },
                     initEventsCanvas: function (params) {
                         const el = params.el;
 
@@ -374,9 +428,13 @@ $url_path_plugins = "libs/";
                         var updated = Object.assign({}, this.iconItems[idx], {number: numberOrNull});
                         this.$set(this.iconItems, idx, updated);
                     },
+                    getTitleMain:function(){
+                        return {title:"El Camino del Chasqui","subtitle":"Recorre las cuatro energías del saber ancestral."}
+                    },
                     ...$courseManagementToolsMethods,
-                    ...$configApuntesMethods
-
+                    ...$configApuntesMethods,
+                        ...$configNumberKichwaMethods,
+                    ...$configSentenceMethods
                 }
             });
         appInit.initManagement();
@@ -497,7 +555,7 @@ $url_path_plugins = "libs/";
             <div class="offcanvas-header mc-offcanvas-header">
                 <div class="mc-hub__search input-group mb-2">
                     <h1 class="mc-offcanvas-header__title">
-                        <?php echo "   {{canvasManager.data.title}} " ?>
+                        <?php echo "{{canvasManager.data.title}}<span class='mc-offcanvas-header__subtitle'>{{canvasManager.data.subtitle==''?'':'-'}}{{canvasManager.data.subtitle}}</span> " ?>
                     </h1>
                     <div class="not-view">
                          <span class="input-group-text bg-white border-end-0 mc-pill-left">
@@ -538,7 +596,25 @@ $url_path_plugins = "libs/";
                                 </button>
                             </li>
                         </ul>
-                        <div class="row g-3" v-if="hub.active_process.key==null">
+                        <div class="manager-score" v-if="hub.active_process.key==null">
+                            <button
+                                v-for="item in iconItemsScore"
+                                :key="item.id"
+                                type="button"
+                                :class="getItemClass(item)"
+                                :title="item.id"
+                            >
+                                <img class="manager-score__img" :src="item.image" :alt="item.id"/>
+                                <span  class="manager-score__badge--title">
+       <?php echo "{{ item.actionName }}" ?>
+      </span>
+                                <span v-if="hasNumber(item)" class="manager-score__badge">
+       <?php echo "{{ item.number }}" ?>
+      </span>
+                            </button>
+                        </div>
+
+                        <div class="row g-3" v-if="hub.active_process.key==null" id="content-data">
                             <div class="col-6 col-6" v-for="card in hub.filteredCards" :key="card.id">
                                 <button type="button" class="mc-card card w-100 text-start" @click="openCard(card)">
                                     <div class="card-body">
@@ -564,8 +640,7 @@ $url_path_plugins = "libs/";
                                 <i class="bi bi-arrow-left"></i>
                             </button>
                             <div v-if="hub.active_process.key=='chaski-apuntes'">
-
-                                @include('utils.sections.apuntes.template-main')
+                                @include('chaskishimi.web.yacha-sun.assets.js.template.management-apuntes')
 
                             </div>
 

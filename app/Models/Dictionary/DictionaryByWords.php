@@ -4,6 +4,7 @@ namespace App\Models\Dictionary;
 
 use App\Models\ModelManager;
 
+use App\Support\Dictionary\DictionaryGrammaticalClassIds;
 use Illuminate\Support\Facades\DB;
 
 class DictionaryByWords extends ModelManager
@@ -36,7 +37,29 @@ class DictionaryByWords extends ModelManager
         return $rules;
     }
 
+    public function getListS2DictionaryData($params)
+    {
+        try {
+            $resultData = $this->getListS2DictionaryAdmin($params);
 
+            return $resultData;
+
+        } catch (\Exception $e) {
+
+            // Puedes relanzar o devolver una estructura de error
+            return [
+                'total' => 0,
+                'rows' => [],
+                'current' => -1,
+                'rowCount' => -10,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]
+            ];
+        }
+    }
 
     public function getDictionaryData($params)
     {
@@ -77,19 +100,89 @@ class DictionaryByWords extends ModelManager
 
             // Puedes relanzar o devolver una estructura de error
             return [
-                'total'   => 0,
-                'rows'    => [],
-                'current' =>-1,
-                'rowCount'=> -10,
-                'error'   => [
+                'total' => 0,
+                'rows' => [],
+                'current' => -1,
+                'rowCount' => -10,
+                'error' => [
                     'message' => $e->getMessage(),
-                    'file'    => $e->getFile(),
-                    'line'    => $e->getLine(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
                 ]
             ];
         }
     }
 
+    public function getListS2DictionaryAdmin($params)
+    {
+
+        $term = $params["term"];
+        $searchPhrase = isset($term["term"]) ? ($term["term"] == "" ? '' : $term["term"]) : "";
+        $entity_manager_id = 1;
+        $baseQuery = DB::table($this->table);
+        $baseQuery->where($this->table . '.diccionary_language_id', '=', $entity_manager_id);
+
+
+        $baseQuery->where($this->table . '.status', '=', 'ACTIVE');
+        $baseQuery->join('dictionary_language', 'dictionary_language.id', '=', $this->table . '.diccionary_language_id');
+        $baseQuery->join('dictionary_word_by_class', 'dictionary_word_by_class.dictionary_by_words_id', '=', $this->table . '.id');
+        $baseQuery->join('dictionary_grammatical_class', 'dictionary_word_by_class.dictionary_grammatical_class_id', '=', 'dictionary_grammatical_class.id');
+        $baseQuery->where('dictionary_word_by_class.dictionary_grammatical_class_id', '=', DictionaryGrammaticalClassIds::VERBO);
+        $baseQuery->whereIn(
+            'dictionary_word_by_class.dictionary_grammatical_class_id',
+            [
+                DictionaryGrammaticalClassIds::VERBO,
+            ]
+        );
+        if ($searchPhrase && $searchPhrase != null && $searchPhrase != '') {
+            $searchValue = $searchPhrase;
+            $likeSet = $searchValue;
+            $baseQuery->where(function ($q) use ($likeSet) {
+                $q->orWhere($this->table . '.value', 'like', '%' . $likeSet . '%');
+                $q->orWhere($this->table . '.translation_value', 'like', '%' . $likeSet . '%');
+                $q->orWhere('dictionary_grammatical_class.name', 'like', '%' . $likeSet . '%');
+            });
+        }
+
+        /**
+         * ✅ DATA QUERY (AQUÍ SÍ: select agregado + groupBy)
+         */
+        $query = clone $baseQuery;
+
+        $selectString = "
+        {$this->table}.id,
+ {$this->table}.value,
+ {$this->table}.translation_value,
+
+       CONCAT( {$this->table}.value, '(', {$this->table}.translation_value,')' ) text,
+        {$this->table}.usage_context,
+        {$this->table}.description,
+        {$this->table}.status,
+        {$this->table}.diccionary_language_id,
+        {$this->table}.letters_of_the_alphabet,
+        GROUP_CONCAT(DISTINCT dictionary_word_by_class.dictionary_grammatical_class_id
+            ORDER BY dictionary_word_by_class.dictionary_grammatical_class_id SEPARATOR ',') AS dictionary_grammatical_class_id,
+        GROUP_CONCAT(DISTINCT dictionary_grammatical_class.name
+            ORDER BY dictionary_grammatical_class.name SEPARATOR ', ') AS dictionary_grammatical_class_name
+    ";
+        $query->select(DB::raw($selectString));
+        // ✅ groupBy correcto para NO romper ONLY_FULL_GROUP_BY
+        $query->groupBy(
+            "{$this->table}.id",
+            "{$this->table}.translation_value",
+            "{$this->table}.usage_context",
+            "{$this->table}.value",
+            "{$this->table}.description",
+            "{$this->table}.status",
+            "{$this->table}.diccionary_language_id",
+            "{$this->table}.letters_of_the_alphabet"
+        );
+        $query->limit(50);
+        $result = $query->get()->toArray();;
+
+
+        return $result;
+    }
 
     public function getDictionaryAdmin($params)
     {
@@ -215,6 +308,7 @@ class DictionaryByWords extends ModelManager
 
         return $result;
     }
+
     public function getDataExample($params)
     {
         $sort = 'asc';
@@ -272,6 +366,7 @@ class DictionaryByWords extends ModelManager
 
         return $data;
     }
+
     public function getDataPhoto($params)
     {
         $sort = 'asc';
@@ -300,6 +395,7 @@ class DictionaryByWords extends ModelManager
 
         return $data;
     }
+
     public function getDataAudio($params)
     {
         $sort = 'asc';
@@ -328,6 +424,7 @@ class DictionaryByWords extends ModelManager
 
         return $data;
     }
+
     public function getAdmin($params)
     {
         $sort = 'asc';
@@ -623,8 +720,8 @@ class DictionaryByWords extends ModelManager
                 $countId = 1037;
                 $diccionary_language_id = 2;
                 $letters_of_the_alphabet = '-';
-                $grammatical_classification_type=0;
-                $translation_value='';
+                $grammatical_classification_type = 0;
+                $translation_value = '';
                 foreach ($resultWords as $key => $value) {
 
                     $status = 'ACTIVE';
@@ -638,7 +735,7 @@ class DictionaryByWords extends ModelManager
 
                         $sqlAll .= 'VALUES';
                     }
-                    $sqlAll .= '(' . $countId . ',' . "'" . $word . "'" .',' . "'" . $grammatical_classification_type . "'" . ',' . "'" . $translation_value . "'" . ',' . "'" . $description . "'" . ',' . "'" . $status . "'" . ',' . $diccionary_language_id . ',' . "'" . $letters_of_the_alphabet . "'" . ')';
+                    $sqlAll .= '(' . $countId . ',' . "'" . $word . "'" . ',' . "'" . $grammatical_classification_type . "'" . ',' . "'" . $translation_value . "'" . ',' . "'" . $description . "'" . ',' . "'" . $status . "'" . ',' . $diccionary_language_id . ',' . "'" . $letters_of_the_alphabet . "'" . ')';
                     if ($count < $countAll - 1) {
                         $sqlAll .= ',';
                     } else {
@@ -703,6 +800,7 @@ class DictionaryByWords extends ModelManager
         }
         return ($result);
     }
+
     public function setTxtDataByTxt($params)
     {
         $success = true;
@@ -712,10 +810,10 @@ class DictionaryByWords extends ModelManager
         $data = null;
         try {
             // 1) Rutas (por defecto según lo que pediste)
-            $inputRel  = $params['input']  ?? 'kichwa/palabras.txt'; // storage/kichwa/palabras.txt
+            $inputRel = $params['input'] ?? 'kichwa/palabras.txt'; // storage/kichwa/palabras.txt
             $outputRel = $params['output'] ?? 'kichwa/palabras-transofrmadas.txt'; // storage/kichwa/palabras-transofrmadas.txt
 
-            $inputPath  = storage_path($inputRel);   // => {project}/storage/kichwa/palabras.txt
+            $inputPath = storage_path($inputRel);   // => {project}/storage/kichwa/palabras.txt
             $outputPath = storage_path($outputRel);  // => {project}/storage/kichwa/palabras-transofrmadas.txt
 
             // 2) Validaciones
@@ -740,8 +838,8 @@ class DictionaryByWords extends ModelManager
             foreach ($entries as $e) {
                 $word = $e['word'];
                 $phon = $e['phon'];
-                $sig  = $e['siglas'];
-                $def  = $e['def'];
+                $sig = $e['siglas'];
+                $def = $e['def'];
 
                 $third = trim($sig . (strlen($sig) && strlen($def) ? ' ' : '') . $def);
                 $lines[] = "{$word}|{$phon}|{$third}";
@@ -763,11 +861,11 @@ class DictionaryByWords extends ModelManager
 
             // 8) Datos de retorno
             $data = [
-                'input'           => $inputPath,
-                'output'          => $outputPath,
-                'entries_found'   => count($entries),
-                'lines_written'   => count($lines),
-                'sample_first_3'  => array_slice($lines, 0, 3),
+                'input' => $inputPath,
+                'output' => $outputPath,
+                'entries_found' => count($entries),
+                'lines_written' => count($lines),
+                'sample_first_3' => array_slice($lines, 0, 3),
             ];
 
         } catch (\Throwable $e) {
@@ -779,9 +877,9 @@ class DictionaryByWords extends ModelManager
 
         return [
             "success" => $success,
-            "msj"     => $msj,
-            "data"    => $data,
-            "errors"  => $errors,
+            "msj" => $msj,
+            "data" => $data,
+            "errors" => $errors,
         ];
     }
 
@@ -809,11 +907,11 @@ class DictionaryByWords extends ModelManager
             $siglasPattern = '/^((?:amz|sc|snc|sn|ss|scs|ca|bo|j|s|adj|adv|v|interj|det|pron|prep|conj)\.(?:\s*,\s*|\s+))+/u';
 
             $siglas = '';
-            $def    = $tailOneLine;
+            $def = $tailOneLine;
 
             if (preg_match($siglasPattern, $tailOneLine, $sm)) {
                 $siglas = rtrim($sm[0], ', ');
-                $def    = trim(substr($tailOneLine, strlen($sm[0])));
+                $def = trim(substr($tailOneLine, strlen($sm[0])));
             }
 
             // Cortar "Sin. ..." para dejar significado principal (opcional)
@@ -826,10 +924,10 @@ class DictionaryByWords extends ModelManager
             $def = preg_replace('/\s+/', ' ', trim($def));
 
             $out[] = [
-                'word'   => $word,
-                'phon'   => $phon,
+                'word' => $word,
+                'phon' => $phon,
                 'siglas' => $siglas,
-                'def'    => $def,
+                'def' => $def,
             ];
         }
         return $out;
@@ -870,8 +968,8 @@ class DictionaryByWords extends ModelManager
                 $countId = 1;
                 $diccionary_language_id = 1;
                 $letters_of_the_alphabet = '-';
-                $grammatical_classification_type=0;
-                $translation_value='';
+                $grammatical_classification_type = 0;
+                $translation_value = '';
 
                 foreach ($resultWords as $key => $value) {
                     $status = 'ACTIVE';
@@ -884,7 +982,7 @@ class DictionaryByWords extends ModelManager
                     if ($count == 0) {
                         $sqlAll .= 'VALUES';
                     }
-                    $sqlAll .= '(' . $countId . ',' . "'" . $word . "'" .',' . "'" . $grammatical_classification_type . "'" . ',' . "'" . $translation_value . "'" . ',' . "'" . $description . "'" . ',' . "'" . $status . "'" . ',' . $diccionary_language_id . ',' . "'" . $letters_of_the_alphabet . "'" . ')';
+                    $sqlAll .= '(' . $countId . ',' . "'" . $word . "'" . ',' . "'" . $grammatical_classification_type . "'" . ',' . "'" . $translation_value . "'" . ',' . "'" . $description . "'" . ',' . "'" . $status . "'" . ',' . $diccionary_language_id . ',' . "'" . $letters_of_the_alphabet . "'" . ')';
                     if ($count < $countAll - 1) {
                         $sqlAll .= ',';
                     } else {

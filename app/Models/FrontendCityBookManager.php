@@ -1444,6 +1444,8 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
 
                 $dataManagerPage['exercisePayload'] = $exercisePayload;
                 $dataManagerPage['dictionaryMorphemeCatalog'] = DictionaryMorphemeCatalog::morphemeFunctionsPayload();
+                $dataManagerPage['dictionaryCountsNumbersManagement'] = DictionaryCountsNumbersUtil::payload(true);
+                $dataManagerPage['pronunciationPayManagement'] =PronunciationPayloadUtil::buildPayload();
 
 
             } elseif ($page == 'diccionarioPage') {
