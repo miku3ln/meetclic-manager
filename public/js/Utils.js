@@ -1387,37 +1387,90 @@ function initGridManager(params) {
 
     let gridInit = $(gridNameSelector);
     let paramsFilters = params["paramsFilters"];
-    let method = params.hasOwnProperty("ajaxSettings").hasOwnProperty("method")
-        ? params["ajaxSettings"]["method"]
+    const method = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "ajaxSettings") &&
+        params.ajaxSettings &&
+        Object.prototype.hasOwnProperty.call(params.ajaxSettings, "method")
+    )
+        ? params.ajaxSettings.method
         : "POST";
-    let urlCurrent = params["urlCurrent"];
-    //labels
-    let loadingHtml = params.hasOwnProperty("labels").hasOwnProperty("loading")
-        ? params["labels"]["loading"]
+
+    const urlCurrent = (params && Object.prototype.hasOwnProperty.call(params, "urlCurrent"))
+        ? params.urlCurrent
+        : undefined;
+
+// labels
+    const loadingHtml = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "labels") &&
+        params.labels &&
+        Object.prototype.hasOwnProperty.call(params.labels, "loading")
+    )
+        ? params.labels.loading
         : "Cargando...";
-    let noResultsHtml = params
-        .hasOwnProperty("labels")
-        .hasOwnProperty("noResults")
-        ? params["labels"]["noResults"]
+
+    const noResultsHtml = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "labels") &&
+        params.labels &&
+        Object.prototype.hasOwnProperty.call(params.labels, "noResults")
+    )
+        ? params.labels.noResults
         : "Sin Resultados!";
-    let infosHtml = params.hasOwnProperty("labels").hasOwnProperty("infos")
-        ? params["labels"]["infos"]
+
+    const infosHtml = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "labels") &&
+        params.labels &&
+        Object.prototype.hasOwnProperty.call(params.labels, "infos")
+    )
+        ? params.labels.infos
         : "Mostrando {{ctx.start}} - {{ctx.end}} de {{ctx.total}} resultados";
-    let searchHtml = params.hasOwnProperty("labels").hasOwnProperty("search")
-        ? params["labels"]["search"]
+
+    const searchHtml = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "labels") &&
+        params.labels &&
+        Object.prototype.hasOwnProperty.call(params.labels, "search")
+    )
+        ? params.labels.search
         : "Ingrese lo que desee buscar.";
-    let refreshHtml = params.hasOwnProperty("labels").hasOwnProperty("refresh")
-        ? params["labels"]["refresh"]
+
+    const refreshHtml = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "labels") &&
+        params.labels &&
+        Object.prototype.hasOwnProperty.call(params.labels, "refresh")
+    )
+        ? params.labels.refresh
         : "Actualizar";
-    //css
-    let headerCSS = params.hasOwnProperty("css").hasOwnProperty("header")
-        ? params["css"]["header"]
+
+// css
+    const headerCSS = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "css") &&
+        params.css &&
+        Object.prototype.hasOwnProperty.call(params.css, "header")
+    )
+        ? params.css.header
         : "bootgrid-header";
-    let tableCSS = params.hasOwnProperty("css").hasOwnProperty("table")
-        ? params["css"]["table"]
+
+    const tableCSS = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "css") &&
+        params.css &&
+        Object.prototype.hasOwnProperty.call(params.css, "table")
+    )
+        ? params.css.table
         : "xywer-tbl-admin";
-    let formattersCurrent = params.hasOwnProperty("formatters")
-        ? params["formatters"]
+
+    const formattersCurrent = (
+        params &&
+        Object.prototype.hasOwnProperty.call(params, "formatters") &&
+        params.formatters
+    )
+        ? params.formatters
         : {
             default: function (column, row) {
                 console.log(row);
@@ -1466,12 +1519,15 @@ function initGridManager(params) {
     }
 
     var overWritePost = params.hasOwnProperty('overWritePost');
+    var type = -1;
     var requestHandler = null;
     if (overWritePost) {
         requestHandler = params['overWritePost'];
-    }
-    if(paramsFilters){
-        overWritePost=true;
+        overWritePost = true;
+        type = 1;
+    } else if (paramsFilters) {
+        overWritePost = true;
+        type = 2;
     }
 
 
@@ -1493,13 +1549,17 @@ function initGridManager(params) {
         formatters: formattersCurrent
     };
     if (overWritePost) {
+        var setPost = function () {
+            return {
+                filters: paramsFilters
+            };
+        };
+        if (type == 1) {
+            setPost = requestHandler;
+        }
         configCurrent = {
             ...configCurrentLoad,
-            post: function () {
-                return {
-                    filters: paramsFilters
-                };
-            }
+            post: setPost
         };
     } else {
         configCurrent = {

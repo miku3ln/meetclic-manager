@@ -55,6 +55,7 @@ $url_path_plugins = "libs/";
     @include('chaskishimi.web.yacha-sun.assets.css.menu-top-sections')
     @include('chaskishimi.web.yacha-sun.assets.css.menu-top-gamification')
     @include('utils.conjugation-ki.assets.css.conjugation-kichwa')
+    @include('utils.dictionary.assets.css.config-grid-manager')
 
     <style>
 
@@ -137,9 +138,12 @@ $url_path_plugins = "libs/";
 @endsection
 @section('additional-scripts')
     @include('partials.bootstrap-05',["allowJs"=>true])
+    @include('utils.dictionary.assets.js.config-grid-manager')
     <script>
         var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
         var $resources = <?php echo json_encode($resources) ?>;
+
+        var $pronunciationPayManagement = $dataManagerPage.pronunciationPayManagement;
 
         function getScrollableElements() {
             const scrollables = [];
@@ -193,6 +197,9 @@ $url_path_plugins = "libs/";
 
         var serviceConvertNumbers = new DictionaryCountsNumbersService($dictionaryCountsNumbersManagement);
         var appThis = null;
+
+        var serviceConverLanguage = initConvertLanguage();
+        var service = new DictionaryCountsNumbersService($dictionaryCountsNumbersManagement);
         var appInit = new Vue(
             {
                 el: '#app-management',
@@ -220,11 +227,21 @@ $url_path_plugins = "libs/";
                         inserted: function (el, binding, vnode, vm, arg) {
                             var $this = vnode.context;
                             var paramsInput = binding.value;
-                            console.log("init-bootgrid inserted")
-                            $this.initCurrentGridApuntesComponent({
-                                elementInit: el,
-                                params: paramsInput
-                            });
+                            console.log("init-bootgrid inserted", paramsInput)
+                            if ("apuntes" == paramsInput.type) {
+                                $this.initCurrentGridApuntesComponent({
+                                    elementInit: el,
+                                    params: paramsInput
+                                });
+                            } else {
+                               $this.initCurrentGridDictionaryComponent({
+                                    elementInit: el,
+                                    params: paramsInput
+                                });
+
+                            }
+
+
                         }
                     },
                     'init-plugin-study': {
@@ -468,8 +485,10 @@ $url_path_plugins = "libs/";
                             "subtitle": "Recorre las cuatro energías del saber ancestral."
                         }
                     },
+                    ...$methodsConsolidateGrids,
                     ...$courseManagementToolsMethods,
                     ...$configApuntesMethods,
+                    ...$configDictionaryMethods,
                     ...$configNumberKichwaMethods,
                     ...$configSentenceMethods
                 }
@@ -678,7 +697,10 @@ $url_path_plugins = "libs/";
                                 @include('chaskishimi.web.yacha-sun.assets.js.template.management-apuntes')
 
                             </div>
+                            <div v-if="hub.active_process.key=='chaski-diccionario'">
+                                @include('chaskishimi.web.yacha-sun.assets.js.template.management-dictionary')
 
+                            </div>
                         </div>
 
                     </div>

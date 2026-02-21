@@ -70,7 +70,7 @@
 
                 <div class="custom-scroll-admin-grid table-responsive">
                     <table
-                        v-init-bootgrid="{id:'dictionary_by_words-grid',}"
+                        v-init-bootgrid="{id:'dictionary_by_words-grid',type:'apuntes'}"
                         id="dictionary_by_words-grid"
                         class=""
 

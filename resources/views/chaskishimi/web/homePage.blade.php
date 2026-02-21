@@ -7,6 +7,17 @@
 @endphp
 @extends('layouts.chaskishimi')
 @section('additional-styles')
+
+    <div class="word-card">
+        <div class="word-card__header">
+            <h2 class="word-card__base">achachay</h2>
+        </div>
+        <div class="word-card__section word-card__section--detail">
+
+            <p class="word-card__text">Interjección <br>Uso gramatical: interjección </p>
+
+        </div>
+    </div>
     <style>
         .section--full-img {
             padding: 0 0;
@@ -26,7 +37,7 @@
         }
 
         .hero-section .intro-item h2 {
-            font-size: 55px ;
+            font-size: 55px;
             color: #aacbe0;
         }
 
@@ -40,15 +51,18 @@
                 font-size: 17px !important;
 
             }
+
             .hero-section .intro-item h2 {
                 padding-top: 14%;
                 font-size: 29px;
 
             }
-            .slider-container-wrap.fs-slider .hero-section-wrap{
+
+            .slider-container-wrap.fs-slider .hero-section-wrap {
                 top: 23% !important;
             }
-            #wrapper{
+
+            #wrapper {
                 padding-top: 0;
             }
 

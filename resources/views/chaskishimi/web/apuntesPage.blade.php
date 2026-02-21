@@ -14,9 +14,10 @@
             --third-color: #225278;
             --font-size: 16px;
         }
+
         .pagination > .active > a {
             color: #e4e4e4;
-            background-color:var(--secondary-color)!important;
+            background-color: var(--secondary-color) !important;
             border-color: var(--secondary-color) !important;
         }
 
@@ -66,7 +67,7 @@
         }
 
         .text-left a {
-            color:var(--third-color) !important;
+            color: var(--third-color) !important;
             font-size: 28px;
             font-weight: bold;
         }
@@ -81,7 +82,7 @@
         }
 
         label.form__label {
-            color: var(--third-color) ;
+            color: var(--third-color);
             font-size: 24px;
         }
 
@@ -127,8 +128,6 @@
             border: 0 solid var(--secondary-color) !important;;
             border-radius: 0 !important;;
         }
-
-
 
 
         img.content-description__photos--img-row {
@@ -201,29 +200,36 @@
         table#dictionary_by_words-grid {
             width: 100%;
         }
+
         table.manager-information {
             width: 100%;
         }
+
         tr.manager-information__tr {
             width: 100%;
         }
+
         .manager-information__td-information-title {
             font-size: 20px;
             font-weight: bold;
             color: #707070;
         }
+
         .manager-information__td-information-description {
             font-size: 14px;
 
             color: #8A8A8A;
         }
+
         td.manager-information__td-img {
             width: 9%;
         }
+
         td.manager-information__td-information {
             border-bottom: 2px solid #C8C8C8;
             padding-bottom: 1%;
         }
+
         @media screen and (min-width: 300px) and (max-width: 768px) {
             .table-responsive {
 
@@ -231,12 +237,14 @@
                 overflow-y: unset !important;
             }
 
-            .search{
+            .search {
                 width: 100% !important;
             }
+
             .bootgrid-footer .search, .bootgrid-header .search {
                 margin: 0 20px 13px 0 !important;
             }
+
             .intro-item.fl-wrap {
                 padding-top: 35% !important;
             }
@@ -247,23 +255,29 @@
                 padding-left: 0 !important;
                 position: initial !important;
             }
+
             .pagination a {
                 width: 30px !important;
                 height: 30px !important;
             }
+
             .manager-information__td-information-title {
                 font-size: 14px;
             }
+
             .manager-information__td-information-description {
                 font-size: 10px;
 
             }
+
             img.content-description__photos--img-row {
                 margin-top: 28px;
             }
+
             .img-full {
                 width: 100%;
             }
+
             .form-view-title {
 
                 font-size: 18px;
@@ -527,8 +541,10 @@
                         var overWritePost = function (request) {
 
                             var paramsFilters = $scope.getTypeDictionary();
-                            request.filters = paramsFilters;
-                            return request;
+                            var result = {
+                                filters: paramsFilters
+                            };
+                            return result;
                         };
                         let gridInit = initGridManager({
                             gridNameSelector: gridName,

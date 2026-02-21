@@ -604,8 +604,8 @@
 
     img.content-description__photos--img-row {
         margin-top: 69px;
-        height: 90px;
-        width: 100px;
+        height: 130px;
+        width: 100%;
     }
 
     .content-description__information-img {
@@ -784,5 +784,28 @@
 
     .card-body {
         height: 297px;
+    }
+</style>
+
+<style>
+    .word-card__base.word-card__base--apuntes {
+        font-size: 20px;
+    }
+    .word-card__icon {
+        gap: 10px;
+        display: flex;
+        align-items: end;
+        justify-content: end;
+    }
+    .word-card__icon {
+        gap: 10px;
+        display: flex;
+        align-items: end;
+        justify-content: end;
+    }
+    i.word-card__icon-i {
+        transform: rotate(270deg);
+        transition: transform 0.3s ease;
+        font-size: 28px;
     }
 </style>

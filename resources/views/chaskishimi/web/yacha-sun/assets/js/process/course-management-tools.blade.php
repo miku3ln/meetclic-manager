@@ -61,7 +61,7 @@
             elementInit.on('select2:select', function (e) {
                 var data = e.params.data;
                 var translation_value_data = data.translation_value.split(",");
-                var translation_value=translation_value_data[0];
+                var translation_value = translation_value_data[0];
                 var word = {
                     translation_value: translation_value,
                     dictionary_grammatical_class_name: data.dictionary_grammatical_class_name,
@@ -276,19 +276,14 @@
             view: true
         },
     };
-    var $configApuntesMethods = {
+    var $configDictionaryData = {};
+    var $methodsConsolidateGrids = {
         getTypeDictionary: function () {
             var entity_manager_id = this.modelFilters.typeDictionary;
+            var entity_manager_id = this.modelFilters.typeDictionary;
             return {
+                entity_manager_id: entity_manager_id,
                 dictionary_language_id: entity_manager_id
-            };
-        },
-        getMenuConfig: getMenuConfig,
-        _resetManagerGrid: function () {
-            this.managerMenuConfig = {
-                view: false,
-                menuCurrent: [],
-                rowId: null
             };
         },
         _gridManager: function (elementSelect) {
@@ -300,21 +295,49 @@
 
             });
         },
-        initCurrentGridApuntesComponent: function (params) {
-            this.initGridManager(this);
+        _resetManagerGrid: function () {
+            this.managerMenuConfig = {
+                view: false,
+                menuCurrent: [],
+                rowId: null
+            };
         },
-        initGridManager: function (vmCurrent) {
+        getMenuConfig: getMenuConfig,
+        onSetValuesForm: function (type, value) {
+            $(this.gridConfig.selectorCurrent).bootgrid("reload");
+
+        },
+    };
+    var $configDictionaryMethods = {
+        initCurrentGridDictionaryComponent: function (params) {//
+            this.initGridManagerDictionary(this);
+        },
+        initGridManagerDictionary: function (vmCurrent) {
             var gridName = this.gridConfig.selectorCurrent;
-            var urlCurrent = this.gridConfig.url;
+            var urlCurrent = $("#action-dictionary_by_words-getAdmin").val();
+            initGridManagementDictionary({
+                typeBS: "bs5",
+                $scope: vmCurrent,
+                gridName: gridName,
+                urlCurrent: urlCurrent,
+                vmCurrent: vmCurrent
+            });
+        },
 
-            var structure = vmCurrent.model.structure;
-
+    }
+    var $configApuntesMethods = {
+        initCurrentGridApuntesComponent: function (params) {//
+            this.initGridManagerApuntes(this);
+        },
+        initGridManagerApuntes: function (vmCurrent) {
+            var gridName = this.gridConfig.selectorCurrent;
+            var urlCurrent = $("#action-language_course_by_section-getAdmin").val();
+            console.log(urlCurrent);
             var formatters = {
                 'value': function (column, row) {
 
                     var sourceCurrent = $publicAsset + row.source;
                     var imageCurrent = '<img  class=" content-description__photos--img-row" src="' + sourceCurrent + '" alt="">'
-
 
                     var result = [
                         "<table class='manager-information'>",
@@ -332,6 +355,21 @@
                         "</tbody>",
                         "</table>"];
 
+                    result = [
+
+                        ' <div class="word-card">',
+                        '           <div class="word-card__icon ">',
+                        '            <i class="bi bi-chevron-down  word-card__icon-i"></i>',
+                        '            </div>',
+                        '       <div class="word-card__header">',
+                        '         <h2 class="word-card__base word-card__base--apuntes"> ' + row.value + '</h2>',
+                        '        </div>',
+                        imageCurrent,
+                        '       <div class="word-card__section word-card__section--detail word-card__section--detail-apuntes ">',
+                        '          <p class="word-card__text"> <br> ' + row.description + '</p>',
+                        '        </div>',
+                        ' </div>',
+                    ];
                     return result.join("");
                 }
             };
@@ -339,17 +377,14 @@
             var paramsFilters = $scope.getTypeDictionary();
             var overWritePost = function (request) {
                 var paramsFilters = $scope.getTypeDictionary();
-                request.filters = paramsFilters;
-                return request;
+                var result = {filters: paramsFilters};
+                return result;
             };
-
-
             let gridInit = initGridManager({
                 typeBS: "bs5",
                 gridNameSelector: gridName,
                 paramsFilters: paramsFilters,
                 formatters: formatters,
-                //templates:$templatesbs5Bootgrid,
                 'urlCurrent': urlCurrent,
                 'iconRefresh': 'bi bi-arrow-clockwise',
                 'labels': {search: 'Buscar'},
@@ -372,10 +407,6 @@
                 });
 
             });
-        },
-        onSetValuesForm: function (type, value) {
-            $(this.gridConfig.selectorCurrent).bootgrid("reload");
-
         },
         onClickRow: function (params) {
 
@@ -401,12 +432,11 @@
             }
 
         },
-
         getUrlSource: function (params) {
             var sourceCurrent = $publicAsset + params.source;
             return sourceCurrent;
         }
-    }
+    };
     var $courseManagementData = {
         hub: {
             "active_process": {
