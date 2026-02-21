@@ -22,6 +22,7 @@ final class ExercisePayloadUtil
      */
     public static function buildBlocks(array $options = []): array|string
     {
+
         $includeInactive = (bool)($options['include_inactive'] ?? false);
 
         $unitId = array_key_exists('language_course_unit_id', $options) && $options['language_course_unit_id'] !== null
@@ -118,6 +119,8 @@ final class ExercisePayloadUtil
             ->select([
                 // ====== LO QUE YA TENÍAS (NO SE OMITE) ======
                 's.id',
+                's.id as exercise_lvl_one_id',
+
                 's.step_code',
                 's.language_course_unit_id',
                 's.language_course_unit_section_id',
@@ -132,6 +135,9 @@ final class ExercisePayloadUtil
 
                 // ====== RELACIONES EXTRA ======
                 // Unit
+                'u.id as unit_lvl_one_id',
+                'u.value as unit_lvl_one',
+
                 'u.value as unit_value',
                 'u.subtitle as unit_subtitle',
                 'u.description as unit_description',
@@ -140,6 +146,9 @@ final class ExercisePayloadUtil
                 'u.configuracion_ui_ux_id as unit_uiux_id',
 
                 // Section
+                'sec.id as unit_lvl_two_id',
+                'sec.title as unit_lvl_two',
+
                 'sec.section_type as section_type',
                 'sec.title as section_title',
                 'sec.subtitle as section_subtitle',
@@ -150,6 +159,8 @@ final class ExercisePayloadUtil
                 'sec.configuracion_ui_ux_id as section_uiux_id',
 
                 // Item
+                'i.id as unit_lvl_three_id',
+                'i.title as unit_lvl_three',
                 'i.item_kind as item_kind',
                 'i.title as item_title',
                 'i.subtitle as item_subtitle',
@@ -198,6 +209,8 @@ final class ExercisePayloadUtil
             return [
                 // Step (igual que tu select base)
                 'id' => $r['id'],
+                'exercise_lvl_one_id' => $r['exercise_lvl_one_id'],
+
                 'step_code' => $r['step_code'],
                 'language_course_unit_id' => $r['language_course_unit_id'],
                 'language_course_unit_section_id' => $r['language_course_unit_section_id'],
@@ -213,6 +226,9 @@ final class ExercisePayloadUtil
                 // Unit relation
                 'unit' => [
                     'id' => $r['language_course_unit_id'],
+                    'unit_lvl_one_id' => $r['unit_lvl_one_id'],
+                    'unit_lvl_one' => $r['unit_lvl_one'],
+
                     'value' => $r['unit_value'],
                     'subtitle' => $r['unit_subtitle'],
                     'description' => $r['unit_description'],
@@ -229,6 +245,8 @@ final class ExercisePayloadUtil
                 // Section relation
                 'section' => [
                     'id' => $r['language_course_unit_section_id'],
+                    'unit_lvl_two_id' => $r['unit_lvl_two_id'],
+                    'unit_lvl_two' => $r['unit_lvl_two'],
                     'section_type' => $r['section_type'],
                     'title' => $r['section_title'],
                     'subtitle' => $r['section_subtitle'],
@@ -247,6 +265,8 @@ final class ExercisePayloadUtil
                 // Item relation (puede ser null)
                 'item' => $r['language_course_unit_section_item_id'] ? [
                     'id' => $r['language_course_unit_section_item_id'],
+                    'unit_lvl_three_id' => $r['unit_lvl_three_id'],
+                    'unit_lvl_three' => $r['unit_lvl_three'],
                     'item_kind' => $r['item_kind'],
                     'title' => $r['item_title'],
                     'subtitle' => $r['item_subtitle'],
@@ -278,6 +298,7 @@ final class ExercisePayloadUtil
         $rows = DB::table('language_exercise as e')
             ->select([
                 'e.id',
+                'e.id as exercise_lvl_two_id',
                 'e.step_id',
                 'e.exercise_code',
                 'e.type',
@@ -304,7 +325,9 @@ final class ExercisePayloadUtil
         $rows = DB::table('language_exercise_term as t')
             ->select([
                 't.id',
+                't.id as exercise_lvl_three_id',
                 't.exercise_id',
+                't.exercise_id as exercise_lvl_two_id',
                 't.role',
                 't.term_side',
                 't.group_index',
@@ -370,9 +393,19 @@ final class ExercisePayloadUtil
 
         $out = [
             'step_id' => (string)$step['step_code'],
+            'unit_lvl_one_id' => $step["unit"]['unit_lvl_one_id'],
+            'unit_lvl_two_id' => $step["section"]['unit_lvl_two_id'],
+            'unit_lvl_three_id' => $step["item"]['unit_lvl_three_id'],
+            'unit_lvl_one' => $step["unit"]['unit_lvl_one'],
+            'unit_lvl_two' => $step["section"]['unit_lvl_two'],
+            'unit_lvl_three' => $step["item"]['unit_lvl_three'],
+
+
+
             'unidad_seccion_id' => (int)$step['language_course_unit_section_id'],
             'unidad_id' => (int)$step['language_course_unit_id'],
             'configuracion_ui_ux_id' => (int)$step['configuracion_ui_ux_id'],
+            'language_course_unit_section_item_id' => $step['language_course_unit_section_item_id'],
             'title' => (string)$step['title'],
             'activity' => (string)$step['activity_label'],
             'description' => (string)$step['activity_label'],
@@ -643,13 +676,21 @@ final class ExercisePayloadUtil
             if (!isset($groups[$key])) {
                 $groups[$key] = [
                     'language_course_unit_id' => (int)$s['unidad_id'],
+                    'unit_lvl_one' =>$s['unit_lvl_one'],
+                    'unit_lvl_two' => $s["unit_lvl_two"],
+                    'unit_lvl_three' => $s["unit_lvl_three"],
+                    'unit_lvl_one_id' =>$s['unit_lvl_one_id'],
+                    'unit_lvl_two_id' => $s["unit_lvl_two_id"],
+                    'unit_lvl_three_id' => $s["unit_lvl_three_id"],
                     'language_course_unit_section_id' => (int)$s['unidad_seccion_id'],
                     'block_title' => $blockTitle,
                     'steps' => [],
                 ];
+
             }
 
             $groups[$key]['steps'][] = $s;
+
         }
 
         $list = array_values($groups);

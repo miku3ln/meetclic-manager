@@ -22,7 +22,24 @@
             // top:  topPct + "%"
         });
     }
+    function activateSector(sectorId) {
 
+        // 1. resetear todos
+        $(".mc-wheel__sector").each(function () {
+            const $p = $(this);
+            $p.removeClass("is-active");
+            $p.attr("fill", $p.data("color"));
+        });
+
+        // 2. aplicar hover como activo
+        const $sector = $("#sector-" + sectorId);
+        if (!$sector.length) return;
+
+        $sector.addClass("is-active");
+
+        // 👇 aquí la clave: usar hover como active
+        $sector.attr("fill", $sector.data("hover"));
+    }
     (function ($) {
         function polarToCartesian(r, angleDeg) {
             const a = (angleDeg - 90) * Math.PI / 180;
@@ -59,10 +76,93 @@
             $root.find(".mc-wheel__center-img").toggleClass("is-disabled", !enabled);
         }
 
+        function generateSector(params) {
+            var {cfg, options,$root} = params;
+
+            cfg.parts = clampParts(options.parts);
+            const rInner = Math.max(5, cfg.rOuter - cfg.ringThickness);
+            const sectors = [];
+            for (let i = 0; i < cfg.parts; i++) {
+                const s = cfg.sectors[i] || {};
+                sectors.push({
+                    item: s.item,
+                    id: s.id ?? `p${i + 1}`,
+                    color: s.color ?? "#EAF0FF",
+                    hover: s.hover ?? "#D7E2FF",
+                    enabled: (s.enabled !== undefined) ? !!s.enabled : true,
+                    title: s.title ?? `Sector ${i + 1}`,
+                    subtitle: s.subtitle ?? "",
+                    description: s.description ?? "",
+
+                    activeFill: s.activeFill ?? (cfg.activeFill ?? "#BFD1FF"),
+                    activeStroke: s.activeStroke ?? (cfg.activeStroke ?? "#4C4CFF"),
+                    activeStrokeWidth: (s.activeStrokeWidth ?? cfg.activeStrokeWidth ?? 0),
+
+
+                });
+            }
+
+            const $g = $root.find(".mc-wheel__sectors").empty();
+            const step = 360 / cfg.parts;
+            sectors.forEach((s, i) => {
+                const start = cfg.startOffsetDeg + (i * step);
+                const end = cfg.startOffsetDeg + ((i + 1) * step);
+                const d = describeSectorPath(cfg.rOuter, rInner, start, end);
+
+                const $path = $(document.createElementNS("http://www.w3.org/2000/svg", "path"))
+                    .attr("d", d)
+                    .attr("id", "sector-" + s.id)
+                    .attr("fill", s.color)
+                    .attr("data-color", s.color)
+                    .attr("data-hover", s.hover)
+                    .attr("data-id", s.id)
+                    .addClass("mc-wheel__sector mc-wheel__hit-gap")
+                    .toggleClass("is-disabled", !s.enabled)
+                    //active
+                    .attr("data-active-fill", s.activeFill)
+                    .attr("data-active-stroke", s.activeStroke)
+                    .attr("data-active-stroke-width", s.activeStrokeWidth)
+
+                ;
+
+                $path.on("mouseenter", function () {
+                    if (!cfg.enabled || !s.enabled) return;
+                    $(this).attr("fill", $(this).data("hover"));
+                });
+
+                $path.on("mouseleave", function () {
+                    const $t = $(this);
+                    if ($t.hasClass("is-active")) {
+                        // mantiene el hover como activo
+                        $t.attr("fill", $t.data("hover"));
+                    } else {
+                        $t.attr("fill", $t.data("color"));
+                    }
+                });
+
+                $path.on("click", function () {
+                    if (!cfg.enabled || !s.enabled) return;
+                    $root.find(".mc-wheel__sector").removeClass("is-active");
+                    $(this).addClass("is-active");
+                    cfg.onClick(s, i, cfg);
+                });
+
+                $g.append($path);
+            });
+
+            return cfg;
+
+
+        }
+
         function buildWheel($root, options) {
 
 
             const cfg = $.extend(true, {
+                lvl_one: options.lvl_one,
+                lvl_one_id: options.lvl_one_id,
+                lvl_two: options.lvl_two,
+                lvl_two_id: options.lvl_two_id,
                 enabled: options.enabled,
                 pulse: true,
                 pulseMs: 1200,
@@ -119,65 +219,9 @@
                     cfg.onCenterClick(cfg);
                 });
             if (cfg.parts > 0) {
-                cfg.parts = clampParts(options.parts);
 
 
-                const rInner = Math.max(5, cfg.rOuter - cfg.ringThickness);
-                const sectors = [];
-
-
-                for (let i = 0; i < cfg.parts; i++) {
-                    const s = cfg.sectors[i] || {};
-                    sectors.push({
-                        item: s.item,
-                        id: s.id ?? `p${i + 1}`,
-                        color: s.color ?? "#EAF0FF",
-                        hover: s.hover ?? "#D7E2FF",
-                        enabled: (s.enabled !== undefined) ? !!s.enabled : true,
-                        title: s.title ?? `Sector ${i + 1}`,
-                        subtitle: s.subtitle ?? "",
-                        description: s.description ?? ""
-                    });
-                }
-
-                const $g = $root.find(".mc-wheel__sectors").empty();
-                const step = 360 / cfg.parts;
-                sectors.forEach((s, i) => {
-                    const start = cfg.startOffsetDeg + (i * step);
-                    const end = cfg.startOffsetDeg + ((i + 1) * step);
-                    const d = describeSectorPath(cfg.rOuter, rInner, start, end);
-
-                    const $path = $(document.createElementNS("http://www.w3.org/2000/svg", "path"))
-                        .attr("d", d)
-                        .attr("fill", s.color)
-                        .attr("data-color", s.color)
-                        .attr("data-hover", s.hover)
-                        .attr("data-id", s.id)
-                        .addClass("mc-wheel__sector mc-wheel__hit-gap")
-                        .toggleClass("is-disabled", !s.enabled);
-
-                    $path.on("mouseenter", function () {
-                        if (!cfg.enabled || !s.enabled) return;
-                        $(this).attr("fill", $(this).data("hover"));
-                    });
-
-                    $path.on("mouseleave", function () {
-                        $(this).attr("fill", $(this).data("color"));
-                    });
-
-                    $path.on("click", function () {
-                        if (!cfg.enabled || !s.enabled) return;
-                        $root.find(".mc-wheel__sector").removeClass("is-active");
-                        $(this).addClass("is-active");
-                        cfg.onClick(s, i, cfg);
-                    });
-
-                    $g.append($path);
-                });
-
-
-                $root.data("mcWheelCfg", cfg);
-
+                $root.data("mcWheelCfg",  generateSector({cfg: cfg,options:options,$root:$root}));
             }
         }
 
@@ -206,12 +250,55 @@
 
     var ELEMENTS_DATA = [];
 
-    function findBlockByUnitAndSection(blocks, language_course_unit_id, language_course_unit_section_id) {
-        const found = blocks.find(b =>
-            b.language_course_unit_id === language_course_unit_id &&
-            b.language_course_unit_section_id === language_course_unit_section_id
-        );
-        return found ?? null;
+    //TODO DATA TEST
+    function findBlockByUnitAndSection(params) {
+        var {blocks, lvl_one_id, lvl_two_id, lvl_three_id} = params;
+
+        var dataUnitGroup = findBlockByLevelOneGroupByTwo(params);
+
+        var result = [];
+        $.each(dataUnitGroup, function (key, value) {
+            if (value.unit_lvl_two_id == lvl_two_id) {
+                $.each(value.steps, function (keySteps, valueStep) {
+                    if (valueStep["unit_lvl_three_id"] == lvl_three_id) {
+                        result.push(valueStep);
+                    }
+                });
+            }
+
+
+        });
+
+        return result;
+    }
+
+    function findBlockByLevelOneGroupByTwo(params) {
+        var blocks = params.blocks || [];
+        var lvl_one_id = params.lvl_one_id;
+        var grouped = {};
+
+        $.each(blocks, function (_, block) {
+            if (block.unit_lvl_one_id !== lvl_one_id) return;
+
+            $.each(block.steps || [], function (_, step) {
+                var lvl2 = step.unit_lvl_two_id;
+                if (lvl2 == null) return;
+
+                if (!grouped[lvl2]) {
+                    grouped[lvl2] = {
+                        unit_lvl_one_id: lvl_one_id,
+                        unit_lvl_one: step.unit_lvl_one || block.unit_lvl_one || null,
+                        unit_lvl_two_id: lvl2,
+                        unit_lvl_two: step.unit_lvl_two || null,
+                        steps: []
+                    };
+                }
+
+                grouped[lvl2].steps.push(step);
+            });
+        });
+
+        return grouped;
     }
 
     function render() {
@@ -226,25 +313,56 @@
 
                     var web_config = valueData.ui_ux.web_config;
                     var palettes = web_config.palettes;
+                    var item = valueData;
+                    item = {
+                        ...item, lvl_three_id: valueData.id,
+                        lvl_three: valueData.title,
+                    };
                     var setData = {
                         id: valueData.id,
                         enabled: true,
                         color: palettes.main,
                         hover: palettes.hover,
+                        activeFill: "#BFD1FF",
+                        activeStroke: "#4C4CFF",
+                        activeStrokeWidth: 0,
+                        rememberActive: true,
+                        autoActiveFirstEnabled: false,
                         item_kind: valueData.item_kind,
                         subtitle: valueData.subtitle,
                         weight: valueData.weight,
-                        item: valueData
+                        item: item,
+                        state: "IN_PROCESS",
+                        keyId: keyData,
+                        lvl_three_id: valueData.id,
+                        lvl_three: valueData.title,
+                        lvl_one_id: value.id,
+                        lvl_one: value.value,
+                        lvl_two_id: valueSection.id,
+                        lvl_two: valueSection.title,
                     };
                     sectors.push(setData);
                 });
                 var web_config = valueSection.ui_ux.web_config;
                 var palettes = web_config.palettes;
                 var viewBox = web_config.svgConfig.viewBox;
+                var sectionCurrent = valueSection;
+
+
+                sectionCurrent = {
+                    ...sectionCurrent,
+                    lvl_two_id: sectionCurrent.id,
+                    lvl_two: sectionCurrent.title,
+                    lvl_one_id: value.id,
+                    lvl_one: value.value,
+
+                };
                 var setPushItems = {
+
                     id: valueSection.id,
-                    section: valueSection,
+                    section: sectionCurrent,
                     enabled: true,
+                    state: "IN_PROCESS",
                     centerEnabled: true,
                     size: 90,
                     parts: parts,
@@ -257,7 +375,12 @@
                     sectors: sectors,
                     subtitle: valueSection.subtitle,
                     title: valueSection.title,
-                    weight: valueSection.weight
+                    weight: valueSection.weight,
+                    keyId: keySection,
+                    lvl_two_id: valueSection.id,
+                    lvl_two: valueSection.title,
+                    lvl_one_id: value.id,
+                    lvl_one: value.value,
                 };
 
                 items.push(setPushItems);
@@ -273,8 +396,15 @@
                 background = $resources.nina;
             }
             var setPush = {
-                key: value.id, title: value.value, kichwa: value.subtitle, enabled: true,
+                lvl_one_id: value.id,
+                lvl_one: value.value,
+                key: value.id,
+                title: value.value,
+                kichwa: value.subtitle,
+                enabled: true,
                 background: background,
+                state: "IN_PROCESS",
+                keyId: key,
                 items: items.sort(function (a, b) {
                     return (parseInt(b.weight, 10) || 0) - (parseInt(a.weight, 10) || 0);
                 })
@@ -300,10 +430,10 @@
             const $stack = $col.find("#stack_" + section.key);
 
             section.items.forEach(wheel => {
-                var sectionCurrent=wheel.section;
-var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
-                var classImage="mc-wheel__center-img"+(sectionCurrent.section_type=="FINAL_EXAM"?" mc-wheel__center-img--exam":"");
-                var classContentImage="mc-wheel__center"+(sectionCurrent.section_type=="FINAL_EXAM"?" mc-wheel__center--exam":"");
+                var sectionCurrent = wheel.section;
+                var configuracion_ui_ux_id = sectionCurrent.configuracion_ui_ux_id;
+                var classImage = "mc-wheel__center-img" + (sectionCurrent.section_type == "FINAL_EXAM" ? " mc-wheel__center-img--exam" : "");
+                var classContentImage = "mc-wheel__center" + (sectionCurrent.section_type == "FINAL_EXAM" ? " mc-wheel__center--exam" : "");
 
                 $stack.append(`
         <div class="mc-wheel" id="${wheel.id}" ui_ux_id="${configuracion_ui_ux_id}">
@@ -317,8 +447,14 @@ var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
                 const finalWheelEnabled = section.enabled && wheel.enabled;
 
                 $("#" + wheel.id).mcWheel({
+                    state: wheel.state,
+                    keyId: wheel.keyId,
                     section: wheel.section,
                     id: wheel.id,
+                    lvl_one: section.lvl_one,
+                    lvl_one_id: section.lvl_one_id,
+                    lvl_two: wheel.lvl_two,
+                    lvl_two_id: wheel.lvl_two_id,
                     enabled: finalWheelEnabled,
                     centerEnabled: finalWheelEnabled && wheel.centerEnabled,
                     size: wheel.size,
@@ -337,112 +473,175 @@ var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
                         // alert(`section=${section.key} wheel=${wheel.id} sector=${sector.id} idx=${idx}`);
                     },
                     onCenterClick: function () {
-
+                        var messageData = {
+                            title: "", description: ""
+                        };
                         var dataSection = this;
-                        var section = dataSection["section"];
-                        var language_course_unit_id = section.language_course_unit_id;
-                        var language_course_unit_section_id = section.id;
-                        var $blocks = $dataManagerPage.exercisePayload["blocks"];
-                        var resultBlock = findBlockByUnitAndSection($blocks, language_course_unit_id, language_course_unit_section_id);
-                        if (resultBlock) {
-                            function modalTemplate() {
-                                return `
-      <div class="modal-header">
-   <div class="mc-steps" id="mcStepsList"></div>
-        <h5 class="modal-title">Prueba de Conocimiento</h5>
+                        var sectors = dataSection.sectors;
+                        var section = dataSection.section;
+                        console.log("dataSectors", sectors);
+                        var allowProcess = sectors.length > 0;
+                        console.log("dataSection", section);
 
-        <button class="btn-close not-view" data-bs-dismiss="modal"></button>
-      </div>
+                        function getDataInitLvls(itemsSet) {
+                            unit_lvl_three_id = itemsSet[0].id;
+                            return unit_lvl_three_id;
+                        }
 
-      <div class="modal-body p-0">
-        <div id="stepsHost" class="p-3">Cargando…</div>
-      </div>
-    `;
+                        if (allowProcess) {
+                            var lvl_one_id = section.lvl_one_id;
+                            var lvl_one = section.lvl_one;
+                            var lvl_two_id = section.lvl_two_id;
+                            var lvl_two = section.lvl_two;
+
+                            console.log("lvl_two", lvl_two, lvl_two_id);
+                            console.log("lvl_one", lvl_one, lvl_one_id);
+                            var $blocks = $exercisesData;
+                            const unitId = lvl_one_id;
+                            var itemsCurrent = section.items;
+                            var itemsSet = [];
+                            $.each(itemsCurrent, function (key, value) {
+                                var setPush = value;
+                                setPush = {...setPush, complete: false};
+                                itemsSet.push(setPush);
+                            });
+                            var unit_lvl_three_id = -1;
+                            var allowTestUnit = false;
+
+                            if (CourseStore.hasUnit(unitId)) {
+                                if (CourseStore.hasLvl2(unitId, lvl_two_id)) {
+                                    const lvl2 = CourseStore.getLvl2(unitId, lvl_two_id, null);
+                                    const sectors = lvl2 ? (lvl2.sectors || []) : [];
+                                    var itemsCurrentUnit = sectors;
+                                    var unit_lvl_data = null;
+                                    var count = 0;
+                                    $.each(itemsCurrentUnit, function (key, value) {
+                                        if (value["complete"] == false && count == 0) {
+                                            unit_lvl_data = value;
+                                            count++;
+                                        }
+                                    });
+                                    if (unit_lvl_data) {
+                                        allowTestUnit = true;
+                                        unit_lvl_three_id = unit_lvl_data.id;
+                                    } else {
+                                        allowTestUnit = false;
+                                        messageData.title = "Advertencia!";
+                                        messageData.description = "Todas las pruebas de esta secciòn estan realizadas.";
+
+                                    }
+
+                                    //CourseStore.updateLvl2(unitId, lvl_two_id, {sectors: itemsSet, complete: false});
+                                } else {
+                                    allowTestUnit = true;
+                                    CourseStore.ensureLvl2(unitId, lvl_two_id);
+                                    CourseStore.updateLvl2(unitId, lvl_two_id, {sectors: itemsSet, complete: false});
+                                    unit_lvl_three_id = getDataInitLvls(itemsSet);
+
+                                }
+                            } else {
+                                CourseStore.addUnit(unitId, {
+                                    sectors: itemsSet,
+                                    complete: false,
+                                    lvl_two_id: lvl_two_id
+                                });
+                                if (itemsSet.length > 0) {
+                                    unit_lvl_three_id = getDataInitLvls(itemsSet);
+                                }
+                                allowTestUnit = true;
                             }
 
-                            MC.state.resetProgress();
-                            configModal.configuration =
-                                openDynamicModal({
-                                    id: "dynamicModal", // 👈 importante si tu openDynamicModal soporta id
-                                    fullscreen: true,
-                                    options: {backdrop: "static", keyboard: false},
+                            if (allowTestUnit) {
+                                var paramsSearch = {
+                                    blocks: $blocks,
+                                    lvl_one_id: lvl_one_id,
+                                    lvl_two_id: lvl_two_id,
+                                    lvl_three_id: unit_lvl_three_id
+                                };
 
-                                    template: modalTemplate,
+                                var resultBlock = findBlockByUnitAndSection(paramsSearch);
+                                console.log(paramsSearch, resultBlock);
+                                if (resultBlock.length) {
+                                    MC.state.resetProgress();
+                                    configModal.configuration =
+                                        openDynamicModal({
+                                            id: "dynamicModal", // 👈 importante si tu openDynamicModal soporta id
+                                            fullscreen: true,
+                                            options: {backdrop: "static", keyboard: false},
+                                            template: modalTemplate,
+                                            // OJO: mejor usar show.bs.modal para inyectar el HTML (antes del shown)
+                                            onShow: () => {
+                                                // no obligatorio, pero recomendado
+                                                MC.state.resetProgress();
+                                            },
+                                            onShown: () => {
+                                                viewManagerScroll({"selector": "html.js.csstransitions", allow: false});
 
-                                    // OJO: mejor usar show.bs.modal para inyectar el HTML (antes del shown)
-                                    onShow: () => {
-                                        // no obligatorio, pero recomendado
-                                        MC.state.resetProgress();
-                                    },
+                                                function mountStepsLayout() {
+                                                    const host = document.getElementById("stepsHost");
+                                                    if (!host) return;
+                                                    host.innerHTML = initProcessTestForm({resultBlock: resultBlock})
 
-                                    onShown: () => {
+                                                }
 
+                                                mountStepsLayout();
+                                                // 2) carga data directa (sin botones)
+                                                var jsonCurrent = SAMPLE_JSON;
+                                                if (resultBlock) {
+                                                    var managementUnitSection = {
+                                                        lvl_one_id: lvl_one_id,
+                                                        lvl_two_id: lvl_two_id,
+                                                        lvl_three_id: unit_lvl_three_id
+                                                    };
+                                                    jsonCurrent["management-unit"] = managementUnitSection;
+                                                    SAMPLE_JSON["management-unit"] = managementUnitSection;
+                                                    jsonCurrent.steps = resultBlock;
+                                                    $dataSetConfig = jsonCurrent;
+                                                }
 
-                                        // helper: layout de tu app dentro del modal
-                                        function mountStepsLayout() {
-                                            const host = document.getElementById("stepsHost");
-                                            if (!host) return;
+                                            },
 
-                                            host.innerHTML = `
-      <main class="mc-panel">
+                                            onHide: (ctx, ev) => {
+                                                const saving = ctx.modalEl.dataset.saving === "1";
+                                                if (saving) ev.preventDefault();
+                                            },
 
-        <div class="mc-panel__head">
-          <div class="management-information">
-            <h2> Resuelve los ejercicios :</h2>
-            <div class="mc-panel__hint">
-              Presiona <strong>“Verificar”</strong>.
-              ✅ Correcto: PASSED y avanza.
-              ❌ Incorrecto: suma intento. A los 3 intentos: FAILED y avanza.
-            </div>
-          </div>
-          <div class="mc-chip mc-chip--info" id="mcChipActive">Step: —</div>
-        </div>
-        <div class="mc-panel__body">
-          <div class="mc-ex" id="mcExerciseRoot">
-            <div class="mc-chip">Cargando…</div>
-          </div>
+                                            onHidePrevented: () => {
+                                                console.log("Intentó cerrar, pero está bloqueado");
+                                            },
 
-        </div>
-      </main>
-    `;
-                                        }
+                                            onHidden: () => {
+                                                // opcional: limpiar UI (progreso queda en localStorage igual)
+                                                const host = document.getElementById("stepsHost");
+                                                if (host) host.innerHTML = "—";
+                                                console.log("Cerrado: cleanup listo");
+                                                viewManagerScroll({"selector": "html.js.csstransitions", allow: true});
 
-                                        // 1) inyecta UI
-                                        mountStepsLayout();
-
-                                        // 2) carga data directa (sin botones)
-
-                                        var jsonCurrent = SAMPLE_JSON;
-                                        if (resultBlock) {
-                                            jsonCurrent.steps = resultBlock.steps;
-                                            bootstrapFromJSON(jsonCurrent);
-                                        }
-
-                                    },
-
-                                    onHide: (ctx, ev) => {
-                                        const saving = ctx.modalEl.dataset.saving === "1";
-                                        if (saving) ev.preventDefault();
-                                    },
-
-                                    onHidePrevented: () => {
-                                        console.log("Intentó cerrar, pero está bloqueado");
-                                    },
-
-                                    onHidden: () => {
-                                        // opcional: limpiar UI (progreso queda en localStorage igual)
-                                        const host = document.getElementById("stepsHost");
-                                        if (host) host.innerHTML = "—";
-                                        console.log("Cerrado: cleanup listo");
-                                    }
+                                            }
+                                        });
+                                } else {
+                                    mcToastShow({
+                                        type: "warning",
+                                        icon: "⚠️ ",
+                                        title: "Advertencia!",
+                                        msg: "No existen tests para este para este proceso.!"
+                                    });
+                                }
+                            } else {
+                                mcToastShow({
+                                    type: "warning",
+                                    icon: "⚠️ ",
+                                    title: messageData.title,
+                                    msg: messageData.description
                                 });
+                            }
 
                         } else {
                             mcToastShow({
                                 type: "warning",
                                 icon: "⚠️ ",
-                                title: "No existe un Test en esta Seccion.!",
-                                msg: "No se ha configurado un test para esta seccion."
+                                title: "Advertencia!",
+                                msg: "No existen tests para este modulo.!"
                             });
                         }
 
@@ -461,4 +660,20 @@ var configuracion_ui_ux_id=sectionCurrent.configuracion_ui_ux_id;
         // si tu scroll es window:
         MCStickyHeader.init();
     }
+
+    var $exercisesData = $dataManagerPage.exercisePayload["blocks"];
+
+    function initCourseData() {
+        var $blocks = $exercisesData;
+        $.each($blocks, function (key, value) {
+            $blocks[key]["complete"] = false;
+
+        });
+
+        $exercisesData = $blocks;
+    }
+
+    $(function () {
+        initCourseData();
+    });
 </script>

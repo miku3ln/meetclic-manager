@@ -665,7 +665,7 @@
 
     .mc-task__media img {
         width: 100%;
-        height: 420px;
+        height: 285px;
         object-fit: cover; /* CLAVE */
         display: block;
 

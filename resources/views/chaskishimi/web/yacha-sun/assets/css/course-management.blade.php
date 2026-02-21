@@ -316,13 +316,15 @@
         color: #dc3545;
     }
 
-    #content-body-canvas{
-        height: 100dvh;          /* o max-height: 90dvh si quieres que pueda ser menor */
+    #content-body-canvas {
+        height: 100dvh; /* o max-height: 90dvh si quieres que pueda ser menor */
 
     }
+
     div#other-data {
         height: 150px;
     }
+
     button#btn-return-process {
         left: -8px;
         z-index: 1500;
@@ -333,10 +335,12 @@
         width: 60px;
         background-color: #ffffff00;
     }
+
     h1.mc-offcanvas-header__title {
         margin-left: 36px;
         font-weight: bold;
     }
+
     button#btn-return-process-grid {
         display: block !important;
         left: 2px;
@@ -347,6 +351,7 @@
         width: 54px;
         background-color: #ffffff;
     }
+
     .form-view-header .btn-close {
         right: 20px !important;
         top: 0% !important;
@@ -363,9 +368,15 @@
     .container--manager-number-convert {
         margin-left: 0% !important;
 
-        margin-right: 0%!important;;
+        margin-right: 0% !important;
     }
+
     @media (max-width: 560px) {
+        .mc-panel {
+            width: 400px !important;
+            margin-left: 0% !important;
+        }
+
         .mc-dict__card-head {
             display: block !important;
         }
@@ -375,12 +386,14 @@
     div#content-data {
         margin-top: 5px;
     }
+
     button.trophy.manager-score__item {
         border-left: 4px solid #ffffff !important;
         border-right: 4px solid #ffffff !important;
     }
+
     /* Contenedor: 2 columnas (4 ítems => 2x2) */
-    .manager-score{
+    .manager-score {
 
         background: #f08124;
         display: grid;
@@ -389,7 +402,7 @@
     }
 
     /* Botón item: 3 elementos en columna */
-    .manager-score__item{
+    .manager-score__item {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -404,7 +417,7 @@
     }
 
     /* Imagen */
-    .manager-score__img{
+    .manager-score__img {
         width: 84px;
         height: 84px;
         object-fit: contain;
@@ -412,10 +425,10 @@
     }
 
     /* Título debajo del ícono */
-    .manager-score__badge--title{
+    .manager-score__badge--title {
         color: #ffffff;
         display: block;
-        max-width: 120px;          /* ajusta según tu diseño */
+        max-width: 120px; /* ajusta según tu diseño */
         font-size: 18px;
         font-weight: 600;
         line-height: 1.1;
@@ -427,7 +440,7 @@
     }
 
     /* Cantidad al final */
-    .manager-score__badge{
+    .manager-score__badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -441,7 +454,8 @@
         font-weight: 700;
         line-height: 20px;
     }
-    .manager-score__item{
+
+    .manager-score__item {
         min-height: 110px;
     }
 </style>
@@ -449,6 +463,7 @@
     .btn-close--modal.btn-close {
         background: none !important;
     }
+
     :root {
         --primary-color: #445EF2;
         --secondary-color: #f08124;
@@ -725,25 +740,28 @@
         }
 
 
-
     }
+
     .section-grid {
         padding: 0px 0;
     }
 
-   .input-group span{
+    .input-group span {
         padding: 6px 12px;
     }
+
     @media (max-width: 560px) {
         .container--manager-dictionary {
 
             padding: 0 0% 0 0% !important;
 
         }
+
         div#content-all-process {
             padding: 0rem !important;
         }
-        .pagination a{
+
+        .pagination a {
             line-height: 16px !important;
         }
     }

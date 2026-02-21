@@ -425,7 +425,7 @@ class ConfigurationGamificationUtil
 
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/ayni-reciprocidad-04.png',
+                'source' => '/uploads/business/gamification/default/ayni-reciprocidad-04.jpg',
                 'title' => '📲 Comparte este negocio por WhatsApp',
                 'subtitle' => '📤 wakina (compartir) para yanapay (ayudar)',
                 'description' => '{"steps":["🔎 Explora el perfil del negocio","🟢 Toca el botón WhatsApp.","📤 Comparte este perfil con una persona o grupo."],"helpers":["💡 Comparte desde el botón oficial del perfil para que se valide."],"validation":"Validación automática al completar la acción de compartir.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el perfil oficial del negocio."]}',
@@ -458,7 +458,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-07.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-07-explore.jpg',
                 'title' => '👤 Explora el perfil del negocio',
                 'subtitle' => '👀 rikuy (mirar) y conocer lo que ofrece',
                 'description' => '{"steps":["👤 Entra al perfil del negocio.","🖼️ Revisa fotos, horarios, ubicación y lo que ofrece.","👀 Explora lo que vende o brinda."],"helpers":["Mira horarios y ubicación antes de ir al local."],"validation":"Validación automática al ingresar y explorar el perfil.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el perfil oficial del negocio."]}',
@@ -493,7 +493,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-08.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-08.jpg',
                 'title' => '📍 Escanea el QR del tótem y registra tu visita',
                 'subtitle' => '🏪 kaypi (aquí) rikuy (registrar) presencia real',
                 'description' => '{"steps":["🏪 Estando en el local, ubica el QR del tótem/stand.","📷 Escanea el QR con tu celular.","✅ Abre el enlace para registrar tu visita."],"helpers":["💡 Usa buena luz para escanear más rápido.","🔒 Escanea solo el QR autorizado del negocio."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
@@ -528,7 +528,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-03.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-03.jpg',
                 'title' => '⭐ Agrega este negocio a tus Mashis',
                 'subtitle' => '🤝 masichiy (hacerse cercano) con el negocio',
                 'description' => '{"steps":["🔎 Explora el perfil del negocio","Busca el botton de agregar","🤝 Pulsa “Agregar a Mashis”.","✅ Verifica que quedó guardado en tu comunidad."],"helpers":["💡 Esto te ayuda a encontrar el negocio más rápido después."],"validation":"Validación automática al agregar el negocio a tus Mashis.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Esta acción se puede realizar una sola vez por negocio."]}',
@@ -562,7 +562,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/ayni-reciprocidad-02.png',
+                'source' => '/uploads/business/gamification/default/ayni-reciprocidad-02.jpg',
                 'title' => '⭐ Califica tu experiencia (estrellas)',
                 'subtitle' => '🌟 chanichiy (valorar) para mejorar calidad',
                 'description' => '{"steps":["🔎 Explora el perfil del negocio","⭐ Entra a calificaciones del negocio.","Busca el formulario de registro","⭐ Elige de 1 a 5 estrellas según tu experiencia.","📨 Envía tu calificación."],"helpers":["💡 Calificar con sinceridad ayuda a mejorar la calidad del negocio."],"validation":"Validación automática al enviar tu calificación.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Solo se valida si envías la calificación de forma completa."]}',
@@ -600,7 +600,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-06.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-06.jpg',
                 'title' => '🧾 Escanea el QR y Mira calificaciones y opiniones',
                 'subtitle' => '📍 post-compra: ingreso validado por QR',
                 'description' => '{"steps":["🏪 En el local del negocio, escanea el QR autorizado.","📊 Abre la sección de calificaciones y opiniones","👀 Revisa los aportes disponibles."],"helpers":["💡 El ticket debe ser válido y del negocio.","🔒 Escanea solo QR autorizado."],"validation":"Validación automática al completar el escaneo del QR del ticket.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Debes escanear un ticket válido del negocio (QR autorizado)."]}',
@@ -635,7 +635,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/sumka-kawsay-comunidad-invita-05.png',
+                'source' => '/uploads/business/gamification/default/sumka-kawsay-comunidad-invita-05.jpg',
                 'title' => '⭐ Mira calificaciones y opiniones',
                 'subtitle' => '🔍 rikuy (mirar) experiencias reales',
                 'description' => '{"steps":["🔎 Explora el perfil del negocio","⭐ Entra a calificaciones del negocio.","🔍 Lee estrellas y comentarios de otros clientes."],"helpers":["💡 Busca patrones: atención, calidad, tiempos y precios."],"validation":"Validación automática al ingresar a la sección de calificaciones.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
@@ -670,7 +670,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/randi-dar-recibir-01.png',
+                'source' => '/uploads/business/gamification/default/randi-dar-recibir-01.jpg',
                 'title' => '💬 Escribe una sugerencia con respeto',
                 'subtitle' => '🗣️ rimay (hablar) para mejorar juntos',
                 'description' => '{"steps":["🔎 Explora el perfil del negocio","💬 Entra al Buzón de sugerencias","🗣️ Escribe una sugerencia clara y respetuosa.","📨 Envía tu sugerencia"],"helpers":["💡 Describe qué pasó y qué mejorarías.","🧠 Mientras más claro, más útil para el negocio."],"validation":"Validación automática al enviar la sugerencia.","rules":["✅ Debes estar registrado en MeetClic.","⚠️ Solo se valida si envías la sugerencia desde el formulario oficial."]}',
@@ -705,7 +705,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-05.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-05-buzon.jpg',
                 'title' => '📝 Entra al buzón de sugerencias',
                 'subtitle' => '🌐 yaykuy (ingresar) al formulario',
                 'description' => '{"steps":["🔎 Explora el perfil del negocio.","💬 Entra al Buzón de sugerencias.","🔍 Revisa comentarios y opiniones."],"helpers":["💡 Si tu sugerencia es larga, primero escríbela en notas y luego pega."],"validation":"Validación automática al ingresar al buzón de sugerencias.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
@@ -740,7 +740,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-05.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-05.jpg',
                 'title' => '📍 (QR) Entra al buzón de sugerencias',
                 'subtitle' => '🏪 desde el local: ingreso validado por QR',
                 'description' => '{"steps":["🏪 En el local del negocio, ubica el QR autorizado.","📷 Escanea el QR con tu celular.","📝 Se abrirá el buzón de sugerencias."],"helpers":["🔒 Escanea únicamente el QR autorizado del negocio."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
@@ -776,7 +776,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-14.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-14.jpg',
                 'title' => '🎁 (QR) Descubre los premios y canjes del local',
                 'subtitle' => '📍 descubrir beneficios estando aquí',
                 'description' => '{"steps":["🏪 En el local del negocio, ubica el tótem/stand con QR.","📷 Escanea el QR con tu celular.","🎁 Revisa premios y canjes disponibles."],"helpers":["Mira qué puedes canjear con tus Yapitas antes de comprar."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
@@ -811,10 +811,10 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-13.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-13.jpg',
                 'title' => '🎁 Descubre premios y canjes desde la web',
                 'subtitle' => '🧭 rikuy (mirar) y planear tu canje',
-                'description' => '{"steps":["🔎 Explora el perfil del negocio.","🎁 Entra a Premios / Canjes.","👀 Revisa qué puedes obtener con tus Yapitas.","🧭 Elige el premio que deseas canjear"],"helpers":["💡 Planifica tu canje antes de ir al local."],"validation":"Validación automática al ingresar a la sección de premios/canjes.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
+                'description' => '{"steps":["🔎 Explora el perfil del negocio.","🎁 Entra a Premios / Canjes.","👀 Revisa qué puedes obtener con tus Yapitas.","🧭 Y esta lista tu tarea.!"],"helpers":["💡 Planifica tu canje antes de ir al local."],"validation":"Validación automática al ingresar a la sección de premios/canjes.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -846,7 +846,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-11.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-11.jpg',
                 'title' => '📍 (QR) Descubre la lista de tareas del negocio',
                 'subtitle' => '🧭 guía rápida para ganar YAPITAS',
                 'description' => '{"steps":["🏪 En el local del negocio, ubica el QR autorizado.","📷 Escanea el QR con tu celular.","📋 Abre la lista de tareas disponibles."],"helpers":["💡 Úsalo como guía rápida para ganar Yapitas."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
@@ -881,10 +881,10 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-12.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-12.jpg',
                 'title' => '🧭 Descubre las tareas y aprende cómo ganar YAPITAS',
                 'subtitle' => '👀 rikuy (mirar) paso a paso',
-                'description' => '{"steps":["🔎 Explora el perfil del negocio.","🎮 Entra a Tareas / Juegos.","✅ Elige una y complétala."],"helpers":["💡 Empieza por las tareas más fáciles para ganar rápido."],"validation":"Validación automática al ingresar a la lista de tareas.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
+                'description' => '{"steps":["🔎 Explora el perfil del negocio.","🎮 Entra a Tareas / Juegos."],"helpers":["💡 Empieza por las tareas más fáciles para ganar rápido."],"validation":"Validación automática al ingresar a la lista de tareas.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',
                 'state' => 'ACTIVE',
                 'valid_from' => null,
                 'valid_until' => null,
@@ -916,7 +916,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/yachay-aprender-07.png',
+                'source' => '/uploads/business/gamification/default/yachay-aprender-07.jpg',
                 'title' => '🏪 (QR) Entra a la tienda desde el local',
                 'subtitle' => '📍 físico → digital: visita verificada',
                 'description' => '{"steps":["🏪 En el local del negocio, ubica el QR autorizado.","📷 Escanea el QR con tu celular.","🛍️ Abre la tienda/catálogo del negocio."],"helpers":["💡 Ideal para ver el catálogo mientras estás en el local.","🔒 Escanea únicamente el QR autorizado del negocio."],"validation":"Validación automática al completar el escaneo del QR.","rules":["✅ Debes estar registrado en MeetClic.","📍 Debes estar físicamente en el local.","🔒 Debes escanear el QR autorizado del negocio."]}',
@@ -951,7 +951,7 @@ class ConfigurationGamificationUtil
             [
                 "id" => -1, "gamification_id" => -1,
                 "user_id" => -1,
-                'source' => '/uploads/business/gamification/default/tinkuy-encuentro-08.png',
+                'source' => '/uploads/business/gamification/default/tinkuy-encuentro-08.jpg',
                 'title' => '🛍️ Entra a la tienda y revisa el catálogo',
                 'subtitle' => '🛒 rikuy (mirar) productos y servicios',
                 'description' => '{"steps":["🏪 Explora el perfil del negocio y encuentra su tienda.","🛍️ Entra al catálogo de productos o servicios.","👀 Explora con calma lo que ofrece."],"helpers":["Mira precios y descripciones para elegir mejor."],"validation":"Validación automática al ingresar y navegar el catálogo.","rules":["✅ Debes estar registrado en MeetClic.","📌 La acción debe realizarse desde el enlace oficial del negocio."]}',

@@ -10,14 +10,16 @@
      * ✅ Cuando termina (según regla), muestra toast final + evento global
      * ✅ Sigue notificando a stepsbar con mc:progress:changed
      */
+
+
     (function () {
         window.MC = window.MC || {};
 
-        const { APP, ensureStepProgress, saveProgress, getGateIndex, isStepDone } = MC.state;
-        const { normStr } = MC.utils;
-        const { resolveSource } = MC.source;
-        const { logEvent } = MC.logger;
-        const { mountExercise } = MC.router;
+        const {APP, ensureStepProgress, saveProgress, getGateIndex, isStepDone} = MC.state;
+        const {normStr} = MC.utils;
+        const {resolveSource} = MC.source;
+        const {logEvent} = MC.logger;
+        const {mountExercise} = MC.router;
 
         function renderExercise(step, onStepChange) {
             const root = document.getElementById("mcExerciseRoot");
@@ -41,12 +43,16 @@
 
             // ✅ notifica barra superior (COMPACT) y lista (VERTICAL)
             function notifyProgressChanged() {
-                try { $(document).trigger("mc:progress:changed"); } catch (e) {}
+                try {
+                    $(document).trigger("mc:progress:changed");
+                } catch (e) {
+                }
                 try {
                     if (MC.uiStepsList && typeof MC.uiStepsList.refreshCompactUI === "function") {
                         MC.uiStepsList.refreshCompactUI();
                     }
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
             // =========================================================
@@ -88,8 +94,11 @@
             function showToast(kind, override = {}) {
                 const d = getToastDefaults();
                 const base = d[kind] || d.success;
-                const payload = { ...base, ...override };
-                try { mcToastShow(payload); } catch (e) {}
+                const payload = {...base, ...override};
+                try {
+                    mcToastShow(payload);
+                } catch (e) {
+                }
             }
 
             // =========================================================
@@ -112,6 +121,7 @@
             function onModuleCompleted(mode /* "DONE" | "PASSED" */) {
                 // DONE: todos terminaron (PASSED+FAILED)
                 // PASSED: todos OK
+                var typComplete=mode === "PASSED"?"perfect":"completed";
                 if (mode === "PASSED") {
                     showToast("perfect");
                 } else {
@@ -119,12 +129,12 @@
 
                     const ans = APP.api.getAnswer();
                     finishSectionData({
-                        data:{
-                            answerData:ans
+                        data: {
+                            answerData: ans
                         }
-                    })
+                    });
                 }
-
+                updateManagerItemSectionTest({typComplete:typComplete});
                 // Evento global (por si quieres abrir modal, ir a unidad siguiente, etc.)
                 try {
                     $(document).trigger("mc:module:completed", [{
@@ -133,7 +143,8 @@
                         unitId: APP.data?.unit_id,
                         unitSectionId: APP.data?.unit_section_id
                     }]);
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
             // ✅ regla que usas para “ya terminó”
@@ -145,9 +156,10 @@
                     if (allStepsPassed()) onModuleCompleted("PASSED");
                     return;
                 }
-                if (allStepsDone()){
+                if (allStepsDone()) {
                     onModuleCompleted("DONE");
-                };
+                }
+
             }
 
             // =========================================================
@@ -244,8 +256,6 @@
 
             $("#mcBtnVerify").off("click").on("click", () => {
                 if (!APP.api) return;
-
-                // Bloqueo si ya está resuelto
                 if (prog.status !== "IN_PROGRESS") {
                     const msg = prog.status === "PASSED"
                         ? "Este step ya está aprobado ✅."
@@ -258,39 +268,28 @@
 
                     updateAttemptsUI();
                     notifyProgressChanged();
-                    logEvent(step, { action: "VERIFY_BLOCKED_ALREADY_DONE" });
-
-                    // ✅ NUEVO: si por alguna razón ya estaba todo terminado
+                    logEvent(step, {action: "VERIFY_BLOCKED_ALREADY_DONE"});
                     checkModuleCompletion();
                     return;
                 }
-
                 const answer = APP.api.getAnswer();
                 const result = APP.api.check();
-
                 prog.verifiedCount += 1;
                 prog.lastAnswer = answer;
                 prog.lastResult = result;
-                logEvent(step, { action: "VERIFY", ok: !!result.ok, answer, result });
-
+                logEvent(step, {action: "VERIFY", ok: !!result.ok, answer, result});
                 const $res = $("#mcExResult");
                 $res.show().toggleClass("is-ok", !!result.ok).toggleClass("is-bad", !result.ok);
-
                 if (result.ok) {
                     // ✅ Toast usando UI/UX (si existe) o defaults
                     showToast("success");
-
                     prog.status = "PASSED";
                     saveProgress();
                     updateAttemptsUI();
                     notifyProgressChanged();
-
                     $res.text("✅ Correcto. Pasas al siguiente.");
-                    logEvent(step, { action: "STEP_PASSED" });
-
-                    // ✅ NUEVO: comprobar si terminó el módulo
+                    logEvent(step, {action: "STEP_PASSED"});
                     checkModuleCompletion();
-
                     const nextGate = getGateIndex();
                     if (nextGate !== APP.activeIndex) onStepChange(nextGate);
                     return;
@@ -314,11 +313,9 @@
                     });
 
                     $res.text(`❌ Incorrecto. Llegaste a ${prog.attemptsMax} intentos. Este step queda NO PASADO y puedes continuar.`);
-                    logEvent(step, { action: "STEP_FAILED_MAX_ATTEMPTS" });
-
+                    logEvent(step, {action: "STEP_FAILED_MAX_ATTEMPTS"});
                     // ✅ NUEVO: comprobar si terminó el módulo (DONE incluye FAILED)
                     checkModuleCompletion();
-
                     const nextGate = getGateIndex();
                     if (nextGate !== APP.activeIndex) onStepChange(nextGate);
                     return;
@@ -331,7 +328,7 @@
                 // showToast("error", { msg: `Te quedan ${left} intento(s).` });
 
                 $res.text(`❌ Incorrecto. Te quedan ${left} intento(s).`);
-                logEvent(step, { action: "STEP_ATTEMPT_FAILED", attempts: prog.attempts, left });
+                logEvent(step, {action: "STEP_ATTEMPT_FAILED", attempts: prog.attempts, left});
             });
 
             // Si ya estaba resuelto, mostrar estado
@@ -353,6 +350,6 @@
             }
         }
 
-        MC.uiExerciseView = { renderExercise };
+        MC.uiExerciseView = {renderExercise};
     })();
 </script>

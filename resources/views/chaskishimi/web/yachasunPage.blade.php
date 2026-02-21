@@ -16,6 +16,10 @@ $resources=[
        "trophy"=>URL::asset($assetsYapitasRoot.'assets/gamification/trophy.png'),
        "reputation"=>URL::asset($assetsYapitasRoot.'assets/gamification/reputation.png'),
        "configuration"=>URL::asset($assetsYapitasRoot.'assets/gamification/configuration.png'),
+   'intro'=>URL::asset($assetsRoot.'sections/gamification/test/intro.png'),
+   'congratulation_smile'=>URL::asset($assetsRoot.'sections/gamification/test/congratulation-smile.png'),
+
+
 ],
 "top-waka"=>[
        "nina"=>URL::asset($assetsRoot.'sections/subsection/nina/waka.png'),
@@ -136,6 +140,31 @@ $url_path_plugins = "libs/";
     <script>
         var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
         var $resources = <?php echo json_encode($resources) ?>;
+
+        function getScrollableElements() {
+            const scrollables = [];
+
+            $("*").each(function () {
+                const el = this;
+                const style = window.getComputedStyle(el);
+
+                const overflowY = style.overflowY;
+                const canScrollY = (overflowY === "auto" || overflowY === "scroll");
+                const hasOverflowY = el.scrollHeight > el.clientHeight;
+
+                if (canScrollY && hasOverflowY) {
+                    scrollables.push(el);
+                }
+            });
+
+            return scrollables;
+        }
+
+        function viewManagerScroll(params) {
+            var selector = params["selector"];
+            var allow = params["allow"]
+            $(selector).css("overflow", allow ? "auto" : "hidden");
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
@@ -150,6 +179,11 @@ $url_path_plugins = "libs/";
             type="text/javascript"></script>
 
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-test-init')
+    <script>
+        $(function () {
+            CourseStore.clearAndInit();
+        });
+    </script>
     @include('chaskishimi.web.yacha-sun.assets.js.process.init-modal')
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-management-tools')
     @include('chaskishimi.web.yacha-sun.assets.js.process.course-management-tools')
@@ -247,7 +281,7 @@ $url_path_plugins = "libs/";
                         init: null,
                         data: {
                             title: "El Camino del Chasqui",
-                            "subtitle":"Recorre las cuatro energías del saber ancestral."
+                            "subtitle": "Recorre las cuatro energías del saber ancestral."
                         }
                     },
                     managerHeader: {
@@ -428,12 +462,15 @@ $url_path_plugins = "libs/";
                         var updated = Object.assign({}, this.iconItems[idx], {number: numberOrNull});
                         this.$set(this.iconItems, idx, updated);
                     },
-                    getTitleMain:function(){
-                        return {title:"El Camino del Chasqui","subtitle":"Recorre las cuatro energías del saber ancestral."}
+                    getTitleMain: function () {
+                        return {
+                            title: "El Camino del Chasqui",
+                            "subtitle": "Recorre las cuatro energías del saber ancestral."
+                        }
                     },
                     ...$courseManagementToolsMethods,
                     ...$configApuntesMethods,
-                        ...$configNumberKichwaMethods,
+                    ...$configNumberKichwaMethods,
                     ...$configSentenceMethods
                 }
             });
@@ -456,8 +493,6 @@ $url_path_plugins = "libs/";
         });
 
         function mcToastShow(opts = {}) {
-
-
             const type = (opts.type ?? "success").toLowerCase(); // success | warning | danger
             const icon = opts.icon ?? (type === "success" ? "🏆" : type === "warning" ? "⚠️" : "⛔");
             const title = opts.title ?? (type === "success" ? "¡Lo lograste!" : type === "warning" ? "Ojo" : "Ups");
@@ -605,7 +640,7 @@ $url_path_plugins = "libs/";
                                 :title="item.id"
                             >
                                 <img class="manager-score__img" :src="item.image" :alt="item.id"/>
-                                <span  class="manager-score__badge--title">
+                                <span class="manager-score__badge--title">
        <?php echo "{{ item.actionName }}" ?>
       </span>
                                 <span v-if="hasNumber(item)" class="manager-score__badge">
@@ -697,7 +732,7 @@ $url_path_plugins = "libs/";
 @endsection
 @section('data-modal')
     <!-- Toasts -->
-    <div class="toast-container position-fixed p-3 mc-toast__container">
+    <div class="toast-container position-fixed p-3 mc-toast__container" id="toast-main-content">
         <div id="mcToast" class="toast mc-toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex mc-toast__row">
                 <div class="toast-body mc-toast__body">

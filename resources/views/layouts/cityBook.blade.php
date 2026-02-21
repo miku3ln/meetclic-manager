@@ -239,7 +239,7 @@
         .logo-holder {
             float: left;
             position: relative;
-            top: 0px !important;
+            top: 20px !important;
             height: 81px !important;
         }
 
