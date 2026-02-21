@@ -652,8 +652,8 @@
             ICON_CONTENT_BOOK: "bi-book",
             ICON_INFO: "bi-info-circle",
             ICON_COMMENT: "bi-chat-dots",
-            ICON_CHEVRON_UP:"bi-chevron-up",
-            ICON_CHEVRON_DOWN :"bi-chevron-down",
+            ICON_CHEVRON_UP: "bi-chevron-up",
+            ICON_CHEVRON_DOWN: "bi-chevron-down",
 
         },
         "bs": {
@@ -664,8 +664,8 @@
             ICON_CONTENT_BOOK: "glyphicon-book",
             ICON_INFO: "glyphicon-info-sign",
             ICON_COMMENT: "glyphicon-comment",
-            ICON_CHEVRON_UP:"glyphicon-chevron-up",
-            ICON_CHEVRON_DOWN :"glyphicon-chevron-down",
+            ICON_CHEVRON_UP: "glyphicon-chevron-up",
+            ICON_CHEVRON_DOWN: "glyphicon-chevron-down",
 
         }
 
@@ -735,16 +735,16 @@
             $(".word-card__item--main").on("click", function () {
                 var id = $(this).attr("id");
                 console.log(this, id);
-                var setIcon =configIcons.ICON_CHEVRON_DOWN   ;
+                var setIcon = configIcons.ICON_CHEVRON_DOWN;
                 var selectorItemsSetClass = "not-view";
                 var selectorItems = "." + id;
-                if ($(this).find("i").hasClass(configIcons.ICON_CHEVRON_DOWN )) {
-                    setIcon =configIcons.ICON_CHEVRON_UP;
+                if ($(this).find("i").hasClass(configIcons.ICON_CHEVRON_DOWN)) {
+                    setIcon = configIcons.ICON_CHEVRON_UP;
                     $(selectorItems).removeClass("not-view");
-                    $(this).find("i").removeClass(configIcons.ICON_CHEVRON_DOWN );
+                    $(this).find("i").removeClass(configIcons.ICON_CHEVRON_DOWN);
                     selectorItemsSetClass = "";
-                }else{
-                    $(this).find("i").removeClass(configIcons.ICON_CHEVRON_UP );
+                } else {
+                    $(this).find("i").removeClass(configIcons.ICON_CHEVRON_UP);
 
                 }
                 console.log("aadad");
@@ -793,7 +793,9 @@
                 var allowPlayMain = false;
                 var idPlayMain = false;
                 var playStructure = [];
-
+                var allowListen = false;
+                console.log("row.audios", row.audios);
+                var dataAudio=null;
                 if (row.audios) {
                     audioData.push("<div class='content-description__audios'>");
                     var countMain = 0;
@@ -802,10 +804,16 @@
 
                             allowPlayMain = true;
                             playStructure = [
-                                '  <a  class="btn btn-default btn-sm btn--manager-sound" audio-player="' + v.id + '">',
-                                ' <span class="'+configIcons.ICON_BASE+""+configIcons.ICON_AUDIO_PLAY+'"></span>',
+                                '  <a  class="btn btn-default btn-sm btn--manager-sound " audio-player="' + v.id + '">',
+                                ' <span class="' + configIcons.ICON_BASE + "" + configIcons.ICON_AUDIO_PLAY + '"></span>',
                                 'Play ', '</a>'
                             ];
+                            allowListen = true;
+                            dataAudio={
+                                id:v.id,
+                                data:v,
+
+                            };
                         }
                         var sourceCurrent = $publicAsset + v.source;
                         var setCurrent = [
@@ -813,6 +821,7 @@
                             '<audio id="audioPlayer' + v.id + '" controls  class="not-view">',
                             '<source src="' + sourceCurrent + '" type="audio/mpeg">',
                             '</audio>',
+
 
                         ];
                         audioData.push(setCurrent.join(""));
@@ -851,7 +860,7 @@
                 });
                 let exampleData = itemsExamples.length > 0 ? [
                     '  <div class="word-card__section word-card__section--examples">',
-                    '    <h3 class="word-card__subtitle"><i class="'+configIcons.ICON_BASE+""+configIcons.ICON_COMMENT+'"></i> Ejemplos</h3>',
+                    '    <h3 class="word-card__subtitle"><i class="' + configIcons.ICON_BASE + "" + configIcons.ICON_COMMENT + '"></i> Ejemplos</h3>',
                     '    <ul class="word-card__list">',
                     itemsExamples.join(""),
                     '    </ul>',
@@ -885,14 +894,16 @@
                     '      <li class="word-card__item">' + row.dictionary_grammatical_class_name + '</li>',
                 ]);
                 var clasWord = mainPronunciation ? (mainPronunciation.isMain ? "word-card__phonetic--main" : "") : "";
+
+                var htmlPlaying = allowListen ? playStructure.join(""): '';
                 let phoneticData = itemsPhonetic.length > 0 ? [
                     '  <div class="word-card__section word-card__section--pronunciations">',
-                    '    <h3 class="word-card__subtitle"><i class="'+configIcons.ICON_BASE+""+configIcons.ICON_AUDIO_PLAY+' "></i> Pronuciación</h3>',
+                    '    <h3 class="word-card__subtitle">'+htmlPlaying+' Pronuciación</h3>',
                     '    <ul class="word-card__list" id="word-card-list-' + row.id + '">',
                     '      <li class="word-card__item word-card__item--main " id="word-card-list-li-' + row.id + '">',
                     '        <span class="word-card__phonetic ' + clasWord + '">' + mainPronunciation.phonetic_value + '</span>',
                     '        <span class="word-card__notation">(' + mainPronunciation.notation_type + ')</span>',
-                    '<i class="'+configIcons.ICON_BASE+""+configIcons.ICON_DROPDOWN_OPEN+'  word-card__expand-ico"></i>',
+                    '<i class="' + configIcons.ICON_BASE + "" + configIcons.ICON_CHEVRON_DOWN + '  word-card__expand-ico"></i>',
                     '      </li>',
                     itemsPhonetic.join(""),
                     '    </ul>',
@@ -903,7 +914,7 @@
 
                 let grammaticalData = itemsGrammaticalClass.length > 0 ? [
                     '  <div class="word-card__section word-card__section--grammar">',
-                    '    <h3 class="word-card__subtitle"><i class="'+configIcons.ICON_BASE+""+configIcons.ICON_CONTENT_BOOK+'"></i>Clases Gramaticales</h3>',
+                    '    <h3 class="word-card__subtitle"><i class="' + configIcons.ICON_BASE + "" + configIcons.ICON_CONTENT_BOOK + '"></i>Clases Gramaticales</h3>',
                     '    <ul class="word-card__list">',
                     itemsGrammaticalClass.join(""),
                     '    </ul>',
@@ -921,11 +932,12 @@
                     grammaticalData.join(""),
                     exampleData.join(""),
                     '  <div class="word-card__section word-card__section--detail">',
-                    '    <h3 class="word-card__subtitle"><i class="'+configIcons.ICON_BASE+""+configIcons.ICON_INFO+'"></i>Detalles Adicionales</h3>',
+                    '    <h3 class="word-card__subtitle"><i class="' + configIcons.ICON_BASE + "" + configIcons.ICON_INFO + '"></i>Detalles Adicionales</h3>',
                     '    <p class="word-card__text">',
                     row.description, " <br>" + row.usage_context,
                     '    </p>',
                     '  </div>',
+                    audioData.join(""),
                     '</div>'
                 ];
 

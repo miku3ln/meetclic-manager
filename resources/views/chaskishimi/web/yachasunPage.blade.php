@@ -3,13 +3,14 @@
     $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 $assetsRoot = $resourcePathServer . 'assets/chaskishimi/';
 $assetsYapitasRoot = $resourcePathServer . 'yapitas/';
-
+$coming_soon=URL::asset($assetsRoot.'resources/coming-soon.png');
 $resources=[
     'header'=>URL::asset($assetsRoot.'yachasun/header.svg'),
    'wayra'=>URL::asset($assetsRoot.'sections/wayra-ready.png'),
    'nina'=>URL::asset($assetsRoot.'sections/nina-ready.png'),
    'yaku'=>URL::asset($assetsRoot.'sections/yaku-ready.png'),
    'allpa'=>URL::asset($assetsRoot.'sections/allpa-ready.png'),
+   'coming_soon'=>$coming_soon,
 
    "gamification"=>[
        "yapitas"=>URL::asset($assetsYapitasRoot.'assets/gamification/yapitas-premium.png'),
@@ -58,7 +59,9 @@ $url_path_plugins = "libs/";
     @include('utils.dictionary.assets.css.config-grid-manager')
 
     <style>
-
+        .manager-coming-soon__img {
+            width: 100%;
+        }
         :root {
             --mc-nav-h: 64px; /* ajusta al alto real de tu navbar */
         }
@@ -700,6 +703,10 @@ $url_path_plugins = "libs/";
                             <div v-if="hub.active_process.key=='chaski-diccionario'">
                                 @include('chaskishimi.web.yacha-sun.assets.js.template.management-dictionary')
 
+                            </div>
+                            <div v-else id="manager-coming-soon">
+
+                                <img src="{{$coming_soon}}" alt="" class="manager-coming-soon__img">
                             </div>
                         </div>
 
