@@ -215,7 +215,23 @@
         animation: mcWheelGlow var(--mc-pulse-ms, 1200ms) ease-in-out infinite;
         transform: none !important; /* blindaje */
     }
-
+    .mc-wheel__sector.is-active {
+        //animation: mcSectorPulse 1.2s ease-in-out infinite;
+    }
+    .mc-wheel__svg.is-pulsing .mc-wheel__sector {
+        animation: mcSectorPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes mcSectorPulse {
+        0% {
+            filter: brightness(1);
+        }
+        50% {
+            filter: brightness(1.25);
+        }
+        100% {
+            filter: brightness(1);
+        }
+    }
     @keyframes mcWheelGlow {
         0% {
             filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));

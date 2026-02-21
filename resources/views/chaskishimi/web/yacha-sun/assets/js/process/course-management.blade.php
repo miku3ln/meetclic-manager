@@ -22,23 +22,23 @@
             // top:  topPct + "%"
         });
     }
-    function activateSector(sectorId) {
+    function activateSector(sectorId, active = true) {
 
-        // 1. resetear todos
-        $(".mc-wheel__sector").each(function () {
-            const $p = $(this);
-            $p.removeClass("is-active");
-            $p.attr("fill", $p.data("color"));
-        });
-
-        // 2. aplicar hover como activo
         const $sector = $("#sector-" + sectorId);
         if (!$sector.length) return;
 
-        $sector.addClass("is-active");
+        if (active) {
+            $sector.addClass("is-active");
 
-        // 👇 aquí la clave: usar hover como active
-        $sector.attr("fill", $sector.data("hover"));
+            // usar hover como estado activo
+            $sector.attr("fill", $sector.data("hover"));
+
+        } else {
+            $sector.removeClass("is-active");
+
+            // volver al color base
+            $sector.attr("fill", $sector.data("color"));
+        }
     }
     (function ($) {
         function polarToCartesian(r, angleDeg) {
@@ -93,7 +93,6 @@
                     title: s.title ?? `Sector ${i + 1}`,
                     subtitle: s.subtitle ?? "",
                     description: s.description ?? "",
-
                     activeFill: s.activeFill ?? (cfg.activeFill ?? "#BFD1FF"),
                     activeStroke: s.activeStroke ?? (cfg.activeStroke ?? "#4C4CFF"),
                     activeStrokeWidth: (s.activeStrokeWidth ?? cfg.activeStrokeWidth ?? 0),
@@ -157,7 +156,6 @@
 
         function buildWheel($root, options) {
 
-
             const cfg = $.extend(true, {
                 lvl_one: options.lvl_one,
                 lvl_one_id: options.lvl_one_id,
@@ -177,7 +175,6 @@
                 centerImgSize: 34,
                 sectors: [],
                 section: options.section,
-
                 onClick: function () {
                 },
                 onCenterClick: function () {
@@ -207,7 +204,7 @@
             $svg.attr("viewBox", svgConfig.viewBox);
             placeCenterByViewBox(options.id, svgConfig.viewBox)
             setWheelEnabled($root, cfg.enabled);
-            $svg.toggleClass("is-pulsing", cfg.enabled && cfg.pulse);
+           // $svg.toggleClass("is-pulsing", cfg.enabled && cfg.pulse);
 
             if (cfg.centerImageUrl) $root.find(".mc-wheel__center-img").attr("src", cfg.centerImageUrl);
             setCenterEnabled($root, cfg.centerEnabled);
