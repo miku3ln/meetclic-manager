@@ -29,7 +29,6 @@ class Product extends ModelManager
 
     const STATE_INACTIVE = 'INACTIVE';
     protected $table = 'product';
-
     protected $fillable = array(
         'code',//*
         'name',//*
