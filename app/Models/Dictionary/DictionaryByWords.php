@@ -21,14 +21,26 @@ class DictionaryByWords extends ModelManager
     protected $table = 'dictionary_by_words';
     protected $modelNameEntity = 'DictionaryByWords';
 
-    protected $fillable = array('name', "description", 'status', 'diccionary_language_id', 'letters_of_the_alphabet');
+    protected $fillable = array('value', "description", 'status', 'diccionary_language_id', 'letters_of_the_alphabet', "translation_value", "phonetic", "usage_context");
+    public $attributesData = array(
+        "value",//*
+        "description",
+        "status",
+        "diccionary_language_id",
+        "letters_of_the_alphabet",
+        "translation_value",//*,
+        "phonetic",
+        "usage_context"
 
-    public $timestamps = true;
+    );
+    public $timestamps = false;
 
     public static function getRulesModel()
     {
         $rules = [
             "value" => "required",
+            "description" => "required",
+            "usage_context" => "required",
             "status" => "required",
             "diccionary_language_id" => "required|numeric",
             "letters_of_the_alphabet" => "required"
@@ -67,7 +79,7 @@ class DictionaryByWords extends ModelManager
             $resultData = $this->getDictionaryAdmin($params);
             $data = $resultData['rows'];
 
-            foreach ($resultData['rows'] as $item => $value) {
+            foreach ($data as $item => $value) {
                 $idMaster = $value->id;
                 $setPush = $value;
 
@@ -492,11 +504,15 @@ class DictionaryByWords extends ModelManager
         $success = false;
         $msj = "";
         $result = array();
+
         $attributesPost = $params["attributesPost"];
         $errors = array();
         $data = null;
         DB::beginTransaction();
+
+
         try {
+
             $modelName = $this->modelNameEntity;
             $model = new DictionaryByWords();
             $createUpdate = true;
@@ -507,25 +523,31 @@ class DictionaryByWords extends ModelManager
                 $createUpdate = true;
 
             }
+            $dictionary_grammatical_class_data_id = $attributesPost[$modelName]["dictionary_grammatical_class_data_id"];
 
             $modelData = $attributesPost[$modelName];
-            $attributesSet = $this->getValuesModel(array('fillAble' => $this->fillable, 'haystack' => $modelData, 'attributesData' => $this->attributesData));
+            $modelData["letters_of_the_alphabet"] = $modelData["value"][0];
+            unset($modelData["dictionary_grammatical_class_data_id"]);
+
+            $attributesSet = $modelData;
+
             $paramsValidate = array(
                 'inputs' => $attributesSet,
                 'rules' => self::getRulesModel(),
 
             );
+
             $validateResult = $this->validateModel($paramsValidate);
+
             $success = $validateResult["success"];
             if ($success) {
-
-
-                if (!$createUpdate) {
-
-
-                }
                 $model->fill($attributesSet);
                 $success = $model->save();
+                $dictionary_by_words_id = $model->id;
+                $modelClass = new DictionaryWordByClass();
+                $saveClassData = $modelClass->syncByWordId(["dictionary_by_words_id" => $dictionary_by_words_id, "dictionary_grammatical_class_ids" => $dictionary_grammatical_class_data_id]);
+                $success = $saveClassData["success"];
+                $msj = $success ? "" : "Error al registrar Clase Gramatical!";
 
             } else {
                 $success = false;

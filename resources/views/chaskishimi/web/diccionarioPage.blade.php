@@ -382,7 +382,7 @@
 
                         <div class="custom-scroll-admin-grid table-responsive">
                             <table id="dictionary_by_words-grid"
-                                   class=""
+                                   class="dictionary-data"
 
                             >
                                 <thead>

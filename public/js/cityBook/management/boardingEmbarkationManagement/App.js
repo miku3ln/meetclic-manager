@@ -23,7 +23,7 @@ var appInit = new Vue(
                 // 4) validar
                 this.validateReportFilters();
 
-this.startClockInterval();
+                this.startClockInterval();
             },
             directives: {
                 initS2Manager: {
@@ -338,10 +338,8 @@ this.startClockInterval();
                         this.managerCurrentBusiness.maritimeInformation.business_id = params.business_id;
                         this.managerCurrentBusiness.maritimeInformation.maritime_vessel_id = params.id;
                         this.managerCurrentBusiness.maritimeInformation.source = $publicAsset + params.source;
-                        this.managerCurrentBusiness.responsible.fullName="Por Definir";
-                        this.managerCurrentBusiness.responsible.document="10029548888";
-
-
+                        this.managerCurrentBusiness.responsible.fullName = "Por Definir";
+                        this.managerCurrentBusiness.responsible.document = "10029548888";
 
 
                     } else {
@@ -351,8 +349,8 @@ this.startClockInterval();
                         this.managerCurrentBusiness.maritimeInformation.business_id = null;
                         this.managerCurrentBusiness.maritimeInformation.maritime_vessel_id = null;
                         this.managerCurrentBusiness.maritimeInformation.source = null;
-                        this.managerCurrentBusiness.responsible.fullName="Por Definir";
-                        this.managerCurrentBusiness.responsible.document="10029548888";
+                        this.managerCurrentBusiness.responsible.fullName = "Por Definir";
+                        this.managerCurrentBusiness.responsible.document = "10029548888";
                     }
 
                     this.configDataRegisterForm.data = this.managerCurrentBusiness;

@@ -99,7 +99,7 @@ class FrontendCmsCityBook
 
             Route::get('/pointsSales/', 'Frontend\FrontendCityBookController@pointsSales')->name('pointsSales');//GAMIFICATION ROUTE
             Route::get('/boardingEmbarkation/', 'Frontend\FrontendCityBookController@boardingEmbarkation')->name('boardingEmbarkation');//GAMIFICATION ROUTE
-            Route::get('/boardingEmbarkationManagement', 'Frontend\FrontendCityBookController@boardingEmbarkationManagement')->name('boardingEmbarkationManagement');//GAMIFICATION ROUTE
+            Route::get('/boarding-embarkation-management', 'Frontend\FrontendCityBookController@boardingEmbarkationManagement')->name('boardingEmbarkationManagement');//GAMIFICATION ROUTE
 
 
             Route::get('/presentationCard/{id?}/{type?}', 'Frontend\FrontendCityBookController@presentationCard')->name('presentationCard');
@@ -138,6 +138,11 @@ class FrontendCmsCityBook
             Route::get('/getDataInteraction', 'Frontend\ManagerDocumentController@getDataInteraction')->name('getDataInteraction');
 
             Route::get('/kineticDisc', 'Frontend\ManagerDocumentController@kineticDisc')->name('kineticDisc');
+
+
+
+
+            Route::get('/dictionary-words-management', 'Frontend\FrontendCityBookController@dictionaryWordsManagement')->name('dictionary-words-management');
 
 
 

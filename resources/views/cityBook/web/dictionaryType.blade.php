@@ -460,7 +460,7 @@ $allowContact = false;
                                 var audioPlayerId = $(this).attr('audio-player');
                                 var selectorCurrent = 'audioPlayer' + audioPlayerId;
                                 var audio = document.getElementById(selectorCurrent);
-                                audio.play();
+                                managerAudio({audio: audio});
                             });
                         });
                     },

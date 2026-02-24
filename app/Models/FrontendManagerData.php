@@ -75,7 +75,16 @@ class FrontendManagerData extends ModelManager
                 'icon' => 'fa fa-ship',
                 'allowManager' => env('allowMenuLeftMyPointOfSaleFrontEnd'),
                 'active' => false,
-            ]
+            ],
+            'dictionaryWordsManagement' => [
+                'text' => __('frontend.account.menu.records.five'),
+                'link' => route('dictionary-words-management', app()->getLocale()),
+                'icon' => 'fa fa-language',
+                'allowManager' => env('allowMenuLeftMyPointOfSaleFrontEnd'),
+                'active' => false,
+            ],
+
+
         ];
 
         return $result;
@@ -114,6 +123,7 @@ class FrontendManagerData extends ModelManager
     public function getMenuAccountManagementUser($params, $page)
 
     {
+
         $success = true;
         $msg = '';
         $error = [];
@@ -121,6 +131,9 @@ class FrontendManagerData extends ModelManager
         $data = [];
 
         $pageConfig = [
+            //VERIFY
+            "dictionary-words-management",//PROTECTED PROCESS
+            "dictionaryWordsManagement",//PROTECTED PROCESS
             "boardingEmbarkation","boardingEmbarkationManagement",
             'account', 'myProfile', 'password', 'business', 'businessEmployer', 'orders', 'suggestionsMailBox', 'listings', 'bee', 'reviewsTo', 'pointsSales'
         ];
@@ -304,6 +317,7 @@ class FrontendManagerData extends ModelManager
             'error' => $error,
             'typeView' => $typeView
         ];
+
         return $result;
     }
 

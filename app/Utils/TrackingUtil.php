@@ -338,7 +338,7 @@ class TrackingUtil
                             $resultTask["success"] = $result["success"];
                             $resultTask["message"] = $result["success"] ? 'Tarea realizada' : 'Tarea no realizada algun problema en el registro comuniquese con el area de soporte';
                             $resultTask["type"] = $type;
-                        }else{
+                        } else {
                             $resultTask["success"] = false;
                             $resultTask["message"] = $resultAllowDepositLog->message;
                             $resultTask["type"] = self::TYPE_ERROR_LIMIT_GAMIFICATION;
@@ -357,7 +357,7 @@ class TrackingUtil
 
                 $resultTask["success"] = false;
                 $resultTask["message"] = $resultManager["message"];
-                $resultTask["type"] = $resultManager["type"]!=-420? self::TYPE_ERROR_PARAMS_LINK_GAMIFICATION: $resultManager["type"];
+                $resultTask["type"] = $resultManager["type"] != -420 ? self::TYPE_ERROR_PARAMS_LINK_GAMIFICATION : $resultManager["type"];
 
             }
 
@@ -754,7 +754,7 @@ class TrackingUtil
         return array_merge($this->actionsAllows, $this->actionsAllows2);
     }
 
-    private function isProtectedUserAction($actionCurrent)
+    private function isProtectedUserAction($actionCurrent)//PROTECTED PROCESS
     {
         $actionsUserLogin = [
             'account',
@@ -770,7 +770,7 @@ class TrackingUtil
             'boardingEmbarkation',
             'boardingEmbarkationManagement',
 
-
+            "dictionary-words-management",
         ];
 
         return in_array($actionCurrent, $actionsUserLogin);

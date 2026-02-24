@@ -1218,5 +1218,21 @@ class FrontendCityBookController extends FrontendBaseController
 
         }
     }
+    public function dictionaryWordsManagement($language = 'es')
+    {
 
+        $renderView = self::LAYOUT_MAIN . '.management.dictionaryWordsManagement.index';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => 'dictionaryWordsManagement',
+            'paramsRequest' => $paramsRequest
+
+        ]);
+
+        return view($renderView, $paramsSend);
+    }
 }

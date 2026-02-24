@@ -729,7 +729,7 @@
                 var audioPlayerId = $(this).attr('audio-player');
                 var selectorCurrent = 'audioPlayer' + audioPlayerId;
                 var audio = document.getElementById(selectorCurrent);
-                audio.play();
+                managerAudio({audio: audio});
             });
 
             $(".word-card__item--main").on("click", function () {
@@ -895,10 +895,19 @@
                 ]);
                 var clasWord = mainPronunciation ? (mainPronunciation.isMain ? "word-card__phonetic--main" : "") : "";
 
-                var htmlPlaying = allowListen ? playStructure.join(""): '';
+
+
+                var htmlPlaying = allowListen ? [
+                    '    <h3 class="word-card__subtitle"> Pronuciacion',
+                    playStructure.join(""),
+                    ' </h3>',
+
+                ].join("") : '';
                 let phoneticData = itemsPhonetic.length > 0 ? [
                     '  <div class="word-card__section word-card__section--pronunciations">',
-                    '    <h3 class="word-card__subtitle">'+htmlPlaying+' Pronuciación</h3>',
+                    htmlPlaying,
+                    '    <h4 class="word-card__subtitle">Variantes </h4>',
+
                     '    <ul class="word-card__list" id="word-card-list-' + row.id + '">',
                     '      <li class="word-card__item word-card__item--main " id="word-card-list-li-' + row.id + '">',
                     '        <span class="word-card__phonetic ' + clasWord + '">' + mainPronunciation.phonetic_value + '</span>',

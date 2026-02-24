@@ -139,16 +139,17 @@ class ModelManager extends Model
 
         foreach ($valuesFillAble as $key => $value) {
 
-
             $allowAdd = isset($valuesHaystack[$value]);
 
             if ($allowAdd) {
                 $needle = $value;
+                dd($valuesAttributesData);
                 $resultAdd = self::getManagerValuesDefault(array(
                     'haystack' => $valuesAttributesData,
                     'needle' => $needle,
 
                 ));
+
                 if ($resultAdd['currentRequired']) {
                     $keyAttributes = $value;
                     $valueAttributes = $valuesHaystack[$value];
@@ -452,5 +453,110 @@ class ModelManager extends Model
             $countAux++;
         }
         return $result;
+    }
+    // =========================
+// Clean helpers (reusables)
+// =========================
+
+    public function successResponse(string $message, $data = null, array $extra = []): array
+    {
+        return array_merge([
+            'success' => true,
+            'msj' => $message,
+            'data' => $data,
+            'errors' => [],
+        ], $extra);
+    }
+
+    public function failResponse(string $message, array $errors = [], $data = null, array $extra = []): array
+    {
+        return array_merge([
+            'success' => false,
+            'msj' => $message,
+            'data' => $data,
+            'errors' => $errors,
+        ], $extra);
+    }
+
+    /**
+     * Obtiene payload desde $params['attributesPost'][$this->modelNameEntity]
+     * Fallback: $params['attributesPost'][$this->table]
+     */
+    public function resolvePayload(array $params): array
+    {
+        $attributesPost = $params['attributesPost'] ?? null;
+        if (!is_array($attributesPost)) {
+            throw new \RuntimeException("No se encontró attributesPost.");
+        }
+
+        $modelName = $this->modelNameEntity;
+
+        if (isset($attributesPost[$modelName]) && is_array($attributesPost[$modelName])) {
+            return $attributesPost[$modelName];
+        }
+
+        if (isset($attributesPost[$this->table]) && is_array($attributesPost[$this->table])) {
+            return $attributesPost[$this->table];
+        }
+
+        throw new \RuntimeException("No se encontró payload: attributesPost['{$modelName}'].");
+    }
+
+    /**
+     * Devuelve solo lo permitido por fillable y lo que exista en payload.
+     */
+    public function buildAttributes(array $payload): array
+    {
+        return self::getValuesModel([
+            'fillAble' => $this->fillable,
+            'haystack' => $payload,
+            'attributesData' => $this->attributesData ?? [],
+        ]);
+    }
+
+    public function isValidExistingId($id): bool
+    {
+        if ($id === null) return false;
+        if ($id === "null" || $id === "-1") return false;
+
+        return is_numeric($id) && (int)$id > 0;
+    }
+
+    /**
+     * @return array{0: Model, 1: bool} [model, isUpdate]
+     */
+    public function findOrNewModel(array $payload, string $modelClass)
+    {
+        $id = $payload['id'] ?? null;
+
+        if ($this->isValidExistingId($id)) {
+            /** @var \Illuminate\Database\Eloquent\Model|null $model */
+            $model = $modelClass::find((int)$id);
+            if (!$model) {
+                throw new \RuntimeException("No existe registro con id={$id}.");
+            }
+            return [$model, true];
+        }
+
+        return [new $modelClass(), false];
+    }
+
+    /**
+     * Si la tabla NO es AUTO_INCREMENT, genera id = MAX(id)+1 cuando es CREATE.
+     * - Si payload trae id numérico válido, lo respeta.
+     */
+    public function ensureIdForCreate($model, array $payload, ?string $tableName = null): void
+    {
+        if (isset($payload['id']) && is_numeric($payload['id']) && (int)$payload['id'] > 0) {
+            $model->id = (int)$payload['id'];
+            return;
+        }
+
+        $table = $tableName ?: $model->getTable();
+
+        $nextId = ((int) DB::table($table)->max('id')) + 1;
+        if ($nextId <= 0) $nextId = 1;
+
+        $model->id = $nextId;
     }
 }

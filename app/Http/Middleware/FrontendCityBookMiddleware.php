@@ -4,15 +4,14 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App;
-use Couchbase\View;
+
 use Request;
 use Cookie;
 use App\Services\FirebaseService;
 use Input;
 
-use Illuminate\Contracts\Cookie\Factory;
 use Stevebauman\Location\Facades\Location;
-use App\Services\GeoIpLocalService;
+
 class FrontendCityBookMiddleware
 {
     /**

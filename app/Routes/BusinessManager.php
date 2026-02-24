@@ -1338,6 +1338,22 @@ class BusinessManager
             Route::post("boardingEmbarkation/saveMaritimeVesselResponsiblesApi", "MaritimeOperationsManagement\MaritimeVesselResponsiblesController@saveMaritimeVesselResponsiblesApi")->name('saveMaritimeVesselResponsiblesApi');
 
 
+            Route::post("dictionary/get-dictionary-data", "Dictionary\DictionaryByWordsController@getDictionaryData")->name('getDictionaryData');
+            Route::post("dictionary/saveWord", "Dictionary\DictionaryByWordsController@saveWord")->name('saveWord');
+
+
+            Route::get("dictionary/grammatical-class-list", "Dictionary\DictionaryGrammaticalClassController@grammaticalClassList")->name('grammaticalClassList');
+
+
+            Route::post(
+                "dictionary/pronunciation/upload",
+                "Dictionary\DictionaryByWordsController@dictionaryPronunciationUpload"
+            )->name('dictionaryPronunciationUpload');
+
+            Route::post(
+                "dictionary/pronunciation/delete/{id}",
+                "Dictionary\DictionaryByWordsController@dictionaryPronunciationDelete"
+            )->name('dictionaryPronunciationDelete');
         });
     }
 }

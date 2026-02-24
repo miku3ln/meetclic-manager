@@ -109,6 +109,8 @@ Route::group(['prefix' => '{language}', 'middleware' => ['course']], function ()
         return view('homeDatas', $dataSend);
 
     })->name("homeData");
+
+
 });
 
 

@@ -3627,3 +3627,14 @@ var $templatesbs5Bootgrid = {
         '<input name="select" type="{{ctx.type}}" class="{{css.selectBox}}" value="{{ctx.value}}" {{ctx.checked}} />'
 };
 
+function managerAudio(params){
+    var {audio}=params;
+    if (!audio.paused && !audio.ended && audio.currentTime > 0) {
+        console.log("Reproduciendo");
+        audio.pause();
+        audio.currentTime = 0;
+        audio.load();
+    }else{
+        audio.play();
+    }
+}

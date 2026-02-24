@@ -84,7 +84,11 @@ class FrontendCityBookManager extends ModelManager
         $tracking = new TrackingUtil();
 
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
-        if (!in_array($routeName, ["ourAllies","authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
+//NOT MESSAGE
+        if (!in_array($routeName, [
+            "dictionary-words-management",
+
+            "ourAllies", "authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
                 $resultTracking = $tracking->managerGamingTask($request, $type);
                 $gamificationData = $resultTracking;
@@ -399,6 +403,20 @@ class FrontendCityBookManager extends ModelManager
                 'managementNameCurrent' => 'BoardingEmbarkationManagement',
                 'dataCatalogue' => $dataCatalogue,
                 'moduleResource' => 'boardingEmbarkationManagement',
+
+            ];
+            $dataManagerPage['allowVue'] = true;
+        } else if ($page == 'dictionaryWordsManagement') {
+            $dataManagerPage['breadcrumb']['active'] = __('frontend.account.menu.my-business');
+            $dataCatalogue = array();
+            $pathCurrentResources = 'cityBook/management/dictionaryWordsManagement';
+            $configPartial = [
+                'moduleFolder' => 'dictionaryWordsManagement',
+                'moduleCamel' => 'dictionaryWordsManagement',
+                'moduleMain' => 'management',
+                'managementNameCurrent' => 'BoardingEmbarkationManagement',
+                'dataCatalogue' => $dataCatalogue,
+                'moduleResource' => 'dictionaryWordsManagement',
 
             ];
             $dataManagerPage['allowVue'] = true;
@@ -1430,10 +1448,10 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $payload = LanguageCoursePayloadUtil::buildPayload(1);
                 $dataManagerPage['languageCoursePayload'] = $payload;
 
-                $unitId =null;
-                $unitSectionId =null;
+                $unitId = null;
+                $unitSectionId = null;
                 $includeInactive = false;
-                $output=null;
+                $output = null;
                 $exercisePayload = ExercisePayloadUtil::buildBlocks([
                     'unit_id' => $unitId !== null ? (int)$unitId : null,
                     'unit_section_id' => $unitSectionId !== null ? (int)$unitSectionId : null,
@@ -1445,7 +1463,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $dataManagerPage['exercisePayload'] = $exercisePayload;
                 $dataManagerPage['dictionaryMorphemeCatalog'] = DictionaryMorphemeCatalog::morphemeFunctionsPayload();
                 $dataManagerPage['dictionaryCountsNumbersManagement'] = DictionaryCountsNumbersUtil::payload(true);
-                $dataManagerPage['pronunciationPayManagement'] =PronunciationPayloadUtil::buildPayload();
+                $dataManagerPage['pronunciationPayManagement'] = PronunciationPayloadUtil::buildPayload();
 
 
             } elseif ($page == 'diccionarioPage') {
@@ -1455,7 +1473,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
 
                 $dataManagerPage['allowVue'] = true;
                 $dataManagerPage['dictionaryCountsNumbersManagement'] = DictionaryCountsNumbersUtil::payload(true);
-                $dataManagerPage['pronunciationPayManagement'] =PronunciationPayloadUtil::buildPayload();
+                $dataManagerPage['pronunciationPayManagement'] = PronunciationPayloadUtil::buildPayload();
                 $dataManagerPage['dictionaryMorphemeCatalog'] = DictionaryMorphemeCatalog::morphemeFunctionsPayload();
 
             } elseif ($page == 'apuntesPage') {

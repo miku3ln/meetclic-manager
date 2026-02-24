@@ -36,7 +36,7 @@
     }
 
     .btn {
-        color: #f08124 !important;
+        color: #f08124 ;
     }
 
     .text-left {
@@ -247,12 +247,12 @@
         line-height: 1.6;
     }
 
-    table#dictionary_by_words-grid {
+    table.dictionary-data {
         width: 100%;
     }
 
     /* Aplica SOLO al tbody */
-    #dictionary_by_words-grid > tbody {
+    .dictionary-data > tbody {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* 3 columnas en PC, 1 columna móvil */
         gap: 20px;
@@ -260,12 +260,12 @@
     }
 
     /* Los tr deben "desaparecer" como filas */
-    #dictionary_by_words-grid > tbody > tr {
+    .dictionary-data > tbody > tr {
         display: contents; /* Para que los <td> (las word-card) floten directamente como ítems del grid */
     }
 
     /* Aseguramos que el td se comporte como bloque libre */
-    #dictionary_by_words-grid > tbody > tr > td {
+   .dictionary-data > tbody > tr > td {
         margin: 0;
         padding: 0;
     }
