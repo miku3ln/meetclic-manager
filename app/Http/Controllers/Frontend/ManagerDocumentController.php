@@ -600,7 +600,8 @@ class ManagerDocumentController extends FrontendBaseController
 
         return view('sri.managementElectronicReceiptsGenerateInformation');
     }
-    public function sendDataView(Request  $request)
+
+    public function sendDataView(Request $request)
     {
         return response()->json([
             'mensaje' => 'Datos recibidos correctamente',
@@ -617,6 +618,8 @@ class ManagerDocumentController extends FrontendBaseController
     public function generateRetentionsHtmlTable(array $retencionFiles): string
     {
         $html = '<div class="container px-2"><h2 class="mb-4 text-primary">🧾 Tabla de Retenciones</h2>';
+        $totalCode3 = 0;
+        $totalCode303 = 0;
 
         foreach ($retencionFiles as $item) {
             $xml = simplexml_load_file($item["source"]);
@@ -648,13 +651,21 @@ class ManagerDocumentController extends FrontendBaseController
 
             foreach ($impuestos as $imp) {
                 $codigo = (string)$imp->codigo;
+
                 $codigoRetencion = (string)$imp->codigoRetencion;
+
                 $baseImponible = (float)$imp->baseImponible;
                 $porcentajeRetener = (float)$imp->porcentajeRetener;
                 $valorRetenido = (float)$imp->valorRetenido;
                 $numDocSustento = (string)$imp->numDocSustento;
                 $fechaDoc = (string)$imp->fechaEmisionDocSustento;
 
+                if ($codigoRetencion == "303") {
+                    $totalCode303 += $baseImponible;
+                }
+                if ($codigoRetencion == "3") {
+                    $totalCode3 += $baseImponible;
+                }
                 $html .= "<tr>
                 <td><span class='badge bg-secondary'>$codigo</span></td>
                 <td><span class='text-dark'>$razonSocial</span></td>
@@ -671,8 +682,20 @@ class ManagerDocumentController extends FrontendBaseController
         }
 
         $html .= '</div>';
+
+        $html .= '<div class="consolidate">';
+        $html .= '  Total Codigo Retencion <span class="badge bg-warning text-dark">303</span> (401-411) :<span class="badge bg-success">';
+        $html .= "$" . $totalCode303;
+        $html .= '   </span> <br>';
+        $html .= '  Total Codigo Retencion <span class="badge bg-warning text-dark">3</span> (421)<span class="badge bg-success">';
+        $html .= "$" . $totalCode3;
+        $html .= '   </span>';
+        $html .= '</div>';
+
+
         return $html;
     }
+
     public function generateRetentionsSummaryHtmlTable(array $retencionFiles): string
     {
         $html = '<div class="container px-2">';
@@ -700,6 +723,7 @@ class ManagerDocumentController extends FrontendBaseController
             }
         }
 
+
         // Título principal
         $html .= '<h3 class="mt-4 text-primary">📊 Resumen agrupado por % de Retención</h3>';
 
@@ -712,11 +736,11 @@ class ManagerDocumentController extends FrontendBaseController
             <th scope="col">Total Valor Retenido</th>
         </tr>
     </thead><tbody>';
-        $type=100;
+        $type = 100;
         foreach ($groupedByPercent as $percent => $total) {
-            $message="";
-            if($type==$percent){
-                $message="(Seccion 421-609     copiar <--617)";
+            $message = "";
+            if ($type == $percent) {
+                $message = "(Seccion 421-609   )";
             }
             $badgeColor = $percent >= 50 ? 'danger' : ($percent >= 10 ? 'warning text-dark' : 'info');
             $html .= "<tr>
@@ -727,6 +751,258 @@ class ManagerDocumentController extends FrontendBaseController
 
         $html .= '</tbody></table></div></div>';
         return $html;
+    }
+
+
+    private function money($value): float
+    {
+        $value = trim((string)$value);
+        if ($value === '') return 0.0;
+        return (float)str_replace(',', '.', $value);
+    }
+
+    private function isCedulaOrRuc(string $id): bool
+    {
+        return (bool)preg_match('/^\d{10}(\d{3})?$/', $id); // 10 o 13
+    }
+
+    private function badgeTipo(string $id): string
+    {
+        if (preg_match('/^\d{13}$/', $id)) return "<span class='badge bg-success ms-1'>RUC 🏢</span>";
+        if (preg_match('/^\d{10}$/', $id)) return "<span class='badge bg-primary ms-1'>Cédula 🎫</span>";
+        return "<span class='badge bg-secondary ms-1'>Otro</span>";
+    }
+
+    private function badgeImpuesto(float $iva): string
+    {
+        $badgeColor = $iva == 0 ? "bg-secondary" : "bg-warning text-dark";
+        $text = $iva == 0 ? "Sin Impuestos" : "Con IVA";
+        return "<span class='badge {$badgeColor} ms-1'>{$text}</span>";
+    }
+
+    private function emptyTotals(): array
+    {
+        return [
+            'base_total' => 0.0,
+            'iva_total' => 0.0,
+            'total_total' => 0.0,
+            'count' => 0,
+        ];
+    }
+
+    private function splitByTax(float $baseTotal, float $ivaTotal, float $rate = 0.15): array
+    {
+        // Base gravada estimada por IVA real
+        $baseGravada = ($ivaTotal > 0) ? ($ivaTotal / $rate) : 0.0;
+
+        // Base 0% es lo que sobra de la base total
+        $baseCero = $baseTotal - $baseGravada;
+
+        $status = 'ok';
+        if ($baseCero < -0.02) { // tolerancia de redondeo
+            $status = 'error'; // IVA “demasiado” vs base
+            $baseCero = 0.0;
+        } elseif ($baseCero < 0) {
+            $status = 'warn'; // pequeño descuadre por redondeo
+            $baseCero = 0.0;
+        }
+
+        // Redondeo contable
+        $baseTotal = round($baseTotal, 2);
+        $ivaTotal = round($ivaTotal, 2);
+        $baseGravada = round($baseGravada, 2);
+        $baseCero = round($baseCero, 2);
+
+        return [
+            'base_total' => $baseTotal,
+            'iva_total' => $ivaTotal,
+            'base_gravada' => $baseGravada,
+            'base_cero' => $baseCero,
+            'total_gravado' => round($baseGravada + $ivaTotal, 2),
+            'status' => $status,
+        ];
+    }
+
+    public function generateFacturaPreviewHtmlTable2(array $file): string
+    {
+        $html = '<div class="container px-2">';
+        $path = $file["source"];
+        $filename = $file["name"];
+
+        if (!file_exists($path)) {
+            return "<h4 class='text-danger'>❌ Archivo no encontrado: <code>{$filename}</code></h4>";
+        }
+
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $headerOriginal = str_getcsv(array_shift($lines), "\t");
+
+        $ordenColumnas = [
+            'RUC_EMISOR', 'RAZON_SOCIAL_EMISOR', 'TIPO_COMPROBANTE',
+            'IDENTIFICACION_RECEPTOR', 'VALOR_SIN_IMPUESTOS', 'IVA',
+            'IMPORTE_TOTAL', 'SERIE_COMPROBANTE', 'CLAVE_ACCESO',
+            'FECHA_AUTORIZACION', 'FECHA_EMISION', 'NUMERO_DOCUMENTO_MODIFICADO'
+        ];
+
+        $indices = $this->buildIndices($ordenColumnas, $headerOriginal);
+
+        // ✅ filtro: solo tus compras (receptor)
+        $myIds = ['1002954889', '1002954889001'];
+
+        $totals = $this->emptyTotals();
+
+        $html .= "<h4 class='text-primary mb-3'>📄 Archivo: <code>{$filename}</code></h4>";
+        $html .= '<div class="c-table-wrapper">';
+        $html .= '<table class="table table-bordered table-hover table-striped table-sm">';
+        $html .= '<thead><tr>';
+        foreach ($ordenColumnas as $col) $html .= "<th class='text-nowrap'>{$col}</th>";
+        $html .= "</tr></thead><tbody>";
+$totalValorSinImpuestos=0;
+        $totalIva=0;
+        $totalImporteTotal=0;
+
+        foreach ($lines as $line) {
+            $fields = str_getcsv($line, "\t");
+
+            $idxReceptor = $indices['IDENTIFICACION_RECEPTOR'];
+            $identificacion = ($idxReceptor >= 0 && isset($fields[$idxReceptor])) ? trim($fields[$idxReceptor]) : '';
+
+
+
+            $idxValor = $indices['VALOR_SIN_IMPUESTOS'];
+            $idxIva   = $indices['IVA'];
+            $idxTotal = $indices['IMPORTE_TOTAL'];
+
+            $valor = $this->money(($idxValor >= 0 && isset($fields[$idxValor])) ? $fields[$idxValor] : '0');
+            $iva   = $this->money(($idxIva   >= 0 && isset($fields[$idxIva]))   ? $fields[$idxIva]   : '0');
+            $total = $this->money(($idxTotal >= 0 && isset($fields[$idxTotal])) ? $fields[$idxTotal] : '0');
+
+            // ✅ acumula
+            $totals['base_total']  += $valor;
+            $totalValorSinImpuestos+=$valor;
+            $totalIva+=$iva;
+            $totalImporteTotal+=$total;
+
+            $totals['iva_total']   += $iva;
+            $totals['total_total'] += $total;
+            $totals['count']++;
+
+            $badgeTipo = $this->badgeTipo($identificacion);
+            $badgeImpuesto = $this->badgeImpuesto($iva);
+
+            $html .= "<tr>";
+            foreach ($ordenColumnas as $col) {
+                $key = $indices[$col];
+                $contenido = ($key >= 0 && isset($fields[$key])) ? $fields[$key] : '';
+
+                if ($col === 'IDENTIFICACION_RECEPTOR') {
+                    $html .= "<td class='text-nowrap'>{$contenido} {$badgeTipo}</td>";
+                } elseif (in_array($col, ['VALOR_SIN_IMPUESTOS', 'IVA'], true)) {
+                    $html .= "<td class='text-nowrap'>" . number_format($this->money($contenido), 2, '.', '') . " {$badgeImpuesto}</td>";
+                } elseif ($col === 'IMPORTE_TOTAL') {
+                    $html .= "<td class='text-nowrap'>" . number_format($this->money($contenido), 2, '.', '') . "</td>";
+                } else {
+                    $html .= "<td class='text-nowrap'>{$contenido}</td>";
+                }
+            }
+            $html .= "</tr>";
+        }
+
+        $html .= '</tbody></table></div><br>';
+        $html .= '<br>';
+        $html .= '<div class="consolidate">';
+        $html .= ' <span class="badge bg-warning text-dark">Total Valor Sin Impuestos</span> <span class="badge bg-success">';
+        $html .= "$" . $totalValorSinImpuestos;
+        $html .= '   </span> <br>';
+        $html .= ' <span class="badge bg-warning text-dark">Total Iva</span> <span class="badge bg-success">';
+        $html .= "$" . $totalIva;
+        $html .= '   </span> <br>';
+        $html .= ' <span class="badge bg-warning text-dark">Total Importe Total</span> <span class="badge bg-success">';
+        $html .= "$" . $totalImporteTotal;
+        $html .= '   </span> <br>';
+        $html .= '</div>';
+
+
+        // ✅ split 0% vs 15% usando IVA real
+        $split = $this->splitByTax($totals['base_total'], $totals['iva_total'], 0.15);
+
+        $classCurrent = match ($split['status']) {
+            'ok' => 'table-success',
+            'warn' => 'table-warning',
+            default => 'table-danger'
+        };
+
+        // ✅ Casilleros SRI
+        // IMPORTANTE:
+        // 500/510 = BASE gravada (NO base+IVA)
+        // 520 = IVA
+        // 502/512/522 = "sin derecho a crédito" -> 0 por ahora (si no tienes regla para separarlo)
+        $sri = [
+            // con derecho a crédito (tarifa ≠ 0)
+            500 => $split['base_gravada'], // Bruto
+            510 => $split['base_gravada'], // Neto (si no manejas NC, igual)
+            520 => $split['iva_total'],    // IVA crédito
+
+            // sin derecho a crédito (tarifa ≠ 0) - no hay data en TXT para separarlo, queda 0
+            502 => 0.00,
+            512 => 0.00,
+            522 => 0.00,
+
+            // 0%
+            507 => $split['base_cero'],
+            517 => $split['base_cero'],
+        ];
+
+        // Totales como en el resumen SRI
+        $sri[509] = round($sri[500] + $sri[502] + $sri[507], 2); // total bruto compras
+        $sri[519] = round($sri[510] + $sri[512] + $sri[517], 2); // total neto compras
+        $sri[529] = round($sri[520] + $sri[522], 2);            // IVA total
+
+        // ✅ resumen listo para SRI
+        $html .= "<h5 class='text-secondary mt-4'>📊 Resumen del archivo (listo para SRI)</h5>";
+        $html .= '<div class="c-table-wrapper">';
+        $html .= '<table class="table table-bordered table-hover table-striped table-sm c-table">';
+        $html .= '<thead><tr><th class="text-nowrap">🗂 Categoría</th><th class="text-end">💰 Total</th></tr></thead>';
+        $html .= '<tbody>';
+
+        $html .= "<tr><td>Total comprobantes procesados</td><td class='text-end fw-bold'>{$totals['count']}</td></tr>";
+
+        $html .= "<tr><td>BASE TOTAL (VALOR_SIN_IMPUESTOS)</td><td class='text-end'>\$" . number_format($split['base_total'], 2, '.', '') . "</td></tr>";
+        $html .= "<tr><td>IVA TOTAL</td><td class='text-end'>\$" . number_format($split['iva_total'], 2, '.', '') . "</td></tr>";
+        $html .= "<tr><td>TOTAL FACTURAS (IMPORTE_TOTAL)</td><td class='text-end fw-bold'>\$" . number_format(round($totals['total_total'], 2), 2, '.', '') . "</td></tr>";
+
+        $html .= "<tr class='{$classCurrent}'><td><strong>BASE GRAVADA 15%</strong> (IVA/0.15)</td><td class='text-end fw-bold'>\$" . number_format($split['base_gravada'], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='{$classCurrent}'><td><strong>BASE 0%</strong> (BASE_TOTAL - BASE_GRAVADA)</td><td class='text-end fw-bold'>\$" . number_format($split['base_cero'], 2, '.', '') . "</td></tr>";
+
+        // ✅ Tabla casilleros SRI (solo los que pediste + totales)
+        $html .= "<tr class='table-info'><td><strong>SRI 500</strong> Base gravada ≠ 0% (Bruto) con derecho a crédito</td><td class='text-end'>\$" . number_format($sri[500], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-info'><td><strong>SRI 510</strong> Base gravada ≠ 0% (Neto) con derecho a crédito</td><td class='text-end'>\$" . number_format($sri[510], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-info'><td><strong>SRI 520</strong> IVA (crédito tributario)</td><td class='text-end'>\$" . number_format($sri[520], 2, '.', '') . "</td></tr>";
+
+        $html .= "<tr class='table-info'><td><strong>SRI 502</strong> Base gravada ≠ 0% (Bruto) sin derecho a crédito</td><td class='text-end'>\$" . number_format($sri[502], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-info'><td><strong>SRI 512</strong> Base gravada ≠ 0% (Neto) sin derecho a crédito</td><td class='text-end'>\$" . number_format($sri[512], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-info'><td><strong>SRI 522</strong> IVA sin derecho a crédito</td><td class='text-end'>\$" . number_format($sri[522], 2, '.', '') . "</td></tr>";
+
+        $html .= "<tr class='table-info'><td><strong>SRI 507</strong> Base 0% (Bruto)</td><td class='text-end'>\$" . number_format($sri[507], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-info'><td><strong>SRI 517</strong> Base 0% (Neto)</td><td class='text-end'>\$" . number_format($sri[517], 2, '.', '') . "</td></tr>";
+
+        $html .= "<tr class='table-warning'><td><strong>SRI 509</strong> TOTAL adquisiciones y pagos (Bruto)</td><td class='text-end fw-bold'>\$" . number_format($sri[509], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-warning'><td><strong>SRI 519</strong> TOTAL adquisiciones y pagos (Neto)</td><td class='text-end fw-bold'>\$" . number_format($sri[519], 2, '.', '') . "</td></tr>";
+        $html .= "<tr class='table-warning'><td><strong>SRI 529</strong> IVA total generado</td><td class='text-end fw-bold'>\$" . number_format($sri[529], 2, '.', '') . "</td></tr>";
+
+        $html .= '</tbody></table></div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    private function buildIndices(array $ordenColumnas, array $headerOriginal): array
+    {
+        $indices = [];
+        foreach ($ordenColumnas as $col) {
+            $pos = array_search($col, $headerOriginal, true);
+            $indices[$col] = ($pos === false) ? -1 : $pos; // ✅ nunca null
+        }
+        return $indices;
     }
 
     public function generateFacturaPreviewHtmlTable(array $file): string
@@ -758,7 +1034,9 @@ class ManagerDocumentController extends FrontendBaseController
         $sumConIVA_total = 0;
         $sumSinIVA_valor = 0;
         $sumConIVA_valor = 0;
-
+        $totalValorSinImpuestos=0;
+        $totalIva=0;
+        $totalImporteTotal=0;
         $html .= "<h4 class='text-primary mb-3'>📄 Archivo: <code>{$filename}</code></h4>";
         $html .= '<div class="c-table-wrapper">';
         $html .= '<table class="table table-bordered table-hover table-striped table-sm">';
@@ -769,6 +1047,7 @@ class ManagerDocumentController extends FrontendBaseController
         $html .= "</tr></thead><tbody>";
 
         foreach ($lines as $line) {
+
             $fields = str_getcsv($line, "\t");
             $identificacion = trim($fields[$indices['IDENTIFICACION_RECEPTOR']]);
             $valor = (float)str_replace(',', '.', trim($fields[$indices['VALOR_SIN_IMPUESTOS']]));
@@ -795,6 +1074,9 @@ class ManagerDocumentController extends FrontendBaseController
                     $sumConIVA_valor += $valor;
                 }
             }
+            $totalValorSinImpuestos+=$valor;
+            $totalIva+=$iva;
+            $totalImporteTotal+=$total;
 
             $html .= "<tr>";
             foreach ($ordenColumnas as $col) {
@@ -815,7 +1097,18 @@ class ManagerDocumentController extends FrontendBaseController
         }
 
         $html .= '</tbody></table></div><br>';
-
+        $html .= '<br>';
+        $html .= '<div class="consolidate">';
+        $html .= ' <span class="badge bg-warning text-dark">Total Valor Sin Impuestos</span> <span class="badge bg-success">';
+        $html .= "$" . $totalValorSinImpuestos;
+        $html .= '   </span> <br>';
+        $html .= ' <span class="badge bg-warning text-dark">Total Iva</span> <span class="badge bg-success">';
+        $html .= "$" . $totalIva;
+        $html .= '   </span> <br>';
+        $html .= ' <span class="badge bg-warning text-dark">Total Importe Total</span> <span class="badge bg-success">';
+        $html .= "$" . $totalImporteTotal;
+        $html .= '   </span> <br>';
+        $html .= '</div>';
         $classCurrent = "table-success";
         $valuePercentageTaxCurrent = 0.15;
         $valuePercentageTax = $sumConIVA_valor * $valuePercentageTaxCurrent;
@@ -832,6 +1125,7 @@ class ManagerDocumentController extends FrontendBaseController
             $valueCero = $sumSinIVA_valor + $resultStepTwo;
             $valueTax = $resultStepOne;
         } elseif ($valuePercentageTax < $sumConIVA_total) {
+            // dd("sumConIVA_valor",$sumConIVA_valor,"valuePercentageTaxCurrent",$valuePercentageTaxCurrent,"$sumConIVA_total");
             $classCurrent = "table-danger";
         }
 
@@ -843,11 +1137,11 @@ class ManagerDocumentController extends FrontendBaseController
         $html .= "       <tr><td>SIN IVA <span class='badge bg-success ms-1'>RUC 🏢</span></td><td class='text-end'><span class='badge bg-secondary'>$" . number_format($sumSinIVA_total, 2, '.', '') . "</span></td></tr>";
         $html .= "       <tr><td>CON IVA<span class='badge bg-success ms-1'>RUC 🏢</span></td><td class='text-end'><span class='badge bg-warning text-dark'>$" . number_format($sumConIVA_total, 2, '.', '') . "</span></td></tr>";
         $html .= "       <tr><td>VALOR SIN IMPUESTOS - SIN IVA</td><td class='text-end text-muted'>$" . number_format($sumSinIVA_valor, 2, '.', '') . "</td></tr>";
-        $html .= "       <tr><td>VALOR SIN IMPUESTOS - CON IVA</td><td class='text-end text-muted'>$" . number_format($sumConIVA_valor, 2, '.', '') . "</td></tr>";
+        $html .= "       <tr><td>VALOR SIN IMPUESTOS - CON IVA ".'<span class="badge bg-warning" style="display:none;" >'."(Seccion 500 & 510)</span></td><td class='text-end text-muted'> ".'<span class="badge bg-success">$' . number_format($sumConIVA_valor, 2, '.', '') . "</span></td></tr>";
         $html .= "       <tr class='{$classCurrent}'><td><strong>VALOR CON IVA * 0.15</strong></td><td class='text-end fw-bold'>$" . number_format($valuePercentageTax, 2, '.', '') . "</td></tr>";
-        $html .= "       <tr><td>TARIFA 0% <small class='text-muted'>(Sección 507-517)</small></td><td class='text-end'>$" . number_format($valueCero, 2, '.', '') . "</td></tr>";
-        $html .= "       <tr><td>TARIFA IVA <small class='text-muted'>(Sección 500-510)</small></td><td class='text-end'>$" . number_format($valueTax, 2, '.', '') . "</td></tr>";
-        $html .= "       <tr class='{$classCurrent}'><td><strong>IVA</strong> <small class='text-muted'>(Sección 520-(564))</small></td><td class='text-end fw-semibold'>\$" . number_format($valueTaxPercentaje, 2, '.', '') . "</td></tr>";
+        $html .= "       <tr><td>TARIFA IVA <small class='text-muted'>".'<span class="badge bg-warning">'."( Seccion  500& 510)</span></small></td><td class='text-end'>" .'<span class="badge bg-success">$' . number_format($valueTax, 2, '.', '') . "</span></td></tr>";
+        $html .= "       <tr><td>TARIFA 0% <small class='text-muted'>".'<span class="badge bg-warning">'."( Seccion  507& 517)</span></small></td><td class='text-end'>" .'<span class="badge bg-success">$' . number_format($valueCero, 2, '.', '') . "</span></td></tr>";
+        $html .= "       <tr class='{$classCurrent}'><td><strong>IVA</strong> <small class='text-muted'>".'<span class="badge bg-warning">'." (Seccion 520 & 564)</span></small></td><td class='text-end fw-semibold'>".'<span class="badge bg-success">$'  . number_format($valueTaxPercentaje, 2, '.', '') . "</span></td></tr>";
         $html .= '    </tbody>';
         $html .= '    </table>';
         $html .= '</div>';
@@ -866,20 +1160,20 @@ class ManagerDocumentController extends FrontendBaseController
         foreach ($files as $type => $file) {
             $html = "";
             if ($type == "facturas") {
-               $htmlFacturaPreview=$this-> generateFacturaPreviewHtmlTable($file);
-                $html.=$htmlFacturaPreview;
+                $htmlFacturaPreview = $this->generateFacturaPreviewHtmlTable($file);
+                $html .= $htmlFacturaPreview;
             } else {
                 $html .= "<h2>Tabla: Retenciones</h2>";
                 $tablesRetenciones = $this->generateRetentionsHtmlTable($file);
-                $html .=$tablesRetenciones;
+                $html .= $tablesRetenciones;
                 $groupedByPercent = [];
                 foreach ($file as $item) {
                     $xml = simplexml_load_file($item["source"]);
                     $innerXml = simplexml_load_string($xml->comprobante);
                     $filenameCurrent = ($item["name"]);
-                   $infoTributaria= $innerXml->children()->infoTributaria;
-                   $razonSocial=(string)$infoTributaria->razonSocial;
-                    $nombreComercial=(string)$infoTributaria->nombreComercial;
+                    $infoTributaria = $innerXml->children()->infoTributaria;
+                    $razonSocial = (string)$infoTributaria->razonSocial;
+                    $nombreComercial = (string)$infoTributaria->nombreComercial;
                     $impuestos = $innerXml->impuestos->impuesto ?? [];
                     foreach ($impuestos as $imp) {
                         $codigo = (string)$imp->codigo;
@@ -897,8 +1191,8 @@ class ManagerDocumentController extends FrontendBaseController
                     }
                 }
 
-                $tablesRetencionesSummary=$this->generateRetentionsSummaryHtmlTable( $file);
-                $html .=$tablesRetencionesSummary;
+                $tablesRetencionesSummary = $this->generateRetentionsSummaryHtmlTable($file);
+                $html .= $tablesRetencionesSummary;
 
             }
 
@@ -937,8 +1231,8 @@ class ManagerDocumentController extends FrontendBaseController
             } else {
                 $rootSources = "public/documents-manager/sri";
                 $retencionPaths = [];
-                $rootSourceCurrent="app";
-                $basePath = storage_path($rootSourceCurrent."/");
+                $rootSourceCurrent = "app";
+                $basePath = storage_path($rootSourceCurrent . "/");
                 $facturaPath = $request->file('facturas')->store($rootSources . '/facturas');
 
 
@@ -947,12 +1241,12 @@ class ManagerDocumentController extends FrontendBaseController
                 foreach ($request->file('retenciones') as $retencionFile) {
                     $path = $retencionFile->store($rootSources . '/retenciones');
                     $retencionPaths[] = [
-                        "source" => storage_path($rootSourceCurrent."/" . $path),
+                        "source" => storage_path($rootSourceCurrent . "/" . $path),
                         "name" => $retencionFile->getClientOriginalName(),
                     ];
                 }
 
-                $retencionPath=$retencionPaths;
+                $retencionPath = $retencionPaths;
                 $files = [
                     'facturas' => ["source" => $basePath . $facturaPath, "name" => "Facturas"],
                     'retenciones' => $retencionPaths,
