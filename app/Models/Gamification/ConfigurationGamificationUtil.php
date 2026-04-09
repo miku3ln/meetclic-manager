@@ -437,7 +437,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/business-details/MEETCLIC?typeProcess=whatsapp_click&sourceProcess=whatsapp&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-details/MEETCLIC?type-process=whatsapp_click&source-process=whatsapp&campaign_code=campaign-00-web-tracking&code-process=69',
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_FOLLOW, // 13
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WHATSAPP, // 5
                 'gamification_type_activity_id' => self::ACTIVITY_ECOMMERCE, // 1
@@ -470,7 +470,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/business-details/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-details/MEETCLIC?type-process=click&source-process=meetclick&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -505,7 +505,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/business-details/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-details/MEETCLIC?type-process=qr_scan&source-process=qr_ticket&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -612,7 +612,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => 'undefined',
-                'url_manager' => '{urlProject}rate/register/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}rate/register/business/MEETCLIC?type-process=qr_scan&source-process=qr_ticket&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -647,7 +647,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}rates/registers/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}rates/registers/business/MEETCLIC?type-process=click&source-process=meetclick&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -717,7 +717,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '3',
                 'entity_id' => '1',
-                'url_manager' => '{urlProject}rimay/registers/business/1?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}rimay/registers/business/1?type-process=click&source-process=meetclick&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -752,7 +752,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '3',
                 'entity_id' => '1',
-                'url_manager' => '{urlProject}rimay/registers/business/1?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}rimay/registers/business/1?type-process=qr_scan&source-process=qr_ticket&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -788,7 +788,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}rewards/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}rewards/business/MEETCLIC?type-process=qr_scan&source-process=qr_ticket&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -823,7 +823,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}rewards/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}rewards/business/MEETCLIC?type-process=click&source-process=meetclick&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -858,7 +858,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/business-pullkay/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-pullkay/MEETCLIC?type-process=qr_scan&source-process=qr_ticket&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -893,7 +893,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}es/business-pullkay/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}es/business-pullkay/MEETCLIC?type-process=click&source-process=meetclick&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13
@@ -928,7 +928,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}shop/business/MEETCLIC?typeProcess=qr_scan&sourceProcess=qr_ticket&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}shop/business/MEETCLIC?type-process=qr_scan&source-process=qr_ticket&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_QR_SCAN, // 6
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_QR_TOTEM, // 18
@@ -963,7 +963,7 @@ class ConfigurationGamificationUtil
                 'has_source' => 1,
                 'entity' => '0',
                 'entity_id' => '0',
-                'url_manager' => '{urlProject}shop/business/MEETCLIC?typeProcess=click&sourceProcess=meetclick&campaign_code=campaign-00-web-tracking&codeProcess=69',
+                'url_manager' => '{urlProject}shop/business/MEETCLIC?type-process=click&source-process=meetclick&campaign_code=campaign-00-web-tracking&code-process=69',
 
                 'tracking_click_type_id' => self::CLICK_TYPE_CLK_CLICK, // 2
                 'tracking_source_id' => self::TRACKING_SOURCE_SRC_WEB_INTERNAL, // 13

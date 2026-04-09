@@ -10,6 +10,7 @@ $themePath = $resourcePathServer . 'templates/cityBookHtml/';
 @php
     $mcGamification =$gamificationDataTask;
 
+
     // Garantiza estructura para que NUNCA sea undefined
     $mcGamification = $mcGamification ;
 @endphp
@@ -65,6 +66,9 @@ $themePath = $resourcePathServer . 'templates/cityBookHtml/';
     </style>
     <script>
         var $gamification_result =@json($mcGamification);
+        var $TASK_TOAST =@json($TASK_TOAST);
+
+
         window.GAMIFICATION_RESULT = $gamification_result;
         var $dataManagerPage = <?php echo json_encode($dataManagerPage) ?>;
     </script>

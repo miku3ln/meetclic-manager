@@ -1083,6 +1083,31 @@ Vue.component("frequency-limit-type-bs4", {
     },
 
     computed: {
+        helpText() {
+            const value = this.localValue;
+
+            if (!value) return "";
+
+            switch (value) {
+                case "ONCE":
+                    return "El usuario solo podrá realizar esta acción una única vez.";
+
+                case "DAILY":
+                    return "El usuario podrá realizar esta acción una cantidad limitada de veces por día.";
+
+                case "WEEKLY":
+                    return "El usuario podrá realizar esta acción una cantidad limitada de veces por semana.";
+
+                case "MONTHLY":
+                    return "El usuario podrá realizar esta acción una cantidad limitada de veces por mes.";
+
+                case "TOTAL_LIMIT":
+                    return "El usuario podrá realizar esta acción un número máximo total de veces.";
+
+                default:
+                    return "";
+            }
+        },
         status() {
             if (!this.required) return "success";
             if (!this.localValue) return "warning";
@@ -1197,6 +1222,9 @@ Vue.component("frequency-limit-type-bs4", {
             <span class="badge badge-pill not-view" :class="badgeClass">
           {{ statusMessage }}
         </span>
+            <small v-if="localValue" class="badge badge-pill badge-warning">
+                {{ helpText }}
+            </small>
         </div>
         </div>
     `

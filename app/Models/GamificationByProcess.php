@@ -12,6 +12,13 @@ class GamificationByProcess extends ModelManager
     const STATE_INACTIVE = 'INACTIVE';
     protected $table = 'gamification_by_process';
 
+    const FREQUENCY_LIMIT_TYPE_NONE = "NONE";
+    const FREQUENCY_LIMIT_TYPE_ONCE = "ONCE";
+    const FREQUENCY_LIMIT_TYPE_DAILY = "DAILY";
+    const FREQUENCY_LIMIT_TYPE_WEEKLY = "WEEKLY";
+    const FREQUENCY_LIMIT_TYPE_MONTHLY = "MONTHLY";
+    const FREQUENCY_LIMIT_TYPE_TOTAL_LIMIT = "TOTAL_LIMIT";
+
     public function pointsRelation()
     {
         // gamification_by_points.gamification_by_process_id -> gamification_by_process.id
@@ -375,6 +382,19 @@ END as entity_name
                 $user_id = $user->id;
                 $attributesSet['user_id'] = $user_id;
 
+                $isNullLimitValue = isset($attributesPost["frequency_limit_value"]) && $attributesPost["frequency_limit_value"] == 'null';
+
+                if ($isNullLimitValue && $attributesPost["frequency_limit_type"] != self::FREQUENCY_LIMIT_TYPE_TOTAL_LIMIT) {
+                    $attributesSet["frequency_limit_value"] = 0;
+
+                }
+                if (!$createUpdate) {
+
+
+                } else {
+
+                }
+
                 $paramsValidate = array(
                     'modelAttributes' => $attributesSet,
                     'rules' => self::getRulesModel(),
@@ -390,6 +410,14 @@ END as entity_name
                     $model->fill($attributesSet);
                     $success = $model->save();
 
+
+                    if ($createUpdate) {
+                        $newCode = $model->id;
+                        $url = preg_replace('/(code-process=)\d+/', '$1' . $newCode, $model->url_manager);//MANAGER CODE-PROCESS GAMIFICATION-TRACKING
+                        $model->url_manager = $url;
+
+
+                    }
                     $gamification_by_process_id = $model->id;
                     $attributesSet = [
                         'gamification_by_process_id' => $gamification_by_process_id,

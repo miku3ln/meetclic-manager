@@ -1116,7 +1116,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
             var quiet = 2;
             var rounded = 0;
             var mode = 'plain';
-            var imgSize = 30;
+            var imgSize = 20;
 
             var labelPosX = 50;
             var labelPosY = 110;
@@ -1132,7 +1132,8 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                 rounded = clamp(getNum(params, 'rounded', 0), 0, 100);
                 mode = getStr(params, 'mode', 'plain');
 
-                imgSize = clamp(getNum(params, 'imgSize', 30), 1, 100);
+                // 🔥 CLAVE: limitar tamaño del logo
+                imgSize = clamp(getNum(params, 'imgSize', 20), 5, 30);
 
                 labelPosX = clamp(getNum(params, 'labelPosX', 50), 0, 100);
                 // si quieres permitir 110, pon max 150:
@@ -1142,13 +1143,18 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                 labelText = getStr(params, 'labelText', '');
                 labelColor = getStr(params, 'labelColor', '#000000');
             }
+            // ===== Seguridad extra para logo =====
+            var imageSizeSafe = imgSize / 100;
+            if (imageSizeSafe > 0.25) {
+                imageSizeSafe = 0.25;
+            }
 
             // Asegura que el contenedor esté visible (por si antes lo ocultaste)
             $('#qrcode').show();
 
             $('#qrcode').empty();
             $('#label-preview').hide();
-
+            iconImage=null;
             var size = 512;
 
             var hasIcon = (typeof iconImage !== "undefined" && iconImage);
@@ -1167,7 +1173,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                 rounded: rounded,
                 mode: modeFinal,
                 image: hasIcon ? iconImage : null,
-                imageSize: (imgSize / 100)
+                imageSize: imageSizeSafe // 🔥 FIX FINAL
             });
 
             if (typeof currentCanvas !== "undefined") {

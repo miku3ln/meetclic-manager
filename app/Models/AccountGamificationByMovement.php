@@ -223,29 +223,26 @@ class AccountGamificationByMovement extends ModelManager
         $query = DB::table('account_gamification_by_movement as m')
             ->join('account_gamification as w', 'w.id', '=', 'm.wallet_destination_id')
             ->join('account_gamification_movement_type as mt', 'mt.id', '=', 'm.movement_type_id')
-            ->leftJoin('gamification_by_process as gp', 'gp.id', '=', 'm.gamification_by_process_id')
-            ->join('account_gamification as ag', 'ag.id', '=', 'gp.gamification_id')
-            ->join('business as b', 'b.id', '=', 'ag.business_id')
+
+            ->leftJoin('business as b', 'b.id', '=', 'w.business_id')
 
             ->whereNull('m.deleted_at')
             ->where('w.user_id', '=', $userId);
 
-        // filtro opcional por business_id (en la wallet)
+        // filtros
         if (!empty($params['business_id'])) {
             $query->where('w.business_id', '=', (int)$params['business_id']);
         }
 
-        // filtro opcional por type_money
         if (!empty($params['type_money'])) {
             $query->where('w.type_money', '=', (int)$params['type_money']);
         }
 
-        // filtro opcional por movement_type_id
         if (!empty($params['movement_type_id'])) {
             $query->where('m.movement_type_id', '=', (int)$params['movement_type_id']);
         }
 
-        // validar direction_default vs direction
+        // validación direction
         $query->where('mt.state', '=', 'ACTIVE')
             ->where(function (Builder $q) {
                 $q->where('mt.direction_default', 'NA')
@@ -255,7 +252,7 @@ class AccountGamificationByMovement extends ModelManager
         // search
         $this->applySearch($query, $params);
 
-        // select (limpio)
+        // select
         $query->select([
             'm.id',
             'm.created_at',
@@ -281,17 +278,17 @@ class AccountGamificationByMovement extends ModelManager
             'mt.direction_default',
             'mt.icon_class',
 
-
             'm.description',
             'm.expire_at',
             'm.type_money',
             'm.gamification_by_process_id',
+
             'w.id as wallet_id',
             'w.user_id',
             'w.business_id',
             'w.state as wallet_state',
-            'b.title as business_name',
 
+            'b.title as business_name',
         ]);
 
         return $query;

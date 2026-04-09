@@ -95,7 +95,7 @@ Vue.component('gamification-by-process-component', {
         this.initCurrentComponent();
     },
     validations: function () {
-        var integerManager=Validators.integer;
+        var integerManager = Validators.integer;
         var attributes = {
             "id": {}, "change": {},
             "source": {required},
@@ -119,8 +119,10 @@ Vue.component('gamification-by-process-component', {
             "campaign_code_template": {required},
             "is_url": {},
             "type_manager": {},
-            "points": {required , integerManager,
-                minValue: minValue(0)},
+            "points": {
+                required, integerManager,
+                minValue: minValue(0)
+            },
             gamification_by_points_id: {},
 
             vigencia: {
@@ -249,7 +251,7 @@ Vue.component('gamification-by-process-component', {
                 generateAllow: false
             },
             managementSection: {
-                business: ['business-details', 'shop-business', 'gaming-business', 'rewards-business', 'rimay-kuna-business', 'chanichina-registers-business','suggestions-registers-business','rate-business'],
+                business: ['business-details', 'shop-business', 'gaming-business', 'rewards-business', 'rimay-kuna-business', 'chanichina-registers-business', 'suggestions-registers-business', 'rate-business'],
                 product: ['product-details-business'],
                 business_form: ['suggestions-business'],
                 business_route: ['chaqui-business'],
@@ -277,6 +279,7 @@ Vue.component('gamification-by-process-component', {
     methods: {
         ...$methodsFormValid,
         setManagerUrl: function (params) {
+            var processId = params["processId"];
             var gamification_type_activity_id_data = params['gamification_type_activity_id_data'];
             var entity = params['entity'];
             var tracking_type_id_data = params['tracking_type_id_data'];
@@ -367,9 +370,10 @@ Vue.component('gamification-by-process-component', {
                 if (isNil(sourceProcess)) sourceProcess = "";
 
                 var qs =
-                    "typeProcess=" + encodeURIComponent(String(typeProcess)) +
-                    "&sourceProcess=" + encodeURIComponent(String(sourceProcess)) +
-                    "&campaign_code=" + encodeURIComponent(String(campaign_code_template));
+                    "type-process=" + encodeURIComponent(String(typeProcess)) +
+                    "&source-process=" + encodeURIComponent(String(sourceProcess)) +
+                    "&campaign_code=" + encodeURIComponent(String(campaign_code_template)) +
+                    "&code-process=" + encodeURIComponent(String(processId));
 
                 return (baseUrl.indexOf("?") !== -1)
                     ? (baseUrl + "&" + qs)
@@ -391,7 +395,7 @@ Vue.component('gamification-by-process-component', {
                     return failConsolidated(["Negocio (business.title)"]);
                 }
 
-                urlBase = removePlaceholders(id) + "/" + business.title;
+                urlBase = removePlaceholders(id) + "/" + business.id;
                 urlCurrent = buildTrackedUrl(urlBase);
                 return ok(urlCurrent);
             }
@@ -529,15 +533,15 @@ Vue.component('gamification-by-process-component', {
                 managerModalSelect2();
             });
         },
-        getConversion:function(){
-            var yapitas=this.$v.model.attributes.points.$model;
+        getConversion: function () {
+            var yapitas = this.$v.model.attributes.points.$model;
             var resultConversion = GamificationCountryReference.convertYapitasToMoney(
                 window.GamificationCountryReferenceData,
                 yapitas,
                 2
             );
             var valueConversion = [
-                "<span class='badge badge--size-large badge-info'>", yapitas," YAPITA",(yapitas>1?"S":"")," es igual ",resultConversion.unit_label," ",resultConversion.money,
+                "<span class='badge badge--size-large badge-info'>", yapitas, " YAPITA", (yapitas > 1 ? "S" : ""), " es igual ", resultConversion.unit_label, " ", resultConversion.money,
                 "</span>"
             ].join("");
 
@@ -903,10 +907,10 @@ Vue.component('gamification-by-process-component', {
                     }
 
                     if (!['0', 0, -1, null, undefined].includes(row.entity_id)) {
-                     var labelCurrent=   $this.getLabelFormByEntity(row.entity);
+                        var labelCurrent = $this.getLabelFormByEntity(row.entity);
                         entityData = [
                             "<div class='content-description__information'>",
-                            "   <span relation class='content-description__title'>" + labelCurrent + ":</span><span class='content-description__value'>"+rowCurrent.entity_name+"</span>",
+                            "   <span relation class='content-description__title'>" + labelCurrent + ":</span><span class='content-description__value'>" + rowCurrent.entity_name + "</span>",
                             "</div>",
 
                         ];
@@ -1399,7 +1403,12 @@ Vue.component('gamification-by-process-component', {
             console.log("status", p.status, p.data);
 
             if (this.$v.model.attributes.frequency_limit_value.$model) {
-                this.$v.model.attributes.frequency_limit_value.$model = null;
+                if (this.$v.model.attributes.frequency_limit_type.$model === "TOTAL_LIMIT") {
+
+                } else {
+                    this.$v.model.attributes.frequency_limit_value.$model = 0;
+
+                }
                 this.$v["model"]["attributes"].frequency_limit_value.$reset();
             }
         },
@@ -1419,6 +1428,7 @@ Vue.component('gamification-by-process-component', {
             }
 
             var result = {
+                processId: 69,
                 gamification_type_activity_id_data: pick('gamification_type_activity_id_data'),
                 entity: pick('entity'),
                 tracking_type_id_data: pick('tracking_type_id_data'),
@@ -1428,6 +1438,9 @@ Vue.component('gamification-by-process-component', {
                 campaign_code_template: pick('campaign_code_template'),
                 url_manager_data: pick('url_manager_data')
             };
+            if (useRaw) {
+                result["processId"] = this.model.attributes["id"];
+            }
             return result;
         },
         resetManagerUrl: function () {
@@ -1511,7 +1524,9 @@ Vue.component('gamification-by-process-component', {
                     "type_manager": this.$v.model.attributes.type_manager.$model == null ? 0 : (this.$v.model.attributes.type_manager.$model ? 1 : 0),
                     "points": this.$v.model.attributes.points.$model,
                     "unique_code": this.$v.model.attributes.unique_code.$model,
-                    "gamification_by_points_id": this.$v.model.attributes.gamification_by_points_id.$model
+                    "gamification_by_points_id": this.$v.model.attributes.gamification_by_points_id.$model,
+                    "frequency_limit_type": this.$v.model.attributes.frequency_limit_type.$model,
+                    "frequency_limit_value": this.$v.model.attributes.frequency_limit_value.$model,
 
 
                 }

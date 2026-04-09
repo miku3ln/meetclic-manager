@@ -16,74 +16,154 @@ class PreviewTaskRewardUseCase
         private readonly ProcessTrackingPort $tracking
     ) {}
 
+    const FREQUENCY_LIMIT_TYPE_NONE = "NONE";
+    const FREQUENCY_LIMIT_TYPE_ONCE = "ONCE";
+    const FREQUENCY_LIMIT_TYPE_DAILY = "DAILY";
+    const FREQUENCY_LIMIT_TYPE_WEEKLY = "WEEKLY";
+    const FREQUENCY_LIMIT_TYPE_MONTHLY = "MONTHLY";
+    const FREQUENCY_LIMIT_TYPE_TOTAL_LIMIT = "TOTAL_LIMIT";
+
     public function execute(TaskPreviewInputDTO $dto): TaskPreviewResultDTO
     {
         $tz = 'America/Guayaquil';
 
+        // 🔹 Validaciones básicas
         if ($dto->processId <= 0) return TaskPreviewResultDTO::fail("process_id inválido.");
         if ($dto->userId <= 0) return TaskPreviewResultDTO::fail("user_id inválido.");
         if ($dto->nowEpochSeconds <= 0) return TaskPreviewResultDTO::fail("now_epoch_seconds inválido.");
 
         $process = $this->processRead->findProcessWithPointsAndBusiness($dto->processId);
 
-        if (!$process) return TaskPreviewResultDTO::fail("Proceso no existe o no tiene puntos/negocio asociado.");
+        if (!$process) {
+            return TaskPreviewResultDTO::fail("Proceso no existe o no tiene puntos/negocio asociado.");
+        }
 
-        $state = strtoupper((string)($process['state'] ?? ''));
-        if ($state !== 'ACTIVE') return TaskPreviewResultDTO::fail("Proceso INACTIVO.");
+        // 🔹 Estado
+        if (strtoupper((string)$process['state']) !== 'ACTIVE') {
+            return TaskPreviewResultDTO::fail("Proceso INACTIVO.");
+        }
 
-        // ✅ NOW con TZ
         $now = Carbon::createFromTimestamp($dto->nowEpochSeconds, $tz);
 
-        $validFrom = $process['valid_from'] ?? null;
-        $validUntil = $process['valid_until'] ?? null;
-
-        if ($validFrom) {
-            $from = Carbon::parse($validFrom, $tz);
-            if ($now->lt($from)) return TaskPreviewResultDTO::fail("Aún no disponible. Desde: ".$from->toDateTimeString());
+        // 🔹 Vigencia
+        if (!empty($process['valid_from'])) {
+            $from = Carbon::parse($process['valid_from'], $tz);
+            if ($now->lt($from)) {
+                return TaskPreviewResultDTO::fail("Aún no disponible.");
+            }
         }
 
-        if ($validUntil) {
-            $until = Carbon::parse($validUntil, $tz);
-            if ($now->gt($until)) return TaskPreviewResultDTO::fail("Caducado. Hasta: ".$until->toDateTimeString());
+        if (!empty($process['valid_until'])) {
+            $until = Carbon::parse($process['valid_until'], $tz);
+            if ($now->gt($until)) {
+                return TaskPreviewResultDTO::fail("Caducado.");
+            }
         }
 
-        if ($dto->referenceCode) {
-            $exists = $this->tracking->existsReferenceCode($dto->userId, $dto->processId, $dto->referenceCode);
-            if ($exists) return TaskPreviewResultDTO::fail("Reintento detectado: reference_code ya registrado.");
+        // 🔹 Anti duplicado
+        if (!empty(trim((string)$dto->referenceCode))) {
+            $exists = $this->tracking->existsReferenceCode(
+                $dto->userId,
+                $dto->processId,
+                trim($dto->referenceCode)
+            );
+
+            if ($exists) {
+                return TaskPreviewResultDTO::fail("Reintento detectado.");
+            }
         }
 
-        $limitType = strtoupper((string)($process['frequency_limit_type'] ?? ''));
+        // 🔥 NORMALIZAR FRECUENCIA
+        $limitType = strtoupper(trim((string)($process['frequency_limit_type'] ?? '')));
         $limitValueRaw = $process['frequency_limit_value'] ?? null;
 
-        if ($limitType === 'ONCE' && (int)$limitValueRaw <= 0) $limitValueRaw = 1;
-        $limitValue = (int)($limitValueRaw ?? 0);
+        switch ($limitType) {
 
+            case self::FREQUENCY_LIMIT_TYPE_ONCE:
+                $limitValue = 1;
+                break;
+
+            case self::FREQUENCY_LIMIT_TYPE_DAILY:
+            case self::FREQUENCY_LIMIT_TYPE_WEEKLY:
+            case self::FREQUENCY_LIMIT_TYPE_MONTHLY:
+                $limitValue = !empty($limitValueRaw) ? (int)$limitValueRaw : 1;
+                break;
+
+            case self::FREQUENCY_LIMIT_TYPE_TOTAL_LIMIT:
+                $limitValue = (int)($limitValueRaw ?? 0);
+                break;
+
+            case self::FREQUENCY_LIMIT_TYPE_NONE:
+            default:
+                $limitValue = 0;
+                break;
+        }
+
+        // 🔥 VALIDACIÓN DE LÍMITE
         if ($limitValue > 0) {
-            // ✅ resolve con TZ
-            [$from, $to, $mode] = FrequencyWindow::resolve($limitType, $dto->nowEpochSeconds, $tz);
+
+            [$from, $to, $mode] = FrequencyWindow::resolve(
+                $limitType,
+                $dto->nowEpochSeconds,
+                $tz
+            );
 
             $count = 0;
+
             if ($mode === 'WINDOW') {
-                $count = $this->tracking->countUserProcessInWindow($dto->userId, $dto->processId, $from, $to);
+
+                // 🔥 Convertir a UTC (IMPORTANTE)
+                $fromUtc = Carbon::parse($from, $tz)->utc()->toDateTimeString();
+                $toUtc = Carbon::parse($to, $tz)->utc()->toDateTimeString();
+
+                $count = $this->tracking->countUserProcessInWindow(
+                    $dto->userId,
+                    $dto->processId,
+                    $fromUtc,
+                    $toUtc
+                );
+
             } elseif ($mode === 'TOTAL') {
-                $count = $this->tracking->countUserProcessTotal($dto->userId, $dto->processId);
+
+                $count = $this->tracking->countUserProcessTotal(
+                    $dto->userId,
+                    $dto->processId
+                );
             }
 
             if ($count >= $limitValue) {
-                return TaskPreviewResultDTO::fail("Límite alcanzado ({$limitType}). Máximo: {$limitValue}.");
+                $message = match ($limitType) {
+                    self::FREQUENCY_LIMIT_TYPE_ONCE =>
+                    "Esta tarea solo se puede realizar una vez y ya fue completada.",
+
+                    self::FREQUENCY_LIMIT_TYPE_DAILY =>
+                    "Ya realizaste esta tarea hoy. Vuelve a intentarlo mañana.",
+
+                    self::FREQUENCY_LIMIT_TYPE_WEEKLY =>
+                    "Ya completaste esta tarea esta semana. Intenta nuevamente la próxima semana.",
+
+                    self::FREQUENCY_LIMIT_TYPE_MONTHLY =>
+                    "Ya completaste esta tarea este mes. Podrás realizarla nuevamente el próximo mes.",
+
+                    self::FREQUENCY_LIMIT_TYPE_TOTAL_LIMIT =>
+                    "Has alcanzado el número máximo permitido para esta tarea.",
+
+                    default =>
+                    "No puedes realizar esta tarea en este momento.",
+                };
+
+                return TaskPreviewResultDTO::fail($message);
+
             }
         }
 
+        // ✅ OK
         return TaskPreviewResultDTO::ok("OK: permitido.", [
-            'user_id' => $dto->userId,
-            'process_id' => $dto->processId,
-            'now_epoch_seconds' => $dto->nowEpochSeconds,
             'allowed' => true,
             'amount' => (float)($process['points'] ?? 0),
             'business_id' => $process['business_id'] ?? null,
             'business_name' => $process['business_name'] ?? null,
-            'process' => $process,
+            'process_id' => $dto->processId,
         ]);
     }
-
 }

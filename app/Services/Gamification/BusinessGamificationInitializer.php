@@ -175,6 +175,7 @@ class BusinessGamificationInitializer
                 if ($url == "not-url") {
 
                 } else {
+                    //MANAGER CODE-PROCESS GAMIFICATION-TRACKING
                     $setNew = "codeProcess=" . $process->id;
                     $urlNew = str_replace('codeProcess=69', $setNew, $url);
                     $gamificationData['gamification_by_process'][$i]['url_manager'] = $urlNew;

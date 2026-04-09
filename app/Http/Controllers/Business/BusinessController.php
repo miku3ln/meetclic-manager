@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Business;
 use App\Http\Controllers\MyBaseController;
 use App\Models\Business;
 use App\Models\Country;
+use App\Models\Gamification\ConfigurationGamificationUtil;
+use App\Models\GamificationByPoints;
+use App\Models\GamificationByProcess;
 use Illuminate\Support\Facades\Request;
 
 
@@ -443,6 +446,7 @@ class BusinessController extends MyBaseController
 
             ];
             $auxResource = "";
+            $business_id = -1;
             if (isset($attributesPost["id"]) && $attributesPost["id"] != "-1") {
                 $allowSaveProcess = false;
                 $createUpdate = false;
@@ -485,6 +489,8 @@ class BusinessController extends MyBaseController
                     if ($auxResource != "nothing" && $change == "true") {
                         $modelMultimedia->deleteResource(array("path" => $auxResource));
                     }
+
+                } else {
 
                 }
                 $attributes = array(
@@ -536,6 +542,13 @@ class BusinessController extends MyBaseController
                     $business_id = $model->id;
                     if ($allowSaveProcess) {
 
+                        $urlBase = asset("");
+                        $userId = $user->id;
+                        $businessData = [
+                            ["id" => $business_id]
+                        ];
+
+
                         $dataSchedules = $modelBBS->getSchedulesStructureInit(array("business_id" => $business_id));
                         foreach ($dataSchedules as $key => $attributes) {
                             $modelBBSSave = new BusinessBySchedule();
@@ -574,7 +587,6 @@ class BusinessController extends MyBaseController
                             $modelGamification->fill($attributesCurrent);
                             $success = $modelGamification->save();
                             $gamification_id = $modelGamification->id;
-
                             $modelGamificationBusiness = new \App\Models\BusinessByGamification();
                             $attributesCurrent = [
                                 'gamification_id' => $gamification_id,
@@ -599,6 +611,72 @@ class BusinessController extends MyBaseController
                             } else {
                                 $modelGamificationBusiness->fill($attributesCurrent);
                                 $success = $modelGamificationBusiness->save();
+
+                                if ($createUpdate) {
+                                    $dataGamificationData = ConfigurationGamificationUtil::generateManagementDataGamificationBusiness([
+                                        "businessData" => $businessData,
+                                        "urlBase" => $urlBase,
+                                        "user_id" => $userId,
+                                    ]);
+
+                                    $proccesDataBusiness = $dataGamificationData["0"]["gamification_by_process"];
+                                    $errorsProcess = [];
+                                    foreach ($proccesDataBusiness as $key => $attributesProcess) {
+                                        $setPush = [
+                                            "gamification_id" => $gamification_id,
+                                            "user_id" => $attributesProcess["user_id"],
+                                            "source" => $attributesProcess["source"],
+                                            "title" => $attributesProcess["title"],
+                                            "subtitle" => $attributesProcess["subtitle"],
+                                            "description" => $attributesProcess["description"],
+                                            "state" => $attributesProcess["state"],
+                                            "valid_from" => $attributesProcess["valid_from"],
+                                            "valid_until" => $attributesProcess["valid_until"],
+                                            "frequency_limit_type" => $attributesProcess["frequency_limit_type"],
+                                            "has_source" => $attributesProcess["has_source"],
+                                            "entity" => $attributesProcess["entity"],
+                                            "entity_id" => $attributesProcess["entity_id"],
+                                            "url_manager" => $attributesProcess["url_manager"],
+                                            "tracking_click_type_id" => $attributesProcess["tracking_click_type_id"],
+                                            "tracking_source_id" => $attributesProcess["tracking_source_id"],
+                                            "gamification_type_activity_id" => $attributesProcess["gamification_type_activity_id"],
+                                            "is_url" => $attributesProcess["is_url"],
+                                            "type_manager" => $attributesProcess["type_manager"],
+                                            "execution_channel" => $attributesProcess["execution_channel"],
+                                            "unique_code" => $attributesProcess["unique_code"],
+                                            "allow_golden" => $attributesProcess["allow_golden"],
+                                            "icon_class" => $attributesProcess["icon_class"],
+                                            "campaign_code_template" => $attributesProcess["campaign_code_template"],
+
+
+                                        ];
+                                        $setPush["gamification_id"] = $gamification_id;
+
+                                        $modelGBP = new GamificationByProcess();
+
+                                        $modelGBP->fill($setPush);
+                                        $success = $modelGBP->save();
+                                        if ($success) {
+                                            //MANAGER CODE-PROCESS GAMIFICATION-TRACKING
+                                            $newCode = $modelGBP->id;
+                                            $url = preg_replace('/(code-process=)\d+/', '$1' . $newCode, $modelGBP->url_manager);
+                                            $modelGBP->url_manager = $url;
+                                            $setPush["url_manager"] = $url;
+                                            $modelGBP->fill($setPush);
+                                            $modelGBP->save();
+                                            $gamification_by_process_id = $modelGBP->id;
+                                            $errorsProcess[$key]["id"] = $gamification_by_process_id;
+                                            $dataPoint = ["points" => $attributesProcess["gamification_by_points"]["points"], "gamification_by_process_id" => $gamification_by_process_id,];
+                                            $modelDP = new GamificationByPoints();
+                                            $modelDP->fill($dataPoint);
+                                            $success = $modelDP->save();
+                                        } else {
+                                            $msj = "Problemas al guardar Procesos Default Tasks";
+                                            dd("error");
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -816,6 +894,7 @@ class BusinessController extends MyBaseController
             $result
         );
     }
+
     public function saveDataFrontend()
     {
 

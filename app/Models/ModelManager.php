@@ -143,7 +143,7 @@ class ModelManager extends Model
 
             if ($allowAdd) {
                 $needle = $value;
-                dd($valuesAttributesData);
+
                 $resultAdd = self::getManagerValuesDefault(array(
                     'haystack' => $valuesAttributesData,
                     'needle' => $needle,

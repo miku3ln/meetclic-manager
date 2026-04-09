@@ -27,6 +27,43 @@ use Illuminate\Support\Facades\Session;
 
 class TrackingUtil
 {
+    const TASK_TOAST = [
+        -2 => [
+            'type' => 'error',
+            'title' => '¡Atención!',
+            'desc' => 'Error de Obtencion de Datos de la Empresa!'
+        ],
+        -3 => [
+            'type' => 'warning',
+            'title' => '¡Atención!',
+            'desc' => 'El Link de acceso no tiene los parametros dentro de la configuracion de juegos.!'
+        ],
+        -4 => [
+            'type' => 'warning',
+            'title' => '¡Atención!',
+            'desc' => 'No existe información sobre esta tarea!'
+        ],
+        -5 => [
+            'type' => 'warning',
+            'title' => '¡Alerta!',
+            'desc' => 'Hubo un error en el sistema de gestión de tareas, comunícate con soporte de meetclic.'
+        ],
+        -6 => [
+            'type' => 'warning',
+            'title' => '¡Atención!',
+            'desc' => 'Para poder realizar la tarea se debe estar logeado y registrado!'
+        ],
+        420 => [
+            'type' => 'success',
+            'title' => '¡Listo!',
+            'desc' => 'Ganaste YAPITAS por completar la tarea correctamente.'
+        ],
+        -7 => [
+            'type' => 'danger',
+            'title' => '¡Atención!',
+            'desc' => 'Ganaste YAPITAS por completar la tarea correctamente.'
+        ],
+    ];
     public $cookies = [];
     const TYPE_ERROR_BUSINESS_GAMIFICATION = -2;
     const TYPE_ERROR_PARAMS_LINK_GAMIFICATION = -3;
@@ -132,10 +169,10 @@ class TrackingUtil
             "data" => null
         ];
         // tracking type / source / campaign
-        $typeProcess = $request->query('typeProcess', '');     // 'share', 'click', 'view', 'referral', 'web_tracking'
-        $sourceProcess = $request->query('sourceProcess', '');   // 'facebook', 'whatsapp', 'meetclick', etc.
+        $typeProcess = $request->query('type-process', '');     // 'share', 'click', 'view', 'referral', 'web_tracking'
+        $sourceProcess = $request->query('source-process', '');   // 'facebook', 'whatsapp', 'meetclick', etc.
         $campaign_code = $request->query('campaign_code', '');   // 'fb_234', 'campaign-00-web-tracking'
-        $codeProcess = $request->query('codeProcess', '');   // 'fb_234', 'campaign-00-web-tracking'
+        $codeProcess = $request->query('code-process', '');   // 'fb_234', 'campaign-00-web-tracking'
 
         if ($typeProcess == "" && $sourceProcess == "" && $campaign_code == "" && $codeProcess == "") {
             $result["success"] = false;

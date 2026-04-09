@@ -165,46 +165,36 @@
 
 @if(!empty($allowJs))
     <script>
-        function initToastLoad(){
+
+        function initToastLoad() {
             var typeToast = "warning";
             var titleToast = "Atención";
             var descToast = "";
             var allowToast = false;
-            console.log("$gamification_result",$gamification_result);
+            console.log("$gamification_result", $gamification_result);
             if ($gamification_result) {
-                console.log("enter");
-                var resultTask=   ($gamification_result);
+                console.log("enter----------->");
+                var resultTask = ($gamification_result);
 
-                if ([-2, -3, -4, -6, -5,420].includes(resultTask.type)) {
+                if ([-2, -3, -4, -6, -5, 420, -7].includes(resultTask.type)) {
                     allowToast = true;
-                    if (resultTask.type == -2) {
+                    var resultMessage = {type: null, title: "", desc: ""};
+                    if (resultTask.type == -7) {
+                        var configMessage=$TASK_TOAST[resultTask.type];
+                        resultMessage.type =configMessage.type;
+                        resultMessage.title =configMessage.title;
+                        resultMessage.desc = resultTask.message;
 
-                        typeToast = "error";
-                        titleToast = "¡Atención!";
-                        descToast = "Error de Obtencion de Datos de la Empresa!";
-                    } else if (resultTask.type == -3) {
-                        typeToast = "warning";
-                        titleToast = "¡Atención!";
-                        descToast = "El Link de acceso no tiene los parametros dentro de la configuracion de juegos.!";
-                    } else if (resultTask.type == -4) {
-                        typeToast = "warning";
-                        titleToast = "¡Atención!";
-                        descToast = "No existe informaciòn sobre esta tarea!";
-                    } else if (resultTask.type == -6) {
-                        typeToast = "warning";
-                        titleToast = "¡Atención!";
-                        descToast = "Para poder realizar la tarea se debe estar logeado y registrado!";
-                    } else if (resultTask.type == -5) {
-                        typeToast = "warning";
-                        titleToast = "¡Alerta!";
-                        descToast = "Ubo un error en el sistema de gestion de tareas comunicate con soporte de meetclic.!";
+
                     } else {
-                        if (resultTask.type == 420) {
-                            typeToast = "success";
-                            titleToast = "¡Listo!";
-                            descToast = "Ganaste YAPITAS por completar la tarea correctamente.";
-                        }
+                        resultMessage = $TASK_TOAST[resultTask.type];
                     }
+
+
+                    typeToast = resultMessage.type;
+                    titleToast = resultMessage.title;
+                    descToast = resultMessage.desc;
+
                     if (allowToast) {
                         var html = mcBuildToastUI({
                             type: typeToast,
@@ -218,6 +208,7 @@
 
             }
         }
+
         function mcEscapeHtml(str) {
             return String(str)
                 .replace(/&/g, '&amp;')
@@ -226,6 +217,7 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
         }
+
         function mcBuildToastUI(opt) {
             opt = opt || {};
 
@@ -279,8 +271,8 @@
                     closeBtn,
                     '</div>'
                 ].join('');
-            }else{
-                toast=[];
+            } else {
+                toast = [];
             }
             // Si es flotante, lo ponemos dentro del stack (si tu ya tienes stack fijo, puedes omitir wrapper)
             if (!floating) return toast;

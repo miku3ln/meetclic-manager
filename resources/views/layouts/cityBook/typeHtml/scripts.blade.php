@@ -1,8 +1,11 @@
 @php
     $mcGamification =$dataManagerPage['gamificationDataTask'];
+    $TASK_TOAST =$dataManagerPage['TASK_TOAST'];
 
     // Garantiza estructura para que NUNCA sea undefined
     $mcGamification = $mcGamification ;
+
+
 @endphp
 
 <script type="text/javascript">
@@ -12,6 +15,8 @@
 
     }
     var $gamification_result =@json($mcGamification);
+    var $TASK_TOAST =@json($TASK_TOAST);
+
     window.GAMIFICATION_RESULT = $gamification_result;
 </script>
 <?php

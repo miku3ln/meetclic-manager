@@ -1670,6 +1670,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
         $formLanguageManagement = LanguageUtil:: getValidationLangFlat();
         $dataManagerPage['formLanguageManagement'] = $formLanguageManagement;
         $dataManagerPage['gamificationDataTask'] = $gamificationData;
+        $dataManagerPage['TASK_TOAST'] = TrackingUtil::TASK_TOAST;
 
 
         $result['dataManagerPage'] = $dataManagerPage;

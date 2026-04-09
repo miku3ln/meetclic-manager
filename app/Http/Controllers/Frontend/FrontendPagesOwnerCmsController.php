@@ -50,6 +50,8 @@ class FrontendPagesOwnerCmsController extends Controller
             'section' => $section
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+
         return view('cityBook.web.businessOwner.mikuy-yachak', $paramsSend);
     }
 
@@ -149,6 +151,7 @@ class FrontendPagesOwnerCmsController extends Controller
         ];
 
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.chasqui-nian-business', $paramsSend);
     }
@@ -169,6 +172,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
             "boarding-embarkation-management", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
             if ($request->isMethod('get')) {
+
                 $resultTracking = $tracking->managerGamingTask($request, $type);
                 $gamificationDataTask = $resultTracking;
             }
@@ -256,6 +260,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rimay-business', $paramsSend);
     }
@@ -339,6 +344,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rimay-business', $paramsSend);
     }
@@ -423,6 +429,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.shop-business', $paramsSend);
     }
@@ -507,6 +514,8 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+
         return view('cityBook.web.businessOwner.rimay-registers-business', $paramsSend);
     }
 
@@ -590,6 +599,8 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+
         return view('cityBook.web.businessOwner.rewards-registers-business', $paramsSend);
     }
 
@@ -674,6 +685,8 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+
         return view('cityBook.web.businessOwner.rates-registers-business', $paramsSend);
     }
 
@@ -757,6 +770,8 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+
         return view('cityBook.web.businessOwner.rate-register-business', $paramsSend
         );
     }
