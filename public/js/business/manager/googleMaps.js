@@ -180,7 +180,7 @@ function setValuesFrm(lat, lng) {
 /*
 -------------INIT--------*/
 
-function WulpyMapUtil(params) {
+function WulpyMapUtilBusinessManager(params) {
 
     var mapCurrent;
     // Grey Scale

@@ -1369,29 +1369,25 @@ Vue.component('business-component', {
             this.mapCurrent.setCenter(currentLtLng);
         },
         initMapCurrent: function () {
-            markers = [];
-            this.mapCurrent = currentWulpy.initMap("#map");
-            var dataMarker = null;
-            var createUpdate = !this.businessCreate;
-            var currentLtLng;
-            if (!createUpdate) {
-                currentLtLng = {lat: this.model.attributes.street_lat, lng: this.model.attributes.street_lng};
-                dataMarker = this.model.attributes;
-            } else {
-                currentLtLng = {lat: myLatlng.lat, lng: myLatlng.lng};
+            currentWulpy = new UtilGoogleMaps();
+            if (false) {
+                this.mapCurrent = currentWulpy.initMapCurrent({
+                    element: "#map",
+                    businessCreate: this.businessCreate,
+                    model: this.model,
+                    onMapReady: (params) => {
+                        this.mapCurrent = params.mapCurrent;
+                        this._mapCurrent(params);
+                        this.setConfigurationMap(
+                            params.initMarker.data,
+                            params.initMarker.createUpdate
+                        );
+                    }
+                });
+            }else{
+                $("#content-manager-maps").addClass("not-view");
+
             }
-            this._mapCurrent({
-                mapCurrent: this.mapCurrent,
-                initMarker: {data: dataMarker, createUpdate: createUpdate}
-            });
-
-
-            this.setPositionMapCenter(currentLtLng);
-            $.each(markers, function (key, value) {
-                value.setMap(null);
-            });
-            this.setConfigurationMap(dataMarker, createUpdate);
-
 
         },
         /*MAPS*/

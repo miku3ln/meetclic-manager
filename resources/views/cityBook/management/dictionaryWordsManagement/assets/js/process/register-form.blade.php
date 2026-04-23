@@ -69,6 +69,11 @@
                 this.uploadConfigPronunciation.existingFiles = this.getDataExistingFiles({
                     haystack: this.params.data.audios
                 });
+                var audios = this.getDataExistingFiles({
+                    haystack: this.params.data.audios
+                });
+                console.log(audios);
+                this.recConfig.existingFiles =audios;
             }
 
             this.managerCurrentParamsParent = this.params.data;
@@ -146,10 +151,27 @@
                     maxFiles: 1,
                     maxMb: 50,
                     fieldName: 'files[]',
+                    enableAudioRecorder: true, // 🔥 ACTIVA GRABADOR
                     extraData: () => this.extractDataMultimedia(),
                     onUploaded: (uploaded, res) => this.saveRegistersPronunciation(uploaded, res),
                     onDeleted: (file, res) => this.deleteRegisterPronunciation(file, res),
+                },
+                recConfig: {
+                    label: 'Pronunciación',
+                    uploadUrl: $("#action-management-dictionaryPronunciationUpload").val(),
+                    deleteUrl: $("#action-management-dictionaryPronunciationDelete").val(),
+                    baseUrl: $resourceManagementRoot,
+                    headers: {'X-CSRF-TOKEN': csrf},
+                    downloadBaseUrl: '/api/pronunciation/download/:id', // opcional
+
+                    existingFile: [], // 🔥 SOLO UNO
+
+                    extraData: () => this.extractDataMultimedia(),
+
+                    onUploaded: (file, res) => this.saveRegistersPronunciation(file, res),
+                    onDeleted: (file, res) => this.deleteRegisterPronunciation(file, res),
                 }
+
             };
 
             return dataManager;
@@ -392,7 +414,7 @@
             setSaveWord: function (response) {
                 console.log(response);
                 if (response.success) {
-                    var data=response.data;
+                    var data = response.data;
                     this.rowId = data.id;
                     this.$v.model.attributes.id.$model = data.id;
                 }

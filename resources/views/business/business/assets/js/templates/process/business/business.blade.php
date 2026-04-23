@@ -51,7 +51,7 @@
 
             <div class="custom-scroll-admin-grid table-responsive" v-show="!showManager">
                 <table id="business-grid"
-                       class=""
+                       class="manager-grid-two-business"
 
                 >
                     <thead>
@@ -226,7 +226,7 @@
                             </b-col>
                         </b-row>
 
-                        <div class="row">
+                        <div class="row content-manager-maps-one " id="content-manager-maps">
                             <div class="col-md-12">
                                 <div class="floating-panel-manager">
                                     <input id="search-map-current"

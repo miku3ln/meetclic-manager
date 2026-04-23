@@ -36,28 +36,27 @@ Route::middleware('publicApi')->group(function () {
     Route::get('/setTxtDataCastellano', 'MintonPages\MintonPagesController@setTxtDataCastellano')->name('setCastellanoText');
     Route::post('/traductor/getDictionaryByLanguage', 'Api\CustomerAppController@getDictionaryByLanguage')->name('getDictionaryByLanguage');
     Route::post("/gamification/GamificationByProcess/getAdminGamificationFrontend", "Gamification\GamificationByProcessController@getAdminGamificationFrontend")->name('getAdminGamificationFrontend');
-
     Route::post("/gamification/GamificationByProcess/getAdminGamificationFrontendHome", "Gamification\GamificationByProcessController@getAdminGamificationFrontendHome")->name('getAdminGamificationFrontendHome');
-
     Route::get('/test/json', function (Request $request) {
         return response()->json([
             'success' => true,
-            'method'  => 'GET',
+            'method' => 'GET',
             'message' => 'API funcionando correctamente',
-            'ip'      => $request->ip(),
-            'time'    => now()->toDateTimeString(),
+            'ip' => $request->ip(),
+            'time' => now()->toDateTimeString(),
         ]);
     });
     Route::post('/test/json', function (Request $request) {
         return response()->json([
             'success' => true,
-            'method'  => 'POST',
+            'method' => 'POST',
             'message' => 'API funcionando correctamente',
-            'data'    => $request->all(), // lo que mandes en el body te lo devuelve
-            'ip'      => $request->ip(),
-            'time'    => now()->toDateTimeString(),
+            'data' => $request->all(), // lo que mandes en el body te lo devuelve
+            'ip' => $request->ip(),
+            'time' => now()->toDateTimeString(),
         ]);
     });
+
 
 });
 
@@ -82,4 +81,19 @@ Route::post("/createPaymentPayPalEvents", "Payment\PaymentController@createPayme
 
 Route::prefix('api')->group(function () {
     // tus rutas...
+});
+
+
+Route::prefix('pointsales')->group(function () {
+
+    // 🔓 LOGIN (sin token)
+    Route::post('/login', 'Auth\MeetclicController@loginPointSales');
+
+    // 🔒 TODO lo demás protegido
+    Route::middleware(['pointsales.auth'])->group(function () {
+        Route::get('/products-sales', 'PointSales\ProductController@getProductsSales');
+        Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
+
+    });
+
 });

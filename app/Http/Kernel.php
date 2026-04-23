@@ -84,5 +84,6 @@ class Kernel extends HttpKernel
 
         'course' => \App\Http\Middleware\CourseMiddleware::class,
 
+        'pointsales.auth' => \App\Http\Middleware\PointSalesAuth::class,
     ];
 }

@@ -109,7 +109,7 @@
                     </div>
                 </div>
                 <table id="business-grid"
-                       class=""
+                       class="manager-grid-one-business"
 
                 >
                     <thead>
@@ -422,7 +422,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row content-manager-maps-three" id="content-manager-maps">
                             <div class="col-md-12">
                                 <div class="floating-panel-manager">
                                     <input id="search-map-current"
@@ -575,29 +575,27 @@
                         <b-col md="12">
 
 
-                            <div class="form-group"
+                            <div class=""
                                  :class="getClassErrorForm('description',$v.model.attributes.description)">
-                                <label class="form__label " v-html='getLabelForm("description")'></label>
-                                <div class="content-element-form">
-                                    <input
-                                        style="display:none;"
-                                        v-model.trim="$v.model.attributes.description.$model"
-                                        type="description"
-                                        v-bind:id="getNameAttribute('description')"
-                                        v-bind:name="getNameAttribute('description')"
-                                        class="form-control m-input"
-                                        @change="_setValueForm('description', $v.model.attributes.description.$model)"
-                                        v-focus-select
-                                    >
-                                    <div class="description form-control" id="description"
-                                         v-initSummerNote="{initMethod:_initSummerNote}"></div>
-                                </div>
-                                <div class="content-message-errors">
+                                <label class="form__label " v-html='getLabelForm("description")' ></label>
+                                <textarea
+                                    rows="2"
+                                    v-model.trim="$v.model.attributes.description.$model"
+                                    type="text"
+                                    v-bind:id="getNameAttribute('description')"
+                                    v-bind:name="getNameAttribute('description')"
+                                    class="form-control m-input"
+                                    @change="_setValueForm('description', $event.target.value)"
+                                    v-focus-select
+
+                                ></textarea>
+
+                                <div class="content-message-errors ">
                                     <b-form-invalid-feedback
                                         :state="!$v.model.attributes.description.$error">
-      <span v-if="!$v.model.attributes.description.required">
-       <?php echo "{{model.structure.description.required.msj}}" ?>
-      </span>
+                                            <span v-if="!$v.model.attributes.description.required">
+                                <?php  echo "{{model.structure.description.required.msj}}"?>
+                            </span>
 
                                     </b-form-invalid-feedback>
                                 </div>

@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="content-business-manager">
                                     <table id="business-grid"
-
+                                           class="manager-grid-three-business"
                                     >
                                         <thead>
                                         <tr>
@@ -182,6 +182,7 @@
                                 </div>
                                 <div class="content-business-manager">
                                     <table id="business-grid"
+                                           class="manager-grid-four-business"
 
                                     >
                                         <thead>

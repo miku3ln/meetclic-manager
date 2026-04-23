@@ -410,7 +410,7 @@ class DictionaryByWords extends ModelManager
 
     public function getDataAudio($params)
     {
-        $sort = 'asc';
+        $sort = 'desc';
         $field = 'id';
         $tableCurrent = 'dictionary_words_by_audio';
         $query = DB::table($tableCurrent);
@@ -432,7 +432,8 @@ class DictionaryByWords extends ModelManager
 
 // sort
         $query->orderBy($field, $sort);
-        $data = $query->get()->toArray();
+
+        $data = $query->limit(1)->get()->toArray();
 
         return $data;
     }

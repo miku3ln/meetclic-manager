@@ -187,18 +187,13 @@
                 <div v-if="$v.model.attributes.id.$model">
                     <legend class="h6 mb-2 legend--section">DATOS ADICIONALES</legend>
 
+
                     <b-row>
                         <b-col md="6">
-
-                            <div
-                                v-uploadManager="uploadConfigPronunciation"
-                                class="upm"
-                            >
-
-                            </div>
+                            <div v-rec="recConfig" class="rec"></div>
                         </b-col>
-
                     </b-row>
+
                 </div>
 
             </b-container>

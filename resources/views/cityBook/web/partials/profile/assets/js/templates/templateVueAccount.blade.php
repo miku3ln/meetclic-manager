@@ -388,7 +388,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row content-manager-maps-five" id="content-manager-maps">
                             <div class="col-md-12">
                                 <div class="floating-panel-manager">
                                     <input id="search-map-current"

@@ -5,7 +5,9 @@ var myLatlng = {lat: 0.2314799, lng: -78.271874};
 var zoom = 15;
 var markers = [];
 var appThis = null;
-var currentWulpy = new WulpyMapUtil();
+var currentWulpy ;
+
+
 var appInit = new Vue(
     {
         mounted: function () {

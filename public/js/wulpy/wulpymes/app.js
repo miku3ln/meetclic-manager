@@ -599,11 +599,10 @@ function getInfo() {
 /*
 -------------INIT--------*/
 
-function WulpyMapUtil() {
+function WulpyMapUtilWulpymes() {
     var mapCurrent;
     // Grey Scale
     this.greyscale_style = $greyscale_style;
-
     if (google != undefined) {
         var greyStyleMap = new google.maps.StyledMapType($greyscale_style, {
             name: "Greyscale"

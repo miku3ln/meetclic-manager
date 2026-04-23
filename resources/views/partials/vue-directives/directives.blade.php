@@ -1,4 +1,260 @@
 <script id="manager-directives-vue">
+    Vue.directive('rec', {
+        inserted(el, binding, vnode) {
+            initRecorder(el, binding, vnode);
+        },
+
+        componentUpdated(el, binding) {
+            const $root = $(el);
+            const state = $root.data('rec-state');
+            if (!state) return;
+
+            const config = binding.value || {};
+
+            const file = (config.existingFiles && config.existingFiles.length)
+                ? config.existingFiles[0]
+                : null;
+
+            state.setExisting(file);
+        },
+
+        unbind(el) {
+            const $root = $(el);
+            $root.removeData('rec-state');
+        }
+    });
+
+    function initRecorder(el, binding, vnode) {
+
+        const $root = $(el);
+        let config = binding.value || {};
+
+        let mediaRecorder = null;
+        let mediaStream = null;
+        let audioChunks = [];
+        let audioBlob = null;
+
+        // 🔥 SOLO 1 archivo
+        let existing = (config.existingFiles && config.existingFiles.length)
+            ? config.existingFiles[0]
+            : null;
+
+        let newFile = null;
+
+        // -------------------------
+        // TEMPLATE
+        // -------------------------
+        const template = `
+        <div class="rec__header">
+            <div class="rec__title">${config.label || 'Grabación'}</div>
+        </div>
+
+        <div class="rec__controls">
+            <button type="button" class="rec__btn rec__btn--rec">🎙️ Grabar</button>
+            <button type="button" class="rec__btn rec__btn--stop" disabled>⏹️ Detener</button>
+            <button type="button" class="rec__btn rec__btn--save" disabled>➕ Guardar</button>
+        </div>
+
+        <div class="rec__preview"></div>
+
+        <div class="rec__actions">
+            <button type="button" class="rec__btn rec__btn--upload" style="display:none;">⬆️ Subir</button>
+            <button type="button" class="rec__btn rec__btn--delete" style="display:none;">❌ Eliminar</button>
+        </div>
+    `;
+
+        $root.html(template);
+
+        const $btnRec = $root.find('.rec__btn--rec');
+        const $btnStop = $root.find('.rec__btn--stop');
+        const $btnSave = $root.find('.rec__btn--save');
+        const $btnUpload = $root.find('.rec__btn--upload');
+        const $btnDelete = $root.find('.rec__btn--delete');
+        const $preview = $root.find('.rec__preview');
+
+        // -------------------------
+        // RENDER
+        // -------------------------
+        function render() {
+            $preview.empty();
+
+            if (existing) {
+                const url = config.baseUrl
+                    ? config.baseUrl + "/" + existing.url
+                    : existing.url;
+
+                $preview.html(`<audio controls src="${url}"></audio>`);
+
+                $btnDelete.show();
+                $btnUpload.hide();
+            }
+
+            if (newFile) {
+                const url = URL.createObjectURL(newFile);
+
+                $preview.html(`<audio controls src="${url}"></audio>`);
+
+                $btnUpload.show();
+                $btnDelete.hide();
+            }
+        }
+
+        // -------------------------
+        // GRABAR
+        // -------------------------
+        $btnRec.on('click', async () => {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                let options = {};
+                if (MediaRecorder.isTypeSupported('audio/webm')) {
+                    options.mimeType = 'audio/webm';
+                }
+
+                mediaRecorder = new MediaRecorder(mediaStream, options);
+                audioChunks = [];
+
+                mediaRecorder.start();
+
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+                mediaRecorder.onstop = () => {
+                    audioBlob = new Blob(audioChunks, {
+                        type: mediaRecorder.mimeType || 'audio/webm'
+                    });
+
+                    $btnSave.prop('disabled', false);
+                };
+
+                $btnRec.prop('disabled', true);
+                $btnStop.prop('disabled', false);
+
+            } catch (e) {
+                alert("No se pudo acceder al micrófono");
+                console.error(e);
+            }
+        });
+
+        // -------------------------
+        // DETENER
+        // -------------------------
+        $btnStop.on('click', () => {
+            if (mediaRecorder) mediaRecorder.stop();
+
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(t => t.stop());
+                mediaStream = null;
+            }
+
+            $btnRec.prop('disabled', false);
+            $btnStop.prop('disabled', true);
+        });
+
+        // -------------------------
+        // GUARDAR (crear file)
+        // -------------------------
+        $btnSave.on('click', () => {
+            if (!audioBlob) return;
+
+            const mime = audioBlob.type || 'audio/webm';
+            const ext = mime.includes('mp4') ? 'mp4' : 'webm';
+
+            newFile = new File(
+                [audioBlob],
+                `audio_${Date.now()}.${ext}`,
+                { type: mime }
+            );
+
+            existing = null; // reemplaza
+
+            audioBlob = null;
+
+            $btnSave.prop('disabled', true);
+
+            render();
+        });
+
+        // -------------------------
+        // SUBIR
+        // -------------------------
+        $btnUpload.on('click', () => {
+            if (!newFile) return;
+
+            const fd = new FormData();
+            fd.append('files[]', newFile);
+
+            if (config.extraData) {
+                const extra = typeof config.extraData === 'function'
+                    ? config.extraData()
+                    : config.extraData;
+
+                Object.keys(extra || {}).forEach(k => {
+                    fd.append(`data[${k}]`, extra[k]);
+                });
+            }
+
+            $.ajax({
+                url: config.uploadUrl,
+                method: 'POST',
+                data: fd,
+                processData: false,
+                contentType: false,
+                headers: config.headers,
+                success(res) {
+                    const file = res?.data?.uploaded?.[0] || res?.uploaded?.[0];
+
+                    existing = file;
+                    newFile = null;
+
+                    render();
+
+                    if (config.onUploaded) config.onUploaded(file, res);
+                },
+                error(xhr) {
+                    console.error(xhr.responseText);
+                    alert("Error subiendo audio");
+                }
+            });
+        });
+
+        // -------------------------
+        // ELIMINAR
+        // -------------------------
+        $btnDelete.on('click', () => {
+            if (!existing) return;
+
+            if (!confirm("¿Eliminar audio?")) return;
+
+            $.ajax({
+                url: config.deleteUrl,
+                method: 'POST',
+                data: { id: existing.id },
+                headers: config.headers,
+                success(res) {
+                    const removed = existing;
+                    existing = null;
+
+                    render();
+
+                    if (config.onDeleted) config.onDeleted(removed, res);
+                }
+            });
+        });
+
+        // -------------------------
+        // STATE (🔥 CLAVE)
+        // -------------------------
+        $root.data('rec-state', {
+            setExisting(file) {
+                existing = file;
+                newFile = null;
+                render();
+            }
+        });
+
+        // init
+        render();
+    }
     Vue.directive('uploadManager', {
         inserted(el, binding, vnode) {
             initUploadManager(el, binding, vnode);
@@ -81,7 +337,7 @@
             fd.append(`${key}[${k}]`, String(val));
         });
     }
-
+//upload data
     function initUploadManager(el, binding, vnode) {
         const ctx = vnode.context;
 

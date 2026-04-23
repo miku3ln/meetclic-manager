@@ -27,7 +27,88 @@ class MeetclicController extends Controller
     {
         $this->serviceUser = $service;
     }
+    public function loginPointSales(Request $request)
+    {
+        try {
+            $type = -1;
+            $payload = $request->json()->all();
+            $userData = $payload;
+            $validator = Validator::make($userData, [
+                'email' => 'required|string|email',
+                'password' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                return Response::json([
+                    "type" => $type,
+                    'success' => false,
+                    "data" => ["errors" => $validator->errors()],
+                    'message' => 'Campos inválidos.',
+                ]);
+            }
+            $allowLogin = Auth::attempt([
+                'email' => $userData['email'],
+                'password' => $userData['password']
+            ]);
 
+            if ($allowLogin) {
+                $user = Auth::user();
+                if (is_null($user->email_verified_at)) {
+                    Auth::logout(); // cerramos sesión si no está verificado
+                    return Response::json([
+                        "type" => $type,
+                        'success' => false,
+                        "data" => [],
+                        'message' => 'Debes verificar tu correo electrónico antes de iniciar sesión.',
+                    ]);
+                }
+                if (!$user->is_active) {
+                    Auth::logout();
+                    return Response::json([
+                        "type" => $type,
+                        'success' => false,
+                        "data" => [],
+                        'message' => 'Tu cuenta aún no ha sido activada.',
+                    ]);
+                }
+
+                $accessToken = Str::uuid()->toString();
+                $user->api_token = $accessToken;
+                $user->save();
+                $user_id = $user->id;
+                $userData = $this->serviceUser->getUserInfoForFlutter($user_id);
+
+                $data['userData'] = $userData;
+                $data['userData']["access_token"] = $accessToken;
+
+
+
+                return Response::json([
+                    "type" => $type,
+                    'success' => true,
+                    'message' => 'Inicio de sesión correcto.',
+                    'data' => $data,
+                ]);
+            } else {
+                return Response::json([
+                    "type" => $type,
+                    'success' => false,
+                    "data" => [],
+                    'message' => 'Usuario o contraseña incorrectos.',
+                ]);
+            }
+
+
+        } catch (\Throwable $e) {
+            return Response::json([
+                "type" => $type,
+                'success' => false,
+                "data" => [
+                    "errors" => $e->getMessage()
+                ],
+                'message' => 'Error interno del servidor.',
+            ], 500);
+        }
+    }
     public function login(Request $request)
     {
         try {

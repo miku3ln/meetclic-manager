@@ -180,7 +180,7 @@ function setValuesFrm(lat, lng) {
 /*
 -------------INIT--------*/
 
-function WulpyMapUtil() {
+function WulpyMapUtilGoogle() {
     var mapCurrent;
     // Grey Scale
     if (!typeof google == 'undefined') {
@@ -205,7 +205,7 @@ function WulpyMapUtil() {
 //                scrollwheel: true,
             icon: icon_mapa_url
 
-        }
+        };
 
 //----INIT MAP
         var icon_mapa_url = pathDevelopers + "assets/images/markers/merceria.png";
@@ -1533,3 +1533,141 @@ console.log("getEditorContent",overlay);
     };
 }
 
+function UtilGoogleMaps() {
+    this.initMapCurrent = function (config) {
+
+        if (!this.isAvailable) {
+            console.log("No se puede usar Google Maps");
+            $("#content-manager-maps").addClass("not-view");
+            return null;
+        }
+
+        var {
+            element,
+            businessCreate,
+            model,
+            mapInstance,
+            onMapReady
+        } = config;
+
+        markers = [];
+
+        // 🔥 init mapa
+        var map = this.initMap(element);
+
+        var dataMarker = null;
+        var createUpdate = !businessCreate;
+        var currentLtLng;
+
+        if (!createUpdate) {
+            currentLtLng = {
+                lat: model.attributes.street_lat,
+                lng: model.attributes.street_lng
+            };
+            dataMarker = model.attributes;
+        } else {
+            currentLtLng = {
+                lat: myLatlng.lat,
+                lng: myLatlng.lng
+            };
+        }
+
+        // 🔥 callback externo (tu lógica vieja)
+        if (onMapReady) {
+            onMapReady({
+                mapCurrent: map,
+                initMarker: {
+                    data: dataMarker,
+                    createUpdate: createUpdate
+                }
+            });
+        }
+
+        // 🔥 centrar mapa
+        map.setCenter(currentLtLng);
+
+        // 🔥 limpiar markers
+        $.each(markers, function (key, value) {
+            value.setMap(null);
+        });
+
+        return map;
+    };
+    var _this = this;
+
+    // 🔥 bandera global
+    this.isAvailable = (typeof google !== 'undefined' && google.maps);
+
+    // 🔥 validar desde el inicio
+    if (!this.isAvailable) {
+        console.warn("Google Maps no está disponible");
+        return;
+    }
+
+    this.greyscale_style = getGreyScaleStyle();
+
+    var icon_mapa_url = pathDevelopers + "assets/images/markers/merceria.png";
+
+    var mapOptions = {
+        title: "Ubicacion",
+        panControl: true,
+        scrollwheel: true,
+        mapTypeControl: false,
+        scaleControl: true,
+        streetViewControl: false,
+        overviewMapControl: false,
+        draggable: true,
+        center: myLatlng,
+        zoom: zoom,
+        animation: google.maps.Animation.DROP,
+        icon: icon_mapa_url
+    };
+
+    this.markerCurrent = null;
+    this.map = null;
+
+    // -------------------------
+    // INIT MAP
+    // -------------------------
+    this.initMap = function (init_map_element, data) {
+
+        if (!_this.isAvailable) return null; // 🔥 bloqueo
+
+        var map = new google.maps.Map($(init_map_element)[0], mapOptions);
+
+        var marker_object = new google.maps.Marker({
+            draggable: false,
+            title: "Wulpy",
+            animation: google.maps.Animation.DROP,
+            position: new google.maps.LatLng(myLatlng.lat, myLatlng.lng),
+            icon: icon_mapa_url,
+            map: map // 🔥 importante
+        });
+
+        var greyStyleMap = new google.maps.StyledMapType(_this.greyscale_style, {
+            name: "Greyscale"
+        });
+
+        map.mapTypes.set('greyscale_style', greyStyleMap);
+        map.setMapTypeId('greyscale_style');
+
+        _this.map = map;
+
+        return map;
+    };
+
+    // -------------------------
+    // ADD MARKER
+    // -------------------------
+    this.addMarker = function (params) {
+
+        if (!_this.isAvailable) return; // 🔥 bloqueo
+
+        var markerOptions = params.marker;
+        var map = params.map;
+
+        markerOptions.setMap(map);
+        markers.push(markerOptions);
+    };
+
+}

@@ -607,7 +607,7 @@ if (false) {
 /*
 -------------INIT--------*/
 
-function WulpyMapUtil() {
+function WulpyMapUtilRoute() {
     var mapCurrent;
     // Grey Scale
 
