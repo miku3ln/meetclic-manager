@@ -21,7 +21,8 @@
         "smalot/pdfparser": "^2.11",
         "spatie/laravel-ignition": "^2.0",
         "tecnickcom/tcpdf": "^6.7",
-        "maatwebsite/excel": "*"
+        "maatwebsite/excel": "*",
+      "ext-http": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.20",

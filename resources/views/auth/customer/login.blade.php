@@ -44,7 +44,7 @@ $rootUrlResetPassword=route("homePage")."/".app()->getLocale()."/password/reset"
 @endsection
 @section('content')
 
-    <div class="breadcrumb-area section-space--breadcrumb">
+    <div class="breadcrumb-area section-space--breadcrumb"  id="manager-customer-login">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
@@ -72,7 +72,11 @@ $rootUrlResetPassword=route("homePage")."/".app()->getLocale()."/password/reset"
                 <div class="col-md-8 col-lg-6 col-xl-5">
                     <div class="card">
                         <div class="card-body p-4">
-
+                            @if(session('status'))
+                                <div class="alert alert-info">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
 
                             @if(session('error'))
                                 <div class="alert alert-danger">{{ session('error') }}</div><br>@endif

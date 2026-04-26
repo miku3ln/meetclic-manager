@@ -8,7 +8,7 @@ $rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
 @extends('layouts.minton.master-blank')
 
 @section('content')
-<div class="account-pages mt-5 mb-5 " >
+<div class="account-pages mt-5 mb-5 " id="manager-login" >
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 col-xl-5">

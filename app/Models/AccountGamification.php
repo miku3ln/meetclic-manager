@@ -292,7 +292,6 @@ $this->table.balance_available_queen";
                 $modelPointsData = $modelPoints->findByAttribute("gamification_by_process_id", $gamification_by_process_id_one);
                 if ($modelPointsData) {
                     $balance_available_bee = $modelPointsData->points;
-
                 }
             }
             if ($modelAGBMTwo) {

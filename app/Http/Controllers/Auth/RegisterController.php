@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Utils\UtilUser;
 use Auth;
 use App\Http\Controllers\Controller;
@@ -9,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\PeopleTypeIdentification;
 use App\Models\PeopleGender;
 use App\Utils\Util;
+use Illuminate\Support\Facades\App;
+
 class RegisterController extends Controller
 {
 
@@ -68,7 +71,28 @@ class RegisterController extends Controller
         ));
 
     }
+    public function verifyRegister($id, $hash, Request $request)
+    {
 
+        if (! $request->hasValidSignature()) {
+            abort(403, 'Link inválido o expirado');
+        }
+        $user = User::findOrFail($id);
+        if (! hash_equals((string) $hash, sha1($user->email))) {
+            abort(403);
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+            $user->is_active = 1;
+            $user->save();
+        }
+        $lang = App::getLocale();
+
+        return redirect()->to(url('/' . $lang . '/login'))
+            ->with('status', 'Correo verificado con éxito. Ya puedes iniciar sesión.');
+
+    }
 
 
 }

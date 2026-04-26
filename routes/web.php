@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Routes\BusinessManager;
 use App\Routes\FrontendCms;
 use App\Routes\FrontendCmsCityBook;
@@ -78,6 +79,8 @@ $routeFECMS = new EducationCms();
 $routeFCMSCBook = new FrontendCmsCityBook();
 
 use App\Models\PeopleGender;
+use Illuminate\Http\Client\Request;
+
 
 Route::group(['prefix' => '{language}', 'middleware' => ['course']], function () {
 
@@ -114,5 +117,7 @@ Route::group(['prefix' => '{language}', 'middleware' => ['course']], function ()
 });
 
 
+
+Route::get('/email/verify/{id}/{hash}','Auth\RegisterController@verifyRegister')->name('verification.verify');
 
 

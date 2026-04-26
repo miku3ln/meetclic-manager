@@ -22,6 +22,7 @@ class ProductController extends PointSalesBaseController
 
     public function getProductsSales(Request $request)
     {
+
         $params = $request->all();
         $data = $this->service->getProducts($params);
         $this->user= $request->get('auth_user');

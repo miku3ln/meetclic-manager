@@ -104,61 +104,81 @@ class EmailUtil
 
     public function sendMailByPages($params)
     {
-
         $data = $params;
-        $toUsers = array(
+
+        $toUsers = [
             'kalexmiguelalba@gmail.com',
             'developers.dev26@gmail.com',
-        );
+        ];
+
         $dataMessage = $data['dataMessage'];
         $typePage = $data['typePage'];
         $business_id = $data['business_id'];
         $typeTemplate = $data['typeTemplate'];
 
         $modelEmail = new TemplateConfigMailingByEmails();
+
         $emailsSend = $modelEmail->getListEmailsByBusiness([
             'filters' => [
                 'business_id' => $business_id,
                 'type' => $typePage,
-
             ]
         ]);
-        $dataManager=[];
-        $dataManager['emails-by-default']=false;
+
+        $dataManager = [];
+        $dataManager['emails-by-default'] = false;
+
         if (count($emailsSend) > 0) {
             $dataEmails = $emailsSend;
         } else {
-            $dataManager['emails-by-default']=true;
+            $dataManager['emails-by-default'] = true;
             $dataEmails = $toUsers;
         }
 
         $success = true;
-        $msj = 'Mensaje Enviado Correctamente.';
+        $msj = 'Mensaje enviado correctamente.';
+        $errors = [];
 
+        foreach ($dataEmails as $mailSend) {
 
-        if ($typeTemplate == 'contactUsForm') {
-            foreach ($dataEmails as $key => $mailSend) {
+            try {
 
-                Mail::to($mailSend)->send(new SendMailContactUs($dataMessage));
-            }
-        } else if ($typeTemplate == 'checkoutForm') {
-            foreach ($dataEmails as $key => $mailSend) {
+                if ($typeTemplate == 'contactUsForm') {
+                    Mail::to($mailSend)->send(new SendMailContactUs($dataMessage));
 
-                Mail::to($mailSend)->send(new SendMailCheckout($dataMessage));
+                } else if ($typeTemplate == 'checkoutForm') {
+                    Mail::to($mailSend)->send(new SendMailCheckout($dataMessage));
+                }
+
+            } catch (\Throwable $e) {
+
+                $success = false;
+
+                $errors[] = [
+                    'email' => $mailSend,
+                    'error' => $e->getMessage()
+                ];
+
+                // 🔥 log para debug real
+                \Log::error('MAIL ERROR', [
+                    'email' => $mailSend,
+                    'error' => $e->getMessage()
+                ]);
             }
         }
-        if (count(Mail::failures()) > 0) {
-            $success = false;
-            $msj = 'Mensaje no enviado.';
 
+        // mensaje final
+        if (!$success) {
+            $msj = 'Algunos correos no se enviaron.';
         }
-        $result = array(
+
+        return [
             'success' => $success,
             'msj' => $msj,
-            'dataManager'=>$dataManager,
-            "mails-send"=>$dataEmails
-        );
-        return $result;
+            'errors' => $errors,
+            'dataManager' => $dataManager,
+            'mails_send' => $dataEmails
+        ];
     }
     public function sendMailBySchedule($params)
     {

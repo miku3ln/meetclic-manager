@@ -1,7 +1,7 @@
 @extends('layouts.frontend.master-blank')
 <?php
-$rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
-$rootUrlLogin=route("homePage")."/".app()->getLocale()."/login";
+$rootUrlRegister = route("homePage") . "/" . app()->getLocale() . "/register";
+$rootUrlLogin = route("homePage") . "/" . app()->getLocale() . "/login";
 
 ?>
 <?php
@@ -11,6 +11,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
 ?>
 @section('additional-scripts')
     <script>
+
         document.getElementById('togglePassword').addEventListener('click', function () {
             let passwordField = document.getElementById('password');
             let icon = this.querySelector('i');
@@ -25,7 +26,18 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                 icon.classList.add("fa-eye");
             }
         });
-    </script>@endsection
+    </script>
+
+    <script>
+        function initManagementViewCustomer(){
+
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+
+            initManagementViewCustomer();
+        });
+    </script>
+@endsection
 
 @section('content')
     <div class="breadcrumb-area section-space--breadcrumb">
@@ -37,7 +49,8 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                     <div class="breadcrumb-wrapper">
                         <h2 class="page-title">{{__("frontend.web.customer.top.topTitle")}} </h2>
                         <ul class="breadcrumb-list">
-                            <li><a href="{{$redirectTo}}">{{__("frontend.web.customer.top.topTitleBreadcrumbOne")}}</a></li>
+                            <li><a href="{{$redirectTo}}">{{__("frontend.web.customer.top.topTitleBreadcrumbOne")}}</a>
+                            </li>
                             <li class="active"> {{__("frontend.web.customer.top.topTitleBreadcrumbTwo")}}</li>
                         </ul>
                     </div>
@@ -46,7 +59,7 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
             </div>
         </div>
     </div>
-    <div class="account-pages mt-7 mb-7">
+    <div class="account-pages mt-7 mb-7" id="manager-form-register">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-7 col-xl-6">
@@ -72,16 +85,29 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                             </div>
                             @if(session('error'))
                                 @if(session('success'))
-                                    <div class="alert alert-danger">{{ session('error') }}</div><br>@endif
-                                <div class="alert alert-success">{{ session('success') }}</div><br>@endif
+                                    <div class="alert alert-danger">{{ session('error') }}</div><br>
+                                @endif
+                                <div class="alert alert-success">{{ session('success') }}</div><br>
+                            @endif
+                            @if(session('warning'))
+                                <div class="alert alert-warning">
+                                    {{ session('warning') }}
+                                </div>
+                            @endif
 
+                            @if(session('status'))
+                                <div class="alert alert-info">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
                             <form method="POST" action="{{ $rootUrlRegister }}"
                                   class="management--form">
                                 @csrf
                                 <div class="row">
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="fullname">{{__("frontend.web.customer.register.form.name")}} <span class="required">*</span></label>
+                                            <label for="fullname">{{__("frontend.web.customer.register.form.name")}}
+                                                <span class="required">*</span></label>
                                             <input class="form-control @if($errors->has('name')) is-invalid @endif"
                                                    type="text"
                                                    name="name" id="name" value="{{ old('name') }}"
@@ -95,7 +121,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                     </div>
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="last_name">{{__("frontend.web.customer.register.form.lastName")}}  <span class="required">*</span></label>
+                                            <label
+                                                for="last_name">{{__("frontend.web.customer.register.form.lastName")}}
+                                                <span class="required">*</span></label>
                                             <input class="form-control @if($errors->has('last_name')) is-invalid @endif"
                                                    type="text"
                                                    name="last_name" id="last_name" value="{{ old('last_name') }}"
@@ -111,7 +139,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                 <div class="row">
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="people_type_identification_id">{{__("frontend.web.customer.register.form.typeDocument")}}<span
+                                            <label
+                                                for="people_type_identification_id">{{__("frontend.web.customer.register.form.typeDocument")}}
+                                                <span
                                                     class="required">*</span></label>
                                             @php
                                                 $classCurrent='form-control'.( $errors->has('people_type_identification_id')? 'is-invalid':'' );
@@ -119,11 +149,11 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                             <select name="people_type_identification_id" class="{{$classCurrent}}">
 
 
-                                                    @php
-                                                        foreach ($configPartial['identificationData'] as $key => $value) {
-            echo '  <option value="'.$key.'"> '.$value.' </option>';
-        }
-                                                    @endphp
+                                                @php
+                                                    foreach ($configPartial['identificationData'] as $key => $value) {
+        echo '  <option value="'.$key.'"> '.$value.' </option>';
+    }
+                                                @endphp
                                             </select>
 
                                             @if($errors->has('people_type_identification_id'))
@@ -134,7 +164,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                     </div>
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="identification_document"># {{__("frontend.web.customer.register.form.document")}} <span
+                                            <label
+                                                for="identification_document"># {{__("frontend.web.customer.register.form.document")}}
+                                                <span
                                                     class="required">*</span></label>
                                             <input
                                                 class="form-control @if($errors->has('identification_document')) is-invalid @endif"
@@ -152,7 +184,8 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                 <div class="row">
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="gender">{{__("frontend.web.customer.register.form.gender")}}  <span class="required">*</span></label>
+                                            <label for="gender">{{__("frontend.web.customer.register.form.gender")}}
+                                                <span class="required">*</span></label>
                                             @php
                                                 $classCurrent='form-control'.( $errors->has('gender')? 'is-invalid':'' );
                                             @endphp
@@ -173,7 +206,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                     </div>
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="birthdate">{{__("frontend.web.customer.register.form.dateBorn")}}   <span
+                                            <label
+                                                for="birthdate">{{__("frontend.web.customer.register.form.dateBorn")}}
+                                                <span
                                                     class="required">*</span></label>
                                             <input class="form-control @if($errors->has('birthdate')) is-invalid @endif"
                                                    type="date"
@@ -189,7 +224,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                 <div class="row">
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="mobile">{{__("frontend.web.customer.register.form.mobilNumber")}}  <span class="required">*</span></label>
+                                            <label
+                                                for="mobile">{{__("frontend.web.customer.register.form.mobilNumber")}}
+                                                <span class="required">*</span></label>
                                             <input class="form-control @if($errors->has('mobile')) is-invalid @endif"
                                                    type="text"
                                                    name="mobile" id="mobile" value="{{ old('mobile') }}"
@@ -202,7 +239,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                     </div>
                                     <div class="col col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label for="emailaddress">{{__("frontend.web.customer.register.form.email")}} <span
+                                            <label
+                                                for="emailaddress">{{__("frontend.web.customer.register.form.email")}}
+                                                <span
                                                     class="required">*</span></label>
                                             <input class="form-control @if($errors->has('email')) is-invalid @endif"
                                                    type="email" id="emailaddress" name="email"
@@ -220,13 +259,16 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                 <div class="row">
                                     <div class="col col-md-12 col-xs-12">
                                         <div class="form-group position-relative">
-                                            <label for="password">{{__("frontend.web.customer.register.form.password")}} <span class="required">*</span></label>
+                                            <label for="password">{{__("frontend.web.customer.register.form.password")}}
+                                                <span class="required">*</span></label>
                                             <div class="input-group">
-                                                <input class="form-control @if($errors->has('password')) is-invalid @endif"
-                                                       type="password" name="password" id="password"
-                                                       placeholder="{{__("frontend.web.customer.register.form.passwordHelp")}}"/>
+                                                <input
+                                                    class="form-control @if($errors->has('password')) is-invalid @endif"
+                                                    type="password" name="password" id="password"
+                                                    placeholder="{{__("frontend.web.customer.register.form.passwordHelp")}}"/>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                            id="togglePassword">
                                                         <i class="fa fa-eye"></i>
                                                     </button>
                                                 </div>
@@ -241,9 +283,9 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
                                 </div>
 
 
-
                                 <div class="form-group mt-3 mb-0 text-center">
-                                    <button class="btn btn-primary btn-block" type="submit"> {{__("frontend.web.customer.register.form.register")}}</button>
+                                    <button class="btn btn-primary btn-block"
+                                            type="submit"> {{__("frontend.web.customer.register.form.register")}}</button>
                                 </div>
 
                             </form>
@@ -253,7 +295,8 @@ $redirectTo = $modelUtil->getDataEmployerBusiness();
 
                     <div class="row mt-3">
                         <div class="col-12 text-center">
-                            <p class="text-muted">{{__("frontend.web.customer.register.footer.registerOne")}}<a href="{{$rootUrlLogin}}" class="font-weight-medium ml-1">
+                            <p class="text-muted">{{__("frontend.web.customer.register.footer.registerOne")}}<a
+                                    href="{{$rootUrlLogin}}" class="font-weight-medium ml-1">
                                     {{__("frontend.web.customer.register.footer.registerTwo")}}
                                 </a></p>
                         </div> <!-- end col -->

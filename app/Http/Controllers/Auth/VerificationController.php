@@ -68,6 +68,32 @@ class VerificationController extends Controller
         return redirect()->to(url('/' . app()->getLocale() . '/login'))
             ->with('status', 'Correo verificado con éxito. Ya puedes iniciar sesión.');
     }
+    public function verifyCustomerPage(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            $urlLogin = url('/' . app()->getLocale() . '/login');
+
+            return redirect($urlLogin)->with('status', 'Ya habías verificado tu correo.');
+        }
+
+        // Verifica que el ID y hash coincidan con el usuario autenticado
+        if (!hash_equals((string) $request->route('id'), (string) $user->getKey()) ||
+            !hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+            abort(403, 'El enlace no es válido.');
+        }
+
+        // Marcar como verificado
+        if ($user->markEmailAsVerified()) {
+            $user->is_active = 1;
+            $user->save();
+            event(new Verified($user)); // <- Aquí Laravel dispara el evento
+        }
+
+        return redirect()->to(url('/' . app()->getLocale() . '/login'))
+            ->with('status', 'Correo verificado con éxito. Ya puedes iniciar sesión.');
+    }
     public function verifyApp(Request $request)
     {
         $id = $request->route('id');

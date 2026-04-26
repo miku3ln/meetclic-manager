@@ -26,6 +26,10 @@ use App\Rules\DocumentIdentification;
 use Hash;
 use Redirect;
 use Auth;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
+
+use App\Components\VerifyUserMail;
 
 class UtilUser
 {
@@ -41,6 +45,7 @@ class UtilUser
     const PROVIDER_FACEBOOK = 'facebook';
     const PROVIDER_GOOGLE = 'google';
     const PROVIDER_OWNER_SERVER = 'server';
+    const ALLOW_POINTS_REGISTER = false;
     use RegistersUsers;
 
 // guard() RegistersUsers
@@ -393,261 +398,299 @@ class UtilUser
 
     public function saveUserTypes($params)
     {
-
         DB::beginTransaction();
-        $success = false;
-        $typeSave = $params['typeSave'];
-        $dataPost = $params['data'];
-        $msj = '';
-        $errors = '';
-        $request = isset($params['request']) ? $params['request'] : null;
-        $paramsSave = array(
-            'data' => $dataPost,
-            'typeSave' => $typeSave
-        );
-        $result = null;
-        if ($typeSave == UtilUser::TYPE_SAVE_NORMAL) {
+        try {
 
-            if ($this->create($dataPost)) {
+            $success = false;
+            $typeSave = $params['typeSave'];
+            $dataPost = $params['data'];
+            $msj = '';
+            $errors = '';
+            $request = isset($params['request']) ? $params['request'] : null;
+            $paramsSave = array(
+                'data' => $dataPost,
+                'typeSave' => $typeSave
+            );
+            $result = null;
+            if ($typeSave == UtilUser::TYPE_SAVE_NORMAL) {
 
-                DB::commit();
-                return redirect()->to(url('/' . app()->getLocale() . '/login'))
-                    ->with('success', 'Congratulations! your account is registered.');
-            } else {
-                DB::rollBack();
+                if ($this->create($dataPost)) {
 
-            }
-        } else if ($typeSave == UtilUser::TYPE_SAVE_BUSINESS) {
-
-            $user = $this->create($dataPost);
-            if ($user) {
-                event(new Registered($user));
-                $this->guard()->login($user);
-                $this->registered($request, $user);
-                $role = new Role();
-                $hasRolesUser = new UsersHasRoles();
-                $role_id = Role::ROL_BUSINESS;
-                UsersHasRoles::create([
-                    'user_id' => $user->id,
-                    'role_id' => $role_id,
-                ]);
-                $roles = $hasRolesUser->getRolesUser($user->id);
-                $redirectTo = $this->getUrlUser($user);
-                $result = Redirect::to($redirectTo);
-                DB::commit();
-                return $result;
-            } else {
-                $result = Redirect::to('registerBusiness');
-                DB::rollBack();
-                return $result;
-            }
-
-        } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER) {//CMS-TEMPLATE-USER-REGISTER
-            $resultSaveCustomer = UtilUser::saveCustomer(array(
-                'dataPost' => $dataPost,
-                "typeSave" => $typeSave
-            ));
-            $successCustomer = $resultSaveCustomer['success'] ? 1 : 0;
-            $typeManagerMsj = $resultSaveCustomer['success'] ? '' : 'msj';
-            if ($successCustomer == 1) {
-                $success = true;
-                $user = $this->create($dataPost);
-                $user_id = $user->id;
-                event(new Registered($user));
-                $this->guard()->login($user);
-                $this->registered($request, $user);
-                $role_id = Role::ROL_CUSTOMER;
-                UsersHasRoles::create([
-                    'user_id' => $user->id,
-                    'role_id' => $role_id,
-                ]);
-                $customerData = $resultSaveCustomer['data']['Customer'];
-                $attributesSet = array(
-                    "customer_id" => $customerData['id'],
-                    "user_id" => $user_id,
-                );
-                $validateResult = CustomerByProfile::validateModel($attributesSet);
-                $success = $validateResult["success"];
-                if (!$success) {
-                    $msj = "Problemas al guardar Usuario y Perfil .";
-                    $errors = $validateResult["errors"];
-
+                    DB::commit();
+                    return redirect()->to(url('/' . app()->getLocale() . '/login'))
+                        ->with('success', 'Congratulations! your account is registered.');
                 } else {
-                    $modelCBP = new CustomerByProfile();
-                    $modelCBP->fill($attributesSet);
-                    $modelCBP->save();
+                    DB::rollBack();
 
-                    $modelMovement = new \App\Models\AccountGamification();
-                    $managerUser = $modelMovement->managerUserRegister(
-                        ['filters' => [
-                            'user_id' => $user_id
-                        ]]
-                    );
-                    $success = $managerUser['success'];
-                    $msj = $managerUser['msj'];
+                }
+            } else if ($typeSave == UtilUser::TYPE_SAVE_BUSINESS) {
+
+                $user = $this->create($dataPost);
+                if ($user) {
+                    event(new Registered($user));
+                    $this->guard()->login($user);
+                    $this->registered($request, $user);
+                    $role = new Role();
+                    $hasRolesUser = new UsersHasRoles();
+                    $role_id = Role::ROL_BUSINESS;
+                    UsersHasRoles::create([
+                        'user_id' => $user->id,
+                        'role_id' => $role_id,
+                    ]);
+                    $roles = $hasRolesUser->getRolesUser($user->id);
                     $redirectTo = $this->getUrlUser($user);
-
-                }
-
-            } else {
-                $redirectTo = 'register';
-                $success = false;
-
-            }
-
-            if (!$success) {
-                DB::rollBack();
-                return Redirect::to($redirectTo)->with('success', $success)->with('msj', $msj);
-
-            } else {
-                DB::commit();
-                return Redirect::to($redirectTo);
-
-            }
-
-            return Redirect::to($redirectTo)->with('msg', $msj);
-
-
-        } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER_CHECKOUT) {
-            $data = [];
-
-            $resultSaveCustomer = UtilUser::saveCustomer(array(
-                'dataPost' => $dataPost,
-                "typeSave" => $typeSave
-            ));
-            $successCustomer = $resultSaveCustomer['success'] ? 1 : 0;
-
-            $msj = $resultSaveCustomer['msj'];
-            $errors = $resultSaveCustomer['errors'];
-            $success = $successCustomer == 1 ? true : false;
-            if ($success) {
-                $user = $this->create($dataPost);
-                $user_id = $user->id;
-                event(new Registered($user));
-                $this->guard()->login($user);
-                $role_id = Role::ROL_CUSTOMER;
-                UsersHasRoles::create([
-                    'user_id' => $user->id,
-                    'role_id' => $role_id,
-                ]);
-                $customerData = $resultSaveCustomer['data']['Customer'];
-                $attributesSet = array(
-                    "customer_id" => $customerData['id'],
-                    "user_id" => $user_id,
-                );
-                $validateResult = CustomerByProfile::validateModel($attributesSet);
-                $customerByProfile = null;
-                $success = $validateResult["success"];
-                if (!$success) {
-                    $success = false;
-                    $msj = "Problemas al guardar Usuario y Perfil .";
-                    $errors = $validateResult["errors"];
+                    $result = Redirect::to($redirectTo);
+                    DB::commit();
+                    return $result;
                 } else {
-                    $modelCBP = new CustomerByProfile();
-                    $modelCBP->fill($attributesSet);
-                    $allowSave = $modelCBP->save();
-                    $attributesSet["id"] = $modelCBP->id;
-                    $customerByProfile = $attributesSet;
+                    $result = Redirect::to('registerBusiness');
+                    DB::rollBack();
+                    return $result;
                 }
-                $data['Customer'] = $customerData;
-                $data['User'] = $user;
-                $data['CustomerByProfile'] = $customerByProfile;
 
-                $result = [
-                    'success' => $success,
-                    'data' => $data,
-                    'errors' => $errors,
-                    'msj' => $msj
-                ];
+            } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER) {//CMS-TEMPLATE-USER-REGISTER
 
-            } else {
-                $result = [
-                    'success' => $success,
-                    'data' => $data,
-                    'errors' => $errors,
-                    'msj' => $msj
-                ];
-            }
-
-            if (!$success) {
-                DB::rollBack();
-            } else {
-                DB::commit();
-            }
-
-
-            return $result;
-        } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER_APP) {
-            $data = [];
-            $resultSaveCustomer = UtilUser::saveCustomer(array(
-                'dataPost' => $dataPost,
-                "typeSave" => $typeSave
-            ));
-            $successCustomer = $resultSaveCustomer['success'] ? 1 : 0;
-            $msj = $resultSaveCustomer['msj'];
-            $errors = $resultSaveCustomer['errors'];
-            $success = $successCustomer == 1 ? true : false;
-            if ($success) {
-                $user = $this->create($dataPost);
-                $user_id = $user->id;
-                event(new Registered($user));
-                $this->guard()->login($user);
-                $role_id = Role::ROL_CUSTOMER;
-                UsersHasRoles::create([
-                    'user_id' => $user->id,
-                    'role_id' => $role_id,
+                $resultSaveCustomer = UtilUser::saveCustomer([
+                    'dataPost' => $dataPost,
+                    "typeSave" => $typeSave
                 ]);
-                $customerData = $resultSaveCustomer['data']['Customer'];
-                $attributesSet = array(
-                    "customer_id" => $customerData['id'],
-                    "user_id" => $user_id,
-                );
-                $validateResult = CustomerByProfile::validateModel($attributesSet);
-                $customerByProfile = null;
-                $success = $validateResult["success"];
-                if (!$success) {
-                    $success = false;
-                    $msj = "Problemas al guardar Usuario y Perfil .";
-                    $errors = $validateResult["errors"];
+                $successCustomer = $resultSaveCustomer['success'] ? 1 : 0;
+                $mailManager = [
+                    'success' => false, 'message' => ''
+                ]; // 👈 nuevo
+                $redirectTo = '';
+                $user = null;
+                if ($successCustomer == 1) {
+                    $success = true;
+                    $user = $this->create($dataPost);
+                    $user_id = $user->id;
+                   // $this->guard()->login($user);
+                    $this->registered($request, $user);
+                    $role_id = Role::ROL_CUSTOMER;
+                    UsersHasRoles::create([
+                        'user_id' => $user->id,
+                        'role_id' => $role_id,
+                    ]);
+                    $customerData = $resultSaveCustomer['data']['Customer'];
+                    $attributesSet = [
+                        "customer_id" => $customerData['id'],
+                        "user_id" => $user_id,
+                    ];
+
+                    $validateResult = CustomerByProfile::validateModel($attributesSet);
+                    $success = $validateResult["success"];
+
+                    if (!$success) {
+                        $msj = "Problemas al guardar Usuario y Perfil .";
+                        $errors = $validateResult["errors"];
+
+                    } else {
+                        $modelCBP = new CustomerByProfile();
+                        $modelCBP->fill($attributesSet);
+                        $modelCBP->save();
+
+                        if (self::ALLOW_POINTS_REGISTER) {
+                            $modelMovement = new \App\Models\AccountGamification();
+                            $managerUser = $modelMovement->managerUserRegister([
+                                'filters' => [
+                                    'user_id' => $user_id
+                                ]
+                            ]);
+                            $success = $managerUser['success'];
+                            $msj = $managerUser['msj'];
+                        }
+                        $redirectTo = $this->getUrlUser($user);
+                    }
 
                 } else {
-                    $modelCBP = new CustomerByProfile();
-                    $modelCBP->fill($attributesSet);
-                    $allowSave = $modelCBP->save();
-                    $attributesSet["id"] = $modelCBP->id;
-                    $customerByProfile = $attributesSet;
-
+                    $redirectTo = 'register';
+                    $success = false;
+                    $msj = $resultSaveCustomer['msj'] ?? 'Error al registrar cliente';
                 }
-                $data['Customer'] = $customerData;
-                $data['User'] = $user;
-                $data['CustomerByProfile'] = $customerByProfile;
-                $data['CustomerByProfile']["errors"] = $validateResult["errors"];
-                $data['CustomerByProfile']["msj"] = $msj;
 
-                $result = [
-                    'success' => $success,
-                    'data' => $data,
-                    'errors' => $errors,
-                    'msj' => $msj
-                ];
+                if (!$success) {
+                    DB::rollBack();
 
-            } else {
-                $result = [
+
+                } else {
+                    DB::commit();
+                    // ✅ NO ROMPER POR EMAIL
+                    try {
+                     //   event(new Registered($user));
+
+                        $verificationUrl = URL::temporarySignedRoute(
+                            'verification.verify', // ruta
+                            now()->addMinutes(60), // tiempo de expiración
+                            [
+                                'id' => $user->id,
+                                'hash' => sha1($user->email),
+                            ]
+                        );
+
+                        Mail::to($user->email)->send(
+                            new VerifyUserMail($user, $verificationUrl)
+                        );
+
+                    } catch (\Throwable $e) {
+                        $mailManager['success'] = false;
+                        $mailManager['message'] = 'Usuario creado, pero no se pudo enviar el correo.' .$e->getMessage();
+
+
+                    }
+                }
+
+                return [
                     'success' => $success,
-                    'data' => $data,
-                    'errors' => $errors,
-                    'msj' => $msj
+                    'message' => $msj,
+                    'data' => [
+                        'redirect' => $redirectTo,
+                        'mail' => $mailManager
+                    ]
                 ];
+            } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER_CHECKOUT) {
+                $data = [];
+
+                $resultSaveCustomer = UtilUser::saveCustomer(array(
+                    'dataPost' => $dataPost,
+                    "typeSave" => $typeSave
+                ));
+                $successCustomer = $resultSaveCustomer['success'] ? 1 : 0;
+
+                $msj = $resultSaveCustomer['msj'];
+                $errors = $resultSaveCustomer['errors'];
+                $success = $successCustomer == 1 ? true : false;
+                if ($success) {
+                    $user = $this->create($dataPost);
+                    $user_id = $user->id;
+                    event(new Registered($user));
+                    $this->guard()->login($user);
+                    $role_id = Role::ROL_CUSTOMER;
+                    UsersHasRoles::create([
+                        'user_id' => $user->id,
+                        'role_id' => $role_id,
+                    ]);
+                    $customerData = $resultSaveCustomer['data']['Customer'];
+                    $attributesSet = array(
+                        "customer_id" => $customerData['id'],
+                        "user_id" => $user_id,
+                    );
+                    $validateResult = CustomerByProfile::validateModel($attributesSet);
+                    $customerByProfile = null;
+                    $success = $validateResult["success"];
+                    if (!$success) {
+                        $success = false;
+                        $msj = "Problemas al guardar Usuario y Perfil .";
+                        $errors = $validateResult["errors"];
+                    } else {
+                        $modelCBP = new CustomerByProfile();
+                        $modelCBP->fill($attributesSet);
+                        $allowSave = $modelCBP->save();
+                        $attributesSet["id"] = $modelCBP->id;
+                        $customerByProfile = $attributesSet;
+                    }
+                    $data['Customer'] = $customerData;
+                    $data['User'] = $user;
+                    $data['CustomerByProfile'] = $customerByProfile;
+
+                    $result = [
+                        'success' => $success,
+                        'data' => $data,
+                        'errors' => $errors,
+                        'msj' => $msj
+                    ];
+
+                } else {
+                    $result = [
+                        'success' => $success,
+                        'data' => $data,
+                        'errors' => $errors,
+                        'msj' => $msj
+                    ];
+                }
+
+                if (!$success) {
+                    DB::rollBack();
+                } else {
+                    DB::commit();
+                }
+
+
+                return $result;
+            } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER_APP) {
+                $data = [];
+                $resultSaveCustomer = UtilUser::saveCustomer(array(
+                    'dataPost' => $dataPost,
+                    "typeSave" => $typeSave
+                ));
+                $successCustomer = $resultSaveCustomer['success'] ? 1 : 0;
+                $msj = $resultSaveCustomer['msj'];
+                $errors = $resultSaveCustomer['errors'];
+                $success = $successCustomer == 1 ? true : false;
+                if ($success) {
+                    $user = $this->create($dataPost);
+                    $user_id = $user->id;
+                    event(new Registered($user));
+                    $this->guard()->login($user);
+                    $role_id = Role::ROL_CUSTOMER;
+                    UsersHasRoles::create([
+                        'user_id' => $user->id,
+                        'role_id' => $role_id,
+                    ]);
+                    $customerData = $resultSaveCustomer['data']['Customer'];
+                    $attributesSet = array(
+                        "customer_id" => $customerData['id'],
+                        "user_id" => $user_id,
+                    );
+                    $validateResult = CustomerByProfile::validateModel($attributesSet);
+                    $customerByProfile = null;
+                    $success = $validateResult["success"];
+                    if (!$success) {
+                        $success = false;
+                        $msj = "Problemas al guardar Usuario y Perfil .";
+                        $errors = $validateResult["errors"];
+
+                    } else {
+                        $modelCBP = new CustomerByProfile();
+                        $modelCBP->fill($attributesSet);
+                        $allowSave = $modelCBP->save();
+                        $attributesSet["id"] = $modelCBP->id;
+                        $customerByProfile = $attributesSet;
+
+                    }
+                    $data['Customer'] = $customerData;
+                    $data['User'] = $user;
+                    $data['CustomerByProfile'] = $customerByProfile;
+                    $data['CustomerByProfile']["errors"] = $validateResult["errors"];
+                    $data['CustomerByProfile']["msj"] = $msj;
+
+                    $result = [
+                        'success' => $success,
+                        'data' => $data,
+                        'errors' => $errors,
+                        'msj' => $msj
+                    ];
+
+                } else {
+                    $result = [
+                        'success' => $success,
+                        'data' => $data,
+                        'errors' => $errors,
+                        'msj' => $msj
+                    ];
+                }
+
+                if (!$success) {
+                    DB::rollBack();
+                } else {
+                    DB::commit();
+                }
+                return $result;
             }
 
-            if (!$success) {
-                DB::rollBack();
-            } else {
-                DB::commit();
-            }
+        } catch (\Exception $e) {
 
+            DB::rollBack();
 
-            return $result;
         }
 
 
@@ -731,8 +774,24 @@ class UtilUser
                 ->withErrors($validation)
                 ->withInput();
         }
+
         $result = $this->saveUserTypes($paramsSave);
+        if (isset($result['success']) && is_array($result)) {
+
+            $status=$result['success']?'Revise su correo para activar la cuenta.!':'No se pudo realizar la creacion de la cuenta.';
+            return redirect()->to(url(app()->getLocale() . '/register'))->with([
+                'status'=>$status,
+                'success' => $result['success'] ?? false,
+                'msj' => $result['msj'] ?? '',
+                'data' => $result['data'] ?? [],
+                'errors' => $result['errors'] ?? []
+            ]);
+
+        }else{
+
         return $result;
+        }
+
     }
 
     protected function validator($params)
