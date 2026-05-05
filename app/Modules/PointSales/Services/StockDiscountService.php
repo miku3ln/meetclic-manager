@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Modules\PointSales\Services;
 
 use App\Modules\PointSales\Repositories\ProductRepository;
+
 class StockDiscountService
 {
     protected $repo;
@@ -10,62 +12,37 @@ class StockDiscountService
     {
         $this->repo = $repo;
     }
-    public function process($items)
+
+    public function process($params)
     {
         $response = [];
-
+        $items = $params["items"];
         foreach ($items as $item) {
-
             $product = $this->repo->getProductById($item['id']);
-
             if (!$product) continue;
-
-            $amount = (float) $item['amount'];
-            if ($amount <= 0) continue;
-
+            $amount = (float)$item['amount'];
             switch ($product->product_type) {
-
                 case 'MIXED':
                     $dataRecipe = $this->handleMixed($product->id, $amount);
-
-                    $response[] = [
-                        "name"=> $product->name,
-                        'product_id' => $product->id,
-                        'type' => 'UNIT',
-                        'discount_quantity' => $amount,
-                        'unit' => 'u',
-                        'isRecipe'=>true,
-                        'data'=>$dataRecipe
-                    ];
+                    $setPush = $item;
+                    $setPush["isRecipe"] = true;
+                    $setPush["dataRecipe"] = $dataRecipe;
+                    $response[] = $setPush;
                     break;
-
-                case 'UNIT':
-                    $response[] = [
-                        "name"=> $product->name,
-                        'product_id' => $product->id,
-                        'type' => 'UNIT',
-                        'discount_quantity' => $amount,
-                        'unit' => 'u',
-                        'isRecipe'=>false,
-                    ];
-                    break;
-
                 case 'MEASURABLE':
-                    $response[] = [
-                        "name"=> $product->name,
-                        'product_id' => $product->id,
-                        'type' => 'MEASURABLE',
-                        'discount_quantity' => $amount,
-                        'unit' => 'base',
-                        'isRecipe'=>false,
-
-                    ];
+                case 'UNIT':
+                    $setPush = $item;
+                    $measure_base = $this->repo->getProductWithStock($item['id']);
+                    $setPush["measure_base"] = $measure_base;
+                    $setPush["isRecipe"] = false;
+                    $response[] = $setPush;
                     break;
             }
         }
 
-        return $this->consolidate($response);
+        return $response;
     }
+
     private function consolidate($items)
     {
         $grouped = [];
@@ -83,6 +60,7 @@ class StockDiscountService
 
         return array_values($grouped);
     }
+
     private function handleMixed($productId, $amount)
     {
 
@@ -96,107 +74,138 @@ class StockDiscountService
         $response = [];
 
         foreach ($recipe as $component) {
-
-            $required = $component->quantity ;
-
+            $measure_base = $this->repo->getProductWithStock($component->component_product_id);
             $response[] = [
-                'product_id' => $component->component_product_id,
+                'id' => $component->component_product_id,
                 'name' => $component->name,
-                'type' => 'MEASURABLE',
-                'discount_quantity' => $required, // 🔥 FIX AQUÍ
-                'unit' => 'base',
-                'source_product_id' => $productId
+                'type' => $component->component_type,
+                'discount_quantity' => $amount,
+                'recipe_quantity' => $component->recipe_quantity,
+                'total_amount' => ($amount * $component->recipe_quantity),
+                'measure_base' => $measure_base
+
             ];
         }
 
         return $response;
     }
+
+    private function buildMovement($productId, $amount, $measure_base)
+    {
+        $stock = $this->repo->getStock($productId);
+
+        if ($amount > $stock["value"]) {
+            $faltante = $amount - $stock["value"];
+            return [
+                "success" => false,
+                "message" => "Stock insuficiente",
+                "error" => [
+                    "requested" => $amount,
+                    "available" => $stock["value"],
+                    "missing" => $faltante,
+                    "unit" => $stock["unit"],
+                    "type" => $stock["type"]
+                ]
+            ];
+        }
+
+        $movement = [
+            "product_id" => $productId,
+            "movement_type" => "OUT",
+            "reference_type" => "SALE",
+            "reference_id" => -1,
+            "description" => "Venta POS-Product"
+        ];
+
+        switch ($stock["type"]) {
+            case "UNIT":
+                $movement["quantity"] = $amount;
+                $movement["unit_measure_id"] = $stock["unit_id"];
+                $movement["quantity_input"] = $amount;
+                $movement["unit_input_id"] = $stock["unit_id"];
+                $movement["conversion_factor"] = 1;
+                break;
+
+            case "MEASURABLE":
+            case "MIXED":
+
+                $conversionFactor =
+                    $measure_base->quantity > 0
+                        ? ($measure_base->quantity_base / $measure_base->quantity)
+                        : 1;
+
+                $movement["quantity"] = $amount * $conversionFactor;
+                $movement["unit_measure_id"] = $stock["unit_id"];
+
+                $movement["quantity_input"] = $amount;
+                $movement["unit_input_id"] = $measure_base->stock_unit_id;
+
+                $movement["conversion_factor"] = $conversionFactor;
+
+                break;
+        }
+
+        return [
+            "success" => true,
+            "data" => $movement,
+            "message" => "Puede Realizar el debito del inventario!"
+        ];
+    }
+
     public function validateStock($items)
     {
-        $errors = [];
-        $validated = [];
-
+        $result = [];
         foreach ($items as $item) {
+            $setPush = [
+                "success" => false,
+                "message" => "",
+                "data" => [],
+                "errors"=>[]
+            ];
+            if ($item["isRecipe"]) {
 
-            $required = $item['discount_quantity'] ?? 0;
-            $stock = $this->repo->getStock($item['product_id']);
-            $availableFormatted = $this->formatQuantity($item['product_id'], $stock);
-            $requiredFormatted  = $this->formatQuantity($item['product_id'], $required);
-            // 🔥 validar
-            if ($stock < $required) {
+                $inventory_movements = [];
+                $countFails = 0;
+                $message = "Algun Ingrediente no tiene Valores disponibles";
+                $errorsItems = [];
+                foreach ($item["dataRecipe"] as $recipeRow) {
+                    $response = $this->buildMovement(
+                        $recipeRow["id"],
+                        $recipeRow["total_amount"],
+                        $recipeRow["measure_base"]
+                    );
+                    if (!$response["success"]) {
+                        $countFails++;
+                        array_push($errorsItems,$recipeRow);
+                    }
+                    array_push($inventory_movements, $response["data"]);
 
+                }
 
-
-                $errors[] = [
-                    'product_id' => $item['product_id'],
-                    'name' => $item['name'],
-                    'error' => 'INSUFFICIENT_STOCK',
-                    'available' => $availableFormatted['value'],
-                    'available_unit' => $availableFormatted['unit'],
-                    'required' => $requiredFormatted['value'],
-                    'required_unit' => $requiredFormatted['unit']
-                ];
-
-                $validated[] = [
-                    ...$item,
-                    'validation' => [
-                        'success' => false,
-                        'message' => 'Stock insuficiente'
-                    ]
-                ];
+                $item["inventory_movements"] = $inventory_movements;
+                $setPush["success"] = $countFails == 0;
+                $setPush["message"] =$countFails == 0? "Todo Ok":$message;
+                $setPush["errors"] = $errorsItems;
+                $setPush["data"] = $item;
 
             } else {
+                $response = $this->buildMovement(
+                    $item["id"],
+                    $item["amount"],
+                    $item["measure_base"]
+                );
+                $setPush["success"] = $response["success"];
+                $setPush["message"] = $response["message"];
 
-                $validated[] = [
-                    ...$item,
-                    'dataComparation'=>[
-                        'available' => $availableFormatted['value'],
-                        'available_unit' => $availableFormatted['unit'],
-                    ],
-                    'validation' => [
-                        'success' => true,
-                        'message' => 'OK'
-                    ]
-                ];
+                $item["inventory_movements"] = [$response["data"]];
             }
+            $setPush["data"] = $item;
+            array_push($result, $setPush);
+
         }
 
-        return [
-            'success' => empty($errors),
-            'items' => $validated,
-            'errors' => $errors
-        ];
+        return $result;
     }
-    private function formatQuantity($productId, $quantityBase)
-    {
-        $product = $this->repo->getProductWithUnits($productId);
 
-        if (!$product) {
-            return [
-                'value' => $quantityBase,
-                'unit' => 'base'
-            ];
-        }
-      
-        // MIXED o UNIT → no convertir
-        if ($product->product_type === 'MIXED' || $product->product_type === 'UNIT') {
-            return [
-                'value' => $quantityBase,
-                'unit' => $product->stock_symbol ?? 'u'
-            ];
-        }
 
-        // MEASURABLE → convertir a unidad default
-        if ($product->default_factor > 0) {
-            return [
-                'value' => round($quantityBase / $product->default_factor, 2),
-                'unit' => $product->default_symbol
-            ];
-        }
-
-        return [
-            'value' => $quantityBase,
-            'unit' => $product->base_symbol ?? 'base'
-        ];
-    }
 }

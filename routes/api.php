@@ -93,6 +93,7 @@ Route::prefix('pointsales')->group(function () {
     Route::middleware(['pointsales.auth'])->group(function () {
         Route::get('/products-sales', 'PointSales\ProductController@getProductsSales');
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
+        Route::get('/tickets-sales', 'PointSales\TicketManagerController@getTicketsSales');
 
     });
 

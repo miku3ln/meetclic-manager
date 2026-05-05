@@ -11,7 +11,29 @@ class ProductRepository
             ->where('id', $id)
             ->first();
     }
+    public function getProductWithStock($id)
+    {
+        return DB::table('product as p')
+            ->join('product_stock as ps', 'ps.product_id', '=', 'p.id')
+            ->leftJoin('unit_measure as um_stock', 'um_stock.id', '=', 'ps.unit_measure_id')
+            ->leftJoin('unit_measure as um_base', function ($join) {
+                $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
+                    ->where('um_base.is_base', 1);
+            })
+            ->where('p.id', $id)
+            ->select([
+                'p.id',
+                'p.product_type',
 
+                'ps.quantity',
+                'ps.quantity_base',
+                'um_base.symbol',
+
+                'um_stock.id as stock_unit_id',
+                'um_base.id as base_unit_id'
+            ])
+            ->first();
+    }
     public function getRecipe($productId)
     {
         return DB::table('product_recipe as pr')
@@ -69,7 +91,10 @@ class ProductRepository
                 'ps.quantity',
                 'ps.quantity_base',
 
+                'um_stock.id as stock_unit_id',
                 'um_stock.symbol as stock_unit',
+
+                'um_base.id as base_unit_id',
                 'um_base.symbol as base_unit'
             ])
             ->first();
@@ -89,6 +114,7 @@ class ProductRepository
                 return [
                     'value' => (float) $row->quantity,
                     'unit' => $row->stock_unit ?? 'u',
+                    'unit_id' => $row->stock_unit_id,   // ✅ CLAVE
                     'type' => 'UNIT'
                 ];
 
@@ -97,6 +123,7 @@ class ProductRepository
                 return [
                     'value' => (float) $row->quantity_base,
                     'unit' => $row->base_unit ?? 'base',
+                    'unit_id' => $row->base_unit_id,   // ✅ CLAVE
                     'type' => $row->product_type
                 ];
 

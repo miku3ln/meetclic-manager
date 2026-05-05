@@ -10,7 +10,10 @@ class BaseRepository
 
     public function paginate($query, $params, $defaultSort = 'id')
     {
-        $sort = 'asc';
+        $sort = 'asc' ;
+             if (isset($params['sortType'])) {
+                 $sort=$params['sortType'];
+             }
         $field = $defaultSort;
 
         if (isset($params['sort'])) {
