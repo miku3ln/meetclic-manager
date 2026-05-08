@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Gamification;
 
 use App\Http\Controllers\MyBaseController;
 use App\Models\GamificationByProcess;
+use App\Modules\PointSales\Services\ProductSalesService;
+use App\Modules\PointSales\Services\StockDiscountService;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 
 class GamificationByProcessController extends MyBaseController
 {
+    public function __construct(ProductSalesService $service)
+    {
+        $this->service = $service;
 
+
+    }
     public function getAdmin()
     {
         $dataPost = Request::all();
@@ -36,6 +43,18 @@ class GamificationByProcessController extends MyBaseController
         $dataPost = Request::all();
         $model = new GamificationByProcess();
         $result = $model->getAdminGamificationFrontendHome($dataPost);
+
+        return Response::json(
+            $result
+        );
+    }
+
+    public function getAdminShopPageByBusiness()
+    {
+        $dataPost = Request::all();
+        $model = new GamificationByProcess();
+
+        $result = $this->service->getProductsShopPage($dataPost);
 
         return Response::json(
             $result

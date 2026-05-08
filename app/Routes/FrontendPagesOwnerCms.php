@@ -21,7 +21,7 @@ class FrontendPagesOwnerCms
             Route::get('/rimay/registers/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@rimayRegistersByBusiness')->name('rimay-registers-business');
 
             Route::get('/suggestions-mail/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@suggestionsMailBoxByBusiness')->name('suggestion-mail-business');
-            Route::get('/shop/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@shopByBusiness')->name('shop-business');
+           // Route::get('/shop/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@shopByBusiness')->name('shop-business');
             Route::get('/rewards/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@rewardsRegistersByBusiness')->name('rewards-business');
             Route::get('/rates/registers/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@ratesRegistersByBusiness')->name('rates-registers-business');
             Route::get('/rate/register/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@rateRegisterByBusiness')->name('rate-register-business');

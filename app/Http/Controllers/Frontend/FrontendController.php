@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 
 use App\Http\Controllers\FrontendBaseController;
+use App\Models\Business;
 use App\Models\FrontendManager;
 use App;
 use App\Models\Products\Product;
@@ -55,12 +56,9 @@ class FrontendController extends FrontendBaseController
 
         $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
         $language = $languageManager['language'];
-
-        $modelPage = $this->modelInit;
         $paramsRequest = [];
         $paramsRequest['language'] = $language;
         $paramsRequest['type'] = $type;
-        $project = "managerSystemTest";
         $modelPage = new \App\Models\FrontendCityBookManager();
         $renderView = self::LAYOUT_MAIN . '.web.' . '.homePage';
         $paramsSend = $modelPage->getParamsPage([
@@ -70,6 +68,35 @@ class FrontendController extends FrontendBaseController
         ]);
 
         return view($renderView, $paramsSend);
+
+    }
+
+    public function shopPage($language = 'es', $id = null, $type = 1)//MAIN HOME CMS-TEMPLATE-home
+    {
+        $business_id = $id;
+        $model = new Business();
+        $processPage="shopPage";
+        $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+        if (empty($dataBusiness["business"])) {
+            abort(404); // 👈 Laravel maneja esto automáticamente
+        } else {
+            $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+            $language = $languageManager['language'];
+            $paramsRequest = [];
+            $paramsRequest['language'] = $language;
+            $paramsRequest['type'] = $type;
+            $paramsRequest['dataBusinessInformation'] = $dataBusiness;
+            $modelPage = new \App\Models\FrontendCityBookManager();
+            $renderView = self::LAYOUT_MAIN . '.web.' . '.'.$processPage;
+            $paramsSend = $modelPage->getParamsPage([
+                'page' => $processPage,
+                'paramsRequest' => $paramsRequest
+
+            ]);
+
+            return view($renderView, $paramsSend);
+        }
+
 
     }
 
@@ -724,23 +751,24 @@ class FrontendController extends FrontendBaseController
 
     }
 
-    public function getAdminFrontend($language="es")
+    public function getAdminFrontend($language = "es")
     {
         $dataPost = Request::all();
         $model = new Product();
 
         $data = $model->getAdminFrontend($dataPost);
-        $result=Response::json(
+        $result = Response::json(
             $data
         );
 
         return $result;
     }
+
     public function signPdf(Request $request)
     {
-        $result=[
-            "success"=>false,
-            "data"=>[],
+        $result = [
+            "success" => false,
+            "data" => [],
 
         ];
         // Validar entrada
@@ -797,6 +825,7 @@ class FrontendController extends FrontendBaseController
         }
         return Response::json($result);
     }
+
     public function signPdfLocal()
     {
         $result = [
@@ -808,8 +837,8 @@ class FrontendController extends FrontendBaseController
         try {
             // Ruta del PDF a firmar
             $pdfName = "Catalogo Navideño EL ARTE 24.pdf";
-            $pathProcess="app/public/documents-manager";
-            $pdfPath = storage_path($pathProcess.'/pdf_files/' . $pdfName);
+            $pathProcess = "app/public/documents-manager";
+            $pdfPath = storage_path($pathProcess . '/pdf_files/' . $pdfName);
 
             // Verificar si el archivo existe
             if (!file_exists($pdfPath)) {
@@ -817,9 +846,9 @@ class FrontendController extends FrontendBaseController
             }
 
             // Ruta del certificado
-            $certPath = storage_path($pathProcess.'/certificates/my_certificate.p12');
+            $certPath = storage_path($pathProcess . '/certificates/my_certificate.p12');
             $password = "St963852";
-            $reason ="RAZON PARA FIRMAR";
+            $reason = "RAZON PARA FIRMAR";
 
             // Leer certificado P12
             $certData = file_get_contents($certPath);
@@ -851,7 +880,7 @@ class FrontendController extends FrontendBaseController
 
             // Guardar PDF firmado
             $signedPdfName = 'signed_' . uniqid() . '.pdf';
-            $signedPdfPath = storage_path($pathProcess.'/signed_pdfs/' . $signedPdfName);
+            $signedPdfPath = storage_path($pathProcess . '/signed_pdfs/' . $signedPdfName);
 
             file_put_contents($signedPdfPath, $pdf->Output('S'));
 

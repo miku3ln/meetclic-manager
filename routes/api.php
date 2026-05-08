@@ -37,6 +37,9 @@ Route::middleware('publicApi')->group(function () {
     Route::post('/traductor/getDictionaryByLanguage', 'Api\CustomerAppController@getDictionaryByLanguage')->name('getDictionaryByLanguage');
     Route::post("/gamification/GamificationByProcess/getAdminGamificationFrontend", "Gamification\GamificationByProcessController@getAdminGamificationFrontend")->name('getAdminGamificationFrontend');
     Route::post("/gamification/GamificationByProcess/getAdminGamificationFrontendHome", "Gamification\GamificationByProcessController@getAdminGamificationFrontendHome")->name('getAdminGamificationFrontendHome');
+
+    Route::post("/frontend/shop-page/get-admin", "Gamification\GamificationByProcessController@getAdminShopPageByBusiness")->name('getAdminShopPageByBusiness');
+
     Route::get('/test/json', function (Request $request) {
         return response()->json([
             'success' => true,

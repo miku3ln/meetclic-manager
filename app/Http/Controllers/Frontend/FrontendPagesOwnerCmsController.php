@@ -385,8 +385,6 @@ class FrontendPagesOwnerCmsController extends Controller
             $allow = true;
             $model = new Business();
             $dataBusiness = $model->getBusinessData(array("id" => $business_id));
-
-
             $modelWhats = new WhatsappConfigs();
             $dataPhoneWhatsapp = $modelWhats->getConfigsByBusinessAndSection(["businessId" => $business_id, "sectionId" => 9]);
             $variables = [
@@ -406,9 +404,7 @@ class FrontendPagesOwnerCmsController extends Controller
                 ]
             ]);
             $dataRoute = array(
-
                 'socialNetwork' => $resultCurrentData,
-
             );
             $dataBusiness["dataPhoneWhatsapp"] = $dataPhoneWhatsapp;
         }

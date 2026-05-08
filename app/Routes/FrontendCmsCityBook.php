@@ -112,6 +112,8 @@ class FrontendCmsCityBook
             Route::get('/homeBackLine', 'Frontend\BackLineController@index')->name('homeBackLine');//GAMIFICATION ROUTE
 
 
+            Route::get('/shop/business/{id?}', 'Frontend\FrontendController@shopPage')->name('shop-business');//GAMIFICATION ROUTE
+
 
             Route::get('/homeEatPura', 'Frontend\EatPuraController@index')->name('homeEatPura');
             Route::get('/userAccount', 'Frontend\EatPuraController@userAccount')->name('userAccount');
