@@ -374,16 +374,18 @@ $managementNameProcess = "shopPage";
         ========================================================= */
 
         .product-card__media {
-
             position: relative;
 
             width: 100%;
-
             height: 240px;
 
             overflow: hidden;
 
             background: #f8fafc;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .product-card__image {
@@ -391,9 +393,12 @@ $managementNameProcess = "shopPage";
             width: 100%;
             height: 100%;
 
-            object-fit: cover;
+            object-fit: contain;
+            object-position: center;
 
             display: block;
+
+            padding: 12px;
         }
 
         /* =========================================================

@@ -1,14 +1,14 @@
 <!--CMS-TEMPLATE-META-DATA-TEMPLATE -->
 
-<meta charset="utf-8" id="manager-meta" class="manager-header">
+<meta charset="utf-8" id="manager-meta" class="manager-header" current-action="{{$dataManagerPage['currentPage']}}">
 
 @php
 
-    $dataPagesSections=[
-        'homePage','shopBee','aboutUs','howItWorks','contactUs','ourServicesBee','pricesBee','listingsQueen','reviewsTo' ,'business','bee','password','suggestionsMailBox' ,'myProfile','account','businessDetails','search','authorSingle'
-        , 'productDetails','checkout','cart','checkoutDetails','rewards','activities','productProducts','productFlowers' , 'productFrozen','productFruits','productBox'
-        , 'FAQ','dictionaryType'
-    ]
+        $dataPagesSections=[
+            'homePage','shopBee','aboutUs','howItWorks','contactUs','ourServicesBee','pricesBee','listingsQueen','reviewsTo' ,'business','bee','password','suggestionsMailBox' ,'myProfile','account','businessDetails','search','authorSingle'
+            , 'productDetails','checkout','cart','checkoutDetails','rewards','activities','productProducts','productFlowers' , 'productFrozen','productFruits','productBox'
+            , 'FAQ','dictionaryType'
+        ]
 @endphp
 
 
@@ -206,6 +206,218 @@
             <meta name="twitter:image" content="{{ $dataManagerPage['dictionaryTypeData']['information']['source'] }}">
             <meta name="fb:app_id" content="{{ env('facebook_client_id') }}">
             <meta name="og:type" content="article">
+
+        @elseif($dataManagerPage['currentPage'] == 'shopPage')
+            @php
+
+                $dataBusinessInformation = $dataManagerPage["dataBusinessInformation"]["business"];
+
+                $businessInformation = count($dataBusinessInformation) > 0
+                    ? $dataBusinessInformation[0]
+                    : null;
+
+                $businessTitle = $businessInformation["title"] ?? "MeetClic";
+
+                $businessDescription = $businessInformation["description"] ?? "Menú digital";
+
+
+
+                $businessUrl = url('/es/shop/business/' . $businessInformation["id"]);
+                $urlCurrentRoot = env('APP_IS_SERVER') ? 'public' : '';
+                        $businessImage = asset($urlCurrentRoot . $businessInformation["source"]);
+            @endphp
+
+
+                <!-- ========================================================= -->
+            <!-- BASIC SEO -->
+            <!-- ========================================================= -->
+
+            <title>
+                {{$businessTitle}} | Menú Digital y Delivery
+            </title>
+
+            <meta charset="utf-8">
+
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1"
+            >
+
+            <meta
+                name="description"
+                content="{{$businessDescription}}"
+            >
+
+            <meta
+                name="keywords"
+                content="
+    {{$businessTitle}},
+    MeetClic,
+    menú digital,
+    menú online,
+    delivery,
+    pedidos online,
+    restaurante,
+    ecommerce gastronómico,
+    comida rápida,
+    promociones,
+    Yapitas,
+    gamificación,
+    recompensas,
+    cashback,
+    menú QR,
+    pedidos a domicilio,
+    delivery gamificado
+    "
+            >
+
+            <meta
+                name="robots"
+                content="index, follow"
+            >
+
+            <meta
+                name="author"
+                content="{{$businessTitle}}"
+            >
+
+            <meta
+                name="theme-color"
+                content="#445EF2"
+            >
+
+            <link
+                rel="canonical"
+                href="{{$businessUrl}}"
+            >
+
+
+            <!-- ========================================================= -->
+            <!-- OPEN GRAPH / FACEBOOK / WHATSAPP -->
+            <!-- ========================================================= -->
+
+            <meta
+                property="og:type"
+                content="website"
+            >
+
+            <meta
+                property="og:site_name"
+                content="MeetClic"
+            >
+
+            <meta
+                property="og:title"
+                content="{{$businessTitle}} | Menú Digital"
+            >
+
+            <meta
+                property="og:description"
+                content="{{$businessDescription}}"
+            >
+
+            <meta
+                property="og:url"
+                content="{{$businessUrl}}"
+            >
+
+            <meta
+                property="og:image"
+                content="{{$businessImage}}"
+            >
+
+            <meta
+                property="og:image:width"
+                content="1200"
+            >
+
+            <meta
+                property="og:image:height"
+                content="630"
+            >
+
+            <meta
+                property="og:image:alt"
+                content="{{$businessTitle}} menú digital"
+            >
+
+            <meta
+                property="og:locale"
+                content="es_EC"
+            >
+
+            <meta
+                property="fb:app_id"
+                content="{{ env('facebook_client_id') }}"
+            >
+
+
+            <!-- ========================================================= -->
+            <!-- TWITTER / X -->
+            <!-- ========================================================= -->
+
+            <meta
+                name="twitter:card"
+                content="summary_large_image"
+            >
+
+            <meta
+                name="twitter:title"
+                content="{{$businessTitle}} | Menú Digital"
+            >
+
+            <meta
+                name="twitter:description"
+                content="{{$businessDescription}}"
+            >
+
+            <meta
+                name="twitter:image"
+                content="{{$businessImage}}"
+            >
+
+            <meta
+                name="twitter:url"
+                content="{{$businessUrl}}"
+            >
+
+
+            <!-- ========================================================= -->
+            <!-- MOBILE / PWA -->
+            <!-- ========================================================= -->
+
+            <meta
+                name="apple-mobile-web-app-capable"
+                content="yes"
+            >
+
+            <meta
+                name="apple-mobile-web-app-status-bar-style"
+                content="black-translucent"
+            >
+
+            <meta
+                name="apple-mobile-web-app-title"
+                content="{{$businessTitle}}"
+            >
+
+            <meta
+                name="mobile-web-app-capable"
+                content="yes"
+            >
+
+
+            <!-- ========================================================= -->
+            <!-- ICON -->
+            <!-- ========================================================= -->
+
+            <link
+                rel="icon"
+                type="image/png"
+                href="{{$businessImage}}"
+            >
+
+
         @endif
     @endif
 @endif
