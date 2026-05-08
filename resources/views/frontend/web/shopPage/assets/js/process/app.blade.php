@@ -5,7 +5,7 @@
 
         // ✅ HEADER
         templates.header = `
-<div id="@{{ctx.id}}" class="@{{css.header}} mc-grid">
+<div id="@{{ctx.id}}" class="@{{css.header}} mc-grid--manager">
     <div class="row">
         <div class="col-12 actionBar custom-action-bar mc-grid__header d-flex justify-content-between align-items-center">
 

@@ -83,21 +83,21 @@ $managementNameProcess = "shopPage";
 
         .mc-grid__header {
             padding: 12px 16px;
-            border-bottom: 1px solid var(--mc-border);
+
         }
 
         /* zonas */
         .mc-grid__left,
         .mc-grid__center,
         .mc-grid__right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
 
+        }
+        .mc-center.mc-grid__center{
+            width: 31%;
+        }
         .mc-grid__search-wrapper {
             width: 100%;
-            max-width: 320px;
+
         }
 
         .mc-grid__search-group {
@@ -725,14 +725,22 @@ $managementNameProcess = "shopPage";
             }
 
             .custom-scroll-admin-grid.table-responsive--fixed {
-                margin-top: 18%;
+                margin-top: 5%;
             }
         }
 
         /* =========================================================
            SMALL TABLET
         ========================================================= */
-
+        .mc-right.mc-grid__right {
+            display: none;
+        }
+        .owl-nav {
+            display: none !important;
+        }
+        tbody, td, tfoot, th, thead, tr {
+            display: none !important;
+        }
         @media (max-width: 992px) {
 
             .xywer-tbl-admin tbody {
@@ -746,6 +754,17 @@ $managementNameProcess = "shopPage";
                 height: 220px;
             }
 
+            .content-manager-grid {
+                margin-top: 12%;
+            }
+
+            .bootgrid-footer .search, .bootgrid-header .search {
+                max-width: 100% !important;
+
+            }
+            .mc-center.mc-grid__center{
+                width: 95% !important;
+            }
         }
 
         /* =========================================================
@@ -787,23 +806,10 @@ $managementNameProcess = "shopPage";
                 gap: 10px;
             }
 
-
-            .mc-left > *,
-            .mc-center > *,
-            .mc-right > * {
-                width: 100%;
+            .mc-center.mc-grid__center{
+                width: 95% !important;
             }
 
-            .mc-right .actions {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                gap: 8px;
-            }
-
-            .mc-grid__search-group {
-                width: 100%;
-            }
         }
 
         /* =========================================================
@@ -826,7 +832,9 @@ $managementNameProcess = "shopPage";
 
                 font-size: 13px;
             }
-
+            .mc-center.mc-grid__center{
+                width: 95% !important;
+            }
         }
 
     </style>
