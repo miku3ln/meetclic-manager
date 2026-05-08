@@ -5,6 +5,13 @@ $managementNameProcess = "shopPage";
 ?>
 @extends('layouts.cityBook')
 @section('additional-styles')
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+
     <style id="base-colors">
         /* =========================
  MC GRID - BASE
@@ -262,12 +269,38 @@ $managementNameProcess = "shopPage";
 
         div.bootgrid-header {
             width: 100%;
-            position: fixed;
+        / / position: fixed;
             z-index: 15;
         }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 10px 14px;
+
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .category-item i {
+            font-size: 16px;
+        }
+
+        .category-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
         .custom-scroll-admin-grid.table-responsive--fixed {
             margin-top: 4%;
         }
+
         /* =========================================================
            BOOTGRID GRID
         ========================================================= */
@@ -685,6 +718,7 @@ $managementNameProcess = "shopPage";
                 grid-template-columns:
             repeat(3, minmax(0, 1fr));
             }
+
             .custom-scroll-admin-grid.table-responsive--fixed {
                 margin-top: 18%;
             }
@@ -741,6 +775,30 @@ $managementNameProcess = "shopPage";
                 font-size: 20px;
             }
 
+
+            .custom-action-bar {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px;
+            }
+
+
+            .mc-left > *,
+            .mc-center > *,
+            .mc-right > * {
+                width: 100%;
+            }
+
+            .mc-right .actions {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .mc-grid__search-group {
+                width: 100%;
+            }
         }
 
         /* =========================================================
@@ -767,11 +825,303 @@ $managementNameProcess = "shopPage";
         }
 
     </style>
+
+    <style>
+        /*
+|--------------------------------------------------------------------------
+| WRAPPER
+|--------------------------------------------------------------------------
+*/
+
+        .filters-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CAROUSEL CONTAINERS
+        |--------------------------------------------------------------------------
+        */
+
+        .categories,
+        .sub-categories {
+            width: 100%;
+            position: relative;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | OWL
+        |--------------------------------------------------------------------------
+        */
+
+        .category-carousel,
+        .sub-categories-carousel {
+            width: 100%;
+        }
+
+        .category-carousel .owl-stage,
+        .sub-categories-carousel .owl-stage {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .category-carousel .item,
+        .sub-categories-carousel .item {
+            height: 100%;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORY CARD
+        |--------------------------------------------------------------------------
+        */
+
+        .mc-category-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            min-height: 48px;
+
+            padding: 10px 14px;
+
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            transition: all .2s ease;
+
+            user-select: none;
+
+            white-space: nowrap;
+        }
+
+        .mc-category-card:hover {
+            border-color: #445EF2;
+            background: #f8faff;
+        }
+
+        .mc-category-card--active {
+            background: #445EF2;
+            border-color: #445EF2;
+            color: #ffffff;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORY ICON
+        |--------------------------------------------------------------------------
+        */
+
+        .mc-category-card__icon {
+            /*  display:flex;*/
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 28px;
+            height: 28px;
+
+            font-size: 15px;
+
+            border-radius: 8px;
+
+            background: rgba(68, 94, 242, .08);
+
+            color: #445EF2;
+
+            flex-shrink: 0;
+        }
+
+        .mc-category-card--active .mc-category-card__icon {
+            background: rgba(255, 255, 255, .18);
+            color: #ffffff;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORY CONTENT
+        |--------------------------------------------------------------------------
+        */
+
+        .mc-category-card__content {
+            display: flex;
+            align-items: center;
+        }
+
+        .mc-category-card__title {
+            font-size: 14px;
+            font-weight: 600;
+
+            line-height: 1.2;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUBCATEGORY CARD
+        |--------------------------------------------------------------------------
+        */
+
+        .mc-subcategory-card {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            min-height: 42px;
+
+            padding: 8px 12px;
+
+            background: #f9fafb;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: all .2s ease;
+
+            white-space: nowrap;
+        }
+
+        .mc-subcategory-card:hover {
+            border-color: #445EF2;
+            background: #eef2ff;
+        }
+
+        .mc-subcategory-card--active {
+            background: #111827;
+            border-color: #111827;
+            color: #ffffff;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUBCATEGORY ICON
+        |--------------------------------------------------------------------------
+        */
+
+        .mc-subcategory-card__icon {
+            /*  display:flex;*/
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            width: 24px;
+            height: 24px;
+
+            border-radius: 6px;
+
+            background: rgba(68, 94, 242, .08);
+
+            color: #445EF2;
+
+            font-size: 13px;
+
+            flex-shrink: 0;
+        }
+
+        .mc-subcategory-card--active .mc-subcategory-card__icon {
+            background: rgba(255, 255, 255, .15);
+            color: #ffffff;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUBCATEGORY CONTENT
+        |--------------------------------------------------------------------------
+        */
+
+        .mc-subcategory-card__content {
+            display: flex;
+            align-items: center;
+        }
+
+        .mc-subcategory-card__title {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | OWL NAV
+        |--------------------------------------------------------------------------
+        */
+
+        .owl-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+
+            margin-top: 10px;
+        }
+
+        .owl-nav button {
+            width: 34px;
+            height: 34px;
+
+            border: none !important;
+
+            border-radius: 10px !important;
+
+            background: #ffffff !important;
+
+            border: 1px solid #e5e7eb !important;
+
+            transition: .2s;
+        }
+
+        .owl-nav button:hover {
+            background: #445EF2 !important;
+            color: #ffffff !important;
+            border-color: #445EF2 !important;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOBILE
+        |--------------------------------------------------------------------------
+        */
+
+        @media (max-width: 768px) {
+
+            .mc-category-card {
+                padding: 10px 12px;
+            }
+
+            .mc-category-card__title {
+                font-size: 13px;
+            }
+
+            .mc-subcategory-card {
+                padding: 8px 10px;
+            }
+
+        }
+    </style>
 @endsection
 @section('script')
 
 @endsection
 @section('additional-scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="{{ asset($resourcePathServer.'libs/bootgrid1.3.1/bootgrid1.3.1.min.js')}}"></script>
 
     @include('frontend.web.'.$managementNameProcess.'.assets.js.index')
@@ -814,6 +1164,713 @@ $managementNameProcess = "shopPage";
         })
         var $dataManagerPageView = <?php echo json_encode($dataManagerPage) ?>;
 
+        function generateCategoriesCarousel(params = {}) {
+
+            const categories = params.categories || [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | SELECTORS
+            |--------------------------------------------------------------------------
+            */
+
+            const $categoriesCarousel = $('.category-carousel');
+            const $subCategoriesCarousel = $('.sub-categories-carousel');
+
+            /*
+            |--------------------------------------------------------------------------
+            | RESET
+            |--------------------------------------------------------------------------
+            */
+
+            destroyOwlCarousel($categoriesCarousel);
+            destroyOwlCarousel($subCategoriesCarousel);
+
+            $categoriesCarousel.html('');
+            $subCategoriesCarousel.html('');
+
+            /*
+            |--------------------------------------------------------------------------
+            | GENERATE CATEGORIES
+            |--------------------------------------------------------------------------
+            */
+
+            let categoriesHtml = '';
+
+            categories.forEach(category => {
+
+                categoriesHtml += `
+            <div class="item">
+
+                <div
+                    class="mc-category-card"
+
+                    data-id="${category.id}"
+                    data-title="${category.title}"
+                    data-description="${category.description || ''}"
+                >
+
+                    <div class="mc-category-card__icon">
+                        <i class="fa ${category.icon}"></i>
+                    </div>
+
+                    <div class="mc-category-card__content">
+
+                        <div class="mc-category-card__title">
+                            ${category.title}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+            });
+
+            $categoriesCarousel.html(categoriesHtml);
+
+            /*
+            |--------------------------------------------------------------------------
+            | INIT CATEGORYS
+            |--------------------------------------------------------------------------
+            */
+
+            initOwlCarousel($categoriesCarousel);
+
+            /*
+            |--------------------------------------------------------------------------
+            | INIT SUBCATEGORYS
+            |--------------------------------------------------------------------------
+            */
+
+            initOwlCarousel($subCategoriesCarousel);
+
+            /*
+            |--------------------------------------------------------------------------
+            | CATEGORY CLICK
+            |--------------------------------------------------------------------------
+            */
+
+            $categoriesCarousel.off('click');
+
+            $categoriesCarousel.on('click', '.mc-category-card', function () {
+
+                /*
+                |--------------------------------------------------------------------------
+                | ACTIVE
+                |--------------------------------------------------------------------------
+                */
+
+                $('.mc-category-card')
+                    .removeClass('mc-category-card--active');
+
+                $(this)
+                    .addClass('mc-category-card--active');
+
+                /*
+                |--------------------------------------------------------------------------
+                | DATA
+                |--------------------------------------------------------------------------
+                */
+
+                const categoryId = $(this).data('id');
+
+                const category = categories.find(
+                    item => item.id == categoryId
+                );
+
+                console.log('CATEGORY', category);
+
+                /*
+                |--------------------------------------------------------------------------
+                | RENDER SUBCATEGORYS
+                |--------------------------------------------------------------------------
+                */
+
+                renderSubCategories({
+                    category,
+                    $carousel: $subCategoriesCarousel
+                });
+
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | AUTO SELECT FIRST CATEGORY
+            |--------------------------------------------------------------------------
+            */
+
+            if (categories.length > 0) {
+
+                setTimeout(() => {
+
+                    $categoriesCarousel
+                        .find('.mc-category-card')
+                        .first()
+                        .trigger('click');
+
+                }, 100);
+
+            }
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUBCATEGORYS
+        |--------------------------------------------------------------------------
+        */
+
+        function renderSubCategories(params = {}) {
+
+            const category = params.category || {};
+            const $carousel = params.$carousel;
+
+            const subcategories = category.subcategories || [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | RESET
+            |--------------------------------------------------------------------------
+            */
+
+            destroyOwlCarousel($carousel);
+
+            $carousel.html('');
+
+            /*
+            |--------------------------------------------------------------------------
+            | HTML
+            |--------------------------------------------------------------------------
+            */
+
+            let html = '';
+
+            subcategories.forEach(subcategory => {
+
+                html += `
+            <div class="item">
+
+                <div
+                    class="mc-subcategory-card"
+
+                    data-id="${subcategory.id}"
+                    data-category-id="${category.id}"
+                    data-title="${subcategory.title}"
+                    data-description="${subcategory.description || ''}"
+                >
+
+                    <div class="mc-subcategory-card__icon">
+                        <i class="fa ${subcategory.icon}"></i>
+                    </div>
+
+                    <div class="mc-subcategory-card__content">
+
+                        <div class="mc-subcategory-card__title">
+                            ${subcategory.title}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+            });
+
+            $carousel.html(html);
+
+            /*
+            |--------------------------------------------------------------------------
+            | INIT
+            |--------------------------------------------------------------------------
+            */
+
+            initOwlCarousel($carousel);
+
+            /*
+            |--------------------------------------------------------------------------
+            | CLICK
+            |--------------------------------------------------------------------------
+            */
+
+            $carousel.off('click');
+
+            $carousel.on('click', '.mc-subcategory-card', function () {
+
+                $('.mc-subcategory-card')
+                    .removeClass('mc-subcategory-card--active');
+
+                $(this)
+                    .addClass('mc-subcategory-card--active');
+
+                console.log('SUBCATEGORY', {
+                    id: $(this).data('id'),
+                    categoryId: $(this).data('category-id'),
+                    title: $(this).data('title')
+                });
+
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | AUTO SELECT FIRST SUBCATEGORY
+            |--------------------------------------------------------------------------
+            */
+
+            if (subcategories.length > 0) {
+
+                setTimeout(() => {
+
+                    $carousel
+                        .find('.mc-subcategory-card')
+                        .first()
+                        .trigger('click');
+
+                }, 100);
+
+            }
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | OWL INIT
+        |--------------------------------------------------------------------------
+        */
+
+        function initOwlCarousel($carousel, options = {}) {
+
+            const config = {
+
+                loop: false,
+                nav: true,
+                dots: false,
+                margin: 10,
+                autoWidth: true,
+
+                responsive: {
+                    0: {
+                        items: 2
+                    },
+                    600: {
+                        items: 4
+                    },
+                    960: {
+                        items: 6
+                    }
+                },
+
+                ...options
+            };
+
+            $carousel.owlCarousel(config);
+
+            /*
+            |--------------------------------------------------------------------------
+            | MOUSE WHEEL
+            |--------------------------------------------------------------------------
+            */
+
+            $carousel.off('mousewheel');
+
+            $carousel.on('mousewheel', '.owl-stage', function (e) {
+
+                if (e.originalEvent.deltaY > 0) {
+                    $carousel.trigger('next.owl');
+                } else {
+                    $carousel.trigger('prev.owl');
+                }
+
+                e.preventDefault();
+            });
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DESTROY OWL
+        |--------------------------------------------------------------------------
+        */
+
+        function destroyOwlCarousel($carousel) {
+
+            if ($carousel.hasClass('owl-loaded')) {
+                $carousel.trigger('destroy.owl.carousel');
+            }
+
+        }
+    </script>
+    <script>
+        $(function () {
+            var categories = [
+
+                /*
+                |--------------------------------------------------------------------------
+                | HAMBURGUESAS
+                |--------------------------------------------------------------------------
+                */
+                {
+                    id: -1,
+                    title: 'TODOS',
+                    description: 'Burgers artesanales',
+                    icon: 'fa-burger',
+
+                    subcategories: []
+                },
+                {
+                    id: 1,
+                    title: 'Hamburguesas',
+                    description: 'Burgers artesanales',
+                    icon: 'fa-burger',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 101,
+                            title: 'Clásicas',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+
+                        {
+                            id: 102,
+                            title: 'Dobles',
+                            description: 'Doble carne',
+                            icon: 'fa-layer-group'
+                        },
+
+                        {
+                            id: 103,
+                            title: 'Premium',
+                            description: 'Especiales gourmet',
+                            icon: 'fa-crown'
+                        },
+
+                        {
+                            id: 104,
+                            title: 'Picantes',
+                            description: 'Con extra ají',
+                            icon: 'fa-pepper-hot'
+                        }
+
+                    ]
+                },
+
+                /*
+                |--------------------------------------------------------------------------
+                | PIZZAS
+                |--------------------------------------------------------------------------
+                */
+
+                {
+                    id: 2,
+                    title: 'Pizzas',
+                    description: 'Pizzas calientes',
+                    icon: 'fa-pizza-slice',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 201,
+                            title: 'Personales',
+                            description: 'Pizza individual',
+                            icon: 'fa-user'
+                        },
+
+                        {
+                            id: 202,
+                            title: 'Familiares',
+                            description: 'Pizza grande',
+                            icon: 'fa-users'
+                        },
+
+                        {
+                            id: 203,
+                            title: 'Especiales',
+                            description: 'Recetas premium',
+                            icon: 'fa-fire'
+                        },
+
+                        {
+                            id: 204,
+                            title: 'Extra queso',
+                            description: 'Mucho queso',
+                            icon: 'fa-cheese'
+                        }
+
+                    ]
+                },
+
+                /*
+                |--------------------------------------------------------------------------
+                | POLLO
+                |--------------------------------------------------------------------------
+                */
+
+                {
+                    id: 3,
+                    title: 'Pollo',
+                    description: 'Pollo frito y broaster',
+                    icon: 'fa-drumstick-bite',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 301,
+                            title: 'Broaster',
+                            description: 'Pollo crocante',
+                            icon: 'fa-fire-flame-curved'
+                        },
+
+                        {
+                            id: 302,
+                            title: 'Alitas',
+                            description: 'Wings BBQ',
+                            icon: 'fa-wing'
+                        },
+
+                        {
+                            id: 303,
+                            title: 'Combos',
+                            description: 'Pollo + papas + bebida',
+                            icon: 'fa-box-open'
+                        },
+
+                        {
+                            id: 304,
+                            title: 'Picantes',
+                            description: 'Hot chicken',
+                            icon: 'fa-pepper-hot'
+                        }
+
+                    ]
+                },
+
+                /*
+                |--------------------------------------------------------------------------
+                | HOT DOGS
+                |--------------------------------------------------------------------------
+                */
+
+                {
+                    id: 4,
+                    title: 'Hot Dogs',
+                    description: 'Perros calientes',
+                    icon: 'fa-hotdog',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 401,
+                            title: 'Clásicos',
+                            description: 'Hot dog tradicional',
+                            icon: 'fa-star'
+                        },
+
+                        {
+                            id: 402,
+                            title: 'Gigantes',
+                            description: 'Extra grandes',
+                            icon: 'fa-maximize'
+                        },
+
+                        {
+                            id: 403,
+                            title: 'Con tocino',
+                            description: 'Bacon lovers',
+                            icon: 'fa-bacon'
+                        },
+
+                        {
+                            id: 404,
+                            title: 'Especiales',
+                            description: 'Recetas premium',
+                            icon: 'fa-crown'
+                        }
+
+                    ]
+                },
+
+                /*
+                |--------------------------------------------------------------------------
+                | PAPAS FRITAS
+                |--------------------------------------------------------------------------
+                */
+
+                {
+                    id: 5,
+                    title: 'Papas',
+                    description: 'French fries',
+                    icon: 'fa-bowl-food',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 501,
+                            title: 'Clásicas',
+                            description: 'Papas normales',
+                            icon: 'fa-potato'
+                        },
+
+                        {
+                            id: 502,
+                            title: 'Supremas',
+                            description: 'Con queso y carne',
+                            icon: 'fa-cheese'
+                        },
+
+                        {
+                            id: 503,
+                            title: 'Bacon Fries',
+                            description: 'Con tocino',
+                            icon: 'fa-bacon'
+                        },
+
+                        {
+                            id: 504,
+                            title: 'Familiares',
+                            description: 'Porción grande',
+                            icon: 'fa-users'
+                        }
+
+                    ]
+                },
+
+                /*
+                |--------------------------------------------------------------------------
+                | BEBIDAS
+                |--------------------------------------------------------------------------
+                */
+
+                {
+                    id: 6,
+                    title: 'Bebidas',
+                    description: 'Drinks y sodas',
+                    icon: 'fa-glass-water',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 601,
+                            title: 'Gaseosas',
+                            description: 'Bebidas frías',
+                            icon: 'fa-bottle-water'
+                        },
+
+                        {
+                            id: 602,
+                            title: 'Milkshakes',
+                            description: 'Batidos',
+                            icon: 'fa-blender'
+                        },
+
+                        {
+                            id: 603,
+                            title: 'Jugos',
+                            description: 'Naturales',
+                            icon: 'fa-lemon'
+                        },
+
+                        {
+                            id: 604,
+                            title: 'Energéticas',
+                            description: 'Energy drinks',
+                            icon: 'fa-bolt'
+                        }
+
+                    ]
+                },
+
+                /*
+                |--------------------------------------------------------------------------
+                | POSTRES
+                |--------------------------------------------------------------------------
+                */
+
+                {
+                    id: 7,
+                    title: 'Postres',
+                    description: 'Sweet desserts',
+                    icon: 'fa-ice-cream',
+
+                    subcategories: [
+                        {
+                            id: -1,
+                            title: 'TODOS',
+                            description: 'Hamburguesas tradicionales',
+                            icon: 'fa-star'
+                        },
+                        {
+                            id: 701,
+                            title: 'Helados',
+                            description: 'Ice cream',
+                            icon: 'fa-ice-cream'
+                        },
+
+                        {
+                            id: 702,
+                            title: 'Brownies',
+                            description: 'Chocolate lovers',
+                            icon: 'fa-cookie'
+                        },
+
+                        {
+                            id: 703,
+                            title: 'Cheesecake',
+                            description: 'Postres premium',
+                            icon: 'fa-cake-candles'
+                        },
+
+                        {
+                            id: 704,
+                            title: 'Combos dulces',
+                            description: 'Postre + bebida',
+                            icon: 'fa-gift'
+                        }
+
+                    ]
+                }
+
+            ];
+
+
+            generateCategoriesCarousel({categories: categories});
+        })
     </script>
 @endsection
 
@@ -874,7 +1931,24 @@ $managementNameProcess = "shopPage";
             <div class="content-manager-grid">
                 <div class="row">
                     <div class="col-md-12">
+
                         <div class="custom-scroll-admin-grid table-responsive table-responsive--fixed">
+                            <div class="filters-sections">
+                                <div class="categories">
+                                    <div class="owl-carousel category-carousel">
+
+
+                                    </div>
+
+                                </div>
+                                <div class="sub-categories">
+                                    <div class="owl-carousel sub-categories-carousel">
+
+
+                                    </div>
+
+                                </div>
+                            </div>
 
                             <table id="grid-registers-grid"
                                    class="dictionary-data"
