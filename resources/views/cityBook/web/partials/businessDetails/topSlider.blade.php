@@ -82,7 +82,14 @@ if (isset($dataManagerPage["dataConfigGamificationBusiness"])&&$dataManagerPage[
 
 <section class="parallax-section single-par list-single-section" data-scrollax-parent="true" id="slider">
     <div class="bg par-elem " data-bg="{{ $dataManagerPage['business']['information']->srcMain}}"
-         data-scrollax="properties: { translateY: '30%' }"></div>
+
+         data-scrollax="properties: { translateY: '30%' }"
+         style="
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+     "
+    ></div>
     <div class="overlay"></div>
     <div class="bubble-bg"></div>
     <div class="list-single-header absolute-header fl-wrap">
