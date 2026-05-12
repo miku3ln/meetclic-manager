@@ -408,12 +408,12 @@ class Util
         $isGod = !empty(array_intersect([$roleGod], $roles));
 
         $routeRoot = rtrim(route('urlBase'), '/') . "/es/";
-
+        $language="es";
         $slugBusiness = '{slug_business}';
         $slugProductService = '{slug_product_service}';
         $slugForm = '{slug_form}';
         $slugChaqui = '{slug_chaqui}';
-
+     $shopUrl=   route('shop-business','es') . "/" . $slugBusiness;
         // ✅ IDs de secciones (deben coincidir con getGamificationSectionsData)
         $SECTIONS = [
             'BUSINESS_PUBLIC' => 0,
@@ -450,7 +450,7 @@ class Util
             // TIENDA
             // -------------------------
             [
-                'id' =>  route('shop-business') ."/".$slugBusiness,
+                'id' =>  $shopUrl,
                 'text' => 'Tienda del negocio(Katuna)',
                 'type' => 'shop-business',
                 'section_id' => $SECTIONS['SHOP_PUBLIC'],

@@ -961,6 +961,8 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
             $VIEW_PROFILE_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_PROFILE_WEB_MC");
             $paramsProcess = array_merge($VIEW_PROFILE_WEB_MC, $currentInformation);
             $VIEW_PROFILE_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
+            $shopUrl=   route('shop-business','es') . "/" . $business;
+
             return [
                 "SHARE_PROFILE_WHATSAPP_MC" => [
                     "success" => $SHARE_PROFILE_WHATSAPP_MC !== null,
@@ -976,7 +978,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
                 "AYNI_YACHAY_SHOP_WEB_MC" => [
                     "success" => $AYNI_YACHAY_SHOP_WEB_MC_DATA !== null,
                     "data" => $AYNI_YACHAY_SHOP_WEB_MC_DATA,
-                    "urlDefault" => route("shop-business", $business)
+                    "urlDefault" => $shopUrl
 
                 ],
                 "VIEW_TASK_WEB_MC" => [
@@ -1046,7 +1048,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
                 "AYNI_YACHAY_SHOP_WEB_MC" => [
                     "success" => false,
                     "data" => null,
-                    "urlDefault" => route("shop-business", $business)
+                    "urlDefault" =>$shopUrl
 
                 ],
                 "VIEW_TASK_WEB_MC" => [
