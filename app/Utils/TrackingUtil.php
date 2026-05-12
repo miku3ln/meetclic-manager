@@ -174,11 +174,37 @@ class TrackingUtil
         $campaign_code = $request->query('campaign_code', '');   // 'fb_234', 'campaign-00-web-tracking'
         $codeProcess = $request->query('code-process', '');   // 'fb_234', 'campaign-00-web-tracking'
 
-        if ($typeProcess == "" && $sourceProcess == "" && $campaign_code == "" && $codeProcess == "") {
-            $result["success"] = false;
-            $result["type"] = -420;
+        if ($typeProcess == "" || $sourceProcess == "" || $campaign_code == "" || $codeProcess == "") {
 
-            $result["message"] = "No existe datos que procesar de tracking.!";
+            $errors = [];
+            if ($typeProcess == "") {
+                $errors[] = "Tipo de Proceso";
+            }
+
+            if ($codeProcess == "") {
+                $errors[] = "Código de Proceso";
+            }
+
+            if ($campaign_code == "") {
+                $errors[] = "Código de Campaña";
+            }
+
+            if ($sourceProcess == "") {
+                $errors[] = "Source Proceso";
+            }
+
+            if (!empty($errors)) {
+                $message=
+                    "No existen datos de tracking: " .
+                    implode(", ", $errors);
+                $result["success"] = false;
+                $result["type"] = -420;
+                $result["message"] = $message;
+            }else{
+                $result["success"] = true;
+                $result["type"] = 420;
+            }
+
         } else if ($typeProcess !== "" && $sourceProcess !== "" && $campaign_code !== "" && $codeProcess !== "") {
             $result["success"] = true;
             $result["message"] = "Datos Obtenidos desde tracking!";

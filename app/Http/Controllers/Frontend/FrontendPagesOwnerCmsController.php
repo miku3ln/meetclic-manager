@@ -179,6 +179,7 @@ class FrontendPagesOwnerCmsController extends Controller
         } else {
 
         }
+
         return $gamificationDataTask;
     }
 
