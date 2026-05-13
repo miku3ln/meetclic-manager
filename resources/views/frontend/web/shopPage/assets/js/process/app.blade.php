@@ -994,7 +994,7 @@
                     let gridInit = $(gridName);
                     gridInit.bootgrid("reload");
                 },
-                getFiltersGrid: function () {
+                getFiltersGrid: function (request) {
                     var gridName = this.gridConfig.selectorCurrent;
                     var business_id = -1;
                     var dataBusinessInformation = $dataManagerPage.dataBusinessInformation;
@@ -1009,6 +1009,7 @@
 
                     };
                     var result = {
+                        ...request,
                         grid_id: gridName,
                         filters: paramsFilters,
 
@@ -1034,18 +1035,21 @@
                     };
                     $this = this;
                     let gridInit = $(gridName);
+                    var labelsConfig=$labelsGridConfigDefault;
+
+
                     gridInit.bootgrid({
                         ajaxSettings: {
                             method: "POST"
                         },
                         ajax: true,
                         requestHandler: function (request) {
-                            request = $this.getFiltersGrid();
+                            request = $this.getFiltersGrid(request);
                             return request;
                         },
 
                         url: urlCurrent,
-                        labels: $labelsGridConfigDefault,
+                        labels: labelsConfig,
                         css: cssConfig,
                         templates: getCustomTemplatesBS5(), // 👈 AQUI ESTÁ LA CLAVE
                         formatters: {

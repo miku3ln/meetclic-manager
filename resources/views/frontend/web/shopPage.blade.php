@@ -471,6 +471,7 @@ $managementNameProcess = "shopPage";
             cursor: pointer;
 
             transition: var(--pc-transition);
+            display: none;
         }
 
         .product-card__favorite i {
@@ -643,28 +644,29 @@ $managementNameProcess = "shopPage";
 
         .product-card__points {
 
-            display: inline-flex;
+        /* display: inline-flex;*/
 
-            align-items: center;
+       align-items: center;
 
-            width: fit-content;
+       width: fit-content;
 
-            padding: 8px 14px;
+       padding: 8px 14px;
 
-            border-radius: 999px;
+       border-radius: 999px;
 
-            background: #eff6ff;
+       background: #eff6ff;
 
-            color: var(--mc-azulClic);
+       color: var(--mc-azulClic);
 
-            font-size: 13px;
+       font-size: 13px;
 
-            font-weight: 800;
-        }
+       font-weight: 800;
+       display: none !important;
+   }
 
-        /* =========================================================
-           ACTIONS
-        ========================================================= */
+   /* =========================================================
+      ACTIONS
+   ========================================================= */
 
         .product-card__actions {
 
@@ -700,6 +702,7 @@ $managementNameProcess = "shopPage";
             font-weight: 800;
 
             transition: var(--pc-transition);
+            display:none;
         }
 
         .product-card__add i {
