@@ -238,8 +238,9 @@ class FrontendCityBookManager extends ModelManager
 
         } else if ($page == 'shopPage') {
             $modelProduct = new Product();
+           $businessCurrentId= $paramsRequest["dataBusinessInformation"]["business_id"];
            $categoriesShop= $modelProduct->getProductsShopPage(["filters" => [
-                "business_id" => $business_id
+                "business_id" => $businessCurrentId
             ]]);
             $modelProcess = new GamificationByProcess();
             $categoriesData = $modelProcess->getSubcategoriesDataByProcess();

@@ -2990,8 +2990,8 @@ product_measure_type.id as product_measure_type_id,product_inventory.id product_
         $query = DB::table('product_stock as ps')
             ->join('product as p', 'p.id', '=', 'ps.product_id')
             ->join('business_by_products as bp', 'p.id', '=', 'bp.products_id')
-            ->leftJoin('product_category as pc', 'pc.id', '=', 'p.product_category_id')
-            ->leftJoin('product_subcategory as psc', 'psc.id', '=', 'p.product_subcategory_id')
+            ->join('product_category as pc', 'pc.id', '=', 'p.product_category_id')
+            ->join('product_subcategory as psc', 'psc.id', '=', 'p.product_subcategory_id')
             ->where('bp.business_id', $business_id)
             ->where('p.state', 'ACTIVE')
             ->select([

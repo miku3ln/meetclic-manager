@@ -86,6 +86,8 @@ class FrontendController extends FrontendBaseController
             $paramsRequest['language'] = $language;
             $paramsRequest['type'] = $type;
             $paramsRequest['dataBusinessInformation'] = $dataBusiness;
+            $paramsRequest['dataBusinessInformation']["business_id"] = $business_id;
+
             $modelPage = new \App\Models\FrontendCityBookManager();
             $renderView = self::LAYOUT_MAIN . '.web.' . '.'.$processPage;
             $paramsSend = $modelPage->getParamsPage([

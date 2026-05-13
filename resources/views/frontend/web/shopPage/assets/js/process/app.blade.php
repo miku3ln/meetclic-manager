@@ -955,9 +955,9 @@
                     menuCurrent: [],
                     rowId: null
                 },
-                filters:{
-                    categoryId:-1,
-                    subcategoryId:-1,
+                filters: {
+                    categoryId: -1,
+                    subcategoryId: -1,
 
                 }
             },
@@ -968,17 +968,20 @@
                 _gridManager: _gridManager,
                 onSubCategorySelect: function (params) {
 
-                   var subCategory= params.subCategory;
-                    this.filters.subcategoryId=subCategory.id;
-                    this.filters.categoryId=subCategory.categoryId;
+                    var subCategory = params.subCategory;
+                    this.filters.subcategoryId = subCategory.id;
+                    this.filters.categoryId = subCategory.categoryId;
 
                     this.setFiltersGrid();
                 },
                 onCategorySelect: function (params) {
 
-                    var category= params;
-                    this.filters.categoryId=category.id;
+                    var category = params;
+                    this.filters.categoryId = category.id;
+                    if (category.subcategories.length == 0) {
+                        this.setFiltersGrid();
 
+                    }
 
                 },
                 initFiltersGrid: function () {
@@ -986,7 +989,7 @@
                     generateCategoriesCarousel({categories: categories, $scope: this});
 
                 },
-                setFiltersGrid:function(){
+                setFiltersGrid: function () {
                     var gridName = this.gridConfig.selectorCurrent;
                     let gridInit = $(gridName);
                     gridInit.bootgrid("reload");
@@ -1001,16 +1004,16 @@
 
                     var paramsFilters = {
                         business_id: business_id,
-                        subcategoryId:  this.filters.subcategoryId,
-                        categoryId:  this.filters.categoryId,
+                        subcategoryId: this.filters.subcategoryId,
+                        categoryId: this.filters.categoryId,
 
                     };
-                    var result={
+                    var result = {
                         grid_id: gridName,
                         filters: paramsFilters,
 
                     };
-                    return result ;
+                    return result;
 
                 },
                 initGridManager: function (vmCurrent) {
@@ -1029,7 +1032,7 @@
                         dropDownItemButton: "dropdown-item",
 
                     };
-                    $this=this;
+                    $this = this;
                     let gridInit = $(gridName);
                     gridInit.bootgrid({
                         ajaxSettings: {
