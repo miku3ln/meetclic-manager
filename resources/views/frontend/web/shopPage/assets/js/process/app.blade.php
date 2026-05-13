@@ -1,3 +1,351 @@
+<script id="owl-manager">
+
+    function generateCategoriesCarousel(params = {}) {
+
+        const categories = params.categories || [];
+        var $scope = params.$scope;
+
+        /*
+        |--------------------------------------------------------------------------
+        | SELECTORS
+        |--------------------------------------------------------------------------
+        */
+
+        const $categoriesCarousel = $('.category-carousel');
+        const $subCategoriesCarousel = $('.sub-categories-carousel');
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESET
+        |--------------------------------------------------------------------------
+        */
+
+        destroyOwlCarousel($categoriesCarousel);
+        destroyOwlCarousel($subCategoriesCarousel);
+
+        $categoriesCarousel.html('');
+        $subCategoriesCarousel.html('');
+
+        /*
+        |--------------------------------------------------------------------------
+        | GENERATE CATEGORIES
+        |--------------------------------------------------------------------------
+        */
+
+        let categoriesHtml = '';
+
+        categories.forEach(category => {
+
+            categoriesHtml += `
+            <div class="item">
+
+                <div
+                    class="mc-category-card"
+
+                    data-id="${category.id}"
+                    data-title="${category.title}"
+                    data-description="${category.description || ''}"
+                >
+
+                    <div class="mc-category-card__icon">
+                        <i class="fa ${category.icon}"></i>
+                    </div>
+
+                    <div class="mc-category-card__content">
+
+                        <div class="mc-category-card__title">
+                            ${category.title}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+        });
+
+        $categoriesCarousel.html(categoriesHtml);
+
+        /*
+        |--------------------------------------------------------------------------
+        | INIT CATEGORYS
+        |--------------------------------------------------------------------------
+        */
+
+        initOwlCarousel($categoriesCarousel);
+
+        /*
+        |--------------------------------------------------------------------------
+        | INIT SUBCATEGORYS
+        |--------------------------------------------------------------------------
+        */
+
+        initOwlCarousel($subCategoriesCarousel);
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORY CLICK
+        |--------------------------------------------------------------------------
+        */
+
+        $categoriesCarousel.off('click');
+
+        $categoriesCarousel.on('click', '.mc-category-card', function () {
+
+            /*
+            |--------------------------------------------------------------------------
+            | ACTIVE
+            |--------------------------------------------------------------------------
+            */
+
+            $('.mc-category-card')
+                .removeClass('mc-category-card--active');
+
+            $(this)
+                .addClass('mc-category-card--active');
+
+            /*
+            |--------------------------------------------------------------------------
+            | DATA
+            |--------------------------------------------------------------------------
+            */
+
+            const categoryId = $(this).data('id');
+
+            const category = categories.find(
+                item => item.id == categoryId
+            );
+
+            console.log('CATEGORY', category);
+            $scope.onCategorySelect(category);
+            /*
+            |--------------------------------------------------------------------------
+            | RENDER SUBCATEGORYS
+            |--------------------------------------------------------------------------
+            */
+
+            renderSubCategories({
+                category,
+                $carousel: $subCategoriesCarousel,
+                $scope: $scope
+            });
+
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | AUTO SELECT FIRST CATEGORY
+        |--------------------------------------------------------------------------
+        */
+
+        if (categories.length > 0) {
+
+            setTimeout(() => {
+
+                $categoriesCarousel
+                    .find('.mc-category-card')
+                    .first()
+                    .trigger('click');
+
+            }, 100);
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUBCATEGORYS
+    |--------------------------------------------------------------------------
+    */
+
+    function renderSubCategories(params = {}) {
+
+        const category = params.category || {};
+        const $carousel = params.$carousel;
+
+        const subcategories = category.subcategories || [];
+        var $scope = params.$scope;
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESET
+        |--------------------------------------------------------------------------
+        */
+
+        destroyOwlCarousel($carousel);
+
+        $carousel.html('');
+
+        /*
+        |--------------------------------------------------------------------------
+        | HTML
+        |--------------------------------------------------------------------------
+        */
+
+        let html = '';
+
+        subcategories.forEach(subcategory => {
+
+            html += `
+            <div class="item">
+
+                <div
+                    class="mc-subcategory-card"
+
+                    data-id="${subcategory.id}"
+                    data-category-id="${category.id}"
+                    data-title="${subcategory.title}"
+                    data-description="${subcategory.description || ''}"
+                >
+
+                    <div class="mc-subcategory-card__icon">
+                        <i class="fa ${subcategory.icon}"></i>
+                    </div>
+
+                    <div class="mc-subcategory-card__content">
+
+                        <div class="mc-subcategory-card__title">
+                            ${subcategory.title}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+        });
+
+        $carousel.html(html);
+
+        /*
+        |--------------------------------------------------------------------------
+        | INIT
+        |--------------------------------------------------------------------------
+        */
+
+        initOwlCarousel($carousel);
+
+        /*
+        |--------------------------------------------------------------------------
+        | CLICK
+        |--------------------------------------------------------------------------
+        */
+
+        $carousel.off('click');
+
+        $carousel.on('click', '.mc-subcategory-card', function () {
+
+            $('.mc-subcategory-card')
+                .removeClass('mc-subcategory-card--active');
+
+            $(this)
+                .addClass('mc-subcategory-card--active');
+            var subCategoryData = {
+                id: $(this).data('id'),
+                categoryId: $(this).data('category-id'),
+                title: $(this).data('title')
+            };
+            console.log('SUBCATEGORY', subCategoryData);
+            $scope.onSubCategorySelect({category: category, subCategory: subCategoryData});
+
+
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | AUTO SELECT FIRST SUBCATEGORY
+        |--------------------------------------------------------------------------
+        */
+
+        if (subcategories.length > 0) {
+
+            setTimeout(() => {
+
+                $carousel
+                    .find('.mc-subcategory-card')
+                    .first()
+                    .trigger('click');
+
+            }, 100);
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | OWL INIT
+    |--------------------------------------------------------------------------
+    */
+
+    function initOwlCarousel($carousel, options = {}) {
+
+        const config = {
+
+            loop: false,
+            nav: true,
+            dots: false,
+            margin: 10,
+            autoWidth: true,
+
+            responsive: {
+                0: {
+                    items: 2
+                },
+                600: {
+                    items: 4
+                },
+                960: {
+                    items: 6
+                }
+            },
+
+            ...options
+        };
+
+        $carousel.owlCarousel(config);
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOUSE WHEEL
+        |--------------------------------------------------------------------------
+        */
+
+        $carousel.off('mousewheel');
+
+        $carousel.on('mousewheel', '.owl-stage', function (e) {
+
+            if (e.originalEvent.deltaY > 0) {
+                $carousel.trigger('next.owl');
+            } else {
+                $carousel.trigger('prev.owl');
+            }
+
+            e.preventDefault();
+        });
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DESTROY OWL
+    |--------------------------------------------------------------------------
+    */
+
+    function destroyOwlCarousel($carousel) {
+
+        if ($carousel.hasClass('owl-loaded')) {
+            $carousel.trigger('destroy.owl.carousel');
+        }
+
+    }
+</script>
 <script id="management-tasks">
     function getCustomTemplatesBS5() {
 
@@ -34,7 +382,7 @@
 `;
 
         // ✅ DROPDOWN (BS5)
-        templates.actionDropDown =  `
+        templates.actionDropDown = `
 <div class="@{{css.dropDownMenu}} mc-grid__dropdown">
     <button class="btn btn-sm btn-light dropdown-toggle mc-grid__dropdown-toggle"
             type="button"
@@ -75,7 +423,7 @@
 `;
 
         // ✅ SEARCH (más moderno)
-        templates.search =  `
+        templates.search = `
 <div class="@{{css.search}} mc-search mc-grid__search-wrapper">
     <div class="input-group input-group-sm mc-grid__search-group">
         <span class="input-group-text mc-grid__search-icon">
@@ -125,6 +473,7 @@
             new bootstrap.Dropdown(this);
         });
     }
+
     function pushIf(arr, cond, html) {
         if (cond) arr.push(html);
     }
@@ -567,19 +916,6 @@
                         empty: '<h1>No existe Datos</h1>',
                     }
                 },
-                configPagination: {
-                    items: [],
-                    itemActive: 0,
-                    totalData: 0,
-                    rowCountPerPage: 0,
-                    currentPage: 0,
-                    html: '',
-                    view: {
-                        init: 0,
-                        to: 0,
-
-                    }
-                },
                 model: {
                     attributes: {
                         'keywords': null,
@@ -608,21 +944,7 @@
                         categories: $dataManagerPage.categoriesData
                     }
                 },
-                paginationState: {
-                    // estado del api
-                    total: 0,          // response.total
-                    rowCount: 10,      // response.rowCount
-                    current: 0,        // response.current (página actual que ya cargaste)
 
-                    // control de infinito
-                    loading: false,    // lock anti-paralelo
-                    hasMore: true,     // cortar cuando ya no hay más
-                    throttleMs: 300,   // anti overload
-                    lastFireAt: 0,     // throttle timestamp
-
-                    // control: cuántos items ya tengo en UI
-                    loadedCount: 0     // this.configGridAdmin.data.length
-                },
                 isFiltersOpen: false,
                 gridConfig: {
                     selectorCurrent: "#grid-registers-grid",
@@ -633,26 +955,69 @@
                     menuCurrent: [],
                     rowId: null
                 },
+                filters:{
+                    categoryId:-1,
+                    subcategoryId:-1,
+
+                }
             },
             methods: {
                 _destroyTooltip: _destroyTooltip,
                 _resetManagerGrid: _resetManagerGrid,
                 _managerMenuGrid: _managerMenuGrid,
                 _gridManager: _gridManager,
-                initGridManager: function (vmCurrent) {
+                onSubCategorySelect: function (params) {
+
+                   var subCategory= params.subCategory;
+                    this.filters.subcategoryId=subCategory.id;
+                    this.filters.categoryId=subCategory.categoryId;
+
+                    this.setFiltersGrid();
+                },
+                onCategorySelect: function (params) {
+
+                    var category= params;
+                    this.filters.categoryId=category.id;
+
+
+                },
+                initFiltersGrid: function () {
+                    var categories = $dataManagerPage.categoriesShop.categories;
+                    generateCategoriesCarousel({categories: categories, $scope: this});
+
+                },
+                setFiltersGrid:function(){
                     var gridName = this.gridConfig.selectorCurrent;
-                    var urlCurrent = this.gridConfig.url;
+                    let gridInit = $(gridName);
+                    gridInit.bootgrid("reload");
+                },
+                getFiltersGrid: function () {
+                    var gridName = this.gridConfig.selectorCurrent;
                     var business_id = -1;
-                    var dataBusinessInformation=$dataManagerPage.dataBusinessInformation;
-                    var business=dataBusinessInformation.business[0];
+                    var dataBusinessInformation = $dataManagerPage.dataBusinessInformation;
+                    var business = dataBusinessInformation.business[0];
 
                     var business_id = business.id;
 
                     var paramsFilters = {
-                         business_id:business_id
+                        business_id: business_id,
+                        subcategoryId:  this.filters.subcategoryId,
+                        categoryId:  this.filters.categoryId,
 
                     };
-                    var cssConfig={
+                    var result={
+                        grid_id: gridName,
+                        filters: paramsFilters,
+
+                    };
+                    return result ;
+
+                },
+                initGridManager: function (vmCurrent) {
+                    var gridName = this.gridConfig.selectorCurrent;
+                    var urlCurrent = this.gridConfig.url;
+
+                    var cssConfig = {
                         header: "bootgrid-header",
                         table: "xywer-tbl-admin",
                         iconRefresh: "fa fa-refresh",
@@ -664,21 +1029,21 @@
                         dropDownItemButton: "dropdown-item",
 
                     };
+                    $this=this;
                     let gridInit = $(gridName);
                     gridInit.bootgrid({
                         ajaxSettings: {
                             method: "POST"
                         },
                         ajax: true,
-                        post: function () {
-                            return {
-                                grid_id: gridName,
-                                filters: paramsFilters
-                            };
+                        requestHandler: function (request) {
+                            request = $this.getFiltersGrid();
+                            return request;
                         },
+
                         url: urlCurrent,
                         labels: $labelsGridConfigDefault,
-                        css:cssConfig,
+                        css: cssConfig,
                         templates: getCustomTemplatesBS5(), // 👈 AQUI ESTÁ LA CLAVE
                         formatters: {
 
@@ -887,6 +1252,8 @@
                         vmCurrent._gridManager(gridInit);
                         customActionBar(gridInit);
                     });
+
+                    this.initFiltersGrid();
                 },
                 onEscClose(e) {
                     if (e.key === 'Escape') this.isFiltersOpen = false;
@@ -1021,11 +1388,6 @@
                 _resetManagerMaps: function (items) {
 
                 },
-
-
-
-
-
 
 
             }

@@ -2954,6 +2954,7 @@ product_measure_type.id as product_measure_type_id,product_inventory.id product_
         return $result;
 
     }
+
     public function getProductShopAdmin($params)
     {
         $result = $this->getAdminData($params);
@@ -2981,4 +2982,108 @@ product_measure_type.id as product_measure_type_id,product_inventory.id product_
         return $result;
 
     }
+
+    public function getProductsShopPage($params)
+    {
+        $business_id = $params["filters"]["business_id"];
+
+        $query = DB::table('product_stock as ps')
+            ->join('product as p', 'p.id', '=', 'ps.product_id')
+            ->join('business_by_products as bp', 'p.id', '=', 'bp.products_id')
+            ->leftJoin('product_category as pc', 'pc.id', '=', 'p.product_category_id')
+            ->leftJoin('product_subcategory as psc', 'psc.id', '=', 'p.product_subcategory_id')
+            ->where('bp.business_id', $business_id)
+            ->where('p.state', 'ACTIVE')
+            ->select([
+                'pc.id as category_id',
+                'pc.value as category',
+                'psc.id as subcategory_id',
+                'psc.value as subcategory',
+            ])
+            ->distinct();
+
+        $rows = $query->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | FORMATO CATEGORIAS
+        |--------------------------------------------------------------------------
+        */
+
+        $categories = [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | TODOS
+        |--------------------------------------------------------------------------
+        */
+
+        $categories[] = [
+            'id' => -1,
+            'title' => 'TODOS',
+            'description' => 'Todos los productos',
+            'icon' => 'fa-store',
+            'subcategories' => []
+        ];
+
+        foreach ($rows->groupBy('category_id') as $categoryId => $items) {
+
+            $first = $items->first();
+
+            $subcategories = [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | SUBCATEGORY TODOS
+            |--------------------------------------------------------------------------
+            */
+
+            $subcategories[] = [
+                'id' => -1,
+                'title' => 'TODOS',
+                'description' => 'Todos',
+                'icon' => 'fa-star'
+            ];
+
+            foreach ($items as $item) {
+
+                if (!$item->subcategory_id) {
+                    continue;
+                }
+
+                $subcategories[] = [
+                    'id' => $item->subcategory_id,
+                    'title' => $item->subcategory,
+                    'description' => $item->subcategory,
+                    'icon' => 'fa-tag'
+                ];
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | ELIMINAR DUPLICADOS
+            |--------------------------------------------------------------------------
+            */
+
+            $subcategories = collect($subcategories)
+                ->unique('id')
+                ->values()
+                ->toArray();
+
+            $categories[] = [
+                'id' => $categoryId,
+                'title' => $first->category,
+                'description' => $first->category,
+                'icon' => 'fa-box',
+
+                'subcategories' => $subcategories
+            ];
+        }
+
+        return [
+            'categories' => $categories
+        ];
+    }
+
+
 }

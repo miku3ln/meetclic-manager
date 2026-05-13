@@ -180,7 +180,6 @@ class FrontendCityBookManager extends ModelManager
         }
 
 
-
         if ($page == 'homePage' || $page == 'home') {
             $modelProcess = new GamificationByProcess();
             $categoriesData = $modelProcess->getSubcategoriesDataByProcess();
@@ -237,7 +236,11 @@ class FrontendCityBookManager extends ModelManager
                 }
             }
 
-        } else  if ($page == 'shopPage' ) {
+        } else if ($page == 'shopPage') {
+            $modelProduct = new Product();
+           $categoriesShop= $modelProduct->getProductsShopPage(["filters" => [
+                "business_id" => $business_id
+            ]]);
             $modelProcess = new GamificationByProcess();
             $categoriesData = $modelProcess->getSubcategoriesDataByProcess();
             $dataManagerPage['allowVue'] = true;
@@ -246,12 +249,14 @@ class FrontendCityBookManager extends ModelManager
             $dataManagerPage['dataBusinessInformation'] = $paramsRequest["dataBusinessInformation"];
 
 
-
             $dataManagerPage['type'] = $paramsRequest['type'];
             if ($allowTemplate) {
             }
+            $dataManagerPage['categoriesShop'] = $categoriesShop;
 
-        }else if ($page == 'search') {
+
+
+        } else if ($page == 'search') {
             $dataManagerPage['allowPlugins']['googleMaps'] = true;
             $dataManagerPage['allowVue'] = true;
             $categoryNeedle = $paramsRequest['category'] ? $paramsRequest['category'] : null;

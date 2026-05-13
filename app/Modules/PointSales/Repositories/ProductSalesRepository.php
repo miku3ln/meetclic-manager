@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Modules\PointSales\Repositories ;
-
+namespace App\Modules\PointSales\Repositories;
 
 
 use App\Core\Repositories\BaseRepository;
@@ -19,34 +18,26 @@ class ProductSalesRepository extends BaseRepository
             ->join('business_by_products as bp', 'p.id', '=', 'bp.products_id')
             ->join('product_inventory as pi', 'p.id', '=', 'pi.product_id')
             ->join('tax as tx', 'pi.tax_id', '=', 'tx.id')
-
             ->leftJoin('product_category as pc', 'pc.id', '=', 'p.product_category_id')
             ->leftJoin('product_subcategory as psc', 'psc.id', '=', 'p.product_subcategory_id')
             ->leftJoin('product_measure_type as pmt', 'pmt.id', '=', 'p.product_measure_type_id')
-
             ->leftJoin('unit_measure as um_stock', 'um_stock.id', '=', 'ps.unit_measure_id')
-
             ->leftJoin('unit_measure as um_base', function ($join) {
                 $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('um_base.is_base', 1);
             })
-
             ->leftJoin('measure_type_config as mtc', function ($join) {
                 $join->on('mtc.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('mtc.state', 1);
             })
-
             ->leftJoin('measure_unit_config as muc', function ($join) {
                 $join->on('muc.measure_type_config_id', '=', 'mtc.id')
                     ->where('muc.is_default', 1)
                     ->where('muc.state', 1);
             })
-
             ->leftJoin('unit_measure as um_default', 'um_default.id', '=', 'muc.unit_measure_id')
-
             ->where('bp.business_id', $business_id)
             ->where('p.state', 'ACTIVE')
-
             ->select([
                 'p.id as product_id',
                 'p.code',
@@ -106,44 +97,39 @@ class ProductSalesRepository extends BaseRepository
         // 📦 PAGINACIÓN + SORT (genérico)
         return $this->paginate($query, $params, 'p.id');
     }
+
     public function getProductsShopPage($params)
     {
 
         $business_id = $params["filters"]["business_id"];
+        $subcategoryId = $params["filters"]["subcategoryId"] == -1 ? null : $params["filters"]["subcategoryId"];
+        $categoryId = $params["filters"]["categoryId"] == -1 ? null : $params["filters"]["categoryId"];
 
         $query = DB::table('product_stock as ps')
             ->join('product as p', 'p.id', '=', 'ps.product_id')
             ->join('business_by_products as bp', 'p.id', '=', 'bp.products_id')
             ->join('product_inventory as pi', 'p.id', '=', 'pi.product_id')
             ->join('tax as tx', 'pi.tax_id', '=', 'tx.id')
-
             ->leftJoin('product_category as pc', 'pc.id', '=', 'p.product_category_id')
             ->leftJoin('product_subcategory as psc', 'psc.id', '=', 'p.product_subcategory_id')
             ->leftJoin('product_measure_type as pmt', 'pmt.id', '=', 'p.product_measure_type_id')
-
             ->leftJoin('unit_measure as um_stock', 'um_stock.id', '=', 'ps.unit_measure_id')
-
             ->leftJoin('unit_measure as um_base', function ($join) {
                 $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('um_base.is_base', 1);
             })
-
             ->leftJoin('measure_type_config as mtc', function ($join) {
                 $join->on('mtc.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('mtc.state', 1);
             })
-
             ->leftJoin('measure_unit_config as muc', function ($join) {
                 $join->on('muc.measure_type_config_id', '=', 'mtc.id')
                     ->where('muc.is_default', 1)
                     ->where('muc.state', 1);
             })
-
             ->leftJoin('unit_measure as um_default', 'um_default.id', '=', 'muc.unit_measure_id')
-
             ->where('bp.business_id', $business_id)
             ->where('p.state', 'ACTIVE')
-
             ->select([
                 'p.id as product_id',
                 'p.code',
@@ -191,7 +177,15 @@ class ProductSalesRepository extends BaseRepository
                 'um_default.name as default_unit',
                 'um_default.symbol as default_symbol',
             ]);
+        if ($categoryId) {
+            $query->where('p.product_category_id', $categoryId);
+            if ($subcategoryId) {
+                $query
+                    ->where('p.product_subcategory_id', $subcategoryId);
 
+
+            }
+        }
         // 🔍 SEARCH (sin romper nada)
         $this->applySearch($query, $params['searchPhrase'] ?? null, [
             'p.name',
