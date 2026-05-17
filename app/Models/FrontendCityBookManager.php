@@ -327,6 +327,7 @@ class FrontendCityBookManager extends ModelManager
             $pageSectionsConfig['business']['viewWhatsAppMain'] = false;
             $resultBusinessDetails = Util::getDataBusinessAll($params);
             $dataManagerPage = array_merge($dataManagerPage, $resultBusinessDetails);
+
             if ($resultBusinessDetails["viewPage"]) {
                 $gamificationAllow = $resultBusinessDetails["gamification"]["allow"];
                 $modelGamification = new GamificationByProcess();
@@ -1812,7 +1813,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
             $listingHtml .= '                  </span>';
             $listingHtml .= '              </div>';
             $listingHtml .= '              <h3>';
-            $listingHtml .= '                <a href="' . $urlBusiness . '">' . $row->title . '</a>';
+            $listingHtml .= '                <a href="' . $urlBusiness . '">' . $row->id . '</a>';
             $listingHtml .= '              </h3>';
             if ($row->description && $row->description != 'null') {
                 $listingHtml .= '          <p>' . $row->description;
@@ -1885,7 +1886,7 @@ El idioma desempeña un papel esencial en la cultura de un pueblo, ya que actúa
                 $countRoute++;
             }
             $type = $countRoute;
-            $urlBusiness = $urlRoute . '/' . $row->title;
+            $urlBusiness = $urlRoute . '/' . $row->id;
             $urlUser = $urlRouteUser . '/' . $row->user_id;
 
 

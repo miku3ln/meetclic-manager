@@ -1,4 +1,6 @@
 <?php
+$publicAsset = env('APP_IS_SERVER') ? "public" : '';
+
 $counterReviews = 0;
 $counterViews = 0;
 $counterViewsResult = '';
@@ -67,10 +69,10 @@ if ($counterHearth > 1) {
 
 
 }
-$urlCurrentSearch = route('search', app()->getLocale());
+$urlCurrentSearch = route('urlBase').'/'.app()->getLocale();
 $htmlLinkRate = "";
 
-if (isset($dataManagerPage["dataConfigGamificationBusiness"])&&$dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["success"]) {
+if (isset($dataManagerPage["dataConfigGamificationBusiness"]) && $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["success"]) {
     $htmlLinkRate = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_RATE_WEB_MC"]["data"]->url_manager;
 
 } else {
@@ -78,10 +80,18 @@ if (isset($dataManagerPage["dataConfigGamificationBusiness"])&&$dataManagerPage[
 
 }
 
+
+$sourceMain =          URL("") .'/'. $publicAsset.'/uploads/business/gamification/default/gallery/empty.png';
+if (count($dataManagerPage['business']['gallery']) > 0) {
+    $sourceMain = $dataManagerPage['business']['gallery']['0']->src;
+}
 ?>
 
-<section class="parallax-section single-par list-single-section" data-scrollax-parent="true" id="slider">
-    <div class="bg par-elem " data-bg="{{ $dataManagerPage['business']['information']->srcMain}}"
+<section class="parallax-section single-par list-single-section slider-main-business" data-scrollax-parent="true"
+         id="slider">
+
+    <div class="bg par-elem " data-bg="{{ $sourceMain}}"
+         id="item-src-{{ $sourceMain}}" source-data="{{ $sourceMain}}"
 
          data-scrollax="properties: { translateY: '30%' }"
          style="
@@ -90,6 +100,8 @@ if (isset($dataManagerPage["dataConfigGamificationBusiness"])&&$dataManagerPage[
         background-position: center center;
      "
     ></div>
+
+
     <div class="overlay"></div>
     <div class="bubble-bg"></div>
     <div class="list-single-header absolute-header fl-wrap">
@@ -136,7 +148,7 @@ if (isset($dataManagerPage["dataConfigGamificationBusiness"])&&$dataManagerPage[
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 not-view">
                         <div class="fl-wrap list-single-header-column">
                             @include('cityBook.web.partials.businessDetails.shareOptions')
 

@@ -41,6 +41,13 @@ if (isset($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUG
     $urlSuggestion = $dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUGGESTION_WEB_MC"]["urlDefault"];
 
 }
+$titleShop=__('frontend.business-details.menu-top.four.title');
+$iconShop='fa fa-shopping-bag';
+if($dataManagerPage['business']['information']->category_id==1){
+    $titleShop=__('frontend.business-details.menu-top.four.title_other');
+    $iconShop='fa fa-cutlery';
+
+}
 ?>
 
 <div class="scroll-nav-wrapper fl-wrap business__menu-top">
@@ -68,9 +75,9 @@ if (isset($dataManagerPage["dataConfigGamificationBusiness"]["VIEW_REGISTERS_SUG
                 @if(count($dataManagerPage['categories'])>0)
                     <li class="ul-list__li ul-list--link-custom" id="menu-shop-li">
                         @if($dataManagerPage['typeShopView']==1)
-                            <a href="#business__categories"> {{__('frontend.business-details.menu-top.four.title')}}</a>
+                            <a href="#business__categories"> {{$titleShop}}</a>
                         @else
-                            <a href="{{$urlShop}}"><i class="fa fa-shopping-bag"></i> {{__('frontend.business-details.menu-top.four.title')}}</a>
+                            <a href="{{$urlShop}}"><i class="{{$iconShop}}"></i> {{$titleShop}}</a>
                         @endif
                     </li>
                 @endif

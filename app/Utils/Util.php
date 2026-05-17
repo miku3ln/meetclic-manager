@@ -408,12 +408,12 @@ class Util
         $isGod = !empty(array_intersect([$roleGod], $roles));
 
         $routeRoot = rtrim(route('urlBase'), '/') . "/es/";
-        $language="es";
+        $language = "es";
         $slugBusiness = '{slug_business}';
         $slugProductService = '{slug_product_service}';
         $slugForm = '{slug_form}';
         $slugChaqui = '{slug_chaqui}';
-     $shopUrl=   route('shop-business','es') . "/" . $slugBusiness;
+        $shopUrl = route('shop-business', 'es') . "/" . $slugBusiness;
         // ✅ IDs de secciones (deben coincidir con getGamificationSectionsData)
         $SECTIONS = [
             'BUSINESS_PUBLIC' => 0,
@@ -440,7 +440,7 @@ class Util
                 'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
             ],
             [
-                'id' =>route('chasqui-routes') ."/".$slugChaqui, // si es público cámbialo; si es login muévelo a CMS/LOGIN
+                'id' => route('chasqui-routes') . "/" . $slugChaqui, // si es público cámbialo; si es login muévelo a CMS/LOGIN
                 'text' => 'Rutas- Chasquiñanes',
                 'type' => 'chaqui-business',
                 'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
@@ -450,7 +450,7 @@ class Util
             // TIENDA
             // -------------------------
             [
-                'id' =>  $shopUrl,
+                'id' => $shopUrl,
                 'text' => 'Tienda del negocio(Katuna)',
                 'type' => 'shop-business',
                 'section_id' => $SECTIONS['SHOP_PUBLIC'],
@@ -472,26 +472,26 @@ class Util
                 'section_id' => $SECTIONS['GAMING_PUBLIC'],
             ],
             [
-                'id' => route('rimay-business') ."/".$slugForm,
+                'id' => route('rimay-business') . "/" . $slugForm,
                 'text' => 'Realizar sugerencia(Yanapana rimaykuna))',
                 'type' => 'suggestions-business',
                 'section_id' => $SECTIONS['GAMING_PUBLIC'],
             ],
             [
-                'id' => route('rimay-registers-business') ."/".$slugBusiness,
+                'id' => route('rimay-registers-business') . "/" . $slugBusiness,
                 'text' => 'Ver sugerencias',
                 'type' => 'suggestions-registers-business',
                 'section_id' => $SECTIONS['GAMING_PUBLIC'],
             ],
 
             [
-                'id' =>  route('rates-registers-business') ."/".$slugBusiness,
+                'id' => route('rates-registers-business') . "/" . $slugBusiness,
                 'text' => 'Calificaciones Registros',
                 'type' => 'chanichina-registers-business',
                 'section_id' => $SECTIONS['GAMING_PUBLIC'],
             ],
             [
-                'id' =>  route('rate-register-business') ."/".$slugBusiness,
+                'id' => route('rate-register-business') . "/" . $slugBusiness,
                 'text' => 'Calificacion Registro Rate',
                 'type' => 'rate-business',
                 'section_id' => $SECTIONS['GAMING_PUBLIC'],
@@ -502,7 +502,7 @@ class Util
             //    Ej: rewards, redemptions, exchange, prizeStore, etc.
             // -------------------------
             [
-                'id' => route('rewards-business') ."/".$slugBusiness, // <- CREA ESTA RUTA EN TU WEB / FRONT
+                'id' => route('rewards-business') . "/" . $slugBusiness, // <- CREA ESTA RUTA EN TU WEB / FRONT
                 'text' => 'Premios y canjes',
                 'type' => 'rewards-business',
                 'section_id' => $SECTIONS['REWARDS_PUBLIC'],
@@ -1581,8 +1581,6 @@ class Util
             'category' => '',
             'subcategory' => '',
             'subcategory_id' => '',
-            'category' => '',
-
             'statusOpen' => '',
             'title' => '',
             'user' => $user,
@@ -1837,14 +1835,17 @@ class Util
         if ($information) {
             $viewPage = true;
             $business_id = $information->id;
-            $modelBBS = new \App\Models\BusinessBySchedule;
-            $modelBBG = new \App\Models\BusinessByGallery;
+
+
+            $modelBBS = new \App\Models\BusinessBySchedule();
+            $modelBBG = new \App\Models\BusinessByGallery();
             $modelBA = new \App\Models\BusinessAmenities();
             $gallery = $modelBBG->getGalleryByBusiness([
                 'filters' => [
                     "business_id" => $business_id
                 ]
             ]);
+
             $tags = [];
             $details = [];
             $amenities = $modelBA->getAmenitiesBusiness(
@@ -1866,9 +1867,15 @@ class Util
             $aboutUs = [];
             $counters = [];
             $networkSocial = [];
+
+            $galleryData =$gallery;
+
+
+
             $informationAll = [
                 'business' => $information,
                 'gallery' => $gallery,
+                'galleryData' => $galleryData,
                 'tags' => $tags,
                 'details' => $details,
                 'amenities' => $amenities,

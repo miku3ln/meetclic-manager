@@ -196,7 +196,9 @@
     "frontend.business-details.menu-top.one.title": "Ñawpa",
     "frontend.business-details.menu-top.two.title": "Ñawrikuna",
     "frontend.business-details.menu-top.three.title": "Yuyaykuna",
-    "frontend.business-details.menu-top.four.title": "Tienda",
+    "frontend.business-details.menu-top.four.title": "Katuna",
+    "frontend.business-details.menu-top.four.title_other": "Mikuna Killka",
+
     "frontend.business-details.menu-top.five.title": "Ñukanchik killkakuy",
     "frontend.business-details.menu-top.six.title": "Pukllay / Llankay",
     "frontend.business-details.menu-top.seven.title": "Chaninchakuna",

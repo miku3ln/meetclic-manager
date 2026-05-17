@@ -214,12 +214,9 @@
             bottom: 75% !important;
         }
 
-        .slick-slide {
-
-            height: auto !important;
-
+        .content.fs-slider-wrap {
+            padding-top: 0px !important;
         }
-
         .slick-arrow i {
             margin-top: 33%;
         }
@@ -731,7 +728,7 @@
         }
 
         function initMapCurrent() {
-
+console.log('initMapCurrent');
             function singleMap() {
                 var myLatLng = {
                     lng: $('#singleMap').data('longitude'),
@@ -799,6 +796,24 @@
                 });
                 single_map.mapTypes.set('greyscale_style', greyStyleMap);
                 single_map.setMapTypeId('greyscale_style');
+
+
+                google.maps.event.addListener(single_map, 'idle', function () {
+                    console.log('Mapa cargado completamente');
+
+                    $('.dismissButton').click();
+                });
+                google.maps.event.addListenerOnce(single_map, 'idle', function () {
+                    console.log('Mapa listo por primera vez');
+                    $('.dismissButton').click();
+
+                });
+                google.maps.event.addListenerOnce(single_map, 'tilesloaded', function () {
+                    console.log('Mapa listo por primera vez tilesloaded');
+                    $('.dismissButton').click();
+
+                });
+
             }
 
             var single_map = document.getElementById('singleMap');
@@ -1173,6 +1188,7 @@
         $(function () {
             initMenuGamification();
             initEvents();
+            $('.dismissButton').click();
         });
     </script>
     <script src="{{ asset($resourcePathServer . 'libs/vue-bootstrap/vue-bootstrap.min.js') }}"></script>
@@ -1210,7 +1226,6 @@
         <div id="management-product-details">
             <div v-if="configModalManagementFormDetailsProduct.viewAllow">
 
-
                 <management-form-details-product-component ref="refManagementFormDetailsProduct"
                                                            :params="configModalManagementFormDetailsProduct"></management-form-details-product-component>
             </div>
@@ -1228,12 +1243,6 @@
         @if (isset($dataManagerPage['type']))
             @if ($dataManagerPage['type'] == 2)
                 @include('cityBook.web.listingView.single2')
-            @elseif($dataManagerPage['type']==1)
-                @include('cityBook.web.listingView.single')
-            @elseif($dataManagerPage['type']==3)
-                @include('cityBook.web.listingView.single3')
-            @elseif($dataManagerPage['type']==4)
-                @include('cityBook.web.listingView.single4')
 
             @endif
         @endif

@@ -98,7 +98,7 @@ class BusinessByGallery extends Model
         $field = 'position';
         $query = DB::table($this->table);
         $business_id = isset($params["filters"]["business_id"]) ? $params["filters"]["business_id"] : null;
-        $selectString = "$this->table.id ,$this->table.src,$this->table.position,$this->table.type,$this->table.config,$this->table.business_id,$this->table.created_at,$this->table.updated_at,$this->table.deleted_at,$this->table.status,$this->table.title,$this->table.subtitle,$this->table.description
+        $selectString = "$this->table.id,$this->table.business_id ,$this->table.src,$this->table.position,$this->table.type,$this->table.config,$this->table.business_id,$this->table.created_at,$this->table.updated_at,$this->table.deleted_at,$this->table.status,$this->table.title,$this->table.subtitle,$this->table.description
         ";
         $select = DB::raw($selectString);
         $query->select($select);
