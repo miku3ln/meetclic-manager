@@ -876,8 +876,42 @@
                 this.configDataFiltersCategories.allow = true;
                 this.initCurrentComponent();
                 appThis = this;
-
                 window.addEventListener('keydown', this.onEscClose);
+                var dataBusiness = $dataManagerPage.dataBusinessInformation.businessData;
+                this.businessInformation.information.title = dataBusiness["title"];
+                var businessId=dataBusiness["id"];
+                this.businessInformation.information.id =businessId;
+                this.businessInformation.information.url = $urlRouteBusiness + "/" + businessId;
+
+
+                this.businessInformation.subcategory.title = dataBusiness["business_subcategories"];
+                this.businessInformation.subcategory.id = dataBusiness["business_subcategories_id"];
+
+                this.businessInformation.category.title = dataBusiness["business_categories"];
+                this.businessInformation.category.id = dataBusiness["business_categories_id"];
+
+                var linksManagement = [
+                    {
+                        id: -1,
+                        title: '{{__('frontend.business-details.menu-top.six.title')}}',
+                        icon: 'fa fa-gamepad',
+                        link:  $urlRouteGamesBusiness.replace('/-1', '')+ "/" + businessId
+                    },
+                    {
+                        id: -1,
+                        title: '{{__('frontend.business-details.menu-top.seven.title')}}',
+                        icon: 'fa fa-gift',
+                        link:$urlRouteRewardsBusiness.replace('/-1', '')+ "/" + businessId
+                    },
+                    {
+                        id: -1,
+                        title: '{{__('frontend.business-details.menu-top.eight.title')}}',
+                        icon: 'fa fa-commenting',
+                        link:$urlRouteRateBusiness.replace('/-1', '')+ "/" + businessId
+                    }
+                ];
+                this.businessInformation.linksManagement =linksManagement;
+
 
             },
             el: '#app-management',
@@ -959,6 +993,16 @@
                     categoryId: -1,
                     subcategoryId: -1,
 
+                },
+                businessInformation: {
+                    information: {title: "", id: -1, source: "", url: ''},
+                    category: {title: "", id: -1},
+                    subcategory: {title: "", id: -1},
+                    starManagement: {count: 0, numberStar: 5, numberPerson: 0},
+                    linksManagement: [
+                        {id: -1, title: '', icon: '', link: ''}
+                    ],
+
                 }
             },
             methods: {
@@ -966,6 +1010,41 @@
                 _resetManagerGrid: _resetManagerGrid,
                 _managerMenuGrid: _managerMenuGrid,
                 _gridManager: _gridManager,
+                generateStars:function(starManagement) {
+
+                    let html = `
+                    <div class="rating-stars">
+                `;
+
+                    for(let i = 1; i <= starManagement.numberStar; i++) {
+
+                        if(starManagement.count >= i){
+
+                            html += `<i class="bi bi-star-fill"></i>`;
+
+                        }else if(starManagement.count >= (i - 0.5)){
+
+                            html += `<i class="bi bi-star-half"></i>`;
+
+                        }else{
+
+                            html += `<i class="bi bi-star"></i>`;
+
+                        }
+
+                    }
+
+                    html += `
+                        <span class="rating-text">
+                            ${starManagement.count}
+                            (${starManagement.numberPerson})
+                        </span>
+                    </div>
+                `;
+
+                    return html;
+
+                },
                 onSubCategorySelect: function (params) {
 
                     var subCategory = params.subCategory;
@@ -1035,7 +1114,7 @@
                     };
                     $this = this;
                     let gridInit = $(gridName);
-                    var labelsConfig=$labelsGridConfigDefault;
+                    var labelsConfig = $labelsGridConfigDefault;
 
 
                     gridInit.bootgrid({

@@ -388,6 +388,13 @@ class Business extends ModelManager
     function getBusinessData($params = array())
     {
         $information = $this->getBusinessById($params);
+        $modelB = new Business();
+
+        $businessData= $modelB->getBusinessFrontend([
+            'filters' => [
+                'business_id' => $params["id"]
+            ]
+        ]);
         $modelBBS = new BusinessBySchedule;
         $modelBBP = new BusinessByPanorama;
 
@@ -396,6 +403,8 @@ class Business extends ModelManager
         $dataPanorama = $modelBBP->getDataPanoramaByBusiness(array("business_id" => $business_id));
         $result = array(
             "business" => $information,
+            "businessData" => $businessData,
+
             "dataSchedules" => $schedules,
             "dataPanorama" => $dataPanorama
 

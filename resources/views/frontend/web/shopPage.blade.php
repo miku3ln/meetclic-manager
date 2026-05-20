@@ -2,6 +2,12 @@
 <?php
 
 $managementNameProcess = "shopPage";
+$params=["id"=>-1];
+$urlRouteBusiness = route('businessDetails', app()->getLocale(),-1);
+$urlRouteGamesBusiness = route('businessPullkay',["id"=>-1,"language"=>"es"]);
+$urlRouteRewardsBusiness = route('rewards-business',$params);
+$urlRouteRateBusiness = route('rate-register-business',$params);
+
 ?>
 @extends('layouts.cityBook')
 @section('additional-styles')
@@ -92,9 +98,11 @@ $managementNameProcess = "shopPage";
         .mc-grid__right {
 
         }
-        .mc-center.mc-grid__center{
+
+        .mc-center.mc-grid__center {
             width: 31%;
         }
+
         .mc-grid__search-wrapper {
             width: 100%;
 
@@ -432,7 +440,8 @@ $managementNameProcess = "shopPage";
 
             backdrop-filter: blur(10px);
 
-            color: var(--pc-primary);
+            color: var(--mc-azulClic);
+
 
             padding: 8px 12px;
 
@@ -644,29 +653,29 @@ $managementNameProcess = "shopPage";
 
         .product-card__points {
 
-        /* display: inline-flex;*/
+            /* display: inline-flex;*/
 
-       align-items: center;
+            align-items: center;
 
-       width: fit-content;
+            width: fit-content;
 
-       padding: 8px 14px;
+            padding: 8px 14px;
 
-       border-radius: 999px;
+            border-radius: 999px;
 
-       background: #eff6ff;
+            background: #eff6ff;
 
-       color: var(--mc-azulClic);
+            color: var(--mc-azulClic);
 
-       font-size: 13px;
+            font-size: 13px;
 
-       font-weight: 800;
-       display: none !important;
-   }
+            font-weight: 800;
+            display: none !important;
+        }
 
-   /* =========================================================
-      ACTIONS
-   ========================================================= */
+        /* =========================================================
+           ACTIONS
+        ========================================================= */
 
         .product-card__actions {
 
@@ -702,7 +711,7 @@ $managementNameProcess = "shopPage";
             font-weight: 800;
 
             transition: var(--pc-transition);
-            display:none;
+            display: none;
         }
 
         .product-card__add i {
@@ -738,12 +747,15 @@ $managementNameProcess = "shopPage";
         .mc-right.mc-grid__right {
             display: none;
         }
+
         .owl-nav {
             display: none !important;
         }
+
         tbody, td, tfoot, th, thead, tr {
             display: none !important;
         }
+
         @media (max-width: 992px) {
 
             .xywer-tbl-admin tbody {
@@ -765,7 +777,8 @@ $managementNameProcess = "shopPage";
                 max-width: 100% !important;
 
             }
-            .mc-center.mc-grid__center{
+
+            .mc-center.mc-grid__center {
                 width: 95% !important;
             }
         }
@@ -809,7 +822,7 @@ $managementNameProcess = "shopPage";
                 gap: 10px;
             }
 
-            .mc-center.mc-grid__center{
+            .mc-center.mc-grid__center {
                 width: 95% !important;
             }
 
@@ -835,7 +848,8 @@ $managementNameProcess = "shopPage";
 
                 font-size: 13px;
             }
-            .mc-center.mc-grid__center{
+
+            .mc-center.mc-grid__center {
                 width: 95% !important;
             }
         }
@@ -922,13 +936,13 @@ $managementNameProcess = "shopPage";
         }
 
         .mc-category-card:hover {
-            border-color: #445EF2;
+            border-color: var(--mc-azulClic);
             background: #f8faff;
         }
 
         .mc-category-card--active {
-            background: #445EF2;
-            border-color: #445EF2;
+            background: var(--mc-azulClic) !important;
+            border-color: var(--mc-azulClic) !important;
             color: #ffffff;
         }
 
@@ -955,7 +969,7 @@ $managementNameProcess = "shopPage";
 
             background: rgba(68, 94, 242, .08);
 
-            color: #445EF2;
+            color: var(--mc-azulClic);
 
             flex-shrink: 0;
         }
@@ -1014,13 +1028,13 @@ $managementNameProcess = "shopPage";
         }
 
         .mc-subcategory-card:hover {
-            border-color: #445EF2;
+            border-color: var(--mc-azulClic);
             background: #eef2ff;
         }
 
         .mc-subcategory-card--active {
-            background: #111827;
-            border-color: #111827;
+            background: var(--mc-azulClic) !important;
+            border-color: var(--mc-azulClic) !important;
             color: #ffffff;
         }
 
@@ -1044,7 +1058,7 @@ $managementNameProcess = "shopPage";
 
             background: rgba(68, 94, 242, .08);
 
-            color: #445EF2;
+            color: var(--mc-azulClic);
 
             font-size: 13px;
 
@@ -1104,9 +1118,9 @@ $managementNameProcess = "shopPage";
         }
 
         .owl-nav button:hover {
-            background: #445EF2 !important;
+            background: var(--mc-azulClic) !important;
             color: #ffffff !important;
-            border-color: #445EF2 !important;
+            border-color: var(--mc-azulClic) !important;
         }
 
 
@@ -1133,7 +1147,127 @@ $managementNameProcess = "shopPage";
         }
 
         .listsearch__subheader {
-            display: none !important;}
+            display: none !important;
+        }
+    </style>
+
+    <style id="business-information">
+
+        body {
+            background: #f5f5f5;
+            padding: 30px;
+            font-family: sans-serif;
+        }
+
+        .business-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+        }
+
+        .business-logo {
+            width: 180px;
+            height: 180px;
+            /* border-radius:50%;*/
+            /*   object-fit:cover;*/
+        }
+
+        .business-title {
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--mc-azulClic);
+            margin-bottom: 4px;
+        }
+
+        .business-title a {
+            text-decoration: none;
+            color: var(--mc-azulClic);
+
+        }
+
+        .business-category {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .rating-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #444;
+            margin-left: 10px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            border: 2px solid var(--mc-azulClic);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mc-azulClic);
+            font-size: 20px;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .social-links a:hover {
+            background: var(--mc-azulClic);
+            color: #fff;
+        }
+
+        .yapitas-box {
+            display: none !important;
+            background: #f7f4ff;
+            border-radius: 18px;
+            padding: 14px 20px;
+            min-width: 220px;
+        }
+
+        .yapitas-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--mc-azulClic);
+
+        }
+
+        .coin-icon {
+            color: #f7b500;
+            font-size: 24px;
+        }
+
+        .arrow-icon {
+            color: var(--mc-azulClic);
+            font-size: 22px;
+        }
+
+        @media (max-width: 768px) {
+
+            .business-title {
+                font-size: 28px;
+            }
+
+            .business-category {
+                font-size: 16px;
+            }
+
+            .yapitas-box {
+                width: 100%;
+                margin-top: 20px;
+            }
+
+        }
+
+        .data-page.manager-page__data-page {
+            margin-left: 4%;
+            margin-right: 4%;
+        }
     </style>
 @endsection
 @section('script')
@@ -1142,7 +1276,14 @@ $managementNameProcess = "shopPage";
 @section('additional-scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="{{ asset($resourcePathServer.'libs/bootgrid1.3.1/bootgrid1.3.1.min.js')}}"></script>
+    <script>
+        var $urlRouteBusiness = '{{$urlRouteBusiness}}';
 
+
+        var $urlRouteGamesBusiness = '{{$urlRouteGamesBusiness}}';
+        var $urlRouteRewardsBusiness = '{{$urlRouteRewardsBusiness}}';
+        var $urlRouteRateBusiness = '{{$urlRouteRateBusiness}}';
+    </script>
     @include('frontend.web.'.$managementNameProcess.'.assets.js.index')
 
 
@@ -1244,24 +1385,94 @@ $managementNameProcess = "shopPage";
         </section>
         <div class="data-page  manager-page__data-page">
 
-
             <div class="content-manager-grid">
+                <div class="row" id="business-information">
+                    <div class="col-md-12">
+                        <div class="business-card">
+
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+
+                                <!-- LEFT -->
+                                <div class="d-flex gap-4 align-items-start">
+
+                                    <!-- LOGO -->
+                                    <img
+                                        src="https://meetclic.com/public/uploads/business/information/trece-wallpaper.jpg"
+                                        class="business-logo"
+                                        alt=""
+                                    >
+
+                                    <!-- INFO -->
+                                    <div>
+
+                                        <div class="business-title">
+                                            <a v-bind:href="businessInformation.information.url"> <?php echo "{{businessInformation.information.title}}" ?></a>
+                                        </div>
+
+                                        <div class="business-category mb-2">
+                                            <?php echo "{{businessInformation.subcategory.title}}" ?>
+                                        </div>
+                                        <!-- RATING -->
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div v-html="generateStars(businessInformation.starManagement)"></div>
+
+
+                                        </div>
+
+                                        <!-- SOCIAL -->
+                                        <div class="social-links d-flex gap-3">
+
+                                            <a v-for="(menu, key) in businessInformation.linksManagement"
+                                               v-bind:href="menu.link"
+                                               target="_blank"
+                                               v-bind:id="'a-menu-'+menu.id"
+                                            >
+                                                <i   v-bind:class="menu.icon"></i>
+                                            </a>
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- RIGHT -->
+                                <div class="yapitas-box d-flex align-items-center justify-content-between">
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <i class="bi bi-coin coin-icon"></i>
+
+                                        <div class="yapitas-text">
+                                            1,250 Yapitas
+                                        </div>
+
+                                    </div>
+
+                                    <i class="bi bi-chevron-right arrow-icon"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
-
                         <div class="custom-scroll-admin-grid table-responsive table-responsive--fixed">
                             <div class="filters-sections">
                                 <div class="categories">
                                     <div class="owl-carousel category-carousel">
-
 
                                     </div>
 
                                 </div>
                                 <div class="sub-categories">
                                     <div class="owl-carousel sub-categories-carousel">
-
-
                                     </div>
 
                                 </div>
