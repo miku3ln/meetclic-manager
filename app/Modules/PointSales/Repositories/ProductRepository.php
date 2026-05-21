@@ -34,6 +34,47 @@ class ProductRepository
             ])
             ->first();
     }
+    public function getRecipesByProducts(array $productIds)
+    {
+        return DB::table('product_recipe as pr')
+
+            ->join('product as p', 'p.id', '=', 'pr.component_product_id')
+
+            ->leftJoin('product_measure_type as pmt', 'pmt.id', '=', 'p.product_measure_type_id')
+
+            ->leftJoin('unit_measure as um_base', function ($join) {
+                $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
+                    ->where('um_base.is_base', 1);
+            })
+
+            ->leftJoin('product_stock as ps', 'ps.product_id', '=', 'p.id')
+
+            ->whereIn('pr.product_id', $productIds)
+
+            ->select([
+
+                'pr.id',
+
+                'pr.product_id as parent_product_id',
+
+                'pr.component_product_id',
+
+                'p.name as component_name',
+
+                'p.product_type as component_type',
+
+                'pr.quantity as recipe_quantity',
+
+                'um_base.symbol as base_unit',
+
+                'ps.quantity as stock_quantity',
+
+                'ps.quantity_base as stock_quantity_base',
+
+            ])
+
+            ->get();
+    }
     public function getRecipe($productId)
     {
         return DB::table('product_recipe as pr')

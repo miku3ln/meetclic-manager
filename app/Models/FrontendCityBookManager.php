@@ -242,6 +242,8 @@ class FrontendCityBookManager extends ModelManager
            $categoriesShop= $modelProduct->getProductsShopPage(["filters" => [
                 "business_id" => $businessCurrentId
             ]]);
+
+
             $modelProcess = new GamificationByProcess();
             $categoriesData = $modelProcess->getSubcategoriesDataByProcess();
             $dataManagerPage['allowVue'] = true;
