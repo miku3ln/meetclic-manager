@@ -25,6 +25,28 @@
                 display: block !important;
             }
         }
+
+
+        @media screen and (min-width: 300px) and (max-width: 768px) {
+            .content {
+                margin-top:-75px !important;
+            }
+            .list-single-header-contacts li {
+
+                margin-bottom: 3px!important;
+            }
+            .list-single-header-contacts {
+                margin-top: 4px!important;
+            }
+            .section-separator {
+
+                margin: 5px 0!important;
+            }
+            section.list-single-section .bg {
+
+                top: 4%!important;
+            }
+        }
     </style>
     <style>
 
