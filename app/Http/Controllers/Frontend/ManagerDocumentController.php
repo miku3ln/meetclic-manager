@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Services\Inventory\MeasurementConversionService;
+
+use App\Services\Inventory\MeasurementValidatorService;
+use App\Services\ProductMassiveLoadService;
+
+use App\Utils\Inventory\MeasurementConversionUtil;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\FrontendBaseController;
@@ -601,6 +607,12 @@ class ManagerDocumentController extends FrontendBaseController
         return view('sri.managementElectronicReceiptsGenerateInformation');
     }
 
+    public function managementProductsGenerateInformation()
+    {
+
+        return view('yapitas.managementProductsGenerateInformation');
+    }
+
     public function sendDataView(Request $request)
     {
         return response()->json([
@@ -856,9 +868,9 @@ class ManagerDocumentController extends FrontendBaseController
         $html .= '<thead><tr>';
         foreach ($ordenColumnas as $col) $html .= "<th class='text-nowrap'>{$col}</th>";
         $html .= "</tr></thead><tbody>";
-$totalValorSinImpuestos=0;
-        $totalIva=0;
-        $totalImporteTotal=0;
+        $totalValorSinImpuestos = 0;
+        $totalIva = 0;
+        $totalImporteTotal = 0;
 
         foreach ($lines as $line) {
             $fields = str_getcsv($line, "\t");
@@ -867,22 +879,21 @@ $totalValorSinImpuestos=0;
             $identificacion = ($idxReceptor >= 0 && isset($fields[$idxReceptor])) ? trim($fields[$idxReceptor]) : '';
 
 
-
             $idxValor = $indices['VALOR_SIN_IMPUESTOS'];
-            $idxIva   = $indices['IVA'];
+            $idxIva = $indices['IVA'];
             $idxTotal = $indices['IMPORTE_TOTAL'];
 
             $valor = $this->money(($idxValor >= 0 && isset($fields[$idxValor])) ? $fields[$idxValor] : '0');
-            $iva   = $this->money(($idxIva   >= 0 && isset($fields[$idxIva]))   ? $fields[$idxIva]   : '0');
+            $iva = $this->money(($idxIva >= 0 && isset($fields[$idxIva])) ? $fields[$idxIva] : '0');
             $total = $this->money(($idxTotal >= 0 && isset($fields[$idxTotal])) ? $fields[$idxTotal] : '0');
 
             // ✅ acumula
-            $totals['base_total']  += $valor;
-            $totalValorSinImpuestos+=$valor;
-            $totalIva+=$iva;
-            $totalImporteTotal+=$total;
+            $totals['base_total'] += $valor;
+            $totalValorSinImpuestos += $valor;
+            $totalIva += $iva;
+            $totalImporteTotal += $total;
 
-            $totals['iva_total']   += $iva;
+            $totals['iva_total'] += $iva;
             $totals['total_total'] += $total;
             $totals['count']++;
 
@@ -1034,9 +1045,9 @@ $totalValorSinImpuestos=0;
         $sumConIVA_total = 0;
         $sumSinIVA_valor = 0;
         $sumConIVA_valor = 0;
-        $totalValorSinImpuestos=0;
-        $totalIva=0;
-        $totalImporteTotal=0;
+        $totalValorSinImpuestos = 0;
+        $totalIva = 0;
+        $totalImporteTotal = 0;
         $html .= "<h4 class='text-primary mb-3'>📄 Archivo: <code>{$filename}</code></h4>";
         $html .= '<div class="c-table-wrapper">';
         $html .= '<table class="table table-bordered table-hover table-striped table-sm">';
@@ -1074,9 +1085,9 @@ $totalValorSinImpuestos=0;
                     $sumConIVA_valor += $valor;
                 }
             }
-            $totalValorSinImpuestos+=$valor;
-            $totalIva+=$iva;
-            $totalImporteTotal+=$total;
+            $totalValorSinImpuestos += $valor;
+            $totalIva += $iva;
+            $totalImporteTotal += $total;
 
             $html .= "<tr>";
             foreach ($ordenColumnas as $col) {
@@ -1137,11 +1148,11 @@ $totalValorSinImpuestos=0;
         $html .= "       <tr><td>SIN IVA <span class='badge bg-success ms-1'>RUC 🏢</span></td><td class='text-end'><span class='badge bg-secondary'>$" . number_format($sumSinIVA_total, 2, '.', '') . "</span></td></tr>";
         $html .= "       <tr><td>CON IVA<span class='badge bg-success ms-1'>RUC 🏢</span></td><td class='text-end'><span class='badge bg-warning text-dark'>$" . number_format($sumConIVA_total, 2, '.', '') . "</span></td></tr>";
         $html .= "       <tr><td>VALOR SIN IMPUESTOS - SIN IVA</td><td class='text-end text-muted'>$" . number_format($sumSinIVA_valor, 2, '.', '') . "</td></tr>";
-        $html .= "       <tr><td>VALOR SIN IMPUESTOS - CON IVA ".'<span class="badge bg-warning" style="display:none;" >'."(Seccion 500 & 510)</span></td><td class='text-end text-muted'> ".'<span class="badge bg-success">$' . number_format($sumConIVA_valor, 2, '.', '') . "</span></td></tr>";
+        $html .= "       <tr><td>VALOR SIN IMPUESTOS - CON IVA " . '<span class="badge bg-warning" style="display:none;" >' . "(Seccion 500 & 510)</span></td><td class='text-end text-muted'> " . '<span class="badge bg-success">$' . number_format($sumConIVA_valor, 2, '.', '') . "</span></td></tr>";
         $html .= "       <tr class='{$classCurrent}'><td><strong>VALOR CON IVA * 0.15</strong></td><td class='text-end fw-bold'>$" . number_format($valuePercentageTax, 2, '.', '') . "</td></tr>";
-        $html .= "       <tr><td>TARIFA IVA <small class='text-muted'>".'<span class="badge bg-warning">'."( Seccion  500& 510)</span></small></td><td class='text-end'>" .'<span class="badge bg-success">$' . number_format($valueTax, 2, '.', '') . "</span></td></tr>";
-        $html .= "       <tr><td>TARIFA 0% <small class='text-muted'>".'<span class="badge bg-warning">'."( Seccion  507& 517)</span></small></td><td class='text-end'>" .'<span class="badge bg-success">$' . number_format($valueCero, 2, '.', '') . "</span></td></tr>";
-        $html .= "       <tr class='{$classCurrent}'><td><strong>IVA</strong> <small class='text-muted'>".'<span class="badge bg-warning">'." (Seccion 520 & 564)</span></small></td><td class='text-end fw-semibold'>".'<span class="badge bg-success">$'  . number_format($valueTaxPercentaje, 2, '.', '') . "</span></td></tr>";
+        $html .= "       <tr><td>TARIFA IVA <small class='text-muted'>" . '<span class="badge bg-warning">' . "( Seccion  500& 510)</span></small></td><td class='text-end'>" . '<span class="badge bg-success">$' . number_format($valueTax, 2, '.', '') . "</span></td></tr>";
+        $html .= "       <tr><td>TARIFA 0% <small class='text-muted'>" . '<span class="badge bg-warning">' . "( Seccion  507& 517)</span></small></td><td class='text-end'>" . '<span class="badge bg-success">$' . number_format($valueCero, 2, '.', '') . "</span></td></tr>";
+        $html .= "       <tr class='{$classCurrent}'><td><strong>IVA</strong> <small class='text-muted'>" . '<span class="badge bg-warning">' . " (Seccion 520 & 564)</span></small></td><td class='text-end fw-semibold'>" . '<span class="badge bg-success">$' . number_format($valueTaxPercentaje, 2, '.', '') . "</span></td></tr>";
         $html .= '    </tbody>';
         $html .= '    </table>';
         $html .= '</div>';
@@ -1201,6 +1212,116 @@ $totalValorSinImpuestos=0;
         }
 
         return $htmlTables;
+    }
+
+    public function productsGenerateInformation(Request $request)
+    {
+        $businessId = 42;
+        $validator = Validator::make($request->all(), [
+            'products-files' => 'required|file|mimes:xlsx,xls,csv,ods|max:10240',
+
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Archivo inválido',
+                'errors' => $validator->errors(),
+                'data' => []
+            ], 422);
+        }
+
+        try {
+
+            $service = new ProductMassiveLoadService();
+            $taxMain = $service->getTaxByBusiness(["businessId" => [$businessId], "priority" => 1]);
+            $notTaxMain = $service->getTaxByBusiness(["businessId" => [$businessId], "priority" => 2]);
+            $allowConfigTax = count($taxMain) && count($notTaxMain);
+            $paramsTax = [
+                'tax' => $taxMain,
+                'not-tax' => $notTaxMain,
+                'allowConfigTax' => $allowConfigTax,
+
+            ];
+            $responseFiles = $service->processFile(
+                $request->file('products-files'), $businessId, $paramsTax
+            );
+
+
+            $html = $service->generateHtmlTable(
+                $responseFiles['data']
+            );
+            $params = [
+                'measureType' => 'MASA',
+                'value' => '15kg',
+                'convertToBase' => ['base']
+
+            ];
+            /*$conversion =
+                app(
+                    \App\Services\Inventory\MeasurementConversionService::class
+                )->convertToBase(
+                    $params['measureType'],
+                    $params['value'],
+                );*/
+
+            $measureType = 'Masa';
+
+            $dataConvert = [
+
+                'base_unit' =>
+
+                    MeasurementConversionUtil::getBaseUnit(
+                        $measureType
+                    ),
+
+                'default_unit' =>
+
+                    MeasurementConversionUtil::getDefaultUnit(
+                        $measureType
+                    ),
+
+                'available_units' =>
+
+                    MeasurementConversionUtil::getAvailableUnits(
+                        $measureType
+                    ),
+
+                'conversions' =>
+
+                    MeasurementConversionUtil::getConversionsByType(
+                        $measureType
+                    ),
+
+                'conversions_to_base' =>
+
+                    MeasurementConversionUtil::getConversionsToBaseUnit(
+                        $measureType
+                    ),
+            ];
+
+            $dataInserts = $service->buildProductsForInsert(['haystack' => $responseFiles['data'], 'businessIdManager' => $businessId, 'paramsTax' => $paramsTax]);
+            $conversionManagement =
+                MeasurementConversionUtil::normalizeToBase(
+                    $params
+                );
+
+            $response = $responseFiles;
+            $response['html'] = $html;
+            $response['inserts'] = $dataInserts;
+            $response['conversion'] = ['params' => $params, 'conversion' => $dataConvert, 'conversionManagement' => $conversionManagement];
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
     }
 
     public function generateInformationElectronic(Request $request)
@@ -1265,7 +1386,7 @@ $totalValorSinImpuestos=0;
                         'retencion' => $retencionPath,
 
                     ],
-                    "html" => $htmlTables
+                    "html" => $htmlTables,
                 ]
 
             ]);

@@ -229,14 +229,15 @@ business.id as business_id
 
         $tableMain = "tracking_events";
         $query = DB::table($tableMain);
-        $selectString = "$tableMain.id ,$tableMain.count";
-        $select = DB::raw($selectString);
-        $query->select($select);
         $joinOne = "tracking_sessions";
         $joinOneRelationField = "session_id";
         $joinTwo = "tracking_sources";
         $joinTwoRelationField = "source_id";
         $joinThree = "tracking_click_types";
+        $selectString = "$tableMain.id ,$tableMain.count,$joinOne.business_id ";
+        $select = DB::raw($selectString);
+        $query->select($select);
+
         $joinThreeRelationField = "click_type_id";
         $query->join($joinOne, $joinOne . '.id', '=', $tableMain . '.' . $joinOneRelationField);
         $query->join($joinTwo, $joinTwo . '.id', '=', $joinOne . '.' . $joinTwoRelationField);
@@ -260,6 +261,7 @@ business.id as business_id
 //COUNTER-001
     public function managerCounter($params)//CMS TRACKING
     {
+
 
         $counterBusiness = $this->getCounterBusiness($params);
 

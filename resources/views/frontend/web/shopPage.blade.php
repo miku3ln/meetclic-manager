@@ -2,13 +2,86 @@
 <?php
 
 $managementNameProcess = "shopPage";
-$params=["id"=>-1];
-$urlRouteBusiness = route('businessDetails', app()->getLocale(),-1);
-$urlRouteGamesBusiness = route('businessPullkay',["id"=>-1,"language"=>"es"]);
-$urlRouteRewardsBusiness = route('rewards-business',$params);
-$urlRouteRateBusiness = route('rate-register-business',$params);
+$params = ["id" => -1];
+$urlRouteBusiness = route('businessDetails', app()->getLocale(), -1);
+$urlRouteGamesBusiness = route('businessPullkay', ["id" => -1, "language" => "es"]);
+$urlRouteRewardsBusiness = route('rewards-business', $params);
+$urlRouteRateBusiness = route('rate-register-business', $params);
 
 ?>
+
+@php
+
+    $counterConfigs = [
+
+        1 => [
+            'class' => 'gradient-bg',
+            'items' => [
+                [
+                    'icon' => 'fa fa-building',
+                    'number' => 45,
+                    'label' => __('frontend.business-details.counter.five')
+                ],
+                [
+                    'icon' => 'fa fa-male',
+                    'number' => 2557,
+                    'label' => __('frontend.business-details.counter.six')
+                ],
+                [
+                    'icon' => 'fa fa-cutlery',
+                    'number' => 5,
+                    'label' => __('frontend.business-details.counter.seven')
+                ],
+            ]
+        ],
+
+        2 => [
+            'class' => 'gradient-bg gradient-bg--counters-profile-business',
+            'items' => [
+                [
+                    'icon' => 'fa fa-male',
+                    'number' => $dataManagerPage['counters']['weekVisit']['count'] ?? 0,
+                    'label' => __('frontend.business-details.counter.one')
+                ],
+                [
+                    'icon' => 'fa fa-hand-peace-o',
+                    'number' => $dataManagerPage['counters']['customersSatisfied']['count'] ?? 0,
+                    'label' => __('frontend.business-details.counter.two')
+                ],
+                [
+                    'icon' => 'fa fa-trophy',
+                    'number' => $dataManagerPage['counters']['awards']['count'] ?? 0,
+                    'label' => __('frontend.business-details.counter.three')
+                ],
+            ]
+        ],
+
+        4 => [
+            'class' => 'gradient-bg',
+            'items' => [
+                [
+                    'icon' => 'fa fa-male',
+                    'number' => 154,
+                    'label' => __('frontend.business-details.counter.one')
+                ],
+                [
+                    'icon' => 'fa fa-hand-peace-o',
+                    'number' => 12168,
+                    'label' => __('frontend.business-details.counter.six')
+                ],
+                [
+                    'icon' => 'fa fa-trophy',
+                    'number' => 72,
+                    'label' => __('frontend.business-details.counter.three')
+                ],
+            ]
+        ],
+
+    ];
+
+     $currentCounter = $counterConfigs[2] ?? null;
+@endphp
+
 @extends('layouts.cityBook')
 @section('additional-styles')
     <!-- Owl Carousel CSS -->
@@ -867,6 +940,7 @@ $urlRouteRateBusiness = route('rate-register-business',$params);
             display: flex;
             flex-direction: column;
             gap: 14px;
+            margin-bottom: 19px;
         }
 
 
@@ -1162,111 +1236,439 @@ $urlRouteRateBusiness = route('rate-register-business',$params);
         .business-card {
             background: #fff;
             border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
         }
 
         .business-logo {
-            width: 180px;
-            height: 180px;
-            /* border-radius:50%;*/
-            /*   object-fit:cover;*/
+            width: 150px;
+            height: 150px;
+            border-radius: 24px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
         }
 
         .business-title {
-            font-size: 38px;
+            font-size: 40px;
             font-weight: 700;
-            color: var(--mc-azulClic);
-            margin-bottom: 4px;
+            line-height: 1.1;
         }
 
         .business-title a {
-            text-decoration: none;
             color: var(--mc-azulClic);
-
+            text-decoration: none;
         }
 
         .business-category {
-            font-size: 20px;
-            color: #666;
+            font-size: 18px;
+            color: #777;
+        }
+
+        .business-rating {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
         .rating-stars {
             color: #ffc107;
-            font-size: 18px;
+            font-size: 20px;
         }
 
-        .rating-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #444;
-            margin-left: 10px;
+        .rating-info {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
         }
 
-        .social-links a {
-            width: 42px;
-            height: 42px;
-            border: 2px solid var(--mc-azulClic);
-            border-radius: 50%;
+        .rating-info span {
+            font-size: 15px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .business-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .business-actions a {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 1px solid #e5e5e5;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--mc-azulClic);
             font-size: 20px;
+            transition: .2s;
             text-decoration: none;
+        }
+
+        .business-actions a:hover {
+            background: var(--mc-azulClic);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid #efefef;
+            border-radius: 22px;
+            padding: 28px 20px;
+            height: 100%;
+            text-align: center;
             transition: .2s;
         }
 
-        .social-links a:hover {
-            background: var(--mc-azulClic);
-            color: #fff;
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .06);
         }
 
-        .yapitas-box {
-            display: none !important;
-            background: #f7f4ff;
-            border-radius: 18px;
-            padding: 14px 20px;
-            min-width: 220px;
+        .stat-icon {
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            margin: auto auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
         }
 
-        .yapitas-text {
-            font-size: 28px;
+        .bg-primary-soft {
+            background: rgba(87, 95, 255, .1);
+            color: #575fff;
+        }
+
+        .bg-success-soft {
+            background: rgba(82, 196, 26, .1);
+            color: #52c41a;
+        }
+
+        .bg-warning-soft {
+            background: rgba(250, 173, 20, .1);
+            color: #faad14;
+        }
+
+        .stat-number {
+            font-size: 48px;
             font-weight: 700;
-            color: var(--mc-azulClic);
-
+            line-height: 1;
+            margin-bottom: 10px;
+            color: #575fff;
         }
 
-        .coin-icon {
+        .stat-title {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .yapitas-card {
+            background: linear-gradient(180deg, #faf7ff, #f5f0ff);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .yapitas-icon {
+            font-size: 42px;
             color: #f7b500;
+            margin-bottom: 15px;
+        }
+
+        .yapitas-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #6a4cff;
+            line-height: 1;
+        }
+
+        .yapitas-label {
+            color: #777;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-yapitas {
+            display: block;
+            width: 100%;
+            background: linear-gradient(90deg, #6a4cff, #5a67ff);
+            color: #fff;
+            padding: 14px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .manager-process-business-gamification__card {
+            background: #fff;
+            border: 1px solid #efefef;
+            border-radius: 20px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: .2s;
+            cursor: pointer;
+        }
+
+        .manager-process-business-gamification__card:hover {
+
+            box-shadow: 0 8px 18px rgba(0, 0, 0, .05);
+        }
+
+        .manager-process-business-gamification__icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: rgba(87, 95, 255, .08);
+            color: var(--mc-azulClic);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 24px;
         }
 
-        .arrow-icon {
-            color: var(--mc-azulClic);
-            font-size: 22px;
+        ul.manager-process-business-gamification__checklist {
+            padding-top: 9%;
         }
 
+        .manager-process-business-gamification__title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+            text-align: left;
+        }
+
+        .manager-process-business-gamification__description {
+            color: #777;
+            font-size: 14px;
+            text-align: justify;
+            height: 150px;
+        }
+
+        .manager-process-business-gamification__icon-go {
+            top: 39%;
+            cursor: pointer;
+            right: 33px;
+            position: absolute;
+            color: var(--mc-azulClic);
+            transform: rotate(270deg);
+
+            font-size: 28px;
+        }
+        .manager-process-business-gamification__actions{
+            display: none;
+        }
+        @media (max-width: 991px) {
+
+            .business-logo {
+                width: 110px;
+                height: 110px;
+            }
+
+            .business-title {
+                font-size: 30px;
+            }
+
+        }
+
+        /* =========================================================
+   MOBILE
+========================================================= */
         @media (max-width: 768px) {
+
 
             .business-title {
                 font-size: 28px;
             }
 
             .business-category {
+                font-size: 15px;
+                margin-bottom: 12px !important;
+            }
+
+            .business-rating {
+                justify-content: center;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .rating-stars {
+                font-size: 18px;
+            }
+
+            .rating-info {
+                font-size: 20px;
+            }
+
+            .rating-info span {
+                display: block;
+                margin-top: 2px;
+            }
+
+            .business-actions {
+                justify-content: center;
+                margin-top: 15px;
+                flex-wrap: wrap;
+            }
+
+            .business-actions a {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            /* STATS */
+            .stats-wrapper {
+                margin-top: 10px;
+            }
+
+            .stat-card {
+                padding: 20px 15px;
+                border-radius: 18px;
+            }
+
+            .stat-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                margin-bottom: 14px;
+            }
+
+            .stat-number {
+                font-size: 34px;
+            }
+
+            .stat-title {
+                font-size: 14px;
+            }
+
+            /* YAPITAS */
+            .yapitas-card {
+                padding: 24px 18px;
+                border-radius: 18px;
+                margin-top: 10px;
+            }
+
+            .yapitas-icon {
+                font-size: 34px;
+            }
+
+            .yapitas-value {
+                font-size: 36px;
+            }
+
+            .btn-yapitas {
+                padding: 12px;
+                border-radius: 14px;
+                font-size: 15px;
+            }
+
+            /* MENU CARDS */
+            .manager-process-business-gamification__card {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .manager-process-business-gamification__icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                border-radius: 14px;
+            }
+
+            .manager-process-business-gamification__title {
                 font-size: 16px;
             }
 
-            .yapitas-box {
-                width: 100%;
-                margin-top: 20px;
+            .manager-process-business-gamification__description {
+                font-size: 13px;
             }
 
         }
 
-        .data-page.manager-page__data-page {
-            margin-left: 4%;
-            margin-right: 4%;
+        /* =========================================================
+           SMALL MOBILES
+        ========================================================= */
+        @media (max-width: 480px) {
+
+
+            .rating-stars {
+                font-size: 16px;
+            }
+
+            .rating-info {
+                font-size: 18px;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+
+            .yapitas-value {
+                font-size: 30px;
+            }
+
+            .manager-process-business-gamification__card {
+                gap: 12px;
+            }
+
+        }
+
+        .content {
+            padding-right: 4% !important;
+            padding-left: 4% !important;
+
+        }
+
+        .manager-process-business-gamification__checklist li {
+            gap: 12px;
+        }
+
+        .manager-process-business-gamification__check-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(98, 72, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mc-azulClic);
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .manager-process-business-gamification__check-text {
+            font-size: 15px;
+            color: #5d6472;
+            font-weight: 500;
+        }
+
+        .manager-process-business-gamification__button {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 16px;
+            background: var(--mc-azulClic);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 800;
+            transition: var(--pc-transition);
+
+        }
+        div#business-information {
+            margin-bottom: 23px;
         }
     </style>
 @endsection
@@ -1390,47 +1792,67 @@ $urlRouteRateBusiness = route('rate-register-business',$params);
                     <div class="col-md-12">
                         <div class="business-card">
 
-                            <div
-                                class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+                            <div class="row g-4 align-items-stretch">
 
-                                <!-- LEFT -->
-                                <div class="d-flex gap-4 align-items-start">
+                                <!-- ROW 1 - COL 1 -->
+                                <div class="col-xl-4">
 
-                                    <!-- LOGO -->
-                                    <img
-                                        src="https://meetclic.com/public/uploads/business/information/trece-wallpaper.jpg"
-                                        class="business-logo"
-                                        alt=""
-                                    >
+                                    <div class="business-profile h-100">
 
-                                    <!-- INFO -->
-                                    <div>
+                                        <div class="d-flex gap-4 align-items-start">
 
-                                        <div class="business-title">
-                                            <a v-bind:href="businessInformation.information.url"> <?php echo "{{businessInformation.information.title}}" ?></a>
+                                            <img
+
+                                                v-bind:src="businessInformation.information.source"
+                                                alt=""
+                                                class="business-logo">
+
+                                            <div class="flex-grow-1">
+                                                <div class="business-title">
+
+                                                    <a v-bind:href="businessInformation.information.url"> <?php echo "{{businessInformation.information.title}}" ?></a>
+                                                </div>
+
+                                                <div class="business-category mb-3">
+                                                    <?php echo "{{businessInformation.subcategory.title}}" ?>
+                                                </div>
+                                                <div v-html="generateStars(businessInformation.starManagement)"></div>
+
+                                            </div>
+
                                         </div>
 
-                                        <div class="business-category mb-2">
-                                            <?php echo "{{businessInformation.subcategory.title}}" ?>
-                                        </div>
-                                        <!-- RATING -->
-                                        <div class="d-flex align-items-center mb-3">
-                                            <div v-html="generateStars(businessInformation.starManagement)"></div>
+                                    </div>
 
+                                </div>
 
-                                        </div>
+                                <!-- ROW 1 - COL 2 -->
+                                <div class="col-xl-6">
 
-                                        <!-- SOCIAL -->
-                                        <div class="social-links d-flex gap-3">
+                                    <div class="stats-wrapper h-100">
 
-                                            <a v-for="(menu, key) in businessInformation.linksManagement"
-                                               v-bind:href="menu.link"
-                                               target="_blank"
-                                               v-bind:id="'a-menu-'+menu.id"
-                                            >
-                                                <i   v-bind:class="menu.icon"></i>
-                                            </a>
+                                        <div class="row g-3 h-100">
+                                            @foreach($currentCounter['items'] as $item)
+                                                <div class="col-md-4">
 
+                                                    <div class="stat-card">
+
+                                                        <div class="stat-icon bg-primary-soft">
+                                                            <i class="{{$item['icon']}}"></i>
+                                                        </div>
+
+                                                        <div class="stat-number">
+                                                            {{$item['number']}}
+                                                        </div>
+
+                                                        <div class="stat-title">
+                                                            {{$item['label']}}
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endforeach
 
 
                                         </div>
@@ -1439,26 +1861,89 @@ $urlRouteRateBusiness = route('rate-register-business',$params);
 
                                 </div>
 
-                                <!-- RIGHT -->
-                                <div class="yapitas-box d-flex align-items-center justify-content-between">
+                                <!-- ROW 1 - COL 3 -->
+                                <div class="col-xl-2 not-view">
 
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="yapitas-card h-100">
 
-                                        <i class="bi bi-coin coin-icon"></i>
-
-                                        <div class="yapitas-text">
-                                            1,250 Yapitas
+                                        <div class="yapitas-icon">
+                                            <i class="bi bi-coin"></i>
                                         </div>
+
+                                        <div class="yapitas-value">
+                                            1,250
+                                        </div>
+
+                                        <div class="yapitas-label">
+                                            Yapitas disponibles
+                                        </div>
+
+                                        <a href="#"
+                                           class="btn-yapitas">
+                                            Ver Yapitas
+                                        </a>
 
                                     </div>
 
-                                    <i class="bi bi-chevron-right arrow-icon"></i>
+                                </div>
+
+                            </div>
+
+                            <!-- ROW 2 -->
+                            <div class="row g-3 mt-4" id="manager-process-business-gamification">
+
+                                <div class="col-md-3" v-for="(row, key) in businessInformation.linksManagement"
+                                     v-on:click="onProcessBusiness(row)">
+                                    <div class="manager-process-business-gamification__icon-go"><i
+                                            class="bi bi-chevron-down "></i>
+                                    </div>
+                                    <div class="manager-process-business-gamification__card" v-bind:link="row.link">
+
+                                        <div class="manager-process-business-gamification__icon">
+                                            <i v-bind:class="row.icon"></i>
+                                        </div>
+
+                                        <div class="manager-process-business-gamification__content">
+                                            <div class="manager-process-business-gamification__title">
+                                                <?php echo "{{row.title}}" ?>
+                                            </div>
+
+                                            <div class="manager-process-business-gamification__description">
+                                                <?php echo "{{row.description}}" ?>
+
+                                                <ul class="manager-process-business-gamification__checklist list-unstyled mb-0">
+
+                                                    <li class="manager-process-business-gamification__check-item d-flex align-items-center mb-2"
+                                                        v-for="(option, keyOption) in row.options">
+                                                        <div class="manager-process-business-gamification__check-icon">
+                                                            <i class="bi bi-check"></i>
+                                                        </div>
+
+                                                        <span class="manager-process-business-gamification__check-text">
+         <?php echo "{{option}}" ?>
+        </span>
+                                                    </li>
+
+
+                                                </ul>
+                                            </div>
+                                            <div class="manager-process-business-gamification__actions">
+                                                <button class="manager-process-business-gamification__button">
+                                                    Agregar
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
                         </div>
+
+
                     </div>
                 </div>
                 <div class="row">

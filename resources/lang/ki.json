@@ -201,8 +201,21 @@
 
     "frontend.business-details.menu-top.five.title": "Ñukanchik killkakuy",
     "frontend.business-details.menu-top.six.title": "Pukllay / Llankay",
+    "frontend.business-details.menu-top.six.option-description": "Ruraykunata tukuchishpa Yapitakunata japiy",
+    "frontend.business-details.menu-top.six.option-one": "Sapa simana retokuna",
+    "frontend.business-details.menu-top.six.option-two": "Yapitakunata ganay",
+
     "frontend.business-details.menu-top.seven.title": "Chaninchakuna",
+    "frontend.business-details.menu-top.seven.option-description": "Yapitakunawan muskuypak allikuna rantiy",
+    "frontend.business-details.menu-top.seven.option-one": "Pishiyachikuna",
+    "frontend.business-details.menu-top.seven.option-two": "Rantikuna",
+    "frontend.business-details.menu-top.seven.option-three": "Kawsay rikurishkakuna",
+
     "frontend.business-details.menu-top.eight.title": "Rimaykuna tantachina",
+    "frontend.business-details.menu-top.eight.option-description": "Yuyaynikita willay shinallatak alliyachun",
+    "frontend.business-details.menu-top.eight.option-one": "Kanpa yuyaykuna yupaychashka",
+    "frontend.business-details.menu-top.eight.option-two": "Tukuykunawan alliyachinchik",
+    "frontend.business-details.menu-top.eight.option-three": "Yapitakunata ganay ushanki",
 
     "frontend.business-details.working": "Llankay pacha",
     "frontend.business-details.all-day": "Tukuy punchapi",

@@ -1,135 +1,109 @@
-@if(isset($dataManagerPage['business']['counters']))
+@if(isset($dataManagerPage['business']['counters']) && isset($dataManagerPage['type']))
 
-    @if(isset($dataManagerPage['type']))
-        @if($dataManagerPage['type']==2)
-            <div class="list-single-facts fl-wrap gradient-bg gradient-bg--counters-profile-business">
-                <!-- inline-facts -->
+    @php
+
+        $counterConfigs = [
+
+            1 => [
+                'class' => 'gradient-bg',
+                'items' => [
+                    [
+                        'icon' => 'fa fa-building',
+                        'number' => 45,
+                        'label' => __('frontend.business-details.counter.five')
+                    ],
+                    [
+                        'icon' => 'fa fa-male',
+                        'number' => 2557,
+                        'label' => __('frontend.business-details.counter.six')
+                    ],
+                    [
+                        'icon' => 'fa fa-cutlery',
+                        'number' => 5,
+                        'label' => __('frontend.business-details.counter.seven')
+                    ],
+                ]
+            ],
+
+            2 => [
+                'class' => 'gradient-bg gradient-bg--counters-profile-business',
+                'items' => [
+                    [
+                        'icon' => 'fa fa-male',
+                        'number' => $dataManagerPage['business']['counters']['weekVisit']['count'] ?? 0,
+                        'label' => __('frontend.business-details.counter.one')
+                    ],
+                    [
+                        'icon' => 'fa fa-hand-peace-o',
+                        'number' => $dataManagerPage['business']['counters']['customersSatisfied']['count'] ?? 0,
+                        'label' => __('frontend.business-details.counter.two')
+                    ],
+                    [
+                        'icon' => 'fa fa-trophy',
+                        'number' => $dataManagerPage['business']['counters']['awards']['count'] ?? 0,
+                        'label' => __('frontend.business-details.counter.three')
+                    ],
+                ]
+            ],
+
+            4 => [
+                'class' => 'gradient-bg',
+                'items' => [
+                    [
+                        'icon' => 'fa fa-male',
+                        'number' => 154,
+                        'label' => __('frontend.business-details.counter.one')
+                    ],
+                    [
+                        'icon' => 'fa fa-hand-peace-o',
+                        'number' => 12168,
+                        'label' => __('frontend.business-details.counter.six')
+                    ],
+                    [
+                        'icon' => 'fa fa-trophy',
+                        'number' => 72,
+                        'label' => __('frontend.business-details.counter.three')
+                    ],
+                ]
+            ],
+
+        ];
+
+        $currentCounter = $counterConfigs[$dataManagerPage['type']] ?? null;
+
+    @endphp
+
+    @if($currentCounter)
+
+        <div class="list-single-facts fl-wrap {{$currentCounter['class']}}"
+             type-counter="{{$dataManagerPage['type']}}">
+
+            @foreach($currentCounter['items'] as $item)
+
                 <div class="inline-facts-wrap">
                     <div class="inline-facts">
-                        <i class="fa fa-male"></i>
+
+                        <i class="{{$item['icon']}}"></i>
+
                         <div class="milestone-counter">
                             <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="{{$dataManagerPage['business']['counters']['weekVisit']['count']}}">0</div>
+                                <div class="num"
+                                     data-content="0"
+                                     data-num="{{$item['number']}}">
+                                    0
+                                </div>
                             </div>
                         </div>
-                        <h6>{{__('frontend.business-details.counter.one')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-                <!-- inline-facts  -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-hand-peace-o"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="{{$dataManagerPage['business']['counters']['customersSatisfied']['count']}}">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.two')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-                <!-- inline-facts  -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-trophy"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="{{$dataManagerPage['business']['counters']['awards']['count']}}">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.three')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-            </div>
-        @elseif($dataManagerPage['type']==1)
-            <div class="list-single-facts fl-wrap gradient-bg">
-                <!-- inline-facts -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-business-details"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="45">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.five')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-                <!-- inline-facts  -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-male"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="2557">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.six')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-                <!-- inline-facts  -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-cutlery"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="5">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.seven')}}</h6>
+
+                        <h6>{{$item['label']}}</h6>
+
                     </div>
                 </div>
 
-            </div>
-        @elseif($dataManagerPage['type']==3)
+            @endforeach
 
-        @elseif($dataManagerPage['type']==4)
-            <div class="list-single-facts fl-wrap gradient-bg">
-                <!-- inline-facts -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-male"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="154">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.one')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-                <!-- inline-facts  -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-hand-peace-o"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="12168">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.six')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-                <!-- inline-facts  -->
-                <div class="inline-facts-wrap">
-                    <div class="inline-facts">
-                        <i class="fa fa-trophy"></i>
-                        <div class="milestone-counter">
-                            <div class="stats animaper">
-                                <div class="num" data-content="0" data-num="72">0</div>
-                            </div>
-                        </div>
-                        <h6>{{__('frontend.business-details.counter.three')}}</h6>
-                    </div>
-                </div>
-                <!-- inline-facts end -->
-            </div>
+        </div>
 
-        @endif
     @endif
+
 @endif

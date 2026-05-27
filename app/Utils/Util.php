@@ -1572,6 +1572,7 @@ class Util
         $schedulingManager = $params['scheduling'];
         $aboutUs = $params['aboutUs'];
         $counters = $params['counters'];
+
         $networkSocial = $params['networkSocial'];
         $allowInformation = $business->title ? true : false;
         $scheduling = [];

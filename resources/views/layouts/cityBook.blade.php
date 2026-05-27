@@ -427,7 +427,12 @@ if (env('allowAllInOne')) {
                     } if ($nameRoute == 'ourAllies') {
                         $activeOurAllies = 'act-link';
 
-                    } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
+                    }elseif ($nameRoute=='shop-business'){
+
+                        $activeOurAllies = 'act-link';
+
+                    }
+                    else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
                         if ($paramsRequest['type'] == 1) {
                             $dictionaryKichwaToCastilian = 'act-link';

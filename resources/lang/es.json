@@ -203,8 +203,21 @@
 
     "frontend.business-details.menu-top.five.title": "Acerca de Nosotros",
     "frontend.business-details.menu-top.six.title": "Juegos / Tareas",
+    "frontend.business-details.menu-top.six.option-description": "Completa actividades y gana Yapitas",
+    "frontend.business-details.menu-top.six.option-one": "Retos Semanales",
+    "frontend.business-details.menu-top.six.option-two": "Gana Yapitas",
+
     "frontend.business-details.menu-top.seven.title": "Premios",
+    "frontend.business-details.menu-top.seven.option-description": "Canjea tus Yapitas por beneficios increibles",
+    "frontend.business-details.menu-top.seven.option-one": "Descuentos",
+    "frontend.business-details.menu-top.seven.option-two": "Productos",
+    "frontend.business-details.menu-top.seven.option-three": "Experiencias",
+
     "frontend.business-details.menu-top.eight.title": "Buzón de sugerencias",
+    "frontend.business-details.menu-top.eight.option-description": "Comparte tus ideas y ayuda a mejorar",
+    "frontend.business-details.menu-top.eight.option-one": "Tus ideas cuentan",
+    "frontend.business-details.menu-top.eight.option-two": "Mejoramos juntos",
+    "frontend.business-details.menu-top.eight.option-three": "Puedes ganar Yapitas",
 
     "frontend.business-details.working": "Horas Laborales",
     "frontend.business-details.all-day": "Todo el dia.",

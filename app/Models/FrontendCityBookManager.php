@@ -123,18 +123,32 @@ class FrontendCityBookManager extends ModelManager
         $resourcePathServer = $publicAsset;
         $dataManagerPage['menuAccountManagementUser'] = $this->modelFMD->getMenuAccountManagementUser($resultPageData['profileConfig'], $page);
 
-        $allowCounters = ($page == 'home' || $page == 'homePage' || $page == 'aboutUs') ? true : false;
+        $allowCounters = ($page == 'home' || $page == 'homePage' || $page == 'aboutUs' || $page == 'shopPage') ? true : false;
 
         if ($allowCounters) {
             $modelCounter = new \App\Models\Tracking\TrackingEvents();
-//BUSINESS HOME
-            $weekVisit = $modelCounter->getCountersBusiness([
+            $paramsCount = [
                 'filters' => [
                     'isWeek' => true,
                     "allVisit" => true,
 
                 ]
-            ]);
+            ];
+            if ($page == 'shopPage') {
+                $setBusinessId=$paramsRequest['dataBusinessInformation']["business_id"];
+                $paramsCount = [
+                    'filters' => [
+                        'business_id' => $setBusinessId,
+                        'isWeek' => true,
+                    ]
+                ];
+
+            }
+
+//BUSINESS HOME
+
+            $weekVisit = $modelCounter->getCountersBusiness($paramsCount);
+
 
             $views = 0;
             $customersSatisfied = 0;
@@ -238,8 +252,8 @@ class FrontendCityBookManager extends ModelManager
 
         } else if ($page == 'shopPage') {
             $modelProduct = new Product();
-           $businessCurrentId= $paramsRequest["dataBusinessInformation"]["business_id"];
-           $categoriesShop= $modelProduct->getProductsShopPage(["filters" => [
+            $businessCurrentId = $paramsRequest["dataBusinessInformation"]["business_id"];
+            $categoriesShop = $modelProduct->getProductsShopPage(["filters" => [
                 "business_id" => $businessCurrentId
             ]]);
 
@@ -256,7 +270,6 @@ class FrontendCityBookManager extends ModelManager
             if ($allowTemplate) {
             }
             $dataManagerPage['categoriesShop'] = $categoriesShop;
-
 
 
         } else if ($page == 'search') {

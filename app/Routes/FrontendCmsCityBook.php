@@ -147,6 +147,8 @@ class FrontendCmsCityBook
             Route::get('/dictionary-words-management', 'Frontend\FrontendCityBookController@dictionaryWordsManagement')->name('dictionary-words-management');
 
 
+            Route::get('/management-products-generate-information', 'Frontend\ManagerDocumentController@managementProductsGenerateInformation')->name('managementProductsGenerateInformation');
+            Route::post('/products-generate-information', 'Frontend\ManagerDocumentController@productsGenerateInformation')->name('productsGenerateInformation');
 
 
         });

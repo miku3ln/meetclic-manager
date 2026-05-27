@@ -3,6 +3,7 @@
 
 namespace App\Models\Tracking;
 
+use App\Utils\TrackingUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ModelManager;
 use Auth;
@@ -134,13 +135,13 @@ class TrackingEvents extends ModelManager
 
     public function getCountersBusiness($params)
     {
-        $limitDays = Util::getDatesInitWeek();
+
         $query = "";
         $business_id = isset($params['filters']['business_id']) ? $params['filters']['business_id'] : null;
-        $actionName = isset($params['filters']['actionName']) ? $params['filters']['actionName'] : 'businessDetails';
+        $actionName = isset($params['filters']['actionName']) ? $params['filters']['actionName'] : TrackingUtil::ROUTE_BUSINESS_DETAILS;
         $getData = isset($params['filters']['allData']) ? $params['filters']['allData'] : false;
         $allVisit = isset($params['filters']['allVisit']) ? $params['filters']['allVisit'] : false;
-
+        $limitDays = Util::getDatesInitWeek();
         if ($allVisit) {
             $subquery = DB::table('tracking_sessions')
                 ->select([
@@ -151,7 +152,9 @@ class TrackingEvents extends ModelManager
                     'token',
                     'created_at'
                 ])
-                ->whereBetween('created_at', [$limitDays['from'], $limitDays['to']]);
+                ->whereBetween('created_at', [$limitDays['from'], $limitDays['to']])
+
+            ;
             $query = DB::table(DB::raw("({$subquery->toSql()}) as sesiones"))
                 ->mergeBindings($subquery)
                 ->select([
@@ -167,6 +170,7 @@ class TrackingEvents extends ModelManager
 
 
         }else{
+
             $query = DB::table($this->table);
             $tableMain = "tracking_sessions";
             $selectString = "tracking_sessions.token,$this->table.id,tracking_sessions.is_guest,tracking_sessions.user_id,$this->table.action_name,tracking_sessions.business_id";
@@ -194,9 +198,6 @@ class TrackingEvents extends ModelManager
         } else {
             $result = $query->get()->count();
         }
-
-
-
         return $result;
     }
 }

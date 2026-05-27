@@ -879,10 +879,11 @@
                 window.addEventListener('keydown', this.onEscClose);
                 var dataBusiness = $dataManagerPage.dataBusinessInformation.businessData;
                 this.businessInformation.information.title = dataBusiness["title"];
-                var businessId=dataBusiness["id"];
-                this.businessInformation.information.id =businessId;
+                var businessId = dataBusiness["id"];
+                this.businessInformation.information.id = businessId;
                 this.businessInformation.information.url = $urlRouteBusiness + "/" + businessId;
 
+                this.businessInformation.information.source = $publicAsset+dataBusiness["source"];
 
                 this.businessInformation.subcategory.title = dataBusiness["business_subcategories"];
                 this.businessInformation.subcategory.id = dataBusiness["business_subcategories_id"];
@@ -895,22 +896,40 @@
                         id: -1,
                         title: '{{__('frontend.business-details.menu-top.six.title')}}',
                         icon: 'fa fa-gamepad',
-                        link:  $urlRouteGamesBusiness.replace('/-1', '')+ "/" + businessId
+                        link: $urlRouteGamesBusiness.replace('/-1', '') + "/" + businessId,
+                        'description': '{{__('frontend.business-details.menu-top.six.option-description')}}',
+                        'options': [
+                            '{{__('frontend.business-details.menu-top.six.option-one')}}',
+                            '{{__('frontend.business-details.menu-top.six.option-two')}}',
+
+                        ]
                     },
                     {
                         id: -1,
                         title: '{{__('frontend.business-details.menu-top.seven.title')}}',
                         icon: 'fa fa-gift',
-                        link:$urlRouteRewardsBusiness.replace('/-1', '')+ "/" + businessId
+                        link: $urlRouteRewardsBusiness.replace('/-1', '') + "/" + businessId,
+                        'description': '{{__('frontend.business-details.menu-top.seven.option-description')}}',
+                        'options': [
+                            '{{__('frontend.business-details.menu-top.seven.option-one')}}',
+                            '{{__('frontend.business-details.menu-top.seven.option-two')}}',
+                            '{{__('frontend.business-details.menu-top.seven.option-three')}}',
+                        ]
                     },
                     {
                         id: -1,
                         title: '{{__('frontend.business-details.menu-top.eight.title')}}',
                         icon: 'fa fa-commenting',
-                        link:$urlRouteRateBusiness.replace('/-1', '')+ "/" + businessId
+                        link: $urlRouteRateBusiness.replace('/-1', '') + "/" + businessId,
+                        'description': '{{__('frontend.business-details.menu-top.eight.option-description')}}',
+                        'options': [
+                            '{{__('frontend.business-details.menu-top.eight.option-one')}}',
+                            '{{__('frontend.business-details.menu-top.eight.option-two')}}',
+                            '{{__('frontend.business-details.menu-top.eight.option-three')}}',
+                        ]
                     }
                 ];
-                this.businessInformation.linksManagement =linksManagement;
+                this.businessInformation.linksManagement = linksManagement;
 
 
             },
@@ -925,6 +944,7 @@
                     $thisV.initViewProcess();
                 });
             },
+
             beforeDestroy() {
                 window.removeEventListener('keydown', this.onEscClose);
             },
@@ -1010,23 +1030,27 @@
                 _resetManagerGrid: _resetManagerGrid,
                 _managerMenuGrid: _managerMenuGrid,
                 _gridManager: _gridManager,
-                generateStars:function(starManagement) {
+                onProcessBusiness: function (params) {
+
+                    window.open(params.link, '_blank');
+                },
+                generateStars: function (starManagement) {
 
                     let html = `
-                    <div class="rating-stars">
+                    <div class="rating-stars  mb-3">
                 `;
 
-                    for(let i = 1; i <= starManagement.numberStar; i++) {
+                    for (let i = 1; i <= starManagement.numberStar; i++) {
 
-                        if(starManagement.count >= i){
+                        if (starManagement.count >= i) {
 
                             html += `<i class="bi bi-star-fill"></i>`;
 
-                        }else if(starManagement.count >= (i - 0.5)){
+                        } else if (starManagement.count >= (i - 0.5)) {
 
                             html += `<i class="bi bi-star-half"></i>`;
 
-                        }else{
+                        } else {
 
                             html += `<i class="bi bi-star"></i>`;
 
@@ -1034,11 +1058,9 @@
 
                     }
 
-                    html += `
-                        <span class="rating-text">
-                            ${starManagement.count}
-                            (${starManagement.numberPerson})
-                        </span>
+                    html += ` <div class="rating-info">
+                                                      ${starManagement.count} <span>(0 reseñas)</span>
+                                                    </div>
                     </div>
                 `;
 
@@ -1115,7 +1137,7 @@
                     $this = this;
                     let gridInit = $(gridName);
                     var labelsConfig = $labelsGridConfigDefault;
-
+                    $labelsGridConfigDefault['search']='Buscar';
 
                     gridInit.bootgrid({
                         ajaxSettings: {
@@ -1226,10 +1248,7 @@
                     <!-- TOP -->
 
                     <div class="product-card__top">
-
-                        <span class="
-                            product-card__subcategory
-                        ">
+                        <span class=" product-card__subcategory">
                             ${subcategory}
                         </span>
 

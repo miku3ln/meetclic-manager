@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Session;
 
 class TrackingUtil
 {
+    const ROUTE_BUSINESS_DETAILS="business-details";
     const TASK_TOAST = [
         -2 => [
             'type' => 'error',
@@ -495,13 +496,16 @@ class TrackingUtil
         // -------------------------
         // DETERMINAR NEGOCIO
         // -------------------------
-        if ($type == 'businessDetails') {
-            if (isset($urlSegments[2])) {
-                $allowManagerProcess = true;
-                $business_id = $urlSegments[2];
-            } else {
-                $allowManagerProcess = false;
+        if ($type == self::ROUTE_BUSINESS_DETAILS) {//COUNTER-INIT
+            $business_id = collect($urlSegments)->first(function ($item) {
+                return is_numeric($item);
+            });
+            $allowManagerProcess = !empty($business_id);
+
+            if ($allowManagerProcess) {
+                $business_id = (int) $business_id;
             }
+
         } else {
             $modelBusiness = new \App\Models\Business();
             $business_id = $modelBusiness::BUSINESS_MAIN_ID;
@@ -514,10 +518,9 @@ class TrackingUtil
                 'business_id' => $business_id
             ]
         ]);
-
         if ($information) {
             $allowManagerProcess = true;
-            if ($type == 'businessDetails') {
+            if ($type == self::ROUTE_BUSINESS_DETAILS) {
                 $businessIdCurrent = $information->id;
             }
         } else {
