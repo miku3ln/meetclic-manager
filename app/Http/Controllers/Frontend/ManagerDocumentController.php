@@ -1939,7 +1939,7 @@ class ManagerDocumentController extends FrontendBaseController
             ],
             'three' => [
 
-                $measureType => $measureType,
+                $measureType => "VOLUMEN",
 
                 'conversion' => '10l-vter_10oz',
 
@@ -1947,9 +1947,24 @@ class ManagerDocumentController extends FrontendBaseController
 
                     $this->measureResolverService
                         ->resolveConversion(
-                            $measureType,
+                            'VOLUMEN',
                             '10l',
                             'vter_10oz'
+                        )
+            ],
+            'four' => [
+
+                $measureType => 'VOLUMEN',
+
+                'conversion' => '2 10l-vter_10oz',
+
+                'resultConversion' =>
+
+                    $this->measureResolverService
+                        ->resolveConversion(
+                            'VOLUMEN',
+                            '2 vter_10oz',
+                            'l'
                         )
             ],
         ];

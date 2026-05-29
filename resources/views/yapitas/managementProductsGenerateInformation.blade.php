@@ -115,7 +115,7 @@
 
             justify-content: center;
 
-            background: rgba(255,255,255,0.85);
+            background: rgba(255, 255, 255, 0.85);
 
             backdrop-filter: blur(3px);
         }
@@ -136,8 +136,7 @@
 
             background: #ffffff;
 
-            box-shadow:
-                0 10px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
 
             text-align: center;
         }
@@ -162,8 +161,7 @@
 
             border-top-color: #0d6efd;
 
-            animation:
-                upload-process-spin 1s linear infinite;
+            animation: upload-process-spin 1s linear infinite;
         }
 
         @keyframes upload-process-spin {
@@ -222,6 +220,129 @@
         | ENABLE BUTTON
         |--------------------------------------------------------------------------
         */
+        function generateConversionHtml(params) {
+            let data = params["data"]; // tu json
+
+            let html = '';
+
+            Object.keys(data).forEach((key) => {
+
+                let item = data[key];
+                let result = item.resultConversion;
+
+                if (result.success) {
+
+                    let input = result.data.input;
+                    let output = result.data.output;
+                    let conversion = result.data.conversion;
+
+                    html += `
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">
+                                Conversión
+                            </h5>
+
+                            <span class="badge bg-success">
+                                Exitosa
+                            </span>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-5">
+                                <div class="p-3 bg-light rounded">
+
+                                    <small class="text-muted d-block">
+                                        Desde
+                                    </small>
+
+                                    <h4 class="mb-1">
+                                        ${input.quantity}
+                                    </h4>
+
+                                    <div>
+                                        ${input.unit_measure.name}
+                                        (${input.unit_measure.symbol})
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-arrow-right fs-2 text-primary"></i>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="p-3 bg-primary text-white rounded">
+
+                                    <small class="d-block">
+                                        Resultado
+                                    </small>
+
+                                    <h4 class="mb-1">
+                                        ${output.quantity}
+                                    </h4>
+
+                                    <div>
+                                        ${output.unit_measure.name}
+                                        (${output.unit_measure.symbol})
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="small text-muted">
+                            <strong>Conversión aplicada:</strong><br>
+                            ${conversion.description}
+                        </div>
+
+                    </div>
+                </div>
+            `;
+
+                } else {
+
+                    html += `
+                <div class="card border-danger mb-3">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title text-danger mb-0">
+                                Conversión no disponible
+                            </h5>
+
+                            <span class="badge bg-danger">
+                                Error
+                            </span>
+                        </div>
+
+                        <hr>
+
+                        <div>
+                            <strong>Conversión solicitada:</strong>
+                            ${item.conversion}
+                        </div>
+
+                        <div class="mt-2 text-danger">
+                            ${result.message}
+                        </div>
+
+                    </div>
+                </div>
+            `;
+                }
+
+            });
+
+            return html;
+        }
 
         function checkInputs() {
 
@@ -299,6 +420,8 @@
                         response
                     );
 
+                 var resultHtmlConversion=   generateConversionHtml({data:response.measureConfiguration.conversion});
+                    $(".view-result").append(resultHtmlConversion);
                     const html =
                         response.html;
                     $(".view-result").append(response.measureConfiguration.measure.html);
