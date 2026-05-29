@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Services\Inventory\MeasurementConversionService;
 
 use App\Services\Inventory\MeasurementValidatorService;
+use App\Services\Inventory\MeasureResolverService;
 use App\Services\ProductMassiveLoadService;
 
 use App\Utils\Inventory\MeasurementConversionUtil;
@@ -32,9 +33,15 @@ class ManagerDocumentController extends FrontendBaseController
 {
 
 
-    public function __construct()
+    private MeasureResolverService $measureResolverService;
+
+    public function __construct(
+        MeasureResolverService $measureResolverService
+    )
     {
 
+        $this->measureResolverService =
+            $measureResolverService;
     }
 
     public function signPdf(Request $request)
@@ -1214,6 +1221,695 @@ class ManagerDocumentController extends FrontendBaseController
         return $htmlTables;
     }
 
+    public function renderCatalogHtml(
+        $catalog
+    ): string
+    {
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONFIG VISUAL
+        |--------------------------------------------------------------------------
+        */
+
+        $themeMap = [
+
+            'MASA' => [
+                'class' => 'success',
+                'icon' => 'bi bi-box-seam'
+            ],
+
+            'LONGITUD' => [
+                'class' => 'primary',
+                'icon' => 'bi bi-rulers'
+            ],
+
+            'VOLUMEN' => [
+                'class' => 'purple',
+                'icon' => 'bi bi-beaker'
+            ],
+
+            'AREA' => [
+                'class' => 'warning',
+                'icon' => 'bi bi-bounding-box'
+            ],
+
+            'UNIDAD' => [
+                'class' => 'dark',
+                'icon' => 'bi bi-box'
+            ],
+        ];
+
+        $html = '
+
+    <div class="measure-catalog container-fluid">
+
+        <div class="row g-4">
+    ';
+
+        foreach ($catalog as $measureType) {
+
+            $name =
+                mb_strtoupper(
+                    trim($measureType['name'])
+                );
+
+            $theme =
+                $themeMap[$name]
+                ??
+                [
+                    'class' => 'secondary',
+                    'icon' => 'bi bi-circle'
+                ];
+
+            $cardClass =
+                $theme['class'];
+
+            $icon =
+                $theme['icon'];
+
+            $html .= '
+
+        <div class="
+            col-12
+            col-md-6
+            col-xl-4
+        ">
+
+            <div class="
+                measure-catalog__card
+                card
+                shadow-sm
+                border-0
+                h-100
+            ">
+
+                <div class="
+                    measure-catalog__header
+                    measure-catalog__header--' . $cardClass . '
+                    card-header
+                    d-flex
+                    align-items-center
+                    gap-3
+                ">
+
+                    <i class="
+                        measure-catalog__icon
+                        ' . $icon . '
+                    "></i>
+
+                    <div>
+
+                        <h4 class="
+                            measure-catalog__title
+                            mb-0
+                        ">
+                            ' . e($measureType['name']) . '
+                        </h4>
+
+                        <small class="
+                            measure-catalog__subtitle
+                        ">
+                            ' . e($measureType['description']) . '
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="
+                            measure-catalog__table
+                            table
+                            table-bordered
+                            align-middle
+                            mb-0
+                        ">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th width="28%">
+                                        Unidad
+                                    </th>
+
+                                    <th width="12%">
+                                        Símbolo
+                                    </th>
+
+                                    <th width="60%">
+                                        Conversiones
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+        ';
+
+            foreach ($measureType['units'] as $unit) {
+
+                $baseClass =
+                    $unit['is_base']
+
+                        ?
+
+                        'measure-catalog__row--base'
+
+                        :
+
+                        '';
+
+                $defaultBadge = '';
+
+                if ($unit['is_default']) {
+
+                    $defaultBadge = '
+
+                    <span class="
+                        badge
+                        text-bg-dark
+                        ms-2
+                    ">
+                        Default
+                    </span>
+                ';
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | CONVERSIONES HTML
+                |--------------------------------------------------------------------------
+                */
+
+                $conversionHtml = '';
+
+                if (
+                    empty($unit['conversions'])
+                ) {
+
+                    $conversionHtml = '
+
+                    <div class="
+                        measure-catalog__empty
+                        text-muted
+                        small
+                    ">
+
+                        <i class="
+                            bi bi-dash-circle
+                        "></i>
+
+                        Sin conversiones
+
+                    </div>
+                ';
+                } else {
+
+                    $conversionHtml .= '
+
+                    <table class="
+                        measure-catalog__conversion-table
+                        table
+                        table-sm
+                        table-bordered
+                        mb-0
+                    ">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Conversión
+                                </th>
+
+                                <th>
+                                    Tipo
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                ';
+
+                    foreach (
+                        $unit['conversions']
+                        as $conversion
+                    ) {
+
+                        $factor =
+                            rtrim(
+                                rtrim(
+                                    number_format(
+                                        $conversion['factor'],
+                                        8,
+                                        '.',
+                                        ''
+                                    ),
+                                    '0'
+                                ),
+                                '.'
+                            );
+
+                        $conversionHtml .= '
+
+                        <tr>
+
+                            <td>
+
+                                <div class="
+                                    measure-catalog__conversion
+                                ">
+
+                                    <div class="
+                                        measure-catalog__conversion-text
+                                    ">
+
+                                        <strong>
+                                            1
+                                            ' . e($unit['symbol']) . '
+                                        </strong>
+
+                                        =
+
+                                        <strong>
+                                            ' . $factor . '
+                                            ' . e(
+                                $conversion['to_unit']['symbol']
+                            ) . '
+                                        </strong>
+
+                                    </div>
+
+                                    <div class="
+                                        measure-catalog__conversion-description
+                                        text-muted
+                                        small
+                                    ">
+
+                                        ' . e(
+                                $conversion['description']
+                            ) . '
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <span class="
+                                    badge
+                                    text-bg-light
+                                    border
+                                ">
+                                    ' . e(
+                                $conversion['conversion_type']
+                            ) . '
+                                </span>
+
+                            </td>
+
+                        </tr>
+                    ';
+                    }
+
+                    $conversionHtml .= '
+
+                        </tbody>
+
+                    </table>
+                ';
+                }
+
+                $html .= '
+
+                <tr class="
+                    measure-catalog__row
+                    ' . $baseClass . '
+                ">
+
+                    <td>
+
+                        <div class="
+                            d-flex
+                            align-items-center
+                            gap-2
+                        ">
+
+                            <span>
+                                ' . e($unit['name']) . '
+                            </span>
+
+                            ' . $defaultBadge . '
+
+                            ' . (
+                    $unit['is_base']
+
+                        ?
+
+                        '
+
+                                    <span class="
+                                        badge
+                                        text-bg-success
+                                    ">
+                                        Base
+                                    </span>
+
+                                    '
+
+                        :
+
+                        ''
+                    ) . '
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            measure-catalog__symbol
+                        ">
+                            ' . e($unit['symbol']) . '
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ' . $conversionHtml . '
+
+                    </td>
+
+                </tr>
+            ';
+            }
+
+            $html .= '
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        ';
+        }
+
+        $html .= '
+
+        </div>
+
+    </div>
+    ';
+
+        return $html;
+    }
+
+    public function renderCatalogHtml2(
+        $catalog
+    ): string
+    {
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONFIG VISUAL
+        |--------------------------------------------------------------------------
+        */
+
+        $themeMap = [
+
+            'MASA' => [
+                'class' => 'success',
+                'icon' => 'bi bi-box-seam'
+            ],
+
+            'LONGITUD' => [
+                'class' => 'primary',
+                'icon' => 'bi bi-rulers'
+            ],
+
+            'VOLUMEN' => [
+                'class' => 'purple',
+                'icon' => 'bi bi-beaker'
+            ],
+
+            'AREA' => [
+                'class' => 'warning',
+                'icon' => 'bi bi-bounding-box'
+            ],
+
+            'UNIDAD' => [
+                'class' => 'dark',
+                'icon' => 'bi bi-box'
+            ],
+        ];
+
+        $html = '
+
+    <div class="measure-catalog container-fluid">
+
+        <div class="row g-4">
+    ';
+
+        foreach ($catalog as $measureType) {
+
+            $name =
+                mb_strtoupper(
+                    trim($measureType['name'])
+                );
+
+            $theme =
+                $themeMap[$name]
+                ??
+                [
+                    'class' => 'secondary',
+                    'icon' => 'bi bi-circle'
+                ];
+
+            $cardClass =
+                $theme['class'];
+
+            $icon =
+                $theme['icon'];
+
+            $html .= '
+
+        <div class="
+            col-12
+            col-md-6
+            col-xl-4
+        ">
+
+            <div class="
+                measure-catalog__card
+                card
+                shadow-sm
+                border-0
+                h-100
+            ">
+
+                <div class="
+                    measure-catalog__header
+                    measure-catalog__header--' . $cardClass . '
+                    card-header
+                    d-flex
+                    align-items-center
+                    gap-3
+                ">
+
+                    <i class="
+                        measure-catalog__icon
+                        ' . $icon . '
+                    "></i>
+
+                    <div>
+
+                        <h4 class="
+                            measure-catalog__title
+                            mb-0
+                        ">
+                            ' . e($measureType['name']) . '
+                        </h4>
+
+                        <small class="
+                            measure-catalog__subtitle
+                        ">
+                            ' . e($measureType['description']) . '
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="
+                            measure-catalog__table
+                            table
+                            table-bordered
+                            align-middle
+                            mb-0
+                        ">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Unidad
+                                    </th>
+
+                                    <th>
+                                        Símbolo
+                                    </th>
+
+                                    <th>
+                                        Conversión
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+        ';
+
+            foreach ($measureType['units'] as $unit) {
+
+                $baseClass =
+                    $unit['is_base']
+
+                        ?
+
+                        'measure-catalog__row--base'
+
+                        :
+
+                        '';
+
+                $defaultBadge = '';
+
+                if ($unit['is_default']) {
+
+                    $defaultBadge = '
+
+                    <span class="
+                        badge
+                        text-bg-dark
+                        ms-2
+                    ">
+                        Default
+                    </span>
+                ';
+                }
+
+                $html .= '
+
+                <tr class="
+                    measure-catalog__row
+                    ' . $baseClass . '
+                ">
+
+                    <td>
+
+                        <div class="
+                            d-flex
+                            align-items-center
+                            gap-2
+                        ">
+
+                            <span>
+                                ' . e($unit['name']) . '
+                            </span>
+
+                            ' . $defaultBadge . '
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            measure-catalog__symbol
+                        ">
+                            ' . e($unit['symbol']) . '
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            measure-catalog__factor
+                        ">
+                            ' . rtrim(
+                        rtrim(
+                            number_format(
+                                $unit['factor_to_base'],
+                                6,
+                                '.',
+                                ''
+                            ),
+                            '0'
+                        ),
+                        '.'
+                    ) . '
+                        </span>
+
+                    </td>
+
+                </tr>
+            ';
+            }
+
+            $html .= '
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        ';
+        }
+
+        $html .= '
+
+        </div>
+
+    </div>
+    ';
+
+        return $html;
+    }
+
     public function productsGenerateInformation(Request $request)
     {
         $businessId = 42;
@@ -1221,7 +1917,52 @@ class ManagerDocumentController extends FrontendBaseController
             'products-files' => 'required|file|mimes:xlsx,xls,csv,ods|max:10240',
 
         ]);
+        $data =
+            $this->measureResolverService
+                ->getCatalog(
+                    $businessId
+                );
 
+        $measureType = "MASA";
+
+        $conversion = [
+
+            'one' => [
+                $measureType => $measureType,
+                'conversion' => "10lb",
+                'resultConversion'=>$this->measureResolverService->resolveConversion($measureType, '10lb')
+            ],
+            'two' => [
+                $measureType => $measureType,
+                'conversion' => "10lb-t",
+                'resultConversion'=>$this->measureResolverService->resolveConversion($measureType, '10lb','oz')
+            ],
+            'three' => [
+
+                $measureType => $measureType,
+
+                'conversion' => '10l-vter_10oz',
+
+                'resultConversion' =>
+
+                    $this->measureResolverService
+                        ->resolveConversion(
+                            $measureType,
+                            '10l',
+                            'vter_10oz'
+                        )
+            ],
+        ];
+        $htmlCatalogMeasure = $this->renderCatalogHtml($data);
+        $measureConfiguration = [
+            'measure' => [
+                'data' => $data,
+                'html' => $htmlCatalogMeasure,
+
+            ],
+            'conversion' => $conversion
+
+        ];
         if ($validator->fails()) {
 
             return response()->json([
@@ -1311,6 +2052,7 @@ class ManagerDocumentController extends FrontendBaseController
             $response['html'] = $html;
             $response['inserts'] = $dataInserts;
             $response['conversion'] = ['params' => $params, 'conversion' => $dataConvert, 'conversionManagement' => $conversionManagement];
+            $response['measureConfiguration'] = $measureConfiguration;
 
             return response()->json($response);
 

@@ -301,8 +301,9 @@
 
                     const html =
                         response.html;
+                    $(".view-result").append(response.measureConfiguration.measure.html);
+                    $(".view-result").append(html);
 
-                    $(".view-result").html(html);
                 },
 
                 error: function (xhr) {
