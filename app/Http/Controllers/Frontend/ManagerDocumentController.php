@@ -1909,8 +1909,273 @@ class ManagerDocumentController extends FrontendBaseController
 
         return $html;
     }
-
     public function productsGenerateInformation(Request $request)
+    {
+        $businessId = 42;
+
+        $validator = Validator::make($request->all(), [
+            'products-files' => 'required|file|mimes:xlsx,xls,csv,ods|max:10240',
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Archivo inválido',
+                'errors' => $validator->errors(),
+                'data' => []
+            ], 422);
+        }
+
+        try {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Catalogo de medidas
+            |--------------------------------------------------------------------------
+            */
+
+            $data =
+                $this->measureResolverService
+                    ->getCatalog(
+                        $businessId
+                    );
+
+            $measureType = "MASA";
+
+            $conversion = [
+
+                'one' => [
+                    $measureType => $measureType,
+                    'conversion' => "10lb",
+                    'resultConversion' =>
+                        $this->measureResolverService
+                            ->resolveConversion(
+                                $measureType,
+                                '10lb'
+                            )
+                ],
+
+                'two' => [
+                    $measureType => $measureType,
+                    'conversion' => "10lb-t",
+                    'resultConversion' =>
+                        $this->measureResolverService
+                            ->resolveConversion(
+                                $measureType,
+                                '10lb',
+                                'oz'
+                            )
+                ],
+
+                'three' => [
+
+                    $measureType => "VOLUMEN",
+
+                    'conversion' => '10l-vter_10oz',
+
+                    'resultConversion' =>
+
+                        $this->measureResolverService
+                            ->resolveConversion(
+                                'VOLUMEN',
+                                '10l',
+                                'vter_10oz'
+                            )
+                ],
+
+                'four' => [
+
+                    $measureType => 'VOLUMEN',
+
+                    'conversion' => '2 vter_10oz-l',
+
+                    'resultConversion' =>
+
+                        $this->measureResolverService
+                            ->resolveConversion(
+                                'VOLUMEN',
+                                '2 vter_10oz',
+                                'l'
+                            )
+                ],
+            ];
+
+            $htmlCatalogMeasure = $this->renderCatalogHtml($data);
+
+            $measureConfiguration = [
+                'measure' => [
+                    'data' => $data,
+                    'html' => $htmlCatalogMeasure,
+                ],
+                'conversion' => $conversion
+            ];
+
+            /*
+            |--------------------------------------------------------------------------
+            | Servicios principales
+            |--------------------------------------------------------------------------
+            */
+
+            $service = new ProductMassiveLoadService();
+
+            $taxMain = $service->getTaxByBusiness([
+                "businessId" => [$businessId],
+                "priority" => 1
+            ]);
+
+            $notTaxMain = $service->getTaxByBusiness([
+                "businessId" => [$businessId],
+                "priority" => 2
+            ]);
+
+            $allowConfigTax =
+                count($taxMain) &&
+                count($notTaxMain);
+
+            $paramsTax = [
+                'tax' => $taxMain,
+                'not-tax' => $notTaxMain,
+                'allowConfigTax' => $allowConfigTax,
+            ];
+
+            /*
+            |--------------------------------------------------------------------------
+            | Variables por defecto
+            |--------------------------------------------------------------------------
+            */
+
+            $responseFiles = [
+                'success' => false,
+                'message' => null,
+                'data' => []
+            ];
+
+            $html = '';
+
+            $dataInserts = [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | Procesamiento del archivo
+            |--------------------------------------------------------------------------
+            | Si falla NO rompe todo el endpoint
+            |--------------------------------------------------------------------------
+            */
+
+            try {
+
+                $responseFiles = $service->processFile(
+                    $request->file('products-files'),
+                    $businessId,
+                    $paramsTax
+                );
+
+                $html = $service->generateHtmlTable(
+                    $responseFiles['data']
+                );
+
+                $dataInserts =
+                    $service->buildProductsForInsert([
+                        'haystack' => $responseFiles['data'],
+                        'businessIdManager' => $businessId,
+                        'paramsTax' => $paramsTax
+                    ]);
+
+            } catch (\Exception $e) {
+
+                $responseFiles = [
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                    'data' => []
+                ];
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Conversiones
+            |--------------------------------------------------------------------------
+            */
+
+            $params = [
+                'measureType' => 'MASA',
+                'value' => '15kg',
+                'convertToBase' => ['base']
+            ];
+
+            $measureType = 'Masa';
+
+            $dataConvert = [
+
+                'base_unit' =>
+
+                    MeasurementConversionUtil::getBaseUnit(
+                        $measureType
+                    ),
+
+                'default_unit' =>
+
+                    MeasurementConversionUtil::getDefaultUnit(
+                        $measureType
+                    ),
+
+                'available_units' =>
+
+                    MeasurementConversionUtil::getAvailableUnits(
+                        $measureType
+                    ),
+
+                'conversions' =>
+
+                    MeasurementConversionUtil::getConversionsByType(
+                        $measureType
+                    ),
+
+                'conversions_to_base' =>
+
+                    MeasurementConversionUtil::getConversionsToBaseUnit(
+                        $measureType
+                    ),
+            ];
+
+            $conversionManagement =
+                MeasurementConversionUtil::normalizeToBase(
+                    $params
+                );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Response final
+            |--------------------------------------------------------------------------
+            */
+
+            $response = $responseFiles;
+
+            $response['html'] = $html;
+
+            $response['inserts'] = $dataInserts;
+
+            $response['conversion'] = [
+                'params' => $params,
+                'conversion' => $dataConvert,
+                'conversionManagement' => $conversionManagement
+            ];
+
+            $response['measureConfiguration'] =
+                $measureConfiguration;
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+    public function productsGenerateInformation2(Request $request)
     {
         $businessId = 42;
         $validator = Validator::make($request->all(), [
@@ -1973,7 +2238,6 @@ class ManagerDocumentController extends FrontendBaseController
             'measure' => [
                 'data' => $data,
                 'html' => $htmlCatalogMeasure,
-
             ],
             'conversion' => $conversion
 
@@ -2068,6 +2332,8 @@ class ManagerDocumentController extends FrontendBaseController
             $response['inserts'] = $dataInserts;
             $response['conversion'] = ['params' => $params, 'conversion' => $dataConvert, 'conversionManagement' => $conversionManagement];
             $response['measureConfiguration'] = $measureConfiguration;
+
+
 
             return response()->json($response);
 

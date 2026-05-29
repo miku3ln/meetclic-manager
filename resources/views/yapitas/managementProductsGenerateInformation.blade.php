@@ -420,13 +420,87 @@
                         response
                     );
 
-                 var resultHtmlConversion=   generateConversionHtml({data:response.measureConfiguration.conversion});
-                    $(".view-result").append(resultHtmlConversion);
-                    const html =
-                        response.html;
-                    $(".view-result").append(response.measureConfiguration.measure.html);
-                    $(".view-result").append(html);
+                    /*
+                    |--------------------------------------------------------------------------
+                    | LIMPIAR
+                    |--------------------------------------------------------------------------
+                    */
 
+                    $(".view-result").html('');
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | MENSAJE ERROR CONTROLADO
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        response.success === false
+                        && response.message
+                    ) {
+
+                        $(".view-result").append(`
+                <div class="alert alert-danger">
+                    ${response.message}
+                </div>
+            `);
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | CONVERSIONES
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        response.measureConfiguration
+                        && response.measureConfiguration.conversion
+                    ) {
+
+                        const resultHtmlConversion =
+                            generateConversionHtml({
+                                data:
+                                response
+                                    .measureConfiguration
+                                    .conversion
+                            });
+
+                        $(".view-result")
+                            .append(resultHtmlConversion);
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | CATALOGO MEDIDAS
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        response.measureConfiguration
+                        && response.measureConfiguration.measure
+                        && response.measureConfiguration.measure.html
+                    ) {
+
+                        $(".view-result")
+                            .append(
+                                response
+                                    .measureConfiguration
+                                    .measure
+                                    .html
+                            );
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | TABLA HTML
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (response.html) {
+
+                        $(".view-result")
+                            .append(response.html);
+                    }
                 },
 
                 error: function (xhr) {
@@ -437,7 +511,7 @@
                     );
 
                     alert(
-                        xhr.responseJSON.message
+                        xhr.responseJSON?.message
                         || 'Error al subir archivos.'
                     );
                 },
