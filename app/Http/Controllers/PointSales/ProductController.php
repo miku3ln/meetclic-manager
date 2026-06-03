@@ -28,16 +28,26 @@ class ProductController extends PointSalesBaseController
 
     }
 
-    public function getProductsSales(Request $request)
+    public function getProductsSales(Request $request)//POS-PRODUCTS -INIT-ONE
     {
 
         $params = $request->all();
-        $data = $this->service->getProducts($params);
+
+        $filters=[
+            'searchPhrase'=>isset($params["searchPhrase"])?$params["searchPhrase"]:'',
+            'current'=>$params["current"],
+            'rowCount'=>$params["rowCount"],
+            'business_id'=>$params["business_id"],
+            'filters'=>[
+                'business_id'=>$params["business_id"],
+            ]
+        ];
+        $data = $this->service->getProducts($filters);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
 
-    public function generateTicket(Request $request)
+    public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO
     {
         $payload = $request->json()->all();
         $dataAllow = false;
@@ -173,6 +183,7 @@ class ProductController extends PointSalesBaseController
                         'update_at' => Util::DateCurrent()
 
                     ];
+
                     $paramsValidate = array(
                         'modelAttributes' => $invoiceByPayment,
                         'rules' => $modelInvoiceByPayment::getRulesModel(),
@@ -291,6 +302,7 @@ class ProductController extends PointSalesBaseController
                         );
 
                         $validateInventoryMovement = $modelInventoryMovement->validateModel($paramsValidate);
+
                         if ($validateInventoryMovement['success']) {
                             $message = "Producto Movimiento Guardado";
                             $success = true;

@@ -107,16 +107,22 @@ class ProductSalesRepository extends BaseRepository
         */
 
         $business_id = $params["filters"]["business_id"];
-
-        $subcategoryId =
-            $params["filters"]["subcategoryId"] == -1
+        $subcategoryId = null;
+        if (isset($params["filters"]["subcategoryId"])) {
+            $subcategoryId = $params["filters"]["subcategoryId"] == -1
                 ? null
                 : $params["filters"]["subcategoryId"];
+        }
+        $categoryId = null;
 
-        $categoryId =
-            $params["filters"]["categoryId"] == -1
-                ? null
-                : $params["filters"]["categoryId"];
+        if (isset($params["filters"]["categoryId"])) {
+            $categoryId =
+                $params["filters"]["categoryId"] == -1
+                    ? null
+                    : $params["filters"]["categoryId"];
+        }
+
+
 
         /*
         |--------------------------------------------------------------------------

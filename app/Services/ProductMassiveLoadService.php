@@ -47,9 +47,24 @@ class ProductMassiveLoadService
 
         $sheet = $spreadsheet->getActiveSheet();
 
-        $rows = $sheet->toArray();
+        /*
+        |--------------------------------------------------------------------------
+        | SOLO LEER A:L
+        |--------------------------------------------------------------------------
+        */
+
+        $highestRow = $sheet->getHighestDataRow();
+
+        $rows = $sheet->rangeToArray(
+            "A1:L{$highestRow}",
+            null,
+            true,
+            false,
+            false
+        );
 
         $taxMain = $paramsTax["tax"];
+
         $notTaxMain = $paramsTax["not-tax"];
         $allowConfigTax = $paramsTax["allowConfigTax"];
 
@@ -89,7 +104,7 @@ class ProductMassiveLoadService
 
             $validation = $this->validateItem(
                 $item,
-                $index + 2,
+                $index + 1,
                 ['allowConfigTax' => $allowConfigTax, 'tax' => $taxMain, 'not-tax' => $notTaxMain],
                 $rows
             );
@@ -97,7 +112,7 @@ class ProductMassiveLoadService
             $item['status'] = $validation['status'];
             $item['message'] = $validation['message'];
             $item['errors'] = $validation['errors'];
-            $item['row'] = $index + 2;
+            $item['row'] = $index + 1;
 
             if ($validation['status'] === 'ERROR') {
                 $hasErrors = true;
@@ -160,7 +175,7 @@ class ProductMassiveLoadService
                                 $setError = [
                                     'row' => $row["row"],
                                     'column' => self::COLUMN_RECIPE,
-                                    'message' => 'El codigo  :'.$valueSearch." no pertenece al documento o no existe.!"
+                                    'message' => 'El codigo  :' . $valueSearch . " no pertenece al documento o no existe.!"
                                 ];
                                 $response[$index]['errors'][] = $setError;
                                 $hasErrors = true;
@@ -168,7 +183,7 @@ class ProductMassiveLoadService
                                 $existDataAllCount++;
                             }
                         }
-                        if ($existDataAllCount==count($recipeData)) {
+                        if ($existDataAllCount == count($recipeData)) {
                             $response[$index]["recipeData"] = $recipeData;
                         }
 
@@ -218,13 +233,17 @@ class ProductMassiveLoadService
         array $row
     ): array
     {
-
         $response = [];
 
         foreach ($headers as $index => $header) {
 
-            $response[$header] =
-                $row[$index] ?? null;
+            $header = trim($header);
+
+            if ($header === '') {
+                continue;
+            }
+
+            $response[$header] = $row[$index] ?? null;
         }
 
         return $response;
@@ -241,6 +260,8 @@ class ProductMassiveLoadService
     private const COLUMN_TAX = 'Tiene Iva';
     private const COLUMN_INVENTORY = 'Inventario';
     private const COLUMN_RECIPE = 'Receta';
+    private const COLUMN_IS_SALE = 'VENTA';
+
     private const REQUIRED_COLUMNS = [
 
         self::COLUMN_CODE,
@@ -254,6 +275,8 @@ class ProductMassiveLoadService
         self::COLUMN_TAX,
         self::COLUMN_INVENTORY,
         self::COLUMN_RECIPE,
+        self::COLUMN_IS_SALE,
+
     ];
 
     private function validateItem(
@@ -284,6 +307,7 @@ class ProductMassiveLoadService
 
         $this->validateDuplicateCode($item, $row, $errors);
         $this->validateTax($item, $row, $errors, $paramsTax);
+        $this->validateSale($item, $row, $errors, $paramsTax);
 
         if (count($errors) > 0) {
 
@@ -532,6 +556,31 @@ class ProductMassiveLoadService
                 'message' => 'Código duplicado'
             ];
         }
+    }
+
+    private function validateSale(
+        array $item,
+        int   $row,
+        array &$errors,
+              $paramsTax
+    ): void
+    {
+        $columnName = self::COLUMN_IS_SALE;
+        $valueCurrent = trim(
+            $item[$columnName] ?? ''
+        );
+        $valueCurrentValidate = $this->normalizeTax($valueCurrent);
+        if ($valueCurrent === '') {
+            $errors[] = [
+                'row' => $row,
+                'column' => $columnName,
+                'message' => 'Requerido '
+            ];
+
+            return;
+        }
+
+
     }
 
     private function validateTax(
@@ -1511,6 +1560,8 @@ class ProductMassiveLoadService
                     'subcategory_id' =>
                         $productSubcategoryId
                 ];
+
+
             }
 
         } else {
@@ -1520,16 +1571,13 @@ class ProductMassiveLoadService
             | CREAR CATEGORIA
             |--------------------------------------------------------------------------
             */
-
             $newCategory =
                 $this->createCategory([
                     'value' => $category,
                     'business_id' => $businessId
                 ]);
-
             $productCategoryId =
-                $newCategory->id;
-
+                $newCategory["id"];
             /*
             |--------------------------------------------------------------------------
             | CREAR SUBCATEGORIA
@@ -1542,9 +1590,8 @@ class ProductMassiveLoadService
                     'product_category_id' => $productCategoryId,
                     'business_id' => $businessId
                 ]);
-
             $productSubcategoryId =
-                $newSubcategory->id;
+                $newSubcategory["id"];
 
             /*
             |--------------------------------------------------------------------------
@@ -1566,6 +1613,7 @@ class ProductMassiveLoadService
                     ]
                 ]
             ];
+
         }
 
         /*
@@ -1776,7 +1824,7 @@ class ProductMassiveLoadService
         $result = [];
         $haystack = $params['haystack'];
         $businessIdMeetclic = 1;
-        $businessIdManager = $params['businessIdManager'];
+
         $businessIdManager = $params['businessIdManager'];
         $paramsTax = $params["paramsTax"];
 
@@ -2036,7 +2084,7 @@ class ProductMassiveLoadService
             ];
             $result[] = $product;
         }
-
+dd("");
         return $result;
     }
 }
