@@ -16,7 +16,11 @@ class ProductMassiveLoadService
         'MASA',
         'UNIDAD',
         'VOLUMEN',
-        'RECETA'
+        'LONGITUD',
+        'AREA',
+        'RECETA-PROCESADA',
+        'RECETA-MENU',
+
     ];
 
     public static function findErrorByColumn(
@@ -1647,6 +1651,7 @@ class ProductMassiveLoadService
                 'tax_by_business.priority as tax_priority',
                 'tax.percentage as tax_percentage',
                 'tax.state as tax_state',
+                'tax.value as tax_name',
 
             ])
             ->join(

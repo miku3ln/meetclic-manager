@@ -1909,6 +1909,7 @@ class ManagerDocumentController extends FrontendBaseController
 
         return $html;
     }
+
     public function productsGenerateInformation(Request $request)
     {
         $businessId = 42;

@@ -98,6 +98,11 @@ Route::prefix('pointsales')->group(function () {
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
         Route::get('/tickets-sales', 'PointSales\TicketManagerController@getTicketsSales');
 
+        Route::get('/catalog-measure', 'PointSales\ProductController@getCatalogMeasure');
+        Route::get('/catalog-tax', 'PointSales\ProductController@getCatalogTax');
+
+
+
     });
 
 });

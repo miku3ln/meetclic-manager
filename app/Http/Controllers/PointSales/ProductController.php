@@ -13,19 +13,63 @@ use App\Models\InvoiceSales\InvoiceSalePayment;
 use App\Models\InvoiceSales\PosPaymentMethod;
 use App\Modules\PointSales\Services\ProductSalesService;
 use App\Modules\PointSales\Services\StockDiscountService;
+use App\Services\Inventory\MeasureResolverService;
+use App\Services\ProductMassiveLoadService;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends PointSalesBaseController
 {
+    private MeasureResolverService $measureResolverService;
 
 
-    public function __construct(ProductSalesService $service, StockDiscountService $serviceStock)
+    public function __construct(ProductSalesService $service, StockDiscountService $serviceStock, MeasureResolverService $measureResolverService)
     {
         $this->service = $service;
         $this->stockDiscountService = $serviceStock;
+        $this->measureResolverService =
+            $measureResolverService;
 
+    }
+
+    public function getCatalogMeasure(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $businessId = $params['business_id'] ?? 0;
+        $data =
+            $this->measureResolverService
+                ->getCatalog(
+                    $businessId
+                );
+        return response()->json($data);
+    }
+
+    public function getCatalogTax(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $businessId = $params['business_id'] ?? 0;
+
+
+        $service = new ProductMassiveLoadService();
+
+        $taxMain = $service->getTaxByBusiness([
+            "businessId" => [$businessId],
+            "priority" => 1
+        ]);
+
+        $notTaxMain = $service->getTaxByBusiness([
+            "businessId" => [$businessId],
+            "priority" => 2
+        ]);
+
+        $data[]=$taxMain;
+        $data[]=$notTaxMain;
+
+      
+
+
+        return response()->json($data);
     }
 
     public function getProductsSales(Request $request)//POS-PRODUCTS -INIT-ONE
@@ -33,13 +77,13 @@ class ProductController extends PointSalesBaseController
 
         $params = $request->all();
 
-        $filters=[
-            'searchPhrase'=>isset($params["searchPhrase"])?$params["searchPhrase"]:'',
-            'current'=>$params["current"],
-            'rowCount'=>$params["rowCount"],
-            'business_id'=>$params["business_id"],
-            'filters'=>[
-                'business_id'=>$params["business_id"],
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'current' => $params["current"],
+            'rowCount' => $params["rowCount"],
+            'business_id' => $params["business_id"],
+            'filters' => [
+                'business_id' => $params["business_id"],
             ]
         ];
         $data = $this->service->getProducts($filters);
@@ -81,7 +125,7 @@ class ProductController extends PointSalesBaseController
             // 2. validar inventario
             $validated = $this->stockDiscountService->validateStock($calculated);
             $headerGet = $payload["header"];
-            $invoice_sale_id=-1;
+            $invoice_sale_id = -1;
             $isTypeInvoice = $headerGet["typeSave"] == "SAVE";
             $ticket_code = $isTypeInvoice ? 'TICKET-' : ($headerGet["ticketCode"] ?? 'TICKET-NONE');
 
@@ -229,7 +273,6 @@ class ProductController extends PointSalesBaseController
                     }
 
 
-
                     $business_by_invoice_sale["id"] = $modelInvoiceByBusiness->id;
                     $success = true;
                     $detailsSales = [];
@@ -293,8 +336,8 @@ class ProductController extends PointSalesBaseController
 
                     foreach ($inventoryDataOutput as $itemInventoryMovement) {
                         $modelInventoryMovement = new InventoryMovement();
-                        $setPushCurrent=$itemInventoryMovement;
-                        $setPushCurrent['reference_id']=$invoice_sale_id;
+                        $setPushCurrent = $itemInventoryMovement;
+                        $setPushCurrent['reference_id'] = $invoice_sale_id;
 
                         $paramsValidate = array(
                             'modelAttributes' => $setPushCurrent,
