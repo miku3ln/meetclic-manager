@@ -49,10 +49,7 @@ class ProductController extends PointSalesBaseController
     {
         $params = $request->all();
         $businessId = $params['business_id'] ?? 0;
-
-
         $service = new ProductMassiveLoadService();
-
         $taxMain = $service->getTaxByBusiness([
             "businessId" => [$businessId],
             "priority" => 1
@@ -62,13 +59,13 @@ class ProductController extends PointSalesBaseController
             "businessId" => [$businessId],
             "priority" => 2
         ]);
-
-        $data[]=$taxMain;
-        $data[]=$notTaxMain;
-
-      
-
-
+        $data = [];
+        if (count($taxMain) > 0) {
+            $data[] = $taxMain;
+        }
+        if (count($notTaxMain) > 0) {
+            $data[] = $notTaxMain;
+        }
         return response()->json($data);
     }
 
@@ -76,7 +73,6 @@ class ProductController extends PointSalesBaseController
     {
 
         $params = $request->all();
-
         $filters = [
             'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
             'current' => $params["current"],
@@ -758,5 +754,93 @@ class ProductController extends PointSalesBaseController
             default:
                 return [];
         }
+    }
+
+    public function setProductTypeSave(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $payload = [
+
+            'product' => [
+                // REQUIRED
+                'code' => 'HEL-MORA-001',
+                'name' => 'Helado Mora',
+                'product_type' => 'MEASURABLE',
+                'inventory_type' => 'RAW',
+                'state' => 'ACTIVE',
+
+                'product_trademark_id' => 1,
+                'product_category_id' => 3,
+                'product_subcategory_id' => 13,
+
+                'has_tax' => 1,
+                'is_service' => 0,
+                'user_id' => 1,
+
+                'product_measure_type_id' => 3,
+                'view_online' => 1,
+
+                // OPTIONAL
+                'source' => null,
+                'description' => 'description',
+                'code_provider' => null,
+                'code_product' => null,
+            ],
+
+            'business_by_products' => [
+                'business_id' => 42,
+            ],
+
+            'product_inventory' => [
+                'business_id' => 42,
+                'avarage_kardex_value' => 1.92,
+                'tax' => 'SI',
+                'quantity_units' => 20,
+                'sale_price' => 2.50,
+                'total_price' => 50.00,
+                'product_id' => null, // lo asigna ProductSaveUtil
+                'tax_id' => 1,
+                'profit' => 30,
+                'profit_type' => 1,
+                'note' => 'Carga inicial',
+                'sale_price2' => 2.50,
+                'sale_price3' => 2.50,
+                'sale_price4' => 2.50,
+            ],
+
+            'product_sell_config' => [
+                'product_id' => null, // lo asigna ProductSaveUtil
+                'allow_pos' => 1,
+                'allow_shop' => 1,
+                'allow_delivery' => 0,
+                'visible' => 1,
+            ],
+
+            'inventory_movement' => [
+                'product_id' => null, // lo asigna ProductSaveUtil
+
+                'movement_type' => 'IN', // lo asigna ProductSaveUtil
+
+                'quantity' => 20,
+
+                'unit_measure_id' => 22,
+
+                'quantity_input' => 20,
+
+                'unit_input_id' => 22,
+
+                'conversion_factor' => 1,
+
+                'reference_type' => null, // lo asigna ProductSaveUtil
+
+                'reference_id' => null,
+
+                'description' => null, // lo asigna ProductSaveUtil
+            ]
+        ];
+        $params = $request->all();
+
+        $data = $this->service->setProductTypeSave($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
     }
 }

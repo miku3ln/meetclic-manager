@@ -67,6 +67,8 @@ class ProductSalesService
                 'unit' => $item->default_symbol ?? $item->stock_symbol ?? 'u'
             ],
             'tax' => [
+                'id' => $item->tax_id,
+
                 'has_tax' => $item->has_tax,
                 'value_text' => $item->tax_value,
                 'value_percentage' => $item->tax_percentage,
@@ -87,12 +89,16 @@ class ProductSalesService
             | NEW CLASSIFICATION
             |--------------------------------------------------------------------------
             */
+            'measure_type_management' => [
+                'id'=>$item->measure_type_id,
+                'value'=>$item->measure_type,
 
+            ],
             'classification' => [
-
+                'product_type' => $item->product_type,
+                'inventory_type' => $item->inventory_type,
                 'structure_type' => $item->product_type,
 
-                'inventory_type' => $item->inventory_type,
 
                 'functional_type' => $functionalType,
 
@@ -110,7 +116,11 @@ class ProductSalesService
 
         ];
     }
+    public function setProductTypeSave($params)
+    {
 
+        return $this->repo->setProductTypeSave($params);
+    }
     public function getProducts($params)
     {
 

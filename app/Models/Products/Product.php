@@ -45,8 +45,113 @@ class Product extends ModelManager
         'user_id',//*
         'product_measure_type_id',//*
         'view_online',//*
+        'inventory_type',//*
+        'product_type',//*
 
     );
+    public static function getRulesModel(): array
+    {
+        return [
+
+            'code' => [
+                'required',
+                'string',
+                'max:64',
+                'unique:product,code'
+            ],
+
+            'name' => [
+                'required',
+                'string'
+            ],
+
+            'product_type' => [
+                'required',
+                'in:MEASURABLE,UNIT,MIXED'
+            ],
+
+            'inventory_type' => [
+                'required',
+                'in:RAW,PROCESSED,FOR_SALE'
+            ],
+
+            'state' => [
+                'required',
+                'in:ACTIVE,INACTIVE'
+            ],
+
+            'product_trademark_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
+
+            'product_category_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
+
+            'product_subcategory_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
+
+            'source' => [
+                'nullable',
+                'string',
+                'max:250'
+            ],
+
+            'description' => [
+                'nullable',
+                'string'
+            ],
+
+            'code_provider' => [
+                'nullable',
+                'string',
+                'max:80'
+            ],
+
+            'code_product' => [
+                'nullable',
+                'string',
+                'max:80'
+            ],
+
+            'has_tax' => [
+                'required',
+                'integer',
+                'in:0,1'
+            ],
+
+            'is_service' => [
+                'required',
+                'integer',
+                'in:0,1,2'
+            ],
+
+            'user_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
+
+            'product_measure_type_id' => [
+                'nullable',
+                'integer',
+                'min:1'
+            ],
+
+            'view_online' => [
+                'required',
+                'integer',
+                'in:0,1'
+            ],
+        ];
+    }
     protected $attributesData = [
         ['column' => 'code', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'name', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
@@ -62,7 +167,10 @@ class Product extends ModelManager
         ['column' => 'is_service', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'view_online', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'user_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
-        ['column' => 'product_measure_type_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true']
+        ['column' => 'product_measure_type_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'inventory_type', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'product_type', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
+
 
     ];
     public $timestamps = false;
@@ -453,25 +561,6 @@ class Product extends ModelManager
         return $result;
     }
 
-    public static function getRulesModel()
-    {
-        $rules = ["code" => "required|max:64",
-            "name" => "required",
-            "state" => "required",
-            "product_trademark_id" => "required|numeric",
-            "product_category_id" => "required|numeric",
-            "product_subcategory_id" => "required|numeric",
-            "source" => "max:250",
-            "code_provider" => "max:80",
-            "code_product" => "max:80",
-            "has_tax" => "required|numeric",
-            "is_service" => "required|numeric",
-            "view_online" => "required|numeric",
-            "user_id" => "required|numeric",
-            "product_measure_type_id" => "required|numeric"
-        ];
-        return $rules;
-    }
 
 //relations
     public function colors()

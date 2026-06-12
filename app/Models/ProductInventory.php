@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelManager;
+
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Facades\Validator;

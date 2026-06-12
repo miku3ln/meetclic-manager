@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Models;
+use App\Models\ModelManager;
 
-use Illuminate\Database\Eloquent\Model;
 
-class BusinessByProduct extends Model
+class BusinessByProduct extends ModelManager
 {
 
     /**
@@ -17,7 +17,24 @@ class BusinessByProduct extends Model
     protected $fillable = array('business_id', 'products_id');
 
     public $timestamps = false;
+    public static function getRulesModel(): array
+    {
+        return [
 
+            'business_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
+
+            'products_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
+
+        ];
+    }
 
     public function getListProductServices($params)
     {

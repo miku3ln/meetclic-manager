@@ -10,8 +10,8 @@ class InventoryMovement extends ModelManager
     protected $table = 'inventory_movement';
 
     // 🔥 CONSTANTES
-    const TYPE_IN     = 'IN';
-    const TYPE_OUT    = 'OUT';
+    const TYPE_IN = 'IN';
+    const TYPE_OUT = 'OUT';
     const TYPE_ADJUST = 'ADJUST';
 
     protected $fillable = [

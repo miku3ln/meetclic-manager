@@ -101,6 +101,7 @@ Route::prefix('pointsales')->group(function () {
         Route::get('/catalog-measure', 'PointSales\ProductController@getCatalogMeasure');
         Route::get('/catalog-tax', 'PointSales\ProductController@getCatalogTax');
 
+        Route::post('/product-type-save', 'PointSales\ProductController@setProductTypeSave');
 
 
     });

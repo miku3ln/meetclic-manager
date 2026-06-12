@@ -4,6 +4,7 @@ namespace App\Modules\PointSales\Repositories;
 
 
 use App\Core\Repositories\BaseRepository;
+use App\Utils\Product\ProductSaveUtil;
 use Illuminate\Support\Facades\DB;
 
 class ProductSalesRepository extends BaseRepository
@@ -98,6 +99,15 @@ class ProductSalesRepository extends BaseRepository
         return $this->paginate($query, $params, 'p.id');
     }
 
+    public function setProductTypeSave($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setProductTypeSave(
+                $params
+            );
+    }
+
     public function getProductsShopPage($params)
     {
         /*
@@ -121,7 +131,6 @@ class ProductSalesRepository extends BaseRepository
                     ? null
                     : $params["filters"]["categoryId"];
         }
-
 
 
         /*
@@ -296,6 +305,7 @@ class ProductSalesRepository extends BaseRepository
                 */
 
                 'pmt.value as measure_type',
+                'pmt.id as measure_type_id',
 
                 /*
                 |--------------------------------------------------------------------------
@@ -471,7 +481,7 @@ class ProductSalesRepository extends BaseRepository
         | PAGINATION
         |--------------------------------------------------------------------------
         */
-
+        $query->orderBy('p.id', 'desc');
         return $this->paginate($query, $params, 'p.id');
     }
 }
