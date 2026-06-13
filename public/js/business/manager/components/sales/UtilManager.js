@@ -843,59 +843,59 @@ function ViewBillingUtil($scope, $uibModalInstance, params) {
             <div class="card card-sri bg-white p-4">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
                     <div>
-                        <h5 class="mb-1 text-dark fw-bold">
-                            <i class="fa-solid fa-file-invoice-dollar text-primary me-2"></i>
+                        <h5 class="mb-1 text-dark font-weight-bold">
+                            <i class="fas fa-file-invoice-dollar text-primary mr-2"></i>
                             Resultado de Transmisión SRI
                         </h5>
                         <p class="text-muted small mb-0">ID de Factura Interna: <strong>#${sriData.factura_id}</strong></p>
                     </div>
                     <div>
-                        <span class="${badgeClass}">
-                            <i class="fa-solid ${iconState} me-1"></i> ${sriData.estado_actual}
+                        <span class="badge badge-pill ${badgeClass}">
+                            <i class="fas ${iconState} mr-1"></i> ${sriData.estado_actual}
                         </span>
                     </div>
                 </div>
 
-                <div class="row g-3">
-                    <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-10 mb-3">
                         <div class="data-label">Clave de Acceso Única</div>
-                        <div class="data-value font-monospace bg-light p-2 rounded border text-secondary">${sriData.clave_acceso}</div>
+                        <div class="data-value text-monospace bg-light p-2 rounded border text-secondary">${sriData.clave_acceso}</div>
                     </div>
-                    <div class="col-md-2 text-md-center">
+                    <div class="col-md-2 mb-3 text-md-center">
                         <div class="data-label">Intentos</div>
                         <div class="data-value">
-                            <span class="badge bg-secondary rounded-pill fs-6">${sriData.total_intentos}</span>
+                            <span class="badge badge-secondary badge-pill p-2 px-3 fs-6">${sriData.total_intentos}</span>
                         </div>
                     </div>
 
-                    <div class="col-md-6 mt-4">
+                    <div class="col-md-6 mb-3">
                         <div class="data-label">Número de Autorización (SRI)</div>
-                        <div class="data-value fw-bold text-success">
+                        <div class="data-value font-weight-bold text-success">
                             ${sriData.numero_autorizacion ? sriData.numero_autorizacion : '---'}
                         </div>
                     </div>
-                    <div class="col-md-6 mt-4">
+                    <div class="col-md-6 mb-3">
                         <div class="data-label">Fecha y Hora de Resolución</div>
                         <div class="data-value">
-                            <i class="fa-regular fa-calendar text-muted me-1"></i> ${sriData.fecha_autorizacion}
+                            <i class="far fa-calendar text-muted mr-1"></i> ${sriData.fecha_autorizacion}
                         </div>
                     </div>
                 </div>
 
-                <div class="border-top mt-4 pt-4">
-                    <h6 class="text-secondary fw-bold mb-3 small text-uppercase">Comprobantes Electrónicos Disponibles</h6>
-                    <div class="d-flex flex-wrap gap-2">
+                <div class="border-top mt-3 pt-3">
+                    <h6 class="text-secondary font-weight-bold mb-3 small text-uppercase">Comprobantes Electrónicos Disponibles</h6>
+                    <div class="d-flex flex-wrap">
 
-                        <a href="${sriData.documentos.url_pdf_ride}" target="_blank" class="btn btn-danger btn-download-sri btn-sm shadow-sm">
-                            <i class="fa-solid fa-file-pdf me-1"></i> Ver RIDE (PDF)
+                        <a href="${sriData.documentos.url_pdf_ride}" target="_blank" class="btn btn-danger btn-sm shadow-sm mr-2 mb-2">
+                            <i class="fas fa-file-pdf mr-1"></i> Ver RIDE (PDF)
                         </a>
 
-                        <a href="${sriData.documentos.url_xml_autorizado}" target="_blank" class="btn btn-outline-success btn-download-sri btn-sm shadow-sm">
-                            <i class="fa-solid fa-code me-1"></i> XML Autorizado
+                        <a href="${sriData.documentos.url_xml_autorizado}" target="_blank" class="btn btn-outline-success btn-sm shadow-sm mr-2 mb-2">
+                            <i class="fas fa-code mr-1"></i> XML Autorizado
                         </a>
 
-                        <a href="${sriData.documentos.url_xml_firmado}" target="_blank" class="btn btn-outline-secondary btn-download-sri btn-sm">
-                            <i class="fa-solid fa-file-signature me-1"></i> XML Firmado (.p12)
+                        <a href="${sriData.documentos.url_xml_firmado}" target="_blank" class="btn btn-outline-secondary btn-sm mb-2">
+                            <i class="fas fa-file-signature mr-1"></i> XML Firmado (.p12)
                         </a>
 
                     </div>
