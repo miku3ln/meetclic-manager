@@ -1198,6 +1198,7 @@ class BusinessManager
 
             Route::post("invoiceSale/admin", "Invoices\InvoiceSaleController@getInvoiceSaleAdmin")->name('getInvoiceSaleAdmin');
             Route::post("invoiceSale/saveAnnulmentBilling", "Invoices\InvoiceSaleController@saveAnnulmentBilling")->name('saveAnnulmentBilling');
+            Route::get("invoiceSale/emmitInvoiceByInvoice", "Invoices\InvoiceSaleController@emmitInvoiceByInvoice")->name('emmitInvoiceByInvoice');
 
 
             Route::post("invoiceSaleByIndebtednessPayingInit/saveIndebtedness", "Invoices\InvoiceSaleByIndebtednessPayingInitController@saveIndebtedness")->name('saveIndebtednessInit');

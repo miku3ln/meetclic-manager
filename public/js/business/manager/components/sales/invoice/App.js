@@ -54,17 +54,17 @@ var app = angular.module('appModuleConfig',
 //-----------INICIALIZACION DE MODULOS en CONTROLADORES------
 //para llamar al modulo ConstEntidadData debido a q en l modulo le pusimos d aqlo nombre
 var control = app.controller('controllerManagement', function (
-    $scope,
-    $http,
-    $log,
-    ConstEntidadData,
-    $sce,
-    $compile,
-    $rootScope,
-    $timeout,
-    $interval,
-    $mdDialog,
-    $uibModal
+        $scope,
+        $http,
+        $log,
+        ConstEntidadData,
+        $sce,
+        $compile,
+        $rootScope,
+        $timeout,
+        $interval,
+        $mdDialog,
+        $uibModal
     ) {
         $configManagerProcessCurrent = $configPartial.resultProcess.data;
         $businessInformation = $configManagerProcessCurrent.data_empresa.empresa;
@@ -282,6 +282,8 @@ function UtilMenu($scope) {
         }
 
         if (estado == statusCurrentManager["PENDIENTE"] || estado == statusCurrentManager["EMITIDO"]) {
+            menuCurrent.push({class: "fa fa-paper-plane", value: "Factura Electronica", gestion_key: 69});
+
             var allowManager = true;
             if (estado == "PENDIENTE") {
                 var managerIndebtedness = row.managerIndebtedness;
@@ -377,8 +379,67 @@ function UtilMenu($scope) {
                 });
 
                 break;
-            case 24://DEVOLUCION
+            case 69://DEVOLUCION
+                var elementLoading = '#content-portlet-gestion';
+                $(elementLoading).block({
+                    message: '<h4>Generando factura electronica.....</h4>'
+                });
 
+
+                var invoiceId = $scope.rowManager.id;
+                var typeMessage = 'warning';
+                var message = 'No guardado...';
+
+                $.ajax({
+                    url: $('#action-invoice-sales-emmitInvoiceByInvoice').val(),
+                    type: 'GET',
+                    data: {
+                        businessId: 42,
+                        invoiceId: invoiceId
+                    },
+
+                    success: function (response, textStatus, xhr) {
+
+                        typeMessage = 'success';
+
+                        if (response.message) {
+                            message = response.message;
+                        } else {
+                            message = 'Factura emitida correctamente';
+                        }
+
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        typeMessage = 'danger';
+
+                        try {
+
+                            var response = JSON.parse(xhr.responseText);
+
+                            if (response.message) {
+                                message = response.message;
+                            } else if (response.error) {
+                                message = response.error;
+                            } else {
+                                message = 'Error al procesar la solicitud';
+                            }
+
+                        } catch (e) {
+
+                            message = xhr.responseText || errorThrown || 'Error desconocido';
+
+                        }
+                    },
+
+                    complete: function (xhr) {
+
+                        showAlert(typeMessage, message);
+                        $(elementLoading).unblock();
+
+                    }
+                });
                 break;
             case 25://RETENCIONES VIEW FACTURAS
 

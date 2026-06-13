@@ -1,3 +1,5 @@
+var $typeOfProofData = [];
+
 function initS2($scope) {
 
     //---------------------FACTURA COMPRA-----------------------
@@ -31,7 +33,7 @@ function initS2($scope) {
     };
     $scope.typeOfProofData = [];
     $scope.typeOfProofData.push(dataDefault);
-    $scope.typeOfProofData = $.merge($typeOfProofData, $scope.typeOfProofData);
+    $scope.typeOfProofData = $.merge([], $scope.typeOfProofData);
     $scope.stateData = [
         {
             id: -1, value: "Todos"

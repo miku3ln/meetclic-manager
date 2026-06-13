@@ -702,6 +702,8 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                 </div>
             @elseif($configPartial['typeManager']=='managerInvoiceSale')
                 <div class="manager-container not-view" id='manager-container'>
+                    <input id="action-invoice-sales-emmitInvoiceByInvoice" type="hidden"
+                           value="{{route("emmitInvoiceByInvoice")}}"/>
                     @include( $partials . '.wizards.sales.invoice.manager',['configPartial'=>$configPartial,'partials'=>$partials])
                 </div>
             @elseif($configPartial['typeManager']=='managerMikrotikRateLimit')
