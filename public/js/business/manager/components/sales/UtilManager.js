@@ -824,9 +824,86 @@ function ViewBillingUtil($scope, $uibModalInstance, params) {
         var billingManager = billingInformation.manager;
         var billingCustomer = billingManager.customer;
 
-       var  authorization_number = billingInformation.authorization_number;
-        if(authorization_number=='INVOICE_SEND_EMMIT'){
-console.log(billingInformation.authorization_number_data);
+        var authorization_number = billingInformation.authorization_number;
+        var htmlContentSRI='';
+        if (authorization_number == 'INVOICE_SEND_EMMIT') {
+            console.log(billingInformation.authorization_number_data);
+
+
+
+            // Extraemos tu objeto JSON que contiene los datos del SRI
+            var sriData = billingInformation.authorization_number_data.cabecera;
+
+            // Evaluamos el color del Badge según el estado del SRI
+            var badgeClass = sriData.estado_actual === 'AUTORIZADO' ? 'badge-sri-autorizado' : 'badge-sri-pendiente';
+            var iconState = sriData.estado_actual === 'AUTORIZADO' ? 'fa-check-circle' : 'fa-clock';
+
+            // Construimos el HTML Informativo dinámicamente
+             htmlContentSRI = `
+            <div class="card card-sri bg-white p-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                    <div>
+                        <h5 class="mb-1 text-dark fw-bold">
+                            <i class="fa-solid fa-file-invoice-dollar text-primary me-2"></i>
+                            Resultado de Transmisión SRI
+                        </h5>
+                        <p class="text-muted small mb-0">ID de Factura Interna: <strong>#${sriData.factura_id}</strong></p>
+                    </div>
+                    <div>
+                        <span class="${badgeClass}">
+                            <i class="fa-solid ${iconState} me-1"></i> ${sriData.estado_actual}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-10">
+                        <div class="data-label">Clave de Acceso Única</div>
+                        <div class="data-value font-monospace bg-light p-2 rounded border text-secondary">${sriData.clave_acceso}</div>
+                    </div>
+                    <div class="col-md-2 text-md-center">
+                        <div class="data-label">Intentos</div>
+                        <div class="data-value">
+                            <span class="badge bg-secondary rounded-pill fs-6">${sriData.total_intentos}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <div class="data-label">Número de Autorización (SRI)</div>
+                        <div class="data-value fw-bold text-success">
+                            ${sriData.numero_autorizacion ? sriData.numero_autorizacion : '---'}
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <div class="data-label">Fecha y Hora de Resolución</div>
+                        <div class="data-value">
+                            <i class="fa-regular fa-calendar text-muted me-1"></i> ${sriData.fecha_autorizacion}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-top mt-4 pt-4">
+                    <h6 class="text-secondary fw-bold mb-3 small text-uppercase">Comprobantes Electrónicos Disponibles</h6>
+                    <div class="d-flex flex-wrap gap-2">
+
+                        <a href="${sriData.documentos.url_pdf_ride}" target="_blank" class="btn btn-danger btn-download-sri btn-sm shadow-sm">
+                            <i class="fa-solid fa-file-pdf me-1"></i> Ver RIDE (PDF)
+                        </a>
+
+                        <a href="${sriData.documentos.url_xml_autorizado}" target="_blank" class="btn btn-outline-success btn-download-sri btn-sm shadow-sm">
+                            <i class="fa-solid fa-code me-1"></i> XML Autorizado
+                        </a>
+
+                        <a href="${sriData.documentos.url_xml_firmado}" target="_blank" class="btn btn-outline-secondary btn-download-sri btn-sm">
+                            <i class="fa-solid fa-file-signature me-1"></i> XML Firmado (.p12)
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        `;
+
+
         }
         var billingTransactions = billingManager.transactionsData;
         var htmlCustomer = typeBilling == "sales" ? "Cliente" : "Proveedor";
@@ -901,6 +978,7 @@ console.log(billingInformation.authorization_number_data);
             ' </table>');
         tdCustomerInformation = tdCustomerInformation.join("");
         var result = [
+            htmlContentSRI,
             '<table class="billing-information">',
             '   <tr class="billing-information-tr1">',
             '       <th  class="billing-information-th-logo">' + tdLogoBusiness + '</th>',

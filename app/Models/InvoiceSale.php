@@ -120,10 +120,11 @@ class InvoiceSale extends ModelManager
             $authorization_number = $row["authorization_number"];
             $authorization_number_data = [];
 
-            if ($authorization_number == '') {
+            if ($authorization_number == 'INVOICE_SEND_EMMIT') {
                 $managerAuthorization = FacturaSriCabecera:: obtenerConsolidadoSriPorFactura($invoice_id);
                 if ($managerAuthorization['success']) {
-                    $authorization_number = $managerAuthorization['data'];
+
+                    $authorization_number_data = $managerAuthorization['data'];
                 }
 
 

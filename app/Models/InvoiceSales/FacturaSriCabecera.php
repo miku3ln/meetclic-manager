@@ -57,7 +57,7 @@ class FacturaSriCabecera extends ModelManager
     {
         return DB::table('factura_sri_cabecera')->where('factura_id', $facturaId)->first();
     }
-    public function obtenerConsolidadoSriPorFactura($facturaId)
+    public static function obtenerConsolidadoSriPorFactura($facturaId)
     {
         // 1. Obtener la cabecera única del SRI
         $cabecera = DB::table('factura_sri_cabecera')
@@ -97,10 +97,10 @@ class FacturaSriCabecera extends ModelManager
                 "path_pdf_ride"       => $documentos->path_pdf_ride,
 
                 // 🌐 URLs dinámicas listas para que el usuario les dé clic en el navegador
-                "url_xml_generado"   => $documentos->path_xml_generado ? url("/api/v1/facturacion/xml/{$clave}?tipo=generado") : null,
-                "url_xml_firmado"    => $documentos->path_xml_firmado ? url("/api/v1/facturacion/xml/{$clave}?tipo=firmado") : null,
-                "url_xml_autorizado" => $documentos->path_xml_autorizado ? url("/api/v1/facturacion/xml/{$clave}?tipo=autorizado") : null,
-                "url_pdf_ride"       => $documentos->path_pdf_ride ? url("/api/v1/facturacion/ride/{$clave}") : null,
+                "url_xml_generado"   => $documentos->path_xml_generado ? ("https://invoice-sign.meetclic.com/api/v1/facturacion/xml/{$clave}?tipo=generado") : null,
+                "url_xml_firmado"    => $documentos->path_xml_firmado ? ("https://invoice-sign.meetclic.com/api/v1/facturacion/xml/{$clave}?tipo=firmado") : null,
+                "url_xml_autorizado" => $documentos->path_xml_autorizado ? ("https://invoice-sign.meetclic.com/api/v1/facturacion/xml/{$clave}?tipo=autorizado") : null,
+                "url_pdf_ride"       => $documentos->path_pdf_ride ? ("https://invoice-sign.meetclic.com/api/v1/facturacion/ride/{$clave}") : null,
             ];
         }
 
