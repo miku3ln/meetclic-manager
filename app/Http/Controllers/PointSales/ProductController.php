@@ -11,6 +11,7 @@ use App\Models\InvoiceSales\InventoryMovement;
 use App\Models\InvoiceSales\InvoiceSaleMeta;
 use App\Models\InvoiceSales\InvoiceSalePayment;
 use App\Models\InvoiceSales\PosPaymentMethod;
+use App\Models\InvoiceSales\PuntoEmision;
 use App\Modules\PointSales\Services\ProductSalesService;
 use App\Modules\PointSales\Services\StockDiscountService;
 use App\Services\Inventory\MeasureResolverService;
@@ -87,6 +88,66 @@ class ProductController extends PointSalesBaseController
         return response()->json($data);
     }
 
+    public function obtenerPuntoEmisionUsuario($business_id, $userId)
+    {
+        $resultado = DB::table('user_punto_emision as upe')
+            ->join('puntos_emision as pe', 'upe.punto_emision_id', '=', 'pe.id')
+            ->join('emisores as e', 'pe.emisor_id', '=', 'e.id')
+            ->select([
+                // 1. Todos los Datos de la tabla Base: user_punto_emision
+                'upe.id as user_punto_emision_id',
+                'upe.user_id',
+                'upe.punto_emision_id',
+                'upe.estado as asignacion_estado',
+                'upe.created_at as asignacion_created_at',
+                'upe.updated_at as asignacion_updated_at',
+
+                // 2. Todos los Datos de la tabla: puntos_emision
+                'pe.emisor_id',
+                'pe.id as pe_id ',
+                'pe.establecimiento',
+                'pe.punto_emision',
+                'pe.factura_inicial',
+                'pe.nota_credito_inicial',
+                'pe.nota_debito_inicial',
+                'pe.comprobante_retencion_inicial',
+                'pe.liquidacion_compra_inicial',
+                'pe.guia_remision_inicial',
+                'pe.factura_actual',
+                'pe.nota_credito_actual',
+                'pe.nota_debito_actual',
+                'pe.comprobante_retencion_actual',
+                'pe.liquidacion_compra_actual',
+                'pe.guia_remision_actual',
+                'pe.informacion_adicional as punto_informacion_adicional',
+                'pe.estado as punto_estado',
+                'pe.created_at as punto_created_at',
+                'pe.updated_at as punto_updated_at',
+
+                // 3. Todos los Datos de la tabla: emisores
+                'e.razon_social',
+                'e.nombre_comercial',
+                'e.ruc',
+                'e.dir_matriz',
+                // Añade aquí cualquier otro campo que tenga tu tabla 'emisores' (ej: e.obligado_contabilidad, e.contribuyente_especial, etc.)
+            ])
+            ->where('upe.user_id', $userId)
+            ->where('e.business_id', $business_id)
+            ->first(); // Retorna una sola fila (objeto) o null si no existe
+
+        if (!$resultado) {
+            return [
+                'success' => false,
+                'message' => 'El usuario no tiene ningún punto de emisión ni emisor vinculado.'
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data' => $resultado
+        ];
+    }
+
     public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO
     {
         $payload = $request->json()->all();
@@ -129,20 +190,41 @@ class ProductController extends PointSalesBaseController
             $service_type = $typeService == 'service' ? 'DINE_IN' : 'TAKEAWAY';
             $voucher_type_id = $isTypeInvoice ? 1 : 2;
             $debt = $isTypeInvoice ? 0 : 1;
+            $userId = $headerGet["userId"];
+            $business_id = $headerGet["business_id"];
+            $resultInformation = $this->obtenerPuntoEmisionUsuario($business_id, $userId);
+            // Inicializamos variables con valores por defecto por seguridad
+            $establishment = "-1";
+            $emissionPoint = "-1";
+            $invoiceCode = 0;
+            $pe_id = -1;
+            if ($resultInformation['success']) {
+                $puntoData = $resultInformation['data'];
+
+                // Asignamos el establecimiento y punto de emisión desde la base de datos
+                $establishment = $puntoData->establecimiento;
+                $emissionPoint = $puntoData->punto_emision;
+
+                // Calcular el secuencial numérico que le corresponde a esta factura
+                // Si factura_actual es mayor a 0, le sumamos 1, sino empezamos desde factura_inicial + 1
+                $invoiceCode = $puntoData->factura_actual + 1;
+                $pe_id = $puntoData->pe_id;
+
+            }
             $header = [// invoice_sale
                 "customer_id" => $headerGet["customer_id"],
-                "invoice_code" => 0,
+                "invoice_code" => $invoiceCode,
                 "invoice_value" => 0,
                 "discount_value" => 0,
                 "status" => $isTypeInvoice ? "ISSUED" : "PENDING",
-                "user_id" => $headerGet["userId"],
+                "user_id" => $userId,
                 "observations" => isset($headerGet["observations"]) ? $headerGet["observations"] : "",
                 "value_taxes" => $value_taxes,
                 "subtotal" => $subTotal,
                 "invoice_date" => Util::DateCurrent(),
                 "created_at" => Util::DateCurrent(),
-                "establishment" => 1,
-                "emission_point" => 1,
+                "establishment" => $establishment,
+                "emission_point" => $emissionPoint,
                 "voucher_type_id" => $voucher_type_id,
                 "mixed_payment" => 1,
                 "has_retention" => 0,
@@ -170,7 +252,7 @@ class ProductController extends PointSalesBaseController
                 $invoice_sale_id = $modelInvoice->id;
                 $attributesSetInvoice["id"] = $invoice_sale_id;
 
-                $business_id = $headerGet["business_id"];
+
                 //business_by_invoice_sale
                 $business_by_invoice_sale = [
                     "entidad_data_id" => $business_id,
@@ -379,6 +461,10 @@ class ProductController extends PointSalesBaseController
                 DB::rollBack();
 
             } else {
+                if ($pe_id>0) {
+                    $modelEmision = new PuntoEmision();
+                    $modelEmision->incrementarFactura($pe_id, $invoiceCode);
+                }
 
                 DB::commit();
             }

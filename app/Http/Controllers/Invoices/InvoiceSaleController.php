@@ -101,8 +101,7 @@ class InvoiceSaleController extends MyBaseController
             $attributesParams = array(
                 "id" => $invoiceId
             );
-            $model = new  InvoiceSale();
-            $resultData = $model->findByAttributes($attributesParams);
+            $resultData = InvoiceSale::find($invoiceId);
             if ($resultData) {
                 $resultData->authorization_number = 'INVOICE_SEND_EMMIT';
                 $resultData->save();
