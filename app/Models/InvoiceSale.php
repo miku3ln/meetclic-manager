@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\InvoiceSales\FacturaSriCabecera;
 use App\Utils\Accounting\BillingUtil;
 use App\Utils\Accounting\UtilAccounting;
 use App\Utils\Util;
@@ -116,7 +117,17 @@ class InvoiceSale extends ModelManager
             $invoice_id = $row["id"];
             $has_retencion = $row["has_retencion"];
             $customer_id = $row["customer_id"];
+            $authorization_number = $row["authorization_number"];
+            $authorization_number_data = [];
 
+            if ($authorization_number == '') {
+                $managerAuthorization = FacturaSriCabecera:: obtenerConsolidadoSriPorFactura($invoice_id);
+                if ($managerAuthorization['success']) {
+                    $authorization_number = $managerAuthorization['data'];
+                }
+
+
+            }
             if ($deuda == "1") {
                 $dataInvoiceManager = $utilCurrent->getDataInvoiceManagerIndebtedness(
                     array("invoice_id" => $invoice_id, "type" => "sales")
@@ -124,7 +135,11 @@ class InvoiceSale extends ModelManager
                 $row["managerIndebtedness"] = $dataInvoiceManager;
             }
             $viewBillingData = $modelUtil->getViewBillingCurrent(array("invoiceId" => $invoice_id, "hasRetention" => $has_retencion, "type" => $type, "customer_id" => $customer_id));
+            if (count($authorization_number_data) > 0) {
+                $row["authorization_number_data"] = $authorization_number_data;
 
+
+            }
             $result["rows"][$key] = array_merge($row, $viewBillingData);
         }
 

@@ -4,6 +4,7 @@ function managerLoading(params) {
         $(".manager-loading").addClass("not-view");
     }
 }
+
 function formatDate(params) {
 
     var date = params.date;
@@ -30,8 +31,7 @@ function formatDate(params) {
     } else if (format == "M/D/Y") {
         formatDateResult = (1 + monthIndex) + "/" + day + "/" + year;
 
-    }
-    else if (format == "D/M/Y") {
+    } else if (format == "D/M/Y") {
         formatDateResult = day + "/" + (1 + monthIndex) + "/" + year;
 
     } else if (format == "D-M-Y") {
@@ -40,23 +40,32 @@ function formatDate(params) {
     }
     return formatDateResult;
 }
+
 function getCodeTypeIdentification(params) {
     var processName = params["processName"];
     var typeIdentificationId = params["typeIdentificationId"];
-
-    var haystack = $processNameIdentificationData[processName];
-
     var needle = {};
-    $.each(haystack, function (key, value) {
-        if (key == typeIdentificationId) {
-            needle = value;
+    if (typeIdentificationId == undefined) {
+        needle = {
+            value: 'none'
         }
-    });
+    } else {
+        var haystack = $processNameIdentificationData[processName];
+
+
+        $.each(haystack, function (key, value) {
+            if (key == typeIdentificationId) {
+                needle = value;
+            }
+        });
+    }
+
     var result = {
         needle: needle
-    }
+    };
     return result;
 }
+
 function UtilAdmin($scope) {
     $scope.regularPhraseNumberInvoice = /^(?:\D*\d){3}\D*$/;//number of tres digitos
     $scope.regularDigits = /^([0-9])*$/;
@@ -204,7 +213,6 @@ function UtilAdmin($scope) {
 }
 
 
-
 /*
 MODALS*/
 var scopeModal;
@@ -250,6 +258,7 @@ function InitModalsAccountants($scope, $uibModal) {
     };
 
 }
+
 function AnnulmentBillingUtil($scope, $uibModalInstance, params) {
     managerCurrentModal = true;
     $scope.loadData = false;
@@ -751,6 +760,7 @@ function AnnulmentBillingUtil($scope, $uibModalInstance, params) {
         $(elementSelector).bootgrid("reload");
     }
 }
+
 function ViewBillingUtil($scope, $uibModalInstance, params) {
     managerCurrentModal = true;
     $scope.loadData = false;
@@ -814,7 +824,10 @@ function ViewBillingUtil($scope, $uibModalInstance, params) {
         var billingManager = billingInformation.manager;
         var billingCustomer = billingManager.customer;
 
-
+       var  authorization_number = billingInformation.authorization_number;
+        if(authorization_number=='INVOICE_SEND_EMMIT'){
+console.log(billingInformation.authorization_number_data);
+        }
         var billingTransactions = billingManager.transactionsData;
         var htmlCustomer = typeBilling == "sales" ? "Cliente" : "Proveedor";
         var htmlCustomerName = billingCustomer.information.ti_code == "R" ? billingCustomer.information.razon_social : billingCustomer.information.p_nombres + " " + billingCustomer.information.p_apellidos;
@@ -1190,6 +1203,7 @@ function ViewBillingUtil($scope, $uibModalInstance, params) {
     $scope.managerViewHtml = $scope.getViewBilling();
 
 }
+
 function IndebtednessUtil($scope, $uibModalInstance, params) {
     managerCurrentModal = true;
     $scope.loadData = false;
@@ -1404,7 +1418,7 @@ function IndebtednessUtil($scope, $uibModalInstance, params) {
         delay: 250,
         type: "POST",
         ajax: {
-            url:  params["step2"]["urlS2"],
+            url: params["step2"]["urlS2"],
             dataType: 'json',
             data: function (term, page) {
 
@@ -1437,7 +1451,7 @@ function IndebtednessUtil($scope, $uibModalInstance, params) {
         delay: 250,
         type: "post",
         ajax: {
-            url:$('#action-typesPayments-getPaymentsCurrentS2').val(),
+            url: $('#action-typesPayments-getPaymentsCurrentS2').val(),
             dataType: 'json',
             data: function (term, page) {
                 params = {
@@ -1456,7 +1470,7 @@ function IndebtednessUtil($scope, $uibModalInstance, params) {
         delay: 250,
         type: "post",
         ajax: {
-            url:$('#action-typesPaymentsByAccount-getAccountingPaymentsS2').val(),
+            url: $('#action-typesPaymentsByAccount-getAccountingPaymentsS2').val(),
             dataType: 'json',
             data: function (term, page) {
                 var tipo_pago = $scope.dataManagerModelStep2[$scope.fieldsManagerStep2[3].id] ? $scope.dataManagerModelStep2[$scope.fieldsManagerStep2[3].id].id : -1;
