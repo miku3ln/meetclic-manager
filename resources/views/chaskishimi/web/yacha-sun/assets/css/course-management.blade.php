@@ -9,7 +9,9 @@
         grid-template-columns: repeat(1, minmax(0, 1fr));
         gap: 0px;
     }
-
+    button.btn.btn-default.dropdown-toggle {
+        display: none;
+    }
     /* Tablet */
     @media (max-width: 992px) {
         .mc-elements {
@@ -24,6 +26,28 @@
         .mc-element__head {
 
         }
+        .mc-elements {
+            width: 100%;
+            margin-right: 0px;
+            margin-left: 0px !important;
+            grid-template-columns: 1fr;
+        }
+        .mc-panel {
+            width: 77% !important;
+            margin-left: 12% !important;
+        }
+        .mc-steps{
+            margin-top: 1px !important;
+        }
+        /* BUTTONS MANAGER */
+        .mc-ex__controls {
+            width: 70%;
+            bottom: 1%;
+        }
+        .container--manager-dictionary{
+            padding: 0 0% 0 0% !important;
+        }
+
     }
 
 
@@ -731,6 +755,7 @@
         .pagination a {
             width: 30px !important;
             height: 30px !important;
+            line-height: 16px !important;
         }
 
         .manager-information__td-information-title {

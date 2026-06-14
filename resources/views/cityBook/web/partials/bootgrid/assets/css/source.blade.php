@@ -35,6 +35,8 @@
         .pagination a {
             width: 30px !important;
             height: 30px !important;
+
+            line-height: 26px !important;/* GRID*/
         }
 
         .hero-section .intro-item h2 {

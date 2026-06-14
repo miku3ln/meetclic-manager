@@ -179,7 +179,7 @@
         </section>
         <!-- section end -->
         <!--section -->
-        <section class="color-bg color-bg--one" id="sec3">
+        <section class="color-bg color-bg--one not-view" id="sec3">
             <div class="shapes-bg-big"></div>
             <div class="container">
                 <div class="row">
@@ -202,7 +202,7 @@
         </section>
         <!-- section end -->
         <!--section -->
-        <section class="gray-bg" id="sec4">
+        <section class="gray-bg not-view" id="sec4" >
             <div class="container">
                 <div class="section-title">
                     <h2> {{__('frontend.how-it-works.faq.title.title')}} </h2>

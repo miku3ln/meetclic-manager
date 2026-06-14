@@ -11,6 +11,8 @@
         <!--=============== basic  ===============-->
     @include('layouts.partials.headMeta')
     @include('layouts.cityBook.typeHtml.styles')
+
+
     <style id="main-colors">
         /* =========================================================
       PULLKAY (MeetClic) - Bootstrap 3.3.5 UI/UX
@@ -36,9 +38,8 @@
             --mc-radius: 14px;
 
 
-
-            --mc-success: #2ECC71;        /* principal */
-            --mc-success-soft: #E9F9F0;   /* fondo */
+            --mc-success: #2ECC71; /* principal */
+            --mc-success-soft: #E9F9F0; /* fondo */
             --mc-success-border: #27AE60;
 
             --mc-info: #5C7CFA;
@@ -54,26 +55,31 @@
             --mc-danger-soft: #FDECEA;
             --mc-danger-border: #C0392B;
         }
+
         .badge__view-points--success {
             background-color: var(--mc-success-soft);
             color: var(--mc-success);
             border: 1px solid var(--mc-success-border);
         }
+
         .badge__view-points--info {
             background-color: var(--mc-info-soft);
             color: var(--mc-info);
             border: 1px solid var(--mc-info-border);
         }
+
         .badge__view-points--warning {
             background-color: var(--mc-warning-soft);
             color: var(--mc-warning);
             border: 1px solid var(--mc-warning-border);
         }
+
         .badge__view-points--danger {
             background-color: var(--mc-danger-soft);
             color: var(--mc-danger);
             border: 1px solid var(--mc-danger-border);
         }
+
         .badge__view-points {
             font-size: 15px !important;
             font-weight: 600;
@@ -84,10 +90,12 @@
             gap: 6px;
             line-height: 1;
         }
+
         span.statistic-item-title {
             font-size: 17px;
             color: #ffffff;
         }
+
         legend.legend--section {
             color: var(--mc-azulClic) !important;
             font-size: 18px;
@@ -269,6 +277,39 @@
         href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:ital,wght@0,1;0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,1;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap"
         rel="stylesheet">
 
+
+    <style id="devices-styles">
+        <?php
+     $cssLabelSing='-12%';
+
+     $cssLabelTranslator='-9%';
+     if($nameRoute=='contactUsBee'||$nameRoute== 'howItWorks'|| $nameRoute== 'ourAllies'){
+     $cssLabelTranslator='-2%';
+         $cssLabelSing='-7%';
+     }
+     ?>
+        @media screen and (min-width: 300px) and (max-width: 600px) {
+            .show-reg-form--login {
+
+                margin-right: <?php echo $cssLabelSing ?> !important;
+            }
+
+            .nav-button-wrap--menu-mobiles {
+                position: absolute;
+                top: 53px !important;
+                right: 8px !important;
+                margin-right: 19px !important;
+            }
+            .manager-language {
+
+                right: <?php echo $cssLabelTranslator ?>!important;
+            }
+            .main-menu {
+
+                top: 97px !important;
+            }
+        }
+    </style>
 </head>
 <body>
 <!--loader-->
@@ -427,12 +468,11 @@ if (env('allowAllInOne')) {
                     } if ($nameRoute == 'ourAllies') {
                         $activeOurAllies = 'act-link';
 
-                    }elseif ($nameRoute=='shop-business'){
+                    } elseif ($nameRoute == 'shop-business') {
 
                         $activeOurAllies = 'act-link';
 
-                    }
-                    else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
+                    } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
                         if ($paramsRequest['type'] == 1) {
                             $dictionaryKichwaToCastilian = 'act-link';
@@ -815,7 +855,7 @@ if (env('allowAllInOne')) {
      * @param {boolean} [options.satellite=false] - true para vista satélite
      * @param {string} [options.windowTarget='_blank'] - destino de window.open
      */
-    function openGoogleMaps({ lat, lng }, options = {}) {
+    function openGoogleMaps({lat, lng}, options = {}) {
         const {
             zoom = 21,
             satellite = false,
@@ -857,6 +897,7 @@ if (env('allowAllInOne')) {
         if (!Number.isFinite(n)) return min;
         return Math.min(max, Math.max(min, n));
     }
+
     function onChangeLanguage() {
         var supportedLangs = ["ki", "es", "en"];
 

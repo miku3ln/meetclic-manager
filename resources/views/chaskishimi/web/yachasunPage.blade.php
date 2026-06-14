@@ -704,7 +704,7 @@ $url_path_plugins = "libs/";
                                 @include('chaskishimi.web.yacha-sun.assets.js.template.management-dictionary')
 
                             </div>
-                            <div v-else id="manager-coming-soon">
+                            <div v-if="hub.active_process.key=='chaski-idioma' || hub.active_process.key=='chaski-trabalenguas' "id="manager-coming-soon">
 
                                 <img src="{{$coming_soon}}" alt="" class="manager-coming-soon__img">
                             </div>
