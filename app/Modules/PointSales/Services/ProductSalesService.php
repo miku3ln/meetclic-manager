@@ -98,21 +98,16 @@ class ProductSalesService
                 'product_type' => $item->product_type,
                 'inventory_type' => $item->inventory_type,
                 'structure_type' => $item->product_type,
-
-
                 'functional_type' => $functionalType,
-
                 'is_virtual' => $item->product_type === ProductClassification::TYPE_MIXED,
-
                 'stock_managed' =>
                     $item->product_type !== ProductClassification::TYPE_MIXED,
-
                 'is_sellable' =>
                     $item->inventory_type === ProductClassification::INVENTORY_FOR_SALE,
-
                 'is_produced' =>
                     $item->inventory_type === ProductClassification::INVENTORY_PROCESSED,
             ],
+            'details_all'=>$item->details_all
 
         ];
     }
@@ -121,6 +116,11 @@ class ProductSalesService
 
         return $this->repo->setProductTypeSave($params);
     }
+    public function setProductItemRecipeSave($params)
+    {
+
+        return $this->repo->setProductItemRecipeSave($params);
+    }
     public function getProducts($params)
     {
 
@@ -128,7 +128,18 @@ class ProductSalesService
 
         return $this->transformProducts($result);
     }
+    public function getProductsByTypeForRecipe($params)
+    {
 
+        $result = $this->repo->getProductsByTypeForRecipe($params);
+
+        return $this->transformProducts($result);
+    }
+    public function getProductsRecipeShopPage($params)
+    {
+
+        return $this->repo->getProductsRecipeShopPage($params);
+    }
     public function getProductsShopPage($params)
     {
 

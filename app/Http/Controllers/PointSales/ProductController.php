@@ -12,6 +12,7 @@ use App\Models\InvoiceSales\InvoiceSaleMeta;
 use App\Models\InvoiceSales\InvoiceSalePayment;
 use App\Models\InvoiceSales\PosPaymentMethod;
 use App\Models\InvoiceSales\PuntoEmision;
+use App\Models\Products\ProductRecipe;
 use App\Modules\PointSales\Services\ProductSalesService;
 use App\Modules\PointSales\Services\StockDiscountService;
 use App\Services\Inventory\MeasureResolverService;
@@ -84,6 +85,50 @@ class ProductController extends PointSalesBaseController
             ]
         ];
         $data = $this->service->getProducts($filters);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+
+    public function getProductsByTypeForRecipe(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+
+        $params = $request->all();
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'business_id' => $params["business_id"],
+            'inventory_type' => $params["inventory_type"],
+            'componentProductId' => $params["componentProductId"],
+            'current' => $params["current"],
+            'rowCount' => $params["rowCount"],
+            'filters' => [
+                'business_id' => $params["business_id"],
+                'inventory_type' => $params["inventory_type"],
+                'componentProductId' => $params["componentProductId"],
+            ]
+        ];
+        $data = $this->service->getProductsByTypeForRecipe($filters);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+
+    public function getProductsRecipeSales(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+
+        $params = $request->all();
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'current' => $params["current"],
+            'rowCount' => $params["rowCount"],
+            'business_id' => $params["business_id"],
+            'component_product_id' => $params["component_product_id"],
+
+            'filters' => [
+                'business_id' => $params["business_id"],
+                'component_product_id' => $params["component_product_id"],
+
+            ]
+        ];
+        $data = $this->service->getProductsRecipeShopPage($filters);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
@@ -461,7 +506,7 @@ class ProductController extends PointSalesBaseController
                 DB::rollBack();
 
             } else {
-                if ($pe_id>0) {
+                if ($pe_id > 0) {
                     $modelEmision = new PuntoEmision();
                     $modelEmision->incrementarFactura($pe_id, $invoiceCode);
                 }
@@ -844,89 +889,55 @@ class ProductController extends PointSalesBaseController
 
     public function setProductTypeSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
-        $payload = [
-
-            'product' => [
-                // REQUIRED
-                'code' => 'HEL-MORA-001',
-                'name' => 'Helado Mora',
-                'product_type' => 'MEASURABLE',
-                'inventory_type' => 'RAW',
-                'state' => 'ACTIVE',
-
-                'product_trademark_id' => 1,
-                'product_category_id' => 3,
-                'product_subcategory_id' => 13,
-
-                'has_tax' => 1,
-                'is_service' => 0,
-                'user_id' => 1,
-
-                'product_measure_type_id' => 3,
-                'view_online' => 1,
-
-                // OPTIONAL
-                'source' => null,
-                'description' => 'description',
-                'code_provider' => null,
-                'code_product' => null,
-            ],
-
-            'business_by_products' => [
-                'business_id' => 42,
-            ],
-
-            'product_inventory' => [
-                'business_id' => 42,
-                'avarage_kardex_value' => 1.92,
-                'tax' => 'SI',
-                'quantity_units' => 20,
-                'sale_price' => 2.50,
-                'total_price' => 50.00,
-                'product_id' => null, // lo asigna ProductSaveUtil
-                'tax_id' => 1,
-                'profit' => 30,
-                'profit_type' => 1,
-                'note' => 'Carga inicial',
-                'sale_price2' => 2.50,
-                'sale_price3' => 2.50,
-                'sale_price4' => 2.50,
-            ],
-
-            'product_sell_config' => [
-                'product_id' => null, // lo asigna ProductSaveUtil
-                'allow_pos' => 1,
-                'allow_shop' => 1,
-                'allow_delivery' => 0,
-                'visible' => 1,
-            ],
-
-            'inventory_movement' => [
-                'product_id' => null, // lo asigna ProductSaveUtil
-
-                'movement_type' => 'IN', // lo asigna ProductSaveUtil
-
-                'quantity' => 20,
-
-                'unit_measure_id' => 22,
-
-                'quantity_input' => 20,
-
-                'unit_input_id' => 22,
-
-                'conversion_factor' => 1,
-
-                'reference_type' => null, // lo asigna ProductSaveUtil
-
-                'reference_id' => null,
-
-                'description' => null, // lo asigna ProductSaveUtil
-            ]
-        ];
         $params = $request->all();
-
         $data = $this->service->setProductTypeSave($params);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
+    public function setProductItemRecipeSave(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $data = $this->service->setProductItemRecipeSave($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+
+    public function saveProductRecipe(Request $request)
+    {
+        $payload = $request->json()->all();
+
+        DB::beginTransaction();
+
+        try {
+
+            $model = new ProductRecipe();
+
+            $saved = $model->saveFromArray($payload);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'msj' => 'Ingrediente guardado correctamente',
+                'data' => [
+                    'model'=>$saved,
+                    'recipe_id' => $saved->id
+                ],
+                'errors' => []
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'msj' => $e->getMessage(),
+                'data' => [],
+                'errors' => []
+            ], 500);
+        }
+    }
+
 }

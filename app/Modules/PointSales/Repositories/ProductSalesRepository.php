@@ -85,6 +85,7 @@ class ProductSalesRepository extends BaseRepository
 
                 'um_default.name as default_unit',
                 'um_default.symbol as default_symbol',
+
             ]);
 
         // 🔍 SEARCH (sin romper nada)
@@ -108,6 +109,226 @@ class ProductSalesRepository extends BaseRepository
             );
     }
 
+    public function setProductItemRecipeSave($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setProductItemRecipeSave(
+                $params
+            );
+    }
+    public function getProductsRecipeShopPage($params)
+    {
+        $business_id = $params["filters"]["business_id"];
+        $component_product_id = $params["filters"]["component_product_id"];
+
+        $query = DB::table('product_recipe as pr')
+
+            ->join(
+                'product as p',
+                'p.id',
+                '=',
+                'pr.product_id'
+            )
+
+            ->join(
+                'business_by_products as bp',
+                'bp.products_id',
+                '=',
+                'p.id'
+            )
+
+            ->leftJoin(
+                'product_category as pc',
+                'pc.id',
+                '=',
+                'p.product_category_id'
+            )
+
+            ->leftJoin(
+                'product_subcategory as psc',
+                'psc.id',
+                '=',
+                'p.product_subcategory_id'
+            )
+
+            ->leftJoin(
+                'product_measure_type as pmt',
+                'pmt.id',
+                '=',
+                'p.product_measure_type_id'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Unidad ingresada
+            |--------------------------------------------------------------------------
+            */
+            ->leftJoin(
+                'unit_measure as um_input',
+                'um_input.id',
+                '=',
+                'pr.unit_input_id'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Unidad base
+            |--------------------------------------------------------------------------
+            */
+            ->leftJoin(
+                'unit_measure as um_base',
+                'um_base.id',
+                '=',
+                'pr.base_unit_measure_id'
+            )
+
+            ->where(
+                'bp.business_id',
+                $business_id
+            )
+
+            ->where(
+                'pr.component_product_id',
+                $component_product_id
+            )
+
+            ->where(
+                'p.state',
+                'ACTIVE'
+            )
+
+            ->select([
+
+                /*
+                |--------------------------------------------------------------------------
+                | PRODUCTO INGREDIENTE
+                |--------------------------------------------------------------------------
+                */
+                'p.id as product_id',
+                'p.name',
+                'p.code',
+                'p.product_type',
+                'p.inventory_type',
+
+                /*
+                |--------------------------------------------------------------------------
+                | CATEGORY
+                |--------------------------------------------------------------------------
+                */
+                'pc.value as category',
+                'psc.value as subcategory',
+
+                /*
+                |--------------------------------------------------------------------------
+                | RECIPE
+                |--------------------------------------------------------------------------
+                */
+                'pr.id as recipe_id',
+
+                'pr.quantity_input',
+                'pr.quantity_base',
+
+                'pr.conversion_factor',
+
+                'pr.unit_input_id',
+                'pr.base_unit_measure_id',
+
+                /*
+                |--------------------------------------------------------------------------
+                | INPUT UNIT
+                |--------------------------------------------------------------------------
+                */
+                'um_input.name as input_unit_name',
+                'um_input.symbol as input_unit_symbol',
+
+                /*
+                |--------------------------------------------------------------------------
+                | BASE UNIT
+                |--------------------------------------------------------------------------
+                */
+                'um_base.name as base_unit_name',
+                'um_base.symbol as base_unit_symbol',
+
+                /*
+                |--------------------------------------------------------------------------
+                | DETAILS
+                |--------------------------------------------------------------------------
+                */
+                DB::raw("
+                JSON_OBJECT(
+
+                    'recipe',
+                    JSON_OBJECT(
+                        'id', pr.id,
+                        'product_id', pr.product_id,
+                        'component_product_id', pr.component_product_id,
+                        'quantity_input', pr.quantity_input,
+                        'unit_input_id', pr.unit_input_id,
+                        'quantity_base', pr.quantity_base,
+                        'base_unit_measure_id', pr.base_unit_measure_id,
+                        'conversion_factor', pr.conversion_factor
+                    ),
+
+                    'product',
+                    JSON_OBJECT(
+                        'id', p.id,
+                        'name', p.name,
+                        'code', p.code,
+                        'product_type', p.product_type,
+                        'inventory_type', p.inventory_type
+                    ),
+
+                    'input_unit',
+                    JSON_OBJECT(
+                        'id', um_input.id,
+                        'name', um_input.name,
+                        'symbol', um_input.symbol,
+                        'factor_to_base', um_input.factor_to_base
+                    ),
+
+                    'base_unit',
+                    JSON_OBJECT(
+                        'id', um_base.id,
+                        'name', um_base.name,
+                        'symbol', um_base.symbol,
+                        'factor_to_base', um_base.factor_to_base
+                    ),
+                        'product_measure_type',
+    JSON_OBJECT(
+        'id', pmt.id,
+        'value', pmt.value,
+        'description', pmt.description,
+        'abbreviation', pmt.abbreviation,
+        'unit', pmt.unit,
+        'number_of_units', pmt.number_of_units,
+        'prefix', pmt.prefix,
+        'symbol', pmt.symbol
+    )
+
+                ) as details_all
+            ")
+            ]);
+
+        $this->applySearch(
+            $query,
+            $params['searchPhrase'] ?? null,
+            [
+                'p.name',
+                'p.code',
+                'pc.value',
+                'psc.value'
+            ]
+        );
+
+        $query->orderBy('pr.id', 'desc');
+
+        return $this->paginate(
+            $query,
+            $params,
+            'pr.id'
+        );
+    }
     public function getProductsShopPage($params)
     {
         /*
@@ -181,6 +402,8 @@ class ProductSalesRepository extends BaseRepository
                 'p.id'
             )
             ->join('tax as tx', 'pi.tax_id', '=', 'tx.id')
+            ->join('tax_by_business as txbb', 'tx.id', '=', 'txbb.tax_id')
+
             /*
             |--------------------------------------------------------------------------
             | OPTIONAL TABLES
@@ -424,6 +647,147 @@ class ProductSalesRepository extends BaseRepository
                 'um_default.name as default_unit',
 
                 'um_default.symbol as default_symbol',
+                DB::raw("
+JSON_OBJECT(
+
+    'product',
+    JSON_OBJECT(
+        'id', p.id,
+        'name', p.name,
+        'product_type', p.product_type,
+        'inventory_type', p.inventory_type,
+        'state', p.state,
+        'product_trademark_id', p.product_trademark_id ,
+        'product_category_id', p.product_category_id  ,
+        'product_subcategory_id', p.product_subcategory_id   ,
+        'source', p.source   ,
+        'description', p.description   ,
+        'code_provider', p.code_provider   ,
+        'code_product', p.code_product   ,
+        'has_tax', p.has_tax   ,
+        'is_service', p.is_service   ,
+        'product_measure_type_id', p.product_measure_type_id  ,
+        'view_online', p.view_online
+
+    ),
+
+    'product_category',
+    JSON_OBJECT(
+        'id', pc.id,
+        'value', pc.value
+    ),
+
+    'product_subcategory',
+    JSON_OBJECT(
+        'id', psc.id,
+        'value', psc.value
+    ),
+
+    'product_measure_type',
+    JSON_OBJECT(
+        'id', pmt.id,
+        'value', pmt.value,
+        'description', pmt.description,
+        'abbreviation', pmt.abbreviation,
+        'unit', pmt.unit,
+        'number_of_units', pmt.number_of_units,
+        'prefix', pmt.prefix,
+        'symbol', pmt.symbol
+    ),
+
+    'stock_unit_measure',
+    JSON_OBJECT(
+        'id', um_stock.id,
+        'product_measure_type_id ', um_stock.product_measure_type_id ,
+        'name', um_stock.name,
+        'symbol', um_stock.symbol,
+        'factor_to_base', um_stock.factor_to_base,
+        'is_base', um_stock.is_base,
+        'decimal_precision', um_stock.decimal_precision,
+        'state', um_stock.state
+
+    ),
+
+    'base_unit_measure',
+    JSON_OBJECT(
+        'id', um_base.id,
+        'product_measure_type_id ', um_base.product_measure_type_id ,
+        'name', um_base.name,
+        'symbol', um_base.symbol,
+        'factor_to_base', um_base.factor_to_base,
+        'is_base', um_base.is_base,
+        'decimal_precision', um_base.decimal_precision,
+        'state', um_base.state
+
+    ),
+
+    'default_unit_measure',
+    JSON_OBJECT(
+        'id', um_default.id,
+        'product_measure_type_id ', um_default.product_measure_type_id ,
+        'name', um_default.name,
+        'symbol', um_default.symbol,
+        'factor_to_base', um_default.factor_to_base,
+        'is_base', um_default.is_base,
+        'decimal_precision', um_default.decimal_precision,
+        'state', um_default.state
+    ),
+
+    'tax',
+    JSON_OBJECT(
+        'id', tx.id,
+        'value', tx.value,
+        'percentage', tx.percentage,
+        'priority', txbb.priority
+    ),
+
+    'business_by_products',
+    JSON_OBJECT(
+        'id', bp.id,
+        'business_id', bp.business_id,
+        'products_id', bp.products_id
+    ),
+
+    'product_inventory',
+    JSON_OBJECT(
+        'id', pi.id,
+        'business_id', pi.business_id,
+        'avarage_kardex_value', pi.avarage_kardex_value,
+        'tax', pi.tax,
+        'quantity_units', pi.quantity_units,
+        'sale_price', pi.sale_price,
+        'total_price', pi.total_price,
+        'product_id', pi.product_id ,
+        'tax_id', pi.tax_id  ,
+        'profit', pi.profit  ,
+        'profit_type', pi.profit_type  ,
+        'note', pi.note  ,
+        'sale_price2', pi.sale_price2  ,
+        'sale_price3', pi.sale_price3  ,
+        'sale_price4', pi.sale_price4
+    ),
+
+    'product_sell_config',
+    JSON_OBJECT(
+        'id', pscfg.id,
+        'product_id', pscfg.product_id,
+        'allow_pos', pscfg.allow_pos,
+        'allow_shop', pscfg.allow_shop,
+        'allow_delivery', pscfg.allow_delivery,
+        'visible', pscfg.visible
+    ),
+
+    'product_stock',
+    JSON_OBJECT(
+        'id', ps.id,
+        'product_id', ps.product_id,
+        'quantity', ps.quantity,
+        'quantity_base', ps.quantity_base,
+        'unit_measure_id', ps.unit_measure_id
+    )
+
+) as details_all
+"),
             ]);
 
         /*
@@ -458,6 +822,498 @@ class ProductSalesRepository extends BaseRepository
                 );
             }
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        $this->applySearch(
+            $query,
+            $params['searchPhrase'] ?? null,
+            [
+                'p.name',
+                'p.code',
+                'pc.value',
+                'psc.value'
+            ]
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+        $query->orderBy('p.id', 'desc');
+        return $this->paginate($query, $params, 'p.id');
+    }
+
+    public function getProductsByTypeForRecipe($params)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | FILTERS
+        |--------------------------------------------------------------------------
+        */
+
+        $business_id = $params["filters"]["business_id"];
+        $componentProductId = $params["filters"]["componentProductId"];
+        $inventory_type = $params["filters"]["inventory_type"];
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | OPTIONAL CHANNEL TYPE
+        |--------------------------------------------------------------------------
+        */
+
+        $type = isset($params["filters"]['type'])
+            ? strtoupper($params["filters"]['type'])
+            : null;
+
+        $channelColumn = null;
+
+        if ($type === 'POS') {
+            $channelColumn = 'pscfg.allow_pos';
+        } elseif ($type === 'SHOP') {
+            $channelColumn = 'pscfg.allow_shop';
+
+        } elseif ($type === 'DELIVERY') {
+            $channelColumn = 'pscfg.allow_delivery';
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY
+        |--------------------------------------------------------------------------
+        */
+
+        $query = DB::table('product_stock as ps')
+            /*
+            |--------------------------------------------------------------------------
+            | MAIN TABLES
+            |--------------------------------------------------------------------------
+            */
+
+            ->join('product as p', 'p.id', '=', 'ps.product_id')
+            ->join('business_by_products as bp', 'p.id', '=', 'bp.products_id')
+            ->join('product_inventory as pi', 'p.id', '=', 'pi.product_id')
+            ->join(
+                'product_sell_config as pscfg',
+                'pscfg.product_id',
+                '=',
+                'p.id'
+            )
+            ->join('tax as tx', 'pi.tax_id', '=', 'tx.id')
+            ->join('tax_by_business as txbb', 'tx.id', '=', 'txbb.tax_id')
+
+            /*
+            |--------------------------------------------------------------------------
+            | OPTIONAL TABLES
+            |--------------------------------------------------------------------------
+            */
+
+            ->leftJoin(
+                'product_category as pc',
+                'pc.id',
+                '=',
+                'p.product_category_id'
+            )
+            ->leftJoin(
+                'product_subcategory as psc',
+                'psc.id',
+                '=',
+                'p.product_subcategory_id'
+            )
+            ->leftJoin(
+                'product_measure_type as pmt',
+                'pmt.id',
+                '=',
+                'p.product_measure_type_id'
+            )
+            ->leftJoin(
+                'unit_measure as um_stock',
+                'um_stock.id',
+                '=',
+                'ps.unit_measure_id'
+            )
+            ->leftJoin('unit_measure as um_base', function ($join) {
+
+                $join->on(
+                    'um_base.product_measure_type_id',
+                    '=',
+                    'p.product_measure_type_id'
+                )
+                    ->where('um_base.is_base', 1);
+            })
+            ->leftJoin('measure_type_config as mtc', function ($join) {
+
+                $join->on(
+                    'mtc.product_measure_type_id',
+                    '=',
+                    'p.product_measure_type_id'
+                )
+                    ->where('mtc.state', 1);
+            })
+            ->leftJoin('measure_unit_config as muc', function ($join) {
+
+                $join->on(
+                    'muc.measure_type_config_id',
+                    '=',
+                    'mtc.id'
+                )
+                    ->where('muc.is_default', 1)
+                    ->where('muc.state', 1);
+            })
+            ->leftJoin(
+                'unit_measure as um_default',
+                'um_default.id',
+                '=',
+                'muc.unit_measure_id'
+            )
+            /*
+            |--------------------------------------------------------------------------
+            | MAIN FILTERS
+            |--------------------------------------------------------------------------
+            */
+
+            ->where('bp.business_id', $business_id)
+            ->where('p.inventory_type', $inventory_type)
+
+            ->where('p.state', 'ACTIVE')
+            /*
+            |--------------------------------------------------------------------------
+            | SELL CONFIG
+            |--------------------------------------------------------------------------
+            */
+            ->where('pscfg.visible', 1)
+            /*
+            |--------------------------------------------------------------------------
+            | SELECT
+            |--------------------------------------------------------------------------
+            */
+
+            ->select([
+
+                /*
+                |--------------------------------------------------------------------------
+                | PRODUCT
+                |--------------------------------------------------------------------------
+                */
+
+                'p.id as product_id',
+
+                'p.code',
+
+                'p.name',
+
+                'p.product_type',
+
+                'p.inventory_type',
+
+                'p.state',
+
+                'p.source',
+
+                /*
+                |--------------------------------------------------------------------------
+                | CATEGORY
+                |--------------------------------------------------------------------------
+                */
+
+                'pc.value as category',
+
+                'psc.value as subcategory',
+
+                /*
+                |--------------------------------------------------------------------------
+                | MEASURE
+                |--------------------------------------------------------------------------
+                */
+
+                'pmt.value as measure_type',
+                'pmt.id as measure_type_id',
+
+                /*
+                |--------------------------------------------------------------------------
+                | STOCK
+                |--------------------------------------------------------------------------
+                */
+
+                'ps.quantity',
+
+                'ps.quantity_base',
+
+                /*
+                |--------------------------------------------------------------------------
+                | IDS
+                |--------------------------------------------------------------------------
+                */
+
+                'p.product_category_id',
+
+                'p.product_subcategory_id',
+
+                /*
+                |--------------------------------------------------------------------------
+                | TAX
+                |--------------------------------------------------------------------------
+                */
+
+                'pi.tax_id',
+
+                'tx.value as tax_value',
+
+                'tx.percentage as tax_percentage',
+
+                'pi.tax as has_tax',
+
+                /*
+                |--------------------------------------------------------------------------
+                | PRICES
+                |--------------------------------------------------------------------------
+                */
+
+                'pi.sale_price',
+
+                'pi.sale_price2',
+
+                'pi.sale_price3',
+
+                'pi.sale_price4',
+
+                /*
+                |--------------------------------------------------------------------------
+                | SELL CONFIG
+                |--------------------------------------------------------------------------
+                */
+
+                'pscfg.allow_pos',
+
+                'pscfg.allow_shop',
+
+                'pscfg.allow_delivery',
+
+                'pscfg.visible',
+
+                /*
+                |--------------------------------------------------------------------------
+                | QUANTITY DISPLAY
+                |--------------------------------------------------------------------------
+                */
+
+                DB::raw("
+                CASE
+
+                    WHEN p.product_type = 'MIXED'
+                        THEN ps.quantity
+
+                    WHEN p.product_type = 'UNIT'
+                        THEN ps.quantity
+
+                    WHEN um_default.factor_to_base > 0
+                        THEN ROUND(
+                            ps.quantity_base / um_default.factor_to_base,
+                            2
+                        )
+
+                    ELSE ps.quantity_base
+
+                END as quantity_display
+            "),
+
+                /*
+                |--------------------------------------------------------------------------
+                | STOCK UNIT
+                |--------------------------------------------------------------------------
+                */
+
+                'um_stock.name as stock_unit',
+
+                'um_stock.symbol as stock_symbol',
+
+                /*
+                |--------------------------------------------------------------------------
+                | BASE UNIT
+                |--------------------------------------------------------------------------
+                */
+
+                'um_base.name as base_unit',
+
+                'um_base.symbol as base_symbol',
+
+                /*
+                |--------------------------------------------------------------------------
+                | DEFAULT UNIT
+                |--------------------------------------------------------------------------
+                */
+
+                'um_default.name as default_unit',
+
+                'um_default.symbol as default_symbol',
+                DB::raw("
+JSON_OBJECT(
+
+    'product',
+    JSON_OBJECT(
+        'id', p.id,
+        'name', p.name,
+        'product_type', p.product_type,
+        'inventory_type', p.inventory_type,
+        'state', p.state,
+        'product_trademark_id', p.product_trademark_id ,
+        'product_category_id', p.product_category_id  ,
+        'product_subcategory_id', p.product_subcategory_id   ,
+        'source', p.source   ,
+        'description', p.description   ,
+        'code_provider', p.code_provider   ,
+        'code_product', p.code_product   ,
+        'has_tax', p.has_tax   ,
+        'is_service', p.is_service   ,
+        'product_measure_type_id', p.product_measure_type_id  ,
+        'view_online', p.view_online
+
+    ),
+
+    'product_category',
+    JSON_OBJECT(
+        'id', pc.id,
+        'value', pc.value
+    ),
+
+    'product_subcategory',
+    JSON_OBJECT(
+        'id', psc.id,
+        'value', psc.value
+    ),
+
+    'product_measure_type',
+    JSON_OBJECT(
+        'id', pmt.id,
+        'value', pmt.value,
+        'description', pmt.description,
+        'abbreviation', pmt.abbreviation,
+        'unit', pmt.unit,
+        'number_of_units', pmt.number_of_units,
+        'prefix', pmt.prefix,
+        'symbol', pmt.symbol
+    ),
+
+    'stock_unit_measure',
+    JSON_OBJECT(
+        'id', um_stock.id,
+        'product_measure_type_id ', um_stock.product_measure_type_id ,
+        'name', um_stock.name,
+        'symbol', um_stock.symbol,
+        'factor_to_base', um_stock.factor_to_base,
+        'is_base', um_stock.is_base,
+        'decimal_precision', um_stock.decimal_precision,
+        'state', um_stock.state
+
+    ),
+
+    'base_unit_measure',
+    JSON_OBJECT(
+        'id', um_base.id,
+        'product_measure_type_id ', um_base.product_measure_type_id ,
+        'name', um_base.name,
+        'symbol', um_base.symbol,
+        'factor_to_base', um_base.factor_to_base,
+        'is_base', um_base.is_base,
+        'decimal_precision', um_base.decimal_precision,
+        'state', um_base.state
+
+    ),
+
+    'default_unit_measure',
+    JSON_OBJECT(
+        'id', um_default.id,
+        'product_measure_type_id ', um_default.product_measure_type_id ,
+        'name', um_default.name,
+        'symbol', um_default.symbol,
+        'factor_to_base', um_default.factor_to_base,
+        'is_base', um_default.is_base,
+        'decimal_precision', um_default.decimal_precision,
+        'state', um_default.state
+    ),
+
+    'tax',
+    JSON_OBJECT(
+        'id', tx.id,
+        'value', tx.value,
+        'percentage', tx.percentage,
+        'priority', txbb.priority
+    ),
+
+    'business_by_products',
+    JSON_OBJECT(
+        'id', bp.id,
+        'business_id', bp.business_id,
+        'products_id', bp.products_id
+    ),
+
+    'product_inventory',
+    JSON_OBJECT(
+        'id', pi.id,
+        'business_id', pi.business_id,
+        'avarage_kardex_value', pi.avarage_kardex_value,
+        'tax', pi.tax,
+        'quantity_units', pi.quantity_units,
+        'sale_price', pi.sale_price,
+        'total_price', pi.total_price,
+        'product_id', pi.product_id ,
+        'tax_id', pi.tax_id  ,
+        'profit', pi.profit  ,
+        'profit_type', pi.profit_type  ,
+        'note', pi.note  ,
+        'sale_price2', pi.sale_price2  ,
+        'sale_price3', pi.sale_price3  ,
+        'sale_price4', pi.sale_price4
+    ),
+
+    'product_sell_config',
+    JSON_OBJECT(
+        'id', pscfg.id,
+        'product_id', pscfg.product_id,
+        'allow_pos', pscfg.allow_pos,
+        'allow_shop', pscfg.allow_shop,
+        'allow_delivery', pscfg.allow_delivery,
+        'visible', pscfg.visible
+    ),
+
+    'product_stock',
+    JSON_OBJECT(
+        'id', ps.id,
+        'product_id', ps.product_id,
+        'quantity', ps.quantity,
+        'quantity_base', ps.quantity_base,
+        'unit_measure_id', ps.unit_measure_id
+    )
+
+) as details_all
+"),
+            ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | OPTIONAL CHANNEL FILTER
+        |--------------------------------------------------------------------------
+        */
+
+        if ($channelColumn) {
+
+            $query->where($channelColumn, 1);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORY FILTER
+        |--------------------------------------------------------------------------
+        */
+
+
 
         /*
         |--------------------------------------------------------------------------

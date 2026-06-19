@@ -95,6 +95,7 @@ Route::prefix('pointsales')->group(function () {
     // 🔒 TODO lo demás protegido
     Route::middleware(['pointsales.auth'])->group(function () {
         Route::get('/products-sales', 'PointSales\ProductController@getProductsSales');
+
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
         Route::get('/tickets-sales', 'PointSales\TicketManagerController@getTicketsSales');
 
@@ -102,6 +103,12 @@ Route::prefix('pointsales')->group(function () {
         Route::get('/catalog-tax', 'PointSales\ProductController@getCatalogTax');
 
         Route::post('/product-type-save', 'PointSales\ProductController@setProductTypeSave');
+        Route::post('/product-item-recipe-save', 'PointSales\ProductController@setProductItemRecipeSave');
+        Route::get('/products-sales-recipe', 'PointSales\ProductController@getProductsRecipeSales');
+        Route::post('/save-product-recipe', 'PointSales\ProductController@saveProductRecipe');
+
+        Route::get('/products-by-type-for-recipe', 'PointSales\ProductController@getProductsByTypeForRecipe');
+
 
 
     });

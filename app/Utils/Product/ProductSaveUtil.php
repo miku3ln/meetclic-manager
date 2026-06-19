@@ -7,6 +7,7 @@ use App\Models\BusinessByProduct;
 use App\Models\InvoiceSales\InventoryMovement;
 use App\Models\ProductInventory;
 use App\Models\Products\Product;
+use App\Models\Products\ProductRecipe;
 use App\Models\Products\ProductSellConfig;
 use App\Models\Products\ProductStock;
 use App\Modules\PointSales\Constants\ProductClassification;
@@ -26,7 +27,11 @@ class ProductSaveUtil
     private const ALLOW_DELIVERY = 0;
     private const VISIBLE = 1;
     private const REFERENCE_TYPE = 'INVENTARIO_INICIAL';
+    private const REFERENCE_TYPE_OUT = 'INVENTARIO_DISCOUNT_BY_CREATE';
+
     private const DESCRIPTION = 'Carga inicial';
+    private const DESCRIPTION_OUT = 'Descuento por Registro de Receta by';
+
     private array $saveLog = [];
 
     private function addLog(
@@ -37,6 +42,8 @@ class ProductSaveUtil
         $this->saveLog[$key] = $data;
     }
 
+
+
     public function setProductTypeSave(array $payload): array
     {
         DB::beginTransaction();
@@ -44,7 +51,6 @@ class ProductSaveUtil
         try {
 
             $this->validatePayload($payload);
-
             $productModelSave = $this->saveProductEntity(
                 $payload['product']
             );
@@ -58,9 +64,7 @@ class ProductSaveUtil
                 $productModelSave,
                 $payload
             );
-
             DB::commit();
-
             return [
                 'success' => true,
                 'inventory_type' => $productModelSave->inventory_type,
@@ -85,8 +89,9 @@ class ProductSaveUtil
             ];
         }
     }
+
     private function saveProductStock(
-        int $productId,
+        int               $productId,
         InventoryMovement $movement
     ): ProductStock
     {
@@ -95,9 +100,9 @@ class ProductSaveUtil
         $model = new ProductStock();
 
         $attributes = $model->buildAttributes([
-            'product_id'      => $productId,
-            'quantity'        => $movement->quantity,
-            'quantity_base'   => $movement->quantity,
+            'product_id' => $productId,
+            'quantity' => $movement->quantity,
+            'quantity_base' => $movement->quantity,
             'unit_measure_id' => $movement->unit_measure_id,
         ]);
 
@@ -122,6 +127,7 @@ class ProductSaveUtil
 
         return $model;
     }
+
     /*
     |--------------------------------------------------------------------------
     | VALIDATE ROOT PAYLOAD
@@ -136,7 +142,7 @@ class ProductSaveUtil
             'product_inventory',
             'product_sell_config',
             'inventory_movement'
-           // ,'product_stock'
+            // ,'product_stock'
         ];
 
         foreach ($requiredSections as $section) {
@@ -201,35 +207,8 @@ class ProductSaveUtil
         array   $payload
     ): void
     {
-        $business = $this->saveBusinessProduct(
-            $product->id,
-            $payload['business_by_products']
-        );
+        $this->allManagementProduct($product, $payload);
 
-        $this->addLog(
-            'business_by_products',
-            $business->toArray()
-        );
-
-        $inventory = $this->saveProductInventory(
-            $product->id,
-            $payload['product_inventory']
-        );
-
-        $this->addLog(
-            'product_inventory',
-            $inventory->toArray()
-        );
-
-        $sellConfig = $this->saveProductSellConfig(
-            $product->id,
-            $payload['product_sell_config']
-        );
-
-        $this->addLog(
-            'product_sell_config',
-            $sellConfig->toArray()
-        );
     }
 
     private function processProcessedProduct(
@@ -237,39 +216,8 @@ class ProductSaveUtil
         array   $payload
     ): void
     {
-        $business = $this->saveBusinessProduct(
-            $product->id,
-            $payload['business_by_products']
-        );
+        $this->allManagementProduct($product, $payload);
 
-        $this->addLog(
-            'business_by_products',
-            $business->toArray()
-        );
-
-        $inventory = $this->saveProductInventory(
-            $product->id,
-            $payload['product_inventory']
-        );
-
-        $this->addLog(
-            'product_inventory',
-            $inventory->toArray()
-        );
-
-        $sellConfig = $this->saveProductSellConfig(
-            $product->id,
-            $payload['product_sell_config']
-        );
-
-        $this->addLog(
-            'product_sell_config',
-            $sellConfig->toArray()
-        );
-
-        /*
-        recipe
-        */
     }
 
     /*
@@ -309,10 +257,9 @@ class ProductSaveUtil
         return $model;
     }
 
-    private function processRawProduct(
+    private function allManagementProduct(
         Product $product,
-        array   $payload
-    ): void
+        array   $payload)
     {
         $business = $this->saveBusinessProduct(
             $product->id,
@@ -344,11 +291,15 @@ class ProductSaveUtil
             $sellConfig->toArray()
         );
 
+
+        $inventory_movement = $payload['inventory_movement'];
+        $inventory_movement['movement_type'] = InventoryMovement::TYPE_IN;
+        $inventory_movement['reference_type'] = self::REFERENCE_TYPE;
+        $inventory_movement['description'] = self::DESCRIPTION;
         $movement = $this->saveInventoryMovement(
             $product->id,
-            $payload['inventory_movement']
+            $inventory_movement
         );
-
         $this->addLog(
             'inventory_movement',
             $movement->toArray()
@@ -363,6 +314,14 @@ class ProductSaveUtil
             'product_stock',
             $productStock->toArray()
         );
+    }
+
+    private function processRawProduct(
+        Product $product,
+        array   $payload
+    ): void
+    {
+        $this->allManagementProduct($product, $payload);
     }
 
     /*
@@ -495,17 +454,9 @@ class ProductSaveUtil
     ): InventoryMovement
     {
         $this->currentStep = 'INVENTORY_MOVEMENT';
-
         $data['product_id'] = $productId;
-
-        $data['movement_type'] = InventoryMovement::TYPE_IN;
-        $data['reference_type'] = self::REFERENCE_TYPE;
-        $data['description'] = self::DESCRIPTION;
-
         $model = new InventoryMovement();
-
         $attributes = $model->buildAttributes($data);
-
         $validate = $model->validateModel([
             'modelAttributes' => $attributes,
             'rules' => InventoryMovement::getRulesModel()
@@ -526,5 +477,90 @@ class ProductSaveUtil
         $model->save();
 
         return $model;
+    }
+
+
+
+
+    private function saveRecipeProduct(
+        array $data
+    ): ProductRecipe
+    {
+        $this->currentStep = 'PRODUCT_RECIPE';
+        $model = new ProductRecipe();
+        $attributes = $model->buildAttributes($data);
+        $validate = $model->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => $model::getRulesModel()
+        ]);
+
+        if (!$validate['success']) {
+            throw new Exception(
+                json_encode([
+                    'table' => $model->getTable(),
+                    'errors' => $validate['errorsFields']
+                ])
+            );
+        }
+
+        $model->fill($attributes);
+        return $model;
+    }
+    public function setProductItemRecipeSave(array $payload): array
+    {
+        DB::beginTransaction();
+
+        $inventory_type = $payload['product']['inventory_type'];
+        try {
+            $product_id = $payload['product']['id'];
+
+
+            $productRecipeModelSave = $this->saveRecipeProduct(
+                $payload['product_recipe']
+            );
+
+            $this->addLog(
+                'product_recipe',
+                $productRecipeModelSave->toArray()
+            );
+
+            $inventory_movement = $payload['inventory_movement'];
+            $inventory_movement['movement_type'] = InventoryMovement::TYPE_OUT;
+            $inventory_movement['reference_type'] = self::REFERENCE_TYPE_OUT;
+            $inventory_movement['description'] = self::DESCRIPTION_OUT . " : " . $inventory_type;
+            $movement = $this->saveInventoryMovement(
+                $product_id,
+                $inventory_movement
+            );
+
+            $this->addLog(
+                'inventory_movement',
+                $movement->toArray()
+            );
+
+            DB::commit();
+            return [
+                'success' => true,
+                'inventory_type' => $inventory_type,
+                'step' => 'FINISH',
+                'saved' => $this->saveLog
+            ];
+
+        } catch (Throwable $e) {
+
+            DB::rollBack();
+
+            return [
+                'success' => false,
+                'inventory_type' => $inventory_type,
+                'step' => $this->currentStep,
+                'saved_until_error' => $this->saveLog,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]
+            ];
+        }
     }
 }
