@@ -117,48 +117,43 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function getProductsRecipeShopPage($params)
     {
         $business_id = $params["filters"]["business_id"];
         $component_product_id = $params["filters"]["component_product_id"];
 
         $query = DB::table('product_recipe as pr')
-
             ->join(
                 'product as p',
                 'p.id',
                 '=',
                 'pr.product_id'
             )
-
             ->join(
                 'business_by_products as bp',
                 'bp.products_id',
                 '=',
                 'p.id'
             )
-
             ->leftJoin(
                 'product_category as pc',
                 'pc.id',
                 '=',
                 'p.product_category_id'
             )
-
             ->leftJoin(
                 'product_subcategory as psc',
                 'psc.id',
                 '=',
                 'p.product_subcategory_id'
             )
-
             ->leftJoin(
                 'product_measure_type as pmt',
                 'pmt.id',
                 '=',
                 'p.product_measure_type_id'
             )
-
             /*
             |--------------------------------------------------------------------------
             | Unidad ingresada
@@ -170,7 +165,6 @@ class ProductSalesRepository extends BaseRepository
                 '=',
                 'pr.unit_input_id'
             )
-
             /*
             |--------------------------------------------------------------------------
             | Unidad base
@@ -182,22 +176,18 @@ class ProductSalesRepository extends BaseRepository
                 '=',
                 'pr.base_unit_measure_id'
             )
-
             ->where(
                 'bp.business_id',
                 $business_id
             )
-
             ->where(
                 'pr.component_product_id',
                 $component_product_id
             )
-
             ->where(
                 'p.state',
                 'ACTIVE'
             )
-
             ->select([
 
                 /*
@@ -329,6 +319,7 @@ class ProductSalesRepository extends BaseRepository
             'pr.id'
         );
     }
+
     public function getProductsShopPage($params)
     {
         /*
@@ -365,6 +356,7 @@ class ProductSalesRepository extends BaseRepository
             : null;
 
         $channelColumn = null;
+        $state = ['ACTIVE'];
 
         if ($type === 'POS') {
 
@@ -377,6 +369,8 @@ class ProductSalesRepository extends BaseRepository
         } elseif ($type === 'DELIVERY') {
 
             $channelColumn = 'pscfg.allow_delivery';
+        } elseif ($type === 'MANAGEMENT') {
+            $state = ['ACTIVE', 'INACTIVE'];
         }
 
         /*
@@ -402,8 +396,12 @@ class ProductSalesRepository extends BaseRepository
                 'p.id'
             )
             ->join('tax as tx', 'pi.tax_id', '=', 'tx.id')
-            ->join('tax_by_business as txbb', 'tx.id', '=', 'txbb.tax_id')
+            ->join('tax_by_business as txbb', function ($join) use ($business_id) {
 
+                $join->on('tx.id', '=', 'txbb.tax_id')
+                    ->where('txbb.business_id', '=', $business_id);
+
+            })
             /*
             |--------------------------------------------------------------------------
             | OPTIONAL TABLES
@@ -474,131 +472,131 @@ class ProductSalesRepository extends BaseRepository
             |--------------------------------------------------------------------------
             */
 
-            ->where('bp.business_id', $business_id)
-            ->where('p.state', 'ACTIVE')
-            /*
-            |--------------------------------------------------------------------------
-            | SELL CONFIG
-            |--------------------------------------------------------------------------
-            */
+            ->where('bp.business_id', $business_id);
+           $query->whereIn('p.state', $state)
+               /*
+               |--------------------------------------------------------------------------
+               | SELL CONFIG
+               |--------------------------------------------------------------------------
+               */
 
-            ->where('pscfg.visible', 1)
-            /*
-            |--------------------------------------------------------------------------
-            | SELECT
-            |--------------------------------------------------------------------------
-            */
+               ->where('pscfg.visible', 1)
+               /*
+               |--------------------------------------------------------------------------
+               | SELECT
+               |--------------------------------------------------------------------------
+               */
 
-            ->select([
+               ->select([
 
-                /*
-                |--------------------------------------------------------------------------
-                | PRODUCT
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | PRODUCT
+                   |--------------------------------------------------------------------------
+                   */
 
-                'p.id as product_id',
+                   'p.id as product_id',
 
-                'p.code',
+                   'p.code',
 
-                'p.name',
+                   'p.name',
 
-                'p.product_type',
+                   'p.product_type',
 
-                'p.inventory_type',
+                   'p.inventory_type',
 
-                'p.state',
+                   'p.state',
 
-                'p.source',
+                   'p.source',
 
-                /*
-                |--------------------------------------------------------------------------
-                | CATEGORY
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | CATEGORY
+                   |--------------------------------------------------------------------------
+                   */
 
-                'pc.value as category',
+                   'pc.value as category',
 
-                'psc.value as subcategory',
+                   'psc.value as subcategory',
 
-                /*
-                |--------------------------------------------------------------------------
-                | MEASURE
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | MEASURE
+                   |--------------------------------------------------------------------------
+                   */
 
-                'pmt.value as measure_type',
-                'pmt.id as measure_type_id',
+                   'pmt.value as measure_type',
+                   'pmt.id as measure_type_id',
 
-                /*
-                |--------------------------------------------------------------------------
-                | STOCK
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | STOCK
+                   |--------------------------------------------------------------------------
+                   */
 
-                'ps.quantity',
+                   'ps.quantity',
 
-                'ps.quantity_base',
+                   'ps.quantity_base',
 
-                /*
-                |--------------------------------------------------------------------------
-                | IDS
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | IDS
+                   |--------------------------------------------------------------------------
+                   */
 
-                'p.product_category_id',
+                   'p.product_category_id',
 
-                'p.product_subcategory_id',
+                   'p.product_subcategory_id',
 
-                /*
-                |--------------------------------------------------------------------------
-                | TAX
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | TAX
+                   |--------------------------------------------------------------------------
+                   */
 
-                'pi.tax_id',
+                   'pi.tax_id',
 
-                'tx.value as tax_value',
+                   'tx.value as tax_value',
 
-                'tx.percentage as tax_percentage',
+                   'tx.percentage as tax_percentage',
 
-                'pi.tax as has_tax',
+                   'pi.tax as has_tax',
 
-                /*
-                |--------------------------------------------------------------------------
-                | PRICES
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | PRICES
+                   |--------------------------------------------------------------------------
+                   */
 
-                'pi.sale_price',
+                   'pi.sale_price',
 
-                'pi.sale_price2',
+                   'pi.sale_price2',
 
-                'pi.sale_price3',
+                   'pi.sale_price3',
 
-                'pi.sale_price4',
+                   'pi.sale_price4',
 
-                /*
-                |--------------------------------------------------------------------------
-                | SELL CONFIG
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | SELL CONFIG
+                   |--------------------------------------------------------------------------
+                   */
 
-                'pscfg.allow_pos',
+                   'pscfg.allow_pos',
 
-                'pscfg.allow_shop',
+                   'pscfg.allow_shop',
 
-                'pscfg.allow_delivery',
+                   'pscfg.allow_delivery',
 
-                'pscfg.visible',
+                   'pscfg.visible',
 
-                /*
-                |--------------------------------------------------------------------------
-                | QUANTITY DISPLAY
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | QUANTITY DISPLAY
+                   |--------------------------------------------------------------------------
+                   */
 
-                DB::raw("
+                   DB::raw("
                 CASE
 
                     WHEN p.product_type = 'MIXED'
@@ -618,36 +616,36 @@ class ProductSalesRepository extends BaseRepository
                 END as quantity_display
             "),
 
-                /*
-                |--------------------------------------------------------------------------
-                | STOCK UNIT
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | STOCK UNIT
+                   |--------------------------------------------------------------------------
+                   */
 
-                'um_stock.name as stock_unit',
+                   'um_stock.name as stock_unit',
 
-                'um_stock.symbol as stock_symbol',
+                   'um_stock.symbol as stock_symbol',
 
-                /*
-                |--------------------------------------------------------------------------
-                | BASE UNIT
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | BASE UNIT
+                   |--------------------------------------------------------------------------
+                   */
 
-                'um_base.name as base_unit',
+                   'um_base.name as base_unit',
 
-                'um_base.symbol as base_symbol',
+                   'um_base.symbol as base_symbol',
 
-                /*
-                |--------------------------------------------------------------------------
-                | DEFAULT UNIT
-                |--------------------------------------------------------------------------
-                */
+                   /*
+                   |--------------------------------------------------------------------------
+                   | DEFAULT UNIT
+                   |--------------------------------------------------------------------------
+                   */
 
-                'um_default.name as default_unit',
+                   'um_default.name as default_unit',
 
-                'um_default.symbol as default_symbol',
-                DB::raw("
+                   'um_default.symbol as default_symbol',
+                   DB::raw("
 JSON_OBJECT(
 
     'product',
@@ -788,7 +786,7 @@ JSON_OBJECT(
 
 ) as details_all
 "),
-            ]);
+               ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -846,7 +844,14 @@ JSON_OBJECT(
         |--------------------------------------------------------------------------
         */
         $query->orderBy('p.id', 'desc');
-        return $this->paginate($query, $params, 'p.id');
+        $result = $this->paginate($query, $params, 'p.id');
+
+        return $result;
+    }
+
+    public function getProductsManagement($params)
+    {
+        return $this->getProductsShopPage($params);
     }
 
     public function getProductsByTypeForRecipe($params)
@@ -861,8 +866,9 @@ JSON_OBJECT(
         $componentProductId = $params["filters"]["componentProductId"];
         $inventory_type = $params["filters"]["inventory_type"];
 
-
-
+        $inventoryTypeData = $inventory_type
+            ? array_filter(array_map('trim', explode(',', $inventory_type)))
+            : [];
         /*
         |--------------------------------------------------------------------------
         | OPTIONAL CHANNEL TYPE
@@ -896,7 +902,6 @@ JSON_OBJECT(
             | MAIN TABLES
             |--------------------------------------------------------------------------
             */
-
             ->join('product as p', 'p.id', '=', 'ps.product_id')
             ->join('business_by_products as bp', 'p.id', '=', 'bp.products_id')
             ->join('product_inventory as pi', 'p.id', '=', 'pi.product_id')
@@ -907,8 +912,12 @@ JSON_OBJECT(
                 'p.id'
             )
             ->join('tax as tx', 'pi.tax_id', '=', 'tx.id')
-            ->join('tax_by_business as txbb', 'tx.id', '=', 'txbb.tax_id')
+            ->join('tax_by_business as txbb', function ($join) use ($business_id) {
 
+                $join->on('tx.id', '=', 'txbb.tax_id')
+                    ->where('txbb.business_id', '=', $business_id);
+
+            })
             /*
             |--------------------------------------------------------------------------
             | OPTIONAL TABLES
@@ -980,7 +989,8 @@ JSON_OBJECT(
             */
 
             ->where('bp.business_id', $business_id)
-            ->where('p.inventory_type', $inventory_type)
+
+           ->whereIn('p.inventory_type', $inventoryTypeData)
 
             ->where('p.state', 'ACTIVE')
             /*
@@ -1312,7 +1322,6 @@ JSON_OBJECT(
         | CATEGORY FILTER
         |--------------------------------------------------------------------------
         */
-
 
 
         /*

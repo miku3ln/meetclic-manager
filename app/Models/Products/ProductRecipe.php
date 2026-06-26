@@ -87,25 +87,11 @@ class ProductRecipe extends ModelManager
             'conversion_factor' => $data['conversion_factor'] ?? 1,
         ];
     }
-    public function saveFromArray(array $data): self
+    public static function existsComponentProduct(int $componentProductId): bool
     {
-        $attributes = $this->buildAttributes($data);
-
-        $validate = $this->validateModel([
-            'modelAttributes' => $attributes,
-            'rules' => self::getRulesModel()
-        ]);
-
-        if (!$validate['success']) {
-            throw new \Exception(json_encode([
-                'table' => $this->getTable(),
-                'errors' => $validate['errorsFields']
-            ]));
-        }
-
-        $this->fill($attributes);
-        $this->save();
-
-        return $this;
+        return self::where(
+            'component_product_id',
+            $componentProductId
+        )->exists();
     }
 }

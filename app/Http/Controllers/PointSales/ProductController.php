@@ -12,7 +12,9 @@ use App\Models\InvoiceSales\InvoiceSaleMeta;
 use App\Models\InvoiceSales\InvoiceSalePayment;
 use App\Models\InvoiceSales\PosPaymentMethod;
 use App\Models\InvoiceSales\PuntoEmision;
+use App\Models\Products\Product;
 use App\Models\Products\ProductRecipe;
+use App\Modules\PointSales\Constants\ProductClassification;
 use App\Modules\PointSales\Services\ProductSalesService;
 use App\Modules\PointSales\Services\StockDiscountService;
 use App\Services\Inventory\MeasureResolverService;
@@ -85,6 +87,26 @@ class ProductController extends PointSalesBaseController
             ]
         ];
         $data = $this->service->getProducts($filters);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+
+    public function getProductsManagement(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+
+        $params = $request->all();
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'current' => $params["current"],
+            'rowCount' => $params["rowCount"],
+            'business_id' => $params["business_id"],
+
+            'filters' => [
+                'type' => 'MANAGEMENT',
+                'business_id' => $params["business_id"],
+            ]
+        ];
+        $data = $this->service->getProductsManagement($filters);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
@@ -903,40 +925,140 @@ class ProductController extends PointSalesBaseController
         return response()->json($data);
     }
 
+    public function save2(Request $request)
+    {
+        $payload = $request->json()->all();
+
+
+        $data = $this->service->setProductItemRecipeSave($payload);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+
     public function saveProductRecipe(Request $request)
     {
         $payload = $request->json()->all();
 
         DB::beginTransaction();
 
+        $step = 'START';
+
         try {
+
+            /**
+             * Guardar receta
+             */
+            $step = 'PRODUCT_RECIPE_SAVE';
 
             $model = new ProductRecipe();
 
+            $productId = $payload['component_product_id'];
+
             $saved = $model->saveFromArray($payload);
+
+
+            /**
+             * Buscar producto componente
+             */
+            $step = 'CHECK_COMPONENT_PRODUCT';
+
+            $resultData = Product::find($productId);
+            if (!$resultData) {
+                throw new Exception(
+                    "No existe producto componente ID: {$productId}"
+                );
+            }
+
+
+            /**
+             * Solo descuenta inventario si es procesado
+             */
+            if ($resultData->inventory_type == ProductClassification::INVENTORY_PROCESSED) {
+                $step = 'INVENTORY_MOVEMENT_SAVE';
+                $modelIM = new InventoryMovement();
+                $dataInventoryMovement = [
+
+                    'product_id' => $payload['component_product_id'],
+
+                    'movement_type' => InventoryMovement::TYPE_OUT,
+
+                    'quantity' => $payload['quantity_base'],
+
+                    'unit_measure_id' => $payload['base_unit_measure_id'],
+
+                    'quantity_input' => $payload['quantity_input'],
+
+                    'unit_input_id' => $payload['unit_input_id'],
+
+                    'conversion_factor' => $payload['conversion_factor'],
+
+                    'reference_type' => 'INVENTARIO_DISCOUNT_BY_RECIPE',
+
+                    'reference_id' => $saved->id,
+
+                    'description' => 'Descuento por Registro de Receta by RECETA',
+                ];
+                $savedInventory = $modelIM->saveFromArray(
+                    $dataInventoryMovement
+                );
+
+            }
+            if ($model->existsComponentProduct($productId)) {
+                $resultData->state = "ACTIVE";
+                $resultData->save();
+            }
 
             DB::commit();
 
+
             return response()->json([
+
                 'success' => true,
+
                 'msj' => 'Ingrediente guardado correctamente',
+
                 'data' => [
-                    'model'=>$saved,
-                    'recipe_id' => $saved->id
+
+                    'model' => $saved,
+
+                    'recipe_id' => $saved->id,
+
+                    'inventory_movement' => $savedInventory ?? null
+
                 ],
+
                 'errors' => []
+
             ]);
 
-        } catch (\Exception $e) {
+
+        } catch (\Throwable $e) {
+
 
             DB::rollBack();
 
+
             return response()->json([
+
                 'success' => false,
-                'msj' => $e->getMessage(),
+
+                'msj' => 'Error guardando receta',
+
                 'data' => [],
-                'errors' => []
-            ], 500);
+
+                'errors' => [
+
+                    'step' => $step,
+
+                    'message' => $e->getMessage(),
+
+                    'line' => $e->getLine(),
+
+                    'file' => $e->getFile()
+
+                ]
+
+            ]);
         }
     }
 

@@ -108,6 +108,7 @@ Route::prefix('pointsales')->group(function () {
         Route::post('/save-product-recipe', 'PointSales\ProductController@saveProductRecipe');
 
         Route::get('/products-by-type-for-recipe', 'PointSales\ProductController@getProductsByTypeForRecipe');
+        Route::get('/products-management', 'PointSales\ProductController@getProductsManagement');
 
 
 

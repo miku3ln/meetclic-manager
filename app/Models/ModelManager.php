@@ -8,6 +8,28 @@ use Illuminate\Support\Facades\Validator;
 
 class ModelManager extends Model
 {
+    public function saveFromArray(array $data): self
+    {
+        $attributes = $this->buildAttributes($data);
+        $rulesCurrent = $this->getRulesModel();
+
+        $validate = $this->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => $rulesCurrent
+        ]);
+
+        if (!$validate['success']) {
+            throw new \Exception(json_encode([
+                'table' => $this->getTable(),
+                'errors' => $validate['errorsFields']
+            ]));
+        }
+
+        $this->fill($attributes);
+        $this->save();
+
+        return $this;
+    }
     public function getAttributesData()
     {
         return $this->attributesData;

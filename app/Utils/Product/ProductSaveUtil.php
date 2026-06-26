@@ -43,7 +43,6 @@ class ProductSaveUtil
     }
 
 
-
     public function setProductTypeSave(array $payload): array
     {
         DB::beginTransaction();
@@ -173,7 +172,7 @@ class ProductSaveUtil
     {
         $this->currentStep = 'PRODUCT';
 
-        $data['state'] = self::PRODUCT_STATE;
+        //   $data['state'] = self::PRODUCT_STATE;
 
 
         $model = new Product();
@@ -470,91 +469,144 @@ class ProductSaveUtil
                     'errors' => $validate['errorsFields']
                 ])
             );
+
+        } else {
+            $model->fill($attributes);
+            $model->save();
         }
 
-        $model->fill($attributes);
-
-        $model->save();
 
         return $model;
     }
-
-
 
 
     private function saveRecipeProduct(
         array $data
-    ): ProductRecipe
+    ): array
     {
         $this->currentStep = 'PRODUCT_RECIPE';
-        $model = new ProductRecipe();
-        $attributes = $model->buildAttributes($data);
-        $validate = $model->validateModel([
-            'modelAttributes' => $attributes,
-            'rules' => $model::getRulesModel()
-        ]);
 
-        if (!$validate['success']) {
-            throw new Exception(
-                json_encode([
-                    'table' => $model->getTable(),
-                    'errors' => $validate['errorsFields']
-                ])
-            );
+        try {
+            $model = new ProductRecipe();
+
+            $attributes = $model->buildAttributes($data);
+
+            $validation = $model->validateModel([
+                'modelAttributes' => $attributes,
+                'rules' => ProductRecipe::getRulesModel()
+            ]);
+
+            if (!$validation['success']) {
+                return [
+                    'success' => false,
+                    'errors' => [
+                        'table' => $model->getTable(),
+                        'fields' => $validation['errorsFields']
+                    ],
+                    'model' => null
+                ];
+            }
+
+            $model->fill($attributes);
+
+            return [
+                'success' => true,
+                'errors' => [],
+                'model' => $model
+            ];
+
+        } catch (Exception $e) {
+
+            return [
+                'success' => false,
+                'errors' => [
+                    'message' => $e->getMessage(),
+                    'step' => $this->currentStep
+                ],
+                'model' => null
+            ];
         }
-
-        $model->fill($attributes);
-        return $model;
     }
+
     public function setProductItemRecipeSave(array $payload): array
     {
         DB::beginTransaction();
 
-        $inventory_type = $payload['product']['inventory_type'];
+        $this->currentStep = 'START';
+
+
         try {
-            $product_id = $payload['product']['id'];
 
+            $product_id = $payload['product_id'];
+            $component_product_id = $payload['component_product_id'];
 
-            $productRecipeModelSave = $this->saveRecipeProduct(
-                $payload['product_recipe']
+            $inventory_type=9;
+            /**
+             * 1. Guardar receta producto
+             */
+            $productRecipeSave = $this->saveRecipeProduct(
+                $payload
             );
+
+
+            if (!$productRecipeSave['success']) {
+
+                throw new Exception(
+                    json_encode([
+                        'step' => 'PRODUCT_RECIPE',
+                        'error' => $productRecipeSave['errors']
+                    ])
+                );
+
+            }
 
             $this->addLog(
                 'product_recipe',
-                $productRecipeModelSave->toArray()
+                $productRecipeSave['model']->toArray()
             );
 
-            $inventory_movement = $payload['inventory_movement'];
-            $inventory_movement['movement_type'] = InventoryMovement::TYPE_OUT;
-            $inventory_movement['reference_type'] = self::REFERENCE_TYPE_OUT;
-            $inventory_movement['description'] = self::DESCRIPTION_OUT . " : " . $inventory_type;
-            $movement = $this->saveInventoryMovement(
-                $product_id,
-                $inventory_movement
-            );
+            /**
+             * 2. Guardar movimiento inventario
+             */
+            if (false) {
 
-            $this->addLog(
-                'inventory_movement',
-                $movement->toArray()
-            );
+                $inventory_movement = $payload['inventory_movement'];
+                $inventory_movement['movement_type'] = InventoryMovement::TYPE_OUT;
+                $inventory_movement['reference_type'] = self::REFERENCE_TYPE_OUT;
+                $inventory_movement['description'] = self::DESCRIPTION_OUT . " : " . $inventory_type;
+                $movement = $this->saveInventoryMovement(
+                    $product_id,
+                    $inventory_movement
+                );
+                $this->addLog(
+                    'inventory_movement',
+                    $movement->toArray()
+                );
+            }
 
             DB::commit();
+
             return [
                 'success' => true,
                 'inventory_type' => $inventory_type,
                 'step' => 'FINISH',
-                'saved' => $this->saveLog
+                'saved' => $this->saveLog,
+                'msj' => 'Agregado Item Correctamente.!'
             ];
 
         } catch (Throwable $e) {
 
+
             DB::rollBack();
+
 
             return [
                 'success' => false,
                 'inventory_type' => $inventory_type,
                 'step' => $this->currentStep,
+
                 'saved_until_error' => $this->saveLog,
+                'msj' => $e->getMessage(),
                 'error' => [
                     'message' => $e->getMessage(),
                     'line' => $e->getLine(),
@@ -563,4 +615,6 @@ class ProductSaveUtil
             ];
         }
     }
+
+
 }

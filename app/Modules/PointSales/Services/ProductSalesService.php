@@ -128,6 +128,13 @@ class ProductSalesService
 
         return $this->transformProducts($result);
     }
+    public function getProductsManagement($params)
+    {
+
+        $result = $this->repo->getProductsManagement($params);
+
+        return $this->transformProducts($result);
+    }
     public function getProductsByTypeForRecipe($params)
     {
 
