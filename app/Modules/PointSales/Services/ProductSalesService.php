@@ -47,7 +47,7 @@ class ProductSalesService
         $source = $publicAsset . (
             $item->source == null
                 ? "/images/default/not-image-product-point-sales.png"
-                : $item->source
+                : "/".$item->source
             );
 
         $functionalType = $this->resolveFunctionalType($item);
@@ -68,17 +68,17 @@ class ProductSalesService
             ],
             'tax' => [
                 'id' => $item->tax_id,
-
                 'has_tax' => $item->has_tax,
                 'value_text' => $item->tax_value,
                 'value_percentage' => $item->tax_percentage,
 
             ],
             'price' => [
+                'id' => $item->pi_id,
                 'pv' => $item->sale_price,
-                'pv_two' => $item->sale_price3,
-                'pv_three' => $item->sale_price4,
-                'pc' => $item->sale_price2,
+                'pv_two' => $item->sale_price2,
+                'pv_three' => $item->sale_price3,
+                'pc' => $item->sale_price4,
 
 
             ],
@@ -116,6 +116,11 @@ class ProductSalesService
 
         return $this->repo->setProductTypeSave($params);
     }
+    public function setProductTypeUpdate($params)
+    {
+
+        return $this->repo->setProductTypeUpdate($params);
+    }
     public function setProductItemRecipeSave($params)
     {
 
@@ -142,6 +147,14 @@ class ProductSalesService
 
         return $this->transformProducts($result);
     }
+    public function getProductsCategoriesByBusiness($params)
+    {
+
+        $result = $this->repo->getProductsCategoriesByBusiness($params);
+
+        return  $result;
+    }
+
     public function getProductsRecipeShopPage($params)
     {
 

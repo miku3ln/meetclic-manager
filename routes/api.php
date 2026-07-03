@@ -103,6 +103,8 @@ Route::prefix('pointsales')->group(function () {
         Route::get('/catalog-tax', 'PointSales\ProductController@getCatalogTax');
 
         Route::post('/product-type-save', 'PointSales\ProductController@setProductTypeSave');
+        Route::post('/product-type-update', 'PointSales\ProductController@setProductTypeUpdate');
+
         Route::post('/product-item-recipe-save', 'PointSales\ProductController@setProductItemRecipeSave');
         Route::get('/products-sales-recipe', 'PointSales\ProductController@getProductsRecipeSales');
         Route::post('/save-product-recipe', 'PointSales\ProductController@saveProductRecipe');
@@ -110,6 +112,7 @@ Route::prefix('pointsales')->group(function () {
         Route::get('/products-by-type-for-recipe', 'PointSales\ProductController@getProductsByTypeForRecipe');
         Route::get('/products-management', 'PointSales\ProductController@getProductsManagement');
 
+        Route::get('/products-categories-by-business', 'PointSales\ProductController@getProductsCategoriesByBusiness');
 
 
     });

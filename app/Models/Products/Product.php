@@ -49,7 +49,7 @@ class Product extends ModelManager
         'product_type',//*
 
     );
-    public static function getRulesModel(): array
+    public static function getRulesModel(?int $id = null): array
     {
         return [
 
@@ -57,7 +57,7 @@ class Product extends ModelManager
                 'required',
                 'string',
                 'max:64',
-                'unique:product,code'
+                'unique:product,code,' . ($id?? 'NULL')
             ],
 
             'name' => [

@@ -3,7 +3,10 @@
 namespace App\Utils\Product;
 
 use App\Models\BusinessByProduct;
-
+use App\Models\ProductByStock;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use App\Models\InvoiceSales\InventoryMovement;
 use App\Models\ProductInventory;
 use App\Models\Products\Product;
@@ -42,7 +45,6 @@ class ProductSaveUtil
         $this->saveLog[$key] = $data;
     }
 
-
     public function setProductTypeSave(array $payload): array
     {
         DB::beginTransaction();
@@ -60,6 +62,127 @@ class ProductSaveUtil
             );
 
             $this->processInventoryType(
+                $productModelSave,
+                $payload
+            );
+            DB::commit();
+            return [
+                'success' => true,
+                'inventory_type' => $productModelSave->inventory_type,
+                'step' => 'FINISH',
+                'saved' => $this->saveLog
+            ];
+
+        } catch (Throwable $e) {
+
+            DB::rollBack();
+
+            return [
+                'success' => false,
+                'inventory_type' => $payload['product']['inventory_type'] ?? null,
+                'step' => $this->currentStep,
+                'saved_until_error' => $this->saveLog,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]
+            ];
+        }
+    }
+
+
+    public function saveFile(
+        UploadedFile $file,
+        string       $folder,
+        string       $type = 'file'
+    ): array
+    {
+        try {
+
+            $basePath = public_path('uploads/' . trim($folder, '/'));
+
+            if (!File::exists($basePath)) {
+                File::makeDirectory($basePath, 0755, true);
+            }
+
+            // Obtener toda la información ANTES de mover el archivo
+            $extension = $file->getClientOriginalExtension();
+            $mime = $file->getMimeType();
+            $size = $file->getSize();
+
+            $fileName = Str::uuid() . '.' . $extension;
+
+            $file->move($basePath, $fileName);
+
+            return [
+                'success' => true,
+                'message' => 'Archivo guardado correctamente.',
+                'data' => [
+                    'name' => $fileName,
+                    'extension' => $extension,
+                    'mime' => $mime,
+                    'size' => $size,
+                    'path' => 'uploads/' . trim($folder, '/') . '/' . $fileName,
+                    'type' => $type,
+                ],
+            ];
+
+        } catch (Throwable $e) {
+
+            return [
+                'success' => false,
+                'message' => 'No fue posible guardar el archivo.',
+                'data' => null,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile(),
+                ],
+            ];
+
+        }
+    }
+
+    public function setProductTypeUpdate(array $payload): array
+    {
+        DB::beginTransaction();
+
+        try {
+
+
+            $this->validatePayload($payload);
+
+            $productModelSave = $this->saveProductEntity(
+                $payload['product']
+            );
+            if (isset($payload['image'])) {
+                $idProduct = $productModelSave->id;
+                $result = $this->saveFile(
+                    $payload['image'],
+                    "products/$idProduct",
+                    "image"
+                );
+                $this->addLog(
+                    'product_image',
+                    $result
+                );
+                if (!$result['success']) {
+
+                } else {
+                    $imagePath = $result['data']['path'];
+                    $productModelSave->source = $imagePath;
+                    $productModelSave->save();
+                }
+
+
+            }
+            $this->addLog(
+                'product',
+                $productModelSave->toArray()
+            );
+
+            $this->processInventoryTypeUpdate(
                 $productModelSave,
                 $payload
             );
@@ -172,30 +295,42 @@ class ProductSaveUtil
     {
         $this->currentStep = 'PRODUCT';
 
-        //   $data['state'] = self::PRODUCT_STATE;
-
-
-        $model = new Product();
+        $isUpdate = isset($data['id']) && !empty($data['id']);
+        $rules = Product::getRulesModel();
+        if ($isUpdate) {
+            $model = Product::find($data['id']);
+            $rules = Product::getRulesModel($data['id']);
+            if (!$model) {
+                throw new Exception(
+                    json_encode([
+                        'table' => 'product',
+                        'errors' => [
+                            "Product not found with ID: {$data['id']}"
+                        ]
+                    ])
+                );
+            } else {
+                $data['source'] = $model->source;
+            }
+        } else {
+            $model = new Product();
+        }
 
         $attributes = $model->buildAttributes($data);
 
         $validate = $model->validateModel([
             'modelAttributes' => $attributes,
-            'rules' => Product::getRulesModel()
+            'rules' => $rules// opcional
         ]);
 
         if (!$validate['success']) {
-
-            throw new Exception(
-                json_encode([
-                    'table' => 'product',
-                    'errors' => $validate['errorsFields']
-                ])
-            );
+            throw new Exception(json_encode([
+                'table' => 'product',
+                'errors' => $validate['errorsFields']
+            ]));
         }
 
         $model->fill($attributes);
-
         $model->save();
 
         return $model;
@@ -210,12 +345,30 @@ class ProductSaveUtil
 
     }
 
+    private function processForSaleProductUpdate(
+        Product $product,
+        array   $payload
+    ): void
+    {
+        $this->allManagementProductUpdate($product, $payload);
+
+    }
+
     private function processProcessedProduct(
         Product $product,
         array   $payload
     ): void
     {
         $this->allManagementProduct($product, $payload);
+
+    }
+
+    private function processProcessedProductUpdate(
+        Product $product,
+        array   $payload
+    ): void
+    {
+        $this->allManagementProductUpdate($product, $payload);
 
     }
 
@@ -256,6 +409,48 @@ class ProductSaveUtil
         return $model;
     }
 
+    private function saveBusinessProductByStock(
+        int   $productId,
+        array $data,
+        int   $typeCrud
+    ): ProductByStock
+    {
+        $this->currentStep = 'PRODUCT_BY_STOCK';
+        $data['product_id'] = $productId;
+        $model = null;
+        $isUpdate = !($typeCrud == 0);
+        $rules = ProductByStock::getRulesModel();
+        if ($isUpdate) {
+            $model = ProductByStock::where('product_id', $productId)->first();
+            $rules = ProductByStock::getRulesModel();
+            if (!$model) {
+                $model = new ProductByStock();
+            }
+        } else {
+            $model = new ProductByStock();
+        }
+
+        $attributes = $model->buildAttributes($data);
+        $validate = $model->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => $rules
+        ]);
+
+        if (!$validate['success']) {
+
+            throw new Exception(
+                json_encode([
+                    'table' => $model->getTable(),
+                    'errors' => $validate['errorsFields'],
+                    'product_id'=>$productId
+                ])
+            );
+        }
+        $model->fill($attributes);
+        $model->save();
+        return $model;
+    }
+
     private function allManagementProduct(
         Product $product,
         array   $payload)
@@ -284,10 +479,19 @@ class ProductSaveUtil
             $product->id,
             $payload['product_sell_config']
         );
-
         $this->addLog(
             'product_sell_config',
             $sellConfig->toArray()
+        );
+
+        $keyManager = 'product_by_stock';
+        $stockManager = $this->saveBusinessProductByStock(
+            $product->id,
+            $payload[$keyManager], 0
+        );
+        $this->addLog(
+            $keyManager,
+            $stockManager->toArray()
         );
 
 
@@ -313,6 +517,80 @@ class ProductSaveUtil
             'product_stock',
             $productStock->toArray()
         );
+    }
+
+    private function allManagementProductUpdate(
+        Product $product,
+        array   $payload)
+    {
+
+
+        $inventory = $this->saveProductInventoryUpdate(
+            $product->id,
+            $payload['product_inventory']
+        );
+
+        $this->addLog(
+            'product_inventory',
+            $inventory->toArray()
+        );
+
+        $sellConfig = $this->saveProductSellConfigUpdate(
+            $product->id,
+            $payload['product_sell_config']
+        );
+
+        $this->addLog(
+            'product_sell_config',
+            $sellConfig->toArray()
+        );
+
+        $keyManager = 'product_by_stock';
+        $stockManager = $this->saveBusinessProductByStock(
+            $product->id,
+            $payload[$keyManager], 1
+        );
+        $this->addLog(
+            $keyManager,
+            $stockManager->toArray()
+        );
+        $this->addLog(
+            $keyManager."_set",
+            $payload[$keyManager]
+        );
+        if (false) {
+
+            $inventory_movement = $payload['inventory_movement'];
+            $inventory_movement['movement_type'] = InventoryMovement::TYPE_IN;
+            $inventory_movement['reference_type'] = self::REFERENCE_TYPE;
+            $inventory_movement['description'] = self::DESCRIPTION;
+            $movement = $this->saveInventoryMovement(
+                $product->id,
+                $inventory_movement
+            );
+            $this->addLog(
+                'inventory_movement',
+                $movement->toArray()
+            );
+            $productStock = $this->saveProductStock(
+                $product->id,
+                $movement
+            );
+            $this->addLog(
+                'product_stock',
+                $productStock->toArray()
+            );
+        }
+
+
+    }
+
+    private function processRawProductUpdate(
+        Product $product,
+        array   $payload
+    ): void
+    {
+        $this->allManagementProductUpdate($product, $payload);
     }
 
     private function processRawProduct(
@@ -358,6 +636,71 @@ class ProductSaveUtil
                 "Inventory type {$inventoryType} no soportado"
             )
         };
+    }
+
+    private function processInventoryTypeUpdate(
+        Product $product,
+        array   $payload
+    ): void
+    {
+        $inventoryType = $product->inventory_type;
+
+        match ($inventoryType) {
+
+            ProductClassification::INVENTORY_RAW
+            => $this->processRawProductUpdate(
+                $product,
+                $payload
+            ),
+
+            ProductClassification::INVENTORY_PROCESSED
+            => $this->processProcessedProductUpdate(
+                $product,
+                $payload
+            ),
+            ProductClassification::INVENTORY_FOR_SALE
+            => $this->processForSaleProductUpdate(
+                $product,
+                $payload
+            ),
+            default
+            => throw new Exception(
+                "Inventory type {$inventoryType} no soportado"
+            )
+        };
+    }
+
+    private function saveProductInventoryUpdate(
+        int   $productId,
+        array $data
+    ): ProductInventory
+    {
+        $this->currentStep = 'PRODUCT_INVENTORY';
+        $data['product_id'] = $productId;
+        $model = ProductInventory::where('product_id', $productId)->first();
+
+        if (!$model) {
+            $model = new ProductInventory();
+        }
+
+        $attributes = $model->buildAttributes($data);
+
+        $validate = $model->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => ProductInventory::getRulesModel()
+        ]);
+
+        if (!$validate['success']) {
+            throw new Exception(json_encode([
+                'table' => 'product_inventory',
+                'errors' => $validate['errorsFields']
+            ]));
+        }
+
+        $model->fill($attributes);
+        $model->save();
+
+        return $model;
     }
 
     private function saveProductInventory(
@@ -436,6 +779,40 @@ class ProductSaveUtil
 
         $model->fill($attributes);
 
+        $model->save();
+
+        return $model;
+    }
+
+    private function saveProductSellConfigUpdate(
+        int   $productId,
+        array $data
+    ): ProductSellConfig
+    {
+        $this->currentStep = 'PRODUCT_SELL_CONFIG';
+
+        $model = ProductSellConfig::where('product_id', $productId)->first();
+        $data['product_id'] = $productId;
+
+        if (!$model) {
+            $model = new ProductSellConfig();
+        }
+
+        $attributes = $model->buildAttributes($data);
+
+        $validate = $model->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => ProductSellConfig::getRulesModel()
+        ]);
+
+        if (!$validate['success']) {
+            throw new Exception(json_encode([
+                'table' => 'product_sell_config',
+                'errors' => $validate['errorsFields']
+            ]));
+        }
+
+        $model->fill($attributes);
         $model->save();
 
         return $model;
@@ -540,7 +917,7 @@ class ProductSaveUtil
             $product_id = $payload['product_id'];
             $component_product_id = $payload['component_product_id'];
 
-            $inventory_type=9;
+            $inventory_type = 9;
             /**
              * 1. Guardar receta producto
              */

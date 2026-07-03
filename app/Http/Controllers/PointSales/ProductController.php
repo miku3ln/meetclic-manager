@@ -132,6 +132,21 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+    public function getProductsCategoriesByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+
+        $params = $request->all();
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'business_id' => $params["business_id"],
+            'filters' => [
+                'business_id' => $params["business_id"],
+            ]
+        ];
+        $data = $this->service->getProductsCategoriesByBusiness($filters);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
 
     public function getProductsRecipeSales(Request $request)//POS-PRODUCTS -INIT-ONE
     {
@@ -916,7 +931,16 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
-
+    public function setProductTypeUpdate(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = json_decode($request->input('payload'), true) ?? [];
+        if ($request->hasFile('image')) {
+            $params['image'] = $request->file('image');
+        }
+        $data = $this->service->setProductTypeUpdate($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
     public function setProductItemRecipeSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
