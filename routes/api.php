@@ -114,6 +114,13 @@ Route::prefix('pointsales')->group(function () {
 
         Route::get('/products-categories-by-business', 'PointSales\ProductController@getProductsCategoriesByBusiness');
 
+        Route::get('/category-by-business', 'PointSales\ProductController@getCategoryByBusiness');
+        Route::post('/category-by-business-save', 'PointSales\ProductController@setCategoryByBusinessSave');
+        Route::post('/category-by-business-update', 'PointSales\ProductController@setCategoryByBusinessUpdate');
+
+        Route::get('/subcategory-by-business', 'PointSales\ProductController@getSubCategoryByBusiness');
+        Route::post('/subcategory-by-business-save', 'PointSales\ProductController@setSubCategoryByBusinessSave');
+        Route::post('/subcategory-by-business-update', 'PointSales\ProductController@setSubCategoryByBusinessUpdate');
 
     });
 

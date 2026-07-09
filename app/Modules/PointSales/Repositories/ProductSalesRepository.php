@@ -101,7 +101,38 @@ class ProductSalesRepository extends BaseRepository
         // 📦 PAGINACIÓN + SORT (genérico)
         return $this->paginate($query, $params, 'p.id');
     }
-
+    public function setCategoryByBusinessSave($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setCategoryByBusinessSave(
+                $params
+            );
+    }
+    public function setCategoryByBusinessUpdate($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setCategoryByBusinessUpdate(
+                $params
+            );
+    }
+    public function setSubCategoryByBusinessSave($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setSubCategoryByBusinessSave(
+                $params
+            );
+    }
+    public function setSubCategoryByBusinessUpdate($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setSubCategoryByBusinessUpdate(
+                $params
+            );
+    }
     public function setProductTypeSave($params)
     {
         $util = new ProductSaveUtil();
@@ -110,6 +141,7 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function setProductTypeUpdate($params)
     {
         $util = new ProductSaveUtil();
@@ -329,7 +361,139 @@ class ProductSalesRepository extends BaseRepository
             'pr.id'
         );
     }
+    public function getSubCategoryByBusiness($params)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | FILTERS
+        |--------------------------------------------------------------------------
+        */
 
+        $business_id = $params["filters"]["business_id"];
+
+        $state = ['ACTIVE', 'INACTIVE'];
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY
+        |--------------------------------------------------------------------------
+        */
+
+$keyMainAlies="psc";
+        $query = DB::table('product_subcategory as '.$keyMainAlies)
+            ->where($keyMainAlies.'.business_id', $business_id)
+            ->whereIn($keyMainAlies.'.state', $state);
+        $query->select([
+            $keyMainAlies.'.id',
+            $keyMainAlies.'.value',
+            $keyMainAlies.'.state',
+            $keyMainAlies. '.description',
+            $keyMainAlies. '.subtitle',
+            $keyMainAlies. '.source',
+            $keyMainAlies. '.business_id',
+            $keyMainAlies. '.product_category_id',
+             'pc.id as pc_id',
+             'pc.value as pc_value',
+             'pc.state  as pc_state',
+             'pc.description  as pc_description',
+            'pc.subtitle  as pc_subtitle'
+
+
+        ]);
+        $query->join('product_category as pc', 'pc.id', '=', $keyMainAlies.'.product_category_id');
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        $this->applySearch(
+            $query,
+            $params['searchPhrase'] ?? null,
+            [
+                $keyMainAlies.'.value',
+                $keyMainAlies. '.subtitle',
+                $keyMainAlies. '.description',
+
+            ]
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+        $query->orderBy($keyMainAlies.'.id', 'desc');
+        $result = $this->paginate($query, $params, $keyMainAlies.'.id');
+
+        return $result;
+    }
+    public function getCategoryByBusiness($params)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | FILTERS
+        |--------------------------------------------------------------------------
+        */
+
+        $business_id = $params["filters"]["business_id"];
+
+        $state = ['ACTIVE', 'INACTIVE'];
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY
+        |--------------------------------------------------------------------------
+        */
+
+        $query = DB::table('product_category as pc')
+            ->where('pc.business_id', $business_id)
+            ->whereIn('pc.state', $state);
+
+        $query->select([
+            'pc.id',
+            'pc.value',
+            'pc.state',
+            'pc.description',
+            'pc.subtitle',
+            'pc.source',
+            'pc.business_id',
+            DB::raw("
+        (
+            SELECT COUNT(*)
+            FROM product_subcategory ps
+            WHERE ps.product_category_id = pc.id
+              AND ps.state = 'ACTIVE'
+        ) as total_subcategories
+    "),
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        $this->applySearch(
+            $query,
+            $params['searchPhrase'] ?? null,
+            [
+                'pc.value',
+                'pc.subtitle',
+                'pc.description',
+
+            ]
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+        $query->orderBy('pc.id', 'desc');
+        $result = $this->paginate($query, $params, 'pc.id');
+
+        return $result;
+    }
     public function getProductsShopPage($params)
     {
         /*
@@ -1172,8 +1336,7 @@ JSON_OBJECT(
             $query,
             $params['searchPhrase'] ?? null,
             [
-                'pc.value',
-                'psc.value'
+                'pc.value'
             ]
         );
 
@@ -1441,10 +1604,7 @@ JSON_OBJECT(
                 'pi.sale_price2',
 
                 'pi.sale_price3',
-
                 'pi.sale_price4',
-                'pi.id pi_id',
-
                 /*
                 |--------------------------------------------------------------------------
                 | SELL CONFIG

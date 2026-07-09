@@ -4,6 +4,8 @@ namespace App\Utils\Product;
 
 use App\Models\BusinessByProduct;
 use App\Models\ProductByStock;
+use App\Models\ProductCategory;
+use App\Models\ProductSubcategory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -44,7 +46,166 @@ class ProductSaveUtil
     {
         $this->saveLog[$key] = $data;
     }
+    public function setSubCategoryByBusinessSave(array $payload): array
+    {
+        DB::beginTransaction();
+        try {
+            $keyCurrentManagement = "product_category";
+            $modelSubCategory = $this->saveSubCategoryByBusiness(
+                $payload[$keyCurrentManagement]
+            );
+            $this->saveSourceByEntity([
+                'payload' => $payload,
+                'modelCurrent' => $modelSubCategory,
+                'folderSaveSource' => "product-subcategory",
+                'keyManagement' => 'product_subcategory_image'
+            ]);
+            $this->addLog(
+                $keyCurrentManagement,
+                $modelSubCategory->toArray()
+            );
+            DB::commit();
+            return [
+                'success' => true,
+                'step' => 'FINISH',
+                'saved' => $this->saveLog
+            ];
 
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return [
+                'success' => false,
+                'step' => $this->currentStep,
+                'saved_until_error' => $this->saveLog,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]
+            ];
+        }
+    }
+    public function setSubCategoryByBusinessUpdate(array $payload): array
+    {
+        DB::beginTransaction();
+        try {
+            $keyCurrentManagement = "product_subcategory";
+            $modelSubCategory = $this->saveSubCategoryByBusiness(
+                $payload[$keyCurrentManagement]
+            );
+            $this->saveSourceByEntity([
+                'payload' => $payload,
+                'modelCurrent' => $modelSubCategory,
+                'folderSaveSource' => "product-subcategory",
+                'keyManagement' => 'product_subcategory_image'
+            ]);
+            $this->addLog(
+                $keyCurrentManagement,
+                $modelSubCategory->toArray()
+            );
+            DB::commit();
+            return [
+                'success' => true,
+                'step' => 'FINISH',
+                'saved' => $this->saveLog
+            ];
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return [
+                'success' => false,
+                'step' => $this->currentStep,
+                'saved_until_error' => $this->saveLog,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]
+            ];
+        }
+    }
+    public function setCategoryByBusinessSave(array $payload): array
+    {
+        DB::beginTransaction();
+        try {
+            $keyCurrentManagement = "product_category";
+            $modelCategory = $this->saveCategoryByBusiness(
+                $payload[$keyCurrentManagement]
+            );
+            $this->saveSourceByEntity([
+                'payload' => $payload,
+                'modelCurrent' => $modelCategory,
+                'folderSaveSource' => "product-category",
+                'keyManagement' => 'product_category_image'
+            ]);
+            $this->addLog(
+                'IMAGE',
+                $payload
+            );
+            $this->addLog(
+                $keyCurrentManagement,
+                $modelCategory->toArray()
+            );
+            DB::commit();
+            return [
+                'success' => true,
+                'step' => 'FINISH',
+                'saved' => $this->saveLog
+            ];
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return [
+                'success' => false,
+                'step' => $this->currentStep,
+                'saved_until_error' => $this->saveLog,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]
+            ];
+        }
+    }
+    public function setCategoryByBusinessUpdate(array $payload): array
+    {
+        DB::beginTransaction();
+        try {
+            $keyCurrentManagement = "product_category";
+            $modelCategory = $this->saveCategoryByBusiness(
+                $payload[$keyCurrentManagement]
+            );
+            $this->saveSourceByEntity([
+                'payload' => $payload,
+                'modelCurrent' => $modelCategory,
+                'folderSaveSource' => "product-category",
+                'keyManagement' => 'product_category_image'
+            ]);
+            $this->addLog(
+                $keyCurrentManagement,
+                $modelCategory->toArray()
+            );
+            DB::commit();
+            return [
+                'success' => true,
+                'step' => 'FINISH',
+                'saved' => $this->saveLog
+            ];
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return [
+                'success' => false,
+                'step' => $this->currentStep,
+                'saved_until_error' => $this->saveLog,
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]
+            ];
+        }
+    }
     public function setProductTypeSave(array $payload): array
     {
         DB::beginTransaction();
@@ -55,7 +216,12 @@ class ProductSaveUtil
             $productModelSave = $this->saveProductEntity(
                 $payload['product']
             );
-
+            $this->saveSourceByEntity([
+                'payload' => $payload,
+                'modelCurrent' => $productModelSave,
+                'folderSaveSource' => "products/",
+                'keyManagement' => 'product_image'
+            ]);
             $this->addLog(
                 'product',
                 $productModelSave->toArray()
@@ -144,6 +310,36 @@ class ProductSaveUtil
         }
     }
 
+    public function saveSourceByEntity($params)
+    {
+        $payload = $params['payload'];
+        $modelCurrent = $params['modelCurrent'];
+        $folderSaveSource = $params['folderSaveSource'];
+        $keyManagement = $params['keyManagement'];
+
+        if (isset($payload['image'])) {
+            $idSource = $modelCurrent->id;
+            $result = $this->saveFile(
+                $payload['image'],
+                $folderSaveSource . "/$idSource",
+                "image"
+            );
+            $this->addLog(
+                $keyManagement,
+                $result
+            );
+            if (!$result['success']) {
+
+            } else {
+                $imagePath = $result['data']['path'];
+                $modelCurrent->source = $imagePath;
+                $modelCurrent->save();
+            }
+
+
+        }
+    }
+
     public function setProductTypeUpdate(array $payload): array
     {
         DB::beginTransaction();
@@ -152,10 +348,15 @@ class ProductSaveUtil
 
 
             $this->validatePayload($payload);
-
             $productModelSave = $this->saveProductEntity(
                 $payload['product']
             );
+            $this->saveSourceByEntity([
+                'payload' => $payload,
+                'modelCurrent' => $productModelSave,
+                'folderSaveSource' => "products",
+                'keyManagement' => 'product_image'
+            ]);
             if (isset($payload['image'])) {
                 $idProduct = $productModelSave->id;
                 $result = $this->saveFile(
@@ -283,6 +484,92 @@ class ProductSaveUtil
                 );
             }
         }
+    }
+
+    /*
+       |--------------------------------------------------------------------------
+       | PRODUCT
+       |--------------------------------------------------------------------------
+       */
+    private function saveCategoryByBusiness(array $data): ProductCategory
+    {
+        $this->currentStep = 'PRODUCT_CATEGORY';
+        $key_process = "product_category";
+        $isUpdate = isset($data['id']) && !empty($data['id']);
+        $rules = ProductCategory::getRulesModel();
+        if ($isUpdate) {
+            $model = ProductCategory::find($data['id']);
+            $rules = ProductCategory::getRulesModel();
+            if (!$model) {
+                throw new Exception(
+                    json_encode([
+                        'table' => $key_process,
+                        'errors' => [
+                            $this->currentStep . " not found with ID: {$data['id']}"
+                        ]
+                    ])
+                );
+            } else {
+                $data['source'] = $model->source;
+            }
+        } else {
+            $model = new ProductCategory();
+        }
+        $attributes = $model->buildAttributes($data);
+        $validate = $model->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => $rules// opcional
+        ]);
+        if (!$validate['success']) {
+            throw new Exception(json_encode([
+                'table' => $key_process,
+                'errors' => $validate['errorsFields']
+            ]));
+        }
+
+        $model->fill($attributes);
+        $model->save();
+        return $model;
+    }
+    private function saveSubCategoryByBusiness(array $data): ProductSubCategory
+    {
+        $this->currentStep = 'PRODUCT_SUBCATEGORY';
+        $key_process = "product_subcategory";
+        $isUpdate = isset($data['id']) && !empty($data['id']);
+        $rules = ProductSubCategory::getRulesModel();
+        if ($isUpdate) {
+            $model = ProductSubCategory::find($data['id']);
+            $rules = ProductSubCategory::getRulesModel();
+            if (!$model) {
+                throw new Exception(
+                    json_encode([
+                        'table' => $key_process,
+                        'errors' => [
+                            $this->currentStep . " not found with ID: {$data['id']}"
+                        ]
+                    ])
+                );
+            } else {
+                $data['source'] = $model->source;
+            }
+        } else {
+            $model = new ProductSubCategory();
+        }
+        $attributes = $model->buildAttributes($data);
+        $validate = $model->validateModel([
+            'modelAttributes' => $attributes,
+            'rules' => $rules// opcional
+        ]);
+        if (!$validate['success']) {
+            throw new Exception(json_encode([
+                'table' => $key_process,
+                'errors' => $validate['errorsFields']
+            ]));
+        }
+
+        $model->fill($attributes);
+        $model->save();
+        return $model;
     }
 
     /*
@@ -442,7 +729,7 @@ class ProductSaveUtil
                 json_encode([
                     'table' => $model->getTable(),
                     'errors' => $validate['errorsFields'],
-                    'product_id'=>$productId
+                    'product_id' => $productId
                 ])
             );
         }
@@ -555,7 +842,7 @@ class ProductSaveUtil
             $stockManager->toArray()
         );
         $this->addLog(
-            $keyManager."_set",
+            $keyManager . "_set",
             $payload[$keyManager]
         );
         if (false) {

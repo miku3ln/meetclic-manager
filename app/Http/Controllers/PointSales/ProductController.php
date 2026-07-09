@@ -90,7 +90,42 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+    public function getCategoryByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
 
+        $params = $request->all();
+
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'current' => $params["current"],
+            'rowCount' => $params["rowCount"],
+            'business_id' => $params["business_id"],
+            'filters' => [
+                'business_id' => $params["business_id"],
+            ]
+        ];
+        $data = $this->service->getCategoryByBusiness($filters);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+    public function getSubCategoryByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+
+        $params = $request->all();
+
+        $filters = [
+            'searchPhrase' => isset($params["searchPhrase"]) ? $params["searchPhrase"] : '',
+            'current' => $params["current"],
+            'rowCount' => $params["rowCount"],
+            'business_id' => $params["business_id"],
+            'filters' => [
+                'business_id' => $params["business_id"],
+            ]
+        ];
+        $data = $this->service->getSubCategoryByBusiness($filters);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
     public function getProductsManagement(Request $request)//POS-PRODUCTS -INIT-ONE
     {
 
@@ -923,11 +958,66 @@ class ProductController extends PointSalesBaseController
                 return [];
         }
     }
-
     public function setProductTypeSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
-        $data = $this->service->setProductTypeSave($params);
+        $payload = json_decode($request->input('payload'), true);
+        $sendData=$payload;
+        if(isset($params['image'])){
+            $sendData['image']=$params['image'];
+        }
+        $data = $this->service->setProductTypeSave($sendData);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+    public function setCategoryByBusinessSave(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $payload = json_decode($request->input('payload'), true);
+        $sendData=$payload;
+        if(isset($params['image'])){
+            $sendData['image']=$params['image'];
+        }
+
+        $data = $this->service->setCategoryByBusinessSave($sendData);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+    public function setCategoryByBusinessUpdate(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $payload = json_decode($request->input('payload'), true);
+        $sendData=$payload;
+        if(isset($params['image'])){
+            $sendData['image']=$params['image'];
+        }
+
+        $data = $this->service->setCategoryByBusinessUpdate($sendData);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+    public function setSubCategoryByBusinessSave(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $payload = json_decode($request->input('payload'), true);
+        $sendData=$payload;
+        if(isset($params['image'])){
+            $sendData['image']=$params['image'];
+        }
+
+        $data = $this->service->setSubCategoryByBusinessSave($sendData);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+    public function setSubCategoryByBusinessUpdate(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $payload = json_decode($request->input('payload'), true);
+        $sendData=$payload;
+        if(isset($params['image'])){
+            $sendData['image']=$params['image'];
+        }
+        $data = $this->service->setSubCategoryByBusinessUpdate($sendData);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }

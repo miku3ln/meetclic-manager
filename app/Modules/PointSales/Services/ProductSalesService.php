@@ -25,14 +25,12 @@ class ProductSalesService
     | TRANSFORM COLLECTION
     |--------------------------------------------------------------------------
     */
-
-    private function transformProducts(array $result): array
+    private function transformProductSubCategoryByBusiness(array $result): array
     {
         $publicAsset = URL("") . "/public";
 
         $rows = collect($result['rows'])
-            ->map(fn($item) =>
-            $this->transformProductRow($item, $publicAsset)
+            ->map(fn($item) => $this->transformProductSubCategoryRow($item, $publicAsset)
             );
 
         return [
@@ -42,12 +40,45 @@ class ProductSalesService
             'rowCount' => $result['rowCount'],
         ];
     }
+
+    private function transformProductCategoryByBusiness(array $result): array
+    {
+        $publicAsset = URL("") . "/public";
+
+        $rows = collect($result['rows'])
+            ->map(fn($item) => $this->transformProductCategoryRow($item, $publicAsset)
+            );
+
+        return [
+            'total' => $result['total'],
+            'rows' => $rows,
+            'current' => $result['current'],
+            'rowCount' => $result['rowCount'],
+        ];
+    }
+
+    private function transformProducts(array $result): array
+    {
+        $publicAsset = URL("") . "/public";
+
+        $rows = collect($result['rows'])
+            ->map(fn($item) => $this->transformProductRow($item, $publicAsset)
+            );
+
+        return [
+            'total' => $result['total'],
+            'rows' => $rows,
+            'current' => $result['current'],
+            'rowCount' => $result['rowCount'],
+        ];
+    }
+
     private function transformProductRow($item, string $publicAsset): array
     {
         $source = $publicAsset . (
             $item->source == null
                 ? "/images/default/not-image-product-point-sales.png"
-                : "/".$item->source
+                : "/" . $item->source
             );
 
         $functionalType = $this->resolveFunctionalType($item);
@@ -74,7 +105,6 @@ class ProductSalesService
 
             ],
             'price' => [
-                'id' => $item->pi_id,
                 'pv' => $item->sale_price,
                 'pv_two' => $item->sale_price2,
                 'pv_three' => $item->sale_price3,
@@ -90,8 +120,8 @@ class ProductSalesService
             |--------------------------------------------------------------------------
             */
             'measure_type_management' => [
-                'id'=>$item->measure_type_id,
-                'value'=>$item->measure_type,
+                'id' => $item->measure_type_id,
+                'value' => $item->measure_type,
 
             ],
             'classification' => [
@@ -107,25 +137,106 @@ class ProductSalesService
                 'is_produced' =>
                     $item->inventory_type === ProductClassification::INVENTORY_PROCESSED,
             ],
-            'details_all'=>$item->details_all
+            'details_all' => $item->details_all
 
         ];
     }
+
+    private function transformProductCategoryRow($item, string $publicAsset): array
+    {
+        $source = $publicAsset . (
+            $item->source == null
+                ? "/images/default/not-image-product-point-sales.png"
+                : "/" . $item->source
+            );
+
+
+        return [
+            'id' => $item->id,
+            'value' => $item->value,
+            'subtitle' => $item->subtitle,
+            'description' => $item->description,
+            'source' => $source,
+            'state' => $item->state,
+
+            'business_id' => $item->business_id,
+            'total_subcategories' => $item->total_subcategories,
+
+        ];
+    }
+
+    private function transformProductSubCategoryRow($item, string $publicAsset): array
+    {
+        $source = $publicAsset . (
+            $item->source == null
+                ? "/images/default/not-image-product-point-sales.png"
+                : "/" . $item->source
+            );
+
+
+        return [
+            'id' => $item->id,
+            'value' => $item->value,
+            'subtitle' => $item->subtitle,
+            'description' => $item->description,
+            'source' => $source,
+            'state' => $item->state,
+            'business_id' => $item->business_id,
+            'category' =>
+                [
+                    'id' => $item->pc_id,
+                    'value' => $item->pc_value,
+                    'subtitle' => $item->pc_subtitle,
+                    'description' => $item->pc_description,
+                    'state' => $item->pc_state,
+                ]
+
+
+        ];
+    }
+
     public function setProductTypeSave($params)
     {
 
         return $this->repo->setProductTypeSave($params);
     }
+
+    public function setCategoryByBusinessSave($params)
+    {
+
+        return $this->repo->setCategoryByBusinessSave($params);
+    }
+
+    public function setCategoryByBusinessUpdate($params)
+    {
+
+        return $this->repo->setCategoryByBusinessUpdate($params);
+    }
+
     public function setProductTypeUpdate($params)
     {
 
         return $this->repo->setProductTypeUpdate($params);
     }
+
+    public function setSubCategoryByBusinessUpdate($params)
+    {
+
+        return $this->repo->setSubCategoryByBusinessUpdate($params);
+    }
+
+    public function setSubCategoryByBusinessSave($params)
+    {
+
+        return $this->repo->setSubCategoryByBusinessSave($params);
+    }
+
     public function setProductItemRecipeSave($params)
     {
 
         return $this->repo->setProductItemRecipeSave($params);
     }
+
     public function getProducts($params)
     {
 
@@ -133,6 +244,23 @@ class ProductSalesService
 
         return $this->transformProducts($result);
     }
+
+    public function getCategoryByBusiness($params)
+    {
+
+        $result = $this->repo->getCategoryByBusiness($params);
+
+        return $this->transformProductCategoryByBusiness($result);
+    }
+
+    public function getSubCategoryByBusiness($params)
+    {
+
+        $result = $this->repo->getSubCategoryByBusiness($params);
+
+        return $this->transformProductSubCategoryByBusiness($result);
+    }
+
     public function getProductsManagement($params)
     {
 
@@ -140,6 +268,7 @@ class ProductSalesService
 
         return $this->transformProducts($result);
     }
+
     public function getProductsByTypeForRecipe($params)
     {
 
@@ -147,12 +276,13 @@ class ProductSalesService
 
         return $this->transformProducts($result);
     }
+
     public function getProductsCategoriesByBusiness($params)
     {
 
         $result = $this->repo->getProductsCategoriesByBusiness($params);
 
-        return  $result;
+        return $result;
     }
 
     public function getProductsRecipeShopPage($params)
@@ -160,6 +290,7 @@ class ProductSalesService
 
         return $this->repo->getProductsRecipeShopPage($params);
     }
+
     public function getProductsShopPage($params)
     {
 
