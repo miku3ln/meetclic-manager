@@ -41,7 +41,18 @@ class WhatsappConfigs extends ModelManager
     );
 
     public $fieldsCurrentSelect = '';
-
+    public static function getRulesModel()
+    {
+        return [
+            "business_id"        => 'required|integer',
+            "country_id"         => 'required|integer',
+            "whatsapp_section_id"=> 'required|integer',
+            "phone_local"        => 'required',
+            "is_primary"         => 'required|in:0,1',
+            "status"             => 'required|in:ACTIVE,INACTIVE',
+            "default_message"    => 'nullable|string',
+        ];
+    }
     public function __construct()
     {
         parent::__construct();
@@ -82,18 +93,7 @@ class WhatsappConfigs extends ModelManager
         );
     }
 
-    public static function getRulesModel()
-    {
-        return [
-            "business_id"        => 'required|integer',
-            "country_id"         => 'required|integer',
-            "whatsapp_section_id"=> 'required|integer',
-            "phone_local"        => 'required',
-            "is_primary"         => 'required|in:0,1',
-            "status"             => 'required|in:ACTIVE,INACTIVE',
-            "default_message"    => 'nullable|string',
-        ];
-    }
+
 
     /* =========================================================================
      *  MÉTODOS SOLICITADOS (CON JOIN A COUNTRIES)

@@ -5,18 +5,38 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Appointment\Appointments;
+use App\Models\Appointment\AppointmentSettings;
+use App\Models\Appointment\AppointmentTypes;
 use App\Models\Business;
 use App\Models\BusinessByRoutesMap;
+use App\Models\Customer;
 use App\Models\RouteMapByAdventureTypes;
 use App\Models\RoutesMap;
 use App\Models\RoutesMapByRoutesDrawing;
 use App\Models\TemplateBySource;
 use App\Models\Whatsapp\WhatsappConfigs;
+use App\Services\Appointment\AppointmentService;
 use App\Utils\TrackingUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class FrontendPagesOwnerCmsController extends Controller
 {
+    protected $appointmentService;
+
+
+    public function __construct(
+        AppointmentService $appointmentService
+    )
+    {
+
+        $this->appointmentService =
+            $appointmentService;
+
+    }
+
     public function businessOwner(Request $request)
     {
         $slug = $request->route('slug');
@@ -50,9 +70,151 @@ class FrontendPagesOwnerCmsController extends Controller
             'section' => $section
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.mikuy-yachak', $paramsSend);
+    }
+    public function getListCustomer()
+    {
+
+        $attributesPost = \Illuminate\Support\Facades\Request::all();
+        $model = new Customer();
+        $result = $model->getListCustomers($attributesPost);
+        return Response::json($result);
+    }
+
+
+    public function getAvailabilityByDate(Request $request)
+    {
+        try {
+            $result = $this->appointmentService->getAvailabilityByDate(
+
+                $request->business_id,
+                $request->date,
+
+            );
+            return response()->json($result);
+
+
+        } catch(\Exception $e){
+
+
+            return response()->json([
+
+                "success" => false,
+
+                "message" => $e->getMessage()
+
+            ]);
+
+
+        }
+
+    }
+    public function checkAvailabilityByBusiness(Request $request)
+    {
+
+        try {
+
+
+            $result = $this->appointmentService->checkAvailability(
+
+                $request->business_id,
+
+                $request->date,
+
+                $request->time
+
+            );
+
+
+            return response()->json([
+
+                "success" => true,
+
+                "data" => $result
+
+            ]);
+
+
+        } catch(\Exception $e){
+
+
+            return response()->json([
+
+                "success" => false,
+
+                "message" => $e->getMessage()
+
+            ],500);
+
+
+        }
+
+    }
+    public function businessByAppointmentList(Request $request)
+    {
+        $businessId = $request->route('id');
+
+        $logoHtmlMeetclic = "";
+        $modelTBS = new TemplateBySource();
+        $template_information_id = 1;
+        $filtersManager = [
+            'filters' => [
+                "template_information_id" => $template_information_id
+            ]
+        ];
+        $resultResources = $modelTBS->getSourcesTypesData($filtersManager);
+        if ($resultResources["logoMain"]) {
+            $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
+            $data = $resultResources["logoMain"];
+            $logoHtmlMeetclic .= '<div class="main-header">';
+            $rootUrl = route("homePage");
+            $logoHtmlMeetclic .= ' <a href="' . $rootUrl . '">  <img  id="main-header__logo" src="' . URL($resourcePathServer . $data->source) . '" class="img-fluid" alt=""></a>';
+            $logoHtmlMeetclic .= '</div>';
+        }
+        $appointmentSettings =
+            AppointmentSettings::getBusinessConfiguration(
+                $businessId
+            );
+
+        $paramsSend = [
+            "managerData"=>[
+                "logoHtmlMeetclic" => $logoHtmlMeetclic,
+                "appointmentSettings" => $appointmentSettings,
+                "appointmentTypes" => AppointmentTypes::getByBusiness($businessId),
+            ]
+
+
+        ];
+        $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
+
+
+        return view('cityBook.web.businessOwner.business-by-appointment-list', $paramsSend);
+    }
+
+    public function businessByAppointmentListData(Request $request)
+    {
+        $businessId = $request->input('businessId');
+        $start = $request->input('start'); // Fecha inicio
+        $end = $request->input('end');
+
+        $events = Appointments::getCalendarEvents(
+            $businessId,
+            $start,
+            $end
+        );
+
+        return response()->json([
+            'success' => true,
+            'businessId' => $businessId,
+            'start' => $start,
+            'end' => $end,
+            'data' => $events
+        ]);
+
+
     }
 
     public function chasqui($id = null)
@@ -151,7 +313,7 @@ class FrontendPagesOwnerCmsController extends Controller
         ];
 
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.chasqui-nian-business', $paramsSend);
     }
@@ -167,7 +329,7 @@ class FrontendPagesOwnerCmsController extends Controller
         $gamificationDataTask = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
 
 
-        if (!in_array($routeName, ["ourAllies","authorSingle","contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation",
+        if (!in_array($routeName, ["ourAllies", "authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation",
 
 
             "boarding-embarkation-management", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
@@ -261,7 +423,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rimay-business', $paramsSend);
     }
@@ -345,7 +507,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rimay-business', $paramsSend);
     }
@@ -426,7 +588,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.shop-business', $paramsSend);
     }
@@ -511,7 +673,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rimay-registers-business', $paramsSend);
     }
@@ -596,7 +758,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rewards-registers-business', $paramsSend);
     }
@@ -682,7 +844,7 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rates-registers-business', $paramsSend);
     }
@@ -767,9 +929,171 @@ class FrontendPagesOwnerCmsController extends Controller
 
         ];
         $paramsSend["gamificationDataTask"] = $this->getParamsPage([]);
-        $paramsSend["TASK_TOAST"] =  TrackingUtil::TASK_TOAST;
+        $paramsSend["TASK_TOAST"] = TrackingUtil::TASK_TOAST;
 
         return view('cityBook.web.businessOwner.rate-register-business', $paramsSend
         );
     }
+
+
+
+
+    public function businessByAppointmentSave(
+        Request $request
+    )
+    {
+
+        try {
+
+
+            DB::beginTransaction();
+
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Datos recibidos
+            |--------------------------------------------------------------------------
+            */
+
+            $data = $request->all();
+
+
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Crear cita
+            |--------------------------------------------------------------------------
+            */
+
+            $result =
+                $this->appointmentService
+                    ->create(
+                        $data
+                    );
+
+
+
+
+            DB::commit();
+
+
+
+
+            return response()->json([
+
+
+                "success"=>true,
+
+
+                "code"=>
+                    $result['code'],
+
+
+                "message"=>
+                    $result['message'],
+
+
+
+                "data"=>[
+
+
+                    "id"=>
+                        $result['appointment']->id,
+
+
+                    "appointment"=>
+                        $result['appointment']
+
+
+                ],
+
+
+
+                "errors"=>[]
+
+
+
+            ],200);
+
+
+
+
+        } catch(\Exception $e) {
+
+
+
+            DB::rollback();
+
+
+
+            $errorData=null;
+
+
+
+            $json =
+                json_decode(
+                    $e->getMessage(),
+                    true
+                );
+
+
+
+            if(
+                is_array($json)
+            ){
+
+                $errorData=$json;
+
+            }
+
+
+
+
+            return response()->json([
+
+
+                "success"=>false,
+
+
+                "code"=>
+                    $errorData['code']
+                    ??
+                    "SYSTEM_ERROR",
+
+
+
+                "message"=>
+                    $errorData['message']
+                    ??
+                    "No fue posible crear la cita",
+
+
+
+
+                "data"=>null,
+
+
+
+                "errors"=>
+                    $errorData
+                    ??
+                    [
+                        $e->getMessage()
+                    ]
+
+
+
+            ],200);
+
+
+
+        }
+
+
+    }
+
+
+
 }

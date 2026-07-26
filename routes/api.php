@@ -122,6 +122,8 @@ Route::prefix('pointsales')->group(function () {
         Route::post('/subcategory-by-business-save', 'PointSales\ProductController@setSubCategoryByBusinessSave');
         Route::post('/subcategory-by-business-update', 'PointSales\ProductController@setSubCategoryByBusinessUpdate');
 
+        Route::get('/generate-keys-manager', 'PointSales\ProductController@generateKeysManager');
+
     });
 
 });

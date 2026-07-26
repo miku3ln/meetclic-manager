@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\BusinessByEmployeeProfile;
 
 use App\Models\Role;
+use App\Services\MenuService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -33,7 +34,14 @@ class FrontendProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->singleton(
+            MenuService::class,
+            function(){
 
+                return new MenuService();
+
+            }
+        );
 
     }
 
@@ -60,7 +68,17 @@ class FrontendProvider extends ServiceProvider
               $view->with('dataSliderLogo', $dataSliderLogo)->with('dataCategoriesHtml', $dataCategoriesHtml)->with('dataSliderHtml', $dataSliderHtml);*/
         });
 
+        view()->composer('layouts.bootstrap5', function ($view) {
+            $menu = app(MenuService::class)
+                ->getMenu();
 
+
+            $view->with(
+                'menu',
+                $menu
+            );
+
+        });
         //MANAGEMENT VARIABLES FRONTEND
         view()->composer('auth.customer.login', function ($view) {
             $allowManagementLoginNetworkSocial = false;
@@ -977,32 +995,29 @@ class FrontendProvider extends ServiceProvider
     {
 
         $htmlRow = '';
-        $htmlRow .= '<title class="meta-customer__title-page">'.$params['title'] .'</title>';
+        $htmlRow .= '<title class="meta-customer__title-page">' . $params['title'] . '</title>';
         $htmlRow .= "<meta name='description' content='Perfil USUARIO'>";
         $htmlRow .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 
-        $htmlRow .= "<meta property='og:title' content='" . $params['title']   . "'>";
-        $htmlRow .= "<meta property='og:url' content='" . $params['urlManagerRoot']   . "'>";
+        $htmlRow .= "<meta property='og:title' content='" . $params['title'] . "'>";
+        $htmlRow .= "<meta property='og:url' content='" . $params['urlManagerRoot'] . "'>";
         $htmlRow .= "<meta property='og:type' content='product'>";
-        $htmlRow .= "<meta property='og:description' class=\"meta-customer-profile__description\"  content='" .$params['descriptionData']  . "'>";
-        $htmlRow .= "<meta property='og:image'  class=\"meta-customer-profile__image\"  content='" . $params['source']  . "'>";
+        $htmlRow .= "<meta property='og:description' class=\"meta-customer-profile__description\"  content='" . $params['descriptionData'] . "'>";
+        $htmlRow .= "<meta property='og:image'  class=\"meta-customer-profile__image\"  content='" . $params['source'] . "'>";
         $htmlRow .= "<meta property='og:image:width'  class=\"meta-customer-profile__image-width\"  content='500'>";
         $htmlRow .= "<meta property='og:image:height' class=\"meta-customer-profile__image-height\"   content='500'>";
         $htmlRow .= "<meta property='og:image:type' class=\"meta-customer-profile__type\"   content='image/jpeg'>";
         $htmlRow .= "<meta  class=\"meta-customer-profile__fb-app-id\" property='fb:app_id' content='" . env('facebook_client_id') . "'>";
-        $htmlRow .= "<meta class=\"meta-customer-profile__image-alt\"  property='og:image:alt' content='" . $params['title']  . "'>";
+        $htmlRow .= "<meta class=\"meta-customer-profile__image-alt\"  property='og:image:alt' content='" . $params['title'] . "'>";
         $htmlRow .= "<meta class=\"meta-customer-profile__description\"  content='" . $params['descriptionData'] . "' name='description' >";
-        $htmlRow .= "<meta property='og:site_name' class=\"meta-customer-profile__site-name\" content='Perfil Usuario ".$params['title'] ."'>";
+        $htmlRow .= "<meta property='og:site_name' class=\"meta-customer-profile__site-name\" content='Perfil Usuario " . $params['title'] . "'>";
 
         $htmlRow .= '<meta name="twitter:card" content="summary_large_image">';
         $htmlRow .= '<meta property="twitter:domain" content="meetclic.com">';
-        $htmlRow .= '<meta property="twitter:url" content="'.$params['urlManager'].'">';
-        $htmlRow .= '<meta name="twitter:title" content="'.$params['title'] .'">';
-        $htmlRow .= '<meta name="twitter:description" content="'. $params['descriptionData'].'">';
-        $htmlRow .= '<meta name="twitter:image" content="'. $params['source'] .'">';
-
-
-
+        $htmlRow .= '<meta property="twitter:url" content="' . $params['urlManager'] . '">';
+        $htmlRow .= '<meta name="twitter:title" content="' . $params['title'] . '">';
+        $htmlRow .= '<meta name="twitter:description" content="' . $params['descriptionData'] . '">';
+        $htmlRow .= '<meta name="twitter:image" content="' . $params['source'] . '">';
 
 
         $htmlRow = ($htmlRow);
@@ -1041,7 +1056,7 @@ class FrontendProvider extends ServiceProvider
         $resource = asset($resourcePathServer . $data->source);
         $source = $data->source;
         $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
-        $attributesIcon="";
+        $attributesIcon = "";
         // Lógica según extensión
         switch ($extension) {
             case 'ico':
@@ -1077,7 +1092,7 @@ class FrontendProvider extends ServiceProvider
         }
 
 
-        $htmlRow .= '<link '.$attributesIcon.' href="' . $resource . '">';
+        $htmlRow .= '<link ' . $attributesIcon . ' href="' . $resource . '">';
 
 
         $htmlRow = new HtmlString($htmlRow);

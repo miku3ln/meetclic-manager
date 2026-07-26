@@ -98,12 +98,9 @@ class InvoiceSaleController extends MyBaseController
 
         $dataResponse = $response->json();
         if (isset($dataResponse['success']) && $dataResponse['success']) {
-            $attributesParams = array(
-                "id" => $invoiceId
-            );
             $resultData = InvoiceSale::find($invoiceId);
             if ($resultData) {
-                $resultData->authorization_number = 'INVOICE_SEND_EMMIT';
+                $resultData->status = 'ELECTRONIC_ISSUED';
                 $resultData->save();
             }
         }

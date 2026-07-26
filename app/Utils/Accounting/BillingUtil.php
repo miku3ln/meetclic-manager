@@ -158,15 +158,16 @@ class BillingUtil
         $relationOne = 'retention_tax_sub_type';
         $relationTwo = 'retention_tax_type';
         $relationThree = 'accounting_account';
-        $select = "$tableCurrent.id,$tableCurrent.retention_tax_sub_type_id sub_tipo_retencion_impuesto_id,$tableCurrent.created_at fecha_creacion,$tableCurrent.retained_value valor_retenido,$tableCurrent.establishment establecimiento,$tableCurrent.emission_point punto_emision,$tableCurrent.number_authorization num_autorizacion,$tableCurrent.number_retention num_retencion,$tableCurrent.invoice_date fecha_factura
-        ,$relationThree.id cc_id ,$relationThree.value cc_value,$relationThree.status cc_estado,$relationThree.description cc_descripcion,$relationThree.parent_key cc_parent_key,$relationThree.has_parent cc_has_parent,$relationThree.is_parent cc_is_parent,$relationThree.movement cc_movimiento,$relationThree.rfc cc_rfc,$relationThree.cost_center cc_centro_costo,$relationThree.base_amount cc_monto_base
-       ,$relationOne.value stri_value,$relationOne.retention_tax_type_id tipo_retencion_impuesto_id,$relationOne.description stri_descripcion,$relationOne.percentage stri_porcentaje
-       ,$relationTwo.value tri_value,$relationTwo.type tri_type";
+
         if ($type == "sale") {
 
             $tableCurrent = self::tblRetentionsSale . "";
             $relationCurrent = self::keyRetentionsBySale;
         }
+        $select = "$tableCurrent.id,$tableCurrent.retention_tax_sub_type_id sub_tipo_retencion_impuesto_id,$tableCurrent.created_at fecha_creacion,$tableCurrent.retained_value valor_retenido,$tableCurrent.establishment establecimiento,$tableCurrent.emission_point punto_emision,$tableCurrent.number_authorization num_autorizacion,$tableCurrent.number_retention num_retencion,$tableCurrent.invoice_date fecha_factura
+        ,$relationThree.id cc_id ,$relationThree.value cc_value,$relationThree.status cc_estado,$relationThree.description cc_descripcion,$relationThree.parent_key cc_parent_key,$relationThree.has_parent cc_has_parent,$relationThree.is_parent cc_is_parent,$relationThree.movement cc_movimiento,$relationThree.rfc cc_rfc,$relationThree.cost_center cc_centro_costo,$relationThree.base_amount cc_monto_base
+       ,$relationOne.value stri_value,$relationOne.retention_tax_type_id tipo_retencion_impuesto_id,$relationOne.description stri_descripcion,$relationOne.percentage stri_porcentaje
+       ,$relationTwo.value tri_value,$relationTwo.type tri_type";
         $selectString = $select;
         $query = DB::table($tableCurrent);
         $select = DB::raw($selectString);

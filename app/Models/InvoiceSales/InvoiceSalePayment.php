@@ -11,7 +11,7 @@ class InvoiceSalePayment extends ModelManager
 
     protected $fillable = [
         'invoice_sale_id',
-        'payment_method_id',
+        'type_payment_id',
         'amount',
         'provider',
         'reference',
@@ -22,7 +22,7 @@ class InvoiceSalePayment extends ModelManager
 
     protected $attributesData = [
         ['column' => 'invoice_sale_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
-        ['column' => 'payment_method_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
+        ['column' => 'type_payment_id', 'type' => 'integer', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'amount', 'type' => 'string', 'defaultValue' => '', 'required' => 'true'],
         ['column' => 'provider', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
         ['column' => 'reference', 'type' => 'string', 'defaultValue' => '', 'required' => 'false'],
@@ -39,7 +39,7 @@ class InvoiceSalePayment extends ModelManager
     {
         return [
             "invoice_sale_id" => "required|numeric",
-            "payment_method_id" => "required|numeric",
+            "type_payment_id" => "required|numeric",
             "amount" => "required|numeric",
             "provider" => "max:100",
             "reference" => "max:100"
@@ -54,6 +54,6 @@ class InvoiceSalePayment extends ModelManager
 
     public function paymentMethod()
     {
-        return $this->belongsTo(PosPaymentMethod::class, 'payment_method_id');
+        return $this->belongsTo(PosPaymentMethod::class, 'type_payment_id');
     }
 }

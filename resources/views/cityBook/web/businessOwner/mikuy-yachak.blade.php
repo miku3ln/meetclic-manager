@@ -5,7 +5,6 @@
 @extends('layouts.bootstrap5')
 @section('additional-scripts')
     <script>
-
         function initDataGrid() {
             $('#grid-products-manager').bootgrid({
                 ajax: true,
@@ -129,9 +128,6 @@
 @endsection
 @section('content')
     <div class="container--custom">
-
         <img src="{{URL::asset($sourcesRoot."/infogram.png")}}" class="img-fluid" alt="...">
-
-
     </div>
 @endsection

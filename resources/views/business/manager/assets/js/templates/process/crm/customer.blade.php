@@ -822,7 +822,7 @@ foreach ($dataManagerProcessActions as $key => $value) {
                         <div class="form-group"
                         >
                             <label
-                                class="form__label ">Telefono/Cel<?php echo '{{model.attributes.information_phone_id==null?" Creacion ":"-Actualizacion"}}'?></label>
+                                class="form__label ">Telefono/Celadadd<?php echo '{{model.attributes.information_phone_id==null?" Creacion ":"-Actualizacion"}}'?></label>
                             <div class="content-element-form" v-if="model.attributes.information_phone_id==null">
                                 <switch-button
                                     @change="onEmmitOtherData({'type':'phone'})"

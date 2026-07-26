@@ -108,9 +108,155 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+    public function generateKeysManager(Request $request)
+    {
+        try {
+
+            // ======================================================
+            // Configurar OpenSSL
+            // ======================================================
+            $opensslConf = env('OPENSSL_CONF');
+
+            if (empty($opensslConf) || !file_exists($opensslConf)) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'openssl_conf',
+                    'message' => 'No se encontró el archivo openssl.cnf.',
+                    'path' => $opensslConf,
+                ], 500);
+            }
+
+            putenv("OPENSSL_CONF={$opensslConf}");
+            $_ENV['OPENSSL_CONF'] = $opensslConf;
+            $_SERVER['OPENSSL_CONF'] = $opensslConf;
+
+            // ======================================================
+            // Configuración RSA
+            // ======================================================
+            $config = [
+                'config' => $opensslConf,
+                'private_key_bits' => 4096,
+                'private_key_type' => OPENSSL_KEYTYPE_RSA,
+            ];
+
+            // ======================================================
+            // Generar clave privada
+            // ======================================================
+            $key = openssl_pkey_new($config);
+
+            if ($key === false) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'openssl_pkey_new',
+                    'message' => 'Error al generar la clave.',
+                    'config_file' => $opensslConf,
+                    'openssl_errors' => $this->getOpenSSLErrors(),
+                ], 500);
+            }
+
+            // ======================================================
+            // Exportar privada
+            // ======================================================
+            if (!openssl_pkey_export($key, $privateKey, null, $config)) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'openssl_pkey_export',
+                    'message' => 'Error al exportar la clave privada.',
+                    'openssl_errors' => $this->getOpenSSLErrors(),
+                ], 500);
+            }
+
+            // ======================================================
+            // Obtener pública
+            // ======================================================
+            $details = openssl_pkey_get_details($key);
+
+            if ($details === false || !isset($details['key'])) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'openssl_pkey_get_details',
+                    'message' => 'No se pudo obtener la clave pública.',
+                    'openssl_errors' => $this->getOpenSSLErrors(),
+                ], 500);
+            }
+
+            $publicKey = $details['key'];
+
+            // ======================================================
+            // Crear directorio
+            // ======================================================
+            $dir = storage_path('app/keys');
+
+            if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'mkdir',
+                    'message' => 'No se pudo crear el directorio.',
+                    'path' => $dir,
+                ], 500);
+            }
+
+            // ======================================================
+            // Guardar archivos
+            // ======================================================
+            $privatePath = $dir . DIRECTORY_SEPARATOR . 'private.pem';
+            $publicPath = $dir . DIRECTORY_SEPARATOR . 'public.pem';
+
+            if (file_put_contents($privatePath, $privateKey) === false) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'save_private_key',
+                    'message' => 'No se pudo guardar la clave privada.',
+                    'path' => $privatePath,
+                ], 500);
+            }
+
+            if (file_put_contents($publicPath, $publicKey) === false) {
+                return response()->json([
+                    'success' => false,
+                    'step' => 'save_public_key',
+                    'message' => 'No se pudo guardar la clave pública.',
+                    'path' => $publicPath,
+                ], 500);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Claves RSA generadas correctamente.',
+                'data' => [
+                    'private_key_path' => $privatePath,
+                    'public_key_path' => $publicPath,
+                    'openssl_conf' => $opensslConf,
+                ],
+            ]);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'success' => false,
+                'step' => 'exception',
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => app()->environment('local')
+                    ? explode("\n", $e->getTraceAsString())
+                    : [],
+            ], 500);
+        }
+    }
+
+    private function getOpenSSLErrors(): array
+    {
+        $errors = [];
+
+        while ($error = openssl_error_string()) {
+            $errors[] = $error;
+        }
+
+        return $errors;
+    }
     public function getSubCategoryByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
     {
-
         $params = $request->all();
 
         $filters = [
