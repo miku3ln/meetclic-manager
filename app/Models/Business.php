@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 
 
-
-
 class Business extends ModelManager
 {
     const STATUS_ACTIVE = 'ACTIVE';
@@ -322,21 +320,19 @@ class Business extends ModelManager
         $business = $this->getBusinessByIdManager(array("id" => $id));
         $schedules = array();
         $success = false;
-        $gamificationCountryReferenceData=[];
+        $gamificationCountryReferenceData = [];
         if (count($business) > 0) {
-            $dataBusiness= $business[0];
+            $dataBusiness = $business[0];
             $business_id = $dataBusiness->id;
 
             $schedules = $modelBBS->getStructureSchedulesBusiness(array("business_id" => $business_id));
             $success = true;
 
-            $gamificationCountryReferenceData= GamificationCountryReference::findActiveByCountryId($dataBusiness->countries_id);
+            $gamificationCountryReferenceData = GamificationCountryReference::findActiveByCountryId($dataBusiness->countries_id);
         }
         $peopleNationalityData = $modelPN->getDataListAll();
         $peopleProfessionData = $modelPP->getDataListAll();
         $dateCurrentData = array("format" => Util::DateCurrent('America/Guayaquil'), "not-format" => Util::DateCurrent('America/Guayaquil', "H:i:s d/m/Y"));
-
-
 
 
         return array(
@@ -346,11 +342,11 @@ class Business extends ModelManager
             "peopleNationalityData" => $peopleNationalityData,
             "peopleProfessionData" => $peopleProfessionData,
             "dateCurrentData" => $dateCurrentData,
-            "gamificationCountryReferenceData"=>$gamificationCountryReferenceData,
-            'user'=>$user,
-            "userData"=>[
-                'model'=>$user,
-                'roles'=>$roles
+            "gamificationCountryReferenceData" => $gamificationCountryReferenceData,
+            'user' => $user,
+            "userData" => [
+                'model' => $user,
+                'roles' => $roles
             ]
 
         );
@@ -385,12 +381,1216 @@ class Business extends ModelManager
     }
 
     public
+    function getBusinessDataAgent($params = array())
+    {
+        $information = $this->getBusinessById($params);
+        /*
+        |--------------------------------------------------------------------------
+        | 1. BUSINESS
+        |--------------------------------------------------------------------------
+        | Información general de la empresa.
+        |
+        | Propósito:
+        | - Identificar la empresa.
+        | - Mostrar información al cliente.
+        | - Configuración regional.
+        | - Utilizado por todos los canales.
+        |--------------------------------------------------------------------------
+        */
+        $business = null;
+        if (count($information) > 0) {
+            $business = $information[0];
+        }
+
+        $modelBBS = new BusinessBySchedule;
+        $business_id = $params["id"];
+        $scheduleDays = $modelBBS->getStructureSchedulesBusiness(array("business_id" => $business_id));
+
+        $result = [
+            "business" => $business,
+
+            /*
+            |--------------------------------------------------------------------------
+            | 2. CONTACT
+            |--------------------------------------------------------------------------
+            | Información de contacto.
+            |
+            | Propósito:
+            | - Responder preguntas.
+            | - Compartir teléfonos.
+            | - Compartir correos.
+            |--------------------------------------------------------------------------
+            */
+
+            "contact" => [
+
+                "email" => "alexalba@meetclic.com",
+
+                "phone" => "0985339457",
+
+                "mobile" => "0985339457",
+
+                "whatsapp" => "593985339457",
+
+                "website" => "https://www.meetclic.com",
+
+                "allow_whatsapp_call" => true,
+
+                "allow_phone_call" => true,
+
+                "allow_email" => true
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. LOCATION
+            |--------------------------------------------------------------------------
+            | Ubicación física.
+            |
+            | Propósito:
+            | - Compartir dirección.
+            | - Abrir Google Maps.
+            |--------------------------------------------------------------------------
+            */
+
+            "location" => [
+
+                "address" => [
+
+                    "street_1" => "Piedrahita",
+
+                    "street_2" => "Buenos Aires",
+
+                    "reference" => "Frente al parque"
+
+                ],
+
+                "coordinates" => [
+
+                    "lat" => 0.226204,
+
+                    "lng" => -78.236500
+
+                ],
+
+                "country" => "Ecuador",
+
+                "province" => "Imbabura",
+
+                "city" => "Otavalo",
+
+                "postal_code" => null
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 4. SOCIAL NETWORKS
+            |--------------------------------------------------------------------------
+            | Redes sociales.
+            |
+            | Propósito:
+            | Compartir redes cuando el cliente las solicite.
+            |--------------------------------------------------------------------------
+            */
+
+            "social_networks" => [
+
+                "facebook" => "https://facebook.com/meetclic",
+
+                "instagram" => "https://instagram.com/meetclic",
+
+                "tiktok" => "",
+
+                "youtube" => "",
+
+                "linkedin" => "",
+
+                "x" => ""
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 5. ASSISTANT
+            |--------------------------------------------------------------------------
+            | Configuración del asistente.
+            |
+            | Propósito:
+            | Define la personalidad del agente.
+            |--------------------------------------------------------------------------
+            */
+
+            "assistant" => [
+
+                "enabled" => true,
+
+                "name" => "MIA",
+
+                "avatar" => null,
+
+                "language" => "es",
+
+                "tone" => "friendly", // friendly | formal | professional
+
+                "personality" => "helpful",
+
+                "show_emojis" => true,
+
+                "show_typing" => false,
+
+                "show_menu_on_start" => true,
+
+                "allow_voice" => false,
+
+                "allow_images" => false,
+
+                "allow_documents" => false
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 6. AI
+            |--------------------------------------------------------------------------
+            | Configuración de Inteligencia Artificial.
+            |
+            | Propósito:
+            | Controlar el funcionamiento del proveedor IA.
+            |--------------------------------------------------------------------------
+            */
+
+            "ai" => [
+
+                "enabled" => true,
+
+                "provider" => "OPENAI",
+
+                "model" => "gpt-5.5",
+
+                "temperature" => 0.3,
+
+                "top_p" => 1,
+
+                "max_tokens" => 1000,
+
+                "presence_penalty" => 0,
+
+                "frequency_penalty" => 0,
+
+                "detect_language" => true,
+
+                "translate_language" => false,
+
+                "memory" => true,
+
+                "knowledge_base" => true,
+
+                "allow_outside_business" => false,
+
+                "system_prompt" => "Eres el asistente virtual oficial de la empresa."
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 7. CONVERSATION
+            |--------------------------------------------------------------------------
+            | Configuración general del chat.
+            |
+            | Propósito:
+            | Controlar el ciclo de vida de una conversación.
+            |--------------------------------------------------------------------------
+            */
+
+            "conversation" => [
+
+                "save_history" => true,
+
+                "conversation_timeout_minutes" => 30,
+
+                "restart_after_finish" => true,
+
+                "continue_last_conversation" => true,
+
+                "max_context_messages" => 20,
+
+                "simulate_typing" => false,
+
+                "allow_multiple_sessions" => false,
+
+                "log_all_messages" => true
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 8. COMMANDS
+            |--------------------------------------------------------------------------
+            | Comandos globales.
+            |
+            | Propósito:
+            | Funcionan desde cualquier flujo.
+            |--------------------------------------------------------------------------
+            */
+
+            "commands" => [
+
+                [
+                    "code" => "MENU",
+                    "keyword" => "menu",
+                    "description" => "Mostrar menú principal",
+                    "enabled" => true
+                ],
+
+                [
+                    "code" => "START",
+                    "keyword" => "inicio",
+                    "description" => "Reiniciar conversación",
+                    "enabled" => true
+                ],
+
+                [
+                    "code" => "HELP",
+                    "keyword" => "ayuda",
+                    "description" => "Mostrar ayuda",
+                    "enabled" => true
+                ],
+
+                [
+                    "code" => "CANCEL",
+                    "keyword" => "cancelar",
+                    "description" => "Cancelar proceso actual",
+                    "enabled" => true
+                ],
+
+                [
+                    "code" => "ADVISOR",
+                    "keyword" => "asesor",
+                    "description" => "Hablar con un asesor",
+                    "enabled" => true
+                ],
+
+                [
+                    "code" => "EXIT",
+                    "keyword" => "salir",
+                    "description" => "Finalizar conversación",
+                    "enabled" => true
+                ]
+
+            ],
+            /*
+    |--------------------------------------------------------------------------
+    | 10. MODULES
+    |--------------------------------------------------------------------------
+    | Módulos habilitados para la empresa.
+    |
+    | Propósito:
+    | Permite activar o desactivar funcionalidades sin modificar código.
+    |--------------------------------------------------------------------------
+    */
+
+            "modules" => [
+
+                "appointments" => true,
+                "products" => false,
+                "catalog" => false,
+                "orders" => false,
+                "payments" => false,
+                "debts" => false,
+                "invoices" => false,
+                "crm" => false,
+                "inventory" => false,
+                "delivery" => false,
+                "marketing" => false,
+                "surveys" => false,
+                "support" => true,
+                "calendar" => true,
+                "employees" => true
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 11. APPOINTMENTS
+            |--------------------------------------------------------------------------
+            | Configuración del sistema de reservas.
+            |--------------------------------------------------------------------------
+            */
+
+            "appointments" => [
+
+                "enabled" => true,
+
+                "require_login" => false,
+
+                "require_payment" => false,
+
+                "allow_cancel" => true,
+
+                "allow_reschedule" => true,
+
+                "allow_multiple" => true,
+
+                "allow_waiting_list" => false,
+
+                "automatic_confirmation" => true,
+
+                "requires_professional" => true,
+
+                "requires_service" => true,
+
+                "requires_category" => true,
+
+                "max_active_appointments" => 3,
+
+                "minimum_hours_before_booking" => 1,
+
+                "maximum_days_before_booking" => 90,
+
+                "minimum_hours_cancel" => 2,
+
+                "minimum_hours_reschedule" => 2,
+
+                "appointment_duration_default" => 60,
+
+                "send_confirmation" => true,
+
+                "send_reminder" => true,
+
+                "reminder_hours_before" => 24
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 12. SERVICES
+            |--------------------------------------------------------------------------
+            | Configuración general de servicios.
+            |--------------------------------------------------------------------------
+            */
+
+            "services" => [
+
+                "enabled" => true,
+
+                "allow_categories" => true,
+
+                "allow_subcategories" => true,
+
+                "allow_professionals" => true,
+
+                "allow_price" => true,
+
+                "allow_duration" => true,
+
+                "allow_images" => true,
+
+                "allow_description" => true,
+
+                "allow_online_booking" => true,
+
+                "show_price" => true,
+
+                "show_duration" => true,
+
+                "currency" => "USD",
+
+                "categories" => [],
+
+                "items" => []
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 13. PROFESSIONALS
+            |--------------------------------------------------------------------------
+            | Configuración de empleados/profesionales.
+            |--------------------------------------------------------------------------
+            */
+
+            "professionals" => [
+
+                "enabled" => true,
+
+                "allow_multiple_services" => true,
+
+                "allow_custom_schedule" => true,
+
+                "allow_breaks" => true,
+
+                "allow_days_off" => true,
+
+                "allow_color_calendar" => true,
+
+                "allow_photo" => true,
+
+                "allow_specialties" => true,
+
+                "items" => []
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 14. SCHEDULE
+            |--------------------------------------------------------------------------
+            | Configuración de agenda.
+            |--------------------------------------------------------------------------
+            */
+
+            "schedule" => [
+
+                "timezone" => "America/Guayaquil",
+
+                "working_days" => $scheduleDays,
+
+                "allow_multiple_blocks" => true,
+
+                "slot_interval_minutes" => 30,
+
+                "default_duration" => 60,
+
+                "allow_overbooking" => false,
+
+                "buffer_before_minutes" => 0,
+
+                "buffer_after_minutes" => 0,
+
+                "holidays" => [],
+
+                "special_days" => [],
+
+                "exceptions" => []
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 15. CUSTOMER
+            |--------------------------------------------------------------------------
+            | Configuración de clientes.
+            |
+            | Cada campo puede ser:
+            | visible
+            | required
+            | editable
+            |--------------------------------------------------------------------------
+            */
+            "customer" => [
+
+                "allow_registration" => true,
+
+                "allow_guest" => true,
+
+                "allow_update_information" => true,
+
+                "fields" => [
+
+                    [
+                        "code" => "first_name",
+                        "label" => "Nombre",
+                        "type" => "text",
+                        "visible" => true,
+                        "required" => true,
+                        "editable" => true,
+                        "order" => 1
+                    ],
+
+                    [
+                        "code" => "last_name",
+                        "label" => "Apellidos",
+                        "type" => "text",
+                        "visible" => true,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 2
+                    ],
+
+                    [
+                        "code" => "phone",
+                        "label" => "Celular",
+                        "type" => "phone",
+                        "visible" => true,
+                        "required" => true,
+                        "editable" => true,
+                        "order" => 3
+                    ],
+
+                    [
+                        "code" => "email",
+                        "label" => "Correo",
+                        "type" => "email",
+                        "visible" => true,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 4
+                    ],
+
+                    [
+                        "code" => "document",
+                        "label" => "Documento",
+                        "type" => "text",
+                        "visible" => true,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 5
+                    ],
+
+                    [
+                        "code" => "address",
+                        "label" => "Dirección",
+                        "type" => "text",
+                        "visible" => false,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 6
+                    ],
+
+                    [
+                        "code" => "birthdate",
+                        "label" => "Fecha nacimiento",
+                        "type" => "date",
+                        "visible" => false,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 7
+                    ],
+
+                    [
+                        "code" => "gender",
+                        "label" => "Sexo",
+                        "type" => "select",
+                        "visible" => false,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 8
+                    ],
+
+                    [
+                        "code" => "company",
+                        "label" => "Empresa",
+                        "type" => "text",
+                        "visible" => false,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 9
+                    ],
+
+                    [
+                        "code" => "notes",
+                        "label" => "Observaciones",
+                        "type" => "textarea",
+                        "visible" => false,
+                        "required" => false,
+                        "editable" => true,
+                        "order" => 10
+                    ]
+
+                ]
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 16. PAYMENTS
+            |--------------------------------------------------------------------------
+            | Métodos de pago disponibles.
+            |--------------------------------------------------------------------------
+            */
+
+            "payments" => [
+
+                "enabled" => false,
+
+                "allow_partial_payment" => false,
+
+                "allow_full_payment" => true,
+
+                "require_advance" => false,
+
+                "methods" => [
+
+                    [
+                        "code" => "cash",
+                        "name" => "Efectivo",
+                        "enabled" => true
+                    ],
+
+                    [
+                        "code" => "transfer",
+                        "name" => "Transferencia",
+                        "enabled" => false
+                    ],
+
+                    [
+                        "code" => "credit_card",
+                        "name" => "Tarjeta",
+                        "enabled" => false
+                    ],
+
+                    [
+                        "code" => "debit_card",
+                        "name" => "Tarjeta Débito",
+                        "enabled" => false
+                    ],
+
+                    [
+                        "code" => "paypal",
+                        "name" => "PayPal",
+                        "enabled" => false
+                    ],
+
+                    [
+                        "code" => "stripe",
+                        "name" => "Stripe",
+                        "enabled" => false
+                    ],
+
+                    [
+                        "code" => "payphone",
+                        "name" => "PayPhone",
+                        "enabled" => false
+                    ]
+
+                ]
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 17. AUTO_INFORMATION
+            |--------------------------------------------------------------------------
+            | Información que el asistente puede responder SIN IA.
+            |--------------------------------------------------------------------------
+            */
+
+            "auto_information" => [
+
+                "schedule" => true,
+
+                "location" => true,
+
+                "phones" => true,
+
+                "email" => true,
+
+                "website" => true,
+
+                "social_networks" => true,
+
+                "services" => true,
+
+                "categories" => true,
+
+                "products" => false,
+
+                "promotions" => false,
+
+                "faq" => true,
+
+                "policies" => true,
+
+                "payments" => true,
+
+                "professionals" => true
+
+            ],
+            /*
+    |--------------------------------------------------------------------------
+    | 18. ESCALATION
+    |--------------------------------------------------------------------------
+    | Configuración para escalar la conversación a una persona.
+    |
+    | Propósito:
+    | - Transferir conversación.
+    | - Notificar empleados.
+    | - Enviar correo.
+    | - Enviar WhatsApp.
+    |--------------------------------------------------------------------------
+    */
+
+            "escalation" => [
+
+                "enabled" => true,
+
+                "allow_human_transfer" => true,
+
+                "automatic_transfer" => false,
+
+                "max_ai_attempts" => 3,
+
+                "business_hours_only" => true,
+
+                "queue_enabled" => false,
+
+                "notify_email" => true,
+
+                "notify_whatsapp" => true,
+
+                "notify_dashboard" => true,
+
+                "default_department" => "Recepción",
+
+                "default_employee" => null,
+
+                "message_before_transfer" => "Un momento por favor, te comunicaré con un asesor.",
+
+                "message_no_agents" => "En este momento no hay asesores disponibles."
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 19. CHANNELS
+            |--------------------------------------------------------------------------
+            | Canales donde funciona el asistente.
+            |--------------------------------------------------------------------------
+            */
+
+            "channels" => [
+
+                [
+                    "code" => "whatsapp",
+                    "name" => "WhatsApp",
+                    "enabled" => true,
+                    "default" => true
+                ],
+
+                [
+                    "code" => "webchat",
+                    "name" => "Web Chat",
+                    "enabled" => false,
+                    "default" => false
+                ],
+
+                [
+                    "code" => "facebook",
+                    "name" => "Facebook",
+                    "enabled" => false,
+                    "default" => false
+                ],
+
+                [
+                    "code" => "instagram",
+                    "name" => "Instagram",
+                    "enabled" => false,
+                    "default" => false
+                ],
+
+                [
+                    "code" => "telegram",
+                    "name" => "Telegram",
+                    "enabled" => false,
+                    "default" => false
+                ],
+
+                [
+                    "code" => "email",
+                    "name" => "Correo",
+                    "enabled" => false,
+                    "default" => false
+                ]
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 20. SECURITY
+            |--------------------------------------------------------------------------
+            | Seguridad del asistente.
+            |--------------------------------------------------------------------------
+            */
+
+            "security" => [
+
+                "enabled" => true,
+
+                "save_logs" => true,
+
+                "save_conversations" => true,
+
+                "session_timeout_minutes" => 30,
+
+                "max_messages_per_minute" => 30,
+
+                "verify_customer" => false,
+
+                "verify_phone" => false,
+
+                "verify_email" => false,
+
+                "verify_document" => false,
+
+                "allow_blocked_customers" => false,
+
+                "allow_blacklist" => true,
+
+                "allow_whitelist" => false
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 21. MESSAGES
+            |--------------------------------------------------------------------------
+            | Mensajes automáticos del asistente.
+            |--------------------------------------------------------------------------
+            */
+
+            "messages" => [
+
+                "welcome" =>
+                    "Hola 👋 Bienvenido. Soy el asistente virtual de la empresa. ¿Cómo puedo ayudarte?",
+
+                "goodbye" =>
+                    "Muchas gracias por comunicarte con nosotros. ¡Hasta pronto!",
+
+                "outside_schedule" =>
+                    "En este momento estamos fuera del horario de atención.",
+
+                "error" =>
+                    "Ocurrió un error. Intenta nuevamente.",
+
+                "fallback" =>
+                    "No entendí tu solicitud. Puedes escribir *menu* para ver las opciones.",
+
+                "transfer" =>
+                    "Voy a transferir tu conversación con un asesor.",
+
+                "appointment_created" =>
+                    "Tu reserva fue creada correctamente.",
+
+                "appointment_updated" =>
+                    "Tu reserva fue reprogramada correctamente.",
+
+                "appointment_cancelled" =>
+                    "Tu reserva fue cancelada correctamente.",
+
+                "payment_received" =>
+                    "Hemos recibido tu pago.",
+
+                "no_results" =>
+                    "No encontramos información.",
+
+                "thanks" =>
+                    "Gracias por preferirnos."
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 22. NOTIFICATIONS
+            |--------------------------------------------------------------------------
+            | Notificaciones automáticas.
+            |--------------------------------------------------------------------------
+            */
+
+            "notifications" => [
+
+                "enabled" => true,
+
+                "appointment_created" => true,
+
+                "appointment_cancelled" => true,
+
+                "appointment_reminder" => true,
+
+                "payment_received" => true,
+
+                "new_customer" => true,
+
+                "survey" => false,
+
+                "promotion" => false
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 23. INTEGRATIONS
+            |--------------------------------------------------------------------------
+            | Integraciones externas.
+            |--------------------------------------------------------------------------
+            */
+
+            "integrations" => [
+
+                "google_calendar" => false,
+
+                "outlook_calendar" => false,
+
+                "google_meet" => false,
+
+                "zoom" => false,
+
+                "teams" => false,
+
+                "crm" => false,
+
+                "erp" => false,
+
+                "webhooks" => true,
+
+                "n8n" => true,
+
+                "api" => true
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 24. WORKFLOWS
+            |--------------------------------------------------------------------------
+            | Flujos disponibles.
+            |
+            | n8n utilizará este bloque para decidir qué workflow ejecutar.
+            |--------------------------------------------------------------------------
+            */
+
+            "workflows" => [
+
+                [
+                    "code" => "appointment",
+                    "name" => "Reservar cita",
+                    "enabled" => true,
+                    "requires_ai" => false,
+                    "priority" => 1
+                ],
+
+                [
+                    "code" => "information",
+                    "name" => "Consultar información",
+                    "enabled" => true,
+                    "requires_ai" => false,
+                    "priority" => 2
+                ],
+
+                [
+                    "code" => "my_appointments",
+                    "name" => "Mis reservas",
+                    "enabled" => true,
+                    "requires_ai" => false,
+                    "priority" => 3
+                ],
+
+                [
+                    "code" => "advisor",
+                    "name" => "Hablar con asesor",
+                    "enabled" => true,
+                    "requires_ai" => false,
+                    "priority" => 4
+                ],
+
+                [
+                    "code" => "products",
+                    "name" => "Productos",
+                    "enabled" => false,
+                    "requires_ai" => false,
+                    "priority" => 5
+                ],
+
+                [
+                    "code" => "promotions",
+                    "name" => "Promociones",
+                    "enabled" => false,
+                    "requires_ai" => false,
+                    "priority" => 6
+                ],
+
+                [
+                    "code" => "payments",
+                    "name" => "Pagos",
+                    "enabled" => false,
+                    "requires_ai" => false,
+                    "priority" => 7
+                ],
+
+                [
+                    "code" => "debts",
+                    "name" => "Consultar deudas",
+                    "enabled" => false,
+                    "requires_ai" => false,
+                    "priority" => 8
+                ],
+
+                [
+                    "code" => "support",
+                    "name" => "Soporte",
+                    "enabled" => true,
+                    "requires_ai" => true,
+                    "priority" => 9
+                ]
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 25. PERMISSIONS
+            |--------------------------------------------------------------------------
+            | Acciones permitidas al asistente.
+            |--------------------------------------------------------------------------
+            */
+
+            "permissions" => [
+
+                "create_customer" => true,
+
+                "update_customer" => true,
+
+                "view_customer" => true,
+
+                "create_appointment" => true,
+
+                "update_appointment" => true,
+
+                "cancel_appointment" => true,
+
+                "view_schedule" => true,
+
+                "view_services" => true,
+
+                "view_products" => false,
+
+                "view_payments" => false,
+
+                "view_debts" => false,
+
+                "transfer_conversation" => true,
+
+                "send_notifications" => true
+
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | 9. MENU
+            |--------------------------------------------------------------------------
+            | Menú principal.
+            |
+            | Propósito:
+            | n8n mostrará únicamente los elementos habilitados.
+            |--------------------------------------------------------------------------
+            */
+
+            "menu" => [
+
+                [
+                    "code" => "APPOINTMENT",
+                    "title" => "Reservar cita",
+                    "description" => "Agendar una nueva cita.",
+                    "icon" => "calendar",
+                    "order" => 1,
+                    "enabled" => true,
+                    "workflow" => "appointment"
+                ],
+
+                [
+                    "code" => "INFORMATION",
+                    "title" => "Consultar información",
+                    "description" => "Horarios, ubicación y servicios.",
+                    "icon" => "info",
+                    "order" => 2,
+                    "enabled" => true,
+                    "workflow" => "information"
+                ],
+
+                [
+                    "code" => "MY_APPOINTMENTS",
+                    "title" => "Mis reservas",
+                    "description" => "Consultar reservas realizadas.",
+                    "icon" => "event",
+                    "order" => 3,
+                    "enabled" => true,
+                    "workflow" => "my_appointments"
+                ],
+
+                [
+                    "code" => "PRODUCTS",
+                    "title" => "Productos",
+                    "description" => "Consultar catálogo.",
+                    "icon" => "shopping_bag",
+                    "order" => 4,
+                    "enabled" => false,
+                    "workflow" => "products"
+                ],
+
+                [
+                    "code" => "PROMOTIONS",
+                    "title" => "Promociones",
+                    "description" => "Promociones vigentes.",
+                    "icon" => "local_offer",
+                    "order" => 5,
+                    "enabled" => false,
+                    "workflow" => "promotions"
+                ],
+
+                [
+                    "code" => "DEBTS",
+                    "title" => "Consultar deudas",
+                    "description" => "Consultar deudas pendientes.",
+                    "icon" => "payments",
+                    "order" => 6,
+                    "enabled" => false,
+                    "workflow" => "debts"
+                ],
+
+                [
+                    "code" => "INVOICES",
+                    "title" => "Facturas",
+                    "description" => "Consultar facturas.",
+                    "icon" => "receipt",
+                    "order" => 7,
+                    "enabled" => false,
+                    "workflow" => "invoices"
+                ],
+
+                [
+                    "code" => "SURVEYS",
+                    "title" => "Encuestas",
+                    "description" => "Responder encuestas.",
+                    "icon" => "poll",
+                    "order" => 8,
+                    "enabled" => false,
+                    "workflow" => "surveys"
+                ],
+
+                [
+                    "code" => "SUPPORT",
+                    "title" => "Soporte",
+                    "description" => "Solicitar ayuda.",
+                    "icon" => "support_agent",
+                    "order" => 9,
+                    "enabled" => true,
+                    "workflow" => "support"
+                ],
+
+                [
+                    "code" => "ADVISOR",
+                    "title" => "Hablar con un asesor",
+                    "description" => "Transferir la conversación.",
+                    "icon" => "person",
+                    "order" => 10,
+                    "enabled" => true,
+                    "workflow" => "advisor"
+                ]
+
+            ]
+        ];
+
+
+        return $result;
+    }
+
+    public
     function getBusinessData($params = array())
     {
         $information = $this->getBusinessById($params);
         $modelB = new Business();
 
-        $businessData= $modelB->getBusinessFrontend([
+        $businessData = $modelB->getBusinessFrontend([
             'filters' => [
                 'business_id' => $params["id"]
             ]

@@ -16,7 +16,9 @@ class FrontendPagesOwnerCms
     {
         Route::group(['middleware' => ['frontend']], function () {
             Route::get('/business/{slug}/{section}', 'Frontend\FrontendPagesOwnerCmsController@businessOwner')->name('pages-owner');
-            Route::get('/simi-rura/chasqui/mundo-virtual/{id?}', 'Frontend\FrontendPagesOwnerCmsController@chasqui')->name('chasqui-routes');
+            Route::get('/simi-rura/chasqui-nian/mundo-virtual/{id?}', 'Frontend\FrontendPagesOwnerCmsController@chasquiNian')->name('chasqui-nian');
+
+
             Route::get('/rimay/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@rimayByBusiness')->name('rimay-business');
             Route::get('/rimay/registers/business/{id?}', 'Frontend\FrontendPagesOwnerCmsController@rimayRegistersByBusiness')->name('rimay-registers-business');
 

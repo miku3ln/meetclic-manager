@@ -217,8 +217,9 @@ class FrontendPagesOwnerCmsController extends Controller
 
     }
 
-    public function chasqui($id = null)
+    public function chasquiNian($id = null)
     {
+
         $slug = "";
         $section = "";
 
@@ -253,8 +254,11 @@ class FrontendPagesOwnerCmsController extends Controller
             $business_id = $dataModelBRR->business_id;
             $routes_map_id = $dataModelBRR->routes_map_id;
             $allow = true;
+
             $model = new Business();
-            $dataBusiness = $model->getBusinessData(array("id" => $business_id));
+
+            $dataBusiness = $model->getBusinessData(array("id" =>$business_id));
+
             $modelRMBRD = new RoutesMapByRoutesDrawing();
             $routes_drawing_data = $modelRMBRD->getRoutesDrawing(array("routes_map_id" => $routes_map_id));
             $routesDrawingGroup = $modelRMBRD->getRoutesDrawingGroupedBySubcategory(["rows" => $routes_drawing_data]);

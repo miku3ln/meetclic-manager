@@ -127,3 +127,13 @@ Route::prefix('pointsales')->group(function () {
     });
 
 });
+Route::prefix("v1")
+    ->middleware("agent")
+    ->group(function () {
+
+        Route::get(
+            "/business/{id}/agent",
+            "Api\AgentController@getBusinessDataAgent"
+        );
+
+    });
