@@ -14,6 +14,7 @@ use App\Models\InvoiceSales\PosPaymentMethod;
 use App\Models\InvoiceSales\PuntoEmision;
 use App\Models\Products\Product;
 use App\Models\Products\ProductRecipe;
+use App\Models\Products\ProductStock;
 use App\Modules\PointSales\Constants\ProductClassification;
 use App\Modules\PointSales\Services\ProductSalesService;
 use App\Modules\PointSales\Services\StockDiscountService;
@@ -90,6 +91,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function getCategoryByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
     {
 
@@ -108,6 +110,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function generateKeysManager(Request $request)
     {
         try {
@@ -255,6 +258,7 @@ class ProductController extends PointSalesBaseController
 
         return $errors;
     }
+
     public function getSubCategoryByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
@@ -272,6 +276,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function getProductsManagement(Request $request)//POS-PRODUCTS -INIT-ONE
     {
 
@@ -313,6 +318,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function getProductsCategoriesByBusiness(Request $request)//POS-PRODUCTS -INIT-ONE
     {
 
@@ -367,7 +373,7 @@ class ProductController extends PointSalesBaseController
 
                 // 2. Todos los Datos de la tabla: puntos_emision
                 'pe.emisor_id',
-                'pe.id as pe_id ',
+                'pe.id as pe_id',
                 'pe.establecimiento',
                 'pe.punto_emision',
                 'pe.factura_inicial',
@@ -411,6 +417,20 @@ class ProductController extends PointSalesBaseController
         ];
     }
 
+    private function throwStepException(
+        string     $step,
+        string     $message,
+        array      $errors = [],
+        \Throwable $previous = null
+    )
+    {
+        throw new \Exception(
+            "[{$step}] {$message}",
+            0,
+            $previous
+        );
+    }
+
     public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO
     {
         $payload = $request->json()->all();
@@ -420,12 +440,16 @@ class ProductController extends PointSalesBaseController
         $bodyCurrent = $payload["body"];
         $errors = [];
         $result = [];
+        $step = "";
         DB::beginTransaction();
         try {
+            $allowValidateStock = false;
             $success = false;
             $message = "";
             $items = $bodyCurrent;
+            $step = "STEP 1 - Procesar descuentos";
             $calculated = $this->stockDiscountService->process(["items" => $bodyCurrent]);
+
             $total = 0;
             $subTotal = 0;
             $value_taxes = 0;
@@ -435,15 +459,14 @@ class ProductController extends PointSalesBaseController
             foreach ($items as $item) {
                 $total += $item['total'];
                 $subTotal += $item['subtotal'];
-
                 if ($item['hasTax'] == 'SI') {
                     $value_taxes += $subTotal * $item['valuePercentageTax'] / 100;
                 }
 
             }
-
+            $step = "STEP 2 - Validar inventario";
             // 2. validar inventario
-            $validated = $this->stockDiscountService->validateStock($calculated);
+            $validated = $this->stockDiscountService->validateStock(["items" => $calculated, "allowValidateStock" => $allowValidateStock]);
             $headerGet = $payload["header"];
             $invoice_sale_id = -1;
             $isTypeInvoice = $headerGet["typeSave"] == "SAVE";
@@ -455,31 +478,38 @@ class ProductController extends PointSalesBaseController
             $debt = $isTypeInvoice ? 0 : 1;
             $userId = $headerGet["userId"];
             $business_id = $headerGet["business_id"];
+            $step = "STEP 3 - Obtener punto de emisión";
             $resultInformation = $this->obtenerPuntoEmisionUsuario($business_id, $userId);
             // Inicializamos variables con valores por defecto por seguridad
             $establishment = "-1";
             $emissionPoint = "-1";
             $invoiceCode = 0;
             $pe_id = -1;
+
             if ($resultInformation['success']) {
                 $puntoData = $resultInformation['data'];
-
                 // Asignamos el establecimiento y punto de emisión desde la base de datos
                 $establishment = $puntoData->establecimiento;
                 $emissionPoint = $puntoData->punto_emision;
-
                 // Calcular el secuencial numérico que le corresponde a esta factura
                 // Si factura_actual es mayor a 0, le sumamos 1, sino empezamos desde factura_inicial + 1
                 $invoiceCode = $puntoData->factura_actual + 1;
                 $pe_id = $puntoData->pe_id;
 
+            } else {
+                $success = false;
+                $message = $resultInformation["message"];
+                $errors = [$resultInformation["message"]];
+                throw new \Exception($message);
             }
+
+
             $header = [// invoice_sale
                 "customer_id" => $headerGet["customer_id"],
                 "invoice_code" => $invoiceCode,
                 "invoice_value" => 0,
                 "discount_value" => 0,
-                "status" => $isTypeInvoice ? "ISSUED" : "PENDING",
+                "status" => $isTypeInvoice ? "PENDING" : "DRAFT",
                 "user_id" => $userId,
                 "observations" => isset($headerGet["observations"]) ? $headerGet["observations"] : "",
                 "value_taxes" => $value_taxes,
@@ -506,7 +536,7 @@ class ProductController extends PointSalesBaseController
                 'rules' => $modelInvoice::getRulesModel(),
             );
             $validateInvoice = $modelInvoice->validateModel($paramsValidate);
-
+            $step = "STEP 4 - Validar Factura";
             if ($validateInvoice['success']) {
                 $success = true;
                 $message = "";
@@ -528,9 +558,8 @@ class ProductController extends PointSalesBaseController
                     'rules' => $modelInvoiceByBusiness::getRulesModel(),
                 );
                 $validateInvoiceByBusiness = $modelInvoiceByBusiness->validateModel($paramsValidate);
+
                 $payment_method_id = -1;
-
-
                 if ($validateInvoiceByBusiness['success']) {
                     $modelInvoiceByBusiness->fill($business_by_invoice_sale);
                     $modelInvoiceByBusiness->save();
@@ -554,12 +583,10 @@ class ProductController extends PointSalesBaseController
                         $reference = 'DE UNA REFERENCIA ';
                         $extra_data = '{"type":"NONE-ID-BANCO"}';
                     }
-
-
                     $modelInvoiceByPayment = new InvoiceSalePayment();
                     $invoiceByPayment = [
                         'invoice_sale_id' => $invoice_sale_id,
-                        'payment_method_id' => $payment_method_id,
+                        'type_payment_id' => $payment_method_id,
                         'amount' => $total,
                         'provider' => $provider,
                         'reference' => $reference,
@@ -618,17 +645,14 @@ class ProductController extends PointSalesBaseController
                     $success = true;
                     $detailsSales = [];
                     $inventoryDataOutput = [];
+
                     foreach ($validated as $itemValidate) {
                         $dataItem = $itemValidate["data"];
                         $typeProduct = $dataItem["type"];
-
-
                         $inventoryDataOutput = array_merge($inventoryDataOutput, $dataItem["inventory_movements"]);
                         if ($typeProduct == "MIXED") {
                             $dataRecipe = $dataItem["dataRecipe"];
-                            foreach ($dataRecipe as $itemRecipe) {
 
-                            }
                         } else {
 
                         }
@@ -674,25 +698,35 @@ class ProductController extends PointSalesBaseController
                         }
                         array_push($detailsSales, $setPushItem);
                     }
+                    $validateStock = $allowValidateStock;
 
                     foreach ($inventoryDataOutput as $itemInventoryMovement) {
                         $modelInventoryMovement = new InventoryMovement();
                         $setPushCurrent = $itemInventoryMovement;
                         $setPushCurrent['reference_id'] = $invoice_sale_id;
-
                         $paramsValidate = array(
                             'modelAttributes' => $setPushCurrent,
                             'rules' => $modelInventoryMovement::getRulesModel(),
                         );
 
                         $validateInventoryMovement = $modelInventoryMovement->validateModel($paramsValidate);
-
                         if ($validateInventoryMovement['success']) {
                             $message = "Producto Movimiento Guardado";
                             $success = true;
                             $modelInventoryMovement->fill($setPushCurrent);
                             $modelInventoryMovement->save();
-
+                            if (!$validateStock) {
+                                $product_id = $modelInventoryMovement->product_id;
+                                $modelPStock = ProductStock::where([
+                                    'product_id' => $product_id
+                                ])->first();
+                                if ($modelPStock) {
+                                    $quantityCurrent = $modelPStock->quantity - $modelInventoryMovement->quantity_input;
+                                    $modelPStock->quantity = $quantityCurrent;
+                                    $modelPStock->quantity_base = $quantityCurrent;
+                                    $modelPStock->save();
+                                }
+                            }
 
                         } else {
                             $message = "No se pudo realizar el guardado del Producto Movimiento!";
@@ -716,7 +750,6 @@ class ProductController extends PointSalesBaseController
                 $success = false;
                 $message = "No se pudo realizar el guardado de Factura.!";
                 $errors = $validateInvoice["errors"];
-
                 throw new \Exception($message);
 
             }
@@ -738,7 +771,8 @@ class ProductController extends PointSalesBaseController
                     "detailsSales" => $detailsSales,
                     "business_by_invoice_sale" => $business_by_invoice_sale,
                     "invoice" => $attributesSetInvoice,
-                    "inventoryDataOutput" => $inventoryDataOutput
+                    "inventoryDataOutput" => $inventoryDataOutput,
+
 
                 ],
                 "errors" => []
@@ -1104,69 +1138,75 @@ class ProductController extends PointSalesBaseController
                 return [];
         }
     }
+
     public function setProductTypeSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
         $payload = json_decode($request->input('payload'), true);
-        $sendData=$payload;
-        if(isset($params['image'])){
-            $sendData['image']=$params['image'];
+        $sendData = $payload;
+        if (isset($params['image'])) {
+            $sendData['image'] = $params['image'];
         }
         $data = $this->service->setProductTypeSave($sendData);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setCategoryByBusinessSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
         $payload = json_decode($request->input('payload'), true);
-        $sendData=$payload;
-        if(isset($params['image'])){
-            $sendData['image']=$params['image'];
+        $sendData = $payload;
+        if (isset($params['image'])) {
+            $sendData['image'] = $params['image'];
         }
 
         $data = $this->service->setCategoryByBusinessSave($sendData);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setCategoryByBusinessUpdate(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
         $payload = json_decode($request->input('payload'), true);
-        $sendData=$payload;
-        if(isset($params['image'])){
-            $sendData['image']=$params['image'];
+        $sendData = $payload;
+        if (isset($params['image'])) {
+            $sendData['image'] = $params['image'];
         }
 
         $data = $this->service->setCategoryByBusinessUpdate($sendData);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setSubCategoryByBusinessSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
         $payload = json_decode($request->input('payload'), true);
-        $sendData=$payload;
-        if(isset($params['image'])){
-            $sendData['image']=$params['image'];
+        $sendData = $payload;
+        if (isset($params['image'])) {
+            $sendData['image'] = $params['image'];
         }
 
         $data = $this->service->setSubCategoryByBusinessSave($sendData);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setSubCategoryByBusinessUpdate(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
         $payload = json_decode($request->input('payload'), true);
-        $sendData=$payload;
-        if(isset($params['image'])){
-            $sendData['image']=$params['image'];
+        $sendData = $payload;
+        if (isset($params['image'])) {
+            $sendData['image'] = $params['image'];
         }
         $data = $this->service->setSubCategoryByBusinessUpdate($sendData);
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setProductTypeUpdate(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = json_decode($request->input('payload'), true) ?? [];
@@ -1177,6 +1217,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setProductItemRecipeSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();

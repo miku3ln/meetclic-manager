@@ -77,34 +77,40 @@ class ProductRepository
     }
     public function getRecipe($productId)
     {
+
         return DB::table('product_recipe as pr')
 
-            ->join('product as p', 'p.id', '=', 'pr.component_product_id')
-
+            ->join('product as p', 'p.id', '=', 'pr.product_id')
             ->leftJoin('product_measure_type as pmt', 'pmt.id', '=', 'p.product_measure_type_id')
-
             ->leftJoin('unit_measure as um_base', function ($join) {
                 $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('um_base.is_base', 1);
             })
-
             ->leftJoin('product_stock as ps', 'ps.product_id', '=', 'p.id')
-
-            ->where('pr.product_id', $productId)
-
+            ->where('pr.component_product_id', $productId)
             ->select([
                 'pr.id',
                 'pr.product_id',
 
-                'pr.product_id as parent_product_id',
-                'pr.component_product_id',
+                'pr.component_product_id as parent_product_id',
+                'pr.product_id',
                 'p.name',
-
+                'p.inventory_type',
                 'p.name as component_name',
-                'p.product_type as component_type',
+                'p.inventory_type as component_name',
+                'p.inventory_type as component_name',
 
-                'pr.quantity as recipe_quantity',
-                'pr.quantity',
+                'p.product_type as component_type',
+                'p.product_measure_type_id',
+                'pr.quantity_input as quantity',
+                'pr.quantity_base as recipe_quantity',
+
+                'pr.quantity_base',
+                'pr.quantity_input',
+                'pr.unit_input_id',
+                'pr.base_unit_measure_id',
+
+
 
                 'um_base.symbol as base_unit',
 

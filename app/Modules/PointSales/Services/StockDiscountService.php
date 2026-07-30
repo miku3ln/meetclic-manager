@@ -21,17 +21,25 @@ class StockDiscountService
             $product = $this->repo->getProductById($item['id']);
             if (!$product) continue;
             $amount = (float)$item['amount'];
-            switch ($product->product_type) {
-                case 'MIXED':
+            $setPush = $item;
+            $setPush["inventory_type"] = $product->inventory_type;
+            switch ($product->inventory_type) {
+                case 'FOR_SALE'://MENU
+                case 'PROCESSED':
                     $dataRecipe = $this->handleMixed($product->id, $amount);
-                    $setPush = $item;
                     $setPush["isRecipe"] = true;
                     $setPush["dataRecipe"] = $dataRecipe;
+                    if ($product->inventory_type == "FOR_SALE") {
+                        $measure_base = $this->repo->getProductWithStock($item['id']);
+                        $setPush["measure_base"] = $measure_base;
+                    } else {
+                        $measure_base = $this->repo->getProductWithStock($item['id']);
+                        $setPush["measure_base"] = $measure_base;
+                    }
                     $response[] = $setPush;
                     break;
-                case 'MEASURABLE':
+                case 'RAW':
                 case 'UNIT':
-                    $setPush = $item;
                     $measure_base = $this->repo->getProductWithStock($item['id']);
                     $setPush["measure_base"] = $measure_base;
                     $setPush["isRecipe"] = false;
@@ -72,43 +80,60 @@ class StockDiscountService
         }
 
         $response = [];
-
+        $UNIT_MEASURE_ID = 5;//UNIT
+        $PRODUCT_MEASURE_TYPE_UNIT = 35;
         foreach ($recipe as $component) {
-            $measure_base = $this->repo->getProductWithStock($component->component_product_id);
+
+            $measure_base = $this->repo->getProductWithStock($component->product_id);
+            $base_unit_measure_id = $component->base_unit_measure_id;
+            $total_amount = 0;
+            $recipe_quantity = 0;
+            if ($UNIT_MEASURE_ID == $component->base_unit_measure_id && $PRODUCT_MEASURE_TYPE_UNIT == $component->unit_input_id) {
+                $total_amount = ($amount * $component->quantity);
+                $recipe_quantity = $component->quantity_input;
+            } else {
+                $total_amount = ($amount * $component->recipe_quantity);
+                $recipe_quantity = $component->recipe_quantity;
+            }
+
             $response[] = [
-                'id' => $component->component_product_id,
+                'id' => $component->product_id,
                 'name' => $component->name,
                 'type' => $component->component_type,
                 'discount_quantity' => $amount,
-                'recipe_quantity' => $component->recipe_quantity,
-                'total_amount' => ($amount * $component->recipe_quantity),
-                'measure_base' => $measure_base
-
+                'recipe_quantity' => $recipe_quantity,
+                'total_amount' => $total_amount,
+                'measure_base' => $measure_base,
+                'quantity_component' => $component->quantity,
+                'component_quantity_input' => $component->quantity,
+                'component_recipe_quantity' => $component->recipe_quantity,
             ];
+
+
         }
 
         return $response;
     }
 
-    private function buildMovement($productId, $amount, $measure_base)
+    private function buildMovement($productId, $amount, $measure_base, $allowValidateStock)
     {
         $stock = $this->repo->getStock($productId);
-
-        if ($amount > $stock["value"]) {
-            $faltante = $amount - $stock["value"];
-            return [
-                "success" => false,
-                "message" => "Stock insuficiente",
-                "error" => [
-                    "requested" => $amount,
-                    "available" => $stock["value"],
-                    "missing" => $faltante,
-                    "unit" => $stock["unit"],
-                    "type" => $stock["type"]
-                ]
-            ];
+        if ($allowValidateStock) {
+            if ($amount > $stock["value"]) {
+                $faltante = $amount - $stock["value"];
+                return [
+                    "success" => false,
+                    "message" => "Stock insuficiente",
+                    "error" => [
+                        "requested" => $amount,
+                        "available" => $stock["value"],
+                        "missing" => $faltante,
+                        "unit" => $stock["unit"],
+                        "type" => $stock["type"]
+                    ]
+                ];
+            }
         }
-
         $movement = [
             "product_id" => $productId,
             "movement_type" => "OUT",
@@ -125,10 +150,8 @@ class StockDiscountService
                 $movement["unit_input_id"] = $stock["unit_id"];
                 $movement["conversion_factor"] = 1;
                 break;
-
             case "MEASURABLE":
             case "MIXED":
-
                 $conversionFactor =
                     $measure_base->quantity > 0
                         ? ($measure_base->quantity_base / $measure_base->quantity)
@@ -152,18 +175,21 @@ class StockDiscountService
         ];
     }
 
-    public function validateStock($items)
+    public function validateStock($params)
     {
+        $items = $params['items'];
+        $allowValidateStock = $params['allowValidateStock'];
+
+
         $result = [];
         foreach ($items as $item) {
             $setPush = [
                 "success" => false,
                 "message" => "",
                 "data" => [],
-                "errors"=>[]
+                "errors" => []
             ];
             if ($item["isRecipe"]) {
-
                 $inventory_movements = [];
                 $countFails = 0;
                 $message = "Algun Ingrediente no tiene Valores disponibles";
@@ -172,19 +198,34 @@ class StockDiscountService
                     $response = $this->buildMovement(
                         $recipeRow["id"],
                         $recipeRow["total_amount"],
-                        $recipeRow["measure_base"]
+                        $recipeRow["measure_base"], $allowValidateStock
                     );
-                    if (!$response["success"]) {
-                        $countFails++;
-                        array_push($errorsItems,$recipeRow);
+                    if ($allowValidateStock) {
+                        if (!$response["success"]) {
+                            $countFails++;
+                            array_push($errorsItems, $recipeRow);
+                        } else {
+                            array_push($inventory_movements, $response["data"]);
+                        }
+                    } else {
+                        array_push($inventory_movements, $response["data"]);
+
                     }
-                    array_push($inventory_movements, $response["data"]);
+                }
+                if ($item["inventory_type"] == 'FOR_SALE' || $item["inventory_type"] == 'PROCESSED') {
+                    if (isset($item["measure_base"])) {
+                        $responseMovement = $this->buildMovement(
+                            $item["id"],
+                            $item["amount"],
+                            $item["measure_base"], $allowValidateStock
+                        );
+                        array_push($inventory_movements, $responseMovement["data"]);
+                    }
 
                 }
-
                 $item["inventory_movements"] = $inventory_movements;
                 $setPush["success"] = $countFails == 0;
-                $setPush["message"] =$countFails == 0? "Todo Ok":$message;
+                $setPush["message"] = $countFails == 0 ? "Todo Ok" : $message;
                 $setPush["errors"] = $errorsItems;
                 $setPush["data"] = $item;
 
@@ -192,11 +233,10 @@ class StockDiscountService
                 $response = $this->buildMovement(
                     $item["id"],
                     $item["amount"],
-                    $item["measure_base"]
+                    $item["measure_base"], $allowValidateStock
                 );
                 $setPush["success"] = $response["success"];
                 $setPush["message"] = $response["message"];
-
                 $item["inventory_movements"] = [$response["data"]];
             }
             $setPush["data"] = $item;

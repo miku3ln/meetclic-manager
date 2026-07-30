@@ -1387,7 +1387,7 @@ class Business extends ModelManager
                 [
                     "code" => "products",
                     "name" => "Productos",
-                    "enabled" => false,
+                    "enabled" => true,
                     "requires_ai" => false,
                     "priority" => 5
                 ],
@@ -1513,7 +1513,7 @@ class Business extends ModelManager
                     "description" => "Consultar catálogo.",
                     "icon" => "shopping_bag",
                     "order" => 4,
-                    "enabled" => false,
+                    "enabled" => true,
                     "workflow" => "products"
                 ],
 
