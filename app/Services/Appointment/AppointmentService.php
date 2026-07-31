@@ -980,10 +980,7 @@ public  function getAppointmentSettings($businessId){
 
     public function getAvailableSlots($businessId, $date)
     {
-        $availability = $this->getAvailabilityByDate(
-            $businessId,
-            $date
-        );
+        $availability = $this->getAvailabilityByDate($businessId, $date);
 
         $result = [
             "business_id" => $businessId,
@@ -997,14 +994,22 @@ public  function getAppointmentSettings($businessId){
 
             foreach ($block["sub_blocks"] as $slot) {
 
-                // Solo horarios con disponibilidad
-                if ($slot["remaining"] <= 0) {
+                $check = $this->checkAvailability(
+                    $businessId,
+                    $date,
+                    $slot["start_time"]
+                );
+
+                if (!$check["available"]) {
                     continue;
                 }
 
                 $item = [
-                    "time" => $slot["start_time"],
-                    "remaining" => $slot["remaining"]
+                    "time"      => $slot["start_time"],
+                    "remaining" => $check["remaining"],
+                    "capacity"  => $check["capacity"],
+                    "occupied"  => $check["occupied"],
+
                 ];
 
                 switch ($block["period"]) {
