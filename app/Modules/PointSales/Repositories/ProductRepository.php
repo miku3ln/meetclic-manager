@@ -7,8 +7,23 @@ class ProductRepository
 {
     public function getProductById($id)
     {
-        return DB::table('product')
-            ->where('id', $id)
+
+
+
+        return DB::table('product as p')
+            ->leftJoin('product_measure_type as pmt', 'pmt.id', '=', 'p.product_measure_type_id')
+            ->where('p.id', $id)
+            ->select([
+                'p.id',
+                'p.code',
+                'p.name',
+                'p.product_type',
+                'p.inventory_type',
+                'p.description',
+                'p.product_measure_type_id',
+                'pmt.value as product_measure_type_value',
+
+            ])
             ->first();
     }
     public function getProductWithStock($id)
@@ -86,7 +101,11 @@ class ProductRepository
                 $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('um_base.is_base', 1);
             })
+
             ->leftJoin('product_stock as ps', 'ps.product_id', '=', 'p.id')
+            ->leftJoin('unit_measure as um_base_input', function ($join) {
+                $join->on('um_base_input.id', '=', 'pr.unit_input_id');
+            })
             ->where('pr.component_product_id', $productId)
             ->select([
                 'pr.id',
@@ -109,6 +128,21 @@ class ProductRepository
                 'pr.quantity_input',
                 'pr.unit_input_id',
                 'pr.base_unit_measure_id',
+                'pmt.value as product_measure_type_name',
+                'pr.quantity_input as um_base_input_quantity_input',
+
+                'um_base.id as um_base_id',
+                'um_base.name as um_base_name',
+                'um_base.factor_to_base as um_base_factor_to_base',
+                'um_base.symbol as um_base_symbol',
+                'pr.quantity_base as um_base_quantity',
+
+
+                'um_base_input.id as um_base_input_id',
+                'um_base_input.name as um_base_input_name',
+                'um_base_input.factor_to_base as um_base_input_factor_to_base',
+                'um_base_input.symbol as um_base_input_symbol',
+                'pr.quantity_input as um_base_input_quantity',
 
 
 

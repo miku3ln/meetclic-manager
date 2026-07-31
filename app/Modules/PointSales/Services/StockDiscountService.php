@@ -3,13 +3,17 @@
 namespace App\Modules\PointSales\Services;
 
 use App\Modules\PointSales\Repositories\ProductRepository;
+use App\Services\Inventory\MeasureResolverService;
 
 class StockDiscountService
 {
     protected $repo;
+    private MeasureResolverService $measureResolverService;
 
-    public function __construct(ProductRepository $repo)
+    public function __construct(ProductRepository $repo, MeasureResolverService $measureResolverService)
     {
+        $this->measureResolverService =
+            $measureResolverService;
         $this->repo = $repo;
     }
 
@@ -17,8 +21,12 @@ class StockDiscountService
     {
         $response = [];
         $items = $params["items"];
+
+
         foreach ($items as $item) {
             $product = $this->repo->getProductById($item['id']);
+
+
             if (!$product) continue;
             $amount = (float)$item['amount'];
             $setPush = $item;
@@ -84,16 +92,21 @@ class StockDiscountService
         $PRODUCT_MEASURE_TYPE_UNIT = 35;
         foreach ($recipe as $component) {
 
+            $measureType = $component->product_measure_type_name;
+
+
             $measure_base = $this->repo->getProductWithStock($component->product_id);
             $base_unit_measure_id = $component->base_unit_measure_id;
             $total_amount = 0;
             $recipe_quantity = 0;
-            if ($UNIT_MEASURE_ID == $component->base_unit_measure_id && $PRODUCT_MEASURE_TYPE_UNIT == $component->unit_input_id) {
+            if ($PRODUCT_MEASURE_TYPE_UNIT == $component->product_measure_type_id) {
                 $total_amount = ($amount * $component->quantity);
                 $recipe_quantity = $component->quantity_input;
             } else {
-                $total_amount = ($amount * $component->recipe_quantity);
-                $recipe_quantity = $component->recipe_quantity;
+                $quantityInput = $component->um_base_input_quantity_input * $amount;
+                $quantityInput = number_format((float)$quantityInput, 4, '.', '');
+                $total_amount = $quantityInput;
+                $recipe_quantity = $total_amount;
             }
 
             $response[] = [
@@ -107,6 +120,20 @@ class StockDiscountService
                 'quantity_component' => $component->quantity,
                 'component_quantity_input' => $component->quantity,
                 'component_recipe_quantity' => $component->recipe_quantity,
+                "conversion" => [
+                    "um_base_id" => $component->um_base_id,
+                    "um_base_name" => $component->um_base_name,
+                    "um_base_factor_to_base" => $component->um_base_factor_to_base,
+                    "um_base_symbol" => $component->um_base_symbol,
+                    "um_base_quantity" => $component->um_base_quantity,
+                    "um_base_input_id" => $component->um_base_input_id,
+                    "um_base_input_name" => $component->um_base_input_name,
+                    "um_base_input_factor_to_base" => $component->um_base_input_factor_to_base,
+                    "um_base_input_symbol" => $component->um_base_input_symbol,
+                    "um_base_input_quantity" => $component->um_base_input_quantity,
+                ]
+
+
             ];
 
 
@@ -115,7 +142,7 @@ class StockDiscountService
         return $response;
     }
 
-    private function buildMovement($productId, $amount, $measure_base, $allowValidateStock)
+    private function buildMovement($productId, $amount, $measure_base, $allowValidateStock, $conversion)
     {
         $stock = $this->repo->getStock($productId);
         if ($allowValidateStock) {
@@ -144,6 +171,7 @@ class StockDiscountService
 
         switch ($stock["type"]) {
             case "UNIT":
+
                 $movement["quantity"] = $amount;
                 $movement["unit_measure_id"] = $stock["unit_id"];
                 $movement["quantity_input"] = $amount;
@@ -152,18 +180,12 @@ class StockDiscountService
                 break;
             case "MEASURABLE":
             case "MIXED":
-                $conversionFactor =
-                    $measure_base->quantity > 0
-                        ? ($measure_base->quantity_base / $measure_base->quantity)
-                        : 1;
-
-                $movement["quantity"] = $amount * $conversionFactor;
-                $movement["unit_measure_id"] = $stock["unit_id"];
-
-                $movement["quantity_input"] = $amount;
-                $movement["unit_input_id"] = $measure_base->stock_unit_id;
-
-                $movement["conversion_factor"] = $conversionFactor;
+                $quantityInput = number_format((float)$amount * $conversion["um_base_input_factor_to_base"], 3, '.', '');
+                $movement["quantity"] =  $amount;
+                $movement["unit_measure_id"] =  $conversion["um_base_input_id"];
+                $movement["quantity_input"] =$quantityInput;
+                $movement["unit_input_id"] =$stock["unit_id"];
+                $movement["conversion_factor"] = $conversion["um_base_input_factor_to_base"];
 
                 break;
         }
@@ -195,10 +217,12 @@ class StockDiscountService
                 $message = "Algun Ingrediente no tiene Valores disponibles";
                 $errorsItems = [];
                 foreach ($item["dataRecipe"] as $recipeRow) {
+                    $conversion = $recipeRow["conversion"];
                     $response = $this->buildMovement(
                         $recipeRow["id"],
                         $recipeRow["total_amount"],
-                        $recipeRow["measure_base"], $allowValidateStock
+                        $recipeRow["measure_base"], $allowValidateStock,
+                        $conversion
                     );
                     if ($allowValidateStock) {
                         if (!$response["success"]) {
@@ -217,7 +241,8 @@ class StockDiscountService
                         $responseMovement = $this->buildMovement(
                             $item["id"],
                             $item["amount"],
-                            $item["measure_base"], $allowValidateStock
+                            $item["measure_base"], $allowValidateStock,
+                            $conversion
                         );
                         array_push($inventory_movements, $responseMovement["data"]);
                     }
@@ -233,7 +258,8 @@ class StockDiscountService
                 $response = $this->buildMovement(
                     $item["id"],
                     $item["amount"],
-                    $item["measure_base"], $allowValidateStock
+                    $item["measure_base"], $allowValidateStock,
+                    $conversion
                 );
                 $setPush["success"] = $response["success"];
                 $setPush["message"] = $response["message"];
