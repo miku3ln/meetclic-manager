@@ -136,4 +136,8 @@ Route::prefix("v1")
             "Api\AgentController@getBusinessDataAgent"
         );
 
+
+        Route::post('/business-process/check-availability-by-business', 'Api\AgentController@checkAvailabilityByBusiness')->name('check-availability-by-business-api');
+        Route::post('/business-process/check-availability-by-date', 'Api\AgentController@getAvailableByDate')->name('check-availability-by-date');
+
     });

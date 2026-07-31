@@ -978,6 +978,53 @@ public  function getAppointmentSettings($businessId){
     }
 
 
+    public function getAvailableSlots($businessId, $date)
+    {
+        $availability = $this->getAvailabilityByDate(
+            $businessId,
+            $date
+        );
 
+        $result = [
+            "business_id" => $businessId,
+            "date" => $date,
+            "morning" => [],
+            "afternoon" => [],
+            "night" => []
+        ];
+
+        foreach ($availability["blocks"] as $block) {
+
+            foreach ($block["sub_blocks"] as $slot) {
+
+                // Solo horarios con disponibilidad
+                if ($slot["remaining"] <= 0) {
+                    continue;
+                }
+
+                $item = [
+                    "time" => $slot["start_time"],
+                    "remaining" => $slot["remaining"]
+                ];
+
+                switch ($block["period"]) {
+
+                    case "MORNING":
+                        $result["morning"][] = $item;
+                        break;
+
+                    case "AFTERNOON":
+                        $result["afternoon"][] = $item;
+                        break;
+
+                    default:
+                        $result["night"][] = $item;
+                        break;
+                }
+            }
+        }
+
+        return $result;
+    }
 
 }
