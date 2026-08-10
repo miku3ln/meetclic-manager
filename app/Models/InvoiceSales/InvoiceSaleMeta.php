@@ -34,7 +34,7 @@ class InvoiceSaleMeta extends ModelManager
         return [
             "invoice_sale_id" => "required|numeric",
             "ticket_code" => "required|max:50",
-            "service_type" => "required|in:DINE_IN,TAKEAWAY"
+            "service_type" => "required|in:DINE_IN,TAKEAWAY,DELIVERY"
         ];
     }
 

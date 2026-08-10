@@ -17,9 +17,9 @@ class PosPaymentMethod extends ModelManager
 
     // 🔥 OPCIONAL: IDS FIJOS (solo si estás 100% seguro que no cambiarán)
     const ID_CASH     = 1;
-    const ID_TRANSFER = 2;
-    const ID_CARD     = 3;
-    const ID_DEPOSIT  = 4;
+    const ID_TRANSFER = 4;
+    const ID_CARD     = 2;
+    const ID_DEPOSIT  = 13;
 
     protected $fillable = [
         'code',

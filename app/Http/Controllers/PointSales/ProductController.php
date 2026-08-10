@@ -470,10 +470,17 @@ class ProductController extends PointSalesBaseController
             $headerGet = $payload["header"];
             $invoice_sale_id = -1;
             $isTypeInvoice = $headerGet["typeSave"] == "SAVE";
-            $ticket_code = $isTypeInvoice ? 'TICKET-' : ($headerGet["ticketCode"] ?? 'TICKET-NONE');
+
 
             $typeService = $headerGet['typeService'];
-            $service_type = $typeService == 'service' ? 'DINE_IN' : 'TAKEAWAY';
+            $service_type = "";
+            if ($typeService == 'llevar') {
+                $service_type = "TAKEAWAY";
+            } else if ($typeService == 'servirse') {
+                $service_type = "DINE_IN";
+            } else if ($typeService == 'domicilio') {
+                $service_type = "DELIVERY";
+            }
             $voucher_type_id = $isTypeInvoice ? 1 : 2;
             $debt = $isTypeInvoice ? 0 : 1;
             $userId = $headerGet["userId"];
@@ -545,7 +552,7 @@ class ProductController extends PointSalesBaseController
                 $invoice_sale_id = $modelInvoice->id;
                 $attributesSetInvoice["id"] = $invoice_sale_id;
 
-
+                $ticket_code =  'TICKET-'. ($invoice_sale_id);
                 //business_by_invoice_sale
                 $business_by_invoice_sale = [
                     "entidad_data_id" => $business_id,
@@ -634,7 +641,7 @@ class ProductController extends PointSalesBaseController
                         $modelInvoiceByMeta->fill($invoiceByMeta);
                         $modelInvoiceByMeta->save();
                     } else {
-                        $message = "No se pudo realizar el guardado de Factura by Payments!";
+                        $message = "No se pudo realizar el guardado de Factura by Meta!";
                         $success = false;
                         $errors = $validateInvoiceByMeta["errors"];
                         throw new \Exception($message);

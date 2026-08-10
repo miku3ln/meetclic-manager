@@ -145,6 +145,7 @@ class StockDiscountService
     private function buildMovement($productId, $amount, $measure_base, $allowValidateStock, $conversion)
     {
         $stock = $this->repo->getStock($productId);
+
         if ($allowValidateStock) {
             if ($amount > $stock["value"]) {
                 $faltante = $amount - $stock["value"];
@@ -181,10 +182,10 @@ class StockDiscountService
             case "MEASURABLE":
             case "MIXED":
                 $quantityInput = number_format((float)$amount * $conversion["um_base_input_factor_to_base"], 3, '.', '');
-                $movement["quantity"] =  $amount;
-                $movement["unit_measure_id"] =  $conversion["um_base_input_id"];
-                $movement["quantity_input"] =$quantityInput;
-                $movement["unit_input_id"] =$stock["unit_id"];
+                $movement["quantity"] = $amount;
+                $movement["unit_measure_id"] = $conversion["um_base_input_id"];
+                $movement["quantity_input"] = $quantityInput;
+                $movement["unit_input_id"] = $stock["unit_id"];
                 $movement["conversion_factor"] = $conversion["um_base_input_factor_to_base"];
 
                 break;
@@ -204,6 +205,7 @@ class StockDiscountService
 
 
         $result = [];
+
         foreach ($items as $item) {
             $setPush = [
                 "success" => false,
@@ -211,11 +213,13 @@ class StockDiscountService
                 "data" => [],
                 "errors" => []
             ];
+
             if ($item["isRecipe"]) {
                 $inventory_movements = [];
                 $countFails = 0;
                 $message = "Algun Ingrediente no tiene Valores disponibles";
                 $errorsItems = [];
+
                 foreach ($item["dataRecipe"] as $recipeRow) {
                     $conversion = $recipeRow["conversion"];
                     $response = $this->buildMovement(
@@ -255,12 +259,14 @@ class StockDiscountService
                 $setPush["data"] = $item;
 
             } else {
+
                 $response = $this->buildMovement(
                     $item["id"],
                     $item["amount"],
                     $item["measure_base"], $allowValidateStock,
-                    $conversion
+[]
                 );
+
                 $setPush["success"] = $response["success"];
                 $setPush["message"] = $response["message"];
                 $item["inventory_movements"] = [$response["data"]];
