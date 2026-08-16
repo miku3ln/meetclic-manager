@@ -2,10 +2,7 @@ var currentDataLatLng;
 var default_latitude = 0.3444677;
 var default_longitude = -78.1222843;
 var dataLayer = [];
-
 function initMyMap() {
-
-
     var map = new google.maps.Map(document.getElementById('my_map_location'), {
         center: {lat: parseFloat(default_latitude), lng: parseFloat(default_longitude)},
         zoom: 16,
@@ -14,13 +11,11 @@ function initMyMap() {
         mapTypeControl: false,
         // scaleControl: false,
     });
-
     var marker = new google.maps.Marker({
         position: {lat: parseFloat(default_latitude), lng: parseFloat(default_longitude)},
         map: map,
         draggable: true
     });
-
     // Create the search box and link it to the UI element.
     $("#content-search-google-maps").hide();
     var input = document.getElementById('input_address');
@@ -28,7 +23,6 @@ function initMyMap() {
 
     initEventsMap(map, searchBox);
     initEventsMarker(marker, map);
-
     var markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
@@ -175,11 +169,6 @@ function setValuesFrm(lat, lng) {
     $("#business_street_lng").val(lng);
 
 }
-
-
-/*
--------------INIT--------*/
-
 function WulpyMapUtilBusinessManager(params) {
 
     var mapCurrent;
@@ -271,59 +260,7 @@ function WulpyMapUtilBusinessManager(params) {
         var content = params.content;
         markers.push(markerOptions); // add marker to array
         markerOptions.setMap(map);
-
-
-//        mcOptions = {styles: [{
-//                    height: 53,
-//                    url: themeUrl + "plugins/google-maps/images/m1.png",
-//                    width: 53
-//                },
-//                {
-//                    height: 56,
-//                    url: themeUrl + "plugins/google-maps/images/m2.png",
-//                    width: 56
-//                },
-//                {
-//                    height: 66,
-//                    url: themeUrl + "plugins/google-maps/images/m3.png",
-//                    width: 66
-//                },
-//                {
-//                    height: 78,
-//                    url: themeUrl + "plugins/google-maps/images/m4.png",
-//                    width: 78
-//                },
-//                {
-//                    height: 90,
-//                    url: themeUrl + "plugins/google-maps/m5.png",
-//                    width: 90
-//                }]}
-////        var markerCluster = new MarkerClusterer(map, markerOptions, mcOptions);
-
     }
-
-    function eventsMarker(marker_data) {
-
-        // Add dragging event listeners.
-        google.maps.event.addListener(marker_data, 'dragstart', function () {
-            console.log("dragstart");
-//            updateMarkerAddress('Dragging...');
-
-        });
-
-        google.maps.event.addListener(marker_data, 'drag', function () {
-//            updateMarkerStatus('Dragging...');
-            console.log("drag");
-            /!*$scope.updateMarkerPosition(marker_data.getPosition());*!/
-        });
-
-        google.maps.event.addListener(marker_data, 'dragend', function () {
-            /!*   updateMarkerStatus('Drag ended');*!/
-//        geocodePosition(marker.getPosition());
-//        map.panTo(marker.getPosition());
-        });
-    }
-
     function getMessage(data) {
         var html_data = "";
         var key_id = data.id;
@@ -365,9 +302,9 @@ function WulpyMapUtilBusinessManager(params) {
         html_data += "</td>";
         html_data += "</tr>";
 
-        html_data += "</tbody>"
-        html_data += "</table>"
-        html_data += "</div>"
+        html_data += "</tbody>";
+        html_data += "</table>";
+        html_data += "</div>";
 
 
         html_data += "</div >";
@@ -378,161 +315,6 @@ function WulpyMapUtilBusinessManager(params) {
 
 }
 
-/*
-if (false) {
-
-
-    var database = firebase.database();
-    var refCurrent = "business";
-    var db = firebase.database();
-    var firebaseOrdersCollection = database.ref().child(refCurrent);
-
-
-,
-    initEventsFBCurrent: function () {
-        orderByChild = "wulpyme_user_id";
-        searchTerm = $wulpyme_user_id;
-        var _this = this;
-
-        database.ref(refCurrent).orderByChild(orderByChild).equalTo(searchTerm).on('child_changed', function (snap) {
-            //update_data_table(data.val().username, data.val().profile_picture, data.val().email, data.key)
-            console.log("child_changed");
-
-            _this.modelBusiness = snap.val();
-            _this.modelBusiness["keyRef"] = snap.key;
-            console.log(_this.modelBusiness["keyRef"]);
-
-        });
-        database.ref(refCurrent).orderByChild(orderByChild).equalTo(searchTerm).on('child_removed', function (data) {
-            //remove_data_table(data.key)
-        });
-        database.ref(refCurrent).orderByChild(orderByChild).equalTo(searchTerm).on("value", function (snaps) {
-            console.log("initial data loaded!", snaps.numChildren());
-            if (snaps.numChildren()) {
-                var valuesCurrent = [];
-                valuesCurrent = snaps.val();
-
-                $.each(valuesCurrent, function (index, snap) {
-                    valuesCurrent = snap;
-                    if (_this.initDataRows.count) {
-                        _this.modelBusiness = valuesCurrent;
-                    } else {
-
-                        valuesCurrent["index"] = index;
-                        _this.setConfiguration(valuesCurrent, false);
-                    }
-
-                });
-
-                /!* _this.setConfiguration(snap.value(), true);*!/
-
-            } else {
-                _this.setConfiguration(null, true);
-
-            }
-
-
-        });
-    }
-,
-    getRefSearch: function (params) {
-        var type = params.type;
-        var searchTerm = params.search;
-        var initData = params.init;
-
-        var searchKey = params.searchKey;
-        var equals = params.equals;
-        var ref;
-        var orderByChild = searchKey;
-        if (initData) {
-            if (equals) {
-                ref = database.ref(refCurrent).orderByChild(orderByChild).equalTo(searchTerm);
-            } else {
-
-                ref = database.ref(refCurrent).orderByChild(orderByChild)
-                    .startAt(searchTerm)
-                    .endAt(searchTerm + '~');
-            }
-
-        } else {
-            ref = database.orderByChild(searchKey);
-        }
-        return ref;
-    }
-,
-    searchData: function () {
-        var ref = this.getRefSearch({init: true, searchKey: "title"});
-        ref.once('value', this.showResults, errors);
-    }
-     ,
-            showResults: function (snap, many = false) {
-                var _this = this;
-                if (many) {
-                    this.initDataRows.count = snap.numChildren();
-
-                    var name = snap.key;
-                } else {
-                    var valuesCurrent = snap.val();
-                    if (valuesCurrent) {
-                        valuesCurrent["index"] = snap.key;
-                        this.setConfiguration(valuesCurrent, false);
-                    } else {
-                        this.setConfiguration(null, true);
-
-                    }
-                }
-
-
-            }
-            ,
-            removeBusiness(row) {
-                console.log(row);
-            }
-            ,  getDataRows: function () {
-                var promiseResult = new Promise((resolve, reject) => {
-                    database.ref(refCurrent).on("value", function (snap) {
-                        console.log("initial data loaded!", snap.numChildren());
-                        resolve(snap);
-                    });
-
-                });
-                return promiseResult;
-            }
-             ,
-            updateDataByParams: function (params) {
-                var ref = params.ref;
-                var updates_set = params.data;
-                var updates = {};
-                updates[ref] = updates_set;
-                ref = database.ref(refCurrent);
-                var promiseResult = new Promise((resolve, reject) => {
-                    ref.update(updates).then(function (snapshot) {
-                        resolve(snapshot);
-                    }).catch(function (error) {
-
-                        reject(error);
-                    });
-
-                });
-                return promiseResult;
-            }
-            ,
-            setDataByParams: function (data) {
-                ref = database.ref(refCurrent);
-                var promiseResult = new Promise((resolve, reject) => {
-                    ref.push(data).then(function (snapshot) {
-                        resolve(snapshot);
-                    }).catch(function (error) {
-
-                        reject(error);
-                    });
-
-                });
-                return promiseResult;
-            }
-
-}
-*/
 var mapOverlays = [];
 
 function UtilBlitzMap(paramsConfig) {
@@ -560,7 +342,443 @@ function UtilBlitzMap(paramsConfig) {
     this.isEditable = isEditable;
     this.map = null;
     var _this = this;
+    var _this = this;
+    var drawingMode = null;
+    var drawingListeners = [];
+    var drawingOverlay = null;
+    this.setDrawingMode = function (mode) {
+        _this.stopDrawing();
 
+        drawingMode = mode;
+
+        switch (mode) {
+
+            case 'marker':
+                _this.startMarkerDrawing();
+                break;
+
+            case 'circle':
+                _this.startCircleDrawing();
+                break;
+
+            case 'rectangle':
+                _this.startRectangleDrawing();
+                break;
+
+            case 'polygon':
+                _this.startPolygonDrawing();
+                break;
+
+            case 'polyline':
+                _this.startPolylineDrawing();
+                break;
+        }
+    };
+    this.stopDrawing = function () {
+
+        drawingListeners.forEach(function (listener) {
+
+            if (listener.remove) {
+                listener.remove();
+            } else {
+                google.maps.event.removeListener(listener);
+            }
+
+        });
+
+        drawingListeners = [];
+
+        if (drawingOverlay) {
+            drawingOverlay.setMap(null);
+            drawingOverlay = null;
+        }
+
+        drawingMode = null;
+    };
+
+    this.startMarkerDrawing = function () {
+
+        var listener = mapObj.addListener('click', function (event) {
+
+            var overlay = new google.maps.Marker({
+                position: event.latLng,
+                map: mapObj,
+                draggable: true
+            });
+
+            _this.finishDrawingOverlay(
+                overlay,
+                'marker'
+            );
+        });
+
+        drawingListeners.push(listener);
+    };
+    this.startCircleDrawing = function () {
+
+        var center = null;
+
+        var clickListener = mapObj.addListener('click', function (event) {
+
+            if (!center) {
+
+                center = event.latLng;
+
+                drawingOverlay = new google.maps.Circle({
+                    map: mapObj,
+                    center: center,
+                    radius: 1,
+                    editable: true,
+
+                    fillColor: '#000000',
+                    fillOpacity: 0.3,
+
+                    strokeColor: '#000000',
+                    strokeOpacity: 0.9,
+                    strokeWeight: 3
+                });
+            }
+        });
+
+        var mousemoveListener = mapObj.addListener(
+            'mousemove',
+            function (event) {
+
+                if (!center || !drawingOverlay) {
+                    return;
+                }
+
+                var radius =
+                    google.maps.geometry.spherical.computeDistanceBetween(
+                        center,
+                        event.latLng
+                    );
+
+                drawingOverlay.setRadius(radius);
+            }
+        );
+
+        // BOTÓN CENTRAL DEL MOUSE
+        var middleMouseHandler = function (event) {
+
+            // 1 = botón izquierdo
+            // 2 = botón central
+            // 3 = botón derecho
+            if (event.button !== 1) {
+                return;
+            }
+
+            if (!center || !drawingOverlay) {
+                return;
+            }
+
+            event.preventDefault();
+
+            _this.finishDrawingOverlay(
+                drawingOverlay,
+                'circle'
+            );
+        };
+
+        mapDiv.addEventListener(
+            'mousedown',
+            middleMouseHandler
+        );
+
+        // Guardamos también la referencia para poder quitarla
+        drawingListeners.push(clickListener);
+        drawingListeners.push(mousemoveListener);
+
+        drawingListeners.push({
+            remove: function () {
+                mapDiv.removeEventListener(
+                    'mousedown',
+                    middleMouseHandler
+                );
+            }
+        });
+    };
+    this.startRectangleDrawing = function () {
+
+        var start = null;
+
+        // CLICK IZQUIERDO
+        // El primer click fija la esquina inicial.
+        var clickListener = mapObj.addListener(
+            'click',
+            function (event) {
+
+                if (!start) {
+
+                    start = event.latLng;
+
+                    drawingOverlay = new google.maps.Rectangle({
+                        map: mapObj,
+
+                        bounds: {
+                            north: start.lat(),
+                            south: start.lat(),
+                            east: start.lng(),
+                            west: start.lng()
+                        },
+
+                        editable: true,
+
+                        fillColor: '#000000',
+                        fillOpacity: 0.3,
+
+                        strokeColor: '#000000',
+                        strokeOpacity: 0.9,
+                        strokeWeight: 3
+                    });
+                }
+            }
+        );
+
+        // MOVIMIENTO DEL MOUSE
+        // Actualiza el tamaño del rectángulo.
+        var mousemoveListener = mapObj.addListener(
+            'mousemove',
+            function (event) {
+
+                if (!start || !drawingOverlay) {
+                    return;
+                }
+
+                drawingOverlay.setBounds({
+                    north: Math.max(
+                        start.lat(),
+                        event.latLng.lat()
+                    ),
+
+                    south: Math.min(
+                        start.lat(),
+                        event.latLng.lat()
+                    ),
+
+                    east: Math.max(
+                        start.lng(),
+                        event.latLng.lng()
+                    ),
+
+                    west: Math.min(
+                        start.lng(),
+                        event.latLng.lng()
+                    )
+                });
+            }
+        );
+
+        // BOTÓN CENTRAL DEL MOUSE
+        var middleMouseHandler = function (event) {
+
+            // 0 = izquierdo
+            // 1 = central
+            // 2 = derecho
+            if (event.button !== 1) {
+                return;
+            }
+
+            if (!start || !drawingOverlay) {
+                return;
+            }
+
+            event.preventDefault();
+
+            // ACEPTAR RECTÁNGULO
+            _this.finishDrawingOverlay(
+                drawingOverlay,
+                'rectangle'
+            );
+        };
+
+        mapDiv.addEventListener(
+            'mousedown',
+            middleMouseHandler
+        );
+
+        drawingListeners.push(clickListener);
+        drawingListeners.push(mousemoveListener);
+
+        // Guardamos el listener para poder eliminarlo
+        // desde stopDrawing()
+        drawingListeners.push({
+            remove: function () {
+                mapDiv.removeEventListener(
+                    'mousedown',
+                    middleMouseHandler
+                );
+            }
+        });
+    };
+    this.startPolygonDrawing = function () {
+
+        var path = new google.maps.MVCArray();
+
+        drawingOverlay = new google.maps.Polygon({
+            map: mapObj,
+            paths: path,
+
+            editable: true,
+
+            fillColor: '#000000',
+            fillOpacity: 0.3,
+
+            strokeColor: '#000000',
+            strokeOpacity: 0.9,
+            strokeWeight: 3
+        });
+
+        // CLICK IZQUIERDO
+        // Cada click agrega un punto al polígono.
+        var clickListener = mapObj.addListener(
+            'click',
+            function (event) {
+
+                path.push(event.latLng);
+            }
+        );
+
+        // BOTÓN CENTRAL DEL MOUSE
+        // Acepta el polígono.
+        var middleMouseHandler = function (event) {
+
+            // 0 = izquierdo
+            // 1 = central
+            // 2 = derecho
+            if (event.button !== 1) {
+                return;
+            }
+
+            // No permitir guardar un polígono incompleto
+            if (path.getLength() < 3) {
+                return;
+            }
+
+            event.preventDefault();
+
+            _this.finishDrawingOverlay(
+                drawingOverlay,
+                'polygon'
+            );
+        };
+
+        mapDiv.addEventListener(
+            'mousedown',
+            middleMouseHandler
+        );
+
+        drawingListeners.push(clickListener);
+
+        // Guardamos el listener para eliminarlo
+        // cuando se ejecute stopDrawing()
+        drawingListeners.push({
+            remove: function () {
+                mapDiv.removeEventListener(
+                    'mousedown',
+                    middleMouseHandler
+                );
+            }
+        });
+    };
+    this.startPolylineDrawing = function () {
+
+        var path = new google.maps.MVCArray();
+
+        drawingOverlay = new google.maps.Polyline({
+            map: mapObj,
+            path: path,
+
+            editable: true,
+
+            strokeColor: '#000000',
+            strokeOpacity: 0.9,
+            strokeWeight: 3
+        });
+
+        // CLICK IZQUIERDO
+        // Cada click agrega un punto a la línea.
+        var clickListener = mapObj.addListener(
+            'click',
+            function (event) {
+
+                path.push(event.latLng);
+            }
+        );
+
+        // BOTÓN CENTRAL DEL MOUSE
+        // Acepta la polilínea.
+        var middleMouseHandler = function (event) {
+
+            // 0 = izquierdo
+            // 1 = central
+            // 2 = derecho
+            if (event.button !== 1) {
+                return;
+            }
+
+            // Una línea necesita mínimo 2 puntos
+            if (path.getLength() < 2) {
+                return;
+            }
+
+            event.preventDefault();
+
+            _this.finishDrawingOverlay(
+                drawingOverlay,
+                'polyline'
+            );
+        };
+
+        mapDiv.addEventListener(
+            'mousedown',
+            middleMouseHandler
+        );
+
+        drawingListeners.push(clickListener);
+
+        // Guardamos el listener para que stopDrawing()
+        // pueda eliminarlo correctamente.
+        drawingListeners.push({
+            remove: function () {
+                mapDiv.removeEventListener(
+                    'mousedown',
+                    middleMouseHandler
+                );
+            }
+        });
+    };
+    this.finishDrawingOverlay = function (overlay, type) {
+
+        if (!overlay) {
+            return;
+        }
+
+        overlay.uniqueid = uniqid();
+        overlay.title = "";
+        overlay.content = "";
+        overlay.type = type;
+
+        mapOverlays.push(overlay);
+        dataLayers = mapOverlays;
+
+        _this._layerMap(overlay);
+
+        var center = _this.getShapeCenter(overlay);
+
+        // IMPORTANTE:
+        // El overlay ya terminó de dibujarse.
+        // No debemos eliminarlo del mapa.
+        drawingOverlay = null;
+
+        _this.stopDrawing();
+
+        _this.openInfowindow(
+            overlay,
+            center,
+            _this.getEditorContent(overlay)
+        );
+    };
 
     /*****************************************
      *
@@ -589,24 +807,8 @@ function UtilBlitzMap(paramsConfig) {
         if (_this.isEditable) {
             //initialize a common Drawing Manager object
             //we will use only one Drawing Manager
-            drwManager = new google.maps.drawing.DrawingManager({
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [
-                        google.maps.drawing.OverlayType.MARKER,
-                        google.maps.drawing.OverlayType.CIRCLE,
-                        google.maps.drawing.OverlayType.RECTANGLE,
-                        google.maps.drawing.OverlayType.POLYGON,
-                        google.maps.drawing.OverlayType.POLYLINE
-                    ]
-                },
-                markerOptions: {editable: true, draggable: true}, 		// markers created are editable by default
-                circleOptions: {editable: true},		// circles created are editable by default
-                rectangleOptions: {editable: true},	// rectangles created are editable by default
-                polygonOptions: {editable: true},		// polygons created are editable by default
-                polylineOptions: {editable: true},		// polylines created are editable by default
-            });
+            //BUSINESS MANAGER
+
         }
 
 
@@ -615,9 +817,9 @@ function UtilBlitzMap(paramsConfig) {
             infWindow.setMap(mapObj);
             if (_this.isEditable) {
                 console.log("isEditable");
-                drwManager.setMap(mapObj);
+             //   drwManager.setMap(mapObj);
                 google.maps.event.addListener(infWindow, "domready", _this.pickColor);
-                google.maps.event.addListener(drwManager, "overlaycomplete", _this.overlayDone);
+              //  google.maps.event.addListener(drwManager, "overlaycomplete", _this.overlayDone);
 
             }
 

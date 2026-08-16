@@ -1,17 +1,316 @@
 <style>
+    .stats__header {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .stats__header i {
+        font-size: 1.1rem;
+    }
+    .stats__header {
+        font-weight: bold;
+        color: #6e7171;
+        padding-bottom: 14px;
+    }
     /* Estado oculto de elementos marcados */
     .not-view {
         display: none !important;
     }
+    .route-type--turismo {
+        --route-pastel: #D7CCC8;
+        --route-dark: #5D4037;
+    }
+
+    .route-type--educativo {
+        --route-pastel: #D1C4E9;
+        --route-dark: #512DA8;
+    }
+
+    .route-type--medico {
+        --route-pastel: #FFCDD2;
+        --route-dark: #C62828;
+    }
+
+    /* =========================================================
+   ACTIVIDADES DE RUTA
+   ========================================================= */
+    .adventure-carousel {
+        width: 100%;
+        position: relative;
+    }
+
+    .adventure-carousel__slide {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 35px;
+    }
+
+    .adventure-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 7px 11px;
+        border-radius: 50px;
+
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .adventure-tag__icon {
+        font-size: 14px;
+    }
+
+    .adventure-tag__label {
+        line-height: 1;
+    }
+
+    .adventure-carousel__control {
+        width: 28px;
+        height: 28px;
+
+        top: 50%;
+        transform: translateY(-50%);
+
+        opacity: 1;
+
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+
+        color: #495057;
+    }
+
+    .adventure-carousel__control:hover {
+        color: #212529;
+    }
+
+    .adventure-carousel__control i {
+        font-size: 14px;
+    }
+
+    .adventure-carousel__control.carousel-control-prev {
+        left: 0;
+    }
+
+    .adventure-carousel__control.carousel-control-next {
+        right: 0;
+    }
+    .route-activity--apnea {
+        --activity-pastel: #B3E5FC;
+        --activity-dark: #0277BD;
+    }
+
+    .route-activity--cicloturismo {
+        --activity-pastel: #C8E6C9;
+        --activity-dark: #2E7D32;
+    }
+
+    .route-activity--bungee {
+        --activity-pastel: #FFCDD2;
+        --activity-dark: #C62828;
+    }
+
+    .route-activity--rafting {
+        --activity-pastel: #B2EBF2;
+        --activity-dark: #00838F;
+    }
+
+    .route-activity--cabalgata {
+        --activity-pastel: #D7CCC8;
+        --activity-dark: #6D4C41;
+    }
+
+    .route-activity--montanismo {
+        --activity-pastel: #CFD8DC;
+        --activity-dark: #455A64;
+    }
+
+    .route-activity--senderismo {
+        --activity-pastel: #DCEDC8;
+        --activity-dark: #558B2F;
+    }
+
+    .route-activity--ciclismo-montana {
+        --activity-pastel: #DCE775;
+        --activity-dark: #827717;
+    }
+
+    .route-activity--escalada {
+        --activity-pastel: #FFE0B2;
+        --activity-dark: #EF6C00;
+    }
+
+    .route-activity--canopy {
+        --activity-pastel: #FFF9C4;
+        --activity-dark: #F9A825;
+    }
+
+    .route-activity--tirolesas {
+        --activity-pastel: #FFECB3;
+        --activity-dark: #FF8F00;
+    }
+
+    .route-activity--overlanding {
+        --activity-pastel: #EFEBE9;
+        --activity-dark: #5D4037;
+    }
+
+    .route-activity--rapel {
+        --activity-pastel: #FFCCBC;
+        --activity-dark: #D84315;
+    }
+
+    .route-activity--vias-ferratas {
+        --activity-pastel: #B0BEC5;
+        --activity-dark: #546E7A;
+    }
+
+    .route-activity--barranquismo {
+        --activity-pastel: #B2DFDB;
+        --activity-dark: #00796B;
+    }
+
+    .route-activity--parapente {
+        --activity-pastel: #D1C4E9;
+        --activity-dark: #5E35B1;
+    }
+    /* =========================================================
+       TÓTEMS EN LA RUTA
+       ========================================================= */
+
+    .stat.senderismo {
+        background: #E8F5E9!important;
+    }
+    .stat__label.senderismo {
+        color: #2E7D32 !important;
+    }
+    .stat__value.senderismo {
+        color: #2E7D32 !important;
+    }
+
+
+    .route-totem--trekking {
+        --totem-pastel: #F1F8E9;
+        --totem-dark: #558B2F;
+    }
+    .stat.trekking {
+        background: #F1F8E9!important;
+    }
+    .stat__label.trekking {
+        color: #558B2F !important;
+    }
+    .stat__value.trekking {
+        color: #558B2F !important;
+    }
+
+
+
+    .route-totem--cultural {
+        --totem-pastel: #FFF3E0;
+        --totem-dark: #E65100;
+    }
+    .stat.cultural {
+        background: #FFF3E0!important;
+    }
+    .stat__label.cultural {
+        color: #E65100 !important;
+    }
+    .stat__value.cultural {
+        color: #E65100 !important;
+    }
+
+
+    .route-totem--andino-apu {
+        --totem-pastel: #E0E0E0;
+        --totem-dark: #424242;
+    }
+    .stat.andino_apu {
+        background: #E0E0E0!important;
+    }
+    .stat__label.andino_apu {
+        color: #424242 !important;
+    }
+    .stat__value.andino_apu {
+        color: #424242 !important;
+    }
+
+
+    .stat.andino_agua {
+        background: #E1F5FE!important;
+    }
+
+    .stat__label.andino_agua {
+        color: #0277BD !important;
+    }
+    .stat__value.andino_agua {
+        color: #0277BD !important;
+    }
+
+
+    .route-totem--andino-arbol {
+        --totem-pastel: #E8F5E9;
+        --totem-dark: #33691E;
+    }
+
+    .stat.andino_arbol {
+        background: #E8F5E9!important;
+    }
+
+    .stat__label.andino_arbol {
+        color: #33691E !important;
+    }
+    .stat__value.andino_arbol {
+        color: #33691E !important;
+    }
+
+
+    .route-totem--andino-espiritual {
+        --totem-pastel: #F3E5F5;
+        --totem-dark: #6A1B9A;
+    }
+
+    .stat.andino_espiritual {
+        background: #F3E5F5!important;
+    }
+    .stat__label.andino_espiritual {
+        color: #6A1B9A !important;
+    }
+    .stat__value.andino_espiritual {
+        color: #6A1B9A !important;
+    }
+
+
+
+    .route-totem--medico-general {
+        --totem-pastel: #FFEBEE;
+        --totem-dark: #C62828;
+    }
+    .stat.medico_general {
+        background: #FFEBEE!important;
+    }
+    .stat__label.medico_general {
+        color: #C62828 !important;
+    }
+    .stat__value.medico_general {
+        color: #C62828 !important;
+    }
+
+
 
     body {
         margin: 0;
         font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
         color: #eee;
     }
+
     .leaflet-top.leaflet-left {
         top: 15%;
     }
+
     #map {
         position: fixed;
         inset: 0;
@@ -371,9 +670,11 @@
         bottom: 11.6%;
         color: #000;
     }
+
     .btn-view-data-cam-joystick-zone {
         bottom: 45% !important;
     }
+
     #btn-capture:hover {
         filter: brightness(.95);
     }
@@ -597,7 +898,7 @@
 
     .company-panel__header {
         cursor: pointer;
-        display: flex;
+
         align-items: center;
         padding: 12px 12px 8px;
         border-bottom: 1px solid #eee;
@@ -605,10 +906,9 @@
     }
 
     .company-panel__logo img {
-        width: 40px;
-        height: 40px;
-        border-radius: 999px;
-        object-fit: cover;
+        width: 320px;
+        height: 140px;
+
     }
 
     .company-panel__title h2 {
@@ -623,6 +923,7 @@
     }
 
     .company-panel__toggle {
+        display: none;
         margin-left: auto;
         border: none;
         background: transparent;
@@ -705,9 +1006,23 @@
     .stat {
         background: #f5f5ff;
         border-radius: 10px;
-        padding: 4px 6px;
+        padding: 1px 1px;
         text-align: center;
     }
+
+    .stat.senderismo {
+        background: #DCEDC8 !important;
+    }
+
+    .stat__label.senderismo {
+        color: #33691E !important;
+    }
+    .stat__value.senderismo {
+        color: #33691E !important;
+    }
+
+
+
 
     .stat__label {
         display: block;
@@ -718,7 +1033,13 @@
     .stat__value {
         font-size: 14px;
         font-weight: 600;
-        color: #ffc700;
+
+    }
+
+    .stat__value {
+        font-size: 14px;
+        font-weight: 600;
+
     }
 
     .totems-list {
@@ -741,7 +1062,7 @@
             bottom: 0;
             transform: none;
             width: auto;
-            max-height: 45vh;
+            max-height: 89vh;
             border-radius: 16px 16px 0 0;
         }
     }

@@ -265,26 +265,6 @@ class Business extends ModelManager
         $query->join('business_categories', "business_subcategories.business_categories_id", '=', 'business_categories.id');
         $user = Auth::user();
         $user_id = $user->id;
-        $role = new Role();
-        $hasRolesUser = new UsersHasRoles();
-        $user = Auth::user();
-        $roles = $hasRolesUser->getRolesUser($user->id);
-        $managerOwner = false;
-        $managerOwnerReceptionist = false;
-        $allowManagerData = false;
-        foreach ($roles as $role) {
-            if ($role->role_id == Role::ROL_RECEPTIONIST) {
-                $managerOwnerReceptionist = true;
-            } else if ($role->role_id == Role::ROL_SUPERADMIN) {
-                $managerOwner = true;
-            } else if ($role->role_id == Role::ROL_BUSINESS) {
-                $managerOwner = true;
-                $allowManagerData = true;
-            }
-        }
-
-
-        $allowWorker = false;
         $businessProfile = new BusinessByEmployeeProfile();
         $resultBusiness = $businessProfile->getUserBusiness(
             array(
@@ -293,7 +273,6 @@ class Business extends ModelManager
         );
         $owner_user_id = null;
         if ($resultBusiness) {
-
             if ($resultBusiness->business_id == $id) {
                 $owner_user_id = $resultBusiness->owner_user_id;
             }
@@ -306,6 +285,34 @@ class Business extends ModelManager
         $data = $query->get()->toArray();
 
         return $data;
+    }
+
+    public function getBusinessDataByAppManager($id)
+    {
+        $modelBBS = new BusinessBySchedule;
+        $business = $this->getBusinessByIdManager(array("id" => $id));
+        $schedules = array();
+        $success = false;
+        $dataBusiness = null;
+        $data = [];
+        $dateCurrentData = array("format" => Util::DateCurrent('America/Guayaquil'), "not-format" => Util::DateCurrent('America/Guayaquil', "H:i:s d/m/Y"));
+        if (count($business) > 0) {
+            $dataBusiness = $business[0];
+            $business_id = $dataBusiness->id;
+            $schedules = $modelBBS->getStructureSchedulesBusiness(array("business_id" => $business_id));
+            $success = true;
+
+            $data = [
+                "business" => $dataBusiness,
+                "schedules" => $schedules,
+                "dateCurrentData" => $dateCurrentData,
+            ];
+        }
+
+        return array(
+            "data" => $data,
+            "success" => $success
+        );
     }
 
     public
@@ -1738,7 +1745,8 @@ class Business extends ModelManager
 
     }
 
-    public function getDataManagerEmployer($params)
+    public
+    function getDataManagerEmployer($params)
     {
 
         $sort = 'asc';
@@ -1842,7 +1850,8 @@ class Business extends ModelManager
         return $result;
     }
 
-    public function getDataManager($params)
+    public
+    function getDataManager($params)
     {
 
         $sort = 'asc';
@@ -1940,7 +1949,8 @@ class Business extends ModelManager
         return $result;
     }
 
-    public function getAdminEmployer($params)
+    public
+    function getAdminEmployer($params)
     {
         $result = $this->getDataManagerEmployer($params);
         $modelAmenities = new BusinessAmenities();
@@ -1963,7 +1973,8 @@ class Business extends ModelManager
         return $result;
     }
 
-    public function getAdmin($params)
+    public
+    function getAdmin($params)
     {
         $result = $this->getDataManager($params);
         $modelAmenities = new BusinessAmenities();
@@ -2167,7 +2178,8 @@ class Business extends ModelManager
         return $data;
     }
 
-    public function getData($params)
+    public
+    function getData($params)
     {
         $sort = 'asc';
         $field = $this->table . '.title';
@@ -2239,19 +2251,22 @@ class Business extends ModelManager
         return $result;
     }
 
-    public function getPopularListBee($params)
+    public
+    function getPopularListBee($params)
     {
         $result = $this->getData($params);
         return $result;
     }
 
-    public function getAdminBee($params)
+    public
+    function getAdminBee($params)
     {
         $result = $this->getData($params);
         return $result;
     }
 
-    public function getDetailsBee($params)
+    public
+    function getDetailsBee($params)
     {
         $sort = 'asc';
         $field = $this->table . '.title';
@@ -2279,7 +2294,8 @@ class Business extends ModelManager
         return $result;
     }
 
-    public function getManagerConfigBee($params)
+    public
+    function getManagerConfigBee($params)
     {
 
         $query = $params['query'];
@@ -2320,7 +2336,8 @@ class Business extends ModelManager
         ];
     }
 
-    public function getCountBusinessByCategory($params)
+    public
+    function getCountBusinessByCategory($params)
     {
 
         $business_categories_id = $params['filters']['business_categories_id'];
@@ -2402,7 +2419,8 @@ class Business extends ModelManager
         return $result;
     }
 
-    public function getEntityManager($params)
+    public
+    function getEntityManager($params)
     {
         $businessId = $params["businessId"];
         $query = DB::table($this->table);

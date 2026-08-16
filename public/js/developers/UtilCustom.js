@@ -1656,7 +1656,12 @@ function getCenterByType(params) {
         }
 
     } else if (type == "circle") {
-        latlng = objCurrent.getCenter();
+
+        if (typeof objCurrent.getCenter === 'function') {
+            latlng = objCurrent.getCenter();
+        }else{
+            latlng = objCurrent.center;
+        }
     }
     result = {
         latlng: latlng,

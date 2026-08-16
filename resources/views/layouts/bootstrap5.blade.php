@@ -205,7 +205,10 @@ $themePath = $resourcePathServer . 'templates/cityBookHtml/';
         }
 
         $(function () {
-            initToastLoad();
+            if (false) {
+
+                initToastLoad();
+            }
 
         });
     </script>

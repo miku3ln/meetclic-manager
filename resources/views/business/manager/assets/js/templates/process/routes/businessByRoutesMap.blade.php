@@ -229,6 +229,39 @@
 
                         <?php echo " <h1 v-on:click='_dataChildren()'>{{ configParams.title}}</h1>" ?>
                         <b-row>
+                            <div id="map-drawing-tools">
+
+                                <button type="button"
+                                        onclick="BlitzMap.setDrawingMode('marker')">
+                                    Marker
+                                </button>
+
+                                <button type="button"
+                                        onclick="BlitzMap.setDrawingMode('circle')">
+                                    Circle
+                                </button>
+
+                                <button type="button"
+                                        onclick="BlitzMap.setDrawingMode('rectangle')">
+                                    Rectangle
+                                </button>
+
+                                <button type="button"
+                                        onclick="BlitzMap.setDrawingMode('polygon')">
+                                    Polygon
+                                </button>
+
+                                <button type="button"
+                                        onclick="BlitzMap.setDrawingMode('polyline')">
+                                    Polyline
+                                </button>
+
+                                <button type="button"
+                                        onclick="BlitzMap.stopDrawing()">
+                                    Cancelar
+                                </button>
+
+                            </div>
                             <b-col lg="12">
                                 <input
                                         type="button"

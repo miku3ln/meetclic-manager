@@ -595,7 +595,7 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
         }
 
     }
-
+    var companyPanel=null;
     $(function () {
             initWhatsapp();
             ItemsStore.setItems(itemsSources);
@@ -617,7 +617,7 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
                 await window.Viewer.onCaptureGpu();
             });
 
-            const companyPanel = document.getElementById('companyPanelHeader');
+             companyPanel = document.getElementById('companyPanelHeader');
             companyPanel.addEventListener('click', () => {
                 companyPanel.classList.toggle('company-panel--collapsed');
                 const body = document.querySelector('.company-panel__body');
@@ -646,7 +646,8 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
                     btnMoreInfo.dataset.expanded = 'true';
                 }
             });
-            btnMoreInfo.click();
+           // btnMoreInfo.click();
+        companyPanel.click();
             initJoystickZone();
         }
     );

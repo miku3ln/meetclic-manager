@@ -116,13 +116,201 @@ class RoutesMapByRoutesDrawing extends Model
 
         return $grouped;
     }
-
     public function getRoutesDrawingStatsHtml($params)
+    {
+        $grouped = $params['grouped'];
+
+        $html = '';
+
+        $html .= '
+        <div class="company-panel__section">
+
+            <div class="company-panel__section-title">
+                 <div class="stats__header">
+            <i class="bi bi-signpost-2"></i>
+            <span class="stats__title">Tótems de la ruta</span>
+        </div>
+            </div>
+
+            <div
+                id="totemsCarousel"
+                class="carousel slide totems-carousel"
+                data-bs-interval="false"
+            >
+                <div class="carousel-inner">
+    ';
+
+        /*
+         * 3 estadísticas por slide
+         */
+        $groups = array_chunk($grouped, 3);
+        $slideIndex = 0;
+
+        foreach ($groups as $groupItems) {
+
+            $active = ($slideIndex === 0) ? ' active' : '';
+
+            $html .= '
+            <div class="carousel-item' . $active . '">
+                <div class="stats company-panel__stats">
+        ';
+
+            foreach ($groupItems as $sid => $group) {
+
+                $totemSubcategoryId = isset($group['totem_subcategory_id'])
+                    ? intval($group['totem_subcategory_id'])
+                    : 0;
+
+                $totemCategoryId = isset($group['totem_category_id'])
+                    ? intval($group['totem_category_id'])
+                    : 0;
+
+                $totemCategoryCode = isset($group['totem_category_code'])
+                    ? $group['totem_category_code']
+                    : '';
+
+                $totemCategoryName = isset($group['totem_category_name'])
+                    ? $group['totem_category_name']
+                    : '';
+
+                $totemSubcategoryCode = isset($group['totem_subcategory_code'])
+                    ? $group['totem_subcategory_code']
+                    : '';
+
+                $totemSubcategoryName = isset($group['totem_subcategory_name'])
+                    ? $group['totem_subcategory_name']
+                    : '';
+
+                $count = isset($group['count'])
+                    ? intval($group['count'])
+                    : 0;
+
+
+                /*
+                 * Label
+                 */
+                $labelParts = array();
+
+                if ($totemSubcategoryName !== '') {
+                    $labelParts[] = $totemSubcategoryName;
+                }
+
+                $labelText = '';
+
+                if (!empty($labelParts)) {
+                    $labelText = implode(' – ', $labelParts);
+                }
+
+
+                /*
+                 * ID
+                 */
+                $statId = 'statSubcategory' . $totemSubcategoryId;
+
+
+                /*
+                 * JSON
+                 */
+                $paramsJson = htmlspecialchars(
+                    json_encode($group),
+                    ENT_QUOTES,
+                    'UTF-8'
+                );
+
+
+                /*
+                 * Stat
+                 */
+                $html .= '
+                <div
+                    class="stat company-panel__stat ' . htmlspecialchars($totemSubcategoryCode, ENT_QUOTES, 'UTF-8') . '"
+                    data-key="' . $totemSubcategoryId . '"
+                    data-count="' . $count . '"
+                    data-params="' . $paramsJson . '"
+                    data-totem_category_code="' . htmlspecialchars($totemCategoryCode, ENT_QUOTES, 'UTF-8') . '"
+                    data-totem_category_id="' . $totemCategoryId . '"
+                    data-totem_category_name="' . htmlspecialchars($totemCategoryName, ENT_QUOTES, 'UTF-8') . '"
+                    data-totem_subcategory_code="' . htmlspecialchars($totemSubcategoryCode, ENT_QUOTES, 'UTF-8') . '"
+                    data-totem_subcategory_id="' . $totemSubcategoryId . '"
+                    data-totem_subcategory_name="' . htmlspecialchars($totemSubcategoryName, ENT_QUOTES, 'UTF-8') . '"
+                >
+
+                    <span class="stat__label company-panel__stat-label ' . htmlspecialchars($totemSubcategoryCode, ENT_QUOTES, 'UTF-8') . '">
+                        ' . htmlspecialchars($labelText, ENT_QUOTES, 'UTF-8') . '
+                    </span>
+
+                    <span
+                        class="stat__value company-panel__stat-value ' . htmlspecialchars($totemSubcategoryCode, ENT_QUOTES, 'UTF-8') . '"
+                        id="' . $statId . '"
+                    >
+                        ' . $count . '
+                    </span>
+
+                </div>
+            ';
+            }
+
+            $html .= '
+                </div>
+            </div>
+        ';
+
+            $slideIndex++;
+        }
+
+        $html .= '
+                </div>
+    ';
+
+        /*
+         * Controles solamente si existen varios slides
+         */
+        if (count($groups) > 1) {
+
+            $html .= '
+            <button
+                class="carousel-control-prev totems-carousel__control"
+                type="button"
+                data-bs-target="#totemsCarousel"
+                data-bs-slide="prev"
+                aria-label="Anterior"
+            >
+                <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <button
+                class="carousel-control-next totems-carousel__control"
+                type="button"
+                data-bs-target="#totemsCarousel"
+                data-bs-slide="next"
+                aria-label="Siguiente"
+            >
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        ';
+        }
+
+        $html .= '
+            </div>
+        </div>
+    ';
+
+        return $html;
+    }
+    public function getRoutesDrawingStatsHtml2($params)
     {
         // 1) Rows viene desde fuera
         $grouped = $params['grouped'];
-        $html  = '<div class="company-panel__section company-panel__section--stats">';
+        $html = '
+        <div class="stats__header">
+            <i class="bi bi-signpost-2"></i>
+            <span class="stats__title">Tótems de la ruta</span>
+        </div>
+';
+        $html  .= '<div class="company-panel__section company-panel__section--stats">';
+
         $html .= '<div class="stats company-panel__stats">';
+
 
         foreach ($grouped as $sid => $group) {
 
@@ -145,7 +333,7 @@ class RoutesMapByRoutesDrawing extends Model
                 $labelParts[] = $totemSubcategoryName;
             }
 
-            $labelText = 'Tótem'.($count>1?"s":"");
+            $labelText = "";
             if (!empty($labelParts)) {
                 $labelText .= ' ' . implode(' – ', $labelParts);
             }
@@ -157,7 +345,7 @@ class RoutesMapByRoutesDrawing extends Model
             $paramsJson = htmlspecialchars(json_encode($group), ENT_QUOTES, 'UTF-8');
 
             // 4) Construimos el bloque stat
-            $html .= '<div class="stat company-panel__stat"'
+            $html .= '<div class="stat company-panel__stat '.$totemSubcategoryCode.'  "'
                 . ' data-key="' . $totemSubcategoryId . '"'
                 . ' data-count="' . $count . '"'
                 . ' data-params="' . $paramsJson . '"'
@@ -169,11 +357,11 @@ class RoutesMapByRoutesDrawing extends Model
                 . ' data-totem_subcategory_name="' . htmlspecialchars($totemSubcategoryName, ENT_QUOTES, 'UTF-8') . '"'
                 . '>';
 
-            $html .= '<span class="stat__label company-panel__stat-label">'
+            $html .= '<span class="stat__label company-panel__stat-label '.$totemSubcategoryCode.'">'
                 . htmlspecialchars($labelText, ENT_QUOTES, 'UTF-8')
                 . '</span>';
 
-            $html .= '<span class="stat__value company-panel__stat-value" id="' . $statId . '">'
+            $html .= '<span class="stat__value company-panel__stat-value '.$totemSubcategoryCode.'" id="' . $statId . '">'
                 . $count
                 . '</span>';
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Business;
+use App\Models\BusinessByEmployeeProfile;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Illuminate\Http\Request;
@@ -27,6 +29,7 @@ class MeetclicController extends Controller
     {
         $this->serviceUser = $service;
     }
+
     public function loginPointSales(Request $request)
     {
         try {
@@ -78,9 +81,30 @@ class MeetclicController extends Controller
                 $userData = $this->serviceUser->getUserInfoForFlutter($user_id);
 
                 $data['userData'] = $userData;
+                $modelUserByBusiness = new BusinessByEmployeeProfile();
+                $userByBusiness = $modelUserByBusiness->getUserBusiness([
+                    'user_id' => $user_id
+                ]);
+                $businessManager = [];
+                if ($userByBusiness) {
+                    $modelBusiness = new Business();
+                    $businessId = $userByBusiness->business_id;
+                    $dataBusiness = $modelBusiness->getBusinessDataByAppManager($businessId);
+                    if ($dataBusiness['success']) {
+                        $dataManagerBusiness = $dataBusiness['data'];
+                        $business = $dataManagerBusiness['business'];
+                        $dataManagerBusiness['business'] = $business;
+                        $sourceBusiness = asset('public') . $business->source;
+                        $business->source = $sourceBusiness;
+                        $businessManager = $dataManagerBusiness;
+
+
+                    }
+                    $businessManager['cash'] = [];
+
+                }
                 $data['userData']["access_token"] = $accessToken;
-
-
+                $data['userData']["businessManager"] = $businessManager;
 
                 return Response::json([
                     "type" => $type,
@@ -109,6 +133,7 @@ class MeetclicController extends Controller
             ], 500);
         }
     }
+
     public function login(Request $request)
     {
         try {
