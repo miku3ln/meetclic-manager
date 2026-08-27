@@ -20,7 +20,7 @@
                         class="btn "
                         :class="{'btn-success':!showManager,'btn-danger':showManager}"
                         v-on:click="_viewManager(showManager?2:1)">
-                        <?php  echo "{{showManager?'Regresar':'Nuevo'}}" ?>
+                        <?php echo "{{showManager?'Regresar':'Nuevo'}}" ?>
                     </button>
                     <button
                         v-if="!managerMenuConfig.view"
@@ -35,7 +35,7 @@
                             :disabled="!validateForm()"
                             class="btn btn-success "
                             v-on:click="_saveModel()">
-                        <?php echo '{{managerType==1?labelsConfig.buttons.create:labelsConfig.buttons.update}}'?></button>
+                        <?php echo '{{managerType==1?labelsConfig.buttons.create:labelsConfig.buttons.update}}' ?></button>
 
 
                     <div v-if="!showManager">
@@ -396,7 +396,54 @@
                         <!-- =====================================================
                              FACTOR / PRECISIÓN / UNIDAD BASE
                              ===================================================== -->
+                        <div class="row">
+                            <div class="measure-factor">
+                                <div class="measure-factor__info">
+                                    <div class="measure-factor__icon">
+                                        <span class="measure-factor__icon-symbol">i</span>
+                                    </div>
 
+                                    <div class="measure-factor__content">
+                                        <h5 class="measure-factor__title">
+                                            Equivalencia con la unidad bas base
+                                        </h5>
+
+                                        <p class="measure-factor__description">
+                                            Indica cuántas unidades de la unidad base equivalen a
+                                            1 unidad de esta medida.
+                                        </p>
+
+                                        <p class="measure-factor__description mb-0">
+                                            Este valor permite convertir automáticamente entre
+                                            unidades del mismo tipo de medida.
+                                        </p>
+                                    </div>
+
+                                    <div class="measure-factor__example">
+            <span class="measure-factor__example-title">
+                Ejemplo práctico
+            </span>
+
+                                        <p class="measure-factor__example-text">
+                                            Si la unidad base es
+                                            <strong>Gramo (g)</strong>
+                                            y está creando
+                                            <strong>Kilogramo (kg)</strong>:
+                                        </p>
+
+                                        <div class="measure-factor__equivalence">
+                                            <strong>1 kg = 1000 g</strong>
+                                        </div>
+
+                                        <span class="measure-factor__example-result">
+                Factor = 1000
+            </span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
                         <b-row>
 
                             <!-- FACTOR -->
@@ -499,7 +546,6 @@
                                 </div>
 
                             </b-col>
-
 
 
                         </b-row>

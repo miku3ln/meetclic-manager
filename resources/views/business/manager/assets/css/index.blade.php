@@ -10,6 +10,161 @@ $assetsTemplateMintonUpdate = 'templates/minton/';
 
 <style id="unit-measure">
 
+    .measure-factor {
+        margin-top: 24px;
+    }
+
+    .measure-factor__info {
+        display: flex;
+        align-items: flex-start;
+        padding: 20px;
+        border: 1px solid #cfe0ff;
+        border-radius: 8px;
+        background: #f7faff;
+    }
+
+    .measure-factor__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        margin-right: 14px;
+        border-radius: 50%;
+        background: #2f6fed;
+    }
+
+    .measure-factor__icon-symbol {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .measure-factor__content {
+        flex: 1;
+        padding-right: 24px;
+    }
+
+    .measure-factor__title {
+        margin-bottom: 6px;
+        color: #2458b8;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .measure-factor__description {
+        margin-bottom: 6px;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .measure-factor__example {
+        min-width: 320px;
+        padding: 14px 16px;
+        border: 1px solid #d9e4f5;
+        border-radius: 6px;
+        background: #ffffff;
+    }
+
+    .measure-factor__example-title {
+        display: block;
+        margin-bottom: 6px;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .measure-factor__example-text {
+        margin-bottom: 8px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .measure-factor__equivalence {
+        color: #1e3a8a;
+        font-size: 14px;
+    }
+
+    .measure-factor__example-result {
+        display: block;
+        margin-top: 4px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .measure-factor__field {
+        margin-top: 18px;
+    }
+
+    .measure-factor__label {
+        display: block;
+        margin-bottom: 8px;
+        color: #374151;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .measure-factor__required {
+        color: #dc3545;
+    }
+
+    .measure-factor__help {
+        display: block;
+        margin-top: 6px;
+        color: #28a745;
+        font-size: 13px;
+    }
+
+    @media (max-width: 991.98px) {
+        .measure-factor__info {
+            flex-wrap: wrap;
+        }
+
+        .measure-factor__content {
+            padding-right: 0;
+        }
+
+        .measure-factor__example {
+            width: 100%;
+            min-width: 0;
+            margin-top: 16px;
+            margin-left: 50px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .measure-factor__info {
+            display: block;
+        }
+
+        .measure-factor__icon {
+            margin-bottom: 12px;
+        }
+
+        .measure-factor__example {
+            margin-left: 0;
+        }
+
+        .measure-factor__field .input-group {
+            display: block;
+        }
+
+        .measure-factor__field .input-group-prepend,
+        .measure-factor__field .input-group-append,
+        .measure-factor__field .form-control {
+            width: 100%;
+        }
+
+        .measure-factor__field .input-group-text {
+            justify-content: center;
+            width: 100%;
+            border-radius: 0;
+        }
+    }
+
+
     /* =========================================================
    MEASURE CONVERSION
    ========================================================= */

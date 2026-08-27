@@ -525,7 +525,7 @@ Vue.component(configManager.name + '-component', {
                 factor_to_base: {
                     id: "factor_to_base",
                     name: "factor_to_base",
-                    label: "Factor de Conversión",
+                    label: "Equivalencia con la unidad base",
                     required: {
                         allow: true,
                         msj: "Campo requerido.",
