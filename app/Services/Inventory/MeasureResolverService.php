@@ -400,7 +400,118 @@ public function resolveConversion(
             ]
         ];
     }
+    private function parseSymbolConversionInput(
+        string $from,
+        string $to
+    ): array {
 
+        $from = trim(
+            mb_strtolower($from)
+        );
+
+        $to = trim(
+            mb_strtolower($to)
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | FROM
+        |--------------------------------------------------------------------------
+        |
+        | Ej:
+        |
+        | 10g
+        | 10 g
+        | 2.5kg
+        | 1pollo
+        | 60pz
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        preg_match(
+            '/^([\d]+(?:\.[\d]+)?)\s*([a-z0-9_]+)$/iu',
+            $from,
+            $matches
+        );
+
+        if (
+            !isset(
+                $matches[1],
+                $matches[2]
+            )
+        ) {
+
+            throw new \Exception(
+                'Formato FROM inválido'
+            );
+        }
+
+        $quantity =
+            (float)
+            $matches[1];
+
+        $fromSymbol =
+            trim(
+                $matches[2]
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | TO
+        |--------------------------------------------------------------------------
+        |
+        | TO solamente acepta símbolo:
+        |
+        | kg
+        | g
+        | u
+        | pollo
+        | pz
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        preg_match(
+            '/^([a-z0-9_]+)$/iu',
+            $to,
+            $toMatches
+        );
+
+        if (
+            !isset(
+                $toMatches[1]
+            )
+        ) {
+
+            throw new \Exception(
+                'Formato TO inválido'
+            );
+        }
+
+        $toSymbol =
+            trim(
+                $toMatches[1]
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESULT
+        |--------------------------------------------------------------------------
+        */
+
+        return [
+
+            'quantity' =>
+                $quantity,
+
+            'from_symbol' =>
+                $fromSymbol,
+
+            'to_symbol' =>
+                $toSymbol,
+        ];
+    }
     public function parseMeasurement(
         string $value
     ): array {
@@ -431,5 +542,434 @@ public function resolveConversion(
                 trim($matches[2]),
         ];
     }
+
+    public function resolveSymbolConversion(
+        string $from,
+        string $to,
+        int $businessId = 0
+    ): array {
+
+        /*
+        |--------------------------------------------------------------------------
+        | PARSE FROM
+        |--------------------------------------------------------------------------
+        |
+        | Ej:
+        | 10g
+        | 1pollo
+        | 60pz
+        |
+        |--------------------------------------------------------------------------
+        */
+        $parsed=null;
+        try {
+
+            $parsed =
+                $this->parseSymbolConversionInput($from,$to);
+
+        } catch (\Throwable $exception) {
+
+            return [
+                'success' => false,
+                'message' => 'Formato origen inválido',"data"=>$parsed
+            ];
+        }
+
+        $quantity =
+            (float) $parsed['quantity'];
+
+        $fromSymbol =
+            trim(
+                mb_strtolower(
+                    $parsed['from_symbol']
+                )
+            );
+
+        $toSymbol =
+            trim(
+                mb_strtolower($to)
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATALOGO
+        |--------------------------------------------------------------------------
+        */
+
+        $catalog =
+            $this->catalogService
+                ->getCatalog($businessId);
+
+        /*
+        |--------------------------------------------------------------------------
+        | FROM UNIT
+        |--------------------------------------------------------------------------
+        */
+
+        $fromContext =
+            MeasureUtil::findUnitContextBySymbol(
+                $catalog,
+                $fromSymbol
+            );
+
+        if (!$fromContext) {
+
+            return [
+                'success' => false,
+                'message' => 'Unidad origen inválida'
+            ];
+        }
+
+        $fromUnit =
+            $fromContext['unit'];
+
+        $fromMeasureType =
+            $fromContext['measure_type'];
+
+        /*
+        |--------------------------------------------------------------------------
+        | TO UNIT
+        |--------------------------------------------------------------------------
+        */
+
+        $toContext =
+            MeasureUtil::findUnitContextBySymbol(
+                $catalog,
+                $toSymbol
+            );
+
+        if (!$toContext) {
+
+            return [
+                'success' => false,
+                'message' => 'Unidad destino inválida'
+            ];
+        }
+
+        $toUnit =
+            $toContext['unit'];
+
+        $toMeasureType =
+            $toContext['measure_type'];
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDAR TIPO
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $fromMeasureType['id']
+            !=
+            $toMeasureType['id']
+        ) {
+
+            return [
+                'success' => false,
+                'message' =>
+                    'Tipos de medida incompatibles'
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | MISMA UNIDAD
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $fromUnit['id']
+            ==
+            $toUnit['id']
+        ) {
+
+            return [
+
+                'success' => true,
+
+                'data' => [
+
+                    'input' => [
+
+                        'quantity' =>
+                            $quantity,
+
+                        'symbol' =>
+                            $fromUnit['symbol'],
+                    ],
+
+                    'conversion' => [
+
+                        'direction' =>
+                            'SAME',
+
+                        'factor' =>
+                            1,
+                    ],
+
+                    'output' => [
+
+                        'quantity' =>
+                            $quantity,
+
+                        'symbol' =>
+                            $toUnit['symbol'],
+                    ],
+                ]
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONVERSION DIRECTA
+        |--------------------------------------------------------------------------
+        |
+        | Ej:
+        |
+        | pollo -> u
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        $conversion =
+            MeasureUtil::findConversion(
+                $fromUnit,
+                $toUnit['id']
+            );
+
+        if ($conversion) {
+
+            $factor =
+                (float)
+                $conversion['factor'];
+
+            $result =
+                $quantity *
+                $factor;
+
+            return [
+
+                'success' => true,
+
+                'data' => [
+
+                    'input' => [
+
+                        'quantity' =>
+                            $quantity,
+
+                        'symbol' =>
+                            $fromUnit['symbol'],
+                    ],
+
+                    'conversion' => [
+
+                        'id' =>
+                            $conversion['id'],
+
+                        'direction' =>
+                            'DIRECT',
+
+                        'factor' =>
+                            $factor,
+
+                        'type' =>
+                            $conversion[
+                            'conversion_type'
+                            ],
+
+                        'description' =>
+                            $conversion[
+                            'description'
+                            ],
+                    ],
+
+                    'output' => [
+
+                        'quantity' =>
+                            $result,
+
+                        'symbol' =>
+                            $toUnit['symbol'],
+                    ],
+                ]
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONVERSION INVERSA
+        |--------------------------------------------------------------------------
+        |
+        | Ej:
+        |
+        | solicitamos:
+        |
+        | u -> pollo
+        |
+        | almacenado:
+        |
+        | pollo -> u = 8
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        $inverseConversion =
+            MeasureUtil::findConversion(
+                $toUnit,
+                $fromUnit['id']
+            );
+
+        if ($inverseConversion) {
+
+            $storedFactor =
+                (float)
+                $inverseConversion['factor'];
+
+            if ($storedFactor <= 0) {
+
+                return [
+                    'success' => false,
+                    'message' =>
+                        'Factor de conversión inválido'
+                ];
+            }
+
+            $result =
+                $quantity /
+                $storedFactor;
+
+            return [
+
+                'success' => true,
+
+                'data' => [
+
+                    'input' => [
+
+                        'quantity' =>
+                            $quantity,
+
+                        'symbol' =>
+                            $fromUnit['symbol'],
+                    ],
+
+                    'conversion' => [
+
+                        'id' =>
+                            $inverseConversion['id'],
+
+                        'direction' =>
+                            'INVERSE',
+
+                        'factor' =>
+                            1 / $storedFactor,
+
+                        'type' =>
+                            $inverseConversion[
+                            'conversion_type'
+                            ],
+
+                        'description' =>
+                            $inverseConversion[
+                            'description'
+                            ],
+                    ],
+
+                    'output' => [
+
+                        'quantity' =>
+                            $result,
+
+                        'symbol' =>
+                            $toUnit['symbol'],
+                    ],
+                ]
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONVERSION POR FACTOR_TO_BASE
+        |--------------------------------------------------------------------------
+        |
+        | Ej:
+        |
+        | g -> kg
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        $fromFactor =
+            (float)
+            $fromUnit['factor_to_base'];
+
+        $toFactor =
+            (float)
+            $toUnit['factor_to_base'];
+
+        if (
+            $fromFactor > 0 &&
+            $toFactor > 0
+        ) {
+
+            $result =
+                $this->conversionService
+                    ->convert(
+                        $quantity,
+                        $fromUnit,
+                        $toUnit
+                    );
+
+            return [
+
+                'success' => true,
+
+                'data' => [
+
+                    'input' => [
+
+                        'quantity' =>
+                            $quantity,
+
+                        'symbol' =>
+                            $fromUnit['symbol'],
+                    ],
+
+                    'conversion' => [
+
+                        'direction' =>
+                            'BASE',
+
+                        'factor' =>
+                            $fromFactor /
+                            $toFactor,
+                    ],
+
+                    'output' => [
+
+                        'quantity' =>
+                            $result,
+
+                        'symbol' =>
+                            $toUnit['symbol'],
+                    ],
+                ]
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | NO ENCONTRADA
+        |--------------------------------------------------------------------------
+        */
+
+        return [
+            'success' => false,
+            'message' =>
+                'Conversión no encontrada'
+        ];
+    }
+
 }
 

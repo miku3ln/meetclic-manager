@@ -126,7 +126,7 @@ class BusinessMenu
         return $menuCurrentManager;
     }
 
-    public static function getDataForAppVariables($params)
+    public static function getDataForAppVariables($params)   //MENU-0002
     {
         $nameProcess = $params['typeManager'];
         $modelDataManager = $params['modelDataManager'];
@@ -151,6 +151,12 @@ class BusinessMenu
                 'keyParent' => 'store',
                 'keyChildren' => 'businessByShippingRate',
                 'action' => 'businessByShippingRate/admin'
+            ],
+            'managerUnitMeasure' => [
+                'isChildren' => true,
+                'keyParent' => 'store',
+                'keyChildren' => 'unitMeasure',
+                'action' => 'unitMeasure/admin'
             ],
             'managerInvoiceSaleManager' => [
                 'isChildren' => true,
@@ -486,9 +492,14 @@ class BusinessMenu
             ],
         ];
 
-        $configModulesAllow = array(
+        $configModulesAllow = array(//MENU-0003
             "humanResourcesPermissionType" => array(
                 "title" => "Información",
+                "allow" => true,
+                "active" => false
+            ),
+            "unitMeasure" => array(
+                "title" => "Medidas",
                 "allow" => true,
                 "active" => false
             ),
@@ -1621,6 +1632,13 @@ class BusinessMenu
                 'icon' => 'fas fa-clipboard',
                 'isParent' => true,
                 'parentData' => array(
+                    'unitMeasure' => array(//MENU-0001
+                        'title' => 'Medidas',
+                        'allow' => true,
+                        'active' => false,
+                        'isParent' => false,
+                        'link' => 'unitMeasure/admin',
+                    ),
                     'product' => array(
                         'title' => 'Productos',
                         'allow' => true,

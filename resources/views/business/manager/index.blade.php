@@ -5,6 +5,7 @@
 $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
 ?>
+
 @php
     $managerOptions=[
     'pageTitle'=>'Administracion',
@@ -187,7 +188,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
         }
 
         legend.legend--section {
-            color: #0e2bcf  !important;
+            color: #0e2bcf !important;
             font-size: 18px;
         }
 
@@ -249,6 +250,12 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
             @if($configPartial['typeManager']=='managerRepair'||$configPartial['typeManager']=='managerPointOfSale')
 
                 @include('partials.loading',[])
+            @endif
+            @if($configPartial['typeManager']=='managerUnitMeasure')
+                <div class="manager-process not-view" id="tab-unit-measure"
+                     v-if="businessCreate && configModulesAllow.unitMeasure.allow && configModulesAllow.unitMeasure.active">
+                    @include($partials.'.wizards.store.unitMeasure',[])
+                </div>
             @endif
             @if($configPartial['typeManager']=='managerInformation' )
                 <div v-view-data class="manager-process not-view" id="tab-business"
@@ -734,7 +741,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                     ])
 
                 </div>
-            @elseif($configPartial['typeManager']=='managerDashboard' )
+            @elseif($configPartial['typeManager']=='managerDashboard')
 
                 <div class="manager-process not-view" id="tab-template-manager-dashboard"
                 >
@@ -742,6 +749,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
                     ])
 
                 </div>
+
             @endif
 
         </div>
@@ -777,19 +785,19 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
             function _assertRef(ref) {
                 if (!ref || typeof ref !== "object") {
-                    return { ok: false, message: "Referencia inválida (objeto vacío)." };
+                    return {ok: false, message: "Referencia inválida (objeto vacío)."};
                 }
                 if (!ref.country_id) {
-                    return { ok: false, message: "Falta country_id en la referencia." };
+                    return {ok: false, message: "Falta country_id en la referencia."};
                 }
 
                 var ppu = _toNumber(ref.yapitas_per_unit, 0);
                 var unitValue = _toNumber(ref.unit_value, 0);
 
-                if (ppu <= 0) return { ok: false, message: "yapitas_per_unit inválido." };
-                if (unitValue <= 0) return { ok: false, message: "unit_value inválido." };
+                if (ppu <= 0) return {ok: false, message: "yapitas_per_unit inválido."};
+                if (unitValue <= 0) return {ok: false, message: "unit_value inválido."};
 
-                return { ok: true };
+                return {ok: true};
             }
 
             /**
@@ -798,7 +806,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
              */
             function convertYapitasToMoney(ref, yapitas, decimals) {
                 var check = _assertRef(ref);
-                if (!check.ok) return $.extend({ country_id: ref && ref.country_id, yapitas: yapitas }, check);
+                if (!check.ok) return $.extend({country_id: ref && ref.country_id, yapitas: yapitas}, check);
 
                 var y = Math.max(0, Math.floor(_toNumber(yapitas, 0)));
                 var ppu = _toNumber(ref.yapitas_per_unit, 100);
@@ -824,7 +832,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
              */
             function convertMoneyToYapitas(ref, money) {
                 var check = _assertRef(ref);
-                if (!check.ok) return $.extend({ country_id: ref && ref.country_id, money: money }, check);
+                if (!check.ok) return $.extend({country_id: ref && ref.country_id, money: money}, check);
 
                 var m = Math.max(0, _toNumber(money, 0));
                 var ppu = _toNumber(ref.yapitas_per_unit, 100);
@@ -1156,7 +1164,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
 
             $('#qrcode').empty();
             $('#label-preview').hide();
-            iconImage=null;
+            iconImage = null;
             var size = 512;
 
             var hasIcon = (typeof iconImage !== "undefined" && iconImage);
@@ -1256,7 +1264,7 @@ $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
         }
 
         $(function () {
-            var urlSource = $publicAsset+'/uploads/frontend/templateBySource/1750454099_logo-one.png';
+            var urlSource = $publicAsset + '/uploads/frontend/templateBySource/1750454099_logo-one.png';
             setIconFromUrl(urlSource, function (res) {
 
             });

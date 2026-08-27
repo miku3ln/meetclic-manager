@@ -177,7 +177,7 @@ Vue.component('business-by-shipping-rate-component', {
                     if (row.state == "INACTIVE") {
                         classStatus = "badge-warning"
                     }
-                    ;var result = [
+                    var result = [
                         "<div class='content-description'>",
                         "<div class='content-description__information'>",
                         "   <span relation class='content-description__title'>" + structure.shipping_rate_business_id_data.label + ":</span><span class='content-description__value'>" + row.shipping_rate_business + "</span>",

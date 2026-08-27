@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Tax;
+namespace App\Http\Controllers\ProductsMeasure;
 
 use App\Http\Controllers\MyBaseController;
-use App\Models\TaxByBusiness;
+
+use App\Models\ProductsMeasure\MeasureConversion;
 use Illuminate\Support\Facades\Request;
-
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\View;
 
-class TaxByBusinessController extends MyBaseController
+
+class MeasureConversionController extends MyBaseController
 {
 
     public function getAdmin()
     {
         $dataPost = Request::all();
-        $model = new TaxByBusiness();
+        $model = new MeasureConversion();
         $result = $model->getAdmin($dataPost);
 
         return Response::json(
@@ -27,7 +27,7 @@ class TaxByBusinessController extends MyBaseController
     {
 
         $attributesPost = Request::all();
-        $model = new TaxByBusiness();
+        $model = new MeasureConversion();
         $result = $model->saveData(array("attributesPost" => $attributesPost));
         return Response::json($result);
     }
@@ -37,7 +37,7 @@ class TaxByBusinessController extends MyBaseController
     {
 
         $attributesPost = Request::all();
-        $model = new  TaxByBusiness();
+        $model = new  MeasureConversion();
         $result = $model->getListSelect2($attributesPost);
         return Response::json($result);
     }

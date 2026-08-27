@@ -66,7 +66,6 @@ class BusinessManagerController extends BusinessBaseController
             if ($success) {
                 $configProcess = [];
                 $menuConfigByRole = [];
-
                 $allowViewsResult = BusinessMenu::getDataMenuManager([
                     'modelDataManager' => $modelDataManager,
                     'typeManager' => $typeManager

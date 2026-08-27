@@ -1355,6 +1355,19 @@ class BusinessManager
                 "dictionary/pronunciation/delete/{id}",
                 "Dictionary\DictionaryByWordsController@dictionaryPronunciationDelete"
             )->name('dictionaryPronunciationDelete');
+
+
+            Route::post("unitMeasure/admin", "ProductsMeasure\UnitMeasureController@getAdmin")->name('unitMeasureGetAdmin');
+            Route::post("unitMeasure/save", "ProductsMeasure\UnitMeasureController@saveData")->name('unitMeasureSaveData');
+            Route::get("unitMeasure/listSelect2", "ProductsMeasure\UnitMeasureController@getListSelect2")->name('unitMeasureListSelect2');
+
+
+            Route::post("measureConversion/admin", "ProductsMeasure\MeasureConversionController@getAdmin")->name('measureConversionGetAdmin');
+            Route::post("measureConversion/save", "ProductsMeasure\MeasureConversionController@saveData")->name('measureConversionSaveData');
+
+
+
+
         });
     }
 }

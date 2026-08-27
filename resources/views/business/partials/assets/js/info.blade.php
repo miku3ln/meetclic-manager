@@ -31,16 +31,6 @@ $resourcePathServer=env('APP_IS_SERVER')?"public/":'';
 
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyAy7FfEU_fOeVTrJKxENPLxAor4cL6_d88&libraries=places"></script>
 
-{{--<!-- Add additional services you want to use -->--}}
-{{--<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>--}}
-{{--<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>--}}
-{{--<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>--}}
-{{--<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>--}}
-{{--<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-functions.js"></script>--}}
-
-<!-- Comment out (or don't include) services you don't want to use -->
-<!-- <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-storage.js"></script> -->
-
 <script type="text/javascript">
     var model_entity = "{{$model_entity}}";
     var name_manager = "{{$name_manager}}";

@@ -1,6 +1,6 @@
 {{-- CONFIG GET TEMPLATE  VM-004 --}}
 <!--BUSINESS-MANAGER-TEMPLATES-->
-
+{{--MENU-0005--}}
 
 <script type="text/x-template" id="item-template">
     <li>
@@ -352,6 +352,16 @@ CRM--}}
     @include($wizards_route,$paramsWizard)
         <?php
         $wizards_route = $configPartial["moduleMain"] . "." . $configPartial["moduleFolder"] . ".assets.js.templates.process.business.BusinessByHistory.businessByHistory";
+        ?>
+    @include($wizards_route,$paramsWizard)
+@elseif($configPartial['typeManager']=='managerUnitMeasure')
+
+        <?php
+        $wizards_route = $configPartial["moduleMain"] . "." . $configPartial["moduleFolder"] . ".assets.js.templates.process.store.UnitMeasure.unitMeasureByData";
+        ?>
+    @include($wizards_route,$paramsWizard)
+        <?php
+        $wizards_route = $configPartial["moduleMain"] . "." . $configPartial["moduleFolder"] . ".assets.js.templates.process.store.UnitMeasure.unitMeasure";
         ?>
     @include($wizards_route,$paramsWizard)
 

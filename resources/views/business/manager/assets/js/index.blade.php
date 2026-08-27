@@ -24,6 +24,7 @@ $gamificationCountryReferenceData = $modelDataManager["gamificationCountryRefere
 {{-- INIT CONFIG GET JS-PROCESS  VM-006 --}}
 
 {{--scripts GESTION--}}
+{{--MENU-0004--}}
 <script type="text/javascript">
     var $wulpyme_user_id = {{($user->id)}};
     var model_entity = "{{$model_entity}}";
@@ -342,6 +343,18 @@ $gamificationCountryReferenceData = $modelDataManager["gamificationCountryRefere
         <script
             src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/business/BusinessByHistory/BusinessByHistory.js') }}"
             type="text/javascript"></script>
+    @elseif($configPartial['typeManager'] === 'managerUnitMeasure')
+
+        <script src="{{ asset($resourcePathServer.'assets/libs/summernote/summernote.min.js')}}"></script>
+
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/store/UnitMeasure/UnitMeasureByData.js') }}"
+            type="text/javascript"></script>
+
+        <script
+            src="{{ asset($resourcePathServer.'js/'.$pathCurrent.'/components/store/UnitMeasure/UnitMeasure.js') }}"
+            type="text/javascript"></script>
+
     @elseif($configPartial['typeManager'] === 'managerBusinessByAcademicOfferings')
 
         <script src="{{ asset($resourcePathServer.'assets/libs/summernote/summernote.min.js')}}"></script>

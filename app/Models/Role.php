@@ -117,7 +117,6 @@ class Role extends Model
     {
 
         $level = 0;
-        //$environment = Parameter::where('name', '=', 'environment')->first()->value;
         $actions = self::getActionsMenu($roles_id);
         $result = array();
         foreach ($actions as $action) {

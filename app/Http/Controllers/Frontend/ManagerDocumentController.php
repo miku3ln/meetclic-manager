@@ -2176,6 +2176,36 @@ class ManagerDocumentController extends FrontendBaseController
             ], 500);
         }
     }
+
+    public function measureConversionByType(Request $request)
+    {
+
+
+        try {
+            $dataInput = $request->all();
+
+            $from = $dataInput['from'];
+            $to = $dataInput['to'];
+            $type = isset($dataInput['type'])?$dataInput['type']:null;
+
+            $response = $this->measureResolverService
+                ->resolveSymbolConversion(
+                    $from,
+                    $to
+                );
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => []
+            ]);
+        }
+    }
+
     public function productsGenerateInformation2(Request $request)
     {
         $businessId = 42;
@@ -2196,12 +2226,12 @@ class ManagerDocumentController extends FrontendBaseController
             'one' => [
                 $measureType => $measureType,
                 'conversion' => "10lb",
-                'resultConversion'=>$this->measureResolverService->resolveConversion($measureType, '10lb')
+                'resultConversion' => $this->measureResolverService->resolveConversion($measureType, '10lb')
             ],
             'two' => [
                 $measureType => $measureType,
                 'conversion' => "10lb-t",
-                'resultConversion'=>$this->measureResolverService->resolveConversion($measureType, '10lb','oz')
+                'resultConversion' => $this->measureResolverService->resolveConversion($measureType, '10lb', 'oz')
             ],
             'three' => [
 
@@ -2333,7 +2363,6 @@ class ManagerDocumentController extends FrontendBaseController
             $response['inserts'] = $dataInserts;
             $response['conversion'] = ['params' => $params, 'conversion' => $dataConvert, 'conversionManagement' => $conversionManagement];
             $response['measureConfiguration'] = $measureConfiguration;
-
 
 
             return response()->json($response);

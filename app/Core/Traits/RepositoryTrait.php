@@ -1,27 +1,33 @@
 <?php
 
-namespace App\Core\Repositories;
+namespace App\Core\Traits;
 
-class BaseRepository
+trait RepositoryTrait
 {
-    protected $query;
-
-    public function paginate($query, $params, $defaultSort = 'id')
+    public function paginateQuery($query, $params, $defaultSort = 'id')
     {
-        $sort = 'asc' ;
-             if (isset($params['sortType'])) {
-                 $sort=$params['sortType'];
-             }
+        $sort = 'asc';
+
+        if (isset($params['sortType'])) {
+            $sort = $params['sortType'];
+        }
+
         $field = $defaultSort;
 
         if (isset($params['sort'])) {
             $column = array_keys($params['sort'])[0];
+
             $field = $column;
             $sort = $params['sort'][$column];
         }
 
-        $page = isset($params['current']) ? (int)$params['current'] : 1;
-        $perpage = isset($params['rowCount']) ? (int)$params['rowCount'] : 10;
+        $page = isset($params['current'])
+            ? (int) $params['current']
+            : 1;
+
+        $perpage = isset($params['rowCount'])
+            ? (int) $params['rowCount']
+            : 10;
 
         $total = $query->count();
 
@@ -29,7 +35,10 @@ class BaseRepository
 
         if ($perpage > 0) {
             $offset = ($page - 1) * $perpage;
-            $query->offset($offset)->limit($perpage);
+
+            $query
+                ->offset($offset)
+                ->limit($perpage);
         }
 
         return [
@@ -42,9 +51,11 @@ class BaseRepository
 
     public function applySearch($query, $search, $fields = [])
     {
-        if (!$search) return $query;
+        if (!$search) {
+            return $query;
+        }
 
-        $like = "%$search%";
+        $like = "%{$search}%";
 
         $query->where(function ($q) use ($fields, $like) {
             foreach ($fields as $field) {

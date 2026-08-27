@@ -445,6 +445,22 @@
 <input id="action-business-history-by-data-getAdmin" type="hidden"
        value="{{action("Business\BusinessHistoryByDataController@getAdmin")}}"/>
 
+@if($configPartial['typeManager'] === 'managerUnitMeasure')
+<input id="action-unit-measure-saveData" type="hidden"
+       value="{{route("unitMeasureSaveData")}}"/>
+<input id="action-unit-measure-getAdmin" type="hidden"
+       value="{{route("unitMeasureGetAdmin")}}"/>
+<input id="action-unit-measure-by-data-saveData" type="hidden"
+       value="{{route("measureConversionSaveData")}}"/>
+<input id="action-unit-measure-by-data-getAdmin" type="hidden"
+       value="{{route("measureConversionGetAdmin")}}"/>
+
+<input id="action-unit-measure-getListSelect2" type="hidden"
+       value="{{route("unitMeasureListSelect2")}}"/>
+<input id="action-unit-measure-measureConversionByType" type="hidden"
+       value="{{route("measureConversionByType",'es')}}"/>
+
+@endif
 
 <input id="action-business-by-menu-management-frontend-save" type="hidden"
        value="{{ action("Business\BusinessByMenuManagementFrontendController@saveData") }}"/>

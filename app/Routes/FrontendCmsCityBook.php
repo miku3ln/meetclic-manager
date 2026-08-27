@@ -149,6 +149,8 @@ class FrontendCmsCityBook
 
             Route::get('/management-products-generate-information', 'Frontend\ManagerDocumentController@managementProductsGenerateInformation')->name('managementProductsGenerateInformation');
             Route::post('/products-generate-information', 'Frontend\ManagerDocumentController@productsGenerateInformation')->name('productsGenerateInformation');
+            Route::post('/measure-conversion/by-type', 'Frontend\ManagerDocumentController@measureConversionByType')->name('measureConversionByType');
+
 
 
         });
