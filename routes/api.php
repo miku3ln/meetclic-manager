@@ -106,6 +106,9 @@ Route::prefix('pointsales')->group(function () {
         Route::post('/product-type-update', 'PointSales\ProductController@setProductTypeUpdate');
 
         Route::post('/product-item-recipe-save', 'PointSales\ProductController@setProductItemRecipeSave');
+        Route::post('/product-recipe-yield-save', 'PointSales\ProductController@setProductRecipeYieldSave');
+        Route::post('/product-recipe-yield-get', 'PointSales\ProductController@getProductRecipeYield');
+
         Route::get('/products-sales-recipe', 'PointSales\ProductController@getProductsRecipeSales');
         Route::post('/save-product-recipe', 'PointSales\ProductController@saveProductRecipe');
 

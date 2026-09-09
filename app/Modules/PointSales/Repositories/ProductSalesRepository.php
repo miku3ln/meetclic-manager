@@ -159,6 +159,23 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+    public function setProductRecipeYieldSave($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->setProductRecipeYieldSave(
+                $params
+            );
+    }
+    public function getProductRecipeYield($params)
+    {
+        $util = new ProductSaveUtil();
+        return
+            $util->getProductRecipeYield(
+                $params
+            );
+    }
+
 
     public function getProductsRecipeShopPage($params)
     {

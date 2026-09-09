@@ -236,6 +236,16 @@ class ProductSalesService
 
         return $this->repo->setProductItemRecipeSave($params);
     }
+    public function setProductRecipeYieldSave($params)
+    {
+
+        return $this->repo->setProductRecipeYieldSave($params);
+    }
+    public function getProductRecipeYield($params)
+    {
+
+        return $this->repo->getProductRecipeYield($params);
+    }
 
     public function getProducts($params)
     {

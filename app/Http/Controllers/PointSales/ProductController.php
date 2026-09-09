@@ -1232,7 +1232,20 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
-
+    public function setProductRecipeYieldSave(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $data = $this->service->setProductRecipeYieldSave($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+    public function getProductRecipeYield(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $data = $this->service->getProductRecipeYield($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
     public function save2(Request $request)
     {
         $payload = $request->json()->all();

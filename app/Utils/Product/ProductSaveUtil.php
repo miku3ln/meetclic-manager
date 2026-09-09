@@ -5,6 +5,7 @@ namespace App\Utils\Product;
 use App\Models\BusinessByProduct;
 use App\Models\ProductByStock;
 use App\Models\ProductCategory;
+use App\Models\Products\ProductRecipeYield;
 use App\Models\ProductSubcategory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
@@ -46,6 +47,7 @@ class ProductSaveUtil
     {
         $this->saveLog[$key] = $data;
     }
+
     public function setSubCategoryByBusinessSave(array $payload): array
     {
         DB::beginTransaction();
@@ -85,6 +87,7 @@ class ProductSaveUtil
             ];
         }
     }
+
     public function setSubCategoryByBusinessUpdate(array $payload): array
     {
         DB::beginTransaction();
@@ -124,6 +127,7 @@ class ProductSaveUtil
             ];
         }
     }
+
     public function setCategoryByBusinessSave(array $payload): array
     {
         DB::beginTransaction();
@@ -167,6 +171,7 @@ class ProductSaveUtil
             ];
         }
     }
+
     public function setCategoryByBusinessUpdate(array $payload): array
     {
         DB::beginTransaction();
@@ -206,6 +211,7 @@ class ProductSaveUtil
             ];
         }
     }
+
     public function setProductTypeSave(array $payload): array
     {
         DB::beginTransaction();
@@ -531,6 +537,7 @@ class ProductSaveUtil
         $model->save();
         return $model;
     }
+
     private function saveSubCategoryByBusiness(array $data): ProductSubCategory
     {
         $this->currentStep = 'PRODUCT_SUBCATEGORY';
@@ -1280,5 +1287,286 @@ class ProductSaveUtil
         }
     }
 
+    public function setProductRecipeYieldSave(
+        array $payload
+    ): array
+    {
+        $this->currentStep = 'PRODUCT_RECIPE_YIELD';
+
+        try {
+
+            $productId =
+                (int)($payload['product_id'] ?? 0);
+
+            /**
+             * =====================================================
+             * 1. VERIFICAR SI EXISTE
+             * =====================================================
+             */
+            $exists =
+                ProductRecipeYield::existsByProductId(
+                    $productId
+                );
+
+            /**
+             * =====================================================
+             * 2. CREAR O RECUPERAR MODELO
+             * =====================================================
+             */
+            if ($exists) {
+
+                $model =
+                    ProductRecipeYield::findByProductId(
+                        $productId
+                    );
+
+                $action = 'UPDATE';
+
+            } else {
+
+                $model =
+                    new ProductRecipeYield();
+
+                $action = 'CREATE';
+            }
+
+            /**
+             * =====================================================
+             * 3. CONSTRUIR ATRIBUTOS
+             * =====================================================
+             */
+            $attributes =
+                $model->buildAttributes([
+                    'product_id' =>
+                        $productId,
+
+                    'yield_quantity' =>
+                        $payload['yield_quantity']
+                        ?? 1,
+
+                    'unit_measure_id' =>
+                        $payload['unit_measure_id']
+                        ?? null,
+                ]);
+
+            /**
+             * =====================================================
+             * 4. VALIDAR MODELO
+             * =====================================================
+             */
+            $validate =
+                $model->validateModel([
+                    'modelAttributes' =>
+                        $attributes,
+
+                    'rules' =>
+                        ProductRecipeYield::getRulesModel()
+                ]);
+
+            if (!$validate['success']) {
+
+                return [
+                    'success' => false,
+
+                    'step' =>
+                        $this->currentStep,
+
+                    'action' =>
+                        $action,
+
+                    'model' =>
+                        null,
+
+                    'errors' =>
+                        $validate['errorsFields'],
+
+                    'msj' =>
+                        'Error de validación en product_recipe_yield.'
+                ];
+            }
+
+            /**
+             * =====================================================
+             * 5. LLENAR MODELO
+             * =====================================================
+             */
+            $model->fill(
+                $attributes
+            );
+
+            /**
+             * =====================================================
+             * 6. GUARDAR
+             * =====================================================
+             */
+            $model->save();
+
+            /**
+             * =====================================================
+             * 7. RETORNO CORRECTO
+             * =====================================================
+             */
+            return [
+                'success' =>
+                    true,
+
+                'step' =>
+                    $this->currentStep,
+
+                'action' =>
+                    $action,
+
+                'data' =>
+                    $model,
+
+                'errors' =>
+                    [],
+
+                'msj' =>
+                    $action === 'CREATE'
+                        ? 'Rendimiento creado correctamente.'
+                        : 'Rendimiento actualizado correctamente.'
+            ];
+
+        } catch (Throwable $e) {
+
+            return [
+                'success' =>
+                    false,
+
+                'step' =>
+                    $this->currentStep,
+
+                'action' =>
+                    null,
+
+                'model' =>
+                    null,
+
+                'errors' => [
+                    'message' =>
+                        $e->getMessage(),
+
+                    'line' =>
+                        $e->getLine(),
+
+                    'file' =>
+                        $e->getFile()
+                ],
+
+                'msj' =>
+                    $e->getMessage()
+            ];
+        }
+    }
+    public function getProductRecipeYield(
+        array $payload
+    ): array
+    {
+        $this->currentStep = 'PRODUCT_RECIPE_YIELD';
+
+        try {
+
+            $productId =
+                (int)($payload['product_id'] ?? 0);
+
+            /**
+             * =====================================================
+             * 1. VALIDAR PRODUCT ID
+             * =====================================================
+             */
+            if ($productId <= 0) {
+
+                return [
+                    'success' => false,
+                    'step' => $this->currentStep,
+                    'exists' => false,
+                    'data' => null,
+                    'errors' => [
+                        'product_id' =>
+                            'El product_id es requerido.'
+                    ],
+                    'msj' =>
+                        'Product ID no válido.'
+                ];
+            }
+
+            /**
+             * =====================================================
+             * 2. VERIFICAR SI EXISTE
+             * =====================================================
+             */
+            $exists =
+                ProductRecipeYield::existsByProductId(
+                    $productId
+                );
+
+            /**
+             * =====================================================
+             * 3. NO EXISTE
+             * =====================================================
+             */
+            if (!$exists) {
+
+                return [
+                    'success' => false,
+                    'step' => $this->currentStep,
+                    'exists' => false,
+                    'data' => null,
+                    'errors' => [],
+                    'msj' =>
+                        'No existe rendimiento configurado para el producto.'
+                ];
+            }
+
+            /**
+             * =====================================================
+             * 4. OBTENER MODELO
+             * =====================================================
+             */
+            $model =
+                ProductRecipeYield::findByProductId(
+                    $productId
+                );
+
+            /**
+             * =====================================================
+             * 5. RETORNAR INFORMACIÓN
+             * =====================================================
+             */
+            return [
+                'success' => true,
+                'step' => $this->currentStep,
+                'exists' => true,
+                'data' => $model->toArray(),
+                'errors' => [],
+                'msj' =>
+                    'Rendimiento obtenido correctamente.'
+            ];
+
+        } catch (Throwable $e) {
+
+            return [
+                'success' => false,
+                'step' => $this->currentStep,
+                'exists' => false,
+                'data' => null,
+
+                'errors' => [
+                    'message' =>
+                        $e->getMessage(),
+
+                    'line' =>
+                        $e->getLine(),
+
+                    'file' =>
+                        $e->getFile()
+                ],
+
+                'msj' =>
+                    $e->getMessage()
+            ];
+        }
+    }
 
 }
