@@ -4,11 +4,21 @@ namespace App\Modules\PointSales\Repositories;
 
 
 use App\Core\Repositories\BaseRepository;
+use App\Modules\PointSales\Services\StockDiscountService;
 use App\Utils\Product\ProductSaveUtil;
 use Illuminate\Support\Facades\DB;
 
 class ProductSalesRepository extends BaseRepository
 {
+    protected StockDiscountService $serviceStock;
+
+    public function __construct(
+        StockDiscountService $serviceStock
+    )
+    {
+        $this->serviceStock = $serviceStock;
+    }
+
     public function getProducts($params)
     {
 
@@ -101,6 +111,7 @@ class ProductSalesRepository extends BaseRepository
         // 📦 PAGINACIÓN + SORT (genérico)
         return $this->paginate($query, $params, 'p.id');
     }
+
     public function setCategoryByBusinessSave($params)
     {
         $util = new ProductSaveUtil();
@@ -109,6 +120,7 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function setCategoryByBusinessUpdate($params)
     {
         $util = new ProductSaveUtil();
@@ -117,6 +129,7 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function setSubCategoryByBusinessSave($params)
     {
         $util = new ProductSaveUtil();
@@ -125,6 +138,7 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function setSubCategoryByBusinessUpdate($params)
     {
         $util = new ProductSaveUtil();
@@ -133,6 +147,7 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function setProductTypeSave($params)
     {
         $util = new ProductSaveUtil();
@@ -159,6 +174,7 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function setProductRecipeYieldSave($params)
     {
         $util = new ProductSaveUtil();
@@ -167,6 +183,11 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+    public function generateMovementProduct($params)
+    {
+       return $this->serviceStock->generateMovementProduct($params);
+    }
+
     public function getProductRecipeYield($params)
     {
         $util = new ProductSaveUtil();
@@ -378,6 +399,7 @@ class ProductSalesRepository extends BaseRepository
             'pr.id'
         );
     }
+
     public function getSubCategoryByBusiness($params)
     {
         /*
@@ -395,28 +417,28 @@ class ProductSalesRepository extends BaseRepository
         |--------------------------------------------------------------------------
         */
 
-$keyMainAlies="psc";
-        $query = DB::table('product_subcategory as '.$keyMainAlies)
-            ->where($keyMainAlies.'.business_id', $business_id)
-            ->whereIn($keyMainAlies.'.state', $state);
+        $keyMainAlies = "psc";
+        $query = DB::table('product_subcategory as ' . $keyMainAlies)
+            ->where($keyMainAlies . '.business_id', $business_id)
+            ->whereIn($keyMainAlies . '.state', $state);
         $query->select([
-            $keyMainAlies.'.id',
-            $keyMainAlies.'.value',
-            $keyMainAlies.'.state',
-            $keyMainAlies. '.description',
-            $keyMainAlies. '.subtitle',
-            $keyMainAlies. '.source',
-            $keyMainAlies. '.business_id',
-            $keyMainAlies. '.product_category_id',
-             'pc.id as pc_id',
-             'pc.value as pc_value',
-             'pc.state  as pc_state',
-             'pc.description  as pc_description',
+            $keyMainAlies . '.id',
+            $keyMainAlies . '.value',
+            $keyMainAlies . '.state',
+            $keyMainAlies . '.description',
+            $keyMainAlies . '.subtitle',
+            $keyMainAlies . '.source',
+            $keyMainAlies . '.business_id',
+            $keyMainAlies . '.product_category_id',
+            'pc.id as pc_id',
+            'pc.value as pc_value',
+            'pc.state  as pc_state',
+            'pc.description  as pc_description',
             'pc.subtitle  as pc_subtitle'
 
 
         ]);
-        $query->join('product_category as pc', 'pc.id', '=', $keyMainAlies.'.product_category_id');
+        $query->join('product_category as pc', 'pc.id', '=', $keyMainAlies . '.product_category_id');
 
         /*
         |--------------------------------------------------------------------------
@@ -428,9 +450,9 @@ $keyMainAlies="psc";
             $query,
             $params['searchPhrase'] ?? null,
             [
-                $keyMainAlies.'.value',
-                $keyMainAlies. '.subtitle',
-                $keyMainAlies. '.description',
+                $keyMainAlies . '.value',
+                $keyMainAlies . '.subtitle',
+                $keyMainAlies . '.description',
 
             ]
         );
@@ -440,11 +462,12 @@ $keyMainAlies="psc";
         | PAGINATION
         |--------------------------------------------------------------------------
         */
-        $query->orderBy($keyMainAlies.'.id', 'desc');
-        $result = $this->paginate($query, $params, $keyMainAlies.'.id');
+        $query->orderBy($keyMainAlies . '.id', 'desc');
+        $result = $this->paginate($query, $params, $keyMainAlies . '.id');
 
         return $result;
     }
+
     public function getCategoryByBusiness($params)
     {
         /*
@@ -511,6 +534,7 @@ $keyMainAlies="psc";
 
         return $result;
     }
+
     public function getProductsShopPage($params)
     {
         /*
@@ -677,8 +701,8 @@ $keyMainAlies="psc";
         | SELECT
         |--------------------------------------------------------------------------
         */
-        $inventoryInitial=" ";
-        $stockManager=" ";
+        $inventoryInitial = " ";
+        $stockManager = " ";
 
         if ($type === 'MANAGEMENT') {
 
@@ -810,7 +834,7 @@ $keyMainAlies="psc";
                 }
             );
 
-            $stockManager=" ,
+            $stockManager = " ,
 'product_by_stock',
 JSON_OBJECT(
     'id', pbst.id,
@@ -926,7 +950,7 @@ JSON_OBJECT(
 
         }
 
-        $detailsAll="
+        $detailsAll = "
 JSON_OBJECT(
 
     'product',

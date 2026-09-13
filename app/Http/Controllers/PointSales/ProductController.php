@@ -552,7 +552,7 @@ class ProductController extends PointSalesBaseController
                 $invoice_sale_id = $modelInvoice->id;
                 $attributesSetInvoice["id"] = $invoice_sale_id;
 
-                $ticket_code =  'TICKET-'. ($invoice_sale_id);
+                $ticket_code = 'TICKET-' . ($invoice_sale_id);
                 //business_by_invoice_sale
                 $business_by_invoice_sale = [
                     "entidad_data_id" => $business_id,
@@ -1232,6 +1232,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function setProductRecipeYieldSave(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
@@ -1239,6 +1240,15 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
+    public function generateMovementProduct(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+        $params = $request->all();
+        $data = $this->service->generateMovementProduct($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
+    }
+
     public function getProductRecipeYield(Request $request)//POS-PRODUCTS -INIT-ONE
     {
         $params = $request->all();
@@ -1246,6 +1256,7 @@ class ProductController extends PointSalesBaseController
         $this->user = $request->get('auth_user');
         return response()->json($data);
     }
+
     public function save2(Request $request)
     {
         $payload = $request->json()->all();
@@ -1289,49 +1300,47 @@ class ProductController extends PointSalesBaseController
                     "No existe producto componente ID: {$productId}"
                 );
             }
-
-
             /**
              * Solo descuenta inventario si es procesado
              */
             if ($resultData->inventory_type == ProductClassification::INVENTORY_PROCESSED) {
-                $step = 'INVENTORY_MOVEMENT_SAVE';
-                $modelIM = new InventoryMovement();
-                $dataInventoryMovement = [
+                if (false) {
+                    $step = 'INVENTORY_MOVEMENT_SAVE';
+                    $modelIM = new InventoryMovement();
+                    $dataInventoryMovement = [
 
-                    'product_id' => $payload['component_product_id'],
+                        'product_id' => $payload['component_product_id'],
 
-                    'movement_type' => InventoryMovement::TYPE_OUT,
+                        'movement_type' => InventoryMovement::TYPE_OUT,
 
-                    'quantity' => $payload['quantity_base'],
+                        'quantity' => $payload['quantity_base'],
 
-                    'unit_measure_id' => $payload['base_unit_measure_id'],
+                        'unit_measure_id' => $payload['base_unit_measure_id'],
 
-                    'quantity_input' => $payload['quantity_input'],
+                        'quantity_input' => $payload['quantity_input'],
 
-                    'unit_input_id' => $payload['unit_input_id'],
+                        'unit_input_id' => $payload['unit_input_id'],
 
-                    'conversion_factor' => $payload['conversion_factor'],
+                        'conversion_factor' => $payload['conversion_factor'],
 
-                    'reference_type' => 'INVENTARIO_DISCOUNT_BY_RECIPE',
+                        'reference_type' => 'INVENTARIO_DISCOUNT_BY_RECIPE',
 
-                    'reference_id' => $saved->id,
+                        'reference_id' => $saved->id,
 
-                    'description' => 'Descuento por Registro de Receta by RECETA',
-                ];
-                $savedInventory = $modelIM->saveFromArray(
-                    $dataInventoryMovement
-                );
+                        'description' => 'Descuento por Registro de Receta by RECETA',
+                    ];
+                    $savedInventory = $modelIM->saveFromArray(
+                        $dataInventoryMovement
+                    );
+                }
+
 
             }
             if ($model->existsComponentProduct($productId)) {
                 $resultData->state = "ACTIVE";
                 $resultData->save();
             }
-
             DB::commit();
-
-
             return response()->json([
 
                 'success' => true,

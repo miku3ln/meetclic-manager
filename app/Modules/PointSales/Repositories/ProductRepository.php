@@ -39,11 +39,11 @@ class ProductRepository
             ->select([
                 'p.id',
                 'p.product_type',
-
+                'ps.id as manager_register_id',
                 'ps.quantity',
                 'ps.quantity_base',
                 'um_base.symbol',
-
+                'um_base.name',
                 'um_stock.id as stock_unit_id',
                 'um_base.id as base_unit_id'
             ])
@@ -101,11 +101,11 @@ class ProductRepository
                 $join->on('um_base.product_measure_type_id', '=', 'p.product_measure_type_id')
                     ->where('um_base.is_base', 1);
             })
-
-            ->leftJoin('product_stock as ps', 'ps.product_id', '=', 'p.id')
             ->leftJoin('unit_measure as um_base_input', function ($join) {
                 $join->on('um_base_input.id', '=', 'pr.unit_input_id');
             })
+            ->leftJoin('product_stock as ps', 'ps.product_id', '=', 'p.id')
+
             ->where('pr.component_product_id', $productId)
             ->select([
                 'pr.id',
@@ -151,7 +151,7 @@ class ProductRepository
                 'ps.quantity as stock_quantity',
                 'ps.quantity_base as stock_quantity_base',
             ])
-
+            ->orderBy('pr.id', 'desc')
             ->get();
     }
     public function getStock($productId)

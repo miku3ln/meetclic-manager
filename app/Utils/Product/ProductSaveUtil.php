@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Utils\Product;
-
 use App\Models\BusinessByProduct;
 use App\Models\ProductByStock;
 use App\Models\ProductCategory;
@@ -1570,3 +1569,5 @@ class ProductSaveUtil
     }
 
 }
+
+

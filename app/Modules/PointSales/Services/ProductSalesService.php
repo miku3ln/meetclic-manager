@@ -241,6 +241,14 @@ class ProductSalesService
 
         return $this->repo->setProductRecipeYieldSave($params);
     }
+    public function generateMovementProduct($params)
+    {
+
+        return $this->repo->generateMovementProduct($params);
+    }
+
+
+
     public function getProductRecipeYield($params)
     {
 

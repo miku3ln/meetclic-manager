@@ -127,6 +127,9 @@ Route::prefix('pointsales')->group(function () {
 
         Route::get('/generate-keys-manager', 'PointSales\ProductController@generateKeysManager');
 
+
+        Route::post('/generate-movement-product', 'PointSales\ProductController@generateMovementProduct');
+
     });
 
 });
