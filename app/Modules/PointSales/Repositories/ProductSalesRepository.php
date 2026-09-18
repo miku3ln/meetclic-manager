@@ -703,7 +703,7 @@ class ProductSalesRepository extends BaseRepository
         */
         $inventoryInitial = " ";
         $stockManager = " ";
-
+        $productRecipeYield = "";
         if ($type === 'MANAGEMENT') {
 
             $query->leftJoin(
@@ -833,6 +833,26 @@ class ProductSalesRepository extends BaseRepository
                         ->where('muc_input.state', 1);
                 }
             );
+
+            $query->leftJoin(
+                'product_recipe_yield as pry',
+                'pry.product_id',
+                '=',
+                'p.id'
+            );
+            $productRecipeYield = ",
+'product_recipe_yield',
+IF(
+    pry.id IS NULL,
+    NULL,
+    JSON_OBJECT(
+        'id', pry.id,
+        'product_id', pry.product_id,
+        'yield_quantity', pry.yield_quantity,
+        'unit_measure_id', pry.unit_measure_id
+    )
+)";
+
 
             $stockManager = " ,
 'product_by_stock',
@@ -1087,7 +1107,7 @@ JSON_OBJECT(
         'quantity', ps.quantity,
         'quantity_base', ps.quantity_base,
         'unit_measure_id', ps.unit_measure_id
-    ) $inventoryInitial $stockManager
+    ) $inventoryInitial $stockManager $productRecipeYield
 
 ) as details_all
 ";

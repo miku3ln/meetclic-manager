@@ -383,8 +383,179 @@ class StockDiscountService
             ->values()
             ->toArray();
     }
-
     private function buildRecipeInventoryMovementData(
+        array $dataRecipeManager,
+        int $typeMovement,
+        array $options = []
+    ): array
+    {
+        $movementType =
+            $typeMovement === 1
+                ? 'OUT'
+                : 'IN';
+
+        /*
+         * =============================================================
+         * REFERENCIA DEL MOVIMIENTO
+         * =============================================================
+         */
+        $referenceType =
+            $options['reference_type']
+            ?? 'INVENTORY_RECIPE_MOVEMENT';
+
+        /*
+         * =============================================================
+         * DESCRIPCIÓN BASE
+         * =============================================================
+         */
+        $baseDescription =
+            $options['description']
+            ?? (
+        $typeMovement === 1
+            ? 'Salida de inventario por consumo de receta'
+            : 'Entrada de inventario por reverso de receta'
+        );
+
+        return collect($dataRecipeManager)
+            ->map(function ($item) use (
+                $movementType,
+                $referenceType,
+                $baseDescription,
+                $options
+            ) {
+
+                /*
+                 * =====================================================
+                 * DATOS DE CONVERSIÓN
+                 * =====================================================
+                 */
+                $transform =
+                    data_get($item, 'transform', []);
+
+                $inputManager =
+                    data_get($transform, 'input_manager', []);
+
+                $baseManager =
+                    data_get($transform, 'base_manager', []);
+
+                /*
+                 * =====================================================
+                 * UNIDAD EN LA QUE VIENE
+                 * =====================================================
+                 */
+                $inputAmount =
+                    round(
+                        (float)data_get($inputManager, 'amount', 0),
+                        6
+                    );
+
+                $inputSymbol =
+                    data_get($inputManager, 'symbol', '');
+
+                $inputName =
+                    data_get($inputManager, 'name', '');
+
+                /*
+                 * =====================================================
+                 * UNIDAD A LA QUE SE ASIGNA / CONVIERTE
+                 * =====================================================
+                 */
+                $baseAmount =
+                    round(
+                        (float)data_get($baseManager, 'amount', 0),
+                        6
+                    );
+
+                $baseSymbol =
+                    data_get($baseManager, 'symbol', '');
+
+                $baseName =
+                    data_get($baseManager, 'name', '');
+
+                /*
+                 * =====================================================
+                 * DESCRIPCIÓN DEL MOVIMIENTO
+                 * =====================================================
+                 *
+                 * Ejemplo:
+                 *
+                 * Salida de inventario por consumo de receta |
+                 * Medida ingresada: 3 lb (Libra) |
+                 * Medida asignada: 1360.776 g (Gramo)
+                 */
+                $movementDescription =
+                    $baseDescription
+                    . ' | Medida ingresada: '
+                    . $inputAmount
+                    . ' '
+                    . $inputSymbol
+                    . ' (' . $inputName . ')'
+                    . ' | Medida asignada: '
+                    . $baseAmount
+                    . ' '
+                    . $baseSymbol
+                    . ' (' . $baseName . ')';
+
+                /*
+                 * =====================================================
+                 * INVENTORY MOVEMENT
+                 * =====================================================
+                 */
+                return [
+
+                    'product_id' =>
+                        data_get($transform, 'product_id'),
+
+                    'movement_type' =>
+                        $movementType,
+
+                    /*
+                     * Cantidad convertida a la unidad base.
+                     */
+                    'unit_measure_id' =>
+                        data_get($baseManager, 'id'),
+
+                    'quantity' =>
+                        $baseAmount,
+
+                    /*
+                     * Cantidad y unidad originales.
+                     */
+                    'unit_input_id' =>
+                        data_get($inputManager, 'id'),
+
+                    'quantity_input' =>
+                        $inputAmount,
+
+                    'conversion_factor' =>
+                        data_get(
+                            $inputManager,
+                            'factor_to_base',
+                            1
+                        ),
+
+                    'reference_type' =>
+                        $referenceType,
+
+                    'reference_id' =>
+                        $options['reference_id']
+                        ?? data_get(
+                            $transform,
+                            'recipe_id'
+                        ),
+
+                    /*
+                     * Aquí queda registrada la conversión
+                     * de forma legible.
+                     */
+                    'description' =>
+                        $movementDescription,
+                ];
+            })
+            ->values()
+            ->toArray();
+    }
+    private function buildRecipeInventoryMovementData2(
         array $dataRecipeManager,
         int   $typeMovement,
         array $options = []
@@ -920,6 +1091,7 @@ class StockDiscountService
             );
         $payloadSave = $parentProductManager["data"];
         $managerProductMovement = $utilSaveMovement->executeProductMovement($payloadSave);
+
         $productManager['parentProductManager'] = $parentProductManager;
         $productManager = null;
         $allowSave = false;
