@@ -130,6 +130,28 @@ Route::prefix('pointsales')->group(function () {
 
         Route::post('/generate-movement-product', 'PointSales\ProductController@generateMovementProduct');
 
+
+        Route::post('/generate-movement-product', 'PointSales\ProductController@generateMovementProduct');
+
+        Route::post(
+            '/get-user-point-of-sale-cash',
+            'PointSales\ManagementCashController@getUserPointOfSaleCash'
+        );
+
+        Route::post(
+            '/open-point-of-sale-cash',
+            'PointSales\ManagementCashController@openPointOfSaleCash'
+        );
+        Route::post(
+            '/close-point-of-sale-cash',
+            'PointSales\ManagementCashController@closePointOfSaleCash'
+        );
+
+        Route::get(
+            '/get-cash-movements',
+            'PointSales\ManagementCashController@getCashMovements'
+        );
+
     });
 
 });

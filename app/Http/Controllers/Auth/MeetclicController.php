@@ -79,7 +79,7 @@ class MeetclicController extends Controller
                 $user->save();
                 $user_id = $user->id;
                 $userData = $this->serviceUser->getUserInfoForFlutter($user_id);
-
+                $userDataRoles=  $this->serviceUser->getRolesByUserId($user_id);
                 $data['userData'] = $userData;
                 $modelUserByBusiness = new BusinessByEmployeeProfile();
                 $userByBusiness = $modelUserByBusiness->getUserBusiness([
@@ -105,6 +105,7 @@ class MeetclicController extends Controller
                 }
                 $data['userData']["access_token"] = $accessToken;
                 $data['userData']["businessManager"] = $businessManager;
+                $data['userData']["roles"] = $userDataRoles;
 
                 return Response::json([
                     "type" => $type,

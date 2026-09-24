@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Cash;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Exception;
+use App\Models\ModelManager;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class CashByUser extends ModelManager
@@ -247,5 +249,182 @@ class CashByUser extends ModelManager
         $result = $rows==null  ? null : $rows;
         return $result;
     }
+
+    public function getByUserAndBusiness(
+        $userId,
+        $businessId
+    ) {
+        return DB::table('cash_by_user as cbu')
+            ->join(
+                'business_by_cash as bbc',
+                'bbc.id',
+                '=',
+                'cbu.business_by_cash_id'
+            )
+            ->join(
+                'cash as c',
+                'c.id',
+                '=',
+                'bbc.cash_id'
+            )
+            ->leftJoin(
+                'cash_by_type as cbt',
+                'cbt.cash_id',
+                '=',
+                'c.id'
+            )
+            ->leftJoin(
+                'cash_type as ct',
+                'ct.id',
+                '=',
+                'cbt.cash_type_id'
+            )
+            ->where('cbu.user_id', $userId)
+            ->where('bbc.business_id', $businessId)
+            ->select([
+                'cbu.id as cash_by_user_id',
+                'cbu.user_id',
+                'cbu.owner_id',
+                'cbu.entidad_data_id',
+
+                'bbc.id as business_by_cash_id',
+                'bbc.business_id',
+
+                'c.id as cash_id',
+                'c.name as cash_name',
+                'c.amount_current',
+
+                'ct.id as cash_type_id',
+                'ct.code as cash_type_code',
+                'ct.value as cash_type',
+                'ct.requires_opening',
+                'ct.requires_closing'
+            ])
+            ->first();
+    }
+
+    /**
+     * Saber si el usuario ya tiene una caja asignada.
+     */
+    public function hasCashAssigned(
+        $userId,
+        $businessId
+    ) {
+        return DB::table('cash_by_user as cbu')
+            ->join(
+                'business_by_cash as bbc',
+                'bbc.id',
+                '=',
+                'cbu.business_by_cash_id'
+            )
+            ->where('cbu.user_id', $userId)
+            ->where('bbc.business_id', $businessId)
+            ->exists();
+    }
+
+    /**
+     * Obtener operadores de una caja.
+     */
+    public function getUsersByBusinessCash(
+        $businessByCashId
+    ) {
+        return self::where(
+            'business_by_cash_id',
+            $businessByCashId
+        )->get();
+    }
+
+
+
+
+    public function getPointOfSaleCashByUser(
+        $userId,
+        $businessId
+    ) {
+        return DB::table('business_by_cash as bbc')
+
+            ->join(
+                'cash as c',
+                'c.id',
+                '=',
+                'bbc.cash_id'
+            )
+
+            ->join(
+                'cash_by_type as cbt',
+                'cbt.cash_id',
+                '=',
+                'c.id'
+            )
+
+            ->join(
+                'cash_type as ct',
+                'ct.id',
+                '=',
+                'cbt.cash_type_id'
+            )
+
+            ->leftJoin(
+                'cash_by_user as cbu',
+                function ($join) use ($userId) {
+                    $join->on(
+                        'cbu.business_by_cash_id',
+                        '=',
+                        'bbc.id'
+                    );
+
+                    $join->where(
+                        'cbu.user_id',
+                        '=',
+                        $userId
+                    );
+                }
+            )
+
+            ->where(
+                'bbc.business_id',
+                $businessId
+            )
+
+            ->where(
+                'c.state',
+                Cash::STATE_ACTIVE
+            )
+
+            ->where(
+                'ct.state',
+                CashType::STATE_ACTIVE
+            )
+
+            ->where(
+                'ct.code',
+                CashType::TYPE_POINT_OF_SALE
+            )
+
+            ->select([
+                'bbc.id as business_by_cash_id',
+                'bbc.business_id',
+
+                'c.id as cash_id',
+                'c.name as cash_name',
+                'c.details as cash_details',
+                'c.amount_current',
+                'c.accounting_account_id',
+
+                'ct.id as cash_type_id',
+                'ct.code as cash_type_code',
+                'ct.value as cash_type',
+                'ct.requires_opening',
+                'ct.requires_closing',
+
+                'cbu.id as cash_by_user_id',
+                'cbu.user_id',
+                'cbu.owner_id',
+                'cbu.entidad_data_id'
+            ])
+
+            ->first();
+    }
+
 
 }

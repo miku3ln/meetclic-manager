@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Cash\CashByUser;
 use App\Models\InvoiceSales\FacturaSriCabecera;
 use App\Utils\Accounting\BillingUtil;
 use App\Utils\Accounting\UtilAccounting;
 use App\Utils\Util;
-use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class InvoiceSale extends ModelManager

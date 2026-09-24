@@ -16,6 +16,10 @@ class UserService
     {
         return $this->repository->getUserCompleteInfo($userId);
     }
+    public function getRolesByUserId($userId)
+    {
+        return $this->repository->getRolesByUserId($userId);
+    }
 
     public function getGamificationLog($userId): array
     {

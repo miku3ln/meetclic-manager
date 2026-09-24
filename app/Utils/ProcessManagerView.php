@@ -2,9 +2,7 @@
 
 namespace App\Utils;
 
-use App\Models\InformationAddressType;
 use App\Models\VoucherType;
-use App\Utils\Util;
 use Auth;
 
 class ProcessManagerView
@@ -435,7 +433,7 @@ class ProcessManagerView
         }
 //CASH
         $allowProcessBuySales = true;
-        $modelCBU = new \App\Models\CashByUser;
+        $modelCBU = new \App\Models\Cash\CashByUser;
         $resultSearch = null;
         $paymentTypeMix = true;
         $paymentType = false;
@@ -889,7 +887,7 @@ class ProcessManagerView
         }
 //CASH
         $allowProcessBuySales = true;
-        $modelCBU = new \App\Models\CashByUser;
+        $modelCBU = new \App\Models\Cash\CashByUser;
         $resultSearch = null;
         $paymentTypeMix = true;
         $paymentType = false;

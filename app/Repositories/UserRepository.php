@@ -64,7 +64,17 @@ class UserRepository
             ->first();
         return $data ? (array)$data : [];
     }
-
+    public function getRolesByUserId($userId)
+    {
+        return DB::table('users_has_roles as ur')
+            ->join('roles as r', 'r.id', '=', 'ur.role_id')
+            ->where('ur.user_id', $userId)
+            ->select([
+                'r.id as role_id',
+                'r.name as role_name',
+            ])
+            ->get();
+    }
     private const INPUT = 1;
     private const OUTPUT = 0;
 
