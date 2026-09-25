@@ -92,6 +92,27 @@ class ManagementCashController extends PointSalesBaseController
 
         return response()->json($result);
     }
+    public function getPointOfSaleCashCloseSummary(Request $request)
+    {
+        $payload = $request->json()->all();
+
+        $userId = isset($payload['user_id'])
+            ? (int)$payload['user_id']
+            : 0;
+
+        $businessId = isset($payload['business_id'])
+            ? (int)$payload['business_id']
+            : 0;
+        $cashManager = new CashManager();
+        $result = $cashManager->getPointOfSaleCashCloseSummary(
+            $userId,
+            $businessId,
+
+        );
+        $this->user = $request->get('auth_user');
+
+        return response()->json($result);
+    }
     public function getCashMovements(Request $request)
     {
         $params =

@@ -543,4 +543,190 @@ class CashMovement extends ModelManager
             $tblCashMovement . '.id'
         );
     }
+    /**
+     * Obtener movimientos de una sesión
+     * consolidados por tipo y motivo.
+     */
+    public function getSessionMovementSummaryByReason(
+        $cashSessionId
+    ) {
+        return DB::table($this->table . ' as cbm')
+
+            ->join(
+                'cash_reason as cr',
+                'cr.id',
+                '=',
+                'cbm.cash_reason_id'
+            )
+
+            ->where(
+                'cbm.cash_session_id',
+                $cashSessionId
+            )
+
+            ->where(
+                'cbm.state',
+                self::STATE_ACTIVE
+            )
+
+            ->groupBy(
+                'cbm.movement_type',
+                'cbm.cash_reason_id',
+                'cr.value'
+            )
+
+            ->select([
+                'cbm.movement_type',
+                'cbm.cash_reason_id',
+                'cr.value as cash_reason',
+
+                DB::raw(
+                    'COUNT(cbm.id) AS movement_count'
+                ),
+
+                DB::raw(
+                    'COALESCE(SUM(cbm.rode), 0) AS total'
+                )
+            ])
+
+            ->orderBy(
+                'cbm.movement_type',
+                'asc'
+            )
+
+            ->orderBy(
+                'cbm.cash_reason_id',
+                'asc'
+            )
+
+            ->get();
+    }
+    /**
+     * Obtener detalle de movimientos de una sesión
+     * para un motivo específico.
+     */
+    public function getSessionMovementsByReason(
+        $cashSessionId,
+        $cashReasonId
+    ) {
+        return DB::table($this->table . ' as cbm')
+
+            ->leftJoin(
+                'cash_reason as cr',
+                'cr.id',
+                '=',
+                'cbm.cash_reason_id'
+            )
+
+            ->where(
+                'cbm.cash_session_id',
+                $cashSessionId
+            )
+
+            ->where(
+                'cbm.cash_reason_id',
+                $cashReasonId
+            )
+
+            ->where(
+                'cbm.state',
+                self::STATE_ACTIVE
+            )
+
+            ->select([
+                'cbm.id',
+                'cbm.cash_session_id',
+                'cbm.movement_type',
+                'cbm.cash_reason_id',
+
+                'cr.value as cash_reason',
+
+                'cbm.rode',
+                'cbm.details',
+                'cbm.date_current',
+
+                'cbm.transaction_type',
+                'cbm.entity_type',
+                'cbm.entity_id',
+
+                'cbm.available_balance'
+            ])
+
+            ->orderBy(
+                'cbm.date_current',
+                'desc'
+            )
+
+            ->get();
+    }
+    /**
+     * Obtener detalle de movimientos por motivo.
+     */
+    public function getReportMovementsByReason(
+        $cashByUserId,
+        $cashReasonId,
+        $dateFrom,
+        $dateTo
+    ) {
+        return DB::table($this->table . ' as cbm')
+
+            ->join(
+                'cash_session as cs',
+                'cs.id',
+                '=',
+                'cbm.cash_session_id'
+            )
+
+            ->leftJoin(
+                'cash_reason as cr',
+                'cr.id',
+                '=',
+                'cbm.cash_reason_id'
+            )
+
+            ->where(
+                'cs.cash_by_user_id',
+                $cashByUserId
+            )
+
+            ->where(
+                'cbm.cash_reason_id',
+                $cashReasonId
+            )
+
+            ->where(
+                'cbm.state',
+                self::STATE_ACTIVE
+            )
+
+            ->whereBetween(
+                'cbm.date_current',
+                [
+                    $dateFrom,
+                    $dateTo
+                ]
+            )
+
+            ->select([
+                'cbm.id',
+                'cbm.cash_session_id',
+                'cbm.movement_type',
+                'cbm.cash_reason_id',
+                'cr.value as cash_reason',
+                'cbm.rode',
+                'cbm.details',
+                'cbm.date_current',
+                'cbm.transaction_type',
+                'cbm.entity_type',
+                'cbm.entity_id',
+                'cbm.available_balance'
+            ])
+
+            ->orderBy(
+                'cbm.date_current',
+                'desc'
+            )
+
+            ->get();
+    }
 }

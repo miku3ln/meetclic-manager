@@ -151,7 +151,10 @@ Route::prefix('pointsales')->group(function () {
             '/get-cash-movements',
             'PointSales\ManagementCashController@getCashMovements'
         );
-
+        Route::post(
+            '/get-point-of-sale-cash-close-summary',
+            'PointSales\ManagementCashController@getPointOfSaleCashCloseSummary'
+        );
     });
 
 });
