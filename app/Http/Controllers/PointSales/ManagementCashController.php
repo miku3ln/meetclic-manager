@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\PointSales;
 
 use App\Http\Controllers\PointSalesBaseController;
-
 use App\Models\Cash\CashManager;
 use App\Models\Cash\CashMovement;
+use App\Models\Cash\CashReason;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class ManagementCashController extends PointSalesBaseController
@@ -65,6 +66,7 @@ class ManagementCashController extends PointSalesBaseController
 
         return response()->json($result);
     }
+
     public function closePointOfSaleCash(Request $request)
     {
         $payload = $request->json()->all();
@@ -92,6 +94,69 @@ class ManagementCashController extends PointSalesBaseController
 
         return response()->json($result);
     }
+
+    public function generateMovementCash(Request $request)
+    {
+        /*
+         * =====================================================
+         * 1. OBTENER PARÁMETROS
+         * =====================================================
+         */
+
+        $payload = $request->json()->all();
+
+        /*
+         * =====================================================
+         * 2. VALIDAR DATOS
+         * =====================================================
+         */
+
+        $validator = Validator::make($payload, [
+            'user_id' => 'required|integer|min:1',
+            'business_id' => 'required|integer|min:1',
+
+            'movement_type' => 'required|integer|in:0,1',
+
+            'cash_reason_id' => 'required|integer|min:1',
+
+            'accounting_account_id' => 'nullable|integer|min:1',
+
+            'details' => 'nullable|string|max:1000',
+
+            'rode' => 'required|numeric|gt:0',
+
+            'transaction_type' => 'required',
+
+            'types_payments_id' => 'required|integer|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Los datos del movimiento no son válidos.',
+                'data' => [],
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+
+        /*
+         * =====================================================
+         * 4. REGISTRAR MOVIMIENTO
+         * =====================================================
+         */
+
+        $cashManager = new CashManager();
+
+        $result = $cashManager->generateMovementCash(
+            $payload
+        );
+
+        $this->user = $request->get('auth_user');
+
+        return response()->json($result);
+    }
+
     public function getPointOfSaleCashCloseSummary(Request $request)
     {
         $payload = $request->json()->all();
@@ -113,6 +178,7 @@ class ManagementCashController extends PointSalesBaseController
 
         return response()->json($result);
     }
+
     public function getCashMovements(Request $request)
     {
         $params =
@@ -170,5 +236,15 @@ class ManagementCashController extends PointSalesBaseController
         return response()->json(
             $data
         );
+    }
+
+    public function cashReasonsSearch(Request $request)//POS-PRODUCTS -INIT-ONE
+    {
+
+        $params = $request->all();
+        $model = new CashReason();
+        $data = $model->getListSelect2($params);
+        $this->user = $request->get('auth_user');
+        return response()->json($data);
     }
 }

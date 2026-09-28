@@ -10,7 +10,8 @@ class CashManager
     private function getPointOfSaleCashContext(
         $userId,
         $businessId
-    ) {
+    )
+    {
         $errors = [];
 
         /*
@@ -118,13 +119,15 @@ class CashManager
             'errors' => []
         ];
     }
+
     /**
      * Obtener la caja POS asignada a un usuario dentro de una empresa.
      */
     public function getUserPointOfSaleCash(
         $userId,
         $businessId
-    ) {
+    )
+    {
         try {
 
             /*
@@ -410,12 +413,14 @@ class CashManager
             ];
         }
     }
+
     public function openPointOfSaleCash(
         $userId,
         $businessId,
         $openingAmount,
         $openingDetails = null
-    ) {
+    )
+    {
         $errors = [];
 
         DB::beginTransaction();
@@ -645,12 +650,14 @@ class CashManager
             ];
         }
     }
+
     public function closePointOfSaleCash(
         $userId,
         $businessId,
         $closingAmount,
         $closingDetails = null
-    ) {
+    )
+    {
         $errors = [];
 
         DB::beginTransaction();
@@ -945,6 +952,509 @@ class CashManager
             ];
         }
     }
+
+    public function generateMovementCash($params)
+    {
+        $errors = [];
+
+        /*
+         * =====================================================
+         * INICIAR TRANSACCIÓN GENERAL
+         * =====================================================
+         *
+         * CashByTransactionManagement
+         * +
+         * CashMovement
+         *
+         * deben guardarse juntos.
+         * =====================================================
+         */
+
+        DB::beginTransaction();
+
+
+        try {
+
+            /*
+             * =====================================================
+             * 1. PARAMS BASE
+             * =====================================================
+             */
+
+            $userId =
+                isset($params['user_id'])
+                    ? (int)$params['user_id']
+                    : 0;
+
+
+            $businessId =
+                isset($params['business_id'])
+                    ? (int)$params['business_id']
+                    : 0;
+
+
+            /*
+             * =====================================================
+             * 2. CONTEXTO DE CAJA POS
+             * =====================================================
+             */
+
+            $context =
+                $this->getPointOfSaleCashContext(
+                    $userId,
+                    $businessId
+                );
+
+
+            if (!$context['success']) {
+
+                DB::rollBack();
+
+                return [
+                    'success' => false,
+
+                    'message' =>
+                        $context['msj']
+                        ?? $context['message']
+                            ?? 'No fue posible obtener el contexto de caja.',
+
+                    'data' =>
+                        $context['data'] ?? [],
+
+                    'errors' =>
+                        $context['errors'] ?? []
+                ];
+            }
+
+
+            /*
+             * =====================================================
+             * DATOS DEL CONTEXTO
+             * =====================================================
+             */
+
+            $cashData =
+                $context['data']['cash'];
+
+
+            $cashSessionModel =
+                new CashSession();
+
+            $cashSession =
+                $cashSessionModel->getAnyOpenByCashUser(
+                    $cashData->cash_by_user_id
+                );
+
+            /*
+             * =====================================================
+             * 3. MAPEAR PARAMS DEL MOVIMIENTO
+             * =====================================================
+             */
+
+            $movementType =
+                isset($params['movement_type'])
+                    ? (int)$params['movement_type']
+                    : null;
+
+
+            $cashReasonId =
+                isset($params['cash_reason_id'])
+                    ? (int)$params['cash_reason_id']
+                    : null;
+
+
+            $accountingAccountId =
+                isset($params['accounting_account_id'])
+                    ? (int)$params['accounting_account_id']
+                    : null;
+
+
+            $rode =
+                isset($params['rode'])
+                    ? (float)$params['rode']
+                    : null;
+
+
+            $transactionType =
+                isset($params['transaction_type'])
+                    ? (int)$params['transaction_type']
+                    : null;
+
+
+            $typesPaymentsId =
+                isset($params['types_payments_id'])
+                    ? (int)$params['types_payments_id']
+                    : null;
+
+
+            $details =
+                trim(
+                    $params['details'] ?? ''
+                );
+
+
+            /*
+             * =====================================================
+             * 4. VALIDAR MOVEMENT TYPE
+             *
+             * 0 = INGRESO
+             * 1 = EGRESO
+             * =====================================================
+             */
+
+            if (
+                $movementType === null ||
+                (
+                    $movementType !==
+                    CashMovement::MOVEMENT_INPUT &&
+
+                    $movementType !==
+                    CashMovement::MOVEMENT_OUTPUT
+                )
+            ) {
+
+                $errors['movement_type'][] =
+                    'El tipo de movimiento debe ser 0 (INGRESO) o 1 (EGRESO).';
+            }
+
+
+            /*
+             * =====================================================
+             * 5. VALIDAR TRANSACTION TYPE
+             *
+             * 0 = INDIRECTO
+             * 1 = DIRECTO
+             * =====================================================
+             */
+
+            if (
+                $transactionType === null ||
+                (
+                    $transactionType !==
+                    CashMovement::TRANSACTION_TYPE_INDIRECT &&
+
+                    $transactionType !==
+                    CashMovement::TRANSACTION_TYPE_DIRECT
+                )
+            ) {
+
+                $errors['transaction_type'][] =
+                    'El tipo de transacción debe ser 0 (INDIRECTO) o 1 (DIRECTO).';
+            }
+
+
+            /*
+             * =====================================================
+             * 6. VALIDAR CASH REASON
+             * =====================================================
+             */
+
+            if (empty($cashReasonId)) {
+
+                $errors['cash_reason_id'][] =
+                    'El motivo del movimiento es requerido.';
+
+            } else {
+
+
+
+                /*
+                 * Verificar que exista y esté activo.
+                 */
+                $reasonExists =
+                    CashReason::where(
+                        'id',
+                        $cashReasonId
+                    )
+                        ->where(
+                            'state',
+                            CashReason::STATE_ACTIVE
+                        )
+                        ->exists();
+
+
+                if (!$reasonExists) {
+
+                    $errors['cash_reason_id'][] =
+                        'El motivo seleccionado no existe o está inactivo.';
+                }
+            }
+
+
+            /*
+             * =====================================================
+             * 7. ACCOUNTING ACCOUNT
+             * =====================================================
+             */
+
+            if (empty($accountingAccountId)) {
+
+                $errors['accounting_account_id'][] =
+                    'La cuenta contable es requerida.';
+            }
+
+
+            /*
+             * =====================================================
+             * 8. AMOUNT
+             * =====================================================
+             */
+
+            if (
+                $rode === null ||
+                $rode <= 0
+            ) {
+
+                $errors['rode'][] =
+                    'El valor del movimiento debe ser mayor a cero.';
+            }
+
+
+            /*
+             * =====================================================
+             * 9. PAYMENT TYPE
+             * =====================================================
+             */
+
+            if (empty($typesPaymentsId)) {
+
+                $errors['types_payments_id'][] =
+                    'El tipo de pago es requerido.';
+            }
+
+
+            /*
+             * =====================================================
+             * 10. DETENER SI EXISTEN ERRORES
+             * =====================================================
+             */
+
+            if (!empty($errors)) {
+
+                DB::rollBack();
+
+                return [
+                    'success' => false,
+
+                    'message' =>
+                        'Existen problemas con los datos del movimiento de caja.',
+
+                    'data' => [],
+
+                    'errors' =>
+                        $errors
+                ];
+            }
+
+
+            /*
+             * =====================================================
+             * 12. CASH MOVEMENT
+             * =====================================================
+             */
+
+            $movementParams = [
+
+                'user_id' =>
+                    $userId,
+                'cash_session_id' =>
+                    $cashSession->id,
+                'cash_id' =>
+                    $cashData->cash_id,
+
+                /*
+                 * 0 = INGRESO
+                 * 1 = EGRESO
+                 */
+                'movement_type' =>
+                    $movementType,
+
+                'cash_reason_id' =>
+                    $cashReasonId,
+
+                'accounting_account_id' =>
+                    $accountingAccountId,
+
+                'details' =>
+                    $details,
+
+                'rode' =>
+                    $rode,
+
+                /*
+                 * 0 = INDIRECTO
+                 * 1 = DIRECTO
+                 */
+                'transaction_type' =>
+                    $transactionType
+            ];
+
+
+            $cashMovement =
+                new CashMovement();
+
+
+            $movementResult =
+                $cashMovement
+                    ->registerMovement(
+                        $movementParams
+                    );
+
+
+            /*
+             * =====================================================
+             * ERROR CASH MOVEMENT
+             * =====================================================
+             *
+             * IMPORTANTE:
+             *
+             * Si CashByTransactionManagement se guardó
+             * pero CashMovement falla,
+             * rollback elimina también el primer INSERT.
+             * =====================================================
+             */
+
+            if (!$movementResult['success']) {
+
+                DB::rollBack();
+
+                return [
+                    'success' => false,
+
+                    'message' =>
+                        $movementResult['message']
+                        ?? 'No fue posible registrar el movimiento de caja.',
+
+                    'data' => [],
+
+                    'errors' =>
+                        $movementResult['errors'] ?? []
+                ];
+            }
+
+
+
+            /*
+             * =====================================================
+             * 11. CASH BY TRANSACTION MANAGEMENT
+             * =====================================================
+             */
+
+            $transactionParams = [
+
+                'types_payments_id' =>
+                    $typesPaymentsId,
+
+                'business_by_cash_id' =>
+                    $cashData->business_by_cash_id,
+
+                'entidad_data_id' =>$movementResult['data']->id
+            ];
+
+
+            $transactionManager =
+                new CashByTransactionManagement();
+
+
+            $transactionResult =
+                $transactionManager
+                    ->registerTransactionManagement(
+                        $transactionParams
+                    );
+
+
+            /*
+             * =====================================================
+             * ERROR CASH BY TRANSACTION MANAGEMENT
+             * =====================================================
+             */
+
+            if (!$transactionResult['success']) {
+
+                DB::rollBack();
+
+                return [
+                    'success' => false,
+
+                    'message' =>
+                        $transactionResult['message']
+                        ?? 'No fue posible registrar la transacción de caja.',
+
+                    'data' => [],
+
+                    'errors' =>
+                        $transactionResult['errors'] ?? []
+                ];
+            }
+
+            /*
+             * =====================================================
+             * 13. COMMIT
+             * =====================================================
+             *
+             * SOLO LLEGAMOS AQUÍ SI:
+             *
+             * CashByTransactionManagement = OK
+             * CashMovement                = OK
+             *
+             * =====================================================
+             */
+
+            DB::commit();
+
+
+            /*
+             * =====================================================
+             * SUCCESS
+             * =====================================================
+             */
+
+            return [
+                'success' => true,
+
+                'message' =>
+                    'Movimiento de caja registrado correctamente.',
+
+                'data' => [
+
+                    'transaction_management' =>
+                        $transactionResult['data'],
+
+                    'cash_movement' =>
+                        $movementResult['data']
+                ],
+
+                'errors' => []
+            ];
+
+
+        } catch (\Throwable $e) {
+
+            /*
+             * =====================================================
+             * ERROR GENERAL
+             * =====================================================
+             */
+
+            DB::rollBack();
+
+
+            return [
+                'success' => false,
+
+                'message' =>
+                    'Ocurrió un error al registrar el movimiento de caja.',
+
+                'data' => [],
+
+                'errors' => [
+                    'exception' =>
+                        $e->getMessage()
+                ]
+            ];
+        }
+    }
+
     /**
      * ============================================================
      * POINT OF SALE - CASH CLOSE SUMMARY
@@ -975,7 +1485,8 @@ class CashManager
     public function getPointOfSaleCashCloseSummary(
         $userId,
         $businessId
-    ) {
+    )
+    {
         try {
 
             /*
@@ -1188,8 +1699,10 @@ class CashManager
 
             /*
              * =====================================================
-             * EXPECTED CASH
+             * THEORETICAL CASH BALANCE
              * =====================================================
+             *
+             * Saldo teórico general de la caja.
              *
              * Opening
              * + Inputs
@@ -1207,13 +1720,10 @@ class CashManager
              * PAYMENT SUMMARY
              * =====================================================
              *
-             * Se deja preparada la estructura.
+             * Obtiene las formas de pago asociadas
+             * a los movimientos de esta sesión.
              *
-             * Cuando integremos:
-             *
-             * CashByTransactionManagement
-             *
-             * aquí se obtendrán:
+             * Ejemplo:
              *
              * - Efectivo
              * - Tarjeta
@@ -1222,10 +1732,47 @@ class CashManager
              *
              */
 
-            $paymentSummary = [
-                'total' => 0,
-                'items' => []
-            ];
+            $cashByTransactionManagementModel =
+                new CashByTransactionManagement();
+
+            $paymentSummary =
+                $cashByTransactionManagementModel
+                    ->getPaymentSummary(
+                        (int)$cashData->business_by_cash_id,
+                        (int)$cashSession->id
+                    );
+
+            /*
+             * =====================================================
+             * EXPECTED PHYSICAL CASH
+             * =====================================================
+             *
+             * Este valor representa únicamente el dinero
+             * físico que debería existir en la caja.
+             *
+             * Opening
+             * + Cash payments net amount
+             *
+             * IMPORTANTE:
+             *
+             * paymentSummary['cash_total'] debe representar:
+             *
+             * CASH INPUTS
+             * -
+             * CASH OUTPUTS
+             *
+             * Es decir, debe ser un valor NETO.
+             *
+             */
+
+            $cashPaymentTotal =
+                (float)(
+                    $paymentSummary['cash_total'] ?? 0
+                );
+
+            $expectedCashAmount =
+                $openingAmount
+                + $cashPaymentTotal;
 
             /*
              * =====================================================
@@ -1382,8 +1929,20 @@ class CashManager
 
                 'closing' => [
 
+                    /*
+                     * ---------------------------------------------
+                     * OPENING AMOUNT
+                     * ---------------------------------------------
+                     */
+
                     'opening_amount' =>
                         $openingAmount,
+
+                    /*
+                     * ---------------------------------------------
+                     * GENERAL MOVEMENTS
+                     * ---------------------------------------------
+                     */
 
                     'total_input' =>
                         $totalInput,
@@ -1391,8 +1950,48 @@ class CashManager
                     'total_output' =>
                         $totalOutput,
 
+                    /*
+                     * ---------------------------------------------
+                     * THEORETICAL BALANCE
+                     * ---------------------------------------------
+                     *
+                     * Apertura
+                     * + todos los ingresos
+                     * - todos los egresos
+                     *
+                     */
+
                     'expected_amount' =>
-                        $expectedAmount
+                        $expectedAmount,
+
+                    /*
+                     * ---------------------------------------------
+                     * CASH PAYMENT NET TOTAL
+                     * ---------------------------------------------
+                     *
+                     * Solamente movimientos cuya forma
+                     * de pago afecta al efectivo.
+                     *
+                     */
+
+                    'cash_payment_total' =>
+                        $cashPaymentTotal,
+
+                    /*
+                     * ---------------------------------------------
+                     * EXPECTED PHYSICAL CASH
+                     * ---------------------------------------------
+                     *
+                     * Dinero físico que debería entregar
+                     * el empleado al cerrar la caja.
+                     *
+                     * Apertura
+                     * + efectivo neto
+                     *
+                     */
+
+                    'expected_cash_amount' =>
+                        $expectedCashAmount
                 ]
             ];
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class CashMovement extends ModelManager
 {
     use RepositoryTrait;
+
     const MOVEMENT_INPUT = 0;
     const MOVEMENT_OUTPUT = 1;
 
@@ -16,6 +17,49 @@ class CashMovement extends ModelManager
     const STATE_INACTIVE = 'INACTIVE';
 
     protected $table = 'cash_by_movement';
+    const TRANSACTION_TYPE_INDIRECT = 0;
+    const TRANSACTION_TYPE_DIRECT = 1;
+
+    /**
+     * Obtener los tipos de transacción permitidos.
+     */
+    public static function getTransactionTypes()
+    {
+        return [
+            self::TRANSACTION_TYPE_INDIRECT,
+            self::TRANSACTION_TYPE_DIRECT
+        ];
+    }
+
+    /**
+     * Validar tipo de transacción.
+     */
+    public static function isValidTransactionType($transactionType)
+    {
+        return in_array(
+            (int)$transactionType,
+            self::getTransactionTypes(),
+            true
+        );
+    }
+
+    /**
+     * Obtener descripción del tipo de transacción.
+     */
+    public static function getTransactionTypeName($transactionType)
+    {
+        switch ((int)$transactionType) {
+
+            case self::TRANSACTION_TYPE_INDIRECT:
+                return 'INDIRECTO';
+
+            case self::TRANSACTION_TYPE_DIRECT:
+                return 'DIRECTO';
+
+            default:
+                return null;
+        }
+    }
 
     protected $fillable = [
         'user_id',
@@ -29,6 +73,8 @@ class CashMovement extends ModelManager
         'date_current',
         'transaction_type',
         'entity_type',
+        'cash_session_id',
+
         'entity_id',
         'created_at',
         'update_at',
@@ -45,7 +91,8 @@ class CashMovement extends ModelManager
         $userId,
         $openingDate,
         $closingDate = null
-    ) {
+    )
+    {
         $query = self::where('cash_id', $cashId)
             ->where('user_id', $userId)
             ->where('state', self::STATE_ACTIVE)
@@ -72,7 +119,8 @@ class CashMovement extends ModelManager
         $userId,
         $openingDate,
         $closingDate = null
-    ) {
+    )
+    {
         $query = DB::table($this->table)
             ->where('cash_id', $cashId)
             ->where('user_id', $userId)
@@ -109,9 +157,11 @@ class CashMovement extends ModelManager
             )
             ->first();
     }
+
     public function getSessionMovementSummary(
         $cashSessionId
-    ) {
+    )
+    {
         return DB::table($this->table)
             ->where(
                 'cash_session_id',
@@ -543,38 +593,35 @@ class CashMovement extends ModelManager
             $tblCashMovement . '.id'
         );
     }
+
     /**
      * Obtener movimientos de una sesión
      * consolidados por tipo y motivo.
      */
     public function getSessionMovementSummaryByReason(
         $cashSessionId
-    ) {
+    )
+    {
         return DB::table($this->table . ' as cbm')
-
             ->join(
                 'cash_reason as cr',
                 'cr.id',
                 '=',
                 'cbm.cash_reason_id'
             )
-
             ->where(
                 'cbm.cash_session_id',
                 $cashSessionId
             )
-
             ->where(
                 'cbm.state',
                 self::STATE_ACTIVE
             )
-
             ->groupBy(
                 'cbm.movement_type',
                 'cbm.cash_reason_id',
                 'cr.value'
             )
-
             ->select([
                 'cbm.movement_type',
                 'cbm.cash_reason_id',
@@ -588,19 +635,17 @@ class CashMovement extends ModelManager
                     'COALESCE(SUM(cbm.rode), 0) AS total'
                 )
             ])
-
             ->orderBy(
                 'cbm.movement_type',
                 'asc'
             )
-
             ->orderBy(
                 'cbm.cash_reason_id',
                 'asc'
             )
-
             ->get();
     }
+
     /**
      * Obtener detalle de movimientos de una sesión
      * para un motivo específico.
@@ -608,31 +653,27 @@ class CashMovement extends ModelManager
     public function getSessionMovementsByReason(
         $cashSessionId,
         $cashReasonId
-    ) {
+    )
+    {
         return DB::table($this->table . ' as cbm')
-
             ->leftJoin(
                 'cash_reason as cr',
                 'cr.id',
                 '=',
                 'cbm.cash_reason_id'
             )
-
             ->where(
                 'cbm.cash_session_id',
                 $cashSessionId
             )
-
             ->where(
                 'cbm.cash_reason_id',
                 $cashReasonId
             )
-
             ->where(
                 'cbm.state',
                 self::STATE_ACTIVE
             )
-
             ->select([
                 'cbm.id',
                 'cbm.cash_session_id',
@@ -651,14 +692,13 @@ class CashMovement extends ModelManager
 
                 'cbm.available_balance'
             ])
-
             ->orderBy(
                 'cbm.date_current',
                 'desc'
             )
-
             ->get();
     }
+
     /**
      * Obtener detalle de movimientos por motivo.
      */
@@ -667,38 +707,33 @@ class CashMovement extends ModelManager
         $cashReasonId,
         $dateFrom,
         $dateTo
-    ) {
+    )
+    {
         return DB::table($this->table . ' as cbm')
-
             ->join(
                 'cash_session as cs',
                 'cs.id',
                 '=',
                 'cbm.cash_session_id'
             )
-
             ->leftJoin(
                 'cash_reason as cr',
                 'cr.id',
                 '=',
                 'cbm.cash_reason_id'
             )
-
             ->where(
                 'cs.cash_by_user_id',
                 $cashByUserId
             )
-
             ->where(
                 'cbm.cash_reason_id',
                 $cashReasonId
             )
-
             ->where(
                 'cbm.state',
                 self::STATE_ACTIVE
             )
-
             ->whereBetween(
                 'cbm.date_current',
                 [
@@ -706,7 +741,6 @@ class CashMovement extends ModelManager
                     $dateTo
                 ]
             )
-
             ->select([
                 'cbm.id',
                 'cbm.cash_session_id',
@@ -721,12 +755,155 @@ class CashMovement extends ModelManager
                 'cbm.entity_id',
                 'cbm.available_balance'
             ])
-
             ->orderBy(
                 'cbm.date_current',
                 'desc'
             )
-
             ->get();
+    }
+
+    public function registerMovement($params)
+    {
+        $errors = [];
+
+        try {
+
+            $data = [
+                'user_id' => $params['user_id'] ?? null,
+                'cash_id' => $params['cash_id'] ?? null,
+                'cash_session_id' => $params['cash_session_id'],
+
+                'movement_type' =>
+                    $params['movement_type'] ?? null,
+
+                'cash_reason_id' =>
+                    $params['cash_reason_id'] ?? null,
+
+                'accounting_account_id' =>
+                    $params['accounting_account_id'] ?? null,
+                'entity_type' => 1,
+                'entity_id'=>1,
+                'details' =>
+                    $params['details'] ?? null,
+
+                'rode' =>
+                    $params['rode'] ?? null,
+
+                'transaction_type' =>
+                    $params['transaction_type'] ?? null,
+
+                'state' =>
+                    self::STATE_ACTIVE,
+
+                'date_current' =>
+                    now(),
+
+                'created_at' =>
+                    now(),
+                "update_at"=>  now(),
+                "available_balance"=>0,
+            ];
+
+            /*
+             * =====================================================
+             * VALIDAR
+             * =====================================================
+             */
+
+            $rules = [
+                'user_id' =>
+                    'required|numeric',
+
+                'cash_id' =>
+                    'required|numeric',
+
+                'movement_type' =>
+                    'required|numeric|in:' .
+                    self::MOVEMENT_INPUT . ',' .
+                    self::MOVEMENT_OUTPUT,
+
+                'cash_reason_id' =>
+                    'required|numeric',
+
+                'accounting_account_id' =>
+                    'required|numeric',
+
+                'rode' =>
+                    'required|numeric',
+
+                'transaction_type' =>
+                    'required',
+
+                'state' =>
+                    'required',
+
+                'date_current' =>
+                    'required',
+
+                'created_at' =>
+                    'required',
+            ];
+
+            $paramsValidate = [
+                'modelAttributes' => $data,
+                'rules' => $rules,
+            ];
+
+            $validateResult =
+                $this->validateModel($paramsValidate);
+
+            if (!$validateResult['success']) {
+
+                return [
+                    'success' => false,
+                    'message' =>
+                        'Problemas al validar CashMovement.',
+                    'data' => [],
+                    'errors' =>
+                        $validateResult['errors']
+                ];
+            }
+
+            /*
+             * =====================================================
+             * GUARDAR
+             * =====================================================
+             */
+
+            $model =
+                new CashMovement();
+
+            $model->fill($data);
+
+            if (!$model->save()) {
+
+                return [
+                    'success' => false,
+                    'message' =>
+                        'Problemas al guardar CashMovement.',
+                    'data' => [],
+                    'errors' => []
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' =>
+                    'Movimiento de caja registrado correctamente.',
+                'data' => $model,
+                'errors' => []
+            ];
+
+        } catch (\Throwable $e) {
+
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => [],
+                'errors' => [
+                    'exception' => $e->getMessage()
+                ]
+            ];
+        }
     }
 }

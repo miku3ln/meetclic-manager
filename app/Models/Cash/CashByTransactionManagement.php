@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Cash;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Exception;
+use App\Models\ModelManager;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class CashByTransactionManagement extends ModelManager
@@ -207,5 +209,276 @@ class CashByTransactionManagement extends ModelManager
         return $result;
 
     }
+    public function registerTransactionManagement($params)
+    {
+        $errors = [];
 
+        try {
+
+            $data = [
+                'created_at' => now(),
+                'state' => self::STATE_ACTIVE,
+                'types_payments_id' => $params['types_payments_id'] ?? null,
+                'business_by_cash_id' => $params['business_by_cash_id'] ?? null,
+                'entidad_data_id' => $params['entidad_data_id'] ?? null,
+            ];
+
+            /*
+             * =====================================================
+             * VALIDAR
+             * =====================================================
+             */
+            $paramsValidate = [
+                'modelAttributes' => $data,
+                'rules' => self::getRulesModel(),
+            ];
+
+            $validateResult =
+                $this->validateModel($paramsValidate);
+
+            if (!$validateResult['success']) {
+
+                return [
+                    'success' => false,
+                    'message' =>
+                        'Problemas al validar CashByTransactionManagement.',
+                    'data' => [],
+                    'errors' =>
+                        $validateResult['errors']
+                ];
+            }
+
+            /*
+             * =====================================================
+             * GUARDAR
+             * =====================================================
+             */
+            $model =
+                new CashByTransactionManagement();
+
+            $model->fill($data);
+
+            if (!$model->save()) {
+
+                return [
+                    'success' => false,
+                    'message' =>
+                        'Problemas al guardar CashByTransactionManagement.',
+                    'data' => [],
+                    'errors' => []
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' =>
+                    'CashByTransactionManagement registrado correctamente.',
+                'data' => $model,
+                'errors' => []
+            ];
+
+        } catch (\Throwable $e) {
+
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => [],
+                'errors' => [
+                    'exception' => $e->getMessage()
+                ]
+            ];
+        }
+    }
+    /**
+     * ============================================================
+     * GET PAYMENT SUMMARY
+     * ============================================================
+     *
+     * Retorna directamente:
+     *
+     * [
+     *     'total' => 0,
+     *     'cash_total' => 0,
+     *     'items' => [...]
+     * ]
+     */
+    public function getPaymentSummary(
+        int $businessByCashId,
+        int $cashSessionId
+    ) {
+        $payments = DB::table(
+            'cash_by_transaction_management as cbtm'
+        )
+            ->join(
+                'cash_by_movement as cbm',
+                'cbm.id',
+                '=',
+                'cbtm.entidad_data_id'
+            )
+            ->join(
+                'types_payments as tp',
+                'tp.id',
+                '=',
+                'cbtm.types_payments_id'
+            )
+            ->where(
+                'cbtm.business_by_cash_id',
+                $businessByCashId
+            )
+            ->where(
+                'cbtm.state',
+                self::STATE_ACTIVE
+            )
+            ->where(
+                'cbm.cash_session_id',
+                $cashSessionId
+            )
+            ->select(
+                'cbtm.types_payments_id',
+                'tp.value',
+
+                DB::raw(
+                    'COUNT(cbtm.id) as payment_count'
+                ),
+
+                DB::raw(
+                    'SUM(cbm.rode) as amount'
+                )
+            )
+            ->groupBy(
+                'cbtm.types_payments_id',
+                'tp.value'
+            )
+            ->get();
+
+        return $this->mapPaymentSummary(
+            $payments
+        );
+    }
+
+
+    /**
+     * ============================================================
+     * MAP PAYMENT SUMMARY
+     * ============================================================
+     *
+     * Convierte la consulta al formato requerido por el cierre
+     * de caja.
+     */
+    private function mapPaymentSummary(
+        $payments
+    ): array {
+
+        $items = [];
+
+        $total = 0.0;
+        $cashTotal = 0.0;
+
+        foreach ($payments as $payment) {
+
+            /*
+             * ========================================================
+             * PAYMENT TYPE
+             * ========================================================
+             */
+            $typesPaymentsId =
+                (int)(
+                    $payment->types_payments_id ?? 0
+                );
+
+            $name =
+                trim(
+                    (string)(
+                        $payment->value ?? ''
+                    )
+                );
+
+            $count =
+                (int)(
+                    $payment->payment_count ?? 0
+                );
+
+            /*
+             * ========================================================
+             * AMOUNT
+             * ========================================================
+             *
+             * IMPORTANTE:
+             *
+             * Actualmente cash_by_transaction_management
+             * no tiene amount.
+             *
+             * Cuando integremos entidad_data_id con la tabla
+             * correspondiente, este valor vendrá desde la consulta.
+             */
+            $amount =
+                (float)(
+                    $payment->amount ?? 0
+                );
+
+            /*
+             * ========================================================
+             * AFFECTS CASH
+             * ========================================================
+             */
+            $affectsCash =
+                $typesPaymentsId==1;
+
+            /*
+             * ========================================================
+             * ITEM
+             * ========================================================
+             */
+            $items[] = [
+
+                'types_payments_id' =>
+                    $typesPaymentsId,
+
+                'name' =>
+                    $name,
+
+                'count' =>
+                    $count,
+
+                'amount' =>
+                    $amount,
+
+                'affects_cash' =>
+                    $affectsCash
+            ];
+
+            /*
+             * ========================================================
+             * TOTAL PAYMENTS
+             * ========================================================
+             */
+            $total += $amount;
+
+            /*
+             * ========================================================
+             * CASH TOTAL
+             * ========================================================
+             */
+            if ($affectsCash) {
+                $cashTotal += $amount;
+            }
+        }
+
+        /*
+         * ============================================================
+         * RESULT
+         * ============================================================
+         */
+        return [
+
+            'total' =>
+                (float)$total,
+
+            'cash_total' =>
+                (float)$cashTotal,
+
+            'items' =>
+                $items
+        ];
+    }
 }

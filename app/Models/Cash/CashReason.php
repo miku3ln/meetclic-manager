@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Cash;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Exception;
+use App\Models\ModelManager;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class CashReason extends ModelManager
@@ -291,15 +293,13 @@ class CashReason extends ModelManager
         $selectString = "$this->table.id,$textValue as text";
         $select = DB::raw($selectString);
         $query->select($select);
-        if (isset($params["filters"]['search_value']["term"])) {
+        if (isset($params["filters"]['search_value']["term"]) && ($params["filters"]['search_value']["term"])!=="") {
 
             $likeSet = $params["filters"]['search_value']["term"];
             $query->where(function ($query) use ($likeSet
             ) {
-                $query->orWhere($this->table . '.id', 'like', '%' . $likeSet . '%');
                 $query->orWhere($this->table . '.value', 'like', '%' . $likeSet . '%');
                 $query->orWhere($this->table . '.description', 'like', '%' . $likeSet . '%');
-                $query->orWhere($this->table . '.state', 'like', '%' . $likeSet . '%');
             });;
 
         }

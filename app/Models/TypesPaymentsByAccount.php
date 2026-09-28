@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Cash\CashByTransactionManagement;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class TypesPaymentsByAccount extends ModelManager
