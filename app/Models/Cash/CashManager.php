@@ -12,7 +12,8 @@ class CashManager
         $userId,
         $invoiceSaleId,
         $total,
-        $paymentMethodId
+        $paymentMethodId,
+        $detailsPayment
     ) {
         $errors = [];
         $message = '';
@@ -95,7 +96,7 @@ class CashManager
                 'movement_type' => CashReason::MOVEMENT_INPUT,
                 'cash_reason_id' => CashReason::REASON_CASH_SALE,
                 'accounting_account_id' => 1,
-                'details' => 'Venta POS - Ticket #' . $invoiceSaleId,
+                'details' => 'Venta POS - Ticket #' . $invoiceSaleId." - ".$detailsPayment,
                 'rode' => (float)$total,
                 'transaction_type' => CashMovement::TRANSACTION_TYPE_DIRECT,
             ];

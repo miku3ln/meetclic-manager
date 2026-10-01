@@ -791,7 +791,7 @@ class ProductController extends PointSalesBaseController
              * =====================================================
              */
 
-            $resultSaveTurn = $cashManager->registerPosSaleCashMovement($context, $userId, $invoice_sale_id, $total, $payment_method_id);
+            $resultSaveTurn = $cashManager->registerPosSaleCashMovement($context, $userId, $invoice_sale_id, $total, $payment_method_id,$reference);
             $success = $resultSaveTurn["success"];
             $message = $resultSaveTurn["message"];
             if (!$success) {
