@@ -4,6 +4,11 @@ namespace App\Http\Controllers\PointSales;
 
 use App\Http\Controllers\PointSalesBaseController;
 
+use App\Models\Cash\CashByTransactionManagement;
+use App\Models\Cash\CashManager;
+use App\Models\Cash\CashMovement;
+use App\Models\Cash\CashReason;
+use App\Models\Cash\CashSession;
 use App\Models\EntityHasInvoiceSale;
 use App\Models\InvoiceSale;
 use App\Models\InvoiceSaleByDetails;
@@ -431,7 +436,7 @@ class ProductController extends PointSalesBaseController
         );
     }
 
-    public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO
+    public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO CASH-TODO
     {
         $payload = $request->json()->all();
         $dataAllow = false;
@@ -440,9 +445,30 @@ class ProductController extends PointSalesBaseController
         $bodyCurrent = $payload["body"];
         $errors = [];
         $result = [];
+        $dataManager = [];
         $step = "";
         DB::beginTransaction();
         try {
+            $cashManager = new CashManager();
+            $headerGet = $payload["header"];
+            $userId = $headerGet["userId"];
+            $business_id = $headerGet["business_id"];
+            $context =
+                $cashManager->getPointOfSaleCashContext(
+                    $userId,
+                    $business_id
+                );
+            $success = $context['success'];
+            if (!$success) {
+                $message = $context['msj']
+                    ?? $context['message']
+                    ?? 'No fue posible obtener el contexto de caja.';
+                $errors = $context['errors'] ?? [];
+                $dataManager = $context['data'] ?? [];
+                throw new \Exception($message);
+            }
+
+            $payment_method_id = -1;
             $allowValidateStock = false;
             $success = false;
             $message = "";
@@ -467,7 +493,7 @@ class ProductController extends PointSalesBaseController
             $step = "STEP 2 - Validar inventario";
             // 2. validar inventario
             $validated = $this->stockDiscountService->validateStock(["items" => $calculated, "allowValidateStock" => $allowValidateStock]);
-            $headerGet = $payload["header"];
+
             $invoice_sale_id = -1;
             $isTypeInvoice = $headerGet["typeSave"] == "SAVE";
 
@@ -483,8 +509,6 @@ class ProductController extends PointSalesBaseController
             }
             $voucher_type_id = $isTypeInvoice ? 1 : 2;
             $debt = $isTypeInvoice ? 0 : 1;
-            $userId = $headerGet["userId"];
-            $business_id = $headerGet["business_id"];
             $step = "STEP 3 - Obtener punto de emisión";
             $resultInformation = $this->obtenerPuntoEmisionUsuario($business_id, $userId);
             // Inicializamos variables con valores por defecto por seguridad
@@ -566,7 +590,7 @@ class ProductController extends PointSalesBaseController
                 );
                 $validateInvoiceByBusiness = $modelInvoiceByBusiness->validateModel($paramsValidate);
 
-                $payment_method_id = -1;
+
                 if ($validateInvoiceByBusiness['success']) {
                     $modelInvoiceByBusiness->fill($business_by_invoice_sale);
                     $modelInvoiceByBusiness->save();
@@ -760,17 +784,26 @@ class ProductController extends PointSalesBaseController
                 throw new \Exception($message);
 
             }
-            if (!$success) {
-                DB::rollBack();
 
+            /*
+             * =====================================================
+             * DATOS DEL CONTEXTO
+             * =====================================================
+             */
+
+            $resultSaveTurn = $cashManager->registerPosSaleCashMovement($context, $userId, $invoice_sale_id, $total, $payment_method_id);
+            $success = $resultSaveTurn["success"];
+            $message = $resultSaveTurn["message"];
+            if (!$success) {
+                throw new \Exception($message . ": Algo Sucedio al registrar su Ticket!");
             } else {
                 if ($pe_id > 0) {
                     $modelEmision = new PuntoEmision();
                     $modelEmision->incrementarFactura($pe_id, $invoiceCode);
                 }
-
                 DB::commit();
             }
+
             $result = array(
                 "success" => $success,
                 "msj" => "Ticket Registrado.!",
@@ -778,18 +811,19 @@ class ProductController extends PointSalesBaseController
                     "detailsSales" => $detailsSales,
                     "business_by_invoice_sale" => $business_by_invoice_sale,
                     "invoice" => $attributesSetInvoice,
-                    "inventoryDataOutput" => $inventoryDataOutput,
-
-
+                    "cash_session_id" => $resultSaveTurn["data"]["cash_session_id"],
+                    "cash_movement" => $resultSaveTurn["data"]["cash_movement"],
+                    "transaction_management" => $resultSaveTurn["data"]["transaction_management"],
                 ],
                 "errors" => []
             );
         } catch (\Exception $e) {
+            DB::rollBack();
             $msj = $e->getMessage();
             $result = array(
                 "success" => false,
                 "msj" => $msj,
-                "data" => [],
+                "data" => $dataManager,
                 "errors" => $errors
             );
 

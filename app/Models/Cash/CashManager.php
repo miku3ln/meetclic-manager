@@ -7,7 +7,268 @@ use Illuminate\Support\Facades\DB;
 
 class CashManager
 {
-    private function getPointOfSaleCashContext(
+    public function registerPosSaleCashMovement(
+        $context,
+        $userId,
+        $invoiceSaleId,
+        $total,
+        $paymentMethodId
+    ) {
+        $errors = [];
+        $message = '';
+
+        try {
+
+            /*
+             * =====================================================
+             * 1. VALIDAR CONTEXTO
+             * =====================================================
+             */
+
+            if (
+                empty($context) ||
+                !isset($context['data']['cash'])
+            ) {
+                $message = 'El contexto de caja no es válido.';
+
+                $errors['cash_context'][] =
+                    'No se encontró información de la caja.';
+
+                throw new \Exception($message);
+            }
+
+
+
+            /*
+             * =====================================================
+             * 3. DATOS DEL CONTEXTO
+             * =====================================================
+             */
+
+            $cashData =
+                $context['data']['cash'];
+
+
+            /*
+             * =====================================================
+             * 4. OBTENER SESIÓN ABIERTA
+             * =====================================================
+             */
+
+            $cashSessionModel =
+                new CashSession();
+
+            $cashSession =
+                $cashSessionModel->getAnyOpenByCashUser(
+                    $cashData->cash_by_user_id
+                );
+
+
+            /*
+             * =====================================================
+             * 5. VALIDAR SESIÓN ABIERTA
+             * =====================================================
+             */
+
+            if (!$cashSession) {
+
+                $message =
+                    'No existe una sesión de caja abierta para registrar la venta.';
+
+                $errors['cash_session'][] =
+                    'El usuario no tiene una sesión de caja abierta.';
+
+                throw new \Exception($message);
+            }
+
+
+            /*
+             * =====================================================
+             * 6. PREPARAR CASH MOVEMENT
+             * =====================================================
+             */
+
+            $movementParams = [
+                'user_id' => $userId,
+                'cash_session_id' => $cashSession->id,
+                'cash_id' => $cashData->cash_id,
+                'movement_type' => CashReason::MOVEMENT_INPUT,
+                'cash_reason_id' => CashReason::REASON_CASH_SALE,
+                'accounting_account_id' => 1,
+                'details' => 'Venta POS - Ticket #' . $invoiceSaleId,
+                'rode' => (float)$total,
+                'transaction_type' => CashMovement::TRANSACTION_TYPE_DIRECT,
+            ];
+
+
+            /*
+             * =====================================================
+             * 7. REGISTRAR CASH MOVEMENT
+             * =====================================================
+             */
+
+            $cashMovement =
+                new CashMovement();
+
+            $movementResult =
+                $cashMovement->registerMovement(
+                    $movementParams
+                );
+
+
+            /*
+             * =====================================================
+             * 8. VALIDAR CASH MOVEMENT
+             * =====================================================
+             */
+
+            if (
+                !isset($movementResult['success']) ||
+                !$movementResult['success']
+            ) {
+
+                $message =
+                    $movementResult['message']
+                    ?? 'No fue posible registrar el movimiento de caja.';
+
+                $errors =
+                    $movementResult['errors']
+                    ?? [];
+
+                throw new \Exception($message);
+            }
+
+
+            /*
+             * =====================================================
+             * 9. VALIDAR ID DEL MOVIMIENTO
+             * =====================================================
+             */
+
+            if (
+                !isset($movementResult['data']) ||
+                !$movementResult['data'] ||
+                empty($movementResult['data']->id)
+            ) {
+
+                $message =
+                    'El movimiento de caja fue registrado sin un identificador válido.';
+
+                $errors['cash_movement'][] =
+                    'No se pudo obtener el identificador del movimiento de caja.';
+
+                throw new \Exception($message);
+            }
+
+
+            /*
+             * =====================================================
+             * 10. PREPARAR CASH BY TRANSACTION MANAGEMENT
+             * =====================================================
+             */
+
+            $transactionParams = [
+                'types_payments_id' =>
+                    (int)$paymentMethodId,
+                'business_by_cash_id' =>
+                    (int)$cashData->business_by_cash_id,
+                'entidad_data_id' =>
+                    (int)$movementResult['data']->id
+            ];
+
+
+            /*
+             * =====================================================
+             * 11. REGISTRAR TRANSACTION MANAGEMENT
+             * =====================================================
+             */
+
+            $transactionManager =
+                new CashByTransactionManagement();
+
+            $transactionResult =
+                $transactionManager
+                    ->registerTransactionManagement(
+                        $transactionParams
+                    );
+
+
+            /*
+             * =====================================================
+             * 12. VALIDAR TRANSACTION MANAGEMENT
+             * =====================================================
+             */
+
+            if (
+                !isset($transactionResult['success']) ||
+                !$transactionResult['success']
+            ) {
+
+                $message =
+                    $transactionResult['message']
+                    ?? 'No fue posible registrar la transacción de caja.';
+
+                $errors =
+                    $transactionResult['errors']
+                    ?? [];
+
+                throw new \Exception($message);
+            }
+
+
+            /*
+             * =====================================================
+             * 13. SUCCESS
+             * =====================================================
+             */
+
+            return [
+                'success' => true,
+
+                'message' =>
+                    'Venta registrada correctamente en el turno de caja.',
+
+                'data' => [
+
+                    'cash_session_id' =>
+                        (int)$cashSession->id,
+
+                    'cash_movement' =>
+                        $movementResult['data'],
+
+                    'transaction_management' =>
+                        $transactionResult['data']
+                ],
+
+                'errors' => []
+            ];
+
+
+        } catch (\Throwable $e) {
+
+            return [
+                'success' => false,
+
+                'message' =>
+                    !empty($message)
+                        ? $message
+                        : 'Ocurrió un error al registrar la venta en el turno de caja.',
+
+                'data' => [],
+
+                'errors' =>
+                    !empty($errors)
+                        ? $errors
+                        : [
+                        'exception' => [
+                            $e->getMessage()
+                        ]
+                    ]
+            ];
+        }
+    }
+
+    public function getPointOfSaleCashContext(
         $userId,
         $businessId
     )
@@ -1157,7 +1418,6 @@ class CashManager
             } else {
 
 
-
                 /*
                  * Verificar que exista y esté activo.
                  */
@@ -1333,7 +1593,6 @@ class CashManager
             }
 
 
-
             /*
              * =====================================================
              * 11. CASH BY TRANSACTION MANAGEMENT
@@ -1348,7 +1607,7 @@ class CashManager
                 'business_by_cash_id' =>
                     $cashData->business_by_cash_id,
 
-                'entidad_data_id' =>$movementResult['data']->id
+                'entidad_data_id' => $movementResult['data']->id
             ];
 
 
