@@ -43,6 +43,8 @@ class FrontendCmsCityBook
             Route::get('/comingSoon', 'Frontend\FrontendCityBookController@comingSoon')->name('comingSoon');
             Route::get('/contactUsBee', 'Frontend\FrontendCityBookController@contactUsBee')->name('contactUsBee');
             Route::get('/aboutUsBee', 'Frontend\FrontendCityBookController@aboutUsBee')->name('aboutUsBee');//GAMIFICATION ROUTE
+            Route::get('/maskana', 'Frontend\FrontendCityBookController@maskana')->name('maskana');//GAMIFICATION ROUTE
+
             Route::get('/ourServicesBee', 'Frontend\FrontendCityBookController@ourServicesBee')->name('ourServicesBee');
             Route::get('/shopBee', 'Frontend\FrontendCityBookController@shopBee')->name('shopBee');
             Route::get('/dictionary/{type}', 'Frontend\FrontendCityBookController@getDictionaryType')->name('dictionaryType');//CMS-TEMPLATE-MENU-ACTION---KICHWA-CASTILIAN

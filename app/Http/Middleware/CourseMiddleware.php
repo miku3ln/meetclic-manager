@@ -28,6 +28,7 @@ class CourseMiddleware
         'es', 'en', 'ki'
     ];
     public $actionsAllows = [
+        "maskana",
         'homePage',
         'profile',
         'aboutUs',

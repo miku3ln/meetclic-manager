@@ -14,16 +14,10 @@ class FrontendCms
     {
 
         Route::group(['prefix' => '{language?}', 'middleware' => ['frontend']], function () {
-
             Route::get('/login/{error?}', 'Auth\LoginController@showLoginFormCustomer')->name('login');
-
             Route::post('/login/{error?}', 'Auth\LoginController@loginCustomer');
-
-
-
             Route::get('/register', 'Auth\RegisterController@showRegistrationFormCustomer')->name('register');
             Route::post('/register', 'Auth\RegisterController@registerCustomer');
-
 
             Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestCustomerForm')->name('password.request');
             Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');

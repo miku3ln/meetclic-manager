@@ -124,6 +124,7 @@ class TrackingUtil
     }
 
     public $actionsAllows2 = [
+        "maskana",
         'homePage',
         'profile',
         'aboutUs',

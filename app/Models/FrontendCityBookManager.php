@@ -86,6 +86,7 @@ class FrontendCityBookManager extends ModelManager
         $gamificationData = ["success" => false, "type" => 96, "message" => "No existe configuracion para esta url en yapitas"];
 //NOT MESSAGE
         if (!in_array($routeName, [
+            "maskana",
             "dictionary-words-management",
             "ourAllies", "authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
 

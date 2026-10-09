@@ -436,6 +436,130 @@ class ProductController extends PointSalesBaseController
         );
     }
 
+    public function updateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO CASH-TODO
+    {
+        $payload = $request->json()->all();
+        $invoice_id = $payload["invoice_id"];
+        $dataAllow = false;
+        // 👇 Si NO viene body → simulamos
+        $type = "mixed_fail_only";
+        $bodyCurrent = $payload["body"];
+        $errors = [];
+        $result = [];
+        $dataManager = [];
+        $step = "";
+        $messageSave = "";
+        DB::beginTransaction();
+        try {
+            $cashManager = new CashManager();
+            $headerGet = $payload["header"];
+            $userId = $headerGet["userId"];
+            $business_id = $headerGet["business_id"];
+            $invoice_sale_id = $invoice_id;
+
+            $context =
+                $cashManager->getPointOfSaleCashContext(
+                    $userId,
+                    $business_id
+                );
+            $success = $context['success'];
+            if (!$success) {
+                $message = $context['msj']
+                    ?? $context['message']
+                    ?? 'No fue posible obtener el contexto de caja.';
+                $errors = $context['errors'] ?? [];
+                $dataManager = $context['data'] ?? [];
+                throw new \Exception($message);
+            }
+
+            $modelSave = InvoiceSale::find($invoice_sale_id);
+            $modelSave->status = "Pending";
+            $total = $modelSave->value_taxes + $modelSave->subtotal;
+            $modelSave->save();
+            $message = "";
+            $provider = '';
+            $reference = '';
+            $extra_data = '';
+            $success = false;
+
+            if ($headerGet['paymentMethod'] == 'CASH') {
+                $payment_method_id = PosPaymentMethod::ID_CASH;
+                $provider = 'MONEY';
+                $reference = 'C2B';
+                $extra_data = '{"type":"none"}';
+            } else if ($headerGet['paymentMethod'] == 'CARD') {
+                $payment_method_id = PosPaymentMethod::ID_CARD;
+                $provider = 'NONE-CARD-TYPE';
+                $reference = 'NONE-CARD-REFERENCE';
+                $extra_data = '{"type":"NONE-CARD"}';
+            } else if ($headerGet['paymentMethod'] == 'QR') {
+                $payment_method_id = PosPaymentMethod::ID_TRANSFER;
+                $provider = 'DEUNA';
+                $reference = 'DE UNA REFERENCIA ';
+                $extra_data = '{"type":"NONE-DE UNA"}';
+            } else if ($headerGet['paymentMethod'] == 'Deposito') {
+                $payment_method_id = PosPaymentMethod::ID_DEPOSIT;
+                $reference = 'DE UNA REFERENCIA ';
+                $extra_data = '{"type":"NONE-ID-BANCO"}';
+            }
+
+            $modelInvoiceByPayment = new InvoiceSalePayment();
+            $invoiceByPayment = [
+                'invoice_sale_id' => $invoice_sale_id,
+                'type_payment_id' => $payment_method_id,
+                'amount' => $total,
+                'provider' => $provider,
+                'reference' => $reference,
+                'extra_data' => $extra_data,
+                'created_at' => Util::DateCurrent(),
+                'update_at' => Util::DateCurrent()
+
+            ];
+            $paramsValidate = array(
+                'modelAttributes' => $invoiceByPayment,
+                'rules' => $modelInvoiceByPayment::getRulesModel(),
+            );
+
+            $validateInvoiceByPayment = $modelInvoiceByPayment->validateModel($paramsValidate);
+            $success = $validateInvoiceByPayment['success'];
+            if ($validateInvoiceByPayment['success']) {
+                $modelInvoiceByPayment->fill($invoiceByPayment);
+                $modelInvoiceByPayment->save();
+            } else {
+                $message = "No se pudo realizar el guardado de Factura by Payments!";
+                $success = false;
+                $errors = $validateInvoiceByPayment["errors"];
+                throw new \Exception($message);
+            }
+            $resultSaveTurn = $cashManager->registerPosSaleCashMovement($context, $userId, $invoice_sale_id, $total, $payment_method_id, $reference);
+            $success = $resultSaveTurn["success"];
+            if (!$success) {
+                $message = $resultSaveTurn["message"];
+                throw new \Exception($message);
+            } else {
+                DB::commit();
+            }
+            $messageSave = $message;
+            $result = array(
+                "success" => $success,
+                "msj" => $messageSave,
+                "data" => [],
+                "errors" => []
+            );
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $msj = $e->getMessage();
+            $result = array(
+                "success" => false,
+                "msj" => $msj,
+                "data" => $dataManager,
+                "errors" => $errors
+            );
+
+        }
+        return response()->json($result);
+    }
+
     public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO CASH-TODO
     {
         $payload = $request->json()->all();
@@ -589,62 +713,61 @@ class ProductController extends PointSalesBaseController
                     'rules' => $modelInvoiceByBusiness::getRulesModel(),
                 );
                 $validateInvoiceByBusiness = $modelInvoiceByBusiness->validateModel($paramsValidate);
-
-
                 if ($validateInvoiceByBusiness['success']) {
                     $modelInvoiceByBusiness->fill($business_by_invoice_sale);
                     $modelInvoiceByBusiness->save();
-                    if ($headerGet['paymentMethod'] == 'CASH') {
-                        $payment_method_id = PosPaymentMethod::ID_CASH;
-                        $provider = 'MONEY';
-                        $reference = 'C2B';
-                        $extra_data = '{"type":"none"}';
-                    } else if ($headerGet['paymentMethod'] == 'CARD') {
-                        $payment_method_id = PosPaymentMethod::ID_CARD;
-                        $provider = 'NONE-CARD-TYPE';
-                        $reference = 'NONE-CARD-REFERENCE';
-                        $extra_data = '{"type":"NONE-CARD"}';
-                    } else if ($headerGet['paymentMethod'] == 'QR') {
-                        $payment_method_id = PosPaymentMethod::ID_TRANSFER;
-                        $provider = 'DEUNA';
-                        $reference = 'DE UNA REFERENCIA ';
-                        $extra_data = '{"type":"NONE-DE UNA"}';
-                    } else if ($headerGet['paymentMethod'] == 'Deposito') {
-                        $payment_method_id = PosPaymentMethod::ID_DEPOSIT;
-                        $reference = 'DE UNA REFERENCIA ';
-                        $extra_data = '{"type":"NONE-ID-BANCO"}';
+                    if ($isTypeInvoice) {//TODO UPDATE -DRAFT
+                        if ($headerGet['paymentMethod'] == 'CASH') {
+                            $payment_method_id = PosPaymentMethod::ID_CASH;
+                            $provider = 'MONEY';
+                            $reference = 'C2B';
+                            $extra_data = '{"type":"none"}';
+                        } else if ($headerGet['paymentMethod'] == 'CARD') {
+                            $payment_method_id = PosPaymentMethod::ID_CARD;
+                            $provider = 'NONE-CARD-TYPE';
+                            $reference = 'NONE-CARD-REFERENCE';
+                            $extra_data = '{"type":"NONE-CARD"}';
+                        } else if ($headerGet['paymentMethod'] == 'QR') {
+                            $payment_method_id = PosPaymentMethod::ID_TRANSFER;
+                            $provider = 'DEUNA';
+                            $reference = 'DE UNA REFERENCIA ';
+                            $extra_data = '{"type":"NONE-DE UNA"}';
+                        } else if ($headerGet['paymentMethod'] == 'Deposito') {
+                            $payment_method_id = PosPaymentMethod::ID_DEPOSIT;
+                            $reference = 'DE UNA REFERENCIA ';
+                            $extra_data = '{"type":"NONE-ID-BANCO"}';
+                        }
+
+                        $modelInvoiceByPayment = new InvoiceSalePayment();
+                        $invoiceByPayment = [
+                            'invoice_sale_id' => $invoice_sale_id,
+                            'type_payment_id' => $payment_method_id,
+                            'amount' => $total,
+                            'provider' => $provider,
+                            'reference' => $reference,
+                            'extra_data' => $extra_data,
+                            'created_at' => Util::DateCurrent(),
+                            'update_at' => Util::DateCurrent()
+
+                        ];
+                        $paramsValidate = array(
+                            'modelAttributes' => $invoiceByPayment,
+                            'rules' => $modelInvoiceByPayment::getRulesModel(),
+                        );
+
+                        $validateInvoiceByPayment = $modelInvoiceByPayment->validateModel($paramsValidate);
+
+                        if ($validateInvoiceByPayment['success']) {
+                            $modelInvoiceByPayment->fill($invoiceByPayment);
+                            $modelInvoiceByPayment->save();
+                        } else {
+                            $message = "No se pudo realizar el guardado de Factura by Payments!";
+                            $success = false;
+                            $errors = $validateInvoiceByPayment["errors"];
+                            throw new \Exception($message);
+                        }
+
                     }
-                    $modelInvoiceByPayment = new InvoiceSalePayment();
-                    $invoiceByPayment = [
-                        'invoice_sale_id' => $invoice_sale_id,
-                        'type_payment_id' => $payment_method_id,
-                        'amount' => $total,
-                        'provider' => $provider,
-                        'reference' => $reference,
-                        'extra_data' => $extra_data,
-                        'created_at' => Util::DateCurrent(),
-                        'update_at' => Util::DateCurrent()
-
-                    ];
-
-                    $paramsValidate = array(
-                        'modelAttributes' => $invoiceByPayment,
-                        'rules' => $modelInvoiceByPayment::getRulesModel(),
-                    );
-
-                    $validateInvoiceByPayment = $modelInvoiceByPayment->validateModel($paramsValidate);
-
-                    if ($validateInvoiceByPayment['success']) {
-                        $modelInvoiceByPayment->fill($invoiceByPayment);
-                        $modelInvoiceByPayment->save();
-                    } else {
-                        $message = "No se pudo realizar el guardado de Factura by Payments!";
-                        $success = false;
-                        $errors = $validateInvoiceByPayment["errors"];
-                        throw new \Exception($message);
-                    }
-
-
                     $modelInvoiceByMeta = new InvoiceSaleMeta();
                     $invoiceByMeta = [
                         'invoice_sale_id' => $invoice_sale_id,
@@ -670,13 +793,10 @@ class ProductController extends PointSalesBaseController
                         $errors = $validateInvoiceByMeta["errors"];
                         throw new \Exception($message);
                     }
-
-
                     $business_by_invoice_sale["id"] = $modelInvoiceByBusiness->id;
                     $success = true;
                     $detailsSales = [];
                     $inventoryDataOutput = [];
-
                     foreach ($validated as $itemValidate) {
                         $dataItem = $itemValidate["data"];
                         $typeProduct = $dataItem["type"];
@@ -687,7 +807,6 @@ class ProductController extends PointSalesBaseController
                         } else {
 
                         }
-
                         $setPushItem = [
                             "product_id" => $dataItem["id"],
                             "quantity" => $dataItem["amount"],
@@ -730,7 +849,6 @@ class ProductController extends PointSalesBaseController
                         array_push($detailsSales, $setPushItem);
                     }
                     $validateStock = $allowValidateStock;
-
                     foreach ($inventoryDataOutput as $itemInventoryMovement) {
                         $modelInventoryMovement = new InventoryMovement();
                         $setPushCurrent = $itemInventoryMovement;
@@ -739,7 +857,6 @@ class ProductController extends PointSalesBaseController
                             'modelAttributes' => $setPushCurrent,
                             'rules' => $modelInventoryMovement::getRulesModel(),
                         );
-
                         $validateInventoryMovement = $modelInventoryMovement->validateModel($paramsValidate);
                         if ($validateInventoryMovement['success']) {
                             $message = "Producto Movimiento Guardado";
@@ -763,7 +880,6 @@ class ProductController extends PointSalesBaseController
                             $message = "No se pudo realizar el guardado del Producto Movimiento!";
                             $success = false;
                             $errors = $validateInventoryMovement["errors"];
-
                             throw new \Exception($message);
                         }
 
@@ -784,16 +900,25 @@ class ProductController extends PointSalesBaseController
                 throw new \Exception($message);
 
             }
+            $resultSaveTurn = [];
 
-            /*
-             * =====================================================
-             * DATOS DEL CONTEXTO
-             * =====================================================
-             */
+            if ($isTypeInvoice) {//TODO UPDATE -DRAFT
+                /*
+          * =====================================================
+          * DATOS DEL CONTEXTO
+          * =====================================================
+          */
+                $resultSaveTurn = $cashManager->registerPosSaleCashMovement($context, $userId, $invoice_sale_id, $total, $payment_method_id, $reference);
+                $success = $resultSaveTurn["success"];
+                $message = $resultSaveTurn["message"];
+            }
+            $messageSave = "";
+            if ($isTypeInvoice) {
+                $messageSave = "Ticket Pagado y Registrado: #" . $invoice_sale_id;
+            } else {
+                $messageSave = "Ticket Registrado y por Pagar: #" . $invoice_sale_id;
+            }
 
-            $resultSaveTurn = $cashManager->registerPosSaleCashMovement($context, $userId, $invoice_sale_id, $total, $payment_method_id,$reference);
-            $success = $resultSaveTurn["success"];
-            $message = $resultSaveTurn["message"];
             if (!$success) {
                 throw new \Exception($message . ": Algo Sucedio al registrar su Ticket!");
             } else {
@@ -803,18 +928,23 @@ class ProductController extends PointSalesBaseController
                 }
                 DB::commit();
             }
-
+            $data = [
+                "detailsSales" => $detailsSales,
+                "business_by_invoice_sale" => $business_by_invoice_sale,
+                "invoice" => $attributesSetInvoice,
+                "cash_session_id" => -1,
+                "cash_movement" => [],
+                "transaction_management" =>[],
+            ];
+            if($isTypeInvoice){
+                $data["cash_session_id"]= $resultSaveTurn["data"]["cash_session_id"];
+                $data["cash_movement"]= $resultSaveTurn["data"]["cash_movement"];
+                $data["transaction_management"]=$resultSaveTurn["data"]["transaction_management"];
+            }
             $result = array(
                 "success" => $success,
-                "msj" => "Ticket Registrado.!",
-                "data" => [
-                    "detailsSales" => $detailsSales,
-                    "business_by_invoice_sale" => $business_by_invoice_sale,
-                    "invoice" => $attributesSetInvoice,
-                    "cash_session_id" => $resultSaveTurn["data"]["cash_session_id"],
-                    "cash_movement" => $resultSaveTurn["data"]["cash_movement"],
-                    "transaction_management" => $resultSaveTurn["data"]["transaction_management"],
-                ],
+                "msj" => $messageSave,
+                "data" => $data,
                 "errors" => []
             );
         } catch (\Exception $e) {
