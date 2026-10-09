@@ -26,6 +26,11 @@ class BusinessAppService
             $onlyWithGamesActive,
             $onlyAlliedCompanies ,$searchQuery );
     }
+    public function getCategoriesBusiness($params)
+    {
+
+        return $this->repository->getCategoriesBusiness($params);
+    }
     public function businessDetails($businessId)
     {
 

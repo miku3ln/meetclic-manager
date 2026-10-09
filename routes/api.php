@@ -26,6 +26,8 @@ Route::middleware('publicApi')->group(function () {
     Route::post('/auth/with/meetclic/login', 'Auth\MeetclicController@login')->name('loginMeetclic');
     Route::post('/auth/with/meetclic/register', 'Auth\MeetclicController@register')->name('registerMeetclic');
     Route::post('/business/searchNearbyBusinesses', 'Api\BusinessAppController@searchNearbyBusinesses')->name('searchNearbyBusinesses');
+    Route::post('/business/getCategoriesBusiness', 'Api\BusinessAppController@getCategoriesBusiness')->name('getCategoriesBusiness');
+
     Route::post('/auth/with/resendVerificationByEmail', 'Auth\MeetclicController@resendVerificationByEmail')->name('resendVerificationByEmail');
     Route::post('/business/businessDetails', 'Api\BusinessAppController@businessDetails')->name('searchNearbyBusinesses');
     Route::get('/api-information/consultar-cedula-legal', 'Api\CustomerAppController@consultarCedula')->name('consultarCedula');

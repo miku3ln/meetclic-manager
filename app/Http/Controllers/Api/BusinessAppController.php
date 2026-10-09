@@ -18,6 +18,30 @@ class BusinessAppController extends Controller
     }
 
 
+    public function getCategoriesBusiness(Request $request)
+    {
+        try {
+
+            $params = [
+                'filters' => [
+                    'search_value' => [
+                        'term' => $request->input('search', '')
+                    ],
+                    'category_id' => $request->input('category_id', 'all')
+                ]
+            ];
+
+            $data = $this->serviceUser->getCategoriesBusiness($params);
+
+            return response()->json($data);
+
+        } catch (\Throwable $e) {
+
+
+            return response()->json([]);
+        }
+    }
+
     public function searchNearbyBusinesses(Request $request)
     {
         try {
@@ -25,7 +49,7 @@ class BusinessAppController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
             $radiusKm = $request->input('radius_km', 200); // Por defecto 10 km
-            $subcategoryIds = $request->input('subcategory_ids'); // Array o vacío
+            $subcategoryIds = $request->input('subcategoryIds'); // Array o vacío
 
             $onlyWithRedeemableRewards = $request->input('onlyWithRedeemableRewards',null);
             $onlyWithGamesActive = $request->input('onlyWithGamesActive',null);

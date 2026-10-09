@@ -1238,8 +1238,8 @@ class FrontendCityBookController extends FrontendBaseController
 
     public function maskana($language = 'es')
     {
-        $nameProcess = 'contactUs';
-        $renderView = self::LAYOUT_MAIN . '.web.contactUs';
+        $nameProcess = 'maskana';
+        $renderView = self::LAYOUT_MAIN . '.web.maskana';
         $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
         $language = $languageManager['language'];
         $paramsRequest = [];

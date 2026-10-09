@@ -122,7 +122,638 @@ class BusinessRepository
         return $results->toArray();
     }
 
-    public function searchNearbyBusinesses($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null, $onlyWithRedeemableRewards = null,
+
+
+
+
+    public function getCategoriesBusiness($params)
+    {
+        try {
+
+            // ==========================================
+            // CONSULTA PRINCIPAL DESDE BUSINESS
+            // ==========================================
+
+            $query = DB::table('business as b')
+
+                ->join(
+                    'business_subcategories as bs',
+                    'bs.id',
+                    '=',
+                    'b.business_subcategories_id'
+                )
+
+                ->join(
+                    'business_categories as bc',
+                    'bc.id',
+                    '=',
+                    'bs.business_categories_id'
+                )
+
+                ->select([
+                    'bs.id',
+                    'bs.id as key',
+                    'bs.name as text',
+                    'bs.icon_class as icon',
+                    'bs.src',
+                    'bs.description',
+                    'bs.has_icon',
+                    'bs.status',
+
+                    'bc.id as category_id',
+                    'bc.name as category_text',
+                    'bc.icon_class as category_icon',
+                    'bc.src as category_src',
+                    'bc.description as category_description',
+                    'bc.has_icon as category_has_icon',
+                    'bc.status as category_status',
+                ])
+
+                // Cantidad de empresas por subcategoría
+                ->selectRaw('COUNT(DISTINCT b.id) as business_count')
+
+                // ==========================================
+                // FILTROS DE ESTADO
+                // ==========================================
+
+                ->where('bs.status', 'ACTIVE')
+                ->where('bc.status', 'ACTIVE')
+                ->whereNull('bs.deleted_at')
+                ->whereNull('bc.deleted_at')
+
+                // Evitar relaciones vacías
+                ->whereNotNull('b.business_subcategories_id');
+
+            // ==========================================
+            // FILTRO DE BÚSQUEDA
+            // ==========================================
+
+            $search = trim(
+                (string) data_get(
+                    $params,
+                    'filters.search_value.term',
+                    ''
+                )
+            );
+
+            if ($search !== '') {
+
+                $query->where(function ($q) use ($search) {
+
+                    $q->where(
+                        'bs.name',
+                        'like',
+                        '%' . $search . '%'
+                    )
+                        ->orWhere(
+                            'bc.name',
+                            'like',
+                            '%' . $search . '%'
+                        );
+
+                    if (ctype_digit($search)) {
+
+                        $q->orWhere(
+                            'bs.id',
+                            (int) $search
+                        );
+                    }
+
+                });
+            }
+
+            // ==========================================
+            // FILTRO OPCIONAL POR CATEGORÍA
+            // ==========================================
+
+            $categoryId = data_get(
+                $params,
+                'filters.category_id'
+            );
+
+            if (
+                $categoryId !== null &&
+                $categoryId !== '' &&
+                $categoryId !== 'all'
+            ) {
+
+                $query->where(
+                    'bc.id',
+                    $categoryId
+                );
+            }
+
+            // ==========================================
+            // AGRUPAR POR SUBCATEGORÍA
+            // ==========================================
+
+            $query->groupBy(
+                'bs.id',
+                'bs.name',
+                'bs.icon_class',
+                'bs.src',
+                'bs.description',
+                'bs.has_icon',
+                'bs.status',
+
+                'bc.id',
+                'bc.name',
+                'bc.icon_class',
+                'bc.src',
+                'bc.description',
+                'bc.has_icon',
+                'bc.status'
+            );
+
+            // ==========================================
+            // ORDENAMIENTO
+            // ==========================================
+
+            $rows = $query
+                ->orderBy('bc.name', 'asc')
+                ->orderBy('bs.name', 'asc')
+                ->get();
+
+            // ==========================================
+            // MAPEO CATEGORÍAS / SUBCATEGORÍAS
+            // ==========================================
+
+            $result = $rows
+                ->groupBy('category_id')
+                ->map(function ($items) {
+
+                    $category = $items->first();
+
+                    return [
+                        'id' => $category->category_id,
+                        'key' => $category->category_id,
+                        'text' => $category->category_text,
+                        'icon' => $category->category_icon,
+                        'src' => $category->category_src,
+                        'description' => $category->category_description,
+                        'has_icon' => $category->category_has_icon,
+                        'status' => $category->category_status,
+
+                        'business_count' => (int) $items->sum(
+                            'business_count'
+                        ),
+
+                        'subcategories' => $items
+                            ->map(function ($item) {
+
+                                return [
+                                    'id' => $item->id,
+                                    'key' => $item->key,
+                                    'text' => $item->text,
+                                    'icon' => $item->icon,
+                                    'src' => $item->src,
+                                    'description' => $item->description,
+                                    'has_icon' => $item->has_icon,
+                                    'status' => $item->status,
+                                    'business_count' => (int) $item->business_count,
+                                ];
+
+                            })
+                            ->values()
+                            ->all(),
+                    ];
+
+                })
+                ->values()
+                ->all();
+
+            return $result;
+
+        } catch (\Throwable $e) {
+
+
+            return [];
+        }
+    }
+
+
+
+
+
+    public function searchNearbyBusinesses(
+        $latitude = null,
+        $longitude = null,
+        $radiusKm = 10,
+        $subcategoryIds = null,
+        $onlyWithRedeemableRewards = null,
+        $onlyWithGamesActive = null,
+        $onlyAlliedCompanies = null,
+        $searchQuery = ""
+    ) {
+        /*
+         * =====================================================
+         * 1. VALIDAR UBICACIÓN DEL USUARIO
+         * =====================================================
+         */
+
+        $hasLocation = (
+            is_numeric($latitude) &&
+            is_numeric($longitude) &&
+            is_finite((float) $latitude) &&
+            is_finite((float) $longitude) &&
+            (float) $latitude >= -90 &&
+            (float) $latitude <= 90 &&
+            (float) $longitude >= -180 &&
+            (float) $longitude <= 180
+        );
+
+        if ($hasLocation) {
+            $latitude = (float) $latitude;
+            $longitude = (float) $longitude;
+        }
+
+        $radiusKm = (
+            is_numeric($radiusKm) &&
+            is_finite((float) $radiusKm) &&
+            (float) $radiusKm > 0
+        ) ? (float) $radiusKm : 10;
+
+        /*
+         * =====================================================
+         * 2. FÓRMULA HAVERSINE
+         * =====================================================
+         */
+
+        $haversine = "(6371 * acos(
+        LEAST(1, GREATEST(-1,
+            cos(radians(?)) *
+            cos(radians(b.street_lat)) *
+            cos(radians(b.street_lng) - radians(?)) +
+            sin(radians(?)) *
+            sin(radians(b.street_lat))
+        ))
+    ))";
+
+        /*
+         * =====================================================
+         * 3. COLUMNAS EXISTENTES
+         * =====================================================
+         */
+
+        $select = [
+            'b.id',
+            'b.title',
+            'b.description',
+            'b.source',
+            'b.business_name',
+            'b.email',
+            'b.phone_value',
+            'b.page_url',
+            'b.street_1',
+            'b.street_2',
+            'b.street_lat',
+            'b.street_lng',
+            'b.status',
+            'b.qualification',
+            'b.business_subcategories_id',
+            'bs.name as subcategory_name',
+            'epf.value as fiscal_position',
+            'bg.id as gamification_config_id',
+            'bg.gamification_id',
+            'bg.allow_exchange',
+            'bg.allow_exchange_business',
+            'bg.state as gamification_state',
+        ];
+
+        /*
+         * =====================================================
+         * 4. CONSULTA BASE
+         * =====================================================
+         */
+
+        $query = DB::table('business as b')
+            ->leftJoin(
+                'entity_position_fiscal as epf',
+                'epf.id',
+                '=',
+                'b.entity_position_fiscal_id'
+            )
+            ->leftJoin(
+                'business_subcategories as bs',
+                'bs.id',
+                '=',
+                'b.business_subcategories_id'
+            )
+            ->leftJoin(
+                'business_by_gamification as bg',
+                function ($join) {
+                    $join->on('bg.business_id', '=', 'b.id')
+                        ->where('bg.state', '=', 'ACTIVE');
+                }
+            )
+            ->select($select)
+            ->where('b.status', 'ACTIVE');
+
+        /*
+         * =====================================================
+         * 5. FILTRAR POR UBICACIÓN SOLO SI EXISTE
+         * =====================================================
+         */
+
+        if ($hasLocation) {
+
+            // Comportamiento original:
+            // calcular distancia y filtrar por radio.
+
+            $query
+                ->selectRaw(
+                    "$haversine as distance",
+                    [$latitude, $longitude, $latitude]
+                )
+                ->whereNotNull('b.street_lat')
+                ->whereNotNull('b.street_lng')
+                ->whereRaw(
+                    "$haversine <= ?",
+                    [
+                        $latitude,
+                        $longitude,
+                        $latitude,
+                        $radiusKm
+                    ]
+                )
+                ->orderBy('distance', 'asc');
+
+        } else {
+
+            // Nuevo comportamiento:
+            // mostrar negocios sin requerir ubicación.
+
+            $query
+                ->selectRaw('NULL as distance')
+                ->orderBy('b.business_name', 'asc');
+        }
+
+        /*
+         * =====================================================
+         * 6. NORMALIZAR FILTROS EXISTENTES
+         * =====================================================
+         */
+
+        $onlyWithRedeemableRewards =
+            $this->normalizeBool($onlyWithRedeemableRewards);
+
+        $onlyWithGamesActive =
+            $this->normalizeBool($onlyWithGamesActive);
+
+        $onlyAlliedCompanies =
+            $this->normalizeBool($onlyAlliedCompanies);
+
+        /*
+         * =====================================================
+         * 7. BÚSQUEDA POR TEXTO
+         * =====================================================
+         */
+
+        if ($searchQuery !== '') {
+
+            $query->when(
+                $searchQuery !== '',
+                function ($q) use ($searchQuery) {
+
+                    $q->where(function ($sub) use ($searchQuery) {
+
+                        $sub->where(
+                            'b.business_name',
+                            'LIKE',
+                            "%{$searchQuery}%"
+                        )
+                            ->orWhere(
+                                'b.title',
+                                'LIKE',
+                                "%{$searchQuery}%"
+                            )
+                            ->orWhere(
+                                'b.description',
+                                'LIKE',
+                                "%{$searchQuery}%"
+                            );
+                    });
+                }
+            );
+        }
+
+        /*
+         * =====================================================
+         * 8. FILTROS DE GAMIFICACIÓN
+         * =====================================================
+         */
+
+        if ($onlyWithRedeemableRewards) {
+            $query->where('bg.allow_exchange', 1);
+        }
+
+        if ($onlyAlliedCompanies) {
+            $query->where('bg.allow_exchange_business', 1);
+        }
+
+        if ($onlyWithGamesActive) {
+            $query->whereNotNull('bg.gamification_id');
+        }
+
+        /*
+         * =====================================================
+         * 9. FILTRO POR SUBCATEGORÍAS
+         * =====================================================
+         */
+        if (!empty($subcategoryIds)) {
+
+            if (is_string($subcategoryIds)) {
+
+                $subcategoryIds = array_filter(
+                    array_map(
+                        'intval',
+                        explode(',', $subcategoryIds)
+                    ),
+                    fn($id) => $id > 0
+                );
+            }
+
+            if (is_array($subcategoryIds)) {
+
+                $subcategoryIds = array_filter(
+                    array_map('intval', $subcategoryIds),
+                    fn($id) => $id > 0
+                );
+            }
+
+            if (!empty($subcategoryIds)) {
+
+                $query->whereIn(
+                    'b.business_subcategories_id',
+                    $subcategoryIds
+                );
+            }
+        }
+
+        /*
+         * =====================================================
+         * 10. EJECUTAR CONSULTA
+         * =====================================================
+         */
+
+        $results = $query->get();
+
+        /*
+         * =====================================================
+         * 11. PROCESAR INFORMACIÓN DE CADA NEGOCIO
+         * =====================================================
+         */
+
+        foreach ($results as $business) {
+
+            // Compatible con el funcionamiento anterior.
+            // Si no hay ubicación, no inventar distancia.
+
+            $business->distance_km = $business->distance !== null
+                ? round((float) $business->distance, 2) . " km"
+                : null;
+
+            $publicAsset = asset('public') . $business->source;
+
+            $business->source = $publicAsset;
+
+            $business_id = $business->id;
+
+            $weekVisit = $this->getCountersBusiness([
+                'filters' => [
+                    'business_id' => $business_id,
+                    'isWeek' => true,
+                ]
+            ]);
+
+            $reputationData =
+                $this->getReputationLogForBusiness($business_id);
+
+            $reputationCustomer =
+                $this->getReputationLogForClient(1);
+
+            $socialFollowDataCustomer =
+                $this->getSocialFollowLogForClient(1);
+
+            $getRatingSummaryForClientData =
+                $this->getRatingSummaryForClient(1);
+
+            $getRatingSummaryForBusiness =
+                $this->getRatingSummaryForBusiness($business_id);
+
+            /*
+             * =====================================================
+             * 12. RESUMEN DE GAMIFICACIÓN
+             * =====================================================
+             */
+
+            $reputationScore =
+                $reputationData["summary"]["total_reputation"];
+
+            $totalTrophies = 0;
+            $totalVisits = 0;
+            $positiveClients = 0;
+
+            $averageStars =
+                $getRatingSummaryForBusiness["average_stars"];
+
+            $communityScore = 0;
+
+            $totalEntradaYapitas = 0;
+            $totalSalidaYapitas = 0;
+            $balance_available_bee = 0;
+
+            $totalEntradaYapitasPremium = 0;
+            $totalSalidaYapitasPremium = 0;
+            $balance_available_queen = 0;
+
+            $summary = new GamificationSummary(
+
+                new Yapitas(
+                    $totalEntradaYapitas,
+                    $totalSalidaYapitas,
+                    $balance_available_bee
+                ),
+
+                new Yapitas(
+                    $totalEntradaYapitasPremium,
+                    $totalSalidaYapitasPremium,
+                    $balance_available_queen
+                ),
+
+                new Reputation($reputationScore),
+
+                new Trophies($totalTrophies),
+
+                new Visits($totalVisits),
+
+                new Rating(
+                    $positiveClients,
+                    $averageStars,
+                    $communityScore
+                )
+            );
+
+            /*
+             * =====================================================
+             * 13. HORARIOS DEL NEGOCIO
+             * =====================================================
+             */
+
+            $schedules = $this->getShedulingByBusinessData([
+                'business_id' => $business_id,
+            ]);
+
+            /*
+             * =====================================================
+             * 14. ASIGNAR INFORMACIÓN EXISTENTE
+             * =====================================================
+             */
+
+            $business->summary = $summary;
+
+            $business->schedules = $schedules;
+
+            $business->reputationData = $reputationData;
+
+            $business->reputationDataCustomer =
+                $reputationCustomer;
+
+            $business->socialFollowDataCustomer =
+                $socialFollowDataCustomer;
+
+            $business->getRatingSummaryForClientData =
+                $getRatingSummaryForClientData;
+
+            $business->getRatingSummaryForBusiness =
+                $getRatingSummaryForBusiness;
+
+            /*
+             * =====================================================
+             * 15. REDES SOCIALES
+             * =====================================================
+             */
+
+            $socialNetworksData = $this->getSocialNetwork([
+                "filters" => [
+                    "business_id" => $business_id
+                ]
+            ]);
+
+            $business->socialNetworksData =
+                $socialNetworksData;
+        }
+
+        /*
+         * =====================================================
+         * 16. RESPUESTA ORIGINAL
+         * =====================================================
+         */
+
+        return $results->toArray();
+    }
+
+    public function searchNearbyBusinesses2($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null, $onlyWithRedeemableRewards = null,
                                            $onlyWithGamesActive = null,
                                            $onlyAlliedCompanies = null, $searchQuery = "")
     {
