@@ -610,112 +610,107 @@ class BusinessRepository
             $business->source = $publicAsset;
 
             $business_id = $business->id;
-
-            $weekVisit = $this->getCountersBusiness([
-                'filters' => [
-                    'business_id' => $business_id,
-                    'isWeek' => true,
-                ]
-            ]);
-
-            $reputationData =
-                $this->getReputationLogForBusiness($business_id);
-
-            $reputationCustomer =
-                $this->getReputationLogForClient(1);
-
-            $socialFollowDataCustomer =
-                $this->getSocialFollowLogForClient(1);
-
-            $getRatingSummaryForClientData =
-                $this->getRatingSummaryForClient(1);
-
-            $getRatingSummaryForBusiness =
-                $this->getRatingSummaryForBusiness($business_id);
-
-            /*
-             * =====================================================
-             * 12. RESUMEN DE GAMIFICACIÓN
-             * =====================================================
-             */
-
-            $reputationScore =
-                $reputationData["summary"]["total_reputation"];
-
-            $totalTrophies = 0;
-            $totalVisits = 0;
-            $positiveClients = 0;
-
-            $averageStars =
-                $getRatingSummaryForBusiness["average_stars"];
-
-            $communityScore = 0;
-
-            $totalEntradaYapitas = 0;
-            $totalSalidaYapitas = 0;
-            $balance_available_bee = 0;
-
-            $totalEntradaYapitasPremium = 0;
-            $totalSalidaYapitasPremium = 0;
-            $balance_available_queen = 0;
-            $summary = new GamificationSummary(
-                new Yapitas(
-                    $totalEntradaYapitas,
-                    $totalSalidaYapitas,
-                    $balance_available_bee
-                ),
-
-                new Yapitas(
-                    $totalEntradaYapitasPremium,
-                    $totalSalidaYapitasPremium,
-                    $balance_available_queen
-                ),
-
-                new Reputation($reputationScore),
-
-                new Trophies($totalTrophies),
-
-                new Visits($totalVisits),
-
-                new Rating(
-                    $positiveClients,
-                    $averageStars,
-                    $communityScore
-                )
-            );
-            $schedules=[   ];
+            $socialNetworksData = [];
+            $schedules = [];
             if ($allowDataBusiness) {
+                $weekVisit = $this->getCountersBusiness([
+                    'filters' => [
+                        'business_id' => $business_id,
+                        'isWeek' => true,
+                    ]
+                ]);
+
+                $reputationData =
+                    $this->getReputationLogForBusiness($business_id);
+
+                $reputationCustomer =
+                    $this->getReputationLogForClient(1);
+
+                $socialFollowDataCustomer =
+                    $this->getSocialFollowLogForClient(1);
+
+                $getRatingSummaryForClientData =
+                    $this->getRatingSummaryForClient(1);
+
+                $getRatingSummaryForBusiness =
+                    $this->getRatingSummaryForBusiness($business_id);
 
 
-            $schedules = $this->getShedulingByBusinessData([
-                'business_id' => $business_id,
-            ]);
-            }
-            /*
-             * =====================================================
-             * 14. ASIGNAR INFORMACIÓN EXISTENTE
-             * =====================================================
-             */
+                $reputationScore =
+                    $reputationData["summary"]["total_reputation"];
 
-            $business->summary = $summary;
+                $totalTrophies = 0;
+                $totalVisits = 0;
+                $positiveClients = 0;
 
-            $business->schedules = $schedules;
+                $averageStars =
+                    $getRatingSummaryForBusiness["average_stars"];
 
-            $business->reputationData = $reputationData;
+                $communityScore = 0;
 
-            $business->reputationDataCustomer =
-                $reputationCustomer;
+                $totalEntradaYapitas = 0;
+                $totalSalidaYapitas = 0;
+                $balance_available_bee = 0;
 
-            $business->socialFollowDataCustomer =
-                $socialFollowDataCustomer;
+                $totalEntradaYapitasPremium = 0;
+                $totalSalidaYapitasPremium = 0;
+                $balance_available_queen = 0;
 
-            $business->getRatingSummaryForClientData =
-                $getRatingSummaryForClientData;
+                $summary = new GamificationSummary(
+                    new Yapitas(
+                        $totalEntradaYapitas,
+                        $totalSalidaYapitas,
+                        $balance_available_bee
+                    ),
 
-            $business->getRatingSummaryForBusiness =
-                $getRatingSummaryForBusiness;
-            $socialNetworksData= [   ];
-            if ($allowDataBusiness) {
+                    new Yapitas(
+                        $totalEntradaYapitasPremium,
+                        $totalSalidaYapitasPremium,
+                        $balance_available_queen
+                    ),
+
+                    new Reputation($reputationScore),
+
+                    new Trophies($totalTrophies),
+
+                    new Visits($totalVisits),
+
+                    new Rating(
+                        $positiveClients,
+                        $averageStars,
+                        $communityScore
+                    )
+                );
+
+
+
+
+
+
+                /*
+                 * =====================================================
+                 * 14. ASIGNAR INFORMACIÓN EXISTENTE
+                 * =====================================================
+                 */
+
+                $business->summary = $summary;
+
+                $business->schedules = $schedules;
+
+                $business->reputationData = $reputationData;
+
+                $business->reputationDataCustomer =
+                    $reputationCustomer;
+
+                $business->socialFollowDataCustomer =
+                    $socialFollowDataCustomer;
+
+                $business->getRatingSummaryForClientData =
+                    $getRatingSummaryForClientData;
+
+                $business->getRatingSummaryForBusiness =
+                    $getRatingSummaryForBusiness;
+
                 $socialNetworksData = $this->getSocialNetwork([
                     "filters" => [
                         "business_id" => $business_id
@@ -723,6 +718,9 @@ class BusinessRepository
                 ]);
             }
 
+            $schedules = $this->getShedulingByBusinessData([
+                'business_id' => $business_id,
+            ]);
 
             $business->socialNetworksData =
                 $socialNetworksData;
