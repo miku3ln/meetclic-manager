@@ -123,9 +123,6 @@ class BusinessRepository
     }
 
 
-
-
-
     public function getCategoriesBusiness($params)
     {
         try {
@@ -135,21 +132,18 @@ class BusinessRepository
             // ==========================================
 
             $query = DB::table('business as b')
-
                 ->join(
                     'business_subcategories as bs',
                     'bs.id',
                     '=',
                     'b.business_subcategories_id'
                 )
-
                 ->join(
                     'business_categories as bc',
                     'bc.id',
                     '=',
                     'bs.business_categories_id'
                 )
-
                 ->select([
                     'bs.id',
                     'bs.id as key',
@@ -189,7 +183,7 @@ class BusinessRepository
             // ==========================================
 
             $search = trim(
-                (string) data_get(
+                (string)data_get(
                     $params,
                     'filters.search_value.term',
                     ''
@@ -215,7 +209,7 @@ class BusinessRepository
 
                         $q->orWhere(
                             'bs.id',
-                            (int) $search
+                            (int)$search
                         );
                     }
 
@@ -294,7 +288,7 @@ class BusinessRepository
                         'has_icon' => $category->category_has_icon,
                         'status' => $category->category_status,
 
-                        'business_count' => (int) $items->sum(
+                        'business_count' => (int)$items->sum(
                             'business_count'
                         ),
 
@@ -310,7 +304,7 @@ class BusinessRepository
                                     'description' => $item->description,
                                     'has_icon' => $item->has_icon,
                                     'status' => $item->status,
-                                    'business_count' => (int) $item->business_count,
+                                    'business_count' => (int)$item->business_count,
                                 ];
 
                             })
@@ -332,19 +326,17 @@ class BusinessRepository
     }
 
 
-
-
-
     public function searchNearbyBusinesses(
         $latitude = null,
         $longitude = null,
-        $radiusKm = 10,
+        $radiusKm = 5,
         $subcategoryIds = null,
         $onlyWithRedeemableRewards = null,
         $onlyWithGamesActive = null,
         $onlyAlliedCompanies = null,
         $searchQuery = ""
-    ) {
+    )
+    {
         /*
          * =====================================================
          * 1. VALIDAR UBICACIÓN DEL USUARIO
@@ -354,24 +346,24 @@ class BusinessRepository
         $hasLocation = (
             is_numeric($latitude) &&
             is_numeric($longitude) &&
-            is_finite((float) $latitude) &&
-            is_finite((float) $longitude) &&
-            (float) $latitude >= -90 &&
-            (float) $latitude <= 90 &&
-            (float) $longitude >= -180 &&
-            (float) $longitude <= 180
+            is_finite((float)$latitude) &&
+            is_finite((float)$longitude) &&
+            (float)$latitude >= -90 &&
+            (float)$latitude <= 90 &&
+            (float)$longitude >= -180 &&
+            (float)$longitude <= 180
         );
 
         if ($hasLocation) {
-            $latitude = (float) $latitude;
-            $longitude = (float) $longitude;
+            $latitude = (float)$latitude;
+            $longitude = (float)$longitude;
         }
 
         $radiusKm = (
             is_numeric($radiusKm) &&
-            is_finite((float) $radiusKm) &&
-            (float) $radiusKm > 0
-        ) ? (float) $radiusKm : 10;
+            is_finite((float)$radiusKm) &&
+            (float)$radiusKm > 0
+        ) ? (float)$radiusKm : 10;
 
         /*
          * =====================================================
@@ -603,14 +595,14 @@ class BusinessRepository
          * 11. PROCESAR INFORMACIÓN DE CADA NEGOCIO
          * =====================================================
          */
-
+        $allowDataBusiness = false;
         foreach ($results as $business) {
 
             // Compatible con el funcionamiento anterior.
             // Si no hay ubicación, no inventar distancia.
 
             $business->distance_km = $business->distance !== null
-                ? round((float) $business->distance, 2) . " km"
+                ? round((float)$business->distance, 2) . " km"
                 : null;
 
             $publicAsset = asset('public') . $business->source;
@@ -666,9 +658,7 @@ class BusinessRepository
             $totalEntradaYapitasPremium = 0;
             $totalSalidaYapitasPremium = 0;
             $balance_available_queen = 0;
-
             $summary = new GamificationSummary(
-
                 new Yapitas(
                     $totalEntradaYapitas,
                     $totalSalidaYapitas,
@@ -693,17 +683,14 @@ class BusinessRepository
                     $communityScore
                 )
             );
+            $schedules=[   ];
+            if ($allowDataBusiness) {
 
-            /*
-             * =====================================================
-             * 13. HORARIOS DEL NEGOCIO
-             * =====================================================
-             */
 
             $schedules = $this->getShedulingByBusinessData([
                 'business_id' => $business_id,
             ]);
-
+            }
             /*
              * =====================================================
              * 14. ASIGNAR INFORMACIÓN EXISTENTE
@@ -727,18 +714,15 @@ class BusinessRepository
 
             $business->getRatingSummaryForBusiness =
                 $getRatingSummaryForBusiness;
+            $socialNetworksData= [   ];
+            if ($allowDataBusiness) {
+                $socialNetworksData = $this->getSocialNetwork([
+                    "filters" => [
+                        "business_id" => $business_id
+                    ]
+                ]);
+            }
 
-            /*
-             * =====================================================
-             * 15. REDES SOCIALES
-             * =====================================================
-             */
-
-            $socialNetworksData = $this->getSocialNetwork([
-                "filters" => [
-                    "business_id" => $business_id
-                ]
-            ]);
 
             $business->socialNetworksData =
                 $socialNetworksData;
@@ -754,8 +738,8 @@ class BusinessRepository
     }
 
     public function searchNearbyBusinesses2($latitude, $longitude, $radiusKm = 10, $subcategoryIds = null, $onlyWithRedeemableRewards = null,
-                                           $onlyWithGamesActive = null,
-                                           $onlyAlliedCompanies = null, $searchQuery = "")
+                                            $onlyWithGamesActive = null,
+                                            $onlyAlliedCompanies = null, $searchQuery = "")
     {
         $haversine = "(6371 * acos(
         cos(radians(?)) *

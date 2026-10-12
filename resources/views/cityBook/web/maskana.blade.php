@@ -180,6 +180,15 @@
                 <!-- CONTENIDO -->
 
                 <div class="manager-filters__body">
+                    <!-- RESULTADOS DE EMPRESAS -->
+                    <div
+                        id="business-response-data"
+                        class="response-data"
+                        role="status"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                    </div>
                     <div class="manager-filters__field">
 
                         <label
@@ -245,7 +254,7 @@
                     <button
                         type="button"
                         id="manager-filters-apply"
-                        class="manager-filters__apply"
+                        class="manager-filters__apply not-view"
                     >
                         <i class="bi bi-check2"></i>
                         Aplicar filtros

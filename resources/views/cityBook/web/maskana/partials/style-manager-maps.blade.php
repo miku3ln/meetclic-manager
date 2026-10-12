@@ -1028,7 +1028,7 @@
     .manager-map {
         position: relative;
         width: 100%;
-        height: 90dvh;
+        height: 84.6dvh;
         overflow: hidden;
         padding: 0;
         margin: 0;
@@ -1091,6 +1091,7 @@
     }
 
     .manager-map__brand {
+        display: none;
         font-weight: 700;
     }
 
@@ -1461,7 +1462,7 @@
 
         .manager-map__toolbar {
             top: 12px;
-            left: 12px;
+            left: 58px;
             right: 12px;
         }
 
@@ -1507,13 +1508,14 @@
             calc(14px + env(safe-area-inset-bottom));
         }
 
+        .chat-widget-button {
+            bottom: 20px!important;
+            left: 10px !important;
+        }
     }
 
     .content {
         padding-top: 16px!important;
-    }
-    .chat-widget-button {
-        left: 50px !important;
     }
 
     #wrapper {
@@ -1523,4 +1525,161 @@
     footer.main-footer.dark-footer {
         display: none;
     }
+</style>
+<style>
+
+    /* ============================================
+       RESPONSE DATA - BEM
+    ============================================ */
+
+    .response-data {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .response-data__content {
+        width: 100%;
+        min-height: 76px;
+        padding: 14px 16px;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        transition: background-color 0.2s ease;
+    }
+
+    /* SUCCESS */
+
+    .response-data__content--success {
+        background-color: #edf8f1;
+        border-color: #c8e9d3;
+    }
+
+    .response-data__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        font-size: 1.25rem;
+    }
+
+    .response-data__icon--success {
+        color: #198754;
+        background-color: #d6f0df;
+    }
+
+    .response-data__count {
+        color: #146c43;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .response-data__message {
+        color: #64748b;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        margin-top: 3px;
+    }
+
+    .response-data__status-icon {
+        color: #198754;
+        font-size: 1.1rem;
+    }
+
+    /* EMPTY */
+
+    .response-data__content--empty {
+        background-color: #fff8eb;
+        border-color: #f4dfb8;
+    }
+
+    .response-data__icon--empty {
+        color: #b7791f;
+        background-color: #fff0cf;
+    }
+
+    .response-data__title {
+        color: #92400e;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 575.98px) {
+
+        .response-data__content {
+            min-height: 68px;
+            padding: 12px;
+            gap: 10px !important;
+        }
+
+        .response-data__icon {
+            width: 38px;
+            height: 38px;
+            font-size: 1.1rem;
+        }
+
+        .response-data__count {
+            font-size: 1.3rem;
+        }
+
+        .response-data__message {
+            font-size: 0.78rem;
+        }
+    }
+
+    /* ============================================
+       RESPONSE DATA - MAP HINT
+    ============================================ */
+
+    .response-data__hint {
+        width: 100%;
+        padding: 12px 14px;
+        background-color: #f0f7ff;
+        border: 1px solid #d7e8fc;
+        border-radius: 12px;
+    }
+
+    .response-data__hint-icon {
+        color: #0d6efd;
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+
+    .response-data__hint-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .response-data__hint-title {
+        color: #1d4e89;
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-bottom: 4px;
+    }
+
+    .response-data__hint-message {
+        color: #526579;
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 575.98px) {
+        .response-data__hint {
+            padding: 10px 12px;
+        }
+
+        .response-data__hint-title {
+            font-size: 0.82rem;
+        }
+
+        .response-data__hint-message {
+            font-size: 0.77rem;
+        }
+    }
+
 </style>

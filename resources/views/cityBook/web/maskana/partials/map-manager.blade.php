@@ -453,14 +453,7 @@
 
                         ${mapsLink
                 ? `
-                                <a
-                                    class="business-detail__button business-detail__button--outline"
-                                    href="${escapeHtml(mapsLink)}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Abrir en OSM
-                                </a>
+
                             `
                 : ''
             }
@@ -739,10 +732,14 @@
                     detailAsideId: 'businessDetailAside',
                     groupAsideId: 'businessGroupAside',
 
+
+                    // Centro de Otavalo, Imbabura
                     position: [0.2343, -78.2625],
-                    zoom: 13,
+
+                    zoom: 15,
                     focusZoom: 17,
                     maxZoom: 19,
+
 
                     tileUrl:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
