@@ -14,7 +14,11 @@
         crossorigin=""
     />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
-
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    >
     @include('cityBook.web.maskana.partials.style-manager-maps')
 
 @endsection
@@ -47,203 +51,294 @@
 @endif
 @section('content')
 
-    <div id="app-management" class="container-fluid py-4">
 
-        <!-- ============================================
-             CONFIGURACIÓN API LARAVEL
-        ============================================ -->
+    <div id="app-management" class="manager-map">
+
+        <!-- ==========================================
+             RUTAS API
+        ========================================== -->
 
         <input
             type="hidden"
             id="route-business-action"
             value="{{ route('searchNearbyBusinesses') }}"
         >
+
         <input
             type="hidden"
             id="route-business-categories-action"
             value="{{ route('getCategoriesBusiness') }}"
         >
 
-        <div class="container-fluid py-3">
+        <!-- ==========================================
+             MAPA PRINCIPAL
+        ========================================== -->
 
-            <!-- ============================================
-                 FILTROS DE EMPRESAS
-            ============================================ -->
+        <div class="business-map-layout">
 
-            <div class="row g-3 mb-3">
+            <div
+                id="business-map"
+                class="business-map-layout__map"
+                aria-label="Mapa de ubicación de empresas"
+            ></div>
 
-                <!-- CATEGORÍAS -->
-                <div class="col-md-3">
+            <!-- ======================================
+                 BARRA SUPERIOR FLOTANTE
+            ====================================== -->
 
-                    <select
-                        id="business-category-filter"
-                        class="form-select"
+            <div class="manager-map__toolbar">
+
+                <div class="manager-map__brand">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>Maskana</span>
+                </div>
+
+                <div class="manager-map__counter">
+                    <i class="bi bi-shop"></i>
+
+                    <strong id="business-total">0</strong>
+
+                    <span>empresas</span>
+                </div>
+
+            </div>
+
+            <!-- ======================================
+                 ACCIONES FLOTANTES
+            ====================================== -->
+
+            <div class="manager-map__actions">
+
+                <button
+                    type="button"
+                    id="manager-filters-toggle"
+                    class="manager-filters__toggle"
+                    aria-label="Mostrar filtros"
+                    aria-controls="manager-filters-panel"
+                    aria-expanded="false"
+                >
+                    <i class="bi bi-sliders2"></i>
+                    <span>Filtros</span>
+                </button>
+
+            </div>
+
+            <!-- ======================================
+                 PANEL FLOTANTE DE FILTROS
+            ====================================== -->
+
+            <div
+                id="manager-filters-backdrop"
+                class="manager-filters__backdrop"
+                aria-hidden="true"
+            ></div>
+
+            <section
+                id="manager-filters-panel"
+                class="manager-filters"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="manager-filters-title"
+                aria-hidden="true"
+                inert
+            >
+
+                <div class="manager-filters__header">
+
+                    <div class="manager-filters__heading">
+
+                        <div class="manager-filters__icon">
+                            <i class="bi bi-sliders2"></i>
+                        </div>
+
+                        <div>
+                            <h2
+                                id="manager-filters-title"
+                                class="manager-filters__title"
+                            >
+                                Filtrar empresas
+                            </h2>
+
+                            <p class="manager-filters__subtitle">
+                                Encuentra lo que necesitas
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="manager-filters-close"
+                        class="manager-filters__close"
+                        aria-label="Cerrar filtros"
                     >
-                        <option value="all">
-                            Todas las categorías
-                        </option>
-
-                        <!-- Cargar categorías desde Laravel -->
-
-                    </select>
+                        <i class="bi bi-x-lg"></i>
+                    </button>
 
                 </div>
 
+                <!-- CONTENIDO -->
+
+                <div class="manager-filters__body">
+                    <div class="manager-filters__field">
+
+                        <label
+                            for="business-category-filter"
+                            class="manager-filters__label"
+                        >
+                            Categoría o subcategoría
+                        </label>
+
+                        <select
+                            id="business-category-filter"
+                            class="manager-filters__select"
+                            style="width: 100%;"
+                        >
+                            <option value="all">
+                                Todas las categorías
+                            </option>
+                        </select>
+
+                    </div>
+                    <div class="manager-filters__field">
+
+                        <label
+                            for="business-search"
+                            class="manager-filters__label"
+                        >
+                            Buscar empresa
+                        </label>
+
+                        <div class="manager-filters__input-wrap">
+
+                            <i class="bi bi-search"></i>
+
+                            <input
+                                type="search"
+                                id="business-search"
+                                class="manager-filters__input"
+                                placeholder="Nombre de la empresa..."
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
 
 
-                <!-- BUSCADOR -->
-                <div class="col-md-4">
-
-                    <input
-                        type="search"
-                        id="business-search"
-                        class="form-control"
-                        placeholder="Buscar empresas..."
-                        autocomplete="off"
-                    >
 
                 </div>
 
-                <!-- LIMPIAR FILTROS -->
-                <div class="col-md-2">
+                <!-- ACCIONES -->
+
+                <div class="manager-filters__footer">
 
                     <button
                         type="button"
                         id="business-reset-filters"
-                        class="btn btn-outline-secondary w-100"
+                        class="manager-filters__reset"
                     >
-                        Limpiar filtros
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        Limpiar
+                    </button>
+
+                    <button
+                        type="button"
+                        id="manager-filters-apply"
+                        class="manager-filters__apply"
+                    >
+                        <i class="bi bi-check2"></i>
+                        Aplicar filtros
                     </button>
 
                 </div>
 
-            </div>
+            </section>
 
-            <!-- ============================================
+            <!-- ======================================
                  MENSAJES DEL SISTEMA
-            ============================================ -->
+            ====================================== -->
 
             <div
                 id="business-map-message"
-                class="alert alert-info d-none"
-                role="alert"
+                class="manager-map__message alert alert-info d-none"
+                role="status"
                 aria-live="polite"
             ></div>
 
-            <!-- ============================================
-                 TOTAL DE EMPRESAS
-            ============================================ -->
+            <!-- ======================================
+                 LOADING
+            ====================================== -->
 
-            <div class="mb-2">
-
-                Empresas encontradas:
-
-                <strong id="business-total">
-                    0
-                </strong>
-
+            <div
+                id="business-map-loading"
+                class="manager-map__loading d-none"
+            >
+                <div
+                    class="spinner-border text-primary"
+                    role="status"
+                >
+                <span class="visually-hidden">
+                    Cargando empresas...
+                </span>
+                </div>
             </div>
 
-            <!-- ============================================
-                 MAPA + ASIDES
-            ============================================ -->
+            <!-- ======================================
+                 DETALLE DE EMPRESA
+            ====================================== -->
 
-            <div class="business-map-layout">
+            <aside
+                id="businessDetailAside"
+                class="business-map-aside business-map-aside--detail"
+                aria-label="Detalle de empresa"
+                aria-hidden="true"
+                inert
+            >
 
-                <!-- ========================================
-                     INDICADOR DE CARGA
-                ======================================== -->
-
-                <div
-                    id="business-map-loading"
-                    class="position-absolute top-50 start-50 translate-middle d-none"
-                    style="z-index: 1100;"
+                <button
+                    type="button"
+                    class="business-map-aside__close"
+                    data-business-aside-close
+                    aria-label="Cerrar detalle de empresa"
                 >
-
-                    <div
-                        class="spinner-border text-primary"
-                        role="status"
-                    >
-
-                    <span class="visually-hidden">
-                        Cargando empresas...
-                    </span>
-
-                    </div>
-
-                </div>
-
-                <!-- ========================================
-                     MAPA LEAFLET / OPENSTREETMAP
-                ======================================== -->
+                    &times;
+                </button>
 
                 <div
-                    id="business-map"
-                    class="business-map-layout__map"
-                    aria-label="Mapa de ubicación de empresas"
+                    class="business-map-aside__content"
+                    data-business-detail-content
                 ></div>
 
-                <!-- ========================================
-                     ASIDE 1: DETALLE DE EMPRESA
-                ======================================== -->
+            </aside>
 
-                <aside
-                    id="businessDetailAside"
-                    class="business-map-aside business-map-aside--detail"
-                    aria-label="Detalle de empresa"
-                    aria-hidden="true"
-                    inert
+            <!-- ======================================
+                 EMPRESAS AGRUPADAS
+            ====================================== -->
+
+            <aside
+                id="businessGroupAside"
+                class="business-map-aside business-map-aside--group"
+                aria-label="Empresas en esta ubicación"
+                aria-hidden="true"
+                inert
+            >
+
+                <button
+                    type="button"
+                    class="business-map-aside__close"
+                    data-business-aside-close
+                    aria-label="Cerrar listado de empresas"
                 >
+                    &times;
+                </button>
 
-                    <!-- BOTÓN CERRAR -->
-                    <button
-                        type="button"
-                        class="business-map-aside__close"
-                        data-business-aside-close
-                        aria-label="Cerrar detalle de empresa"
-                    >
-                        &times;
-                    </button>
+                <div
+                    class="business-map-aside__content"
+                    data-business-group-content
+                ></div>
 
-                    <!-- CONTENIDO DINÁMICO -->
-                    <div
-                        class="business-map-aside__content"
-                        data-business-detail-content
-                    ></div>
-
-                </aside>
-
-                <!-- ========================================
-                     ASIDE 2: EMPRESAS AGRUPADAS
-                ======================================== -->
-
-                <aside
-                    id="businessGroupAside"
-                    class="business-map-aside business-map-aside--group"
-                    aria-label="Empresas en esta ubicación"
-                    aria-hidden="true"
-                    inert
-                >
-
-                    <!-- BOTÓN CERRAR -->
-                    <button
-                        type="button"
-                        class="business-map-aside__close"
-                        data-business-aside-close
-                        aria-label="Cerrar listado de empresas"
-                    >
-                        &times;
-                    </button>
-
-                    <!-- CONTENIDO DINÁMICO -->
-                    <div
-                        class="business-map-aside__content"
-                        data-business-group-content
-                    ></div>
-
-                </aside>
-
-            </div>
+            </aside>
 
         </div>
 

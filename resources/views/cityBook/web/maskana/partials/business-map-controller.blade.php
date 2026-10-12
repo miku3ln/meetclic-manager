@@ -695,6 +695,17 @@
 
         initManager();
         initBusinessCategoriesSelect2();
+        initManagerFilters({
+            onApply: function (params) {
+
+                // Llamar aquí a tu función AJAX existente
+                // que utiliza buildBusinessRequestParams().
+                //
+                // Ejemplo de los datos disponibles:
+                console.log(params);
+
+            }
+        });
     });
 
 
@@ -974,5 +985,198 @@
     }
 
 
+
+    function initManagerFilters({ onApply } = {}) {
+
+        const $panel = $('#manager-filters-panel');
+        const $backdrop = $('#manager-filters-backdrop');
+        const $toggle = $('#manager-filters-toggle');
+        const $close = $('#manager-filters-close');
+        const $apply = $('#manager-filters-apply');
+        const $reset = $('#business-reset-filters');
+
+        const $search = $('#business-search');
+        const $category = $('#business-category-filter');
+
+        if (!$panel.length) {
+            console.error('No se encontró manager-filters.');
+            return;
+        }
+
+        let previousFocus = null;
+
+        // ==========================================
+        // ABRIR PANEL
+        // ==========================================
+
+        function openFilters() {
+
+            previousFocus = document.activeElement;
+
+            $panel.addClass('manager-filters--open');
+
+            $backdrop.addClass(
+                'manager-filters__backdrop--visible'
+            );
+
+            $panel
+                .attr('aria-hidden', 'false')
+                .prop('inert', false);
+
+            $toggle.attr('aria-expanded', 'true');
+
+            $close.trigger('focus');
+        }
+
+        // ==========================================
+        // CERRAR PANEL
+        // ==========================================
+
+        function closeFilters() {
+
+            $panel.removeClass('manager-filters--open');
+
+            $backdrop.removeClass(
+                'manager-filters__backdrop--visible'
+            );
+
+            $panel
+                .attr('aria-hidden', 'true')
+                .prop('inert', true);
+
+            $toggle.attr('aria-expanded', 'false');
+
+            if (previousFocus?.isConnected) {
+                previousFocus.focus();
+            }
+        }
+
+        // ==========================================
+        // APLICAR FILTROS
+        // ==========================================
+
+        function applyFilters() {
+
+            const selectedValue = $category.val() || 'all';
+
+            const selectedId = Number(selectedValue);
+
+            businessFilters.subcategoryIds =
+                selectedValue === 'all' ||
+                !Number.isInteger(selectedId) ||
+                selectedId <= 0
+                    ? []
+                    : [selectedId];
+
+            businessFilters.searchQuery =
+                String($search.val() || '').trim();
+
+            const params = buildBusinessRequestParams();
+
+            console.log('Filtros aplicados:', params);
+
+            closeFilters();
+
+            if (typeof onApply === 'function') {
+                onApply(params);
+            }
+        }
+
+        // ==========================================
+        // LIMPIAR FILTROS
+        // ==========================================
+
+        function resetFilters() {
+
+            $search.val('');
+
+            $category
+                .val('all')
+                .trigger('change.select2');
+
+            businessFilters.subcategoryIds = [];
+            businessFilters.searchQuery = '';
+
+            // Limpiar los campos, sin consultar todavía.
+            // La consulta se ejecuta con Aplicar filtros.
+        }
+
+        // ==========================================
+        // EVENTOS
+        // ==========================================
+
+        $toggle
+            .off('click.managerFilters')
+            .on('click.managerFilters', openFilters);
+
+        $close
+            .off('click.managerFilters')
+            .on('click.managerFilters', closeFilters);
+
+        $backdrop
+            .off('click.managerFilters')
+            .on('click.managerFilters', closeFilters);
+
+        $apply
+            .off('click.managerFilters')
+            .on('click.managerFilters', applyFilters);
+
+        $reset
+            .off('click.managerFilters')
+            .on('click.managerFilters', resetFilters);
+
+        $(document)
+            .off('keydown.managerFilters')
+            .on('keydown.managerFilters', function (event) {
+
+                if (
+                    event.key === 'Escape' &&
+                    $panel.hasClass('manager-filters--open')
+                ) {
+                    closeFilters();
+                }
+
+                if (
+                    event.key === 'Tab' &&
+                    $panel.hasClass('manager-filters--open')
+                ) {
+                    const focusable = $panel
+                        .find(
+                            'button:not(:disabled), ' +
+                            'input:not(:disabled), ' +
+                            'select:not(:disabled), ' +
+                            '[tabindex]:not([tabindex="-1"])'
+                        )
+                        .filter(':visible')
+                        .toArray();
+
+                    if (!focusable.length) return;
+
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+
+                    if (
+                        event.shiftKey &&
+                        document.activeElement === first
+                    ) {
+                        event.preventDefault();
+                        last.focus();
+                    } else if (
+                        !event.shiftKey &&
+                        document.activeElement === last
+                    ) {
+                        event.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+
+        return {
+            open: openFilters,
+            close: closeFilters,
+            apply: applyFilters,
+            reset: resetFilters
+        };
+    }
 
 </script>

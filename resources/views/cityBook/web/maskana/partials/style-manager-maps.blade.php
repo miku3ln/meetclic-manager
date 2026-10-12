@@ -1008,4 +1008,519 @@
         }
     }
 
+
+
+
+
+</style>
+<style>
+
+    /* ==========================================
+       MANAGER MAP - FULL SCREEN
+    ========================================== */
+
+    html,
+    body {
+        margin: 0;
+        min-height: 100%;
+    }
+
+    .manager-map {
+        position: relative;
+        width: 100%;
+        height: 90dvh;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+    }
+
+    .manager-map .business-map-layout {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .manager-map .business-map-layout__map {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        z-index: 1;
+
+        touch-action: none;
+    }
+
+    /* ==========================================
+       TOOLBAR FLOTANTE
+    ========================================== */
+
+    .manager-map__toolbar {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        z-index: 500;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 12px;
+        pointer-events: none;
+    }
+
+    .manager-map__brand,
+    .manager-map__counter {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        padding: 11px 16px;
+        background: #ffffff;
+        border-radius: 50px;
+
+        box-shadow: 0 5px 22px rgba(0, 0, 0, .12);
+
+        font-size: 14px;
+        color: #24372f;
+        pointer-events: auto;
+    }
+
+    .manager-map__brand {
+        font-weight: 700;
+    }
+
+    .manager-map__brand i {
+        color: #287c5b;
+        font-size: 19px;
+    }
+
+    .manager-map__counter i {
+        color: #287c5b;
+    }
+
+    /* ==========================================
+       BOTONES FLOTANTES
+    ========================================== */
+
+    .manager-map__actions {
+        position: absolute;
+        right: 2%;
+        top: 7%;
+        z-index: 600;
+    }
+
+    .manager-filters__toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        border: 0;
+        border-radius: 50px;
+
+        padding: 14px 22px;
+
+        background: #287c5b;
+        color: #ffffff;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, .22);
+        transition: transform .2s, background .2s;
+    }
+
+    .manager-filters__toggle:hover {
+        background: #1c6045;
+        transform: translateY(-2px);
+    }
+
+    .manager-filters__toggle:focus-visible,
+    .manager-filters__close:focus-visible,
+    .manager-filters__apply:focus-visible,
+    .manager-filters__reset:focus-visible {
+        outline: 3px solid #86c7ad;
+        outline-offset: 3px;
+    }
+
+    /* ==========================================
+       FONDO OSCURO DEL PANEL
+    ========================================== */
+
+    .manager-filters__backdrop {
+        position: absolute;
+        inset: 0;
+        z-index: 1190;
+
+        background: rgba(12, 22, 19, .42);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transition: opacity .25s, visibility .25s;
+    }
+
+    .manager-filters__backdrop--visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* ==========================================
+       PANEL DE FILTROS
+    ========================================== */
+
+    .manager-filters {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        bottom: 20px;
+
+        width: min(390px, calc(100% - 40px));
+
+        z-index: 1200;
+
+        display: flex;
+        flex-direction: column;
+
+        background: #ffffff;
+        border-radius: 20px;
+
+        box-shadow: 0 15px 50px rgba(0, 0, 0, .22);
+
+        overflow: hidden;
+
+        transform: translateX(calc(100% + 40px));
+        visibility: hidden;
+        pointer-events: none;
+
+        transition: transform .3s ease, visibility .3s;
+    }
+
+    .manager-filters--open {
+        transform: translateX(0);
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .manager-filters__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 12px;
+        padding: 22px;
+
+        border-bottom: 1px solid #e8ece9;
+    }
+
+    .manager-filters__heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .manager-filters__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 42px;
+        height: 42px;
+
+        border-radius: 12px;
+
+        background: #e5f3ec;
+        color: #287c5b;
+
+        font-size: 19px;
+    }
+
+    .manager-filters__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #203b30;
+    }
+
+    .manager-filters__subtitle {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #7c8981;
+    }
+
+    .manager-filters__close {
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 0;
+        border-radius: 50%;
+
+        background: #f1f3f2;
+        color: #33453a;
+
+        cursor: pointer;
+    }
+
+    /* ==========================================
+       BODY / CAMPOS
+    ========================================== */
+
+    .manager-filters__body {
+        flex: 1;
+        min-height: 0;
+
+        padding: 22px;
+
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .manager-filters__field {
+        margin-bottom: 22px;
+    }
+
+    .manager-filters__label {
+        display: block;
+
+        margin-bottom: 9px;
+
+        font-size: 13px;
+        font-weight: 600;
+        color: #33483b;
+    }
+
+    .manager-filters__input-wrap {
+        position: relative;
+    }
+
+    .manager-filters__input-wrap > i {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+
+        transform: translateY(-50%);
+
+        color: #819087;
+        pointer-events: none;
+    }
+
+    .manager-filters__input {
+        display: block;
+        width: 100%;
+        min-height: 46px;
+
+        padding: 11px 14px 11px 42px;
+
+        border: 1px solid #dce4df;
+        border-radius: 12px;
+
+        background: #ffffff;
+        color: #24382c;
+
+        outline: none;
+    }
+
+    .manager-filters__input:focus {
+        border-color: #287c5b;
+        box-shadow: 0 0 0 3px rgba(40, 124, 91, .12);
+    }
+
+    .manager-filters__select {
+        width: 100%;
+    }
+
+    /* ==========================================
+       SELECT2 PERSONALIZADO
+    ========================================== */
+
+    .manager-filters .select2-container {
+        width: 100% !important;
+    }
+
+    .manager-filters .select2-container
+    .select2-selection--single {
+        height: 46px;
+
+        display: flex;
+        align-items: center;
+
+        border: 1px solid #dce4df;
+        border-radius: 12px;
+    }
+
+    .manager-filters .select2-container
+    .select2-selection__rendered {
+        padding-left: 14px;
+        padding-right: 32px;
+        line-height: normal;
+    }
+
+    .manager-filters .select2-container
+    .select2-selection__arrow {
+        height: 44px;
+        right: 8px;
+    }
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+
+    .manager-filters__footer {
+        display: flex;
+        gap: 12px;
+
+        padding: 18px 22px;
+
+        border-top: 1px solid #e8ece9;
+        background: #ffffff;
+    }
+
+    .manager-filters__reset,
+    .manager-filters__apply {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        min-height: 46px;
+        padding: 12px 16px;
+
+        border-radius: 12px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        cursor: pointer;
+    }
+
+    .manager-filters__reset {
+        border: 1px solid #dce4df;
+        background: #ffffff;
+        color: #52665a;
+    }
+
+    .manager-filters__apply {
+        flex: 1;
+
+        border: 0;
+        background: #287c5b;
+        color: #ffffff;
+    }
+
+    .manager-filters__apply:hover {
+        background: #1c6045;
+    }
+
+    /* ==========================================
+       MENSAJES Y LOADING
+    ========================================== */
+
+    .manager-map__message {
+        position: absolute;
+        top: 86px;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        z-index: 700;
+        max-width: min(500px, calc(100% - 32px));
+    }
+
+    .manager-map__loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        transform: translate(-50%, -50%);
+
+        z-index: 1100;
+    }
+
+    /* ==========================================
+       MOBILE / TABLET
+    ========================================== */
+
+    @media (max-width: 767px) {
+
+        .manager-map__toolbar {
+            top: 12px;
+            left: 12px;
+            right: 12px;
+        }
+
+        .manager-map__brand,
+        .manager-map__counter {
+            padding: 9px 12px;
+            font-size: 12px;
+        }
+
+        .manager-map__actions {
+            right: 15px;
+            bottom: calc(20px + env(safe-area-inset-bottom));
+        }
+
+        .manager-filters {
+            top: auto;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            width: 100%;
+            height: min(80dvh, 680px);
+
+            border-radius: 22px 22px 0 0;
+
+            transform: translateY(105%);
+        }
+
+        .manager-filters--open {
+            transform: translateY(0);
+        }
+
+        .manager-filters__header {
+            padding: 18px;
+        }
+
+        .manager-filters__body {
+            padding: 18px;
+        }
+
+        .manager-filters__footer {
+            padding: 14px 18px
+            calc(14px + env(safe-area-inset-bottom));
+        }
+
+    }
+
+    .content {
+        padding-top: 16px!important;
+    }
+    .chat-widget-button {
+        left: 50px !important;
+    }
+
+    #wrapper {
+
+        padding-top: -1px !important;
+    }
+    footer.main-footer.dark-footer {
+        display: none;
+    }
 </style>
