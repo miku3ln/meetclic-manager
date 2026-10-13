@@ -12,91 +12,134 @@
 @endphp
 
 
+
 @if($dataManagerPage['currentPage'] == 'maskana')
     @php
 
+        // ==========================================
+        // BUSINESS INFORMATION
+        // ==========================================
+
         $dataBusinessInformation = $zoneManager;
 
-
-        $businessTitle =$dataBusinessInformation['title'];
+        $businessTitle = $dataBusinessInformation['title'];
 
         $businessDescription = $dataBusinessInformation['description'];
 
-$code= $dataBusinessInformation['id'];
+        $code = $dataBusinessInformation['id'];
+
+        // ==========================================
+        // BUSINESS URL
+        // ==========================================
+
         $businessUrl = url('/es/maskana');
-if($code=='all') {
-     $businessUrl = url('/es/maskana');
-}else{
-    $businessUrl = url('/es/maskana');
-}
 
+        if ($code == 'all') {
 
-        $urlCurrentRoot =$dataBusinessInformation['source'];
-                $businessImage =$urlCurrentRoot;
+            $businessUrl = url('/es/maskana');
+
+        } else {
+
+            $businessUrl = url('/es/maskana')
+                . '?'
+                . http_build_query([
+                    'type' => $code
+                ]);
+
+        }
+
+        // ==========================================
+        // BUSINESS IMAGE
+        // ==========================================
+
+        $urlCurrentRoot = $dataBusinessInformation['source'];
+
+        $businessImage = $urlCurrentRoot;
+
+        // ==========================================
+        // SOCIAL META INFORMATION
+        // ==========================================
+
+        $businessSocialTitle = $businessTitle . ' | Eventos Digitales';
+
+        $businessImageExtension = strtolower(
+            pathinfo(
+                parse_url($businessImage, PHP_URL_PATH) ?? '',
+                PATHINFO_EXTENSION
+            )
+        );
+
+        $businessImageType = match ($businessImageExtension) {
+            'jpg', 'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+            default => null,
+        };
+
     @endphp
 
 
-            <!-- ========================================================= -->
+        <!-- ========================================================= -->
     <!-- BASIC SEO -->
     <!-- ========================================================= -->
 
     <title>
-        {{$businessTitle}}
+        {{ $businessSocialTitle }}
     </title>
 
     <meta charset="utf-8">
 
     <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1"
+        name="viewport"
+        content="width=device-width, initial-scale=1"
     >
 
     <meta
-            name="description"
-            content="{{$businessDescription}}"
+        name="description"
+        content="{{ $businessDescription }}"
     >
 
     <meta
-            name="keywords"
-            content="
-    {{$businessTitle}},
-    MeetClic,
-    menú digital,
-    menú online,
-    delivery,
-    pedidos online,
-    restaurante,
-    ecommerce gastronómico,
-    comida rápida,
-    promociones,
-    Yapitas,
-    gamificación,
-    recompensas,
-    cashback,
-    menú QR,
-    pedidos a domicilio,
-    delivery gamificado
-    "
+        name="keywords"
+        content="
+            {{ $businessTitle }},
+            MeetClic,
+            menú digital,
+            menú online,
+            delivery,
+            pedidos online,
+            restaurante,
+            ecommerce gastronómico,
+            comida rápida,
+            promociones,
+            Yapitas,
+            gamificación,
+            recompensas,
+            cashback,
+            menú QR,
+            pedidos a domicilio,
+            delivery gamificado
+        "
     >
 
     <meta
-            name="robots"
-            content="index, follow"
+        name="robots"
+        content="index, follow"
     >
 
     <meta
-            name="author"
-            content="{{$businessTitle}}"
+        name="author"
+        content="{{ $businessTitle }}"
     >
 
     <meta
-            name="theme-color"
-            content="#445EF2"
+        name="theme-color"
+        content="#445EF2"
     >
 
     <link
-            rel="canonical"
-            href="{{$businessUrl}}"
+        rel="canonical"
+        href="{{ $businessUrl }}"
     >
 
 
@@ -105,58 +148,76 @@ if($code=='all') {
     <!-- ========================================================= -->
 
     <meta
-            property="og:type"
-            content="website"
+        property="og:type"
+        content="website"
     >
 
     <meta
-            property="og:site_name"
-            content="MeetClic"
+        property="og:site_name"
+        content="MeetClic"
     >
 
     <meta
-            property="og:title"
-            content="{{$businessTitle}} | Eventos Digitales"
+        property="og:title"
+        content="{{ $businessSocialTitle }}"
     >
 
     <meta
-            property="og:description"
-            content="{{$businessDescription}}"
+        property="og:description"
+        content="{{ $businessDescription }}"
     >
 
     <meta
-            property="og:url"
-            content="{{$businessUrl}}"
+        property="og:url"
+        content="{{ $businessUrl }}"
     >
 
     <meta
-            property="og:image"
-            content="{{$businessImage}}"
+        property="og:image"
+        content="{{ $businessImage }}"
+    >
+
+    <!-- HTTPS IMAGE -->
+
+    <meta
+        property="og:image:secure_url"
+        content="{{ $businessImage }}"
+    >
+
+    <!-- IMAGE MIME TYPE -->
+
+    @if($businessImageType)
+        <meta
+            property="og:image:type"
+            content="{{ $businessImageType }}"
+        >
+    @endif
+
+    <!-- IMAGE DIMENSIONS -->
+
+    <meta
+        property="og:image:width"
+        content="1200"
     >
 
     <meta
-            property="og:image:width"
-            content="1200"
+        property="og:image:height"
+        content="630"
     >
 
     <meta
-            property="og:image:height"
-            content="630"
+        property="og:image:alt"
+        content="{{ $businessTitle }}"
     >
 
     <meta
-            property="og:image:alt"
-            content="{{$businessTitle}}"
+        property="og:locale"
+        content="es_EC"
     >
 
     <meta
-            property="og:locale"
-            content="es_EC"
-    >
-
-    <meta
-            property="fb:app_id"
-            content="{{ env('facebook_client_id') }}"
+        property="fb:app_id"
+        content="{{ env('facebook_client_id') }}"
     >
 
 
@@ -165,28 +226,28 @@ if($code=='all') {
     <!-- ========================================================= -->
 
     <meta
-            name="twitter:card"
-            content="summary_large_image"
+        name="twitter:card"
+        content="summary_large_image"
     >
 
     <meta
-            name="twitter:title"
-            content="{{$businessTitle}}"
+        name="twitter:title"
+        content="{{ $businessSocialTitle }}"
     >
 
     <meta
-            name="twitter:description"
-            content="{{$businessDescription}}"
+        name="twitter:description"
+        content="{{ $businessDescription }}"
     >
 
     <meta
-            name="twitter:image"
-            content="{{$businessImage}}"
+        name="twitter:image"
+        content="{{ $businessImage }}"
     >
 
     <meta
-            name="twitter:url"
-            content="{{$businessUrl}}"
+        name="twitter:url"
+        content="{{ $businessUrl }}"
     >
 
 
@@ -195,23 +256,23 @@ if($code=='all') {
     <!-- ========================================================= -->
 
     <meta
-            name="apple-mobile-web-app-capable"
-            content="yes"
+        name="apple-mobile-web-app-capable"
+        content="yes"
     >
 
     <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black-translucent"
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
     >
 
     <meta
-            name="apple-mobile-web-app-title"
-            content="{{$businessTitle}}"
+        name="apple-mobile-web-app-title"
+        content="{{ $businessTitle }}"
     >
 
     <meta
-            name="mobile-web-app-capable"
-            content="yes"
+        name="mobile-web-app-capable"
+        content="yes"
     >
 
 
@@ -220,12 +281,13 @@ if($code=='all') {
     <!-- ========================================================= -->
 
     <link
-            rel="icon"
-            type="image/png"
-            href="{{$businessImage}}"
+        rel="icon"
+        type="{{ $businessImageType ?? 'image/x-icon' }}"
+        href="{{ $businessImage }}"
     >
 
 @endif
+
 
 
 @if (isset($pageSectionsConfig['head']) && $pageSectionsConfig['head']['metaData']['view'])
