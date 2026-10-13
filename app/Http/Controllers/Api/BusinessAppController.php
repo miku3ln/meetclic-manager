@@ -50,6 +50,7 @@ class BusinessAppController extends Controller
             $longitude = $request->input('longitude');
             $radiusKm = $request->input('radius_km', 200); // Por defecto 10 km
             $subcategoryIds = $request->input('subcategoryIds'); // Array o vacío
+            $type = $request->input('type'); // Array o vacío
 
             $onlyWithRedeemableRewards = $request->input('onlyWithRedeemableRewards',null);
             $onlyWithGamesActive = $request->input('onlyWithGamesActive',null);
@@ -57,7 +58,7 @@ class BusinessAppController extends Controller
 
             $searchQuery = $request->input('searchQuery','');
 
-            $data = $this->serviceUser->searchNearbyBusinesses($latitude, $longitude, $radiusKm, $subcategoryIds,$onlyWithRedeemableRewards,$onlyWithGamesActive,$onlyAlliedCompanies,$searchQuery);
+            $data = $this->serviceUser->searchNearbyBusinesses($latitude, $longitude, $radiusKm, $subcategoryIds,$onlyWithRedeemableRewards,$onlyWithGamesActive,$onlyAlliedCompanies,$searchQuery,$type);
             return Response::json([
                 "type" => $type,
                 'success' => true,

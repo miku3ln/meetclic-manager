@@ -23,6 +23,9 @@
 
 @endsection
 @section('additional-scripts')
+    <script>
+        var $zoneManager = <?php echo json_encode($zoneManager) ?>;
+    </script>
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -42,13 +45,7 @@
 
 
 @endsection
-@if(isset($dataManagerPage['dataPage']))
 
-@section('content-manager')
-
-
-@endsection
-@endif
 @section('content')
 
 
@@ -90,7 +87,7 @@
 
                 <div class="manager-map__brand">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <span>Maskana</span>
+                    <span id="title-route">{{$zoneManager['title']}}</span>
                 </div>
 
                 <div class="manager-map__counter">

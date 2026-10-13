@@ -1091,7 +1091,7 @@
     }
 
     .manager-map__brand {
-        display: none;
+
         font-weight: 700;
     }
 
@@ -1111,7 +1111,7 @@
     .manager-map__actions {
         position: absolute;
         right: 2%;
-        top: 7%;
+        top: 10%;
         z-index: 600;
     }
 
@@ -1207,6 +1207,7 @@
     }
 
     .manager-filters--open {
+        padding: 1px 0;
         transform: translateX(0);
         visibility: visible;
         pointer-events: auto;
@@ -1435,7 +1436,7 @@
 
     .manager-map__message {
         position: absolute;
-        top: 86px;
+        top: 33%;
         left: 50%;
 
         transform: translateX(-50%);

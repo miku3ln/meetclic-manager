@@ -17,6 +17,8 @@
     var $gamification_result =@json($mcGamification);
     var $TASK_TOAST =@json($TASK_TOAST);
 
+
+
     window.GAMIFICATION_RESULT = $gamification_result;
 </script>
 <?php

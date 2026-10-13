@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 
 use App\Http\Controllers\FrontendBaseController;
+use App\Models\Events\MapZoneEvent;
 use App\Models\FrontendCityBookManager;
 use App;
 use Auth;
@@ -1241,6 +1242,9 @@ class FrontendCityBookController extends FrontendBaseController
         $nameProcess = 'maskana';
         $renderView = self::LAYOUT_MAIN . '.web.maskana';
         $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $type = request()->query('type');
+        $modelType=new MapZoneEvent();
+        $zoneManager=   $modelType->findActiveById($type);
         $language = $languageManager['language'];
         $paramsRequest = [];
         $paramsRequest['language'] = $language;
@@ -1250,6 +1254,7 @@ class FrontendCityBookController extends FrontendBaseController
             'paramsRequest' => $paramsRequest
 
         ]);
+        $paramsSend["zoneManager"]=$zoneManager;
 
         return view($renderView, $paramsSend);
     }

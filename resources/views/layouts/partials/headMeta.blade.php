@@ -4,13 +4,228 @@
 
 @php
 
-        $dataPagesSections=[
-            'homePage','shopBee','aboutUs','howItWorks','contactUs','ourServicesBee','pricesBee','listingsQueen','reviewsTo' ,'business','bee','password','suggestionsMailBox' ,'myProfile','account','businessDetails','search','authorSingle'
-            , 'productDetails','checkout','cart','checkoutDetails','rewards','activities','productProducts','productFlowers' , 'productFrozen','productFruits','productBox'
-            , 'FAQ','dictionaryType'
-        ]
+    $dataPagesSections=[
+        'homePage','shopBee','aboutUs','howItWorks','contactUs','ourServicesBee','pricesBee','listingsQueen','reviewsTo' ,'business','bee','password','suggestionsMailBox' ,'myProfile','account','businessDetails','search','authorSingle'
+        , 'productDetails','checkout','cart','checkoutDetails','rewards','activities','productProducts','productFlowers' , 'productFrozen','productFruits','productBox'
+        , 'FAQ','dictionaryType'
+    ]
 @endphp
 
+
+@if($dataManagerPage['currentPage'] == 'maskana')
+    @php
+
+        $dataBusinessInformation = $zoneManager;
+
+
+        $businessTitle =$dataBusinessInformation['title'];
+
+        $businessDescription = $dataBusinessInformation['description'];
+
+$code= $dataBusinessInformation['id'];
+        $businessUrl = url('/es/maskana');
+if($code=='all') {
+     $businessUrl = url('/es/maskana');
+}else{
+    $businessUrl = url('/es/maskana');
+}
+
+
+        $urlCurrentRoot =$dataBusinessInformation['source'];
+                $businessImage =$urlCurrentRoot;
+    @endphp
+
+
+            <!-- ========================================================= -->
+    <!-- BASIC SEO -->
+    <!-- ========================================================= -->
+
+    <title>
+        {{$businessTitle}}
+    </title>
+
+    <meta charset="utf-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+    >
+
+    <meta
+            name="description"
+            content="{{$businessDescription}}"
+    >
+
+    <meta
+            name="keywords"
+            content="
+    {{$businessTitle}},
+    MeetClic,
+    menú digital,
+    menú online,
+    delivery,
+    pedidos online,
+    restaurante,
+    ecommerce gastronómico,
+    comida rápida,
+    promociones,
+    Yapitas,
+    gamificación,
+    recompensas,
+    cashback,
+    menú QR,
+    pedidos a domicilio,
+    delivery gamificado
+    "
+    >
+
+    <meta
+            name="robots"
+            content="index, follow"
+    >
+
+    <meta
+            name="author"
+            content="{{$businessTitle}}"
+    >
+
+    <meta
+            name="theme-color"
+            content="#445EF2"
+    >
+
+    <link
+            rel="canonical"
+            href="{{$businessUrl}}"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- OPEN GRAPH / FACEBOOK / WHATSAPP -->
+    <!-- ========================================================= -->
+
+    <meta
+            property="og:type"
+            content="website"
+    >
+
+    <meta
+            property="og:site_name"
+            content="MeetClic"
+    >
+
+    <meta
+            property="og:title"
+            content="{{$businessTitle}} | Eventos Digitales"
+    >
+
+    <meta
+            property="og:description"
+            content="{{$businessDescription}}"
+    >
+
+    <meta
+            property="og:url"
+            content="{{$businessUrl}}"
+    >
+
+    <meta
+            property="og:image"
+            content="{{$businessImage}}"
+    >
+
+    <meta
+            property="og:image:width"
+            content="1200"
+    >
+
+    <meta
+            property="og:image:height"
+            content="630"
+    >
+
+    <meta
+            property="og:image:alt"
+            content="{{$businessTitle}}"
+    >
+
+    <meta
+            property="og:locale"
+            content="es_EC"
+    >
+
+    <meta
+            property="fb:app_id"
+            content="{{ env('facebook_client_id') }}"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- TWITTER / X -->
+    <!-- ========================================================= -->
+
+    <meta
+            name="twitter:card"
+            content="summary_large_image"
+    >
+
+    <meta
+            name="twitter:title"
+            content="{{$businessTitle}}"
+    >
+
+    <meta
+            name="twitter:description"
+            content="{{$businessDescription}}"
+    >
+
+    <meta
+            name="twitter:image"
+            content="{{$businessImage}}"
+    >
+
+    <meta
+            name="twitter:url"
+            content="{{$businessUrl}}"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- MOBILE / PWA -->
+    <!-- ========================================================= -->
+
+    <meta
+            name="apple-mobile-web-app-capable"
+            content="yes"
+    >
+
+    <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+    >
+
+    <meta
+            name="apple-mobile-web-app-title"
+            content="{{$businessTitle}}"
+    >
+
+    <meta
+            name="mobile-web-app-capable"
+            content="yes"
+    >
+
+
+    <!-- ========================================================= -->
+    <!-- ICON -->
+    <!-- ========================================================= -->
+
+    <link
+            rel="icon"
+            type="image/png"
+            href="{{$businessImage}}"
+    >
+
+@endif
 
 
 @if (isset($pageSectionsConfig['head']) && $pageSectionsConfig['head']['metaData']['view'])
@@ -20,17 +235,12 @@
 
     <meta id='condition-section' name="viewport" content="width=device-width, initial-scale=1">
     @if(isset($dataManagerPage))
-        @if(in_array($dataManagerPage['currentPage'],$dataPagesSections))
-
-        @endif
-
         @if($dataManagerPage['currentPage']=='home')
-
             <meta class="meta-not-customer__fb-app--id" name="fb:app_id" content="{{ env('facebook_client_id') }}">
             <meta class="meta-not-customer__article" name="og:type" content="article">
             @if (isset($pageSectionsConfig['head_custom']['business']))
                 <title
-                    class="meta-customer__title-page">{{ $pageSectionsConfig['head_custom']['business']['data']->title }}</title>
+                        class="meta-customer__title-page">{{ $pageSectionsConfig['head_custom']['business']['data']->title }}</title>
                 <meta class="meta-customer__title" name='title'
                       content='{{ $pageSectionsConfig['head_custom']['business']['data']->title }}'>
                 @if ($pageSectionsConfig['head_custom']['business']['data']->description != '')
@@ -65,7 +275,7 @@
 
             @elseif(isset($pageSectionsConfig['head']['business'])&&$pageSectionsConfig['head']['business']['view'] )
                 <title
-                    class="meta-customer__title-page">{{ $pageSectionsConfig['head']['business']['data']->title }}</title>
+                        class="meta-customer__title-page">{{ $pageSectionsConfig['head']['business']['data']->title }}</title>
                 <meta class="meta-customer__title" name='title'
                       content='{{ $pageSectionsConfig['head']['business']['data']->title }}'>
                 @if ($pageSectionsConfig['head']['business']['data']->description != '')
@@ -228,7 +438,7 @@
             @endphp
 
 
-                <!-- ========================================================= -->
+                    <!-- ========================================================= -->
             <!-- BASIC SEO -->
             <!-- ========================================================= -->
 
@@ -239,18 +449,18 @@
             <meta charset="utf-8">
 
             <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1"
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
             >
 
             <meta
-                name="description"
-                content="{{$businessDescription}}"
+                    name="description"
+                    content="{{$businessDescription}}"
             >
 
             <meta
-                name="keywords"
-                content="
+                    name="keywords"
+                    content="
     {{$businessTitle}},
     MeetClic,
     menú digital,
@@ -272,23 +482,23 @@
             >
 
             <meta
-                name="robots"
-                content="index, follow"
+                    name="robots"
+                    content="index, follow"
             >
 
             <meta
-                name="author"
-                content="{{$businessTitle}}"
+                    name="author"
+                    content="{{$businessTitle}}"
             >
 
             <meta
-                name="theme-color"
-                content="#445EF2"
+                    name="theme-color"
+                    content="#445EF2"
             >
 
             <link
-                rel="canonical"
-                href="{{$businessUrl}}"
+                    rel="canonical"
+                    href="{{$businessUrl}}"
             >
 
 
@@ -297,58 +507,58 @@
             <!-- ========================================================= -->
 
             <meta
-                property="og:type"
-                content="website"
+                    property="og:type"
+                    content="website"
             >
 
             <meta
-                property="og:site_name"
-                content="MeetClic"
+                    property="og:site_name"
+                    content="MeetClic"
             >
 
             <meta
-                property="og:title"
-                content="{{$businessTitle}} | Menú Digital"
+                    property="og:title"
+                    content="{{$businessTitle}} | Menú Digital"
             >
 
             <meta
-                property="og:description"
-                content="{{$businessDescription}}"
+                    property="og:description"
+                    content="{{$businessDescription}}"
             >
 
             <meta
-                property="og:url"
-                content="{{$businessUrl}}"
+                    property="og:url"
+                    content="{{$businessUrl}}"
             >
 
             <meta
-                property="og:image"
-                content="{{$businessImage}}"
+                    property="og:image"
+                    content="{{$businessImage}}"
             >
 
             <meta
-                property="og:image:width"
-                content="1200"
+                    property="og:image:width"
+                    content="1200"
             >
 
             <meta
-                property="og:image:height"
-                content="630"
+                    property="og:image:height"
+                    content="630"
             >
 
             <meta
-                property="og:image:alt"
-                content="{{$businessTitle}} menú digital"
+                    property="og:image:alt"
+                    content="{{$businessTitle}} menú digital"
             >
 
             <meta
-                property="og:locale"
-                content="es_EC"
+                    property="og:locale"
+                    content="es_EC"
             >
 
             <meta
-                property="fb:app_id"
-                content="{{ env('facebook_client_id') }}"
+                    property="fb:app_id"
+                    content="{{ env('facebook_client_id') }}"
             >
 
 
@@ -357,28 +567,28 @@
             <!-- ========================================================= -->
 
             <meta
-                name="twitter:card"
-                content="summary_large_image"
+                    name="twitter:card"
+                    content="summary_large_image"
             >
 
             <meta
-                name="twitter:title"
-                content="{{$businessTitle}} | Menú Digital"
+                    name="twitter:title"
+                    content="{{$businessTitle}} | Menú Digital"
             >
 
             <meta
-                name="twitter:description"
-                content="{{$businessDescription}}"
+                    name="twitter:description"
+                    content="{{$businessDescription}}"
             >
 
             <meta
-                name="twitter:image"
-                content="{{$businessImage}}"
+                    name="twitter:image"
+                    content="{{$businessImage}}"
             >
 
             <meta
-                name="twitter:url"
-                content="{{$businessUrl}}"
+                    name="twitter:url"
+                    content="{{$businessUrl}}"
             >
 
 
@@ -387,23 +597,23 @@
             <!-- ========================================================= -->
 
             <meta
-                name="apple-mobile-web-app-capable"
-                content="yes"
+                    name="apple-mobile-web-app-capable"
+                    content="yes"
             >
 
             <meta
-                name="apple-mobile-web-app-status-bar-style"
-                content="black-translucent"
+                    name="apple-mobile-web-app-status-bar-style"
+                    content="black-translucent"
             >
 
             <meta
-                name="apple-mobile-web-app-title"
-                content="{{$businessTitle}}"
+                    name="apple-mobile-web-app-title"
+                    content="{{$businessTitle}}"
             >
 
             <meta
-                name="mobile-web-app-capable"
-                content="yes"
+                    name="mobile-web-app-capable"
+                    content="yes"
             >
 
 
@@ -412,11 +622,10 @@
             <!-- ========================================================= -->
 
             <link
-                rel="icon"
-                type="image/png"
-                href="{{$businessImage}}"
+                    rel="icon"
+                    type="image/png"
+                    href="{{$businessImage}}"
             >
-
 
         @endif
     @endif

@@ -171,6 +171,7 @@
             this.container.replaceChildren();
         }
     }
+
     window.BusinessResponseData = BusinessResponseData;
 
 </script>
@@ -193,12 +194,12 @@
      */
 
     var managerBusiness = {
-        _data: [],data : []
+        _data: [], data: []
     };
 
-let radiusKmInit=6;
-    let latitude=0.2343;
-    let longitude=-78.2625;
+    let radiusKmInit = 6;
+    let latitude = 0.2343;
+    let longitude = -78.2625;
 
     let mapController = null;
     let businessRequest = null;
@@ -208,7 +209,7 @@ let radiusKmInit=6;
     const businessFilters = {
         latitude: latitude,
         longitude: longitude,
-        radiusKm:radiusKmInit,
+        radiusKm: radiusKmInit,
         subcategoryIds: null,
         onlyWithRedeemableRewards: null,
         onlyWithGamesActive: null,
@@ -352,6 +353,11 @@ let radiusKmInit=6;
     /**
      * Consultar empresas por AJAX POST.
      */
+    function getTypeMap() {
+        const params = new URLSearchParams(window.location.search);
+        return parseInt(params.get('type'), 10) || 1;
+    }
+
     function loadBusinesses() {
 
         const url = $('#route-business-action').val();
@@ -363,8 +369,8 @@ let radiusKmInit=6;
             return null;
         }
 
-        const params = buildBusinessRequestParams();
-
+        var params = buildBusinessRequestParams();
+        params['type']=getTypeMap();
         const requestId = ++businessRequestSequence;
 
         if (
@@ -464,7 +470,7 @@ let radiusKmInit=6;
                     )
                 );
 
-                managerBusiness.data=businesses;
+                managerBusiness.data = businesses;
             },
 
             error: function (xhr, status, error) {
@@ -924,8 +930,6 @@ let radiusKmInit=6;
     });
 
 
-
-
     let businessCategoriesData = [];
 
     function initBusinessCategoriesSelect2() {
@@ -1186,8 +1190,7 @@ let radiusKmInit=6;
     }
 
 
-
-    function initManagerFilters({ onApply } = {}) {
+    function initManagerFilters({onApply} = {}) {
 
         const $panel = $('#manager-filters-panel');
         const $backdrop = $('#manager-filters-backdrop');

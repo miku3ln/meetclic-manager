@@ -334,7 +334,9 @@ class BusinessRepository
         $onlyWithRedeemableRewards = null,
         $onlyWithGamesActive = null,
         $onlyAlliedCompanies = null,
-        $searchQuery = ""
+        $searchQuery = "",
+        $type = null,
+
     )
     {
         /*
@@ -438,6 +440,22 @@ class BusinessRepository
                         ->where('bg.state', '=', 'ACTIVE');
                 }
             )
+            // NUEVA RELACIÓN: EMPRESA -> ZONA
+            ->join(
+                'business_map_zone_event as bmz',
+                'bmz.business_id',
+                '=',
+                'b.id'
+            )
+
+            // NUEVA RELACIÓN: ZONA
+            ->join(
+                'map_zone_event as mz',
+                function ($join) {
+                    $join->on('mz.id', '=', 'bmz.map_zone_event_id')
+                        ->where('mz.status', '=', 'ACTIVE');
+                }
+            )
             ->select($select)
             ->where('b.status', 'ACTIVE');
 
@@ -446,7 +464,15 @@ class BusinessRepository
          * 5. FILTRAR POR UBICACIÓN SOLO SI EXISTE
          * =====================================================
          */
+        if ($type !== null && $type !== '') {
 
+            $query->where(
+                'mz.id',
+                '=',
+                (int) $type
+            );
+
+        }
         if ($hasLocation) {
 
             // Comportamiento original:
@@ -495,14 +521,7 @@ class BusinessRepository
         $onlyAlliedCompanies =
             $this->normalizeBool($onlyAlliedCompanies);
 
-        /*
-         * =====================================================
-         * 7. BÚSQUEDA POR TEXTO
-         * =====================================================
-         */
-
         if ($searchQuery !== '') {
-
             $query->when(
                 $searchQuery !== '',
                 function ($q) use ($searchQuery) {
