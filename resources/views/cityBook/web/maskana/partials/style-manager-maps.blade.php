@@ -1475,7 +1475,6 @@
 
         .manager-map__actions {
             right: 15px;
-            bottom: calc(20px + env(safe-area-inset-bottom));
         }
 
         .manager-filters {
