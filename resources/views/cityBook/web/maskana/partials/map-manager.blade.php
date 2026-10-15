@@ -728,7 +728,9 @@
 
                 this.config = {
                     containerId: 'business-map',
-
+                    singleBusinessZoom: 16,
+                    fitMaxZoom: 16,
+                    fitPadding: [70, 70],
                     detailAsideId: 'businessDetailAside',
                     groupAsideId: 'businessGroupAside',
 
@@ -969,7 +971,12 @@
             // BUSINESS MARKERS
             // ============================================
 
+
             setBusinesses(input = []) {
+
+                // ============================================
+                // NORMALIZAR DATOS
+                // ============================================
 
                 const list = Array.isArray(input)
                     ? input
@@ -986,6 +993,10 @@
                 this.markers.clear();
 
                 this.markerLayer?.clearLayers();
+
+                // ============================================
+                // PROCESAR EMPRESAS
+                // ============================================
 
                 for (const business of list) {
 
@@ -1015,6 +1026,7 @@
                         continue;
                     }
 
+                    // Agrupar empresas con la misma ubicación
                     const key =
                         `${lat.toFixed(6)},${lng.toFixed(6)}`;
 
@@ -1029,6 +1041,10 @@
                     this.groups.get(key)
                         .businesses.push(business);
                 }
+
+                // ============================================
+                // CREAR MARCADORES
+                // ============================================
 
                 const bounds = [];
 
@@ -1055,6 +1071,10 @@
                                 )
                         }
                     );
+
+                    // ========================================
+                    // EVENTO CLICK DEL MARCADOR
+                    // ========================================
 
                     marker.on('click', () => {
 
@@ -1085,42 +1105,111 @@
                         }
                     });
 
+                    // Agregar marcador al mapa
                     marker.addTo(this.markerLayer);
 
+                    // Registrar marcador por empresa
                     group.businesses.forEach(item => {
+
                         this.markers.set(
                             String(item.id),
                             marker
                         );
                     });
 
+                    // Registrar coordenadas para el encuadre
                     bounds.push([
                         group.lat,
                         group.lng
                     ]);
                 }
 
+                // ============================================
+                // CENTRAR MAPA AUTOMÁTICAMENTE
+                // ============================================
+
                 if (
                     this.map &&
-                    bounds.length &&
+                    bounds.length > 0 &&
                     this.config.fitOnRender
                 ) {
+
+                    const singleBusinessZoom =
+                        this.config.singleBusinessZoom ?? 16;
+
+                    const fitMaxZoom =
+                        this.config.fitMaxZoom ?? 16;
+
+                    const fitPadding =
+                        this.config.fitPadding ?? [70, 70];
+
+                    // ========================================
+                    // UNA SOLA UBICACIÓN
+                    // ========================================
 
                     if (bounds.length === 1) {
 
                         this.map.setView(
                             bounds[0],
-                            this.config.zoom
+                            Math.min(
+                                singleBusinessZoom,
+                                this.config.maxZoom
+                            ),
+                            {
+                                animate: false
+                            }
                         );
 
                     } else {
 
-                        this.map.fitBounds(bounds, {
-                            padding: [35, 35],
-                            maxZoom: this.config.focusZoom
-                        });
+                        // ====================================
+                        // VARIAS UBICACIONES
+                        // ====================================
+
+                        const businessBounds =
+                            L.latLngBounds(bounds);
+
+                        this.map.fitBounds(
+                            businessBounds,
+                            {
+                                padding: fitPadding,
+
+                                maxZoom: Math.min(
+                                    fitMaxZoom,
+                                    this.config.maxZoom
+                                ),
+
+                                animate: false
+                            }
+                        );
                     }
+
+                    // ========================================
+                    // INFORMACIÓN DE DEPURACIÓN
+                    // ========================================
+
+                    const center = this.map.getCenter();
+
+                    console.log(
+                        '[BusinessMapController] Mapa ajustado',
+                        {
+                            totalBusinesses: this.businesses.size,
+
+                            totalLocations: this.groups.size,
+
+                            center: {
+                                latitude: center.lat,
+                                longitude: center.lng
+                            },
+
+                            zoom: this.map.getZoom()
+                        }
+                    );
                 }
+
+                // ============================================
+                // EVENTO DE RENDERIZACIÓN
+                // ============================================
 
                 this.emit('businesses:rendered', {
                     total: this.businesses.size,
@@ -1129,6 +1218,7 @@
 
                 return this;
             }
+
 
             // ============================================
             // MARKER ICON

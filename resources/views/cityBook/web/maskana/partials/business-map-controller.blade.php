@@ -253,11 +253,16 @@
                 businessFilters.latitude,
                 businessFilters.longitude
             ],
-
-            zoom: 6,
+            // Zoom para una sola ubicación
+            singleBusinessZoom: 16,
             focusZoom: 17,
             maxZoom: 19,
-
+            // Zoom máximo al encuadrar varias empresas
+            fitMaxZoom: 16,
+            // Espacio alrededor de los marcadores
+            fitPadding: [70, 70],
+            zoom: 13,
+            // Ajuste automático
             fitOnRender: true,
             openDetailsOnClick: true,
             fallbackImage: ''

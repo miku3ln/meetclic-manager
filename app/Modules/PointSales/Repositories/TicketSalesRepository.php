@@ -12,6 +12,8 @@ class TicketSalesRepository extends BaseRepository
     public function getTicketSales($params)
     {
         $business_id = $params["business_id"];
+        $status = $params["status"] ?? "ALL";
+        $searchPhrase = (isset($params["searchPhrase"] )&&$params["searchPhrase"] !="")?$params["searchPhrase"]:null;
 
         /*
         |--------------------------------------------------------------------------
@@ -165,7 +167,18 @@ class TicketSalesRepository extends BaseRepository
                 'ehis.entidad_data_id',
                 $business_id
             )
-
+            ->when(
+                !empty($status) && $status !== 'ALL',
+                function ($query) use ($status) {
+                    $query->where('i.status', $status);
+                }
+            )
+            ->when(
+                $searchPhrase!=null,
+                function ($query) use ($searchPhrase) {
+                    $query->where('i.id', $searchPhrase);
+                }
+            )
             /*
             |--------------------------------------------------------------------------
             | SELECT
