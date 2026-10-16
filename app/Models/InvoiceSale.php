@@ -15,6 +15,13 @@ class InvoiceSale extends ModelManager
 {
     const STATE_ACTIVE = 'ACTIVE';
     const STATE_INACTIVE = 'INACTIVE';
+    const STATE_PENDING = 'PENDING';
+    const STATE_DRAFT = 'DRAFT';
+    const STATE_COLLECTED = 'COLLECTED';
+    const STATE_CANCELED = 'CANCELED';
+    const STATE_ELECTRONIC_REJECTED= 'ELECTRONIC_REJECTED';
+    const STATE_ELECTRONIC_ISSUED= 'ELECTRONIC_ISSUED';
+
     protected $table = 'invoice_sale';
     const tipo_comprobante_id_factura = 1;
     const tipo_comprobante_id_nota_de_venta = 1;

@@ -99,6 +99,8 @@ Route::prefix('pointsales')->group(function () {
         Route::get('/products-sales', 'PointSales\ProductController@getProductsSales');
 
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
+        Route::post('/transform-draft-invoice-register', 'PointSales\ProductController@transformDraftInvoiceRegister');
+
         Route::get('/tickets-sales', 'PointSales\TicketManagerController@getTicketsSales');
 
         Route::get('/catalog-measure', 'PointSales\ProductController@getCatalogMeasure');
