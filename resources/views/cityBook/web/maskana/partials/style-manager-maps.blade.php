@@ -1463,85 +1463,87 @@
     }
     @media (max-width: 767px) {
         .header-user-menu {
-            left: -24px !important;
-            top: 170px!important;
-        }
-        .manager-map__toolbar {
-            width: 92%!important;
-            top: 12px!important;
-            left: 3px!important;
-            right: 0px!important;
-        }
-        .leaflet-top {
-            top: 72% !important;
-        }
-        .manager-map__actions {
-            top: 13% !important;
-        }
-        .manager-map__toolbar {
-            top: 12px;
-            left: 58px;
-            right: 12px;
-        }
-
-        .manager-map__brand,
-        .manager-map__counter {
-            padding: 9px 12px;
-            font-size: 12px;
-        }
-
-        .manager-map__actions {
-            right: 15px;
-        }
-
-        .manager-filters {
-            top: auto;
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            width: 100%;
-            height: min(80dvh, 680px);
-
-            border-radius: 22px 22px 0 0;
-
-            transform: translateY(105%);
-        }
-
-        .manager-filters--open {
-            transform: translateY(0);
-        }
-
-        .manager-filters__header {
-            padding: 18px;
-        }
-
-        .manager-filters__body {
-            padding: 18px;
-        }
-
-        .manager-filters__footer {
-            padding: 14px 18px
-            calc(14px + env(safe-area-inset-bottom));
-        }
-
-        .chat-widget-button {
-            bottom: 20px!important;
-            left: 10px !important;
-        }
+            right: 0px !important;
+            top: 46px !important;
+            margin-left: 219px;
+            width: 124px;
+    }
+    .manager-map__toolbar {
+        width: 92%!important;
+        top: 12px!important;
+        left: 3px!important;
+        right: 0px!important;
+    }
+    .leaflet-top {
+        top: 72% !important;
+    }
+    .manager-map__actions {
+        top: 13% !important;
+    }
+    .manager-map__toolbar {
+        top: 12px;
+        left: 58px;
+        right: 12px;
     }
 
-    .content {
-        padding-top: 16px!important;
+    .manager-map__brand,
+    .manager-map__counter {
+        padding: 9px 12px;
+        font-size: 12px;
     }
 
-    #wrapper {
+    .manager-map__actions {
+        right: 15px;
+    }
 
-        padding-top: -1px !important;
+    .manager-filters {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: min(80dvh, 680px);
+
+        border-radius: 22px 22px 0 0;
+
+        transform: translateY(105%);
     }
-    footer.main-footer.dark-footer {
-        display: none;
+
+    .manager-filters--open {
+        transform: translateY(0);
     }
+
+    .manager-filters__header {
+        padding: 18px;
+    }
+
+    .manager-filters__body {
+        padding: 18px;
+    }
+
+    .manager-filters__footer {
+        padding: 14px 18px
+        calc(14px + env(safe-area-inset-bottom));
+    }
+
+    .chat-widget-button {
+        bottom: 20px!important;
+        left: 10px !important;
+    }
+}
+
+.content {
+    padding-top: 16px!important;
+}
+
+#wrapper {
+
+    padding-top: -1px !important;
+}
+footer.main-footer.dark-footer {
+    display: none;
+}
 </style>
 <style>
 
