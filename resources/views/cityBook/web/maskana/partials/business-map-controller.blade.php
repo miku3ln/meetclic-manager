@@ -863,10 +863,7 @@
             // INICIO DEL DRAG
             const onDragStart = function (event) {
 
-                console.log('DRAG START:', {
-                    business_id: business.id,
-                    position: event.target.getLatLng()
-                });
+
 
             };
 
@@ -875,10 +872,6 @@
 
                 const position = event.target.getLatLng();
 
-                console.log('DRAG MOVIENDO:', {
-                    latitude: position.lat,
-                    longitude: position.lng
-                });
 
             };
 
@@ -888,6 +881,8 @@
                 const position = event.target.getLatLng();
 
                 const data = {
+                    business: business,
+
                     business_id: business.id,
                     title: business.title,
                     latitude: Number(position.lat.toFixed(8)),
@@ -1512,12 +1507,19 @@
 
                 const data = event.detail;
                 console.log('data:', data);
+                console.log('business: bmz_manager_id', data.business.bmz_manager_id);
+
 
                 console.log('Empresa:', data.business_id);
                 console.log('Latitud:', data.latitude);
                 console.log('Longitud:', data.longitude);
 if($isLoggedIn){
-    await  updateLocationBusinessMaskana(data);
+    await  updateLocationBusinessMaskana({
+        business_id:data.business_id,
+        latitude:data.latitude,
+        longitude:data.longitude,
+        bmz_manager_id:   data.business.bmz_manager_id
+    });
 }
 
             }

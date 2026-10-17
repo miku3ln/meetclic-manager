@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\PointSales;
+use App\Models\Events\BusinessMapZoneEvent;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\PointSalesBaseController;
@@ -713,6 +714,11 @@ class ProductController extends PointSalesBaseController
                 'min:1',
                 'exists:business,id'
             ],
+            'bmz_manager_id' => [
+                'required',
+                'integer',
+                'min:1'
+            ],
             'latitude' => [
                 'required',
                 'numeric',
@@ -745,8 +751,8 @@ class ProductController extends PointSalesBaseController
 
             $businessData = DB::transaction(function () use ($payload) {
 
-                $business = Business::query()
-                    ->where('id', $payload['business_id'])
+                $business = BusinessMapZoneEvent::query()
+                    ->where('id', $payload['bmz_manager_id'])
                     ->lockForUpdate()
                     ->first();
 
@@ -797,7 +803,7 @@ class ProductController extends PointSalesBaseController
 
             return response()->json([
                 'success' => false,
-                'msj' => 'No fue posible actualizar la ubicación de la empresa.',
+                'msj' => 'No fue posible actualizar la ubicación de la empresa.'.$e->getMessage(),
                 'errors' => [],
                 'data' => null
             ], 500);

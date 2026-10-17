@@ -11,6 +11,11 @@ class BusinessMapZoneEvent extends ModelManager
     protected $fillable = [
         'business_id',
         'map_zone_event_id',
+        'street_lat',
+        'street_lng',
+        'street_1',
+        'street_2',
+
     ];
 
     public $timestamps = true;

@@ -1458,9 +1458,26 @@
     /* ==========================================
        MOBILE / TABLET
     ========================================== */
-
+    img.manager-map__brand-logo {
+        width: 39px;
+    }
     @media (max-width: 767px) {
-
+        .header-user-menu {
+            left: -24px !important;
+            top: 170px!important;
+        }
+        .manager-map__toolbar {
+            width: 92%!important;
+            top: 12px!important;
+            left: 3px!important;
+            right: 0px!important;
+        }
+        .leaflet-top {
+            top: 72% !important;
+        }
+        .manager-map__actions {
+            top: 13% !important;
+        }
         .manager-map__toolbar {
             top: 12px;
             left: 58px;
@@ -1680,6 +1697,8 @@
         .response-data__hint-message {
             font-size: 0.77rem;
         }
+
+
     }
 
 </style>

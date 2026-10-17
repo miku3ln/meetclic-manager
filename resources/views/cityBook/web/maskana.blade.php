@@ -101,8 +101,8 @@
             <div class="manager-map__toolbar">
 
                 <div class="manager-map__brand">
-                    <i class="bi bi-geo-alt-fill"></i>
                     <span id="title-route">{{$zoneManager['title']}}</span>
+                    <img src="{{$zoneManager['source']}}"  class="manager-map__brand-logo">
                 </div>
 
                 <div class="manager-map__counter">

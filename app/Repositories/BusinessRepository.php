@@ -376,10 +376,10 @@ class BusinessRepository
         $haversine = "(6371 * acos(
         LEAST(1, GREATEST(-1,
             cos(radians(?)) *
-            cos(radians(b.street_lat)) *
-            cos(radians(b.street_lng) - radians(?)) +
+            cos(radians(bmz.street_lat)) *
+            cos(radians(bmz.street_lng) - radians(?)) +
             sin(radians(?)) *
-            sin(radians(b.street_lat))
+            sin(radians(bmz.street_lat))
         ))
     ))";
 
@@ -398,10 +398,15 @@ class BusinessRepository
             'b.email',
             'b.phone_value',
             'b.page_url',
-            'b.street_1',
-            'b.street_2',
-            'b.street_lat',
-            'b.street_lng',
+            'b.street_1 as business_street_1',
+            'b.street_2 as business_street_2',
+            'bmz.street_1',
+            'bmz.street_2',
+            'b.street_lat as business_street_lat',
+            'b.street_lng as business_street_lng',
+            'bmz.id as bmz_manager_id',
+            'bmz.street_lng',
+            'bmz.street_lat',
             'b.status',
             'b.qualification',
             'b.business_subcategories_id',
@@ -483,8 +488,8 @@ class BusinessRepository
                     "$haversine as distance",
                     [$latitude, $longitude, $latitude]
                 )
-                ->whereNotNull('b.street_lat')
-                ->whereNotNull('b.street_lng')
+                ->whereNotNull('bmz.street_lat')
+                ->whereNotNull('bmz.street_lng')
                 ->whereRaw(
                     "$haversine <= ?",
                     [
