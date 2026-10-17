@@ -1546,7 +1546,7 @@ if (env('allowAllInOne')) {
             let params = {
                 dataParams: {
                     phone: '+' + phoneCurrent,
-                    text: 'Deseamos saber sobre el proceso de Meetclic.',
+                    text: 'Deseamos saber sobre el proceso de Yapitas.',
                 }
 
 
@@ -1587,5 +1587,10 @@ if (env('allowAllInOne')) {
 
 
 @yield('data-modal')
+<div
+    id="maskana-alert-container"
+    class="position-fixed top-0 end-0 p-3"
+    style="z-index: 2000;"
+></div>
 </body>
 </html>

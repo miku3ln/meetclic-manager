@@ -540,7 +540,7 @@ $addClassManagerHeader=$nameRoute == 'homeBackLine'?'':'dark-header--back-line';
             let params = {
                 dataParams: {
                     phone: '+' + phoneCurrent,
-                    text: 'Deseamos saber sobre el proceso de Meetclic.',
+                    text: 'Deseamos saber sobre el proceso de Yapitas.!',
                 }
 
 

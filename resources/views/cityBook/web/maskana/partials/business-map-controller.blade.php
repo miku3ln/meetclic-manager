@@ -893,9 +893,6 @@
                     latitude: Number(position.lat.toFixed(8)),
                     longitude: Number(position.lng.toFixed(8))
                 };
-
-                console.log('DRAG END:', data);
-
                 // EVENTO PERSONALIZADO
                 document.dispatchEvent(
                     new CustomEvent('business:marker:dragend', {
@@ -1509,17 +1506,28 @@
     }
 
     $(document).ready(function () {
+        document.addEventListener(
+            'business:marker:dragend',
+            async function(event) {
+
+                const data = event.detail;
+                console.log('data:', data);
+
+                console.log('Empresa:', data.business_id);
+                console.log('Latitud:', data.latitude);
+                console.log('Longitud:', data.longitude);
+if($isLoggedIn){
+    await  updateLocationBusinessMaskana(data);
+}
+
+            }
+        );
 
         const businessResponseData = new window.BusinessResponseData();
         initManager();
         initBusinessCategoriesSelect2();
         initManagerFilters({
             onApply: function (params) {
-
-                // Llamar aquí a tu función AJAX existente
-                // que utiliza buildBusinessRequestParams().
-                //
-                // Ejemplo de los datos disponibles:
                 console.log(params);
 
             }
@@ -2009,6 +2017,286 @@
             apply: applyFilters,
             reset: resetFilters
         };
+    }
+
+    function showAlert(message, type = 'success', duration = 4000) {
+
+        const container = document.getElementById(
+            'maskana-alert-container'
+        );
+
+        if (!container) return;
+
+        const allowedTypes = [
+            'success', 'danger', 'warning', 'info', 'primary'
+        ];
+
+        if (!allowedTypes.includes(type)) {
+            type = 'info';
+        }
+
+        const alert = document.createElement('div');
+
+        alert.className = `
+        alert alert-${type}
+        alert-dismissible fade show shadow-sm
+    `;
+
+        alert.setAttribute('role', 'alert');
+
+        // Evita interpretar HTML recibido como mensaje.
+        const text = document.createElement('span');
+        text.textContent = message;
+
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'btn-close';
+        close.setAttribute('data-bs-dismiss', 'alert');
+        close.setAttribute('aria-label', 'Cerrar');
+
+        alert.append(text, close);
+        container.appendChild(alert);
+
+        const instance = bootstrap.Alert.getOrCreateInstance(alert);
+
+        if (duration > 0) {
+            setTimeout(() => {
+                if (alert.isConnected) {
+                    instance.close();
+                }
+            }, duration);
+        }
+    }
+
+
+
+
+
+   async function updateLocationBusinessMaskana(params) {
+
+        const url = $('#update-location-business-maskana-action').val();
+
+        // ==========================================
+        // VALIDAR ENDPOINT
+        // ==========================================
+
+        if (!url) {
+
+            console.error(
+                'No existe #update-location-business-maskana-action'
+            );
+
+            showAlert(
+                'No se encontró la ruta para actualizar la ubicación.',
+                'danger',
+                5000
+            );
+
+            return null;
+        }
+
+
+        // ==========================================
+        // PETICIÓN AJAX
+        // ==========================================
+
+        return $.ajax({
+
+            url: url,
+            type: 'POST',
+
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+
+            data: JSON.stringify(params),
+
+            timeout: 30000,
+
+            headers: {
+                Accept: 'application/json'
+            },
+
+            // ======================================
+            // ANTES DE ENVIAR
+            // ======================================
+
+            beforeSend: function () {
+
+                console.log(
+                    '[Maskana] Actualizando ubicación:',
+                    params
+                );
+            },
+
+            // ======================================
+            // RESPUESTA EXITOSA
+            // ======================================
+
+            success: function (response) {
+
+                console.log(
+                    '[Maskana] Respuesta:',
+                    response
+                );
+
+                if (response.success === true) {
+
+                    showAlert(
+                        response.msj ||
+                        'Ubicación actualizada correctamente.',
+                        'success',
+                        4000
+                    );
+
+                    // Notificar a otros módulos de Maskana.
+                    document.dispatchEvent(
+                        new CustomEvent(
+                            'business:location:saved',
+                            {
+                                detail: response.data || null
+                            }
+                        )
+                    );
+
+                } else {
+
+                    showAlert(
+                        response.msj ||
+                        'No se pudo actualizar la ubicación.',
+                        'danger',
+                        5000
+                    );
+                }
+            },
+
+            // ======================================
+            // MANEJAR ERRORES
+            // ======================================
+
+            error: function (xhr, status, error) {
+
+                console.error(
+                    '[Maskana] Error al actualizar ubicación:',
+                    {
+                        httpStatus: xhr.status,
+                        status: status,
+                        error: error,
+                        response: xhr.responseJSON
+                    }
+                );
+
+                const response = xhr.responseJSON || {};
+
+                let message = response.msj ||
+                    response.message ||
+                    'Ocurrió un error al actualizar la ubicación.';
+
+                switch (xhr.status) {
+
+                    // ----------------------------------
+                    // ERROR DE VALIDACIÓN
+                    // ----------------------------------
+                    case 422:
+
+                        const validationErrors = response.errors || {};
+
+                        const messages = Object.values(validationErrors)
+                            .flat()
+                            .map(item => String(item));
+
+                        if (messages.length > 0) {
+
+                            message += '\n' + messages.join('\n');
+                        }
+
+                        break;
+
+                    // ----------------------------------
+                    // NO AUTENTICADO
+                    // ----------------------------------
+                    case 401:
+
+                        message =
+                            'Tu sesión ha expirado o necesitas iniciar sesión.';
+
+                        break;
+
+                    // ----------------------------------
+                    // SIN PERMISOS
+                    // ----------------------------------
+                    case 403:
+
+                        message =
+                            'No tienes permisos para modificar esta empresa.';
+
+                        break;
+
+                    // ----------------------------------
+                    // EMPRESA NO ENCONTRADA
+                    // ----------------------------------
+                    case 404:
+
+                        message =
+                            'No se encontró la empresa que deseas actualizar.';
+
+                        break;
+
+                    // ----------------------------------
+                    // ERROR DEL SERVIDOR
+                    // ----------------------------------
+                    case 500:
+
+                        message =
+                            'Ocurrió un error interno al guardar la ubicación.';
+
+                        break;
+
+                    // ----------------------------------
+                    // OTROS ERRORES
+                    // ----------------------------------
+                    default:
+
+                        if (status === 'timeout') {
+
+                            message =
+                                'La solicitud tardó demasiado. Intenta nuevamente.';
+
+                        } else if (status === 'abort') {
+
+                            return;
+
+                        } else if (xhr.status === 0) {
+
+                            message =
+                                'No se pudo conectar con el servidor. Verifica tu conexión.';
+                        }
+
+                        break;
+                }
+
+                showAlert(
+                    message,
+                    'danger',
+                    7000
+                );
+            },
+
+            // ======================================
+            // FINALIZAR PETICIÓN
+            // ======================================
+
+            complete: function () {
+
+                businessRequest = null;
+
+                console.log(
+                    '[Maskana] Solicitud de actualización finalizada.'
+                );
+            }
+
+        });
+
+        return businessRequest;
     }
 
 </script>

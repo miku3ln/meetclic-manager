@@ -543,7 +543,7 @@ $addClassManagerHeader=$nameRoute == 'ricksichishun'?'':'dark-header--chaski-shi
             let params = {
                 dataParams: {
                     phone: '+' + phoneCurrent,
-                    text: 'Deseamos saber sobre el proceso de Meetclic.',
+                    text: 'Deseamos saber sobre el proceso de Yapitas.!',
                 }
 
 

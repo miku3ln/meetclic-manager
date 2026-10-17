@@ -496,7 +496,7 @@ $rootUrlRegister=route("homePage")."/".app()->getLocale()."/register";
             let params = {
                 dataParams: {
                     phone: '+' + phoneCurrent,
-                    text: 'Deseamos saber sobre el proceso de Meetclic.',
+                    text: 'Deseamos saber sobre el proceso de Yapitas.!',
                 }
 
 

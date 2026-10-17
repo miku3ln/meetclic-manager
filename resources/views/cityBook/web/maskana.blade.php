@@ -25,6 +25,7 @@
 @section('additional-scripts')
     <script>
         var $zoneManager = <?php echo json_encode($zoneManager) ?>;
+        var $isLoggedIn = @json(auth()->check());
     </script>
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -60,7 +61,11 @@
             id="route-business-action"
             value="{{ route('searchNearbyBusinesses') }}"
         >
-
+        <input
+            type="hidden"
+            id="update-location-business-maskana-action"
+            value="{{ route('updateLocationBusinessMaskana') }}"
+        >
         <input
             type="hidden"
             id="route-business-categories-action"

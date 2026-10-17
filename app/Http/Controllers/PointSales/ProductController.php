@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\PointSales;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\PointSalesBaseController;
 
+use App\Models\Business;
 use App\Models\Cash\CashByTransactionManagement;
 use App\Models\Cash\CashManager;
 use App\Models\Cash\CashMovement;
@@ -28,6 +30,7 @@ use App\Services\ProductMassiveLoadService;
 use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class ProductController extends PointSalesBaseController
 {
@@ -602,8 +605,8 @@ class ProductController extends PointSalesBaseController
             $invoice_sale_id = $invoice_id;
             $isTypeInvoice = $headerGet["typeSave"] == "SAVE";
             $resultData = InvoiceSale::find($invoice_sale_id);
-            $attributesSetInvoice=$resultData;
-            $resultSaveTurn=null;
+            $attributesSetInvoice = $resultData;
+            $resultSaveTurn = null;
 
             $modelInvoiceByPayment = new InvoiceSalePayment();
             if ($isTypeInvoice) {
@@ -665,14 +668,14 @@ class ProductController extends PointSalesBaseController
             if (!$success) {
                 throw new \Exception($message . ": Algo Sucedio al registrar su Ticket!");
             } else {
-                $resultData->status=InvoiceSale::STATE_PENDING;
+                $resultData->status = InvoiceSale::STATE_PENDING;
                 $resultData->save();
                 DB::commit();
             }
             $data = [
                 "invoice" => $attributesSetInvoice,
-             "payment"=>  $modelInvoiceByPayment,
-             "cashMovement"=>  $resultSaveTurn,
+                "payment" => $modelInvoiceByPayment,
+                "cashMovement" => $resultSaveTurn,
 
             ];
 
@@ -695,6 +698,110 @@ class ProductController extends PointSalesBaseController
         }
         return response()->json($result);
 
+    }
+
+    public function updateLocationBusinessMaskana(Request $request)
+    {
+        // ==========================================
+        // 1. VALIDAR DATOS RECIBIDOS
+        // ==========================================
+
+        $validator = Validator::make($request->all(), [
+            'business_id' => [
+                'required',
+                'integer',
+                'min:1',
+                'exists:business,id'
+            ],
+            'latitude' => [
+                'required',
+                'numeric',
+                'between:-90,90'
+            ],
+            'longitude' => [
+                'required',
+                'numeric',
+                'between:-180,180'
+            ]
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'success' => false,
+                'msj' => 'Los datos de ubicación no son válidos.',
+                'errors' => $validator->errors(),
+                'data' => null
+            ], 422);
+        }
+
+        $payload = $validator->validated();
+
+        // ==========================================
+        // 2. ACTUALIZAR UBICACIÓN
+        // ==========================================
+
+        try {
+
+            $businessData = DB::transaction(function () use ($payload) {
+
+                $business = Business::query()
+                    ->where('id', $payload['business_id'])
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$business) {
+                    return null;
+                }
+
+                $business->street_lat = $payload['latitude'];
+                $business->street_lng = $payload['longitude'];
+
+                $business->save();
+
+                return $business->fresh();
+            });
+
+            // ======================================
+            // 3. VERIFICAR EMPRESA
+            // ======================================
+
+            if (!$businessData) {
+
+                return response()->json([
+                    'success' => false,
+                    'msj' => 'La empresa no existe.',
+                    'errors' => [],
+                    'data' => null
+                ], 404);
+            }
+
+            // ======================================
+            // 4. RESPUESTA EXITOSA
+            // ======================================
+
+            return response()->json([
+                'success' => true,
+                'msj' => 'Ubicación de la empresa actualizada correctamente.',
+                'errors' => [],
+                'data' => [
+                    'business_id' => $businessData->id,
+                    'latitude' => (float) $businessData->street_lat,
+                    'longitude' => (float) $businessData->street_lng,
+                    'updated_at' => $businessData->updated_at
+                ]
+            ], 200);
+
+        } catch (Throwable $e) {
+
+
+            return response()->json([
+                'success' => false,
+                'msj' => 'No fue posible actualizar la ubicación de la empresa.',
+                'errors' => [],
+                'data' => null
+            ], 500);
+        }
     }
 
     public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO CASH-TODO
