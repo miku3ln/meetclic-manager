@@ -99,7 +99,7 @@ Route::prefix('pointsales')->group(function () {
         Route::get('/products-sales', 'PointSales\ProductController@getProductsSales');
 
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
-        Route::post('/update-location-business-maskana', 'PointSales\ProductController@updateLocationBusinessMaskana')->name('updateLocationBusinessMaskana');
+
 
         Route::post('/transform-draft-invoice-register', 'PointSales\ProductController@transformDraftInvoiceRegister');
 

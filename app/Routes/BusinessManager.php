@@ -16,7 +16,7 @@ class BusinessManager
     {
 
         Route::group(['middleware' => ['auth', 'auth.business']], function () {
-
+            Route::post('/update-location-business-maskana', 'PointSales\ProductController@updateLocationBusinessMaskana')->name('updateLocationBusinessMaskana');
             Route::get('mintonPages/eccomerceProducts', 'MintonPages\MintonPagesController@getEccomerceProducts'); //
 
 

@@ -2099,6 +2099,7 @@ if($isLoggedIn){
         // ==========================================
         // PETICIÓN AJAX
         // ==========================================
+       var tokenInformation = $('meta[name="csrf-token"]').attr('content');
 
         return $.ajax({
 
@@ -2113,7 +2114,9 @@ if($isLoggedIn){
             timeout: 30000,
 
             headers: {
-                Accept: 'application/json'
+                Accept: 'application/json',
+                'X-CSRF-TOKEN': tokenInformation
+
             },
 
             // ======================================
