@@ -73,6 +73,16 @@
 
         <div class="business-map-layout">
 
+            <button
+                type="button"
+                id="maskana-location-button"
+                class="maskana-location-button"
+                title="Ver mi ubicación"
+                aria-label="Ver mi ubicación"
+                disabled
+            >
+                <i class="bi bi-geo-alt"></i>
+            </button>
             <div
                 id="business-map"
                 class="business-map-layout__map"

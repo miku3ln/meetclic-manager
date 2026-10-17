@@ -1683,3 +1683,182 @@
     }
 
 </style>
+<style>
+    .maskana-map-wrapper {
+        position: relative;
+    }
+
+    .maskana-location-button {
+        position: absolute;
+        right: 16px;
+        bottom: 100px;
+        z-index: 1000;
+
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid #e2e8f0;
+        border-radius: 50%;
+
+        background: #ffffff;
+        color: #2563eb;
+
+        font-size: 22px;
+        cursor: pointer;
+
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+        transition: transform .2s, background .2s;
+    }
+
+    .maskana-location-button:hover:not(:disabled) {
+        transform: scale(1.06);
+    }
+
+    .maskana-location-button.is-denied {
+        color: #dc2626;
+        background: #fef2f2;
+        cursor: not-allowed;
+        opacity: .85;
+    }
+
+    .maskana-location-button.is-pending {
+        color: #64748b;
+    }
+
+    .maskana-location-button.is-granted {
+        color: #2563eb;
+    }
+
+    .maskana-location-button.is-loading {
+        cursor: wait;
+        opacity: .65;
+    }
+
+    .maskana-user-location-marker {
+        background: transparent;
+        border: none;
+    }
+
+    .maskana-user-location-dot {
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: #2563eb;
+        border: 3px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 5px rgba(37, 99, 235, .18);
+    }
+
+
+
+
+
+    /* ==========================================
+       MASKANA - USER PUMPKIN MARKER
+    ========================================== */
+
+    .maskana-user-location-marker {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .maskana-user-pumpkin {
+        position: relative;
+        width: 64px;
+        height: 64px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .maskana-user-pumpkin__emoji {
+        position: relative;
+        z-index: 2;
+
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #fff;
+        border: 3px solid #f97316;
+        border-radius: 50%;
+
+        font-size: 29px;
+
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .22);
+
+        animation: maskana-pumpkin-float 2s ease-in-out infinite;
+    }
+
+    .maskana-user-pumpkin__pulse {
+        position: absolute;
+        inset: 2px;
+
+        background: rgba(249, 115, 22, .2);
+        border: 2px solid rgba(249, 115, 22, .5);
+        border-radius: 50%;
+
+        animation: maskana-pumpkin-pulse 2.4s ease-out infinite;
+    }
+
+    .maskana-user-pumpkin__label {
+        position: absolute;
+        top: 57px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        white-space: nowrap;
+
+        background: #fff;
+        color: #1f2937;
+
+        padding: 5px 10px;
+        border-radius: 20px;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+    }
+
+    /* Movimiento suave de la calabaza */
+    @keyframes maskana-pumpkin-float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    /* Halo de ubicación */
+    @keyframes maskana-pumpkin-pulse {
+        0% {
+            transform: scale(.6);
+            opacity: .8;
+        }
+
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .maskana-user-pumpkin__emoji,
+        .maskana-user-pumpkin__pulse {
+            animation: none;
+        }
+    }
+
+</style>

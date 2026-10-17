@@ -844,7 +844,591 @@ if (env('allowAllInOne')) {
 @include('layouts.cityBook.typeHtml.scripts')
 @include('partials.toast-meetclic',["allowJs"=>true])
 
+<script>
 
+    /**
+     * MASKANA LOCATION UTIL
+     *
+     * Utilitario global de geolocalización.
+     * Sin dependencias externas.
+     *
+     * Eventos:
+     * maskana:location:initialized
+     * maskana:location:permission
+     * maskana:location:requesting
+     * maskana:location:success
+     * maskana:location:changed
+     * maskana:location:error
+     * maskana:location:watching
+     * maskana:location:stopped
+     * maskana:location:cleared
+     * maskana:location:destroyed
+     */
+
+    class MaskanaLocationUtil {
+
+        constructor(config = {}) {
+
+            this.config = {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 60000,
+                ...config
+            };
+
+            this.location = null;
+            this.permission = 'unknown';
+            this.status = 'IDLE';
+
+            this.watchId = null;
+            this.permissionStatus = null;
+
+            this.initialized = false;
+            this.destroyed = false;
+
+            this._generation = 0;
+            this._requestSequence = 0;
+            this._permissionChangeHandler = null;
+        }
+
+        // ==========================================
+        // EMITIR EVENTOS
+        // ==========================================
+
+        emit(eventName, detail = {}) {
+
+            document.dispatchEvent(
+                new CustomEvent(eventName, {
+                    detail
+                })
+            );
+        }
+
+        // ==========================================
+        // VERIFICAR SOPORTE
+        // ==========================================
+
+        isSupported() {
+
+            return (
+                window.isSecureContext &&
+                'geolocation' in navigator
+            );
+        }
+
+        // ==========================================
+        // INICIALIZAR
+        // ==========================================
+
+        async init() {
+
+            if (this.initialized && !this.destroyed) {
+                return this.getState();
+            }
+
+            this.destroyed = false;
+            this.initialized = true;
+
+            this.status = 'INITIALIZING';
+
+            await this.checkPermission();
+
+            this.status = this.isSupported()
+                ? 'READY'
+                : 'UNSUPPORTED';
+
+            const state = this.getState();
+
+            this.emit(
+                'maskana:location:initialized',
+                state
+            );
+
+            return state;
+        }
+
+        // ==========================================
+        // CONSULTAR PERMISO
+        // ==========================================
+
+        async checkPermission() {
+
+            if (!this.isSupported()) {
+
+                this.permission = 'unsupported';
+
+                this.emit(
+                    'maskana:location:permission',
+                    { permission: this.permission }
+                );
+
+                return this.permission;
+            }
+
+            if (!navigator.permissions?.query) {
+
+                this.permission = 'unknown';
+                return this.permission;
+            }
+
+            try {
+
+                const result =
+                    await navigator.permissions.query({
+                        name: 'geolocation'
+                    });
+
+                // Eliminar listener anterior.
+                if (this.permissionStatus &&
+                    this._permissionChangeHandler) {
+
+                    this.permissionStatus.removeEventListener(
+                        'change',
+                        this._permissionChangeHandler
+                    );
+                }
+
+                this.permissionStatus = result;
+                this.permission = result.state;
+
+                this._permissionChangeHandler = () => {
+
+                    this.permission = result.state;
+
+                    this.emit(
+                        'maskana:location:permission',
+                        {
+                            permission: this.permission
+                        }
+                    );
+
+                    if (this.permission === 'denied') {
+                        this.stopWatching();
+                        this.clearLocation();
+                    }
+                };
+
+                result.addEventListener(
+                    'change',
+                    this._permissionChangeHandler
+                );
+
+                this.emit(
+                    'maskana:location:permission',
+                    {
+                        permission: this.permission
+                    }
+                );
+
+                return this.permission;
+
+            } catch (error) {
+
+                this.permission = 'unknown';
+                return this.permission;
+            }
+        }
+
+        // ==========================================
+        // NORMALIZAR POSICIÓN
+        // ==========================================
+
+        parsePosition(position) {
+
+            return {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+
+                accuracy: position.coords.accuracy,
+                altitude: position.coords.altitude,
+                altitudeAccuracy:
+                position.coords.altitudeAccuracy,
+
+                heading: position.coords.heading,
+                speed: position.coords.speed,
+
+                timestamp: position.timestamp
+            };
+        }
+
+        // ==========================================
+        // PROCESAR NUEVA UBICACIÓN
+        // ==========================================
+
+        handleSuccess(position) {
+
+            if (this.destroyed) return null;
+
+            const previousLocation = this.location
+                ? { ...this.location }
+                : null;
+
+            const newLocation = this.parsePosition(position);
+
+            const changed =
+                !previousLocation ||
+                previousLocation.latitude !==
+                newLocation.latitude ||
+                previousLocation.longitude !==
+                newLocation.longitude;
+
+            this.location = newLocation;
+
+            this.permission = 'granted';
+
+            this.status = this.isWatching()
+                ? 'WATCHING'
+                : 'READY';
+
+            // Evento cada vez que se obtiene una posición.
+            this.emit(
+                'maskana:location:success',
+                {
+                    ...newLocation
+                }
+            );
+
+            // Evento únicamente cuando cambian
+            // latitud o longitud.
+            if (changed) {
+
+                this.emit(
+                    'maskana:location:changed',
+                    {
+                        current: { ...newLocation },
+                        previous: previousLocation
+                    }
+                );
+            }
+
+            return { ...newLocation };
+        }
+
+        // ==========================================
+        // PROCESAR ERROR
+        // ==========================================
+
+        handleError(error) {
+
+            if (this.destroyed) return null;
+
+            const statuses = {
+                1: 'DENIED',
+                2: 'UNAVAILABLE',
+                3: 'TIMEOUT'
+            };
+
+            this.status =
+                statuses[error.code] || 'ERROR';
+
+            if (error.code === 1) {
+
+                this.permission = 'denied';
+
+                this.stopWatching();
+                this.clearLocation();
+            }
+
+            const detail = {
+                status: this.status,
+                code: error.code,
+                message: error.message
+            };
+
+            this.emit(
+                'maskana:location:error',
+                detail
+            );
+
+            return detail;
+        }
+
+        // ==========================================
+        // SOLICITAR UBICACIÓN UNA VEZ
+        // ==========================================
+
+        request() {
+
+            return new Promise((resolve, reject) => {
+
+                if (!this.isSupported()) {
+
+                    const error = {
+                        code: 0,
+                        message:
+                            'Geolocalización no disponible.'
+                    };
+
+                    this.handleError(error);
+                    reject(error);
+                    return;
+                }
+
+                this.destroyed = false;
+                this.status = 'REQUESTING';
+
+                const generation = this._generation;
+                const requestId = ++this._requestSequence;
+
+                this.emit(
+                    'maskana:location:requesting'
+                );
+
+                navigator.geolocation.getCurrentPosition(
+
+                    position => {
+
+                        // Ignorar resultados obsoletos
+                        // después de limpiar o destruir.
+                        if (generation !== this._generation) {
+                            reject(new Error(
+                                'Solicitud de ubicación cancelada.'
+                            ));
+                            return;
+                        }
+
+                        resolve(
+                            this.handleSuccess(position)
+                        );
+                    },
+
+                    error => {
+
+                        if (generation !== this._generation) {
+                            reject(new Error(
+                                'Solicitud de ubicación cancelada.'
+                            ));
+                            return;
+                        }
+
+                        this.handleError(error);
+                        reject(error);
+                    },
+
+                    this.config
+                );
+            });
+        }
+
+        // ==========================================
+        // INICIAR SEGUIMIENTO CONTINUO
+        // ==========================================
+
+        startWatching() {
+
+            if (!this.isSupported()) {
+
+                this.handleError({
+                    code: 0,
+                    message:
+                        'Geolocalización no disponible.'
+                });
+
+                return false;
+            }
+
+            if (this.isWatching()) {
+                return true;
+            }
+
+            this.destroyed = false;
+            this.status = 'WATCHING';
+
+            const generation = this._generation;
+
+            this.watchId =
+                navigator.geolocation.watchPosition(
+
+                    position => {
+
+                        if (generation !== this._generation) {
+                            return;
+                        }
+
+                        this.handleSuccess(position);
+                    },
+
+                    error => {
+
+                        if (generation !== this._generation) {
+                            return;
+                        }
+
+                        this.handleError(error);
+                    },
+
+                    this.config
+                );
+
+            this.emit(
+                'maskana:location:watching',
+                {
+                    watching: true
+                }
+            );
+
+            return true;
+        }
+
+        // ==========================================
+        // DETENER SEGUIMIENTO
+        // ==========================================
+
+        stopWatching() {
+
+            if (this.watchId === null) {
+                return false;
+            }
+
+            navigator.geolocation.clearWatch(
+                this.watchId
+            );
+
+            this.watchId = null;
+
+            this.status = 'STOPPED';
+
+            this.emit(
+                'maskana:location:stopped',
+                {
+                    watching: false,
+                    location: this.getLocation()
+                }
+            );
+
+            return true;
+        }
+
+        // ==========================================
+        // VERIFICAR SEGUIMIENTO ACTIVO
+        // ==========================================
+
+        isWatching() {
+
+            return this.watchId !== null;
+        }
+
+        // ==========================================
+        // VERIFICAR SI EXISTE UBICACIÓN
+        // ==========================================
+
+        hasLocation() {
+
+            return (
+                this.location !== null &&
+                Number.isFinite(this.location.latitude) &&
+                Number.isFinite(this.location.longitude)
+            );
+        }
+
+        // ==========================================
+        // OBTENER UBICACIÓN COMPLETA
+        // ==========================================
+
+        getLocation() {
+
+            return this.hasLocation()
+                ? { ...this.location }
+                : null;
+        }
+
+        // ==========================================
+        // OBTENER SOLO COORDENADAS
+        // ==========================================
+
+        getCoordinates() {
+
+            if (!this.hasLocation()) {
+                return null;
+            }
+
+            return {
+                latitude: this.location.latitude,
+                longitude: this.location.longitude
+            };
+        }
+
+        // ==========================================
+        // OBTENER ESTADO COMPLETO
+        // ==========================================
+
+        getState() {
+
+            return {
+                initialized: this.initialized,
+                supported: this.isSupported(),
+                permission: this.permission,
+                status: this.status,
+                watching: this.isWatching(),
+                hasLocation: this.hasLocation(),
+                location: this.getLocation()
+            };
+        }
+
+        // ==========================================
+        // ELIMINAR UBICACIÓN DE MEMORIA
+        // ==========================================
+
+        clearLocation() {
+
+            const previous = this.getLocation();
+
+            this.location = null;
+
+            this.emit(
+                'maskana:location:cleared',
+                {
+                    previous
+                }
+            );
+
+            return true;
+        }
+
+        // ==========================================
+        // DESTRUIR UTILITARIO
+        // ==========================================
+
+        destroy() {
+
+            this._generation++;
+
+            this.stopWatching();
+
+            if (
+                this.permissionStatus &&
+                this._permissionChangeHandler
+            ) {
+
+                this.permissionStatus.removeEventListener(
+                    'change',
+                    this._permissionChangeHandler
+                );
+            }
+
+            this.permissionStatus = null;
+            this._permissionChangeHandler = null;
+
+            this.clearLocation();
+
+            this.initialized = false;
+            this.destroyed = true;
+            this.status = 'DESTROYED';
+
+            this.emit(
+                'maskana:location:destroyed'
+            );
+        }
+    }
+
+    // ==============================================
+    // INSTANCIA GLOBAL PARA TODO MASKANA
+    // ==============================================
+
+    window.maskanaLocation =
+        new MaskanaLocationUtil();
+
+</script>
 <script id="main-data-script-head">
     /**
      * Abre Google Maps en una nueva pestaña/ventana centrado en lat/lng con zoom cercano.
@@ -951,9 +1535,7 @@ if (env('allowAllInOne')) {
 
     }
 
-    function esMovil() {
-        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
+
 
     var $businessMainInformation = <?php echo json_encode($businessMainInformation) ?>;
 
@@ -996,26 +1578,14 @@ if (env('allowAllInOne')) {
 
     });
 
-    if (esMovil() && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            // Cookies (pueden leerse en Laravel)
-            document.cookie = "lat=" + position.coords.latitude;
-            document.cookie = "lon=" + position.coords.longitude;
-            document.cookie = "device=movil";
-            document.cookie = "navegador=" + navigator.userAgent;
-            // Si deseas enviar vía query al siguiente request automático
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const urlConQuery = new URL(window.location.href);
-            urlConQuery.searchParams.set('lat', lat);
-            urlConQuery.searchParams.set('lon', lon);
-            urlConQuery.searchParams.set('device', 'movil');
-
-            // Redirecciona automáticamente con los parámetros
-            //  window.location.href = urlConQuery.toString();
-        });
+    function esMovil() {
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
+
+
 </script>
+
+
 @yield('data-modal')
 </body>
 </html>

@@ -269,7 +269,7 @@
 
 
         static renderDetails(business, options = {}) {
-
+console.log("renderDetails",business);
             if (!business) {
                 return `
             <div class="business-detail__empty">
