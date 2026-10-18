@@ -19,28 +19,6 @@
             min-height: 100dvh;
         }
 
-        #camera-three-video,
-        #camera-three-canvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #camera-three-video {
-            z-index: 1;
-            object-fit: cover;
-        }
-
-        #camera-three-canvas {
-            z-index: 2;
-            touch-action: none;
-        }
-
-
-        /* ==========================================
-           CAMERA THREE - ESCENARIO
-        ========================================== */
 
         .container--custom.camera-three-active {
             position: relative !important;
@@ -70,8 +48,38 @@
             touch-action: none;
         }
 
-        .camera-three-active #ar-loading {
-            z-index: 20;
+        .camera-three-joystick-zone {
+            position: absolute;
+            left: 20px;
+            bottom: 24px;
+            width: 140px;
+            height: 140px;
+            z-index: 35;
+            touch-action: none;
+        }
+
+        .camera-three-joystick-controls {
+            position: absolute;
+            left: 20px;
+            bottom: 178px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            z-index: 36;
+        }
+
+        .camera-three-joystick-controls button {
+            padding: 8px 10px;
+            border: none;
+            border-radius: 8px;
+            background: #303750;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .camera-three-joystick-controls button:active {
+            background: #4C4CFF;
         }
 
     </style>

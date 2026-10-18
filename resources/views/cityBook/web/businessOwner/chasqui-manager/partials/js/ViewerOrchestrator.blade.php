@@ -385,9 +385,13 @@
             }
         }
 
-        async onMarkerSourceSelected(input) {
+        async initACR(input) {
             let id = null;
             let raw = null;
+
+            // ============================================
+            // 1. IDENTIFICAR EL MODELO
+            // ============================================
 
             if (typeof input === 'string') {
                 raw = input;
@@ -396,20 +400,20 @@
                     .find(i => i.sources?.glb === input);
 
                 id = match?.id ?? null;
+
             } else {
                 id = input?.id ?? null;
-                raw = input?.glbUrl ?? '';
+                raw = input?.glbUrl ?? input?.sources?.glb ?? '';
             }
 
-            // ============================================
-            // 1. RESOLVER MODELO Y CACHÉ
-            // ============================================
-  var dataTotem=    ItemsStore.getItemById(id);
-            const originalUrl = id
-                ? ItemsStore.getItemById(id)?.sources?.glb
+            // Recuperar todos los datos existentes del tótem.
+            const dataTotem = id != null
+                ? ItemsStore.getItemById(id)
                 : null;
 
-            // Mantener la URL original para los visores externos.
+            const originalUrl = dataTotem?.sources?.glb || null;
+
+            // Mantener la URL original para WebXR y otros visores.
             const glbUrl = originalUrl || raw;
 
             if (!glbUrl) {
@@ -417,9 +421,13 @@
                 return;
             }
 
+            // ============================================
+            // 2. RESOLVER CACHÉ
+            // ============================================
+
             const cachedBlobUrl = AssetPreloader.getBlobURL(glbUrl);
 
-            const cacheStatus = id
+            const cacheStatus = id != null
                 ? ItemsStore.getCacheStatus(id)
                 : (cachedBlobUrl ? 'hot' : 'cold');
 
@@ -433,14 +441,18 @@
                 ? glbUrl.replace(/\.glb$/i, '.usdz')
                 : '';
 
+            // Guardar información para todos los modos.
             this._state.lastSource = {
                 id,
                 glb: glbUrl,
-                usdz: usdzUrl
+                usdz: usdzUrl,
+                dataTotem
             };
 
             console.log('[ViewerOrchestrator] Modelo seleccionado', {
                 id,
+                title: dataTotem?.title,
+                position: dataTotem?.position,
                 glbUrl,
                 isCached,
                 cacheStatus
@@ -451,7 +463,7 @@
             UI.hideFallback();
 
             // ============================================
-            // 2. INTENTAR WEBXR ORIGINAL
+            // 3. PRIMER MODO: WEBXR ORIGINAL
             // ============================================
 
             console.log('[ViewerOrchestrator] Verificando WebXR');
@@ -460,6 +472,7 @@
 
             try {
                 webXRSupported = await canUseAR();
+
             } catch (error) {
                 console.warn(
                     '[ViewerOrchestrator] Error verificando WebXR',
@@ -479,30 +492,37 @@
 
                     ctrl = new AndroidWebXRController({
                         onEnter: () => {
-                            UI.setHint('Cámara iniciada.');
+                            UI.setHint('Cámara AR iniciada.');
                         },
 
                         onExit: async ({reason}) => {
-                            UI.setHint(
-                                `Sesión finalizada (${reason || 'desconocido'}).`
+                            console.log(
+                                '[ViewerOrchestrator] Sesión WebXR finalizada',
+                                reason
                             );
 
-                            // Evitar destruir otro modo si ya cambió.
                             if (
                                 this._state.mode === 'android-webxr' &&
                                 this._state.controller === ctrl
                             ) {
+                                UI.setHint(
+                                    `Sesión finalizada (${reason || 'desconocido'}).`
+                                );
+
                                 await this.destroy();
+
                                 window.disableJoystick?.();
                             }
                         }
                     });
 
-                    console.log('[ViewerOrchestrator] Solicitando sesión WebXR');
+                    console.log(
+                        '[ViewerOrchestrator] Solicitando sesión WebXR'
+                    );
 
+                    // Verificación real: intentar crear la sesión.
                     await ctrl.startSessionFromGesture();
 
-                    // WebXR iniciado correctamente.
                     this._state.mode = 'android-webxr';
                     this._state.controller = ctrl;
                     this._state.pendingGLB = glbUrl;
@@ -514,13 +534,17 @@
 
                     UI.setHint('Toca la retícula para colocar.');
 
-                    console.log('[ViewerOrchestrator] WebXR activo');
+                    console.log('[ViewerOrchestrator] WebXR activo', {
+                        id,
+                        title: dataTotem?.title
+                    });
 
                     return;
 
                 } catch (error) {
                     console.warn(
-                        '[ViewerOrchestrator] No se pudo iniciar WebXR, probando cámara Three.js',
+                        '[ViewerOrchestrator] WebXR no disponible. ' +
+                        'Iniciando cámara Three.js.',
                         error
                     );
 
@@ -540,140 +564,303 @@
                     }
 
                     UI.hideLoading();
+                    UI.hideReticle();
                 }
             }
 
+        }
+
+
+        async onMarkerSourceSelected(input) {
+
+            let id = null;
+            let raw = null;
+
             // ============================================
-            // 3. NUEVO FALLBACK: CÁMARA + THREE.JS
+            // 1. IDENTIFICAR EL MODELO
             // ============================================
 
-            console.log('[ViewerOrchestrator] Verificando cámara Three.js');
+            if (typeof input === 'string') {
+
+                raw = input;
+
+                const match = ItemsStore.getItems()
+                    .find(item => item.sources?.glb === input);
+
+                id = match?.id ?? null;
+
+            } else {
+
+                id = input?.id ?? null;
+
+                raw =
+                    input?.glbUrl ??
+                    input?.sources?.glb ??
+                    '';
+            }
+
+            // ============================================
+            // 2. RECUPERAR DATOS DEL TÓTEM
+            // ============================================
+
+            const dataTotem = id != null
+                ? ItemsStore.getItemById(id)
+                : null;
+
+            const originalUrl =
+                dataTotem?.sources?.glb || null;
+
+            const glbUrl = originalUrl || raw;
+
+            if (!glbUrl) {
+
+                UI.setHint(
+                    'No hay fuente GLB disponible.'
+                );
+
+                return;
+            }
+
+            // ============================================
+            // 3. VERIFICAR CACHÉ
+            // ============================================
+
+            const cachedBlobUrl =
+                AssetPreloader.getBlobURL(glbUrl);
+
+            const cacheStatus = id != null
+                ? ItemsStore.getCacheStatus(id)
+                : (cachedBlobUrl ? 'hot' : 'cold');
+
+            const isCached =
+                !!cachedBlobUrl ||
+                cacheStatus === 'hot';
+
+            // ============================================
+            // 4. GUARDAR FUENTE SELECCIONADA
+            // ============================================
+
+            this._state.lastSource = {
+                id,
+                glb: glbUrl,
+                dataTotem
+            };
+
+            console.log(
+                '[ViewerOrchestrator] Modelo seleccionado',
+                {
+                    id,
+                    title: dataTotem?.title,
+                    glbUrl,
+                    isCached,
+                    cacheStatus
+                }
+            );
+
+            // ============================================
+            // 5. PREPARAR INTERFAZ
+            // ============================================
+
+            UI.revealContainer();
+            UI.hideMap();
+            UI.hideFallback();
+            UI.hideReticle();
+
+            // ============================================
+            // 6. LIMPIAR CONTROLADOR ANTERIOR
+            // ============================================
+
+            if (this._state.controller) {
+
+                const previousController =
+                    this._state.controller;
+
+                try {
+
+                    await previousController.stop?.();
+
+                } catch (error) {
+
+                    console.warn(
+                        '[ViewerOrchestrator] Error cerrando visor anterior',
+                        error
+                    );
+                }
+
+                this._state.controller = null;
+                this._state.mode = null;
+                this._state.pendingGLB = null;
+            }
+
+            // ============================================
+            // 7. VERIFICAR CÁMARA THREE.JS
+            // ============================================
 
             const canUseCamera =
                 window.isSecureContext &&
                 !!navigator.mediaDevices?.getUserMedia &&
                 typeof CameraThreeController !== 'undefined';
 
-            if (canUseCamera) {
-                let cameraCtrl = null;
+            if (!canUseCamera) {
 
-                try {
-                    UI.showLoading(
-                        isCached
-                            ? 'Abriendo cámara 3D (modelo precargado)…'
-                            : 'Abriendo cámara 3D…'
-                    );
-
-                    cameraCtrl = new CameraThreeController({
-                        onEnter: () => {
-                            UI.setHint('Cámara 3D iniciada.');
-                        },
-
-                        onExit: ({reason}) => {
-                            console.log(
-                                '[CameraThree] Sesión finalizada:',
-                                reason
-                            );
-                        }
-                    });
-
-                    // Abrir cámara trasera.
-                    await cameraCtrl.start();
-
-                    this._state.mode = 'camera-three';
-                    this._state.controller = cameraCtrl;
-                    this._state.pendingGLB = null;
-
-                    // Cargar GLB sobre el vídeo.
-                    UI.showLoading('Cargando personaje 3D…');
-
-                    await cameraCtrl.loadModel(glbUrl, id);
-
-                    UI.hideLoading();
-                    UI.hideReticle();
-
-                    UI.setHint(
-                        'Personaje cargado. Arrástralo para moverlo.'
-                    );
-
-                    console.log(
-                        '[ViewerOrchestrator] Cámara Three.js activa',
-                        {id, glbUrl}
-                    );
-
-                    return;
-
-                } catch (error) {
-                    console.error(
-                        '[ViewerOrchestrator] No se pudo iniciar cámara Three.js',
-                        error
-                    );
-
-                    try {
-                        await cameraCtrl?.stop();
-                    } catch (cleanupError) {
-                        console.warn(
-                            '[ViewerOrchestrator] Error limpiando cámara',
-                            cleanupError
-                        );
-                    }
-
-                    if (this._state.controller === cameraCtrl) {
-                        this._state.controller = null;
-                        this._state.mode = null;
-                        this._state.pendingGLB = null;
-                    }
-
-                    UI.hideLoading();
-                }
-            }
-
-            // ============================================
-            // 4. FALLBACK ORIGINAL: MODEL-VIEWER
-            // ============================================
-
-            console.log(
-                '[ViewerOrchestrator] Iniciando fallback model-viewer'
-            );
-
-            const mvCtrl = new ModelViewerController(UI.mv, {
-                onEnter: ({mode}) => {
-                    UI.setHint(`AR activo (${mode}).`);
-                }
-            });
-
-            mvCtrl.bindOnce();
-
-            try {
-                await mvCtrl.setSource({
-                    glbUrl,
-                    usdzUrl
-                });
-
-                this._state.mode = Platform.isIOS
-                    ? 'ios-quicklook'
-                    : 'web-fallback';
-
-                this._state.controller = mvCtrl;
-                this._state.pendingGLB = null;
-
-                UI.showCapture();
-
-                console.log(
-                    '[ViewerOrchestrator] Model-viewer activo'
-                );
-
-            } catch (error) {
                 console.error(
-                    '[ViewerOrchestrator] Error en fallback model-viewer',
-                    error
+                    '[ViewerOrchestrator] Cámara Three.js no disponible'
                 );
 
                 UI.setHint(
-                    'No se pudo cargar el modelo en fallback.'
+                    'La cámara necesita HTTPS o localhost y un navegador compatible.'
+                );
+
+                return;
+            }
+
+            // ============================================
+            // 8. CREAR CAMERA THREE CONTROLLER
+            // ============================================
+
+            let cameraCtrl = null;
+
+            try {
+
+                UI.showLoading(
+                    isCached
+                        ? 'Abriendo cámara 3D (modelo precargado)…'
+                        : 'Abriendo cámara 3D…'
+                );
+
+                cameraCtrl = new CameraThreeController({
+
+                    dataTotem,
+
+                    onEnter: () => {
+
+                        UI.setHint(
+                            'Cámara 3D iniciada.'
+                        );
+                    },
+
+                    onExit: ({ reason }) => {
+
+                        console.log(
+                            '[CameraThree] Sesión finalizada:',
+                            reason
+                        );
+                    }
+                });
+
+                // ========================================
+                // 9. INICIAR CÁMARA TRASERA
+                // ========================================
+
+                await cameraCtrl.start();
+
+                this._state.mode = 'camera-three';
+                this._state.controller = cameraCtrl;
+                this._state.pendingGLB = null;
+
+                // ========================================
+                // 10. CARGAR PERSONAJE GLB
+                // ========================================
+
+                UI.showLoading(
+                    'Cargando personaje 3D…'
+                );
+
+                await cameraCtrl.loadModel(
+                    glbUrl,
+                    id
+                );
+
+                // ========================================
+                // 11. ACTIVAR JOYSTICK INTEGRADO
+                // ========================================
+
+                // El joystick ya se crea dentro de
+                // CameraThreeController.start().
+                // loadModel() también lo activa.
+                // Esta llamada garantiza que esté visible.
+                cameraCtrl.setJoystickMode('move');
+
+                cameraCtrl.enableJoystick();
+
+                // ========================================
+                // 12. MOSTRAR CONTROLES
+                // ========================================
+
+                UI.hideLoading();
+                UI.hideReticle();
+                UI.showCapture();
+
+                UI.setHint(
+                    'Utiliza el joystick para mover, acercar o girar el personaje.'
+                );
+
+                // ========================================
+                // 13. CONFIRMAR MODO ACTIVO
+                // ========================================
+
+                console.log(
+                    '[ViewerOrchestrator] Cámara Three.js activa',
+                    {
+                        mode: this._state.mode,
+                        id,
+                        title: dataTotem?.title,
+                        glbUrl,
+
+                        joystickEnabled:
+                        cameraCtrl.joystick.enabled,
+
+                        joystickMode:
+                        cameraCtrl.joystick.mode,
+
+                        modelPosition:
+                            cameraCtrl.modelRoot?.position.toArray()
+                    }
+                );
+
+                return;
+
+            } catch (error) {
+
+                console.error(
+                    '[ViewerOrchestrator] Error iniciando cámara Three.js',
+                    error
+                );
+
+                // ========================================
+                // 14. LIMPIAR EN CASO DE ERROR
+                // ========================================
+
+                try {
+
+                    await cameraCtrl?.stop();
+
+                } catch (cleanupError) {
+
+                    console.warn(
+                        '[ViewerOrchestrator] Error limpiando cámara',
+                        cleanupError
+                    );
+                }
+
+                if (
+                    this._state.controller === cameraCtrl
+                ) {
+
+                    this._state.controller = null;
+                    this._state.mode = null;
+                    this._state.pendingGLB = null;
+                }
+
+                UI.hideLoading();
+                UI.hideReticle();
+
+                UI.setHint(
+                    'No se pudo iniciar la cámara o cargar el personaje 3D.'
                 );
             }
         }
+
 
 
         async handleReticleTap() {
@@ -702,7 +889,7 @@
         async destroy() {
             try {
                 if (this._state.controller) {
-                    if (this._state.mode === 'android-webxr'||
+                    if (this._state.mode === 'android-webxr' ||
                         this._state.mode === 'camera-three') await this._state.controller.stop();
                     else this._state.controller.destroy();
                 }
