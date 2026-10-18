@@ -101,7 +101,7 @@
             <div class="manager-map__toolbar">
 
                 <div class="manager-map__brand">
-                    <span id="title-route">{{$zoneManager['title']}}</span>
+                    <span id="title-route" class="not-view">{{$zoneManager['title']}}</span>
                     <img src="{{$zoneManager['source']}}"  class="manager-map__brand-logo">
                 </div>
 
@@ -128,6 +128,7 @@
                     aria-label="Mostrar filtros"
                     aria-controls="manager-filters-panel"
                     aria-expanded="false"
+                    style="background: {{''.$zoneManager['color_hex']}} !important; "
                 >
                     <i class="bi bi-sliders2"></i>
                     <span>Filtros</span>

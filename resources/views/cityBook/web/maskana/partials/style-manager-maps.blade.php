@@ -1073,7 +1073,7 @@
         pointer-events: none;
     }
 
-    .manager-map__brand,
+
     .manager-map__counter {
         display: inline-flex;
         align-items: center;
@@ -1091,7 +1091,7 @@
     }
 
     .manager-map__brand {
-
+        padding-left: 13px;
         font-weight: 700;
     }
 
@@ -1459,7 +1459,10 @@
        MOBILE / TABLET
     ========================================== */
     img.manager-map__brand-logo {
-        width: 39px;
+        width: 64px;
+        height: 75px;
+        object-fit: cover;
+        object-position: center;
     }
     @media (max-width: 767px) {
         .header-user-menu {
@@ -1486,7 +1489,7 @@
         right: 12px;
     }
 
-    .manager-map__brand,
+
     .manager-map__counter {
         padding: 9px 12px;
         font-size: 12px;
