@@ -391,26 +391,55 @@
 
             if (typeof input === 'string') {
                 raw = input;
-                const match = ItemsStore.getItems().find(i => i.sources?.glb === input);
+
+                const match = ItemsStore.getItems()
+                    .find(i => i.sources?.glb === input);
+
                 id = match?.id ?? null;
             } else {
                 id = input?.id ?? null;
                 raw = input?.glbUrl ?? '';
             }
 
-            // Siempre usamos el URL original como clave de caché
-            const cachedBlobUrl = AssetPreloader.getBlobURL(raw);
-            const cacheStatus = id ? ItemsStore.getCacheStatus(id) : (cachedBlobUrl ? 'hot' : 'cold');
-            const isCached = !!cachedBlobUrl || cacheStatus === 'hot';
-            const glbUrl = raw;
+            // ============================================
+            // 1. RESOLVER MODELO Y CACHÉ
+            // ============================================
 
-            const usdzUrl = (!glbUrl?.startsWith('blob:') && glbUrl?.endsWith?.('.glb'))
+            const originalUrl = id
+                ? ItemsStore.getItemById(id)?.sources?.glb
+                : null;
+
+            // Mantener la URL original para los visores externos.
+            const glbUrl = originalUrl || raw;
+
+            if (!glbUrl) {
+                UI.setHint('No hay fuente GLB disponible.');
+                return;
+            }
+
+            const cachedBlobUrl = AssetPreloader.getBlobURL(glbUrl);
+
+            const cacheStatus = id
+                ? ItemsStore.getCacheStatus(id)
+                : (cachedBlobUrl ? 'hot' : 'cold');
+
+            const isCached =
+                !!cachedBlobUrl || cacheStatus === 'hot';
+
+            const usdzUrl = (
+                !glbUrl.startsWith('blob:') &&
+                /\.glb$/i.test(glbUrl)
+            )
                 ? glbUrl.replace(/\.glb$/i, '.usdz')
                 : '';
 
-            this._state.lastSource = {id, glb: glbUrl, usdz: usdzUrl};
+            this._state.lastSource = {
+                id,
+                glb: glbUrl,
+                usdz: usdzUrl
+            };
 
-            console.log('[ViewerOrchestrator] onMarkerSourceSelected cache', {
+            console.log('[ViewerOrchestrator] Modelo seleccionado', {
                 id,
                 glbUrl,
                 isCached,
@@ -420,55 +449,232 @@
             UI.revealContainer();
             UI.hideMap();
             UI.hideFallback();
-            console.log("canUseAR");
-            if (await canUseAR()) {
+
+            // ============================================
+            // 2. INTENTAR WEBXR ORIGINAL
+            // ============================================
+
+            console.log('[ViewerOrchestrator] Verificando WebXR');
+
+            let webXRSupported = false;
+
+            try {
+                webXRSupported = await canUseAR();
+            } catch (error) {
+                console.warn(
+                    '[ViewerOrchestrator] Error verificando WebXR',
+                    error
+                );
+            }
+
+            if (webXRSupported) {
+                let ctrl = null;
 
                 try {
-                    UI.showLoading(isCached ? 'Abriendo cámara (modelo precargado)…' : 'Abriendo cámara…');
-                    const ctrl = new AndroidWebXRController({
-                        onEnter: () => UI.setHint('Cámara iniciada.'),
+                    UI.showLoading(
+                        isCached
+                            ? 'Abriendo cámara (modelo precargado)…'
+                            : 'Abriendo cámara…'
+                    );
+
+                    ctrl = new AndroidWebXRController({
+                        onEnter: () => {
+                            UI.setHint('Cámara iniciada.');
+                        },
+
                         onExit: async ({reason}) => {
-                            UI.setHint(`Sesión finalizada (${reason || 'desconocido'}).`);
-                            await this.destroy();
-                            window.disableJoystick();
+                            UI.setHint(
+                                `Sesión finalizada (${reason || 'desconocido'}).`
+                            );
+
+                            // Evitar destruir otro modo si ya cambió.
+                            if (
+                                this._state.mode === 'android-webxr' &&
+                                this._state.controller === ctrl
+                            ) {
+                                await this.destroy();
+                                window.disableJoystick?.();
+                            }
                         }
                     });
 
+                    console.log('[ViewerOrchestrator] Solicitando sesión WebXR');
+
                     await ctrl.startSessionFromGesture();
+
+                    // WebXR iniciado correctamente.
                     this._state.mode = 'android-webxr';
                     this._state.controller = ctrl;
                     this._state.pendingGLB = glbUrl;
 
                     await ctrl.ready;
+
                     UI.hideLoading();
                     UI.showReticle();
+
                     UI.setHint('Toca la retícula para colocar.');
+
+                    console.log('[ViewerOrchestrator] WebXR activo');
+
                     return;
-                } catch (e) {
-                    console.warn('No se pudo iniciar WebXR, usando fallback', e);
-                    // ⚠️ IMPORTANTE: si falla WebXR, ocultamos el loading que se quedó activo
+
+                } catch (error) {
+                    console.warn(
+                        '[ViewerOrchestrator] No se pudo iniciar WebXR, probando cámara Three.js',
+                        error
+                    );
+
+                    try {
+                        await ctrl?.stop();
+                    } catch (cleanupError) {
+                        console.warn(
+                            '[ViewerOrchestrator] Error limpiando WebXR',
+                            cleanupError
+                        );
+                    }
+
+                    if (this._state.controller === ctrl) {
+                        this._state.controller = null;
+                        this._state.mode = null;
+                        this._state.pendingGLB = null;
+                    }
+
                     UI.hideLoading();
                 }
             }
 
-            // Fallback <model-viewer>
+            // ============================================
+            // 3. NUEVO FALLBACK: CÁMARA + THREE.JS
+            // ============================================
+
+            console.log('[ViewerOrchestrator] Verificando cámara Three.js');
+
+            const canUseCamera =
+                window.isSecureContext &&
+                !!navigator.mediaDevices?.getUserMedia &&
+                typeof CameraThreeController !== 'undefined';
+
+            if (canUseCamera) {
+                let cameraCtrl = null;
+
+                try {
+                    UI.showLoading(
+                        isCached
+                            ? 'Abriendo cámara 3D (modelo precargado)…'
+                            : 'Abriendo cámara 3D…'
+                    );
+
+                    cameraCtrl = new CameraThreeController({
+                        onEnter: () => {
+                            UI.setHint('Cámara 3D iniciada.');
+                        },
+
+                        onExit: ({reason}) => {
+                            console.log(
+                                '[CameraThree] Sesión finalizada:',
+                                reason
+                            );
+                        }
+                    });
+
+                    // Abrir cámara trasera.
+                    await cameraCtrl.start();
+
+                    this._state.mode = 'camera-three';
+                    this._state.controller = cameraCtrl;
+                    this._state.pendingGLB = null;
+
+                    // Cargar GLB sobre el vídeo.
+                    UI.showLoading('Cargando personaje 3D…');
+
+                    await cameraCtrl.loadModel(glbUrl, id);
+
+                    UI.hideLoading();
+                    UI.hideReticle();
+
+                    UI.setHint(
+                        'Personaje cargado. Arrástralo para moverlo.'
+                    );
+
+                    console.log(
+                        '[ViewerOrchestrator] Cámara Three.js activa',
+                        {id, glbUrl}
+                    );
+
+                    return;
+
+                } catch (error) {
+                    console.error(
+                        '[ViewerOrchestrator] No se pudo iniciar cámara Three.js',
+                        error
+                    );
+
+                    try {
+                        await cameraCtrl?.stop();
+                    } catch (cleanupError) {
+                        console.warn(
+                            '[ViewerOrchestrator] Error limpiando cámara',
+                            cleanupError
+                        );
+                    }
+
+                    if (this._state.controller === cameraCtrl) {
+                        this._state.controller = null;
+                        this._state.mode = null;
+                        this._state.pendingGLB = null;
+                    }
+
+                    UI.hideLoading();
+                }
+            }
+
+            // ============================================
+            // 4. FALLBACK ORIGINAL: MODEL-VIEWER
+            // ============================================
+
+            console.log(
+                '[ViewerOrchestrator] Iniciando fallback model-viewer'
+            );
+
             const mvCtrl = new ModelViewerController(UI.mv, {
-                onEnter: ({mode}) => UI.setHint(`AR activo (${mode}).`)
+                onEnter: ({mode}) => {
+                    UI.setHint(`AR activo (${mode}).`);
+                }
             });
+
             mvCtrl.bindOnce();
 
             try {
-                await mvCtrl.setSource({glbUrl, usdzUrl});
-                this._state.mode = Platform.isIOS ? 'ios-quicklook' : 'web-fallback';
+                await mvCtrl.setSource({
+                    glbUrl,
+                    usdzUrl
+                });
+
+                this._state.mode = Platform.isIOS
+                    ? 'ios-quicklook'
+                    : 'web-fallback';
+
                 this._state.controller = mvCtrl;
                 this._state.pendingGLB = null;
 
                 UI.showCapture();
-            } catch (err) {
-                console.error('Error en fallback model-viewer', err);
-                UI.setHint('No se pudo cargar el modelo en fallback.');
+
+                console.log(
+                    '[ViewerOrchestrator] Model-viewer activo'
+                );
+
+            } catch (error) {
+                console.error(
+                    '[ViewerOrchestrator] Error en fallback model-viewer',
+                    error
+                );
+
+                UI.setHint(
+                    'No se pudo cargar el modelo en fallback.'
+                );
             }
         }
+
 
         async handleReticleTap() {
             if (this._state.mode !== 'android-webxr' || !this._state.controller) return;
@@ -496,7 +702,8 @@
         async destroy() {
             try {
                 if (this._state.controller) {
-                    if (this._state.mode === 'android-webxr') await this._state.controller.stop();
+                    if (this._state.mode === 'android-webxr'||
+                        this._state.mode === 'camera-three') await this._state.controller.stop();
                     else this._state.controller.destroy();
                 }
             } catch {

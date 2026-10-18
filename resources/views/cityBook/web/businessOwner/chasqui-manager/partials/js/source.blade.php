@@ -511,6 +511,8 @@ https://cdn.jsdelivr.net/npm/nipplejs@0.10.2/dist/nipplejs.min.js
      * ViewerOrchestrator
      * ========================================================================== */
 </script>
+@include('cityBook.web.businessOwner.chasqui-manager.partials.js.CameraThreeController')
+
 @include('cityBook.web.businessOwner.chasqui-manager.partials.js.ViewerOrchestrator')
 
 <script>

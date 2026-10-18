@@ -1,5 +1,53 @@
 
 <script>
+
+    async function diagnoseARSession() {
+        const info = {
+            userAgent: navigator.userAgent,
+            secure: window.isSecureContext,
+            hasWebXR: !!navigator.xr,
+            supported: false,
+            sessionStarted: false,
+            errorName: null,
+            errorMessage: null
+        };
+
+        console.table(info);
+
+        if (!navigator.xr || !window.isSecureContext) {
+            return info;
+        }
+
+        try {
+            info.supported =
+                await navigator.xr.isSessionSupported('immersive-ar');
+
+            console.log('[AR] Soporte:', info.supported);
+        } catch (error) {
+            console.error('[AR] Error de compatibilidad:', error);
+        }
+
+        // Esta llamada debe ejecutarse desde el clic del usuario.
+        try {
+            const session = await navigator.xr.requestSession('immersive-ar');
+
+            info.sessionStarted = true;
+
+            console.log('[AR] Sesión básica iniciada');
+
+            await session.end();
+        } catch (error) {
+            info.errorName = error.name;
+            info.errorMessage = error.message;
+
+            console.error('[AR] Falló la sesión básica:', error);
+        }
+
+        console.table(info);
+
+        return info;
+    }
+
     const Platform = (() => {
         const ua = navigator.userAgent || navigator.vendor || "";
 

@@ -6,6 +6,37 @@
 @endphp
 @extends('layouts.bootstrap5')
 @section('additional-styles')
+    <style>
+        .container--custom {
+            position: relative;
+            width: 100%;
+            min-height: 100dvh;
+            overflow: hidden;
+        }
+
+        .container--custom:has(#camera-three-canvas) {
+            height: 100dvh !important;
+            min-height: 100dvh;
+        }
+
+        #camera-three-video,
+        #camera-three-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #camera-three-video {
+            z-index: 1;
+            object-fit: cover;
+        }
+
+        #camera-three-canvas {
+            z-index: 2;
+            touch-action: none;
+        }
+    </style>
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
