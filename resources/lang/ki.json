@@ -86,6 +86,7 @@
     "frontend.menu.dictionaryKichwaToCastellano": "Kichwa - Castellano",
     "frontend.menu.project": "Kawsay",
     "frontend.menu.project.one": "Riksichishun",
+    "frontend.menu.project.two": "Halloween",
 
     "frontend.menu.dictionaryCastilianToKichwa": "Castellano - Kichwa",
     "frontend.dictionaryCastilianToKichwa.slider.title": "Simipuri",
@@ -1118,6 +1119,26 @@
 
     "loading_more_results": "Ashtawan rikuchishpa…",
     "loading_data": "Willaykuna apashpa…",
-    "loading": "Apashpa…"
+    "loading": "Apashpa…",
 
+    "frontend.maskana.filter.title": "Empresakunata akllay",
+    "frontend.maskana.filter.subtitle": "Minishtishkata maskay",
+    "frontend.maskana.filter.businesses_found": "tarishka empresakuna",
+    "frontend.maskana.filter.view_map_question": "¿Empresakunata mapapi rikunata munankichu?",
+    "frontend.maskana.filter.view_map_description": "Akllanakunata akllashka kipa, mana kashpaka shuk empresapa shutita killkashka kipa, kay pankata wichkashpa mapapi tarishkakunata rikuy ushanki.",
+    "frontend.maskana.filter.category_subcategory": "Categoría uta subcategoría",
+    "frontend.maskana.filter.search_business": "Empresata maskay",
+    "frontend.maskana.filter.clear": "Pichay",
+    "frontend.maskana.filter.businesses": "empresakuna",
+    "frontend.maskana.filter.toggle": "Akllanakuna",
+    "frontend.maskana.filter.apply": "Akllanakunata rurachiy",
+    "frontend.maskana.business.loading": "Empresakunata apamushpa",
+    "frontend.maskana.business.detail": "Empresamanta willay",
+    "frontend.maskana.business.close_detail": "Empresamanta willayta wichkay",
+    "frontend.maskana.businesses.at_location": "Kay kuskapi tiyak empresakuna",
+    "frontend.maskana.businesses.close_list": "Empresakunapa shutikunata wichkay",
+    "frontend.maskana.business.no_information": "Mana willayta tarirkanchikchu",
+    "frontend.maskana.business.try_changing_filters": "Maskanapa akllanakunata shuktakyachishpa kutin maskay.",
+    "frontend.maskana.map.marker_unavailable": "Mapapi rikuchik mana tiyanchu, mana kashpaka empresata mana tarirkanchikchu.",
+    "frontend.maskana.filter.business_found": "tarishka empresa"
 }

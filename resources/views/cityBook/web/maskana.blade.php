@@ -23,9 +23,47 @@
 
 @endsection
 @section('additional-scripts')
+
+
+    @php
+        $maskanaTranslations = [
+            'frontend.maskana.filter.title' => __('frontend.maskana.filter.title'),
+            'frontend.maskana.filter.subtitle' => __('frontend.maskana.filter.subtitle'),
+            'frontend.maskana.filter.businesses_found' => __('frontend.maskana.filter.businesses_found'),
+            'frontend.maskana.filter.view_map_question' => __('frontend.maskana.filter.view_map_question'),
+            'frontend.maskana.filter.view_map_description' => __('frontend.maskana.filter.view_map_description'),
+            'frontend.maskana.filter.category_subcategory' => __('frontend.maskana.filter.category_subcategory'),
+            'frontend.maskana.filter.search_business' => __('frontend.maskana.filter.search_business'),
+            'frontend.maskana.filter.clear' => __('frontend.maskana.filter.clear'),
+            'frontend.maskana.filter.businesses' => __('frontend.maskana.filter.businesses'),
+            'frontend.maskana.filter.toggle' => __('frontend.maskana.filter.toggle'),
+            'frontend.maskana.filter.apply' => __('frontend.maskana.filter.apply'),
+            'frontend.maskana.business.loading' => __('frontend.maskana.business.loading'),
+            'frontend.maskana.business.detail' => __('frontend.maskana.business.detail'),
+            'frontend.maskana.business.close_detail' => __('frontend.maskana.business.close_detail'),
+            'frontend.maskana.businesses.at_location' => __('frontend.maskana.businesses.at_location'),
+            'frontend.maskana.businesses.close_list' => __('frontend.maskana.businesses.close_list'),
+
+
+
+            'frontend.maskana.business.no_information' => __('frontend.maskana.business.no_information'),
+            'frontend.maskana.business.try_changing_filters' => __('frontend.maskana.business.try_changing_filters'),
+            'frontend.maskana.map.marker_unavailable' => __('frontend.maskana.map.marker_unavailable'),
+            'frontend.maskana.filter.business_found' => __('frontend.maskana.filter.business_found'),
+
+
+        ];
+    @endphp
+
+    <script>
+        window.MaskanaTranslations = {{ Illuminate\Support\Js::from($maskanaTranslations) }};
+    </script>
+
+
     <script>
         var $zoneManager = <?php echo json_encode($zoneManager) ?>;
         var $isLoggedIn = @json(auth()->check());
+
     </script>
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -131,7 +169,7 @@
                     style="background: {{''.$zoneManager['color_hex']}} !important; "
                 >
                     <i class="bi bi-sliders2"></i>
-                    <span>Filtros</span>
+                    <span>{{ __('frontend.maskana.filter.toggle') }}</span>
                 </button>
 
             </div>
@@ -169,11 +207,11 @@
                                 id="manager-filters-title"
                                 class="manager-filters__title"
                             >
-                                Filtrar empresas
+                                {{ __('frontend.maskana.filter.title') }}
                             </h2>
 
                             <p class="manager-filters__subtitle">
-                                Encuentra lo que necesitas
+                                {{ __('frontend.maskana.filter.subtitle') }}
                             </p>
                         </div>
 
@@ -208,7 +246,8 @@
                             for="business-category-filter"
                             class="manager-filters__label"
                         >
-                            Categoría o subcategoría
+                            {{ __('frontend.maskana.filter.category_subcategory') }}
+
                         </label>
 
                         <select
@@ -217,7 +256,8 @@
                             style="width: 100%;"
                         >
                             <option value="all">
-                                Todas las categorías
+                                {{ __('frontend.maskana.filter.category_subcategory') }}
+
                             </option>
                         </select>
 
@@ -228,7 +268,8 @@
                             for="business-search"
                             class="manager-filters__label"
                         >
-                            Buscar empresa
+                            {{ __('frontend.maskana.filter.search_business') }}
+
                         </label>
 
                         <div class="manager-filters__input-wrap">
@@ -261,7 +302,8 @@
                         class="manager-filters__reset"
                     >
                         <i class="bi bi-arrow-counterclockwise"></i>
-                        Limpiar
+                        {{ __('frontend.maskana.filter.clear') }}
+
                     </button>
 
                     <button
@@ -270,7 +312,7 @@
                         class="manager-filters__apply not-view"
                     >
                         <i class="bi bi-check2"></i>
-                        Aplicar filtros
+                        {{ __('frontend.maskana.filter.apply') }}
                     </button>
 
                 </div>
@@ -301,7 +343,7 @@
                     role="status"
                 >
                 <span class="visually-hidden">
-                    Cargando empresas...
+                                         {{ __('frontend.maskana.business.loading') }}...
                 </span>
                 </div>
             </div>
@@ -313,7 +355,7 @@
             <aside
                 id="businessDetailAside"
                 class="business-map-aside business-map-aside--detail"
-                aria-label="Detalle de empresa"
+                aria-label=" {{ __('frontend.maskana.business.detail') }}"
                 aria-hidden="true"
                 inert
             >
@@ -322,7 +364,7 @@
                     type="button"
                     class="business-map-aside__close"
                     data-business-aside-close
-                    aria-label="Cerrar detalle de empresa"
+                    aria-label="{{ __('frontend.maskana.business.close_detail') }}"
                 >
                     &times;
                 </button>
@@ -341,7 +383,7 @@
             <aside
                 id="businessGroupAside"
                 class="business-map-aside business-map-aside--group"
-                aria-label="Empresas en esta ubicación"
+                aria-label="{{ __('frontend.maskana.businesses.at_location') }}"
                 aria-hidden="true"
                 inert
             >
@@ -350,7 +392,7 @@
                     type="button"
                     class="business-map-aside__close"
                     data-business-aside-close
-                    aria-label="Cerrar listado de empresas"
+                    aria-label="{{ __('frontend.maskana.businesses.close_list') }}"
                 >
                     &times;
                 </button>

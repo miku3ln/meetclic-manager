@@ -95,11 +95,14 @@
                     </li>
                     <li class="li-has-children-{{ $activeDictionary }}">
 
-                        {{-- CMS-TEMPLATE-MENU-VIEW--KICHWA-CASTILIAN--}}
                         <a class="{{ $activeDictionary }}  menu__a" href="javascript:void(0)">{{ __('frontend.menu.project') }}
                             <i
                                 class="fa fa-angle-down"></i></a>
                         <ul>
+                            <li class="li-children-{{ $halloween }}"><a
+                                    class="a-{{ $halloween }}  menu__a-children"
+                                    href="{{route('maskana', app()->getLocale())  }}">{{ __('frontend.menu.project.two') }}</a>
+                            </li>
                             <li class="li-children-{{ $chaskishimi }}"><a
                                     class="a-{{ $chaskishimi }}  menu__a-children"
                                     href="{{route('ricksichishun', app()->getLocale())  }}">{{ __('frontend.menu.project.one') }}</a>

@@ -437,15 +437,13 @@
         </div>
 
         <div class="response-data__hint-info">
-            <div class="response-data__hint-title">
-                ¿Quieres ver las empresas en el mapa?
-            </div>
+            <div class="response-data__hint-title">`
+                +MaskanaTranslations['frontend.maskana.filter.view_map_question']+
+                `  </div>
 
-            <p class="response-data__hint-message mb-0">
-                Después de elegir tus filtros o escribir el nombre
-                de una empresa, puedes cerrar este panel para
-                ver los resultados en el mapa.
-            </p>
+            <p class="response-data__hint-message mb-0">`
+            +MaskanaTranslations['frontend.maskana.filter.view_map_description']+
+                ` </p>
         </div>
     `;
 
@@ -481,8 +479,8 @@
         renderSuccess(total) {
 
             const label = total === 1
-                ? 'empresa encontrada'
-                : 'empresas encontradas';
+                ? MaskanaTranslations['frontend.maskana.filter.business_found']
+                : MaskanaTranslations['frontend.maskana.filter.businesses_found'];
 
             this.container.innerHTML = `
             <div class="response-data__content
@@ -535,14 +533,13 @@
 
                 <div class="response-data__info flex-grow-1">
 
-                    <div class="response-data__title">
-                        No se encontró información
-                    </div>
+                    <div class="response-data__title">`
+     +MaskanaTranslations['frontend.maskana.business.no_information']+
+            ` </div>
 
-                    <div class="response-data__message">
-                        Prueba cambiando los filtros
-                        de búsqueda.
-                    </div>
+                    <div class="response-data__message">`
+  +MaskanaTranslations['frontend.maskana.business.try_changing_filters']+
+            `</div>
 
                 </div>
 
@@ -577,7 +574,7 @@
         start(marker, business) {
 
             if (!marker || !business) {
-                console.error('Marcador o empresa no disponible.');
+                console.error(  MaskanaTranslations['frontend.maskana.map.marker_unavailable']);
                 return false;
             }
 

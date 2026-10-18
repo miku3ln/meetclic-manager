@@ -86,6 +86,7 @@
     "frontend.menu.dictionaryKichwaToCastellano": "Kichwa - Spanish",
     "frontend.menu.project": "Culture",
     "frontend.menu.project.one": "Riksichishun",
+    "frontend.menu.project.two": "Halloween",
 
     "frontend.menu.dictionaryCastilianToKichwa": "Spanish - Kichwa",
     "frontend.dictionaryCastilianToKichwa.slider.title": "Dictionary",
@@ -1155,6 +1156,25 @@
 
     "loading_more_results": "Loading more results…",
     "loading_data": "Loading data…",
-    "loading": "Loading…"
-
+    "loading": "Loading…",
+    "frontend.maskana.filter.title": "Filter businesses",
+    "frontend.maskana.filter.subtitle": "Find what you need",
+    "frontend.maskana.filter.view_map_question": "Want to see the businesses on the map?",
+    "frontend.maskana.filter.view_map_description": "After selecting your filters or entering a business name, you can close this panel to see the results on the map.",
+    "frontend.maskana.filter.category_subcategory": "Category or subcategory",
+    "frontend.maskana.filter.search_business": "Search for a business",
+    "frontend.maskana.filter.clear": "Clear",
+    "frontend.maskana.filter.businesses": "businesses",
+    "frontend.maskana.filter.toggle": "Filters",
+    "frontend.maskana.filter.apply": "Apply filters",
+    "frontend.maskana.business.loading": "Loading businesses",
+    "frontend.maskana.business.detail": "Business details",
+    "frontend.maskana.business.close_detail": "Close business details",
+    "frontend.maskana.businesses.at_location": "Businesses at this location",
+    "frontend.maskana.businesses.close_list": "Close business list",
+    "frontend.maskana.business.no_information": "No information found",
+    "frontend.maskana.business.try_changing_filters": "Try changing your search filters.",
+    "frontend.maskana.map.marker_unavailable": "Marker or business unavailable.",
+    "frontend.maskana.filter.businesses_found": "businesses found",
+    "frontend.maskana.filter.business_found": "business found"
 }

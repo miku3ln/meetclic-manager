@@ -87,6 +87,7 @@
     "frontend.menu.dictionaryKichwaToCastellano": "Kichwa - Castellano",
     "frontend.menu.project": "Cultura",
     "frontend.menu.project.one": "Riksichishun",
+    "frontend.menu.project.two": "Halloween",
 
     "frontend.menu.dictionaryCastilianToKichwa": "Castellano-Kichwa",
     "frontend.dictionaryCastilianToKichwa.slider.title": "Diccionario",
@@ -1144,5 +1145,25 @@
 
     "loading_more_results": "Cargando más resultados…",
     "loading_data": "Cargando datos…",
-    "loading": "Cargando…"
+    "loading": "Cargando…",
+    "frontend.maskana.filter.title": "Filtrar empresas",
+    "frontend.maskana.filter.subtitle": "Encuentra lo que necesitas",
+    "frontend.maskana.filter.businesses_found": "empresas encontradas",
+    "frontend.maskana.filter.view_map_question": "¿Quieres ver las empresas en el mapa?",
+    "frontend.maskana.filter.view_map_description": "Después de elegir tus filtros o escribir el nombre de una empresa, puedes cerrar este panel para ver los resultados en el mapa.",
+    "frontend.maskana.filter.category_subcategory": "Categoría o subcategoría",
+    "frontend.maskana.filter.search_business": "Buscar empresa",
+    "frontend.maskana.filter.clear": "Limpiar",
+    "frontend.maskana.filter.businesses": "empresas",
+    "frontend.maskana.filter.toggle": "Filtros",
+    "frontend.maskana.filter.apply": "Aplicar filtros",
+    "frontend.maskana.business.loading": "Cargando empresas",
+    "frontend.maskana.business.detail": "Detalle de empresa",
+    "frontend.maskana.business.close_detail": "Cerrar detalle de empresa",
+    "frontend.maskana.businesses.at_location": "Empresas en esta ubicación",
+    "frontend.maskana.businesses.close_list": "Cerrar listado de empresas",
+    "frontend.maskana.business.no_information": "No se encontró información",
+    "frontend.maskana.business.try_changing_filters": "Prueba cambiando los filtros de búsqueda.",
+    "frontend.maskana.map.marker_unavailable": "Marcador o empresa no disponible.",
+    "frontend.maskana.filter.business_found": "empresa encontrada"
 }

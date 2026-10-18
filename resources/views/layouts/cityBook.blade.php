@@ -426,6 +426,7 @@ if (env('allowAllInOne')) {
                     $activeDictionary = 'not-active';
                     $dictionaryKichwaToCastilian = '';
                     $chaskishimi = '';
+                    $halloween = '';
 
                     $dictionaryCastilianToKichwa = '';
 
@@ -468,9 +469,14 @@ if (env('allowAllInOne')) {
                     } if ($nameRoute == 'ourAllies') {
                         $activeOurAllies = 'act-link';
 
-                    } elseif ($nameRoute == 'shop-business') {
+                    }elseif ($nameRoute == 'shop-business') {
 
                         $activeOurAllies = 'act-link';
+
+                    } elseif ($nameRoute == 'maskana') {
+                        $activeDictionary = 'act-link';
+
+                        $halloween = 'act-link';
 
                     } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
