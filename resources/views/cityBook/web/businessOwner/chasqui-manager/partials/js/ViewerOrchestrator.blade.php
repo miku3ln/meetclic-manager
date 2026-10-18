@@ -404,7 +404,7 @@
             // ============================================
             // 1. RESOLVER MODELO Y CACHÉ
             // ============================================
-
+  var dataTotem=    ItemsStore.getItemById(id);
             const originalUrl = id
                 ? ItemsStore.getItemById(id)?.sources?.glb
                 : null;

@@ -36,6 +36,44 @@
             z-index: 2;
             touch-action: none;
         }
+
+
+        /* ==========================================
+           CAMERA THREE - ESCENARIO
+        ========================================== */
+
+        .container--custom.camera-three-active {
+            position: relative !important;
+            width: 100%;
+            height: 100dvh !important;
+            min-height: 100dvh;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .camera-three-active #camera-three-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .camera-three-active #camera-three-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            touch-action: none;
+        }
+
+        .camera-three-active #ar-loading {
+            z-index: 20;
+        }
+
     </style>
     <link
         rel="stylesheet"
