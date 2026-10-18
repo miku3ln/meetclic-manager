@@ -248,8 +248,15 @@
                     UI.setHint('No hay fuente GLB/USDZ.');
                     return;
                 }
+console.log("click ver informacion")
+                //setTimeout(() => window.Viewer.onMarkerSourceSelected({id, glbUrl: best}), 0);
 
-                setTimeout(() => window.Viewer.onMarkerSourceSelected({id, glbUrl: best}), 0);
+                window.Viewer.onMarkerSourceSelected({
+                    id,
+                    glbUrl: ItemsStore.getItemById(id)?.sources?.glb || best
+                }).catch(error => {
+                    console.error('[MapController] Error al abrir visor:', error);
+                });
             };
 
             root.addEventListener('click', onClick, {passive: false});

@@ -420,8 +420,9 @@
             UI.revealContainer();
             UI.hideMap();
             UI.hideFallback();
-
+            console.log("canUseAR");
             if (await canUseAR()) {
+
                 try {
                     UI.showLoading(isCached ? 'Abriendo cámara (modelo precargado)…' : 'Abriendo cámara…');
                     const ctrl = new AndroidWebXRController({
