@@ -571,6 +571,7 @@
         }
 
 
+
         async onMarkerSourceSelected(input) {
 
             let id = null;
@@ -722,10 +723,10 @@
 
             try {
 
+                // Mostrar indicador general solamente
+                // mientras se inicia la cámara.
                 UI.showLoading(
-                    isCached
-                        ? 'Abriendo cámara 3D (modelo precargado)…'
-                        : 'Abriendo cámara 3D…'
+                    'Iniciando cámara trasera…'
                 );
 
                 cameraCtrl = new CameraThreeController({
@@ -737,14 +738,28 @@
                         UI.setHint(
                             'Cámara 3D iniciada.'
                         );
+                        $("#companyPanelHeader").addClass("not-view");
+                        $("#btn-capture").addClass("not-view");
+
                     },
 
                     onExit: ({ reason }) => {
+                        $("#companyPanelHeader").removeClass("not-view");
+                        $("#btn-capture").removeClass("not-view");
 
                         console.log(
                             '[CameraThree] Sesión finalizada:',
                             reason
                         );
+
+                        const container = document.querySelector('.container--custom');
+
+                        if (container) {
+                            Object.assign(container.style, {
+                                position: 'relative',
+                                zIndex: '0'
+                            });
+                        }
                     }
                 });
 
@@ -759,12 +774,23 @@
                 this._state.pendingGLB = null;
 
                 // ========================================
-                // 10. CARGAR PERSONAJE GLB
+                // 10. OCULTAR LOADER GENERAL
                 // ========================================
 
-                UI.showLoading(
-                    'Cargando personaje 3D…'
+                // El controlador utiliza su propio indicador
+                // de descarga, bytes y tiempo transcurrido.
+                UI.hideLoading();
+                UI.hideReticle();
+
+                UI.setHint(
+                    isCached
+                        ? 'Preparando personaje precargado…'
+                        : 'Descargando personaje 3D…'
                 );
+
+                // ========================================
+                // 11. CARGAR PERSONAJE GLB
+                // ========================================
 
                 await cameraCtrl.loadModel(
                     glbUrl,
@@ -772,19 +798,17 @@
                 );
 
                 // ========================================
-                // 11. ACTIVAR JOYSTICK INTEGRADO
+                // 12. ACTIVAR JOYSTICK
                 // ========================================
 
-                // El joystick ya se crea dentro de
-                // CameraThreeController.start().
-                // loadModel() también lo activa.
-                // Esta llamada garantiza que esté visible.
-                cameraCtrl.setJoystickMode('move');
+                // El joystick ya está integrado en
+                // CameraThreeController.
+                // Solo controla la rotación del personaje.
 
-                cameraCtrl.enableJoystick();
+                cameraCtrl.enableJoystick?.();
 
                 // ========================================
-                // 12. MOSTRAR CONTROLES
+                // 13. MOSTRAR CONTROLES
                 // ========================================
 
                 UI.hideLoading();
@@ -792,11 +816,13 @@
                 UI.showCapture();
 
                 UI.setHint(
-                    'Utiliza el joystick para mover, acercar o girar el personaje.'
+                    'Gira el personaje con el joystick. ' +
+                    'Arrástralo para moverlo y pellizca ' +
+                    'para cambiar su profundidad.'
                 );
 
                 // ========================================
-                // 13. CONFIRMAR MODO ACTIVO
+                // 14. CONFIRMAR MODO ACTIVO
                 // ========================================
 
                 console.log(
@@ -807,11 +833,17 @@
                         title: dataTotem?.title,
                         glbUrl,
 
-                        joystickEnabled:
-                        cameraCtrl.joystick.enabled,
+                        isCached,
+                        cacheStatus,
 
-                        joystickMode:
-                        cameraCtrl.joystick.mode,
+                        joystickEnabled:
+                        cameraCtrl.joystick?.enabled,
+
+                        trackingEnabled:
+                        cameraCtrl._trackingEnabled,
+
+                        orientationReceived:
+                        cameraCtrl._hasOrientation,
 
                         modelPosition:
                             cameraCtrl.modelRoot?.position.toArray()
@@ -828,7 +860,7 @@
                 );
 
                 // ========================================
-                // 14. LIMPIAR EN CASO DE ERROR
+                // 15. LIMPIAR EN CASO DE ERROR
                 // ========================================
 
                 try {
@@ -860,6 +892,7 @@
                 );
             }
         }
+
 
 
 

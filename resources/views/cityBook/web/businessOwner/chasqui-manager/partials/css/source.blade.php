@@ -1111,4 +1111,24 @@
         opacity: 1;
         pointer-events: auto;
     }
+
+    #joystick-zone-camera {
+        position: fixed; /* o absolute dentro de tu contenedor AR */
+        bottom: 3px; /* súbelo un poco para no pisar la tarjeta de ruta */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 140px;
+        z-index: 9999;
+    }
+
+    #joystick-zone-camera.joystick--disabled {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #joystick-zone-camera.joystick--enabled {
+        opacity: 1;
+        pointer-events: auto;
+    }
 </style>
