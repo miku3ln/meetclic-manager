@@ -2,8 +2,58 @@
 
 
     class BusinessMapHtmlUtil {
+        static getBusinessNewsBadge(business) {
 
+            const newsTypes = {
+                discount: {
+                    icon: 'bi-percent',
+                    color: '#e11d48',
+                    title: 'Descuento disponible'
+                },
+                promotion: {
+                    icon: 'bi-gift-fill',
+                    color: '#8b24dc',
+                    title: 'Promoción disponible'
+                },
+                event: {
+                    icon: 'bi-stars',
+                    color: '#f59e0b',
+                    title: 'Evento disponible'
+                }
+            };
 
+            const news = newsTypes[business.demoNewsType];
+
+            if (!news) return '';
+
+            return `
+        <span
+            class="business-map-marker__news"
+            title="${news.title}"
+            style="
+                position:absolute;
+                top:-9px;
+                right:-9px;
+                width:28px;
+                height:28px;
+                border-radius:50%;
+                background:${news.color};
+                border:3px solid #fff;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#fff;
+                font-size:13px;
+                box-shadow:0 3px 10px rgba(0,0,0,.3);
+                z-index:10;
+                pointer-events:none;
+                box-sizing:border-box;
+            "
+        >
+            <i class="bi ${news.icon}"></i>
+        </span>
+    `;
+        }
         static renderSchedules(schedules = []) {
             const weekdays = [
                 'Lunes',
@@ -609,7 +659,9 @@ console.log("renderDetails",business);
     `;
         }
 
-        static getIconBusinessHtml(business, count = 1) {
+        static getIconBusinessHtml2(business, count = 1) {
+
+
             const url = safeUrl(business.source);
             const isGrouped = count > 1;
             const photo = url
@@ -653,6 +705,57 @@ console.log("renderDetails",business);
             </div>
         `;
         }
+
+
+        static getIconBusinessHtml(business, count = 1) {
+
+            const url = safeUrl(business.source);
+            const isGrouped = count > 1;
+
+            const photo = url
+                ? `
+        <img
+            class="business-map-marker__image"
+            src="${escapeHtml(url)}"
+            alt=""
+            loading="lazy"
+            draggable="false"
+            onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
+        >
+        <span
+            class="business-map-marker__fallback"
+            hidden
+            aria-hidden="true"
+        >
+            🏪
+        </span>
+      `
+                : `
+        <span
+            class="business-map-marker__fallback"
+            aria-hidden="true"
+        >
+            🏪
+        </span>
+      `;
+
+            return `
+    <div
+        class="business-map-marker ${isGrouped ? 'business-map-marker--grouped' : ''}"
+    >
+        ${photo}
+
+        ${this.getBusinessNewsBadge(business)}
+
+        ${isGrouped ? `
+            <span class="business-map-marker__count">
+                ${count}
+            </span>
+        ` : ''}
+    </div>
+`;
+        }
+
     }
     window.BusinessMapHtmlUtil = BusinessMapHtmlUtil;
     const escapeHtml = (value) =>
@@ -695,12 +798,8 @@ console.log("renderDetails",business);
 
         return L.divIcon({
             html: html,
-
             className: 'business-map-marker-container',
-
             iconSize: [size, size],
-
-            // Centro inferior del marcador
             iconAnchor: [size / 2, size]
         });
     }
@@ -733,16 +832,11 @@ console.log("renderDetails",business);
                     fitPadding: [70, 70],
                     detailAsideId: 'businessDetailAside',
                     groupAsideId: 'businessGroupAside',
-
-
                     // Centro de Otavalo, Imbabura
                     position: [0.2343, -78.2625],
-
                     zoom: 15,
                     focusZoom: 17,
                     maxZoom: 19,
-
-
                     tileUrl:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 
@@ -792,6 +886,47 @@ console.log("renderDetails",business);
                         zoom: this.map.getZoom()
                     });
                 };
+            }
+
+            assignDemoNews(input = []) {
+                const businesses = Array.isArray(input) ? input : [];
+
+                // Seleccionar únicamente empresas con coordenadas válidas
+                const candidates = businesses.filter(business => {
+                    const lat = Number(business.street_lat);
+                    const lng = Number(business.street_lng);
+
+                    return business.id != null &&
+                        business.street_lat != null &&
+                        business.street_lng != null &&
+                        Number.isFinite(lat) &&
+                        Number.isFinite(lng) &&
+                        Math.abs(lat) <= 90 &&
+                        Math.abs(lng) <= 180;
+                });
+
+                // Mezclar aleatoriamente sin modificar el arreglo original
+                const shuffled = [...candidates];
+
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+
+                const selectedIds = new Set(
+                    shuffled.slice(0, 8).map(business => String(business.id))
+                );
+
+                const types = ['discount', 'promotion', 'event'];
+
+                businesses.forEach(business => {
+                    business.demoNewsType = selectedIds.has(String(business.id))
+                        ? types[Math.floor(Math.random() * types.length)]
+                        : null;
+                });
+
+                return businesses;
             }
 
             // ============================================
@@ -985,7 +1120,7 @@ console.log("renderDetails",business);
                             ? input.data
                             : []
                     );
-
+                this.assignDemoNews(list);
                 this.closeAsides();
 
                 this.businesses.clear();

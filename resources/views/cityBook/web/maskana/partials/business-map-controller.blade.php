@@ -1,565 +1,5 @@
-<script>
 
-    class MaskanaMapLocationController {
 
-        constructor(map, options = {}) {
-
-            this.map = map;
-
-            this.options = {
-                zoom: 17,
-                ...options
-            };
-
-            this.button = document.getElementById(
-                'maskana-location-button'
-            );
-
-            this.marker = null;
-            this.accuracyCircle = null;
-
-            this.permission = 'unknown';
-            this.loading = false;
-            this.visible = false;
-
-            this._onPermissionChange = event => {
-                this.setPermission(event.detail.permission);
-            };
-
-            this._onLocationChange = event => {
-                if (this.visible) {
-                    this.updateMarker(event.detail.current);
-                }
-            };
-
-            this._onLocationCleared = () => {
-                this.removeMarker();
-            };
-
-            this._onButtonClick = () => {
-                this.locate();
-            };
-        }
-
-        // ==========================================
-        // INICIALIZAR
-        // ==========================================
-
-        async init() {
-
-            if (!this.map || !this.button) {
-                console.warn('Mapa o botón no disponible.');
-                return;
-            }
-
-            document.addEventListener(
-                'maskana:location:permission',
-                this._onPermissionChange
-            );
-
-            document.addEventListener(
-                'maskana:location:changed',
-                this._onLocationChange
-            );
-
-            document.addEventListener(
-                'maskana:location:cleared',
-                this._onLocationCleared
-            );
-
-            this.button.addEventListener(
-                'click',
-                this._onButtonClick
-            );
-
-            const permission =
-                await maskanaLocation.checkPermission();
-
-            this.setPermission(permission);
-        }
-
-        // ==========================================
-        // ESTADO DEL PERMISO
-        // ==========================================
-
-        setPermission(permission) {
-
-            this.permission = permission;
-
-            if (!this.button) return;
-
-            this.button.classList.remove(
-                'is-denied',
-                'is-pending',
-                'is-granted'
-            );
-
-            const icon = this.button.querySelector('i');
-
-            if (permission === 'denied') {
-
-                this.button.classList.add('is-denied');
-                this.button.disabled = true;
-                this.button.title = 'Ubicación bloqueada';
-
-                if (icon) {
-                    icon.className = 'bi bi-lock-fill';
-                }
-
-                this.removeMarker();
-
-            } else if (permission === 'granted') {
-
-                this.button.classList.add('is-granted');
-                this.button.disabled = false;
-                this.button.title = 'Ver mi ubicación';
-
-                if (icon) {
-                    icon.className = 'bi bi-crosshair';
-                }
-
-            } else if (permission === 'prompt' ||
-                permission === 'unknown') {
-
-                this.button.classList.add('is-pending');
-                this.button.disabled = false;
-                this.button.title = 'Permitir ubicación';
-
-                if (icon) {
-                    icon.className = 'bi bi-geo-alt';
-                }
-
-            } else {
-
-                this.button.classList.add('is-denied');
-                this.button.disabled = true;
-                this.button.title = 'Ubicación no disponible';
-
-                if (icon) {
-                    icon.className = 'bi bi-lock-fill';
-                }
-            }
-        }
-
-        // ==========================================
-        // LOCALIZAR USUARIO
-        // ==========================================
-
-        async locate() {
-
-            if (this.loading ||
-                this.permission === 'denied') {
-                return;
-            }
-
-            this.loading = true;
-
-            this.button.disabled = true;
-            this.button.classList.add('is-loading');
-
-            try {
-
-                // Solicita posición actual.
-                // Si el permiso está pendiente,
-                // el navegador puede pedir autorización.
-                const location =
-                    await maskanaLocation.request();
-
-                this.visible = true;
-
-                this.updateMarker(location);
-
-                this.map.setView(
-                    [
-                        location.latitude,
-                        location.longitude
-                    ],
-                    this.options.zoom,
-                    {
-                        animate: true
-                    }
-                );
-
-            } catch (error) {
-
-                console.warn(
-                    'No se pudo obtener ubicación:',
-                    error
-                );
-
-                await maskanaLocation.checkPermission();
-
-            } finally {
-
-                this.loading = false;
-
-                this.button.classList.remove('is-loading');
-
-                this.setPermission(
-                    maskanaLocation.permission
-                );
-            }
-        }
-
-        // ==========================================
-        // CREAR / ACTUALIZAR MARCADOR
-        // ==========================================
-
-
-        updateMarker(location) {
-
-            if (!location || !this.map) return;
-
-            const latitude = Number(location.latitude);
-            const longitude = Number(location.longitude);
-
-            // ==========================================
-            // VALIDAR COORDENADAS
-            // ==========================================
-
-            if (
-                !Number.isFinite(latitude) ||
-                !Number.isFinite(longitude) ||
-                latitude < -90 ||
-                latitude > 90 ||
-                longitude < -180 ||
-                longitude > 180
-            ) {
-                console.warn(
-                    '[Maskana] Coordenadas GPS inválidas:',
-                    location
-                );
-                return;
-            }
-
-            const latlng = [latitude, longitude];
-
-            // ==========================================
-            // CREAR MARCADOR DE CALABAZA
-            // ==========================================
-
-            if (!this.marker) {
-
-                const icon = L.divIcon({
-                    className: 'maskana-user-location-marker',
-
-                    html: `
-                <div class="maskana-user-pumpkin">
-
-                    <span class="maskana-user-pumpkin__pulse"></span>
-
-                    <span class="maskana-user-pumpkin__emoji">
-                        🎃
-                    </span>
-
-                    <span class="maskana-user-pumpkin__label">
-                        Estás aquí
-                    </span>
-
-                </div>
-            `,
-
-                    iconSize: [64, 64],
-                    iconAnchor: [32, 32],
-                    popupAnchor: [0, -30]
-                });
-
-                this.marker = L.marker(latlng, {
-                    icon: icon,
-                    interactive: true,
-                    keyboard: false,
-                    draggable: false,
-                    zIndexOffset: 1000
-                }).addTo(this.map);
-
-                this.marker.bindPopup(`
-            <div style="text-align:center;">
-                <strong>🎃 ¡Estás aquí!</strong>
-                <div>
-                    Sigue explorando Maskana
-                    y descubre los dulces cercanos.
-                </div>
-            </div>
-        `);
-
-            } else {
-
-                // ======================================
-                // ACTUALIZAR UBICACIÓN DEL MARCADOR
-                // ======================================
-
-                this.marker.setLatLng(latlng);
-            }
-
-            // ==========================================
-            // CÍRCULO DE PRECISIÓN GPS
-            // ==========================================
-
-            const accuracy = Number(location.accuracy);
-
-            if (
-                location.accuracy !== null &&
-                location.accuracy !== undefined &&
-                Number.isFinite(accuracy) &&
-                accuracy >= 0
-            ) {
-
-                if (!this.accuracyCircle) {
-
-                    this.accuracyCircle = L.circle(latlng, {
-                        radius: accuracy,
-
-                        color: '#f97316',
-                        weight: 1,
-                        opacity: 0.65,
-
-                        fillColor: '#f97316',
-                        fillOpacity: 0.08,
-
-                        interactive: false
-                    }).addTo(this.map);
-
-                } else {
-
-                    // Actualizar centro y precisión.
-                    this.accuracyCircle.setLatLng(latlng);
-                    this.accuracyCircle.setRadius(accuracy);
-                }
-
-            } else if (this.accuracyCircle) {
-
-                // Eliminar círculo si no hay precisión válida.
-                this.accuracyCircle.remove();
-                this.accuracyCircle = null;
-            }
-        }
-
-
-        // ==========================================
-        // ELIMINAR MARCADOR
-        // ==========================================
-
-        removeMarker() {
-
-            if (this.marker) {
-                this.marker.remove();
-                this.marker = null;
-            }
-
-            if (this.accuracyCircle) {
-                this.accuracyCircle.remove();
-                this.accuracyCircle = null;
-            }
-
-            this.visible = false;
-        }
-
-        // ==========================================
-        // DESTRUIR CONTROLADOR
-        // ==========================================
-
-        destroy() {
-
-            document.removeEventListener(
-                'maskana:location:permission',
-                this._onPermissionChange
-            );
-
-            document.removeEventListener(
-                'maskana:location:changed',
-                this._onLocationChange
-            );
-
-            document.removeEventListener(
-                'maskana:location:cleared',
-                this._onLocationCleared
-            );
-
-            this.button?.removeEventListener(
-                'click',
-                this._onButtonClick
-            );
-
-            this.removeMarker();
-        }
-    }
-    window.MaskanaMapLocationController = MaskanaMapLocationController;
-
-</script>
-<script>
-
-    class BusinessResponseData {
-
-        constructor(config = {}) {
-
-            this.config = {
-                containerId: 'business-response-data',
-                ...config
-            };
-
-            this.container = document.getElementById(
-                this.config.containerId
-            );
-
-            if (!this.container) {
-                console.warn(
-                    '[BusinessResponseData] Contenedor no encontrado.'
-                );
-            }
-        }
-
-        /**
-         * Mostrar indicación para visualizar los resultados en el mapa.
-         */
-        renderMapHint() {
-
-            if (!this.container) return;
-
-            // Evitar duplicar el mensaje.
-            if (this.container.querySelector('.response-data__hint')) {
-                return;
-            }
-
-            const hint = document.createElement('div');
-
-            hint.className = [
-                'response-data__hint',
-                'd-flex',
-                'align-items-start',
-                'gap-2',
-                'mt-3'
-            ].join(' ');
-
-            hint.innerHTML = `
-        <div class="response-data__hint-icon flex-shrink-0">
-            <i class="bi bi-info-circle-fill"
-               aria-hidden="true"></i>
-        </div>
-
-        <div class="response-data__hint-info">
-            <div class="response-data__hint-title">`
-                +MaskanaTranslations['frontend.maskana.filter.view_map_question']+
-                `  </div>
-
-            <p class="response-data__hint-message mb-0">`
-            +MaskanaTranslations['frontend.maskana.filter.view_map_description']+
-                ` </p>
-        </div>
-    `;
-
-            this.container.appendChild(hint);
-        }
-
-        /**
-         * Mostrar resultado de empresas.
-         *
-         * @param {Array} businesses
-         */
-        render(businesses = []) {
-
-            if (!this.container) return;
-
-            const data = Array.isArray(businesses)
-                ? businesses
-                : [];
-
-            const total = data.length;
-
-            if (total === 0) {
-                this.renderEmpty();
-                return;
-            }
-
-            this.renderSuccess(total);
-        }
-
-        /**
-         * Mostrar cantidad de empresas.
-         */
-        renderSuccess(total) {
-
-            const label = total === 1
-                ? MaskanaTranslations['frontend.maskana.filter.business_found']
-                : MaskanaTranslations['frontend.maskana.filter.businesses_found'];
-
-            this.container.innerHTML = `
-            <div class="response-data__content
-                        response-data__content--success
-                        d-flex align-items-center gap-3">
-
-                <div class="response-data__icon
-                            response-data__icon--success
-                            flex-shrink-0">
-                    <i class="bi bi-geo-alt-fill"
-                       aria-hidden="true"></i>
-                </div>
-
-                <div class="response-data__info flex-grow-1">
-
-                    <div class="response-data__count">
-                        ${total.toLocaleString('es-EC')}
-                    </div>
-
-                    <div class="response-data__message">
-                        ${label}
-                    </div>
-
-                </div>
-
-                <i class="bi bi-check-circle-fill
-                          response-data__status-icon"
-                   aria-hidden="true"></i>
-
-            </div>
-        `;
-        }
-
-        /**
-         * Mostrar mensaje sin resultados.
-         */
-        renderEmpty() {
-
-            this.container.innerHTML = `
-            <div class="response-data__content
-                        response-data__content--empty
-                        d-flex align-items-center gap-3">
-
-                <div class="response-data__icon
-                            response-data__icon--empty
-                            flex-shrink-0">
-                    <i class="bi bi-search"
-                       aria-hidden="true"></i>
-                </div>
-
-                <div class="response-data__info flex-grow-1">
-
-                    <div class="response-data__title">`
-     +MaskanaTranslations['frontend.maskana.business.no_information']+
-            ` </div>
-
-                    <div class="response-data__message">`
-  +MaskanaTranslations['frontend.maskana.business.try_changing_filters']+
-            `</div>
-
-                </div>
-
-            </div>
-        `;
-        }
-
-        /**
-         * Limpiar el contenedor.
-         */
-        clear() {
-            if (!this.container) return;
-
-            this.container.replaceChildren();
-        }
-    }
-
-    window.BusinessResponseData = BusinessResponseData;
-
-</script>
 <script>
 
     class BusinessMarkerEditor {
@@ -574,7 +14,7 @@
         start(marker, business) {
 
             if (!marker || !business) {
-                console.error(  MaskanaTranslations['frontend.maskana.map.marker_unavailable']);
+                console.error(MaskanaTranslations['frontend.maskana.map.marker_unavailable']);
                 return false;
             }
 
@@ -589,20 +29,19 @@
 
             this.marker = marker;
             this.business = business;
-
             const position = marker.getLatLng();
 
             this.originalPosition = {
                 latitude: position.lat,
                 longitude: position.lng
             };
+            if ($isLoggedIn) {
+                this.editing = true;
+                marker.dragging.enable();
+                marker.off('dragend', this.handleDragEnd, this);
+                marker.on('dragend', this.handleDragEnd, this);
+            }
 
-            this.editing = true;
-
-            marker.dragging.enable();
-
-            marker.off('dragend', this.handleDragEnd, this);
-            marker.on('dragend', this.handleDragEnd, this);
 
             console.log('Edición iniciada:', business.title);
 
@@ -722,7 +161,6 @@
         onlyWithRedeemableRewards: null,
         onlyWithGamesActive: null,
         onlyAlliedCompanies: null,
-
         searchQuery: ''
     };
 
@@ -753,7 +191,6 @@
 
         mapController = new BusinessMapController({
             containerId: 'business-map',
-
             detailAsideId: 'businessDetailAside',
             groupAsideId: 'businessGroupAside',
 
@@ -775,10 +212,8 @@
             openDetailsOnClick: true,
             fallbackImage: ''
         });
-
         registerBusinessMapEvents();
         registerBusinessFilterEvents();
-
         loadBusinesses();
     }
 
@@ -788,7 +223,7 @@
      */
     function registerBusinessMapEvents() {
         let mapLocationController = null;
-        mapController.on('map:init',async  ({map, count}) => {
+        mapController.on('map:init', async ({map, count}) => {
             console.log('Mapa inicializado:', count);
 
             mapLocationController?.destroy();
@@ -800,7 +235,6 @@
             // CLICK SOBRE EL MAPA
             map.on('click', (event) => {
                 const {lat, lng} = event.latlng;
-
                 console.log('Click en el mapa:', {
                     latitude: lat,
                     longitude: lng,
@@ -808,8 +242,6 @@
                 });
             });
         });
-
-
         mapController.on('marker:click', ({
                                               marker,
                                               businesses,
@@ -838,6 +270,8 @@
                 console.warn('Selecciona una empresa individual.');
                 return;
             }
+if($isLoggedIn){
+
 
             // ACTIVAR DRAG
             marker.dragging.enable();
@@ -859,7 +293,6 @@
 
             // INICIO DEL DRAG
             const onDragStart = function (event) {
-
 
 
             };
@@ -907,7 +340,7 @@
             marker.on('dragend', onDragEnd);
 
             console.log('Eventos de arrastre registrados.');
-
+}
         });
 
 
@@ -1120,9 +553,7 @@
                 if (requestId !== businessRequestSequence) {
                     return;
                 }
-
                 businessRequest = null;
-
                 setBusinessLoading(false);
             }
         });
@@ -1500,7 +931,7 @@
     $(document).ready(function () {
         document.addEventListener(
             'business:marker:dragend',
-            async function(event) {
+            async function (event) {
 
                 const data = event.detail;
                 console.log('data:', data);
@@ -1510,14 +941,14 @@
                 console.log('Empresa:', data.business_id);
                 console.log('Latitud:', data.latitude);
                 console.log('Longitud:', data.longitude);
-if($isLoggedIn){
-    await  updateLocationBusinessMaskana({
-        business_id:data.business_id,
-        latitude:data.latitude,
-        longitude:data.longitude,
-        bmz_manager_id:   data.business.bmz_manager_id
-    });
-}
+                if ($isLoggedIn) {
+                    await updateLocationBusinessMaskana({
+                        business_id: data.business_id,
+                        latitude: data.latitude,
+                        longitude: data.longitude,
+                        bmz_manager_id: data.business.bmz_manager_id
+                    });
+                }
 
             }
         );
@@ -2068,10 +1499,7 @@ if($isLoggedIn){
     }
 
 
-
-
-
-   async function updateLocationBusinessMaskana(params) {
+    async function updateLocationBusinessMaskana(params) {
 
         const url = $('#update-location-business-maskana-action').val();
 
@@ -2098,7 +1526,7 @@ if($isLoggedIn){
         // ==========================================
         // PETICIÓN AJAX
         // ==========================================
-       var tokenInformation = $('meta[name="csrf-token"]').attr('content');
+        var tokenInformation = $('meta[name="csrf-token"]').attr('content');
 
         return $.ajax({
 

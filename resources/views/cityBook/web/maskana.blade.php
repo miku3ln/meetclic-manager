@@ -79,6 +79,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
     @include('cityBook.web.maskana.partials.map-manager')
+    @include('cityBook.web.maskana.partials.business-response-data')
+    @include('cityBook.web.maskana.partials.maskana-map-location-controller')
     @include('cityBook.web.maskana.partials.business-map-controller')
 
 
