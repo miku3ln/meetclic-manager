@@ -310,6 +310,41 @@
             }
         }
     </style>
+    <style>
+        #manager-logo-content {
+            top: 4px ;
+            height: 71px !important;
+        }
+        #manager-logo-content img {
+            height: 100%!important;
+            width: auto!important;
+        }
+
+        @media (max-width: 359.98px) {
+            #manager-logo-content {
+                top: 11px !important;
+            }
+
+        }
+
+        /* =========================================================
+           MOBILE: 360px - 767px
+           ========================================================= */
+
+        @media (min-width: 360px) and (max-width: 767.98px) {
+            #manager-logo-content {
+                top: 11px !important;
+            }
+        }
+
+        /* =========================================================
+           TABLET: 768px - 1199px
+           ========================================================= */
+
+        @media (min-width: 768px) and (max-width: 1199.98px) {
+
+        }
+    </style>
 </head>
 <body>
 <!--loader-->
@@ -354,7 +389,7 @@ if (env('allowAllInOne')) {
     <!-- header-->
     <header class="main-header dark-header fs-header sticky">
         <div class="header-inner">
-            <div class="logo-holder ">
+            <div class="logo-holder " id="manager-logo-content">
                 <a href="
                  {{$urlManagerPage}} ">
                     @if(false)
