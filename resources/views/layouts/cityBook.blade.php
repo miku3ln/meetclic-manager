@@ -4,7 +4,7 @@
 <head id="template__web-head">
     <?php
     $nameRoute = Route::currentRouteName();
-
+    $type = request()->query('type');
     $resourcePathServer = env('APP_IS_SERVER') ? "public/" : '';
     $themePath = $resourcePathServer . 'templates/cityBookHtml/';
     ?>
@@ -461,7 +461,12 @@ if (env('allowAllInOne')) {
                     $activeDictionary = 'not-active';
                     $dictionaryKichwaToCastilian = '';
                     $chaskishimi = '';
-                    $halloween = '';
+                    $halloweenOne = '';
+                    $halloweenTwo = '';
+                    $halloweenThree = '';
+                    $halloweenFour= '';
+
+                    $activeHalloween= 'not-active';
 
                     $dictionaryCastilianToKichwa = '';
 
@@ -508,12 +513,27 @@ if (env('allowAllInOne')) {
 
                         $activeOurAllies = 'act-link';
 
-                    } elseif ($nameRoute == 'maskana') {
-                        $activeDictionary = 'act-link';
+                    } elseif ($nameRoute == 'maskana' && $type==1) {
+                        $activeHalloween = 'act-link';
 
-                        $halloween = 'act-link';
+                        $halloweenOne = 'act-link';
 
-                    } else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
+                    }  elseif ($nameRoute == 'maskana' && $type==2) {
+                        $activeHalloween = 'act-link';
+
+                        $halloweenTwo = 'act-link';
+
+                    } elseif ($nameRoute == 'maskana' && $type==3) {
+                        $activeHalloween = 'act-link';
+
+                        $halloweenThree = 'act-link';
+
+                    } elseif ($nameRoute == 'maskana' && $type==4) {
+                        $activeHalloween = 'act-link';
+
+                        $halloweenFour= 'act-link';
+
+                    }else if ($nameRoute == 'dictionaryType') {//CMS-TEMPLATE-MENU---KICHWA-CASTILIAN
                         $activeDictionary = 'act-link';
                         if ($paramsRequest['type'] == 1) {
                             $dictionaryKichwaToCastilian = 'act-link';

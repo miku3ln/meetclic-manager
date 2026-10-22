@@ -97,6 +97,7 @@ Route::prefix('pointsales')->group(function () {
     // 🔒 TODO lo demás protegido
     Route::middleware(['pointsales.auth'])->group(function () {
         Route::get('/products-sales', 'PointSales\ProductController@getProductsSales');
+        Route::post('/business/customer/admin', 'Crm\CustomerController@getAdminBusiness');
 
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
 

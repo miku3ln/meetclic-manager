@@ -898,6 +898,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
 
         $allow = $params["allow"];
         $business = $params["business"];
+        $shopUrl=   route('shop-business','es') . "/" . $business;
         if ($allow) {
             $gamification_id = $params["gamification_id"];
             $business_id = $params["business_id"];
@@ -961,7 +962,7 @@ $this->table.is_url,$this->table.type_manager,$this->table.unique_code
             $VIEW_PROFILE_WEB_MC = ConfigurationGamificationUtil::getProcessFieldsByUniqueCode("VIEW_PROFILE_WEB_MC");
             $paramsProcess = array_merge($VIEW_PROFILE_WEB_MC, $currentInformation);
             $VIEW_PROFILE_WEB_MC_DATA = $this->getTypeProcessDefaultByBusiness($paramsProcess);
-            $shopUrl=   route('shop-business','es') . "/" . $business;
+
 
             return [
                 "SHARE_PROFILE_WHATSAPP_MC" => [

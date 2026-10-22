@@ -59,6 +59,7 @@ class GamificationByProcessController extends MyBaseController
         $dataPost = Request::all();
         $dataPost["filters"]["type"] = "SHOP";
         $result = $this->service->getProductsShopPage($dataPost);
+
         $rows = collect($result['rows']);
         /*
         |--------------------------------------------------------------------------

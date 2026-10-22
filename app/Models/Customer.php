@@ -749,7 +749,8 @@ class Customer extends Model
                 ->where('information_phone.state', '=', 'ACTIVE')//house
             ;
         });
-        if ($params['searchPhrase'] != null) {
+
+        if (isset($params['searchPhrase']) && $params['searchPhrase']!= null) {
             $searchValue = $params['searchPhrase'];
             $likeSet = "%" . $searchValue . "%";
 

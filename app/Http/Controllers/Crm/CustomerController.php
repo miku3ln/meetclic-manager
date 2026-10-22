@@ -74,6 +74,15 @@ class CustomerController extends MyBaseController
             $result
         );
     }
+    public function getAdminBusiness()
+    {
+        $dataPost =Request::all();
+        $model = new Customer();
+        $result = $model->getAdmin($dataPost);
+        return Response::json(
+            $result
+        );
+    }
     public function getDataAdmin()
     {
         $dataPost = Request::all();

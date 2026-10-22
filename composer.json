@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-http": "*",
         "endroid/qr-code": "^4.8",
         "geoip2/geoip2": "^3.2",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -16,13 +17,13 @@
         "laravel/tinker": "^3.0",
         "laravel/ui": "^4.3",
         "laravelista/ekko": "^4.1",
+        "maatwebsite/excel": "*",
+        "predis/predis": "^3.7",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
         "smalot/pdfparser": "^2.11",
         "spatie/laravel-ignition": "^2.0",
-        "tecnickcom/tcpdf": "^6.7",
-        "maatwebsite/excel": "*",
-      "ext-http": "*"
+        "tecnickcom/tcpdf": "^6.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.20",

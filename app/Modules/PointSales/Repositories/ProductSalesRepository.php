@@ -701,6 +701,7 @@ class ProductSalesRepository extends BaseRepository
         | SELECT
         |--------------------------------------------------------------------------
         */
+
         $inventoryInitial = " ";
         $stockManager = " ";
         $productRecipeYield = "";
@@ -1332,6 +1333,7 @@ JSON_OBJECT(
         |--------------------------------------------------------------------------
         */
         $query->orderBy('p.id', 'desc');
+
         $result = $this->paginate($query, $params, 'p.id');
 
         return $result;

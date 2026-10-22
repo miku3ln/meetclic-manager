@@ -59,7 +59,7 @@
                         <a class="{{ $activeHome }}  menu__a"
                            href="{{ route('urlBase')}}">{{ __('frontend.menu.home') }}</a>
                     </li>
-                    <li class="li-{{ $activeOurAllies }}">
+                    <li class="li-{{ $activeOurAllies }} not-view">
                         <a class="{{ $activeOurAllies }}  menu__a"
                            href="{{ route('ourAllies', app()->getLocale()) }}/">{{ __('frontend.menu.allies') }}</a>
                     </li>
@@ -93,16 +93,37 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="li-has-children-{{ $activeHalloween }}">
+
+                        <a class="{{ $activeHalloween }}  menu__a" href="javascript:void(0)">Halloween
+                            <i
+                                class="fa fa-angle-down"></i></a>
+                        <ul>
+                            <li class="li-children-{{ $halloweenOne }}"><a
+                                    class="a-{{ $halloweenOne }}  menu__a-children"
+                                    href="{{route('maskana', ['language' => app()->getLocale(), 'type' => 1])  }}">Ruta Uno</a>
+                            </li>
+                            <li class="li-children-{{ $halloweenTwo}}"><a
+                                    class="a-{{ $halloweenTwo }}  menu__a-children"
+                                    href="{{route('maskana', ['language' => app()->getLocale(), 'type' => 2])  }}">Ruta Dos</a>
+                            </li>
+                            <li class="li-children-{{ $halloweenThree}}"><a
+                                    class="a-{{ $halloweenThree }}  menu__a-children"
+                                    href="{{route('maskana', ['language' => app()->getLocale(), 'type' => 3])  }}">Ruta Tres</a>
+                            </li>
+                            <li class="li-children-{{ $halloweenFour}}"><a
+                                    class="a-{{ $halloweenFour }}  menu__a-children"
+                                    href="{{route('maskana',['language' => app()->getLocale(), 'type' => 4])  }}">Ruta Cuatro</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="li-has-children-{{ $activeDictionary }}">
 
                         <a class="{{ $activeDictionary }}  menu__a" href="javascript:void(0)">{{ __('frontend.menu.project') }}
                             <i
                                 class="fa fa-angle-down"></i></a>
                         <ul>
-                            <li class="li-children-{{ $halloween }}"><a
-                                    class="a-{{ $halloween }}  menu__a-children"
-                                    href="{{route('maskana', app()->getLocale())  }}">{{ __('frontend.menu.project.two') }}</a>
-                            </li>
+
                             <li class="li-children-{{ $chaskishimi }}"><a
                                     class="a-{{ $chaskishimi }}  menu__a-children"
                                     href="{{route('ricksichishun', app()->getLocale())  }}">{{ __('frontend.menu.project.one') }}</a>

@@ -78,7 +78,7 @@ class ProductRepository
 
                 'p.product_type as component_type',
 
-                'pr.quantity as recipe_quantity',
+                'pr.quantity_input as recipe_quantity',
 
                 'um_base.symbol as base_unit',
 
