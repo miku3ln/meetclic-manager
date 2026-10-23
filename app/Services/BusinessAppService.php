@@ -55,25 +55,9 @@ class BusinessAppService
         $cache = Cache::store('file');
 
         $cacheKey = "maskana:businesses:type:{$type}";
-
-        // ==========================================
-        // 2. PREGUNTAR PRIMERO A LA CACHÉ
-        // ==========================================
-
         if ($cache->has($cacheKey)) {
-
-            // SÍ EXISTE:
-            // Recuperar empresas almacenadas.
-            // No consultar MySQL.
-
             $businesses = $cache->get($cacheKey);
-
         } else {
-
-            // NO EXISTE:
-            // Consultar MySQL únicamente por type.
-            // No aplicar subcategoryIds ni searchQuery.
-
             $businesses = $this->repository->searchNearbyBusinesses(
                 $latitude,
                 $longitude,
@@ -86,42 +70,67 @@ class BusinessAppService
                 $type
             );
 
-            // ==========================================
-            // 3. GUARDAR DATOS COMPLETOS EN CACHÉ
-            // ==========================================
+            $businessesPromotions = $this->repository->searchNearbyBusinessPromotion(
+                $latitude,
+                $longitude,
+                $radiusKm,
+                null,
+                $onlyWithRedeemableRewards,
+                $onlyWithGamesActive,
+                $onlyAlliedCompanies,
+                ''
+            );
 
-            // Mantener la caché sin vencimiento
-            // automático, igual que antes con Redis.
+            $businessesMap = collect($businesses)
+                ->keyBy('id');
+            foreach ($businessesPromotions as $promotionBusiness) {
+                $businessId = $promotionBusiness->id;
+                if ($businessesMap->has($businessId)) {
+                    $business = $businessesMap->get($businessId);
 
-            $cache->forever($cacheKey, $businesses);
+                    $business->promotions = $promotionBusiness->promotions ?? [];
+                    $businessesMap->put($businessId, $business);
+
+                } else {
+                    $promotionBusiness->promotions =
+                        $promotionBusiness->promotions ?? [];
+
+                    $businessesMap->put(
+                        $businessId,
+                        $promotionBusiness
+                    );
+                }
+            }
+
+            /*
+             * CASO 3:
+             * Las empresas que no tengan promociones
+             * deben tener promotions: []
+             */
+            $businesses = $businessesMap
+                ->map(function ($business) {
+
+                    $business->promotions = $business->promotions ?? [];
+
+                    return $business;
+                })
+                ->values()
+                ->all();
         }
-
-        // ==========================================
-        // 4. FILTRAR LOS DATOS OBTENIDOS
-        // ==========================================
-
         $results = collect($businesses);
-
-        // FILTRAR POR SUBCATEGORÍAS
         if (!empty($subcategoryIds)) {
-
             $ids = is_array($subcategoryIds)
                 ? $subcategoryIds
                 : explode(',', (string) $subcategoryIds);
-
             $ids = collect($ids)
                 ->map(fn ($id) => trim((string) $id))
                 ->filter(fn ($id) => $id !== '')
                 ->values()
                 ->all();
-
             if (!empty($ids)) {
-
                 $results = $results->filter(
                     function ($business) use ($ids) {
-
                         $business = (array) $business;
-
                         $subcategoryId =
                             $business['business_subcategories_id'] ?? null;
 
@@ -134,8 +143,6 @@ class BusinessAppService
                 );
             }
         }
-
-        // FILTRAR POR TEXTO
         $search = mb_strtolower(
             trim((string) $searchQuery)
         );

@@ -317,9 +317,107 @@
     `;
         }
 
+        static renderPromotionCard(promotion, index = 0) {
+            const name = promotion.name || 'Promoción';
+            const description = promotion.description || '';
+            const image = safeUrl(promotion.source);
+
+            const status = String(promotion.status || '').toUpperCase();
+            const isActive = status === 'ACTIVE';
+
+            const statusText = isActive ? 'Vigente' : 'No vigente';
+
+            const formatDate = (value) => {
+                if (!value) return '';
+
+                const date = new Date(
+                    String(value).replace(' ', 'T')
+                );
+
+                if (Number.isNaN(date.getTime())) {
+                    return '';
+                }
+
+                return date.toLocaleDateString('es-EC', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            };
+
+            const startDate = formatDate(promotion.start_time);
+            const endDate = formatDate(promotion.en_time);
+
+            const dateText = startDate && endDate
+                ? `${startDate} - ${endDate}`
+                : startDate || endDate;
+
+            return `
+        <article class="business-detail__promotion">
+
+            <button
+                type="button"
+                class="business-detail__promotion-action"
+                data-promotion-open
+                data-promotion-image="${escapeHtml(image || '')}"
+                data-promotion-name="${escapeHtml(name)}"
+                data-promotion-description="${escapeHtml(description)}"
+                aria-label="Ver promoción ${escapeHtml(name)}"
+            >
+                <span class="business-detail__promotion-image-wrap">
+                    ${image ? `
+                        <img
+                            class="business-detail__promotion-image"
+                            src="${escapeHtml(image)}"
+                            alt="${escapeHtml(name)}"
+                            loading="lazy"
+                        >
+                    ` : `
+                        <span class="business-detail__promotion-placeholder">
+                            <i class="bi bi-image"></i>
+                        </span>
+                    `}
+                </span>
+
+                <span class="business-detail__promotion-content">
+                    <strong class="business-detail__promotion-name">
+                        ${escapeHtml(name)}
+                    </strong>
+
+                    ${description ? `
+                        <span class="business-detail__promotion-description">
+                            ${escapeHtml(description)}
+                        </span>
+                    ` : ''}
+
+                    <span class="business-detail__promotion-status
+                        ${isActive
+                ? 'business-detail__promotion-status--active'
+                : 'business-detail__promotion-status--inactive'
+            }"
+                    >
+                        <i class="bi bi-circle-fill"></i>
+                        ${statusText}
+                    </span>
+
+                    ${dateText ? `
+                        <span class="business-detail__promotion-date">
+                            <i class="bi bi-calendar3"></i>
+                            ${escapeHtml(dateText)}
+                        </span>
+                    ` : ''}
+                </span>
+
+                <span class="business-detail__promotion-arrow">
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            </button>
+
+        </article>
+    `;
+        }
 
         static renderDetails(business, options = {}) {
-console.log("renderDetails",business);
             if (!business) {
                 return `
             <div class="business-detail__empty">
@@ -328,69 +426,39 @@ console.log("renderDetails",business);
         `;
             }
 
-            const image =
-                safeUrl(business.source) ||
-                safeUrl(options.fallbackImage);
+            const image = safeUrl(business.source)
+                || safeUrl(options.fallbackImage);
 
-            const name =
-                business.business_name ||
-                business.title ||
-                'Empresa';
+            const name = business.business_name
+                || business.title
+                || 'Empresa';
 
-            const category =
-                business.subcategory_name ||
-                'Empresa';
+            const category = business.subcategory_name || 'Empresa';
+            const description = business.description || 'Sin descripción disponible.';
 
-            const address = [
-                business.street_1,
-                business.street_2
-            ]
-                .filter(value =>
-                    value &&
-                    value !== 'null'
-                )
+            const rating = business.getRatingSummaryForClientData;
+            const stars = Number(rating?.average_stars);
+            const totalRatings = Number(rating?.total_ratings || 0);
+
+            const ratingText = Number.isFinite(stars) && totalRatings > 0
+                ? `${stars.toFixed(2)} / 5 (${totalRatings} calificaciones)`
+                : 'Sin calificaciones';
+
+            const phone = String(business.phone_value || '')
+                .replace(/[^+\d]/g, '');
+
+            const email = String(business.email || '').trim();
+            const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            const website = safeUrl(business.page_url);
+
+            const whatsappNumber = phone.replace(/\D/g, '');
+
+            const address = [business.street_1, business.street_2]
+                .filter(value => value && value !== 'null')
                 .join(' y ');
 
-            const description =
-                business.description ||
-                'Sin descripción disponible.';
-
-            const rating =
-                business.getRatingSummaryForClientData;
-
-            const stars = Number(
-                rating?.average_stars
-            );
-
-            const totalRatings = Number(
-                rating?.total_ratings || 0
-            );
-
-            const ratingText =
-                Number.isFinite(stars) &&
-                totalRatings > 0
-                    ? `${stars.toFixed(2)} / 5 (${totalRatings} calificaciones)`
-                    : 'Sin calificaciones';
-
-            const website = safeUrl(
-                business.page_url
-            );
-
-            const phone = String(
-                business.phone_value || ''
-            ).replace(/[^+\d]/g, '');
-
-            const email = String(
-                business.email || ''
-            ).trim();
-
-            const lat = Number(
-                business.street_lat
-            );
-
-            const lng = Number(
-                business.street_lng
-            );
+            const lat = Number(business.street_lat);
+            const lng = Number(business.street_lng);
 
             const hasCoordinates =
                 business.street_lat != null &&
@@ -402,57 +470,84 @@ console.log("renderDetails",business);
                 Math.abs(lat) <= 90 &&
                 Math.abs(lng) <= 180;
 
-            const mapsLink = hasCoordinates
-                ? `https://www.openstreetmap.org/?mlat=${encodeURIComponent(lat)}&mlon=${encodeURIComponent(lng)}#map=17/${encodeURIComponent(lat)}/${encodeURIComponent(lng)}`
-                : '';
+            const promotions = Array.isArray(business.promotions)
+                ? business.promotions.filter(item => item && typeof item === 'object')
+                : [];
 
-            const socials = Object.entries(
-                business.socialNetworksData || {}
-            ).filter(([, url]) => safeUrl(url));
+            // Preparado para cuando el backend incorpore publicidad.
+            const advertisements = Array.isArray(business.advertisements)
+                ? business.advertisements.filter(item => item && typeof item === 'object')
+                : [];
 
-            const yapitas =
-                business.summary?.yapitas?.currentBalance ?? 0;
+            const yapitas = business.summary?.yapitas?.currentBalance ?? 0;
+            const visits = business.summary?.visits?.total ?? 0;
+            const trophies = business.summary?.trophies?.total ?? 0;
 
-            const visits =
-                business.summary?.visits?.total ?? 0;
+            const socials = Object.entries(business.socialNetworksData || {})
+                .filter(([, url]) => safeUrl(url));
 
-            const trophies =
-                business.summary?.trophies?.total ?? 0;
+            const contactItem = (url, icon, label, modifier, external = false) => {
+                if (!url) return '';
+
+                return `
+            <a
+                class="business-detail__contact-item business-detail__contact-item--${modifier}"
+                href="${escapeHtml(url)}"
+                ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}
+                aria-label="${escapeHtml(label)}"
+            >
+                <span class="business-detail__contact-icon">
+                    <i class="bi ${icon}" aria-hidden="true"></i>
+                </span>
+                <span class="business-detail__contact-label">
+                    ${escapeHtml(label)}
+                </span>
+            </a>
+        `;
+            };
+
+            const tabButton = (key, label, icon, active = false) => `
+        <button
+            type="button"
+            class="business-detail__tab ${active ? 'business-detail__tab--active' : ''}"
+            data-business-tab="${key}"
+            role="tab"
+            aria-selected="${active}"
+        >
+            <i class="bi ${icon}" aria-hidden="true"></i>
+            <span>${label}</span>
+        </button>
+    `;
 
             return `
-        <article class="business-detail">
-
+        <article
+            class="business-detail"
+            data-business-id="${escapeHtml(business.id ?? '')}"
+        >
+            <!-- HERO -->
             <div class="business-detail__hero">
-
-                ${image
-                ? `
-                        <img
-                            class="business-detail__hero-image"
-                            src="${escapeHtml(image)}"
-                            alt="${escapeHtml(name)}"
-                            onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
-                        >
-
-                        <div
-                            class="business-detail__hero-fallback"
-                            hidden
-                        >
-                            🏪
-                        </div>
-                    `
-                : `
-                        <div class="business-detail__hero-fallback">
-                            🏪
-                        </div>
-                    `
-            }
-
+                ${image ? `
+                    <img
+                        class="business-detail__hero-image"
+                        src="${escapeHtml(image)}"
+                        alt="${escapeHtml(name)}"
+                        loading="lazy"
+                        onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
+                    >
+                    <div class="business-detail__hero-fallback" hidden>
+                        <i class="bi bi-shop"></i>
+                    </div>
+                ` : `
+                    <div class="business-detail__hero-fallback">
+                        <i class="bi bi-shop"></i>
+                    </div>
+                `}
             </div>
 
             <div class="business-detail__body">
 
+                <!-- IDENTIDAD -->
                 <header class="business-detail__header">
-
                     <span class="business-detail__category">
                         ${escapeHtml(category)}
                     </span>
@@ -462,252 +557,519 @@ console.log("renderDetails",business);
                     </h2>
 
                     <p class="business-detail__rating">
-                        ★ ${escapeHtml(ratingText)}
+                        <i class="bi bi-star-fill"></i>
+                        ${escapeHtml(ratingText)}
                     </p>
-
                 </header>
 
-                <section class="business-detail__section">
-
-                    <h3 class="business-detail__section-title">
-                        Descripción
-                    </h3>
-
-                    <p class="business-detail__description">
-                        ${escapeHtml(description)}
-                    </p>
-
-                </section>
-
-                <section class="business-detail__section">
-
-                    <h3 class="business-detail__section-title">
-                        Dirección
-                    </h3>
-
-                    <p class="business-detail__address">
-                        ${escapeHtml(
-                address || 'Dirección no registrada'
+                <!-- CONTACTOS -->
+                <nav
+                    class="business-detail__contacts"
+                    aria-label="Contactar a la empresa"
+                >
+                    ${contactItem(
+                whatsappNumber ? `https://wa.me/${whatsappNumber}` : '',
+                'bi-whatsapp',
+                'WhatsApp',
+                'whatsapp',
+                true
             )}
-                    </p>
 
-                    <div class="business-detail__actions">
+                    ${contactItem(
+                phone ? `tel:${phone}` : '',
+                'bi-telephone-fill',
+                'Llamar',
+                'phone'
+            )}
 
-                        <button
-                            type="button"
-                            class="business-detail__button business-detail__button--primary"
-                            data-business-action="center"
-                        >
-                            Ver en el mapa
-                        </button>
+                    ${contactItem(
+                validEmail ? `mailto:${email}` : '',
+                'bi-envelope',
+                'Email',
+                'email'
+            )}
 
-                        ${mapsLink
-                ? `
+                    ${contactItem(
+                website || '',
+                'bi-globe',
+                'Sitio web',
+                'website',
+                true
+            )}
+                </nav>
 
-                            `
-                : ''
-            }
+                <!-- DIRECCIÓN -->
+                <section class="business-detail__location">
+                    <div class="business-detail__location-info">
+                        <i class="bi bi-geo-alt-fill business-detail__location-icon"></i>
 
+                        <div class="business-detail__location-text">
+                            <h3>Dirección</h3>
+                            <p>
+                                ${escapeHtml(address || 'Dirección no registrada')}
+                            </p>
+                        </div>
                     </div>
 
+                    <button
+                        type="button"
+                        class="business-detail__map-button"
+                        data-business-action="center"
+                        ${!hasCoordinates ? 'disabled' : ''}
+                    >
+                        <i class="bi bi-map"></i>
+                        <span>Ver en el mapa</span>
+                    </button>
                 </section>
 
-                <section class="business-detail__section">
+                <!-- PESTAÑAS -->
+                <nav
+                    class="business-detail__tabs"
+                    role="tablist"
+                    aria-label="Secciones de la empresa"
+                >
+                    ${tabButton(
+                'information',
+                'Información',
+                'bi-file-text',
+                true
+            )}
 
-                    <h3 class="business-detail__section-title">
-                        Contacto
-                    </h3>
-
-                    <div class="business-detail__contact">
-
-                        ${phone
-                ? `
-                                <a
-                                    class="business-detail__contact-link"
-                                    href="tel:${escapeHtml(phone)}"
-                                >
-                                    ☎ ${escapeHtml(business.phone_value)}
-                                </a>
-                            `
+                    ${promotions.length > 0
+                ? tabButton(
+                    'promotions',
+                    'Promociones',
+                    'bi-tag'
+                )
                 : ''
             }
 
-                        ${email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-                ? `
-                                <a
-                                    class="business-detail__contact-link"
-                                    href="mailto:${escapeHtml(email)}"
-                                >
-                                    ✉ ${escapeHtml(email)}
-                                </a>
-                            `
+                    ${advertisements.length > 0
+                ? tabButton(
+                    'advertisements',
+                    'Publicidad',
+                    'bi-megaphone'
+                )
                 : ''
             }
 
-                        ${website
-                ? `
-                                <a
-                                    class="business-detail__contact-link"
-                                    href="${escapeHtml(website)}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    🌐 Sitio web
-                                </a>
-                            `
-                : ''
-            }
+                    ${tabButton(
+                'schedules',
+                'Horarios',
+                'bi-clock'
+            )}
+                </nav>
 
-                        ${!phone && !email && !website
-                ? `
-                                <p class="business-detail__empty">
-                                    Contacto no registrado.
-                                </p>
-                            `
-                : ''
-            }
+                <!-- PANEL INFORMACIÓN -->
+                <div
+                    class="business-detail__panel business-detail__panel--active"
+                    data-business-panel="information"
+                    role="tabpanel"
+                >
+                    <section class="business-detail__card">
+                        <div class="business-detail__card-icon">
+                            <i class="bi bi-file-text"></i>
+                        </div>
 
-                    </div>
+                        <div class="business-detail__card-content">
+                            <h3>Descripción</h3>
+                            <p>${escapeHtml(description)}</p>
+                        </div>
+                    </section>
 
-                </section>
+                    ${socials.length ? `
+                        <section class="business-detail__card">
+                            <div class="business-detail__card-icon">
+                                <i class="bi bi-share"></i>
+                            </div>
+                            <div class="business-detail__card-content">
+                                <h3>Redes sociales</h3>
 
-                ${socials.length
-                ? `
-                        <section class="business-detail__section">
+                                <div class="business-detail__socials">
+                                    ${socials.map(([socialName, url]) => `
+                                        <a
+                                            class="business-detail__social-link"
+                                            href="${escapeHtml(safeUrl(url))}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            ${escapeHtml(socialName)}
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </section>
+                    ` : ''}
 
-                            <h3 class="business-detail__section-title">
-                                Redes sociales
-                            </h3>
+                    <!-- COMUNIDAD -->
+                    <section class="business-detail__community-card">
+                        <h3 class="business-detail__community-title">
+                            <i class="bi bi-people-fill"></i>
+                            Comunidad
+                        </h3>
 
-                            <div class="business-detail__socials">
-
-                                ${socials.map(([socialName, url]) => `
-                                    <a
-                                        class="business-detail__social-link"
-                                        href="${escapeHtml(safeUrl(url))}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        ${escapeHtml(socialName)}
-                                    </a>
-                                `).join('')}
-
+                        <div class="business-detail__community">
+                            <div class="business-detail__community-item">
+                                <i class="bi bi-heart business-detail__community-icon--heart"></i>
+                                <div>
+                                    <strong>${escapeHtml(yapitas)}</strong>
+                                    <span>Yapitas</span>
+                                </div>
                             </div>
 
-                        </section>
-                    `
-                : ''
-            }
+                            <div class="business-detail__community-item">
+                                <i class="bi bi-eye-fill business-detail__community-icon--eye"></i>
+                                <div>
+                                    <strong>${escapeHtml(visits)}</strong>
+                                    <span>Visitas</span>
+                                </div>
+                            </div>
 
-                <section class="business-detail__section">
-
-                    <h3 class="business-detail__section-title">
-                        Horarios de atención
-                    </h3>
-
-                    ${this.renderSchedules(
-                business.schedules
-            )}
-
-                </section>
-
-                <section class="business-detail__section">
-
-                    <h3 class="business-detail__section-title">
-                        Comunidad
-                    </h3>
-
-                    <div class="business-detail__community">
-
-                        <div class="business-detail__community-item">
-                            <strong class="business-detail__community-value">
-                                ${escapeHtml(yapitas)}
-                            </strong>
-
-                            <span class="business-detail__community-label">
-                                Yapitas
-                            </span>
+                            <div class="business-detail__community-item">
+                                <i class="bi bi-trophy-fill business-detail__community-icon--trophy"></i>
+                                <div>
+                                    <strong>${escapeHtml(trophies)}</strong>
+                                    <span>Trofeos</span>
+                                </div>
+                            </div>
                         </div>
+                    </section>
+                </div>
 
-                        <div class="business-detail__community-item">
-                            <strong class="business-detail__community-value">
-                                ${escapeHtml(visits)}
-                            </strong>
+                <!-- PANEL PROMOCIONES -->
+                ${promotions.length > 0 ? `
+                    <div
+                        class="business-detail__panel"
+                        data-business-panel="promotions"
+                        role="tabpanel"
+                        hidden
+                    >
+                        <header class="business-detail__panel-header">
+                            <h3>Promociones de la empresa</h3>
+                            <p>Descuentos y beneficios disponibles</p>
+                        </header>
 
-                            <span class="business-detail__community-label">
-                                Visitas
-                            </span>
+                        <div class="business-detail__promotions">
+                            ${promotions.map((promotion, index) =>
+                this.renderPromotionCard(promotion, index)
+            ).join('')}
                         </div>
-
-                        <div class="business-detail__community-item">
-                            <strong class="business-detail__community-value">
-                                ${escapeHtml(trophies)}
-                            </strong>
-
-                            <span class="business-detail__community-label">
-                                Trofeos
-                            </span>
-                        </div>
-
                     </div>
+                ` : ''}
 
-                </section>
+                <!-- PANEL PUBLICIDAD -->
+                ${advertisements.length > 0 ? `
+                    <div
+                        class="business-detail__panel"
+                        data-business-panel="advertisements"
+                        role="tabpanel"
+                        hidden
+                    >
+                        <header class="business-detail__panel-header">
+                            <h3>Publicidad de la empresa</h3>
+                            <p>Novedades, campañas y anuncios</p>
+                        </header>
+
+                        <div class="business-detail__promotions">
+                            ${advertisements.map((ad, index) =>
+                this.renderPromotionCard(ad, index)
+            ).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <!-- PANEL HORARIOS -->
+                <div
+                    class="business-detail__panel"
+                    data-business-panel="schedules"
+                    role="tabpanel"
+                    hidden
+                >
+                    <section class="business-detail__card">
+                        <div class="business-detail__card-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div class="business-detail__card-content">
+                            <h3>Horarios de atención</h3>
+                            ${this.renderSchedules(business.schedules)}
+                        </div>
+                    </section>
+                </div>
 
             </div>
-
         </article>
     `;
         }
 
-        static getIconBusinessHtml2(business, count = 1) {
+        static initDetailInteractions() {
+            if (this._detailInteractionsInitialized) return;
 
+            this._detailInteractionsInitialized = true;
+
+            document.addEventListener('click', (event) => {
+
+                // ==========================
+                // CAMBIAR PESTAÑAS
+                // ==========================
+                const tab = event.target.closest('[data-business-tab]');
+
+                if (tab) {
+                    const detail = tab.closest('.business-detail');
+                    if (!detail) return;
+
+                    const selectedTab = tab.dataset.businessTab;
+
+                    detail.querySelectorAll('[data-business-tab]').forEach(button => {
+                        const active = button.dataset.businessTab === selectedTab;
+
+                        button.classList.toggle(
+                            'business-detail__tab--active',
+                            active
+                        );
+
+                        button.setAttribute(
+                            'aria-selected',
+                            String(active)
+                        );
+                    });
+
+                    detail.querySelectorAll('[data-business-panel]').forEach(panel => {
+                        const active = panel.dataset.businessPanel === selectedTab;
+
+                        panel.classList.toggle(
+                            'business-detail__panel--active',
+                            active
+                        );
+
+                        panel.hidden = !active;
+                    });
+
+                    return;
+                }
+
+                // ==========================
+                // ABRIR PROMOCIÓN
+                // ==========================
+                const promotionButton = event.target.closest('[data-promotion-open]');
+
+                if (promotionButton) {
+                    const image = promotionButton.dataset.promotionImage;
+                    const name = promotionButton.dataset.promotionName || 'Promoción';
+                    const description = promotionButton.dataset.promotionDescription || '';
+
+                    this.openPromotionViewer({
+                        image,
+                        name,
+                        description
+                    });
+
+                    return;
+                }
+
+                // ==========================
+                // CERRAR VISOR
+                // ==========================
+                if (
+                    event.target.closest('[data-promotion-close]') ||
+                    event.target.matches('[data-promotion-overlay]')
+                ) {
+                    this.closePromotionViewer();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    this.closePromotionViewer();
+                }
+            });
+        }
+
+        static openPromotionViewer({ image, name, description }) {
+            this.closePromotionViewer();
+
+            const viewer = document.createElement('div');
+
+            viewer.className = 'business-detail__viewer';
+            viewer.setAttribute('data-promotion-overlay', '');
+            viewer.setAttribute('role', 'dialog');
+            viewer.setAttribute('aria-modal', 'true');
+            viewer.setAttribute('aria-label', 'Detalle de promoción');
+
+            // Se construyen nodos DOM para no interpretar texto externo como HTML.
+            const container = document.createElement('div');
+            container.className = 'business-detail__viewer-container';
+
+            const closeButton = document.createElement('button');
+            closeButton.type = 'button';
+            closeButton.className = 'business-detail__viewer-close';
+            closeButton.setAttribute('data-promotion-close', '');
+            closeButton.setAttribute('aria-label', 'Cerrar promoción');
+
+            const closeIcon = document.createElement('i');
+            closeIcon.className = 'bi bi-x-lg';
+            closeButton.appendChild(closeIcon);
+
+            const content = document.createElement('div');
+            content.className = 'business-detail__viewer-content';
+
+            if (image && safeUrl(image)) {
+                const img = document.createElement('img');
+                img.src = safeUrl(image);
+                img.alt = name;
+                img.className = 'business-detail__viewer-image';
+
+                content.appendChild(img);
+            }
+
+            const information = document.createElement('div');
+            information.className = 'business-detail__viewer-information';
+
+            const title = document.createElement('h3');
+            title.textContent = name;
+            information.appendChild(title);
+
+            if (description) {
+                const paragraph = document.createElement('p');
+                paragraph.textContent = description;
+                information.appendChild(paragraph);
+            }
+
+            container.append(closeButton, content, information);
+            viewer.appendChild(container);
+
+            document.body.appendChild(viewer);
+            closeButton.focus();
+        }
+
+        static closePromotionViewer() {
+            document.querySelectorAll('[data-promotion-overlay]')
+                .forEach(viewer => viewer.remove());
+        }
+
+
+        static getIconBusinessHtml(business, count = 1) {
+
+            // ============================================
+            // 1. INFORMACIÓN DEL MARCADOR
+            // ============================================
 
             const url = safeUrl(business.source);
             const isGrouped = count > 1;
+
+            // ============================================
+            // 2. PROMOCIONES REALES DEL BACKEND
+            // ============================================
+
+            const promotions = Array.isArray(business.promotions)
+                ? business.promotions
+                : [];
+
+            const hasPromotions = promotions.some(promotion =>
+                promotion &&
+                String(promotion.status || '').toUpperCase() === 'ACTIVE'
+            );
+
+            // Independiente de is_route.
+            // No animar marcadores agrupados.
+            const shouldAnimate = hasPromotions && !isGrouped;
+
+            // ============================================
+            // 3. IMAGEN O FALLBACK
+            // ============================================
+
             const photo = url
                 ? `
-                <img
-                    class="business-map-marker__image"
-                    src="${escapeHtml(url)}"
-                    alt=""
-                    loading="lazy"
-                    draggable="false"
-                    onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
-                >
-                <span
-                    class="business-map-marker__fallback"
-                    hidden
-                    aria-hidden="true"
-                >
-                    🏪
-                </span>
-              `
+            <img
+                class="business-map-marker__image"
+                src="${escapeHtml(url)}"
+                alt=""
+                loading="lazy"
+                draggable="false"
+                onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
+            >
+
+            <span
+                class="business-map-marker__fallback"
+                hidden
+                aria-hidden="true"
+            >
+                🏪
+            </span>
+        `
                 : `
-                <span
-                    class="business-map-marker__fallback"
-                    aria-hidden="true"
-                >
-                    🏪
-                </span>
-              `;
+            <span
+                class="business-map-marker__fallback"
+                aria-hidden="true"
+            >
+                🏪
+            </span>
+        `;
+
+            // ============================================
+            // 4. CLASES BEM DEL MARCADOR
+            // ============================================
+
+            const markerClasses = [
+                'business-map-marker',
+
+                isGrouped
+                    ? 'business-map-marker--grouped'
+                    : '',
+
+                shouldAnimate
+                    ? 'business-map-marker--pumpkin-bounce'
+                    : ''
+
+            ].filter(Boolean).join(' ');
+
+            // ============================================
+            // 5. GENERAR HTML
+            // ============================================
 
             return `
-            <div
-                class="business-map-marker ${isGrouped ? 'business-map-marker--grouped' : ''}"
-            >
+        <div class="${markerClasses}">
+
+            <!-- CONTENIDO QUE REBOTA -->
+            <div class="business-map-marker__bounce-content">
+
+                <!-- ONDAS DE PULSO -->
+                ${shouldAnimate ? `
+                    <span
+                        class="business-map-marker__pulse-wave"
+                        aria-hidden="true"
+                    ></span>
+
+                    <span
+                        class="
+                            business-map-marker__pulse-wave
+                            business-map-marker__pulse-wave--delayed
+                        "
+                        aria-hidden="true"
+                    ></span>
+                ` : ''}
+
+                <!-- IMAGEN -->
                 ${photo}
 
+                <!-- INDICADOR DE PROMOCIONES -->
+                ${this.getBusinessNewsBadge(business)}
+
+                <!-- CONTADOR DE EMPRESAS -->
                 ${isGrouped ? `
                     <span class="business-map-marker__count">
                         ${count}
                     </span>
                 ` : ''}
+
             </div>
-        `;
+
+        </div>
+    `;
         }
 
 
-        static getIconBusinessHtml(business, count = 1) {
+        static getIconBusinessHtml2(business, count = 1) {
 
             const url = safeUrl(business.source);
             const isGrouped = count > 1;
@@ -891,39 +1253,76 @@ console.log("renderDetails",business);
             assignDemoNews(input = []) {
                 const businesses = Array.isArray(input) ? input : [];
 
-                // Seleccionar únicamente empresas con coordenadas válidas
-                const candidates = businesses.filter(business => {
-                    const lat = Number(business.street_lat);
-                    const lng = Number(business.street_lng);
-
-                    return business.id != null &&
-                        business.street_lat != null &&
-                        business.street_lng != null &&
-                        Number.isFinite(lat) &&
-                        Number.isFinite(lng) &&
-                        Math.abs(lat) <= 90 &&
-                        Math.abs(lng) <= 180;
-                });
-
-                // Mezclar aleatoriamente sin modificar el arreglo original
-                const shuffled = [...candidates];
-
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-
-                const selectedIds = new Set(
-                    shuffled.slice(0, 8).map(business => String(business.id))
-                );
-
-                const types = ['discount', 'promotion', 'event'];
-
                 businesses.forEach(business => {
-                    business.demoNewsType = selectedIds.has(String(business.id))
-                        ? types[Math.floor(Math.random() * types.length)]
-                        : null;
+
+                    // ============================================
+                    // 1. TIPO DE EMPRESA
+                    // ============================================
+
+                    business.is_route = (
+                        business.is_route === true ||
+                        business.is_route === 1 ||
+                        business.is_route === '1'
+                    );
+
+                    // ============================================
+                    // 2. INFORMACIÓN REAL DEL BACKEND
+                    // ============================================
+
+                    const promotions = Array.isArray(business.promotions)
+                        ? business.promotions
+                        : [];
+
+                    const events = Array.isArray(business.events)
+                        ? business.events
+                        : [];
+
+                    const advertisements = Array.isArray(business.advertisements)
+                        ? business.advertisements
+                        : [];
+
+                    // ============================================
+                    // 3. VALIDAR ESTADO ACTIVO
+                    // ============================================
+
+                    const hasActiveItems = (items) => {
+                        return items.some(item =>
+                            item &&
+                            String(item.status || '').toUpperCase() === 'ACTIVE'
+                        );
+                    };
+
+                    // ============================================
+                    // 4. DETERMINAR TIPOS DE NOVEDADES
+                    // ============================================
+
+                    business.newsTypes = [];
+
+                    if (hasActiveItems(promotions)) {
+                        business.newsTypes.push('promotion');
+                    }
+
+                    if (hasActiveItems(events)) {
+                        business.newsTypes.push('event');
+                    }
+
+                    if (hasActiveItems(advertisements)) {
+                        business.newsTypes.push('advertisement');
+                    }
+
+                    // ============================================
+                    // 5. INDICAR SI TIENE NOVEDADES
+                    // ============================================
+
+                    business.hasNews = business.newsTypes.length > 0;
+
+                    // ============================================
+                    // 6. COMPATIBILIDAD TEMPORAL
+                    // ============================================
+
+                    // Se conserva la propiedad si otro componente
+                    // todavía la utiliza para pintar un icono.
+                    business.demoNewsType = business.newsTypes[0] ?? null;
                 });
 
                 return businesses;
@@ -1108,11 +1507,6 @@ console.log("renderDetails",business);
 
 
             setBusinesses(input = []) {
-
-                // ============================================
-                // NORMALIZAR DATOS
-                // ============================================
-
                 const list = Array.isArray(input)
                     ? input
                     : (

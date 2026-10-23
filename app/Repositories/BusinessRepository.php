@@ -324,7 +324,273 @@ class BusinessRepository
             return [];
         }
     }
+    public function searchNearbyBusinessPromotion(
+        $latitude = null,
+        $longitude = null,
+        $radiusKm = 5,
+        $subcategoryIds = null,
+        $searchQuery = "",
 
+    )
+    {
+        /*
+         * =====================================================
+         * 1. VALIDAR UBICACIÓN DEL USUARIO
+         * =====================================================
+         */
+
+        $hasLocation = (
+            is_numeric($latitude) &&
+            is_numeric($longitude) &&
+            is_finite((float)$latitude) &&
+            is_finite((float)$longitude) &&
+            (float)$latitude >= -90 &&
+            (float)$latitude <= 90 &&
+            (float)$longitude >= -180 &&
+            (float)$longitude <= 180
+        );
+
+        if ($hasLocation) {
+            $latitude = (float)$latitude;
+            $longitude = (float)$longitude;
+        }
+
+        $radiusKm = (
+            is_numeric($radiusKm) &&
+            is_finite((float)$radiusKm) &&
+            (float)$radiusKm > 0
+        ) ? (float)$radiusKm : 10;
+
+        /*
+         * =====================================================
+         * 2. FÓRMULA HAVERSINE
+         * =====================================================
+         */
+
+        $haversine = "(6371 * acos(
+        LEAST(1, GREATEST(-1,
+            cos(radians(?)) *
+            cos(radians(b.street_lat)) *
+            cos(radians(b.street_lng) - radians(?)) +
+            sin(radians(?)) *
+            sin(radians(b.street_lat))
+        ))
+    ))";
+
+        /*
+         * =====================================================
+         * 3. COLUMNAS EXISTENTES
+         * =====================================================
+         */
+
+        $select = [
+            'b.id',
+            'b.title',
+            'b.description',
+            'b.source',
+            'b.business_name',
+            'b.email',
+            'b.phone_value',
+            'b.page_url',
+            'b.street_1 as business_street_1',
+            'b.street_2 as business_street_2',
+            'b.street_lat',
+            'b.street_lng',
+            'b.status',
+            'b.qualification',
+            'b.business_subcategories_id',
+            'bs.name as subcategory_name',
+            'epf.value as fiscal_position',
+            'bg.id as gamification_config_id',
+            'bg.gamification_id',
+            'bg.allow_exchange',
+            'bg.allow_exchange_business',
+            'bg.state as gamification_state',
+
+            'bbp.id  as bbp_id',
+            'bbp.start_time as bbp_start_time',
+            'bbp.en_time as bbp_en_time',
+            'bbp.name as bbp_name',
+            'bbp.description as bbp_description',
+            'bbp.source as bbp_source',
+            'bbp.status as bbp_status',
+            'bbp.products_id',
+
+
+        ];
+
+        /*
+         * =====================================================
+         * 4. CONSULTA BASE
+         * =====================================================
+         */
+
+        $query = DB::table('business as b')
+            ->leftJoin(
+                'entity_position_fiscal as epf',
+                'epf.id',
+                '=',
+                'b.entity_position_fiscal_id'
+            )
+            ->leftJoin(
+                'business_subcategories as bs',
+                'bs.id',
+                '=',
+                'b.business_subcategories_id'
+            )
+            ->leftJoin(
+                'business_by_gamification as bg',
+                function ($join) {
+                    $join->on('bg.business_id', '=', 'b.id')
+                        ->where('bg.state', '=', 'ACTIVE');
+                }
+            )
+            ->join(
+                'business_by_promotion  as bbp',
+                'bbp.business_id',
+                '=',
+                'b.id'
+            )
+            ->select($select)
+            ->where('b.status', 'ACTIVE');
+
+        /*
+         * =====================================================
+         * 5. FILTRAR POR UBICACIÓN SOLO SI EXISTE
+         * =====================================================
+         */
+
+        if ($hasLocation) {
+
+            $query
+                ->selectRaw(
+                    "$haversine as distance",
+                    [$latitude, $longitude, $latitude]
+                )
+                ->whereNotNull('b.street_lat')
+                ->whereNotNull('b.street_lng')
+                ->whereRaw(
+                    "$haversine <= ?",
+                    [
+                        $latitude,
+                        $longitude,
+                        $latitude,
+                        $radiusKm
+                    ]
+                )
+                ->orderBy('distance', 'asc');
+
+        } else {
+            $query
+                ->selectRaw('NULL as distance')
+                ->orderBy('b.business_name', 'asc');
+        }
+
+
+
+        if ($searchQuery !== '') {
+            $query->when(
+                $searchQuery !== '',
+                function ($q) use ($searchQuery) {
+
+                    $q->where(function ($sub) use ($searchQuery) {
+
+                        $sub->where(
+                            'b.business_name',
+                            'LIKE',
+                            "%{$searchQuery}%"
+                        )
+                            ->orWhere(
+                                'b.title',
+                                'LIKE',
+                                "%{$searchQuery}%"
+                            )
+                            ->orWhere(
+                                'b.description',
+                                'LIKE',
+                                "%{$searchQuery}%"
+                            );
+                    });
+                }
+            );
+        }
+
+        if (!empty($subcategoryIds)) {
+            if (is_string($subcategoryIds)) {
+                $subcategoryIds = array_filter(
+                    array_map(
+                        'intval',
+                        explode(',', $subcategoryIds)
+                    ),
+                    fn($id) => $id > 0
+                );
+            }
+
+            if (is_array($subcategoryIds)) {
+                $subcategoryIds = array_filter(
+                    array_map('intval', $subcategoryIds),
+                    fn($id) => $id > 0
+                );
+            }
+
+            if (!empty($subcategoryIds)) {
+
+                $query->whereIn(
+                    'b.business_subcategories_id',
+                    $subcategoryIds
+                );
+            }
+        }
+
+        $results = $query->get();
+        $businesses = $results
+            ->groupBy('id')
+            ->map(function ($rows) {
+                $business = clone $rows->first();
+                $business->is_route=false;
+                $business->distance_km = $business->distance !== null
+                    ? round((float) $business->distance, 2) . ' km'
+                    : null;
+
+                $business->promotions = $rows
+                    ->filter(fn($row) => $row->bbp_id !== null)
+                    ->unique('bbp_id')
+                    ->map(function ($row) {
+
+                        return [
+                            'id' => $row->bbp_id,
+                            'start_time' => $row->bbp_start_time,
+                            'en_time' => $row->bbp_en_time,
+                            'name' => $row->bbp_name,
+                            'description' => $row->bbp_description,
+                            'status' => $row->bbp_status,
+                            'source' => !empty($row->bbp_source)
+                                ? asset('public') . '/' . ltrim($row->bbp_source, '/')
+                                : null,
+                            'products_id' => $row->products_id,
+                        ];
+                    })
+                    ->values()
+                    ->all();
+
+                unset(
+                    $business->bbp_id,
+                    $business->bbp_start_time,
+                    $business->bbp_en_time,
+                    $business->bbp_name,
+                    $business->bbp_description,
+                    $business->bbp_source,
+                    $business->bbp_status,
+                    $business->products_id
+                );
+
+                return $business;
+            })
+            ->values()
+            ->all();
+
+        return $businesses;
+    }
 
     public function searchNearbyBusinesses(
         $latitude = null,
@@ -624,6 +890,7 @@ class BusinessRepository
 
             // Compatible con el funcionamiento anterior.
             // Si no hay ubicación, no inventar distancia.
+            $business->is_route=true;
 
             $business->distance_km = $business->distance !== null
                 ? round((float)$business->distance, 2) . " km"

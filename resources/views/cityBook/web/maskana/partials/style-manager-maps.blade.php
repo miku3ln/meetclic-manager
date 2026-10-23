@@ -381,38 +381,7 @@
         background: #fff;
     }
 
-    .business-detail__hero {
-        position: relative;
-        width: 100%;
-        height: clamp(165px, 28vh, 240px);
-        overflow: hidden;
-        background: linear-gradient(
-            135deg,
-            #edf0ff,
-            #dfe8ff
-        );
-    }
 
-    .business-detail__hero-image {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
-
-    .business-detail__hero-image[hidden],
-    .business-detail__hero-fallback[hidden] {
-        display: none !important;
-    }
-
-    .business-detail__hero-fallback {
-        width: 100%;
-        height: 100%;
-        display: grid;
-        place-items: center;
-        font-size: 58px;
-    }
 
     .business-detail__body {
         padding: 0 16px 28px;
@@ -423,22 +392,6 @@
         border-bottom: 1px solid var(--bm-border);
     }
 
-    .business-detail__category {
-        display: inline-flex;
-        align-items: center;
-        max-width: 100%;
-        padding: 5px 11px;
-        margin-bottom: 11px;
-        border-radius: 999px;
-        background: var(--bm-primary-soft);
-        color: #344bc6;
-        font-size: 11px;
-        font-weight: 700;
-        line-height: 1.4;
-        letter-spacing: .035em;
-        text-transform: uppercase;
-        overflow-wrap: anywhere;
-    }
 
     .business-detail__title {
         margin: 0 0 10px;
@@ -450,15 +403,7 @@
         overflow-wrap: anywhere;
     }
 
-    .business-detail__rating {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        margin: 0;
-        color: #a16207;
-        font-size: 13px;
-        font-weight: 650;
-    }
+
 
     /* =========================================================
        DETAIL - SECTIONS
@@ -884,9 +829,7 @@
             height: 155px;
         }
 
-        .business-detail__title {
-            font-size: 20px;
-        }
+
 
         .business-detail__community {
             gap: 5px;
@@ -1882,6 +1825,885 @@ footer.main-footer.dark-footer {
         .maskana-user-pumpkin__emoji,
         .maskana-user-pumpkin__pulse {
             animation: none;
+        }
+    }
+
+</style>
+
+
+<style id="new-details-business">
+
+    /* ============================================
+       YAPITA - BUSINESS DETAIL
+       ============================================ */
+
+    .business-detail {
+        --bd-primary: #3264ff;
+        --bd-dark: #111f44;
+        --bd-muted: #77849d;
+        --bd-card: #f5f7ff;
+        --bd-border: #e1e8f7;
+
+        width: 100%;
+        background: #fff;
+        color: var(--bd-dark);
+        font-family: inherit;
+    }
+
+    .business-detail *,
+    .business-detail *::before,
+    .business-detail *::after {
+        box-sizing: border-box;
+    }
+
+    /* HERO */
+
+    .business-detail__hero {
+        width: 100%;
+        height: clamp(180px, 34vw, 300px);
+        background: #edf1fa;
+        overflow: hidden;
+    }
+
+    .business-detail__hero-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .business-detail__hero-fallback {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        font-size: 64px;
+        color: var(--bd-primary);
+    }
+
+    .business-detail__hero-fallback[hidden] {
+        display: none;
+    }
+
+    .business-detail__body {
+        padding: 0 24px 24px;
+    }
+
+    /* IDENTIDAD */
+
+    .business-detail__header {
+        padding: 0 4px 14px;
+    }
+
+    .business-detail__category {
+        display: inline-block;
+        position: relative;
+        margin-top: -15px;
+        padding: 8px 15px;
+        background: #e8edff;
+        border-radius: 24px;
+        color: var(--bd-primary);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .business-detail__title {
+        margin: 12px 0 6px;
+        font-size: clamp(24px, 4vw, 32px);
+        font-weight: 750;
+        color: var(--bd-dark);
+    }
+
+    .business-detail__rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        color: #aa6508;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* CONTACTOS */
+
+    .business-detail__contacts {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-around;
+        gap: 8px;
+        padding: 12px 0 22px;
+    }
+
+    .business-detail__contact-item {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        color: var(--bd-dark);
+        text-decoration: none;
+    }
+
+    .business-detail__contact-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 25px;
+        box-shadow: 0 4px 12px #263b6c1c;
+        transition: transform .2s;
+    }
+
+    .business-detail__contact-item:hover .business-detail__contact-icon {
+        transform: translateY(-3px);
+    }
+
+    .business-detail__contact-item--whatsapp .business-detail__contact-icon {
+        background: #19c66b;
+    }
+
+    .business-detail__contact-item--phone .business-detail__contact-icon {
+        background: #3068ff;
+    }
+
+    .business-detail__contact-item--email .business-detail__contact-icon {
+        background: #ff416d;
+    }
+
+    .business-detail__contact-item--website .business-detail__contact-icon {
+        background: #9854f5;
+    }
+
+    .business-detail__contact-label {
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    /* DIRECCIÓN */
+
+    .business-detail__location {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px;
+        margin-bottom: 18px;
+        background: var(--bd-card);
+        border-radius: 18px;
+    }
+
+    .business-detail__location-info {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .business-detail__location-icon {
+        color: var(--bd-primary);
+        font-size: 28px;
+    }
+
+    .business-detail__location-text {
+        min-width: 0;
+    }
+
+    .business-detail__location-text h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .business-detail__location-text p {
+        margin: 0;
+        color: var(--bd-muted);
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .business-detail__map-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-shrink: 0;
+        padding: 12px 16px;
+        background: var(--bd-primary);
+        color: #fff;
+        border: 0;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 650;
+        cursor: pointer;
+    }
+
+    .business-detail__map-button:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+
+    /* TABS */
+
+    .business-detail__tabs {
+        display: flex;
+        gap: 3px;
+        width: 100%;
+        margin-bottom: 18px;
+        border-bottom: 1px solid var(--bd-border);
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .business-detail__tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .business-detail__tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        flex: 1 0 auto;
+        min-height: 46px;
+        padding: 12px 10px;
+        background: transparent;
+        color: var(--bd-muted);
+        border: 0;
+        border-bottom: 3px solid transparent;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .business-detail__tab i {
+        font-size: 17px;
+    }
+
+    .business-detail__tab--active {
+        color: var(--bd-primary);
+        border-bottom-color: var(--bd-primary);
+    }
+
+    .business-detail__panel[hidden] {
+        display: none !important;
+    }
+
+    .business-detail__panel-header {
+        margin-bottom: 16px;
+    }
+
+    .business-detail__panel-header h3 {
+        margin: 0 0 4px;
+        font-size: 20px;
+        font-weight: 750;
+    }
+
+    .business-detail__panel-header p {
+        margin: 0;
+        color: var(--bd-muted);
+        font-size: 14px;
+    }
+
+    /* TARJETAS DE INFORMACIÓN */
+
+    .business-detail__card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 20px;
+        margin-bottom: 14px;
+        background: var(--bd-card);
+        border-radius: 18px;
+    }
+
+    .business-detail__card-icon {
+        flex-shrink: 0;
+        color: var(--bd-primary);
+        font-size: 24px;
+    }
+
+    .business-detail__card-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .business-detail__card-content h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .business-detail__card-content p {
+        margin: 0;
+        color: var(--bd-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .business-detail__socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .business-detail__social-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--bd-primary);
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+    /* COMUNIDAD */
+
+    .business-detail__community-card {
+        padding: 20px;
+        background: var(--bd-card);
+        border-radius: 18px;
+    }
+
+    .business-detail__community-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 18px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .business-detail__community-title i {
+        color: var(--bd-primary);
+        font-size: 23px;
+    }
+
+    .business-detail__community {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .business-detail__community-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 8px;
+        border-right: 1px solid var(--bd-border);
+    }
+
+    .business-detail__community-item:last-child {
+        border-right: 0;
+    }
+
+    .business-detail__community-item > i {
+        font-size: 24px;
+    }
+
+    .business-detail__community-item strong,
+    .business-detail__community-item span {
+        display: block;
+    }
+
+    .business-detail__community-item strong {
+        font-size: 20px;
+    }
+
+    .business-detail__community-item span {
+        color: var(--bd-muted);
+        font-size: 12px;
+    }
+
+    .business-detail__community-icon--heart {
+        color: #ff3976;
+    }
+
+    .business-detail__community-icon--eye {
+        color: #3472ff;
+    }
+
+    .business-detail__community-icon--trophy {
+        color: #f5b400;
+    }
+
+    /* PROMOCIONES */
+
+    .business-detail__promotions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .business-detail__promotion {
+        width: 100%;
+        border: 1px solid var(--bd-border);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .business-detail__promotion-action {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .business-detail__promotion-action:hover {
+        background: #f8faff;
+    }
+
+    .business-detail__promotion-image-wrap {
+        display: block;
+        flex: 0 0 36%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border-radius: 12px;
+        background: #eef2fa;
+    }
+
+    .business-detail__promotion-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .business-detail__promotion-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        color: var(--bd-muted);
+        font-size: 28px;
+    }
+
+    .business-detail__promotion-content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 0;
+    }
+
+    .business-detail__promotion-name {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        font-size: 15px;
+        line-height: 1.35;
+        font-weight: 700;
+    }
+
+    .business-detail__promotion-description {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        color: var(--bd-muted);
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .business-detail__promotion-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .business-detail__promotion-status i {
+        font-size: 9px;
+    }
+
+    .business-detail__promotion-status--active {
+        color: #11a85c;
+    }
+
+    .business-detail__promotion-status--inactive {
+        color: #8993a4;
+    }
+
+    .business-detail__promotion-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--bd-muted);
+        font-size: 11px;
+    }
+
+    .business-detail__promotion-arrow {
+        color: #8c96aa;
+        font-size: 20px;
+    }
+
+    /* VISOR DE PUBLICIDAD */
+
+    .business-detail__viewer {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        background: rgba(8, 15, 32, .82);
+    }
+
+    .business-detail__viewer-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: min(100%, 680px);
+        max-height: 95dvh;
+        padding: 16px;
+        background: #fff;
+        border-radius: 18px;
+        overflow-y: auto;
+    }
+
+    .business-detail__viewer-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 12px #0002;
+        cursor: pointer;
+    }
+
+    .business-detail__viewer-content {
+        display: flex;
+        justify-content: center;
+        min-height: 0;
+    }
+
+    .business-detail__viewer-image {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: 72dvh;
+        object-fit: contain;
+        border-radius: 10px;
+    }
+
+    .business-detail__viewer-information {
+        padding: 16px 4px 4px;
+    }
+
+    .business-detail__viewer-information h3 {
+        margin: 0 0 6px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .business-detail__viewer-information p {
+        margin: 0;
+        color: var(--bd-muted, #77849d);
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 575.98px) {
+        .business-detail__hero {
+            height: 200px;
+        }
+
+        .business-detail__body {
+            padding: 0 14px 20px;
+        }
+
+        .business-detail__contact-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 22px;
+        }
+
+        .business-detail__contacts {
+            gap: 4px;
+        }
+
+        .business-detail__location {
+            gap: 10px;
+            padding: 12px;
+        }
+
+        .business-detail__location-icon {
+            font-size: 22px;
+        }
+
+        .business-detail__location-text h3 {
+            font-size: 14px;
+        }
+
+        .business-detail__location-text p {
+            font-size: 12px;
+        }
+
+        .business-detail__map-button {
+            padding: 11px 9px;
+            font-size: 11px;
+        }
+
+        .business-detail__tab {
+            gap: 5px;
+            padding: 12px 9px;
+            font-size: 12px;
+        }
+
+        .business-detail__tab i {
+            font-size: 15px;
+        }
+
+        .business-detail__promotion-action {
+            gap: 9px;
+        }
+
+        .business-detail__promotion-image-wrap {
+            flex-basis: 38%;
+        }
+
+        .business-detail__promotion-name {
+            font-size: 13px;
+        }
+
+        .business-detail__promotion-arrow {
+            font-size: 15px;
+        }
+
+        .business-detail__community-card {
+            padding: 14px 8px;
+        }
+
+        .business-detail__community-item {
+            gap: 6px;
+            padding: 5px;
+        }
+
+        .business-detail__community-item > i {
+            font-size: 20px;
+        }
+    }
+
+
+
+</style>
+
+<style>
+
+    /* ================================================
+       MASKANA - ANIMACIÓN REBOTE + PULSO
+       ================================================ */
+
+    /* Contenedor principal */
+
+    .business-map-marker {
+        position: relative;
+        overflow: visible;
+    }
+
+    /* Contenido visual del marcador */
+
+    .business-map-marker__bounce-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    /* ================================================
+       1. REBOTE ESTILO CALABAZA
+       ================================================ */
+
+    .business-map-marker--pumpkin-bounce
+    .business-map-marker__bounce-content {
+
+        transform-origin: center bottom;
+
+        animation:
+            business-map-marker-bounce
+            2.8s
+            ease-in-out
+            infinite;
+    }
+
+    /* Salto, estiramiento y aterrizaje */
+
+    @keyframes business-map-marker-bounce {
+
+        0%,
+        100% {
+            transform: translateY(0) scale(1, 1);
+        }
+
+        10% {
+            transform: translateY(0) scale(1.06, .94);
+        }
+
+        25% {
+            transform: translateY(-12px) scale(.97, 1.03);
+        }
+
+        38% {
+            transform: translateY(-17px) scale(1, 1);
+        }
+
+        55% {
+            transform: translateY(0) scale(1.07, .93);
+        }
+
+        67% {
+            transform: translateY(-5px) scale(.99, 1.01);
+        }
+
+        80% {
+            transform: translateY(0) scale(1, 1);
+        }
+    }
+
+    /* ================================================
+       2. ONDAS DE PULSO
+       ================================================ */
+
+    .business-map-marker__pulse-wave {
+
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        border-radius: 50%;
+
+        border: 3px solid rgba(131, 54, 232, .7);
+
+        background: rgba(131, 54, 232, .13);
+
+        pointer-events: none;
+
+        z-index: 0;
+
+        opacity: 0;
+
+        animation:
+            business-map-marker-pulse
+            2.8s
+            ease-out
+            infinite;
+    }
+
+    /* Segunda onda */
+
+    .business-map-marker__pulse-wave--delayed {
+        animation-delay: 1.4s;
+    }
+
+    /* Crecimiento radial */
+
+    @keyframes business-map-marker-pulse {
+
+        0% {
+            transform: scale(.85);
+            opacity: .75;
+        }
+
+        65% {
+            opacity: .25;
+        }
+
+        100% {
+            transform: scale(2.1);
+            opacity: 0;
+        }
+    }
+
+    /* ================================================
+       3. ORDEN VISUAL
+       ================================================ */
+
+    /* Imagen por encima de las ondas */
+
+    .business-map-marker--pumpkin-bounce
+    .business-map-marker__image,
+
+    .business-map-marker--pumpkin-bounce
+    .business-map-marker__fallback {
+
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Badge por encima de la imagen */
+
+    .business-map-marker--pumpkin-bounce
+    .business-map-marker__news {
+
+        z-index: 3;
+    }
+
+    /* ================================================
+       4. INTERACCIONES
+       ================================================ */
+
+    /* Pausar al pasar el cursor */
+
+    .business-map-marker-container:hover
+    .business-map-marker__bounce-content,
+
+    .business-map-marker-container:hover
+    .business-map-marker__pulse-wave {
+
+        animation-play-state: paused;
+    }
+
+    /* No interferir con Leaflet */
+
+    .business-map-marker__pulse-wave {
+        pointer-events: none;
+    }
+
+    /* ================================================
+       5. ACCESIBILIDAD
+       ================================================ */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .business-map-marker--pumpkin-bounce
+        .business-map-marker__bounce-content {
+
+            animation: none;
+        }
+
+        .business-map-marker__pulse-wave {
+            animation: none;
+            display: none;
         }
     }
 

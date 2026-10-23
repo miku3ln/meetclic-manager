@@ -929,15 +929,13 @@ if($isLoggedIn){
     }
 
     $(document).ready(function () {
+        BusinessMapHtmlUtil.initDetailInteractions();
         document.addEventListener(
             'business:marker:dragend',
             async function (event) {
-
                 const data = event.detail;
                 console.log('data:', data);
                 console.log('business: bmz_manager_id', data.business.bmz_manager_id);
-
-
                 console.log('Empresa:', data.business_id);
                 console.log('Latitud:', data.latitude);
                 console.log('Longitud:', data.longitude);
