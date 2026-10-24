@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\PointSales;
+
 use App\Models\Events\BusinessMapZoneEvent;
 use Illuminate\Support\Facades\Validator;
 
@@ -701,6 +702,7 @@ class ProductController extends PointSalesBaseController
 
     }
 
+
     public function updateLocationBusinessMaskana(Request $request)
     {
         // ==========================================
@@ -709,15 +711,18 @@ class ProductController extends PointSalesBaseController
 
         $validator = Validator::make($request->all(), [
             'business_id' => [
-                'required',
+                'nullable',
+                'required_without:bmz_manager_id',
                 'integer',
                 'min:1',
                 'exists:business,id'
             ],
             'bmz_manager_id' => [
-                'required',
+                'nullable',
+                'required_without:business_id',
                 'integer',
-                'min:1'
+                'min:1',
+                'exists:business_map_zone_event,id'
             ],
             'latitude' => [
                 'required',
@@ -732,7 +737,6 @@ class ProductController extends PointSalesBaseController
         ]);
 
         if ($validator->fails()) {
-
             return response()->json([
                 'success' => false,
                 'msj' => 'Los datos de ubicación no son válidos.',
@@ -744,71 +748,99 @@ class ProductController extends PointSalesBaseController
         $payload = $validator->validated();
 
         // ==========================================
-        // 2. ACTUALIZAR UBICACIÓN
+        // 2. DETERMINAR QUÉ TABLA ACTUALIZAR
         // ==========================================
+
+        $isMapZone = !empty($payload['bmz_manager_id']);
+
+        $recordId = $isMapZone
+            ? $payload['bmz_manager_id']
+            : $payload['business_id'];
+
+        $recordType = $isMapZone
+            ? 'business_map_zone_event'
+            : 'business';
 
         try {
 
-            $businessData = DB::transaction(function () use ($payload) {
+            // ======================================
+            // 3. ACTUALIZAR UBICACIÓN
+            // ======================================
 
-                $business = BusinessMapZoneEvent::query()
-                    ->where('id', $payload['bmz_manager_id'])
-                    ->lockForUpdate()
-                    ->first();
+            $recordData = DB::transaction(function () use (
+                $recordId,
+                $isMapZone,
+                $payload
+            ) {
 
-                if (!$business) {
+                $record = $isMapZone
+                    ? BusinessMapZoneEvent::query()
+                        ->where('id', $recordId)
+                        ->lockForUpdate()
+                        ->first()
+                    : Business::query()
+                        ->where('id', $recordId)
+                        ->lockForUpdate()
+                        ->first();
+
+                if (!$record) {
                     return null;
                 }
 
-                $business->street_lat = $payload['latitude'];
-                $business->street_lng = $payload['longitude'];
+                $record->street_lat = $payload['latitude'];
+                $record->street_lng = $payload['longitude'];
 
-                $business->save();
+                $record->save();
 
-                return $business->fresh();
+                return $record->fresh();
+
             });
 
             // ======================================
-            // 3. VERIFICAR EMPRESA
+            // 4. VERIFICAR REGISTRO
             // ======================================
 
-            if (!$businessData) {
-
+            if (!$recordData) {
                 return response()->json([
                     'success' => false,
-                    'msj' => 'La empresa no existe.',
+                    'msj' => 'No se encontró el registro solicitado.',
                     'errors' => [],
                     'data' => null
                 ], 404);
             }
 
             // ======================================
-            // 4. RESPUESTA EXITOSA
+            // 5. RESPUESTA EXITOSA
             // ======================================
 
             return response()->json([
                 'success' => true,
-                'msj' => 'Ubicación de la empresa actualizada correctamente.',
+                'msj' => 'Ubicación actualizada correctamente.',
                 'errors' => [],
                 'data' => [
-                    'business_id' => $businessData->id,
-                    'latitude' => (float) $businessData->street_lat,
-                    'longitude' => (float) $businessData->street_lng,
-                    'updated_at' => $businessData->updated_at
+                    'business_id' => $payload['business_id'] ?? null,
+                    'bmz_manager_id' => $payload['bmz_manager_id'] ?? null,
+                    'updated_table' => $recordType,
+                    'updated_id' => $recordData->id,
+                    'latitude' => (float) $recordData->street_lat,
+                    'longitude' => (float) $recordData->street_lng,
+                    'updated_at' => $recordData->updated_at
                 ]
             ], 200);
 
         } catch (Throwable $e) {
 
+            report($e);
 
             return response()->json([
                 'success' => false,
-                'msj' => 'No fue posible actualizar la ubicación de la empresa.'.$e->getMessage(),
+                'msj' => 'No fue posible actualizar la ubicación.',
                 'errors' => [],
                 'data' => null
             ], 500);
         }
     }
+
 
     public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO CASH-TODO
     {
