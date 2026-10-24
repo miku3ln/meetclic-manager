@@ -1245,6 +1245,8 @@ class FrontendCityBookController extends FrontendBaseController
         $type = request()->query('type');
         $modelType=new MapZoneEvent();
         $zoneManager=   $modelType->findActiveById($type);
+        $zonesManager=   $modelType->findActiveAll();
+
         $language = $languageManager['language'];
         $paramsRequest = [];
         $paramsRequest['language'] = $language;
@@ -1255,6 +1257,8 @@ class FrontendCityBookController extends FrontendBaseController
 
         ]);
         $paramsSend["zoneManager"]=$zoneManager;
+        $paramsSend["zonesManager"]=$zonesManager;
+        $paramsSend["typeId"]=$type;
 
         return view($renderView, $paramsSend);
     }

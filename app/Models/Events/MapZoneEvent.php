@@ -136,7 +136,17 @@ class MapZoneEvent extends ModelManager
 
         ];
     }
+    public static function findActiveAll(): array
+    {
+        return self::where('status', 'ACTIVE')
+            ->get()
+            ->map(function ($zone) {
+                $zone->source = asset('public') . '/' . ltrim($zone->source, '/');
 
+                return $zone;
+            })
+            ->toArray();
+    }
     /**
      * Crea o actualiza una zona utilizando su código.
      */

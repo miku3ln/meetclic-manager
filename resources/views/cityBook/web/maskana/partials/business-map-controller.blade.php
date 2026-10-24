@@ -927,8 +927,153 @@ if($isLoggedIn){
 
         setBusinessLoading(false);
     }
+    function initModalYapita()  {
+        YapitaRegisterModal.init();
+    }
+    function changeDataBrand($selected) {
 
+        if (!$selected || !$selected.length) return;
+
+        const zoneTitle = $selected.attr('data-zone-title');
+        const zoneSource = $selected.attr('data-zone-source');
+
+        const zoneColor = (
+            $selected[0].style.getPropertyValue('--route-color') || '#445EF2'
+        ).trim();
+
+        const $brand = $('.manager-map__brand');
+
+        if (!$brand.length) return;
+
+        // 1. ACTUALIZAR IMAGEN
+        $brand.find('.manager-map__brand-logo')
+            .attr({
+                src: zoneSource,
+                alt: zoneTitle
+            })
+            .css('border-color', zoneColor);
+
+        // 2. ACTUALIZAR TÍTULO Y COLOR
+        $brand.find('.manager-map__brand-title')
+            .text(zoneTitle)
+            .css('color', zoneColor);
+
+        // 3. ACTUALIZAR BORDE DEL CONTENEDOR
+        $brand.css(
+            'border-color',
+            `color-mix(in srgb, ${zoneColor} 35%, transparent)`
+        );
+
+        console.log('[Maskana] Brand actualizado:', {
+            title: zoneTitle,
+            source: zoneSource,
+            color: zoneColor
+        });
+    }
+
+    /**
+     * Abre el modal de registro de Yapita.
+     */
+    function openYapitaRegisterModal() {
+
+        const modalElement = document.getElementById(
+            'yapitaRegisterModal'
+        );
+
+        if (!modalElement) {
+            console.warn('[Yapita] Modal de registro no encontrado');
+            return;
+        }
+
+        const modal = bootstrap.Modal.getOrCreateInstance(
+            modalElement
+        );
+
+        modal.show();
+    }
+
+
+function initFiltersRoutes(){
+    $(document).on('click', '.routes-container__item', async function () {
+
+        const $selected = $(this);
+        const zoneId = parseInt($selected.data('zone-id'), 10);
+
+        if (!Number.isInteger(zoneId)) {
+            console.warn('ID de zona inválido');
+            return;
+        }
+
+        // ==========================================
+        // 1. EVITAR SELECCIONAR LA MISMA RUTA
+        // ==========================================
+
+        if ($selected.hasClass('routes-container__item--active')) {
+            return;
+        }
+
+        // ==========================================
+        // 2. ACTUALIZAR PARÁMETRO URL
+        // ==========================================
+
+        const url = new URL(window.location.href);
+
+        url.searchParams.set('type', zoneId);
+
+        window.history.pushState(
+            { type: zoneId },
+            '',
+            url.toString()
+        );
+
+        // ==========================================
+        // 3. QUITAR SELECCIÓN ANTERIOR
+        // ==========================================
+
+        $('.routes-container__item')
+            .removeClass('routes-container__item--active')
+            .attr('aria-pressed', 'false')
+            .find('.routes-container__check, .routes-container__indicator')
+            .remove();
+
+        // ==========================================
+        // 4. ACTIVAR NUEVA RUTA
+        // ==========================================
+
+        $selected
+            .addClass('routes-container__item--active')
+            .attr('aria-pressed', 'true')
+            .append(`
+            <span class="routes-container__check" aria-hidden="true">
+                <i class="bi bi-check-circle-fill"></i>
+            </span>
+        `);
+        changeDataBrand($selected);
+        // ==========================================
+        // 5. ACTUALIZAR EMPRESAS DEL MAPA
+        // ==========================================
+
+        try {
+            await loadBusinesses();
+        } catch (error) {
+            console.error('Error al cargar empresas:', error);
+        }
+
+    });
+}
     $(document).ready(function () {
+
+
+        /**
+         * Capturar evento de registro.
+         */
+        $(document).on('click', '.yapita-register__content', function (event) {
+            event.preventDefault();
+
+            openYapitaRegisterModal();
+        });
+        initModalYapita();
+        initFiltersRoutes();
         BusinessMapHtmlUtil.initDetailInteractions();
         document.addEventListener(
             'business:marker:dragend',

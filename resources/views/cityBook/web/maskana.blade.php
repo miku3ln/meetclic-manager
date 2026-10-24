@@ -1,5 +1,10 @@
 
 @extends('layouts.cityBook')
+
+@section('data-modal')
+    @include('cityBook.web.maskana.partials.yapita.register.modal')
+
+@endsection
 @section('additional-styles')
     <link href="{{ URL::asset($resourcePathServer.'libs/toast/jquery.toast.min.css') }}" rel="stylesheet"
           type="text/css">
@@ -58,10 +63,10 @@
     <script>
         window.MaskanaTranslations = {{ Illuminate\Support\Js::from($maskanaTranslations) }};
     </script>
-
-
     <script>
         var $zoneManager = <?php echo json_encode($zoneManager) ?>;
+        var $zonesManager = <?php echo json_encode($zonesManager) ?>;
+
         var $isLoggedIn = @json(auth()->check());
 
     </script>
@@ -79,6 +84,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
     @include('cityBook.web.maskana.partials.map-manager')
+    @include('cityBook.web.maskana.partials.yapita.register.assets.yapita-register-modal')
+
     @include('cityBook.web.maskana.partials.business-response-data')
     @include('cityBook.web.maskana.partials.maskana-map-location-controller')
     @include('cityBook.web.maskana.partials.business-map-controller')
@@ -141,8 +148,8 @@
             <div class="manager-map__toolbar">
 
                 <div class="manager-map__brand">
-                    <span id="title-route" class="not-view">{{$zoneManager['title']}}</span>
-                    <img src="{{$zoneManager['source']}}"  class="manager-map__brand-logo">
+                    <img src="{{$zoneManager['source']}}"  class="manager-map__brand-logo" alt="{{$zoneManager['title']}}"/>
+                    <span class="manager-map__brand-title" id="title-route" >{{$zoneManager['title']}}</span>
                 </div>
 
                 <div class="manager-map__counter">
@@ -233,7 +240,6 @@
                 <!-- CONTENIDO -->
 
                 <div class="manager-filters__body">
-                    <!-- RESULTADOS DE EMPRESAS -->
                     <div
                         id="business-response-data"
                         class="response-data"
@@ -242,6 +248,87 @@
                         aria-atomic="true"
                     >
                     </div>
+                    <div class="yapita-register">
+                        <div class="yapita-register__icon">
+                            <i class="bi bi-gift-fill"></i>
+                        </div>
+
+                        <div class="yapita-register__content">
+                            <h3 class="yapita-register__title">
+                                ¡Regístrate en Yapita!
+                            </h3>
+
+                            <p class="yapita-register__description">
+                                Participa por premios de las empresas
+                                de Maskana y descubre promociones.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="yapita-register__action"
+                            aria-label="Registrarse en Yapita"
+                        >
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="manager-filters__field">
+
+                        <label
+                            for="business-category-filter"
+                            class="manager-filters__label"
+                        >
+                            {{ __('frontend.maskana.filter.category_subcategory') }}
+
+                        </label>
+                    <div class="routes-container">
+
+                        @foreach ($zonesManager as $zone)
+
+                            @php
+                                $isActive = (string) $typeId === (string) $zone['id'];
+                                $zoneColor = $zone['color_hex'] ?? '#445EF2';
+                            @endphp
+
+                            <button
+                                type="button"
+                                class="routes-container__item {{ $isActive ? 'routes-container__item--active' : '' }}"
+                                data-zone-id="{{ $zone['id'] }}"
+                                data-zone-code="{{ $zone['code'] }}"
+                                data-zone-title="{{ $zone['title'] }}"
+                                data-zone-source="{{ $zone['source'] }}"
+                                style="--route-color: {{ $zoneColor }};"
+                                aria-pressed="{{ $isActive ? 'true' : 'false' }}"
+                            >
+            <span class="routes-container__image-wrapper">
+                <img
+                    src="{{ $zone['source'] }}"
+                    alt="{{ $zone['title'] }}"
+                    class="routes-container__image"
+                    loading="lazy"
+                >
+            </span>
+
+                                <span class="routes-container__title">
+                {{ $zone['title'] }}
+            </span>
+
+                                @if ($isActive)
+                                    <span class="routes-container__check" aria-hidden="true">
+        <i class="bi bi-check-circle-fill"></i>
+    </span>
+                                @endif
+
+                            </button>
+
+                        @endforeach
+
+                      </div>
+
+
+                    </div>
+
+
                     <div class="manager-filters__field">
 
                         <label

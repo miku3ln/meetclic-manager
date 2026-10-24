@@ -25,41 +25,7 @@
          */
         renderMapHint() {
 
-            if (!this.container) return;
 
-            // Evitar duplicar el mensaje.
-            if (this.container.querySelector('.response-data__hint')) {
-                return;
-            }
-
-            const hint = document.createElement('div');
-
-            hint.className = [
-                'response-data__hint',
-                'd-flex',
-                'align-items-start',
-                'gap-2',
-                'mt-3'
-            ].join(' ');
-
-            hint.innerHTML = `
-        <div class="response-data__hint-icon flex-shrink-0">
-            <i class="bi bi-info-circle-fill"
-               aria-hidden="true"></i>
-        </div>
-
-        <div class="response-data__hint-info">
-            <div class="response-data__hint-title">`
-                + MaskanaTranslations['frontend.maskana.filter.view_map_question'] +
-                `  </div>
-
-            <p class="response-data__hint-message mb-0">`
-                + MaskanaTranslations['frontend.maskana.filter.view_map_description'] +
-                ` </p>
-        </div>
-    `;
-
-            this.container.appendChild(hint);
         }
 
         /**
