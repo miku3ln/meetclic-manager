@@ -1,3 +1,4 @@
+
 <section class="yapita-register-hero">
 
     <div class="yapita-register-hero__image-wrapper">
@@ -14,12 +15,11 @@
             class="yapita-register-hero__title"
             id="yapitaRegisterModalTitle"
         >
-            ¡Únete a Yapita!
+            {{ __('frontend.yapita.register_halloween.hero.title') }}
         </h2>
 
         <p class="yapita-register-hero__description">
-            Regístrate gratis y participa por premios
-            de las empresas de Maskana.
+            {{ __('frontend.yapita.register_halloween.hero.description') }}
         </p>
 
     </div>

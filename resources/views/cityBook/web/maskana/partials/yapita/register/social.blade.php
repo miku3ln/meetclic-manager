@@ -1,7 +1,7 @@
 <div class="yapita-register-social">
 
     <div class="yapita-register-social__divider">
-        <span>o continuar con</span>
+        <span>{{ __('frontend.yapita.register_halloween.social.continue_with') }}</span>
     </div>
 
     <div class="yapita-register-social__actions">

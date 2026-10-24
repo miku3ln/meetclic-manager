@@ -157,7 +157,7 @@
 
                     <strong id="business-total">0</strong>
 
-                    <span>empresas</span>
+                    <span>{{ __('frontend.maskana.filter.businesses') }}</span>
                 </div>
 
             </div>
@@ -248,6 +248,7 @@
                         aria-atomic="true"
                     >
                     </div>
+
                     <div class="yapita-register">
                         <div class="yapita-register__icon">
                             <i class="bi bi-gift-fill"></i>
@@ -255,31 +256,30 @@
 
                         <div class="yapita-register__content">
                             <h3 class="yapita-register__title">
-                                ¡Regístrate en Yapita!
+                                {{ __('frontend.yapita.register_halloween.banner.title') }}
                             </h3>
 
                             <p class="yapita-register__description">
-                                Participa por premios de las empresas
-                                de Maskana y descubre promociones.
+                                {{ __('frontend.yapita.register_halloween.banner.description') }}
                             </p>
                         </div>
 
                         <button
                             type="button"
                             class="yapita-register__action"
-                            aria-label="Registrarse en Yapita"
+                            aria-label="{{ __('frontend.yapita.register_halloween.banner.register_action') }}"
                         >
                             <i class="bi bi-chevron-right"></i>
                         </button>
                     </div>
+
                     <div class="manager-filters__field">
 
                         <label
                             for="business-category-filter"
                             class="manager-filters__label"
                         >
-                            {{ __('frontend.maskana.filter.category_subcategory') }}
-
+                            {{ __('frontend.yapita.register_halloween.banner.select_route') }}
                         </label>
                     <div class="routes-container">
 

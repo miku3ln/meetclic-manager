@@ -1,23 +1,28 @@
+
 <footer class="yapita-register-footer">
 
     <p class="yapita-register-footer__login">
-        ¿Ya tienes cuenta?
+        {{ __('frontend.yapita.register_halloween.footer.already_registered') }}
 
         <a href="#" class="yapita-register-footer__login-link">
-            Iniciar sesión
+            {{ __('frontend.yapita.register_halloween.footer.sign_in') }}
         </a>
     </p>
 
     <p class="yapita-register-footer__legal">
-        Al registrarte aceptas las
+        {{ __('frontend.yapita.register_halloween.footer.legal_intro') }}
+
         <a href="#" class="yapita-register-footer__link">
-            bases del sorteo
+            {{ __('frontend.yapita.register_halloween.footer.contest_rules') }}
         </a>
-        y la
+
+        {{ __('frontend.yapita.register_halloween.footer.and_the') }}
+
         <a href="#" class="yapita-register-footer__link">
-            política de privacidad
+            {{ __('frontend.yapita.register_halloween.footer.privacy_policy') }}
         </a>.
-        La recepción de promociones es opcional.
+
+        {{ __('frontend.yapita.register_halloween.footer.promotions_optional') }}
     </p>
 
 </footer>

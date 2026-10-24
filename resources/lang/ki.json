@@ -1140,5 +1140,45 @@
     "frontend.maskana.business.no_information": "Mana willayta tarirkanchikchu",
     "frontend.maskana.business.try_changing_filters": "Maskanapa akllanakunata shuktakyachishpa kutin maskay.",
     "frontend.maskana.map.marker_unavailable": "Mapapi rikuchik mana tiyanchu, mana kashpaka empresata mana tarirkanchikchu.",
-    "frontend.maskana.filter.business_found": "tarishka empresa"
+    "frontend.maskana.filter.business_found": "tarishka empresa",
+
+
+    "frontend.yapita.register_halloween.validation.email_required": "Kanpak correo electrónicota killkay.",
+    "frontend.yapita.register_halloween.validation.email_too_long": "Correo electrónico yalli hatunmi kan.",
+    "frontend.yapita.register_halloween.validation.email_invalid": "Alli correo electrónicota killkay.",
+    "frontend.yapita.register_halloween.validation.password_required": "Pakalla shimita killkay.",
+    "frontend.yapita.register_halloween.validation.password_too_short": "Pakalla shimika pusak killkakunata charinami kan.",
+    "frontend.yapita.register_halloween.validation.password_too_long": "Pakalla shimika patsak ishkay chunka pusak killkakunamanta mana yallinachu.",
+    "frontend.yapita.register_halloween.validation.form_valid": "Formulario alli kan. Registro servicio manarak tinkishkachu.",
+
+    "frontend.yapita.register_halloween.benefits.local_prizes": "Kay llaktapa katuk wasikunapa kushikuna",
+    "frontend.yapita.register_halloween.benefits.promotions": "Promocionkunata riksiy",
+    "frontend.yapita.register_halloween.benefits.routes": "Ñankunata katipay",
+
+    "frontend.yapita.register_halloween.footer.already_registered": "¿Ñachu cuentata charinki?",
+    "frontend.yapita.register_halloween.footer.sign_in": "Cuentaman yaykuy",
+    "frontend.yapita.register_halloween.footer.legal_intro": "Killkarishpaka kaykunata chaskinki:",
+    "frontend.yapita.register_halloween.footer.contest_rules": "sorteopa kamachikuna",
+    "frontend.yapita.register_halloween.footer.and_the": "shinallatak",
+    "frontend.yapita.register_halloween.footer.privacy_policy": "pakalla willaykunapa kamachikuna",
+    "frontend.yapita.register_halloween.footer.promotions_optional": "Promocionkunapa willaykunata chaskina mana mutsurishkachu.",
+
+    "frontend.yapita.register_halloween.form.email_label": "Correo electrónico",
+    "frontend.yapita.register_halloween.form.password_label": "Pakalla shimi",
+    "frontend.yapita.register_halloween.form.password_placeholder": "Pusak killkakunamanta",
+    "frontend.yapita.register_halloween.form.show_password": "Pakalla shimita rikuchiy",
+    "frontend.yapita.register_halloween.form.hide_password": "Pakalla shimita pakay",
+    "frontend.yapita.register_halloween.form.submit": "Ñukapa cuentata wiñachishpa yaykuy",
+
+    "frontend.yapita.register_halloween.hero.title": "¡Yapitaman shamuy!",
+    "frontend.yapita.register_halloween.hero.description": "Mana kullkita kushpa killkaripay, Maskanapi katuk wasikunapa kushikunata hapinkapak.",
+
+    "frontend.yapita.register_halloween.social.continue_with": "kaywanpash katipay",
+
+    "frontend.yapita.register_halloween.banner.title": "¡Yapitapi killkaripay!",
+    "frontend.yapita.register_halloween.banner.description": "Maskanapi katuk wasikunapa kushikunata hapinkapak, mushuk promocionkunatapash riksinkapak yaykuy.",
+    "frontend.yapita.register_halloween.banner.register_action": "Yapitapi killkaripay",
+    "frontend.yapita.register_halloween.banner.select_route": "Ñanta akllay"
+
+
 }

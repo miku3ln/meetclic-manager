@@ -1,3 +1,4 @@
+
 <form
     id="yapitaRegisterForm"
     class="yapita-register-form"
@@ -17,7 +18,7 @@
                     for="yapitaRegisterEmail"
                     class="yapita-register-form__label"
                 >
-                    Correo electrónico
+                    {{ __('frontend.yapita.register_halloween.form.email_label') }}
                 </label>
 
                 <input
@@ -59,7 +60,7 @@
                     for="yapitaRegisterPassword"
                     class="yapita-register-form__label"
                 >
-                    Contraseña
+                    {{ __('frontend.yapita.register_halloween.form.password_label') }}
                 </label>
 
                 <input
@@ -67,7 +68,7 @@
                     id="yapitaRegisterPassword"
                     name="password"
                     class="yapita-register-form__input"
-                    placeholder="Mínimo 8 caracteres"
+                    placeholder="{{ __('frontend.yapita.register_halloween.form.password_placeholder') }}"
                     autocomplete="new-password"
                     minlength="8"
                     maxlength="128"
@@ -80,7 +81,7 @@
             <button
                 type="button"
                 class="yapita-register-form__toggle-password"
-                aria-label="Mostrar contraseña"
+                aria-label="{{ __('frontend.yapita.register_halloween.form.show_password') }}"
                 aria-pressed="false"
             >
                 <i class="bi bi-eye"></i>
@@ -104,7 +105,9 @@
         class="yapita-register-form__submit"
         disabled
     >
-        <span>Crear mi cuenta y participar</span>
+        <span>
+            {{ __('frontend.yapita.register_halloween.form.submit') }}
+        </span>
         <i class="bi bi-arrow-right"></i>
     </button>
 

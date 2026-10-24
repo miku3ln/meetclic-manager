@@ -1176,5 +1176,46 @@
     "frontend.maskana.business.try_changing_filters": "Try changing your search filters.",
     "frontend.maskana.map.marker_unavailable": "Marker or business unavailable.",
     "frontend.maskana.filter.businesses_found": "businesses found",
-    "frontend.maskana.filter.business_found": "business found"
+    "frontend.maskana.filter.business_found": "business found",
+
+
+
+    "frontend.yapita.register_halloween.validation.email_required": "Enter your email address.",
+    "frontend.yapita.register_halloween.validation.email_too_long": "The email address is too long.",
+    "frontend.yapita.register_halloween.validation.email_invalid": "Enter a valid email address.",
+    "frontend.yapita.register_halloween.validation.password_required": "Enter a password.",
+    "frontend.yapita.register_halloween.validation.password_too_short": "The password must contain at least 8 characters.",
+    "frontend.yapita.register_halloween.validation.password_too_long": "The password cannot exceed 128 characters.",
+    "frontend.yapita.register_halloween.validation.form_valid": "Form is valid. Registration service integration is pending.",
+
+    "frontend.yapita.register_halloween.benefits.local_prizes": "Prizes from local businesses",
+    "frontend.yapita.register_halloween.benefits.promotions": "Discover promotions",
+    "frontend.yapita.register_halloween.benefits.routes": "Follow the routes",
+
+    "frontend.yapita.register_halloween.footer.already_registered": "Already have an account?",
+    "frontend.yapita.register_halloween.footer.sign_in": "Sign in",
+    "frontend.yapita.register_halloween.footer.legal_intro": "By signing up, you agree to the",
+    "frontend.yapita.register_halloween.footer.contest_rules": "giveaway rules",
+    "frontend.yapita.register_halloween.footer.and_the": "and the",
+    "frontend.yapita.register_halloween.footer.privacy_policy": "privacy policy",
+    "frontend.yapita.register_halloween.footer.promotions_optional": "Receiving promotional messages is optional.",
+
+    "frontend.yapita.register_halloween.form.email_label": "Email address",
+    "frontend.yapita.register_halloween.form.password_label": "Password",
+    "frontend.yapita.register_halloween.form.password_placeholder": "At least 8 characters",
+    "frontend.yapita.register_halloween.form.show_password": "Show password",
+    "frontend.yapita.register_halloween.form.hide_password": "Hide password",
+    "frontend.yapita.register_halloween.form.submit": "Create my account and participate",
+
+    "frontend.yapita.register_halloween.hero.title": "Join Yapita!",
+    "frontend.yapita.register_halloween.hero.description": "Sign up for free and enter to win prizes from Maskana businesses.",
+
+    "frontend.yapita.register_halloween.social.continue_with": "or continue with",
+
+    "frontend.yapita.register_halloween.banner.title": "Sign up for Yapita!",
+    "frontend.yapita.register_halloween.banner.description": "Enter to win prizes from Maskana businesses and discover promotions.",
+    "frontend.yapita.register_halloween.banner.register_action": "Sign up for Yapita",
+    "frontend.yapita.register_halloween.banner.select_route": "Choose a route"
+
+
 }

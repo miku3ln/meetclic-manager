@@ -172,7 +172,7 @@
             if (!Array.isArray(businesses) || !businesses.length) {
                 return `
             <div class="business-group__empty">
-                No hay empresas disponibles.
+                No hay `+MaskanaTranslations['frontend.maskana.filter.businesses']+ `disponibles.
             </div>
         `;
             }
@@ -296,14 +296,14 @@
             <header class="business-group__header">
 
                 <h2 class="business-group__title">
-                    Empresas en esta ubicación
+                    `+MaskanaTranslations['frontend.maskana.filter.businesses']+` en esta ubicación
                 </h2>
 
                 <p class="business-group__subtitle">
                     ${businesses.length}
                     ${businesses.length === 1
-                ? 'empresa encontrada'
-                : 'empresas encontradas'
+                ? MaskanaTranslations['frontend.maskana.filter.businesses']+' encontrada'
+                : MaskanaTranslations['frontend.maskana.filter.businesses']+' encontradas'
             }
                 </p>
 
@@ -417,15 +417,64 @@
     `;
         }
 
+        /**
+         * CENTRALIZADOR
+         */
         static renderDetails(business, options = {}) {
             if (!business) {
                 return `
-            <div class="business-detail__empty">
-                No se encontró información de la empresa.
-            </div>
-        `;
+        <div class="business-detail__empty">
+            No se encontró información de la empresa.
+        </div>
+    `;
             }
 
+            const data = this.buildDetailData(business, options);
+
+            return `
+    <article
+        class="business-detail"
+        data-business-id="${escapeHtml(business.id ?? '')}"
+    >
+        <!-- HERO -->
+        ${this.renderDetailHero(data)}
+
+        <div class="business-detail__body">
+
+            <!-- IDENTIDAD -->
+            ${this.renderDetailHeader(data)}
+
+            <!-- CONTACTOS -->
+            ${this.renderDetailContacts(data)}
+
+            <!-- DIRECCIÓN -->
+            ${this.renderDetailLocation(data)}
+
+            <!-- PESTAÑAS -->
+            ${this.renderDetailTabs(data)}
+
+            <!-- PANEL INFORMACIÓN -->
+            ${this.renderDetailInformation(data)}
+
+            <!-- PANEL PROMOCIONES -->
+            ${this.renderDetailPromotions(data)}
+
+            <!-- PANEL PUBLICIDAD -->
+            ${this.renderDetailAdvertisements(data)}
+
+            <!-- PANEL HORARIOS -->
+            ${this.renderDetailSchedules(data)}
+
+        </div>
+    </article>
+`;
+        }
+
+        /**
+         * PREPARACIÓN DE DATOS
+         */
+        static buildDetailData(business, options = {}) {
+            const isRoute = [true, 1, '1', 'true'].includes(business.is_route);
             const image = safeUrl(business.source)
                 || safeUrl(options.fallbackImage);
 
@@ -486,27 +535,215 @@
             const socials = Object.entries(business.socialNetworksData || {})
                 .filter(([, url]) => safeUrl(url));
 
-            const contactItem = (url, icon, label, modifier, external = false) => {
-                if (!url) return '';
-
-                return `
-            <a
-                class="business-detail__contact-item business-detail__contact-item--${modifier}"
-                href="${escapeHtml(url)}"
-                ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}
-                aria-label="${escapeHtml(label)}"
-            >
-                <span class="business-detail__contact-icon">
-                    <i class="bi ${icon}" aria-hidden="true"></i>
-                </span>
-                <span class="business-detail__contact-label">
-                    ${escapeHtml(label)}
-                </span>
-            </a>
-        `;
+            return {
+                business,
+                image,
+                name,
+                category,
+                description,
+                ratingText,
+                phone,
+                email,
+                validEmail,
+                website,
+                whatsappNumber,
+                address,
+                hasCoordinates,
+                promotions,
+                advertisements,
+                yapitas,
+                visits,
+                trophies,
+                socials,
+                isRoute
             };
+        }
 
-            const tabButton = (key, label, icon, active = false) => `
+        /**
+         * HERO
+         */
+
+        /**
+         * DISTINTIVO DE EMPRESA PARTICIPANTE EN LA RUTA
+         */
+        static renderDetailRouteBadge(data) {
+            if (!data.isRoute) {
+                return '';
+            }
+
+            return `
+        <div class="business-detail__route-badge">
+            <span class="business-detail__route-badge-icon">
+                <i class="bi bi-gift-fill"></i>
+            </span>
+
+            <span class="business-detail__route-badge-text">
+                <strong>Punto oficial de caramelos</strong>
+                <small>Patrocinador de la ruta</small>
+            </span>
+
+            <i class="bi bi-patch-check-fill business-detail__route-badge-check"></i>
+        </div>
+    `;
+        }
+
+
+        static renderDetailHero(data) {
+            const { image, name } = data;
+
+            return `
+        <div class="business-detail__hero">
+            ${image ? `
+                <img
+                    class="business-detail__hero-image"
+                    src="${escapeHtml(image)}"
+                    alt="${escapeHtml(name)}"
+                    loading="lazy"
+                    onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
+                >
+                <div class="business-detail__hero-fallback" hidden>
+                    <i class="bi bi-shop"></i>
+                </div>
+            ` : `
+                <div class="business-detail__hero-fallback">
+                    <i class="bi bi-shop"></i>
+                </div>
+            `}
+
+            ${this.renderDetailRouteBadge(data)}
+        </div>
+    `;
+        }
+
+
+        /**
+         * IDENTIDAD Y CALIFICACIÓN
+         */
+        static renderDetailHeader(data) {
+            const { category, name, ratingText } = data;
+
+            return `
+        <header class="business-detail__header">
+            <span class="business-detail__category">
+                ${escapeHtml(category)}
+            </span>
+
+            <h2 class="business-detail__title">
+                ${escapeHtml(name)}
+            </h2>
+
+            <p class="business-detail__rating">
+                <i class="bi bi-star-fill"></i>
+                ${escapeHtml(ratingText)}
+            </p>
+        </header>
+    `;
+        }
+
+        /**
+         * ELEMENTO INDIVIDUAL DE CONTACTO
+         */
+        static renderDetailContactItem(url, icon, label, modifier, external = false) {
+            if (!url) return '';
+
+            return `
+        <a
+            class="business-detail__contact-item business-detail__contact-item--${modifier}"
+            href="${escapeHtml(url)}"
+            ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}
+            aria-label="${escapeHtml(label)}"
+        >
+            <span class="business-detail__contact-icon">
+                <i class="bi ${icon}" aria-hidden="true"></i>
+            </span>
+            <span class="business-detail__contact-label">
+                ${escapeHtml(label)}
+            </span>
+        </a>
+    `;
+        }
+
+        /**
+         * CONTACTOS
+         */
+        static renderDetailContacts(data) {
+            const { whatsappNumber, phone, validEmail, email, website } = data;
+
+            return `
+        <nav
+            class="business-detail__contacts"
+            aria-label="Contactar a la empresa"
+        >
+            ${this.renderDetailContactItem(
+                whatsappNumber ? `https://wa.me/${whatsappNumber}` : '',
+                'bi-whatsapp',
+                'WhatsApp',
+                'whatsapp',
+                true
+            )}
+
+            ${this.renderDetailContactItem(
+                phone ? `tel:${phone}` : '',
+                'bi-telephone-fill',
+                'Llamar',
+                'phone'
+            )}
+
+            ${this.renderDetailContactItem(
+                validEmail ? `mailto:${email}` : '',
+                'bi-envelope',
+                'Email',
+                'email'
+            )}
+
+            ${this.renderDetailContactItem(
+                website || '',
+                'bi-globe',
+                'Sitio web',
+                'website',
+                true
+            )}
+        </nav>
+    `;
+        }
+
+        /**
+         * DIRECCIÓN Y MAPA
+         */
+        static renderDetailLocation(data) {
+            const { address, hasCoordinates } = data;
+
+            return `
+        <section class="business-detail__location">
+            <div class="business-detail__location-info">
+                <i class="bi bi-geo-alt-fill business-detail__location-icon"></i>
+
+                <div class="business-detail__location-text">
+                    <h3>Dirección</h3>
+                    <p>
+                        ${escapeHtml(address || 'Dirección no registrada')}
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="business-detail__map-button"
+                data-business-action="center"
+                ${!hasCoordinates ? 'disabled' : ''}
+            >
+                <i class="bi bi-map"></i>
+                <span>Ver en el mapa</span>
+            </button>
+        </section>
+    `;
+        }
+
+        /**
+         * BOTÓN INDIVIDUAL DE PESTAÑA
+         */
+        static renderDetailTabButton(key, label, icon, active = false) {
+            return `
         <button
             type="button"
             class="business-detail__tab ${active ? 'business-detail__tab--active' : ''}"
@@ -518,125 +755,29 @@
             <span>${label}</span>
         </button>
     `;
+        }
+
+        /**
+         * PESTAÑAS
+         */
+        static renderDetailTabs(data) {
+            const { promotions, advertisements } = data;
 
             return `
-        <article
-            class="business-detail"
-            data-business-id="${escapeHtml(business.id ?? '')}"
+        <nav
+            class="business-detail__tabs"
+            role="tablist"
+            aria-label="Secciones de la empresa"
         >
-            <!-- HERO -->
-            <div class="business-detail__hero">
-                ${image ? `
-                    <img
-                        class="business-detail__hero-image"
-                        src="${escapeHtml(image)}"
-                        alt="${escapeHtml(name)}"
-                        loading="lazy"
-                        onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
-                    >
-                    <div class="business-detail__hero-fallback" hidden>
-                        <i class="bi bi-shop"></i>
-                    </div>
-                ` : `
-                    <div class="business-detail__hero-fallback">
-                        <i class="bi bi-shop"></i>
-                    </div>
-                `}
-            </div>
-
-            <div class="business-detail__body">
-
-                <!-- IDENTIDAD -->
-                <header class="business-detail__header">
-                    <span class="business-detail__category">
-                        ${escapeHtml(category)}
-                    </span>
-
-                    <h2 class="business-detail__title">
-                        ${escapeHtml(name)}
-                    </h2>
-
-                    <p class="business-detail__rating">
-                        <i class="bi bi-star-fill"></i>
-                        ${escapeHtml(ratingText)}
-                    </p>
-                </header>
-
-                <!-- CONTACTOS -->
-                <nav
-                    class="business-detail__contacts"
-                    aria-label="Contactar a la empresa"
-                >
-                    ${contactItem(
-                whatsappNumber ? `https://wa.me/${whatsappNumber}` : '',
-                'bi-whatsapp',
-                'WhatsApp',
-                'whatsapp',
-                true
-            )}
-
-                    ${contactItem(
-                phone ? `tel:${phone}` : '',
-                'bi-telephone-fill',
-                'Llamar',
-                'phone'
-            )}
-
-                    ${contactItem(
-                validEmail ? `mailto:${email}` : '',
-                'bi-envelope',
-                'Email',
-                'email'
-            )}
-
-                    ${contactItem(
-                website || '',
-                'bi-globe',
-                'Sitio web',
-                'website',
-                true
-            )}
-                </nav>
-
-                <!-- DIRECCIÓN -->
-                <section class="business-detail__location">
-                    <div class="business-detail__location-info">
-                        <i class="bi bi-geo-alt-fill business-detail__location-icon"></i>
-
-                        <div class="business-detail__location-text">
-                            <h3>Dirección</h3>
-                            <p>
-                                ${escapeHtml(address || 'Dirección no registrada')}
-                            </p>
-                        </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="business-detail__map-button"
-                        data-business-action="center"
-                        ${!hasCoordinates ? 'disabled' : ''}
-                    >
-                        <i class="bi bi-map"></i>
-                        <span>Ver en el mapa</span>
-                    </button>
-                </section>
-
-                <!-- PESTAÑAS -->
-                <nav
-                    class="business-detail__tabs"
-                    role="tablist"
-                    aria-label="Secciones de la empresa"
-                >
-                    ${tabButton(
+            ${this.renderDetailTabButton(
                 'information',
                 'Información',
                 'bi-file-text',
                 true
             )}
 
-                    ${promotions.length > 0
-                ? tabButton(
+            ${promotions.length > 0
+                ? this.renderDetailTabButton(
                     'promotions',
                     'Promociones',
                     'bi-tag'
@@ -644,8 +785,8 @@
                 : ''
             }
 
-                    ${advertisements.length > 0
-                ? tabButton(
+            ${advertisements.length > 0
+                ? this.renderDetailTabButton(
                     'advertisements',
                     'Publicidad',
                     'bi-megaphone'
@@ -653,154 +794,214 @@
                 : ''
             }
 
-                    ${tabButton(
+            ${this.renderDetailTabButton(
                 'schedules',
                 'Horarios',
                 'bi-clock'
             )}
-                </nav>
-
-                <!-- PANEL INFORMACIÓN -->
-                <div
-                    class="business-detail__panel business-detail__panel--active"
-                    data-business-panel="information"
-                    role="tabpanel"
-                >
-                    <section class="business-detail__card">
-                        <div class="business-detail__card-icon">
-                            <i class="bi bi-file-text"></i>
-                        </div>
-
-                        <div class="business-detail__card-content">
-                            <h3>Descripción</h3>
-                            <p>${escapeHtml(description)}</p>
-                        </div>
-                    </section>
-
-                    ${socials.length ? `
-                        <section class="business-detail__card">
-                            <div class="business-detail__card-icon">
-                                <i class="bi bi-share"></i>
-                            </div>
-                            <div class="business-detail__card-content">
-                                <h3>Redes sociales</h3>
-
-                                <div class="business-detail__socials">
-                                    ${socials.map(([socialName, url]) => `
-                                        <a
-                                            class="business-detail__social-link"
-                                            href="${escapeHtml(safeUrl(url))}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            ${escapeHtml(socialName)}
-                                            <i class="bi bi-box-arrow-up-right"></i>
-                                        </a>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </section>
-                    ` : ''}
-
-                    <!-- COMUNIDAD -->
-                    <section class="business-detail__community-card">
-                        <h3 class="business-detail__community-title">
-                            <i class="bi bi-people-fill"></i>
-                            Comunidad
-                        </h3>
-
-                        <div class="business-detail__community">
-                            <div class="business-detail__community-item">
-                                <i class="bi bi-heart business-detail__community-icon--heart"></i>
-                                <div>
-                                    <strong>${escapeHtml(yapitas)}</strong>
-                                    <span>Yapitas</span>
-                                </div>
-                            </div>
-
-                            <div class="business-detail__community-item">
-                                <i class="bi bi-eye-fill business-detail__community-icon--eye"></i>
-                                <div>
-                                    <strong>${escapeHtml(visits)}</strong>
-                                    <span>Visitas</span>
-                                </div>
-                            </div>
-
-                            <div class="business-detail__community-item">
-                                <i class="bi bi-trophy-fill business-detail__community-icon--trophy"></i>
-                                <div>
-                                    <strong>${escapeHtml(trophies)}</strong>
-                                    <span>Trofeos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- PANEL PROMOCIONES -->
-                ${promotions.length > 0 ? `
-                    <div
-                        class="business-detail__panel"
-                        data-business-panel="promotions"
-                        role="tabpanel"
-                        hidden
-                    >
-                        <header class="business-detail__panel-header">
-                            <h3>Promociones de la empresa</h3>
-                            <p>Descuentos y beneficios disponibles</p>
-                        </header>
-
-                        <div class="business-detail__promotions">
-                            ${promotions.map((promotion, index) =>
-                this.renderPromotionCard(promotion, index)
-            ).join('')}
-                        </div>
-                    </div>
-                ` : ''}
-
-                <!-- PANEL PUBLICIDAD -->
-                ${advertisements.length > 0 ? `
-                    <div
-                        class="business-detail__panel"
-                        data-business-panel="advertisements"
-                        role="tabpanel"
-                        hidden
-                    >
-                        <header class="business-detail__panel-header">
-                            <h3>Publicidad de la empresa</h3>
-                            <p>Novedades, campañas y anuncios</p>
-                        </header>
-
-                        <div class="business-detail__promotions">
-                            ${advertisements.map((ad, index) =>
-                this.renderPromotionCard(ad, index)
-            ).join('')}
-                        </div>
-                    </div>
-                ` : ''}
-
-                <!-- PANEL HORARIOS -->
-                <div
-                    class="business-detail__panel"
-                    data-business-panel="schedules"
-                    role="tabpanel"
-                    hidden
-                >
-                    <section class="business-detail__card">
-                        <div class="business-detail__card-icon">
-                            <i class="bi bi-clock"></i>
-                        </div>
-                        <div class="business-detail__card-content">
-                            <h3>Horarios de atención</h3>
-                            ${this.renderSchedules(business.schedules)}
-                        </div>
-                    </section>
-                </div>
-
-            </div>
-        </article>
+        </nav>
     `;
         }
+
+        /**
+         * PANEL DE INFORMACIÓN
+         */
+        static renderDetailInformation(data) {
+            return `
+        <div
+            class="business-detail__panel business-detail__panel--active"
+            data-business-panel="information"
+            role="tabpanel"
+        >
+            ${this.renderDetailDescription(data)}
+
+            ${this.renderDetailSocialNetworks(data)}
+
+            <!-- COMUNIDAD -->
+            ${this.renderDetailCommunity(data)}
+        </div>
+    `;
+        }
+
+        /**
+         * DESCRIPCIÓN
+         */
+        static renderDetailDescription(data) {
+            return `
+        <section class="business-detail__card">
+            <div class="business-detail__card-icon">
+                <i class="bi bi-file-text"></i>
+            </div>
+
+            <div class="business-detail__card-content">
+                <h3>Descripción</h3>
+                <p>${escapeHtml(data.description)}</p>
+            </div>
+        </section>
+    `;
+        }
+
+        /**
+         * REDES SOCIALES
+         */
+        static renderDetailSocialNetworks(data) {
+            const { socials } = data;
+
+            if (!socials.length) return '';
+
+            return `
+        <section class="business-detail__card">
+            <div class="business-detail__card-icon">
+                <i class="bi bi-share"></i>
+            </div>
+
+            <div class="business-detail__card-content">
+                <h3>Redes sociales</h3>
+
+                <div class="business-detail__socials">
+                    ${socials.map(([socialName, url]) => `
+                        <a
+                            class="business-detail__social-link"
+                            href="${escapeHtml(safeUrl(url))}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            ${escapeHtml(socialName)}
+                            <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        </section>
+    `;
+        }
+
+        /**
+         * COMUNIDAD
+         */
+        static renderDetailCommunity(data) {
+            const { yapitas, visits, trophies } = data;
+
+            return `
+        <section class="business-detail__community-card">
+            <h3 class="business-detail__community-title">
+                <i class="bi bi-people-fill"></i>
+                Comunidad
+            </h3>
+
+            <div class="business-detail__community">
+                <div class="business-detail__community-item">
+                    <i class="bi bi-heart business-detail__community-icon--heart"></i>
+                    <div>
+                        <strong>${escapeHtml(yapitas)}</strong>
+                        <span>Yapitas</span>
+                    </div>
+                </div>
+
+                <div class="business-detail__community-item">
+                    <i class="bi bi-eye-fill business-detail__community-icon--eye"></i>
+                    <div>
+                        <strong>${escapeHtml(visits)}</strong>
+                        <span>Visitas</span>
+                    </div>
+                </div>
+
+                <div class="business-detail__community-item">
+                    <i class="bi bi-trophy-fill business-detail__community-icon--trophy"></i>
+                    <div>
+                        <strong>${escapeHtml(trophies)}</strong>
+                        <span>Trofeos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+        }
+
+        /**
+         * PANEL PROMOCIONES
+         */
+        static renderDetailPromotions(data) {
+            const { promotions } = data;
+
+            if (!promotions.length) return '';
+
+            return `
+        <div
+            class="business-detail__panel"
+            data-business-panel="promotions"
+            role="tabpanel"
+            hidden
+        >
+            <header class="business-detail__panel-header">
+                <h3>Promociones de la empresa</h3>
+                <p>Descuentos y beneficios disponibles</p>
+            </header>
+
+            <div class="business-detail__promotions">
+                ${promotions.map((promotion, index) =>
+                this.renderPromotionCard(promotion, index)
+            ).join('')}
+            </div>
+        </div>
+    `;
+        }
+
+        /**
+         * PANEL PUBLICIDAD
+         */
+        static renderDetailAdvertisements(data) {
+            const { advertisements } = data;
+
+            if (!advertisements.length) return '';
+
+            return `
+        <div
+            class="business-detail__panel"
+            data-business-panel="advertisements"
+            role="tabpanel"
+            hidden
+        >
+            <header class="business-detail__panel-header">
+                <h3>Publicidad de la empresa</h3>
+                <p>Novedades, campañas y anuncios</p>
+            </header>
+
+            <div class="business-detail__promotions">
+                ${advertisements.map((ad, index) =>
+                this.renderPromotionCard(ad, index)
+            ).join('')}
+            </div>
+        </div>
+    `;
+        }
+
+        /**
+         * PANEL HORARIOS
+         */
+        static renderDetailSchedules(data) {
+            return `
+        <div
+            class="business-detail__panel"
+            data-business-panel="schedules"
+            role="tabpanel"
+            hidden
+        >
+            <section class="business-detail__card">
+                <div class="business-detail__card-icon">
+                    <i class="bi bi-clock"></i>
+                </div>
+
+                <div class="business-detail__card-content">
+                    <h3>Horarios de atención</h3>
+                    ${this.renderSchedules(data.business.schedules)}
+                </div>
+            </section>
+        </div>
+    `;
+        }
+
+
 
         static initDetailInteractions() {
             if (this._detailInteractionsInitialized) return;
@@ -1592,11 +1793,11 @@
                             ),
 
                             title: count > 1
-                                ? `${count} empresas`
+                                ? `${count} `+MaskanaTranslations['frontend.maskana.filter.businesses']
                                 : (
                                     business.business_name ||
                                     business.title ||
-                                    'Empresa'
+                                    MaskanaTranslations['frontend.maskana.filter.businesses']
                                 )
                         }
                     );

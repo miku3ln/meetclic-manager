@@ -1007,8 +1007,6 @@
         left: 20px;
         right: 20px;
         z-index: 500;
-
-        display: flex;
         align-items: center;
         justify-content: space-between;
 
@@ -1042,7 +1040,7 @@
 
         width: 94px;
         min-width: 94px;
-        height: 94px;
+        height: 120px;
         box-sizing: border-box;
 
         padding: 5px 6px;
@@ -1406,9 +1404,11 @@
     }
 
     .manager-filters__reset {
+
+        margin-left: 9%;
+        width: 50%;
         border: 1px solid #dce4df;
-        background: #ffffff;
-        color: #52665a;
+        background: #ffcd02;
     }
 
     .manager-filters__apply {
@@ -1465,8 +1465,8 @@
             width: 124px;
     }
     .manager-map__toolbar {
-        width: 92%!important;
-        top: 12px!important;
+        width: 97%!important;
+        top: 2px!important;
         left: 3px!important;
         right: 0px!important;
     }
@@ -1474,7 +1474,7 @@
         top: 72% !important;
     }
     .manager-map__actions {
-        top: 13% !important;
+        top: 9% !important;
     }
     .manager-map__toolbar {
         top: 12px;
@@ -1486,10 +1486,13 @@
     .manager-map__counter {
         padding: 9px 12px;
         font-size: 12px;
+        left: 69%;
+        position: absolute;
+        top: 8px;
     }
 
     .manager-map__actions {
-        right: 15px;
+        right: 1px;
     }
 
     .manager-filters {
@@ -3844,6 +3847,79 @@ footer.main-footer.dark-footer {
             padding-top: 12px;
             padding-bottom: 12px;
         }
+    }
+    .nav-button-wrap.color-bg.nav-button-wrap--menu-mobiles {
+        background: #ffcd02;
+    }
+
+
+
+
+    .business-detail__hero {
+        position: relative;
+    }
+
+    .business-detail__route-badge {
+        position: absolute;
+        z-index: 3;
+        bottom: 5px;
+        left: 12px;
+
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        max-width: calc(100% - 24px);
+        padding: 9px 12px;
+
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(245, 177, 39, 0.45);
+        border-radius: 13px;
+
+        box-shadow: 0 5px 18px rgba(24, 38, 80, 0.12);
+        backdrop-filter: blur(8px);
+    }
+
+    .business-detail__route-badge-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+
+        background: #fff0c7;
+        color: #db8b00;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    .business-detail__route-badge-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .business-detail__route-badge-text strong {
+        color: #654400;
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 1.25;
+    }
+
+    .business-detail__route-badge-text small {
+        color: #966300;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 1.25;
+    }
+
+    .business-detail__route-badge-check {
+        color: #e5a000;
+        font-size: 17px;
+        flex-shrink: 0;
     }
 
 </style>
