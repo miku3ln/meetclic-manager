@@ -324,6 +324,18 @@ class BusinessRepository
             return [];
         }
     }
+    public static function getUploadUrl(?string $path): string
+    {
+        $path = ltrim($path ?? '', '/');
+
+        $path = preg_replace(
+            '#^(?:public/)?uploads/#',
+            '',
+            $path
+        );
+
+        return asset('public/uploads/' . $path);
+    }
     public function searchNearbyBusinessPromotion(
         $latitude = null,
         $longitude = null,
@@ -548,6 +560,7 @@ class BusinessRepository
             ->map(function ($rows) {
                 $business = clone $rows->first();
                 $business->is_route=false;
+                $business->source = $this->getUploadUrl($business->source);
                 $business->distance_km = $business->distance !== null
                     ? round((float) $business->distance, 2) . ' km'
                     : null;
@@ -556,7 +569,7 @@ class BusinessRepository
                     ->filter(fn($row) => $row->bbp_id !== null)
                     ->unique('bbp_id')
                     ->map(function ($row) {
-
+                      $source=$this->getUploadUrl($row->bbp_source);
                         return [
                             'id' => $row->bbp_id,
                             'start_time' => $row->bbp_start_time,
@@ -564,9 +577,7 @@ class BusinessRepository
                             'name' => $row->bbp_name,
                             'description' => $row->bbp_description,
                             'status' => $row->bbp_status,
-                            'source' => !empty($row->bbp_source)
-                                ? asset('public') . '/' . ltrim($row->bbp_source, '/')
-                                : null,
+                            'source' => $source,
                             'products_id' => $row->products_id,
                         ];
                     })
@@ -896,9 +907,9 @@ class BusinessRepository
                 ? round((float)$business->distance, 2) . " km"
                 : null;
 
-            $publicAsset = asset('public') . $business->source;
+            $source=$this->getUploadUrl($business->source);
 
-            $business->source = $publicAsset;
+            $business->source = $source;
 
             $business_id = $business->id;
             $socialNetworksData = [];
