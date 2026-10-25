@@ -120,6 +120,7 @@
 
 
     <div id="app-management" class="manager-map">
+        @if(!Auth::check())
         <div class="yapita-register">
             <div class="yapita-register__icon">
                 <i class="bi bi-gift-fill"></i>
@@ -143,6 +144,7 @@
                 <i class="bi bi-chevron-right"></i>
             </button>
         </div>
+        @endif
         <input
             type="hidden"
             id="route-business-action"

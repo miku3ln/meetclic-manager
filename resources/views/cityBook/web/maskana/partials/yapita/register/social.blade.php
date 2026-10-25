@@ -3,7 +3,6 @@
     <div class="yapita-register-social__divider">
         <span>{{ __('frontend.yapita.register_halloween.social.continue_with') }}</span>
     </div>
-
     <div class="yapita-register-social__actions">
 
         <div class="row row--manager-auth">
