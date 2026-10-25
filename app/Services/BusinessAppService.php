@@ -69,16 +69,21 @@ class BusinessAppService
                 '',
                 $type
             );
-
+            $excludeBusinessIds = collect($businesses)
+                ->pluck('id')
+                ->map(fn ($id) => (int) $id)
+                ->unique()
+                ->values()
+                ->all();
+            $excludeBusinessIds[] = 42;
             $businessesPromotions = $this->repository->searchNearbyBusinessPromotion(
                 $latitude,
                 $longitude,
                 $radiusKm,
                 null,
-                $onlyWithRedeemableRewards,
-                $onlyWithGamesActive,
-                $onlyAlliedCompanies,
-                ''
+                $excludeBusinessIds,
+                '',
+
             );
 
             $businessesMap = collect($businesses)

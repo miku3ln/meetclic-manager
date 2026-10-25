@@ -341,6 +341,7 @@ class BusinessRepository
         $longitude = null,
         $radiusKm = 5,
         $subcategoryIds = null,
+        array $excludeBusinessIds = [],
         $searchQuery = "",
 
     )
@@ -471,7 +472,17 @@ class BusinessRepository
          * 5. FILTRAR POR UBICACIÓN SOLO SI EXISTE
          * =====================================================
          */
+        if (!empty($excludeBusinessIds)) {
 
+
+
+
+                $query->whereIn(
+                    'b.id',
+                    $excludeBusinessIds
+                );
+
+        }
         if ($hasLocation) {
 
             $query
