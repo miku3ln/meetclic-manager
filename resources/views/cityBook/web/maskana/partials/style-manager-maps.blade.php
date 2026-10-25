@@ -1474,12 +1474,10 @@
         top: 72% !important;
     }
     .manager-map__actions {
-        top: 9% !important;
+        top: 116px !important;
     }
     .manager-map__toolbar {
-        top: 12px;
-        left: 58px;
-        right: 12px;
+        top: 65px !important;
     }
 
 
@@ -1499,7 +1497,7 @@
         top: auto;
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: -29px;
 
         width: 100%;
         height: min(80dvh, 680px);
@@ -1523,7 +1521,7 @@
 
     .manager-filters__footer {
         padding: 14px 18px
-        calc(14px + env(safe-area-inset-bottom));
+        calc(31px + env(safe-area-inset-bottom));
     }
 
     .chat-widget-button {
@@ -2968,6 +2966,9 @@ footer.main-footer.dark-footer {
 ======================================== */
 
     .yapita-register {
+        z-index: 2;
+        top: 0;
+        position: absolute;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -3074,9 +3075,9 @@ footer.main-footer.dark-footer {
     @media (max-width: 480px) {
 
         .yapita-register {
-            gap: 9px;
-            padding: 12px 10px;
-            border-radius: 14px;
+            gap: 4px;
+            padding: 0 0;
+            border-radius: 0;
         }
 
         .yapita-register__icon {
@@ -3658,9 +3659,6 @@ footer.main-footer.dark-footer {
     /* BUTTONS GRID */
 
     #yapitaRegisterModal .yapita-register-social__actions {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
 
         width: 100%;
         margin: 0;
@@ -3668,26 +3666,17 @@ footer.main-footer.dark-footer {
     }
 
     #yapitaRegisterModal .yapita-register-social__button {
-        display: inline-flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-
         width: 100%;
         min-width: 0;
         height: 44px;
         min-height: 44px;
-
         margin: 0;
         padding: 8px 10px;
 
         border: 1px solid var(--yr-border);
         border-radius: 12px;
-
         background: #fff;
         color: var(--yr-primary);
-
         font-family: inherit;
         font-size: 12px;
         font-weight: 700;
@@ -3711,19 +3700,12 @@ footer.main-footer.dark-footer {
     }
 
     #yapitaRegisterModal .yapita-register-social__button--facebook i {
-        display: inline-flex;
         flex: 0 0 auto;
         color: #fff;
         font-size: 20px;
         line-height: 1;
     }
 
-    /* GOOGLE */
-
-    #yapitaRegisterModal .yapita-register-social__button--google {
-        background: #fff;
-        color: #27334d;
-    }
 
     #yapitaRegisterModal .yapita-register-social__google-icon {
         display: block !important;
@@ -3748,7 +3730,76 @@ footer.main-footer.dark-footer {
     /* =====================================================
        FOOTER
     ===================================================== */
+    .row.row--manager-auth {
+        padding-bottom: 15px;
+    }
+    div#yapita-google-login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 44px;
+        margin: 0 auto;
+    }
+    /* ==========================================
+   SOCIAL LOGIN - LOADING
+========================================== */
 
+    [data-social-loading-target] {
+        position: relative;
+        isolation: isolate;
+    }
+
+    /* Bloquear interacciones mientras se autentica */
+    [data-social-loading-target].is-social-loading {
+        pointer-events: none;
+        cursor: wait;
+    }
+
+    /* Capa sobre el botón */
+    [data-social-loading-target].is-social-loading::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        background: rgba(255, 255, 255, 0.88);
+        border-radius: inherit;
+    }
+
+    /* Spinner */
+    [data-social-loading-target].is-social-loading::after {
+        content: "";
+        position: absolute;
+        z-index: 21;
+
+        width: 22px;
+        height: 22px;
+
+        top: 50%;
+        left: 50%;
+
+        border: 3px solid #dbe4ff;
+        border-top-color: #435cf0;
+        border-radius: 50%;
+
+        animation: yapita-social-spin 0.75s linear infinite;
+    }
+
+    @keyframes yapita-social-spin {
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        [data-social-loading-target].is-social-loading::after {
+            animation-duration: 2s;
+        }
+    }
     #yapitaRegisterModal .yapita-register-footer {
         display: block;
         width: 100%;
@@ -3761,7 +3812,6 @@ footer.main-footer.dark-footer {
     #yapitaRegisterModal .yapita-register-footer__login {
         margin: 0 0 12px;
         padding: 0;
-
         color: var(--yr-primary);
         font-size: 12px;
         font-weight: 500;

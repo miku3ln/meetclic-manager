@@ -9,12 +9,11 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Socialite;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Utils\UtilUser;
-use Hash;
-use Auth;
-
+use Symfony\Component\Console\Input\Input;
 
 
 class FacebookController extends Controller

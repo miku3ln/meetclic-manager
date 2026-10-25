@@ -43,6 +43,10 @@ return [
         'client_id'=>env('google_client_id'),
         'client_secret'=>env('google_client_secret'),
         'redirect'=>env('google_redirect'),
-
+    ],
+    'google_modal_register'=>[
+        'client_id'=>env('modal_register_google_client_id'),
+        'client_secret'=>env('modal_register_google_client_secret'),
+        'redirect'=>env('modal_register_google_redirect'),
     ]
 ];

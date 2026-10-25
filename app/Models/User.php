@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Hash;
-use Auth;
-use DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {

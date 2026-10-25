@@ -1,5 +1,3 @@
-
-
 <script>
 
     class BusinessMarkerEditor {
@@ -270,77 +268,77 @@
                 console.warn('Selecciona una empresa individual.');
                 return;
             }
-if($isLoggedIn){
+            if ($isLoggedIn) {
 
 
-            // ACTIVAR DRAG
-            marker.dragging.enable();
+                // ACTIVAR DRAG
+                marker.dragging.enable();
 
-            console.log(
-                '¿Dragging habilitado?',
-                marker.dragging.enabled()
-            );
-
-            // ELIMINAR ÚNICAMENTE NUESTROS EVENTOS ANTERIORES
-            if (marker._maskanaDragHandlers) {
-
-                const handlers = marker._maskanaDragHandlers;
-
-                marker.off('dragstart', handlers.start);
-                marker.off('drag', handlers.move);
-                marker.off('dragend', handlers.end);
-            }
-
-            // INICIO DEL DRAG
-            const onDragStart = function (event) {
-
-
-            };
-
-            // DURANTE EL DRAG
-            const onDrag = function (event) {
-
-                const position = event.target.getLatLng();
-
-
-            };
-
-            // FINAL DEL DRAG
-            const onDragEnd = function (event) {
-
-                const position = event.target.getLatLng();
-
-                const data = {
-                    business: business,
-
-                    business_id: business.id,
-                    title: business.title,
-                    latitude: Number(position.lat.toFixed(8)),
-                    longitude: Number(position.lng.toFixed(8))
-                };
-                // EVENTO PERSONALIZADO
-                document.dispatchEvent(
-                    new CustomEvent('business:marker:dragend', {
-                        detail: data
-                    })
+                console.log(
+                    '¿Dragging habilitado?',
+                    marker.dragging.enabled()
                 );
 
-            };
+                // ELIMINAR ÚNICAMENTE NUESTROS EVENTOS ANTERIORES
+                if (marker._maskanaDragHandlers) {
 
-            // GUARDAR REFERENCIAS
-            marker._maskanaDragHandlers = {
-                start: onDragStart,
-                move: onDrag,
-                end: onDragEnd
-            };
+                    const handlers = marker._maskanaDragHandlers;
 
-            // REGISTRAR EVENTOS NATIVOS LEAFLET
-            marker.on('dragstart', onDragStart);
-            marker.on('drag', onDrag);
-            marker.on('dragend', onDragEnd);
+                    marker.off('dragstart', handlers.start);
+                    marker.off('drag', handlers.move);
+                    marker.off('dragend', handlers.end);
+                }
 
-            console.log('Eventos de arrastre registrados.');
-}
+                // INICIO DEL DRAG
+                const onDragStart = function (event) {
+
+
+                };
+
+                // DURANTE EL DRAG
+                const onDrag = function (event) {
+
+                    const position = event.target.getLatLng();
+
+
+                };
+
+                // FINAL DEL DRAG
+                const onDragEnd = function (event) {
+
+                    const position = event.target.getLatLng();
+
+                    const data = {
+                        business: business,
+
+                        business_id: business.id,
+                        title: business.title,
+                        latitude: Number(position.lat.toFixed(8)),
+                        longitude: Number(position.lng.toFixed(8))
+                    };
+                    // EVENTO PERSONALIZADO
+                    document.dispatchEvent(
+                        new CustomEvent('business:marker:dragend', {
+                            detail: data
+                        })
+                    );
+
+                };
+
+                // GUARDAR REFERENCIAS
+                marker._maskanaDragHandlers = {
+                    start: onDragStart,
+                    move: onDrag,
+                    end: onDragEnd
+                };
+
+                // REGISTRAR EVENTOS NATIVOS LEAFLET
+                marker.on('dragstart', onDragStart);
+                marker.on('drag', onDrag);
+                marker.on('dragend', onDragEnd);
+
+                console.log('Eventos de arrastre registrados.');
+            }
         });
 
 
@@ -927,9 +925,11 @@ if($isLoggedIn){
 
         setBusinessLoading(false);
     }
-    function initModalYapita()  {
+
+    function initModalYapita() {
         YapitaRegisterModal.init();
     }
+
     function changeDataBrand($selected) {
 
         if (!$selected || !$selected.length) return;
@@ -974,8 +974,8 @@ if($isLoggedIn){
     /**
      * Abre el modal de registro de Yapita.
      */
-    function openYapitaRegisterModal() {
-
+    async  function openYapitaRegisterModal() {
+        await initGoogleLoginButton();
         const modalElement = document.getElementById(
             'yapitaRegisterModal'
         );
@@ -993,151 +993,74 @@ if($isLoggedIn){
     }
 
 
-function initFiltersRoutes(){
-    $(document).on('click', '.routes-container__item', async function () {
+    function initFiltersRoutes() {
+        $(document).on('click', '.routes-container__item', async function () {
 
-        const $selected = $(this);
-        const zoneId = parseInt($selected.data('zone-id'), 10);
+            const $selected = $(this);
+            const zoneId = parseInt($selected.data('zone-id'), 10);
 
-        if (!Number.isInteger(zoneId)) {
-            console.warn('ID de zona inválido');
-            return;
-        }
+            if (!Number.isInteger(zoneId)) {
+                console.warn('ID de zona inválido');
+                return;
+            }
 
-        // ==========================================
-        // 1. EVITAR SELECCIONAR LA MISMA RUTA
-        // ==========================================
+            // ==========================================
+            // 1. EVITAR SELECCIONAR LA MISMA RUTA
+            // ==========================================
 
-        if ($selected.hasClass('routes-container__item--active')) {
-            return;
-        }
+            if ($selected.hasClass('routes-container__item--active')) {
+                return;
+            }
 
-        // ==========================================
-        // 2. ACTUALIZAR PARÁMETRO URL
-        // ==========================================
+            // ==========================================
+            // 2. ACTUALIZAR PARÁMETRO URL
+            // ==========================================
 
-        const url = new URL(window.location.href);
+            const url = new URL(window.location.href);
 
-        url.searchParams.set('type', zoneId);
+            url.searchParams.set('type', zoneId);
 
-        window.history.pushState(
-            { type: zoneId },
-            '',
-            url.toString()
-        );
+            window.history.pushState(
+                {type: zoneId},
+                '',
+                url.toString()
+            );
 
-        // ==========================================
-        // 3. QUITAR SELECCIÓN ANTERIOR
-        // ==========================================
+            // ==========================================
+            // 3. QUITAR SELECCIÓN ANTERIOR
+            // ==========================================
 
-        $('.routes-container__item')
-            .removeClass('routes-container__item--active')
-            .attr('aria-pressed', 'false')
-            .find('.routes-container__check, .routes-container__indicator')
-            .remove();
+            $('.routes-container__item')
+                .removeClass('routes-container__item--active')
+                .attr('aria-pressed', 'false')
+                .find('.routes-container__check, .routes-container__indicator')
+                .remove();
 
-        // ==========================================
-        // 4. ACTIVAR NUEVA RUTA
-        // ==========================================
+            // ==========================================
+            // 4. ACTIVAR NUEVA RUTA
+            // ==========================================
 
-        $selected
-            .addClass('routes-container__item--active')
-            .attr('aria-pressed', 'true')
-            .append(`
+            $selected
+                .addClass('routes-container__item--active')
+                .attr('aria-pressed', 'true')
+                .append(`
             <span class="routes-container__check" aria-hidden="true">
                 <i class="bi bi-check-circle-fill"></i>
             </span>
         `);
-        changeDataBrand($selected);
-        // ==========================================
-        // 5. ACTUALIZAR EMPRESAS DEL MAPA
-        // ==========================================
+            changeDataBrand($selected);
+            // ==========================================
+            // 5. ACTUALIZAR EMPRESAS DEL MAPA
+            // ==========================================
 
-        try {
-            await loadBusinesses();
-        } catch (error) {
-            console.error('Error al cargar empresas:', error);
-        }
-
-    });
-}
-    $(document).ready(function () {
-
-
-        /**
-         * Capturar evento de registro.
-         */
-        $(document).on('click', '.yapita-register__content', function (event) {
-            event.preventDefault();
-
-            openYapitaRegisterModal();
-        });
-        initModalYapita();
-        initFiltersRoutes();
-        BusinessMapHtmlUtil.initDetailInteractions();
-        document.addEventListener(
-            'business:marker:dragend',
-            async function (event) {
-                const data = event.detail;
-                console.log('data:', data);
-                console.log('business: bmz_manager_id', data.business.bmz_manager_id);
-                console.log('Empresa:', data.business_id);
-                console.log('Latitud:', data.latitude);
-                console.log('Longitud:', data.longitude);
-                if ($isLoggedIn) {
-                    await updateLocationBusinessMaskana({
-                        business_id: data.business_id,
-                        latitude: data.latitude,
-                        longitude: data.longitude,
-                        bmz_manager_id: data.business.bmz_manager_id
-                    });
-                }
-
+            try {
+                await loadBusinesses();
+            } catch (error) {
+                console.error('Error al cargar empresas:', error);
             }
-        );
 
-        const businessResponseData = new window.BusinessResponseData();
-        initManager();
-        initBusinessCategoriesSelect2();
-        initManagerFilters({
-            onApply: function (params) {
-                console.log(params);
-
-            }
         });
-
-        Object.defineProperty(managerBusiness, 'data', {
-            get() {
-                return this._data;
-            },
-
-            set(newData) {
-                if (this._data === newData) return;
-                const oldData = this._data;
-                this._data = newData;
-                $(document).trigger('managerBusiness:dataChanged', [
-                    newData,
-                    oldData
-                ]);
-            },
-
-            enumerable: true,
-            configurable: true
-        });
-
-
-        $(document).on(
-            'managerBusiness:dataChanged.businessMap',
-            function (event, newData, oldData) {
-
-                businessResponseData.render(newData);
-                businessResponseData.renderMapHint();
-            }
-        );
-
-
-    });
-
+    }
 
     let businessCategoriesData = [];
 

@@ -28,6 +28,7 @@
 
 @endsection
 @section('additional-scripts')
+    @include('cityBook.web.maskana.partials.yapita.register.assets.util-social-network-authentication')
 
 
     @php
@@ -63,6 +64,26 @@
     <script>
         window.MaskanaTranslations = {{ Illuminate\Support\Js::from($maskanaTranslations) }};
     </script>
+
+    <script>
+        window.SocialNetworkConfig = {
+            google: {
+                enabled: true,
+                clientId: @json(config('services.google_modal_register.client_id')),
+                endpoint: @json(url('/auth/google/modal'))
+            },
+
+            facebook: {
+                enabled: false, // Activar cuando configuremos Meta
+                appId: null,
+                apiVersion: null,
+                endpoint: null
+            }
+        };
+    </script>
+
+    <script src="https://accounts.google.com/gsi/client"
+            async defer></script>
     <script>
         var $zoneManager = <?php echo json_encode($zoneManager) ?>;
         var $zonesManager = <?php echo json_encode($zonesManager) ?>;
@@ -89,6 +110,7 @@
     @include('cityBook.web.maskana.partials.business-response-data')
     @include('cityBook.web.maskana.partials.maskana-map-location-controller')
     @include('cityBook.web.maskana.partials.business-map-controller')
+    @include('cityBook.web.maskana.partials.init-process-manager')
 
 
 
@@ -98,11 +120,29 @@
 
 
     <div id="app-management" class="manager-map">
+        <div class="yapita-register">
+            <div class="yapita-register__icon">
+                <i class="bi bi-gift-fill"></i>
+            </div>
 
-        <!-- ==========================================
-             RUTAS API
-        ========================================== -->
+            <div class="yapita-register__content">
+                <h3 class="yapita-register__title">
+                    {{ __('frontend.yapita.register_halloween.banner.title') }}
+                </h3>
 
+                <p class="yapita-register__description">
+                    {{ __('frontend.yapita.register_halloween.banner.description') }}
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="yapita-register__action"
+                aria-label="{{ __('frontend.yapita.register_halloween.banner.register_action') }}"
+            >
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
         <input
             type="hidden"
             id="route-business-action"
@@ -248,31 +288,6 @@
                         aria-atomic="true"
                     >
                     </div>
-
-                    <div class="yapita-register">
-                        <div class="yapita-register__icon">
-                            <i class="bi bi-gift-fill"></i>
-                        </div>
-
-                        <div class="yapita-register__content">
-                            <h3 class="yapita-register__title">
-                                {{ __('frontend.yapita.register_halloween.banner.title') }}
-                            </h3>
-
-                            <p class="yapita-register__description">
-                                {{ __('frontend.yapita.register_halloween.banner.description') }}
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            class="yapita-register__action"
-                            aria-label="{{ __('frontend.yapita.register_halloween.banner.register_action') }}"
-                        >
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
-
                     <div class="manager-filters__field">
 
                         <label
