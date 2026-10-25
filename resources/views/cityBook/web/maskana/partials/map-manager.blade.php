@@ -668,14 +668,18 @@
          */
         static renderDetailContacts(data) {
             const { whatsappNumber, phone, validEmail, email, website } = data;
-
+            const businessName = data.title || data.business_name || data.name || '';
+            const whatsappLink = MaskanaContactUtil.getWhatsAppLink(
+                whatsappNumber || phone,
+                businessName
+            );
             return `
         <nav
             class="business-detail__contacts"
             aria-label="Contactar a la empresa"
         >
             ${this.renderDetailContactItem(
-                whatsappNumber ? `https://wa.me/${whatsappNumber}` : '',
+                whatsappLink,
                 'bi-whatsapp',
                 'WhatsApp',
                 'whatsapp',

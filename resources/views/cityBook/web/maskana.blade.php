@@ -103,6 +103,7 @@
     <script src="{{ URL::asset($resourcePathServer.'libs/toast/jquery.toast.min.js') }}"
             type='text/javascript'></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    @include('cityBook.web.maskana.partials.util-whatsapp')
 
     @include('cityBook.web.maskana.partials.map-manager')
     @include('cityBook.web.maskana.partials.yapita.register.assets.yapita-register-modal')
