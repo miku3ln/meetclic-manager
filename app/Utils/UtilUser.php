@@ -464,7 +464,7 @@ class UtilUser
                     $success = true;
                     $user = $this->create($dataPost);
                     $user_id = $user->id;
-                   // $this->guard()->login($user);
+                    // $this->guard()->login($user);
                     $this->registered($request, $user);
                     $role_id = Role::ROL_CUSTOMER;
                     UsersHasRoles::create([
@@ -516,7 +516,7 @@ class UtilUser
                     DB::commit();
                     // ✅ NO ROMPER POR EMAIL
                     try {
-                     //   event(new Registered($user));
+                        //   event(new Registered($user));
 
                         $verificationUrl = URL::temporarySignedRoute(
                             'verification.verify', // ruta
@@ -533,7 +533,7 @@ class UtilUser
 
                     } catch (\Throwable $e) {
                         $mailManager['success'] = false;
-                        $mailManager['message'] = 'Usuario creado, pero no se pudo enviar el correo.' .$e->getMessage();
+                        $mailManager['message'] = 'Usuario creado, pero no se pudo enviar el correo.' . $e->getMessage();
 
 
                     }
@@ -778,18 +778,18 @@ class UtilUser
         $result = $this->saveUserTypes($paramsSave);
         if (isset($result['success']) && is_array($result)) {
 
-            $status=$result['success']?'Revise su correo para activar la cuenta.!':'No se pudo realizar la creacion de la cuenta.';
+            $status = $result['success'] ? 'Revise su correo para activar la cuenta.!' : 'No se pudo realizar la creacion de la cuenta.';
             return redirect()->to(url(app()->getLocale() . '/register'))->with([
-                'status'=>$status,
+                'status' => $status,
                 'success' => $result['success'] ?? false,
                 'msj' => $result['msj'] ?? '',
                 'data' => $result['data'] ?? [],
                 'errors' => $result['errors'] ?? []
             ]);
 
-        }else{
+        } else {
 
-        return $result;
+            return $result;
         }
 
     }
@@ -913,16 +913,16 @@ class UtilUser
 
     protected function createProvider(array $data, $typeProvider)
     {
-        $user = null;
+        $result = null;
         $model = new User;
 
         if ($typeProvider == User::PROVIDER_FACEBOOK) {
-            $user = $model->managerFacebook($data);
+            $result = $model->managerFacebook($data);
         } else if ($typeProvider == User::PROVIDER_GOOGLE) {
-            $user = $model->managerGoogle($data);
+            $result = $model->managerGoogle($data);
         }
 
-        return $user;
+        return $result;
     }
 
     public function managerUserProvider($params)
@@ -934,9 +934,11 @@ class UtilUser
         $success = false;
         $msg = 'Nothing';
         $data = [];
+        $resultSaveUser = $this->createProvider($dataPost, $typeProvider);
         $user = null;
         if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER_FACEBOOK) {
-            $user = $this->createProvider($dataPost, $typeProvider);
+
+            $user = $resultSaveUser["user"];
             if (!$user) {
 
                 $success = false;
@@ -949,7 +951,9 @@ class UtilUser
             }
 
         } else if ($typeSave == UtilUser::TYPE_SAVE_CUSTOMER_GOOGLE) {
-            $user = $this->createProvider($dataPost, $typeProvider);
+            $user = $resultSaveUser["user"];
+            $data['userManager'] = $resultSaveUser;
+
             if (!$user) {
                 $success = false;
                 $msg = 'Error al crear un usuario Google.';
@@ -984,17 +988,16 @@ class UtilUser
                 ];
             } else {
                 $data['user'] = $user;
-
+                $data['userManager'] = $resultSaveUser;
             }
         }
 
 
-        $result = [
+        return [
             'success' => $success,
             'msg' => $msg,
             'data' => $data
         ];
-        return $result;
     }
 
     public function getDataUserRBAC($user)

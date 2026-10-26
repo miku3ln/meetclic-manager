@@ -381,73 +381,7 @@
                     </footer>
                 </div>
             </section>
-            <section
-                id="manager-filters-panel"
-                class="manager-filters"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="manager-filters-title"
-                aria-hidden="true"
-                inert
-            >
 
-                <div class="manager-filters__header">
-
-                    <div class="manager-filters__heading">
-
-                        <div class="manager-filters__icon">
-                            <i class="bi bi-sliders2"></i>
-                        </div>
-
-                        <div>
-                            <h2
-                                id="manager-filters-title"
-                                class="manager-filters__title"
-                            >
-                                {{ __('frontend.maskana.filter.title') }}
-                            </h2>
-
-                            <p class="manager-filters__subtitle">
-                                {{ __('frontend.maskana.filter.subtitle') }}
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        id="manager-filters-close"
-                        class="manager-filters__close"
-                        aria-label="Cerrar filtros"
-                    >
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-
-                </div>
-
-                <!-- CONTENIDO -->
-
-                <div class="manager-filters__body">
-                    <div
-                        id="business-response-data"
-                        class="response-data"
-                        role="status"
-                        aria-live="polite"
-                        aria-atomic="true"
-                    >
-                    </div>
-
-
-                </div>
-
-                <!-- ACCIONES -->
-
-                <div class="manager-filters__footer">
-
-
-                </div>
-
-            </section>
 
             <!-- ======================================
                  MENSAJES DEL SISTEMA

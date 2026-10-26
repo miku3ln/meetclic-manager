@@ -67,22 +67,34 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $user = static::where('provider', self::PROVIDER_FACEBOOK)
             ->where('provider_id', $input['provider_id'])->first();
-
+        $isCreate = false;
         if (!$user) {
-            return static::create($input);
-        }
+            $user = static::create($input);
+            $isCreate = true;
 
-        return $user;
+        }
+        return [
+            "isCreate" => $isCreate,
+            "user" => $user,
+
+        ];
     }
 
     public function managerGoogle($input)
     {
         $user = static::where('provider', self::PROVIDER_GOOGLE)
             ->where('provider_id', $input['provider_id'])->first();
+        $isCreate = false;
+
         if (is_null($user)) {
-            return static::create($input);
+            $user = static::create($input);
+            $isCreate = true;
         }
-        return $user;
+        return [
+            "isCreate" => $isCreate,
+            "user" => $user,
+
+        ];
     }
 
     public static function getRulesModel($user_id = null)
@@ -282,15 +294,15 @@ class User extends Authenticatable implements MustVerifyEmail
 ,countries.name countries,countries.id countries_id";
         $select = DB::raw($selectString);
         $query->select($select);
-        $query->join('customer_by_profile',$this->table . '.id','=','customer_by_profile.user_id');
-        $query->join('customer', 'customer_by_profile.customer_id','=','customer.id');
+        $query->join('customer_by_profile', $this->table . '.id', '=', 'customer_by_profile.user_id');
+        $query->join('customer', 'customer_by_profile.customer_id', '=', 'customer.id');
         $query->join('customer_by_information', 'customer_by_information.id', '=', 'customer.id');
         $query->join('people_nationality', 'people_nationality.id', '=', 'customer_by_information.people_nationality_id');
         $query->join('people_profession', 'people_profession.id', '=', 'customer_by_information.people_profession_id');
         $query->join('ruc_type', 'ruc_type.id', '=', 'customer.ruc_type_id');
         $query->join('people_type_identification', 'people_type_identification.id', '=', 'customer.people_type_identification_id');
         $query->join('people', 'people.id', '=', 'customer.people_id');
-        $query->leftJoin('customer_profile_by_location',  'customer_by_profile.id', '=', 'customer_profile_by_location.customer_by_profile_id');
+        $query->leftJoin('customer_profile_by_location', 'customer_by_profile.id', '=', 'customer_profile_by_location.customer_by_profile_id');
         $query->leftJoin('zones', 'zones.id', '=', 'customer_profile_by_location.zones_id');
         $query->leftJoin('cities', 'cities.id', '=', 'zones.city_id');
         $query->leftJoin('provinces', 'provinces.id', '=', 'cities.province_id');
@@ -302,7 +314,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ) {
                 $query->where($this->table . '.name', 'like', '%' . $likeSet . '%');
                 $query->orWhere($this->table . '.email', 'like', '%' . $likeSet . '%');
-                $query->orWhere( 'customer.identification_document', 'like', '%' . $likeSet . '%');
+                $query->orWhere('customer.identification_document', 'like', '%' . $likeSet . '%');
 
                 $query->orWhere($this->table . '.username', 'like', '%' . $likeSet . '%');
 

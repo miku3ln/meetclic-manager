@@ -5,7 +5,12 @@ namespace App\Http\Controllers\Auth;
 
 
 use App\Http\Controllers\Controller;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\DTOs\TaskRewardInputDTO;
+use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\RewardUserByTaskUseCase;
+use App\Models\Gamification\GamificationByProcessTracking;
 use App\Models\User;
+use App\Utils\TrackingUtil;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -21,208 +26,12 @@ use App\Utils\UtilUser;
 use Symfony\Component\Console\Input\Input;
 use Google\Client as GoogleClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Throwable;
 
 class SocialNetworkController extends Controller
 {
     use AuthenticatesUsers;
 
-
-    public function handleFacebookCallback(Request $request)
-    {
-        $providerName = 'facebook';
-
-        $providerSet = UtilUser::PROVIDER_FACEBOOK;
-        $typeSave = UtilUser::TYPE_SAVE_CUSTOMER_FACEBOOK;
-        $provider = null;
-        if (Input::has('code')) {
-            /*       session()->put('state', Input::has('state'));
-                   session()->put('code', Input::has('code'));*/
-            $provider = Socialite::driver($providerName)->stateless()->user();
-
-        } else {
-            $provider = Socialite::driver($providerName)->user();
-        }
-
-
-        DB::beginTransaction();
-        try {
-
-            $create = [];
-            $user_id = $provider->getId();
-            $name = $provider->getName();
-            $email = $provider->getEmail();
-            $username = $provider->getNickname();
-            $avatar = $provider->getAvatar();
-            $provider_id = $user_id;
-            $create['name'] = $name;
-            $create['username'] = $username;
-            $create['status'] = 'ACTIVE';
-            $create['provider'] = $providerSet;
-            $create['user_id'] = $user_id;
-            $create['avatar'] = $avatar;
-
-            $create['email'] = $email;
-            $create['provider_id'] = $provider_id;
-            $password = Hash::make(trim($user_id));
-            $create['password'] = $password;
-            $managerSave = new UtilUser();
-            $result = $managerSave->managerUserProvider(array(
-                'typeSave' => $typeSave,
-                'data' => $create
-            ));
-            $success = $result['success'];
-            if (!$success) {
-                DB::rollBack();
-                return $this->sendFailedResponse($result['msg']);
-
-            } else {
-                DB::commit();
-                $userCurrent = $result['data']['user'];
-                $this->initSession($userCurrent, $request);
-                return $this->sendSuccessResponse(1);
-            }
-        } catch (Exception $e) {
-            return $this->sendFailedResponse($e->getMessage());
-        }
-
-    }
-
-    public function handleGoogleCallback(Request $request)
-    {
-        $providerName = 'google';
-        $providerSet = UtilUser::PROVIDER_GOOGLE;
-        $typeSave = UtilUser::TYPE_SAVE_CUSTOMER_GOOGLE;
-        $provider = null;
-
-        if (Input::has('code')) {
-            /*  session()->put('state', Input::has('state'));
-              session()->put('code', Input::has('code'));*/
-            $provider = Socialite::driver($providerName)->stateless()->user();
-        } else {
-            $provider = Socialite::driver($providerName)->user();
-        }
-
-        DB::beginTransaction();
-        try {
-
-            $create = [];
-            $user_id = $provider->getId();
-            $name = $provider->getName();
-            $email = $provider->getEmail();
-            $username = $provider->getNickname();
-            $avatar = $provider->getAvatar();
-            $provider_id = $user_id;
-            $create['name'] = $name;
-            $create['username'] = $username;
-            $create['status'] = 'ACTIVE';
-            $create['provider'] = $providerSet;
-            $create['user_id'] = $user_id;
-            $create['email'] = $email;
-            $create['avatar'] = $avatar;
-
-
-            $create['provider_id'] = $provider_id;
-            $password = Hash::make(trim($user_id));
-            $create['password'] = $password;
-            $managerSave = new UtilUser();
-            $result = $managerSave->managerUserProvider(array(
-                'typeSave' => $typeSave,
-                'data' => $create
-            ));
-            $success = $result['success'];
-            if (!$success) {
-                DB::rollBack();
-
-                return $this->sendFailedResponse($result['msg']);
-
-            } else {
-                DB::commit();
-                $userCurrent = $result['data']['user'];
-                $this->initSession($userCurrent, $request);
-
-                return $this->sendSuccessResponse(1);
-            }
-        } catch (Exception $e) {
-            return $this->sendFailedResponse($e->getMessage());
-        }
-
-    }
-
-
-    protected function initSession($user, Request $request)
-    {
-
-        $this->guard()->login($user);
-
-        $request->session()->regenerate();
-
-    }
-
-
-    public function verifyGoogleModalCredential(Request $request)
-    {
-        $validated = $request->validate([
-            'credential' => ['required', 'string', 'max:8192'],
-        ]);
-
-        $clientId = config('services.google_modal_register.client_id');
-
-        if (empty($clientId)) {
-            return response()->json([
-                'success' => false,
-                'msg' => 'Google no está configurado.',
-            ], 500);
-        }
-
-        try {
-            $client = new GoogleClient([
-                'client_id' => $clientId,
-            ]);
-
-            $payload = $client->verifyIdToken(
-                $validated['credential']
-            );
-
-            if (
-                !is_array($payload) ||
-                empty($payload['sub']) ||
-                empty($payload['email']) ||
-                ($payload['email_verified'] ?? false) !== true
-            ) {
-                throw ValidationException::withMessages([
-                    'credential' => 'La identidad de Google no es válida.',
-                ]);
-            }
-
-            // Identidad comprobada por Google.
-            // En la siguiente etapa llamaremos a
-            // UtilUser::managerUserProvider() y a initSession().
-
-            return response()->json([
-                'success' => true,
-                'msg' => 'Identidad de Google verificada.',
-            ]);
-
-        } catch (ValidationException $e) {
-            throw $e;
-
-        } catch (\Throwable $e) {
-            report($e);
-
-            return response()->json([
-                'success' => false,
-                'msg' => 'No se pudo verificar la identidad de Google.',
-            ], 401);
-        }
-    }
-
-    /**
-     * Authenticate a user through Google Identity Services.
-     *
-     * Receives a Google ID token from the frontend,
-     * verifies it, creates or retrieves the user,
-     * and initializes the Laravel session.
-     */
 
     public function handleGoogleModal(Request $request): JsonResponse
     {
@@ -319,8 +128,8 @@ class SocialNetworkController extends Controller
 
             $step = 'USER_NORMALIZATION';
 
-            $providerId = (string) $payload['sub'];
-            $email = (string) $payload['email'];
+            $providerId = (string)$payload['sub'];
+            $email = (string)$payload['email'];
 
             $create = [
                 'name' => $payload['name'] ?? $email,
@@ -349,7 +158,7 @@ class SocialNetworkController extends Controller
 
             $step = 'USER_REGISTRATION';
 
-            $userCurrent = DB::transaction(function () use (
+            $userManager = DB::transaction(function () use (
                 $create,
                 $providerId,
                 $email,
@@ -407,6 +216,8 @@ class SocialNetworkController extends Controller
                 }
 
                 $user = $result['data']['user'] ?? null;
+                $userManager = $result['data']['userManager'];
+
 
                 if (!$user instanceof User) {
                     throw new \DomainException(
@@ -426,7 +237,7 @@ class SocialNetworkController extends Controller
                     );
                 }
 
-                return $user;
+                return $userManager;
             });
 
             // ==========================================
@@ -434,11 +245,12 @@ class SocialNetworkController extends Controller
             // ==========================================
 
             $step = 'SESSION_INITIALIZATION';
+            $userCurrent = $userManager["user"];
+            $isCreate = $userManager["isCreate"];
+            $userId = $userCurrent->id;
 
             $this->initSession($userCurrent, $request);
-
-            $request->session()->regenerate();
-
+            $gamification = $this->creditRegisterUser($userCurrent, $isCreate, UtilUser::PROVIDER_GOOGLE);
             // ==========================================
             // 7. SUCCESS RESPONSE
             // ==========================================
@@ -451,6 +263,7 @@ class SocialNetworkController extends Controller
                         'id' => $userCurrent->id,
                         'name' => $userCurrent->name,
                     ],
+                    'gamification' => $gamification,
                     'provider' => 'google',
                 ],
             ], 200);
@@ -499,18 +312,262 @@ class SocialNetworkController extends Controller
             return $this->googleModalError(
                 'GOOGLE_LOGIN_INTERNAL_ERROR',
                 $step,
-                'No se pudo completar el inicio de sesión.'.$exception->getMessage(),
+                'No se pudo completar el inicio de sesión.' . $exception->getMessage(),
                 500
             );
         }
     }
+
+    public function getGamificationProcessById(int $processId): ?array
+    {
+        $result = DB::table('gamification_by_process as gp')
+            ->leftJoin(
+                'gamification_by_points as gpt',
+                'gpt.gamification_by_process_id',
+                '=',
+                'gp.id'
+            )
+            ->where('gp.id', $processId)
+            ->select([
+                'gp.*',
+                'gpt.id as points_id',
+                'gpt.gamification_by_process_id as points_process_id',
+                'gpt.points as points_value',
+            ])
+            ->first();
+
+        if (!$result) {
+            return null;
+        }
+
+        $data = (array)$result;
+
+        // Separar los campos de gamification_by_points
+        $points = [
+            'id' => $data['points_id'],
+            'gamification_by_process_id' => $data['points_process_id'],
+            'points' => $data['points_value'],
+        ];
+
+        // Eliminar los campos auxiliares del JOIN
+        unset(
+            $data['points_id'],
+            $data['points_process_id'],
+            $data['points_value']
+        );
+
+        return [
+            'process' => $data,
+            'points' => $points['id'] !== null ? $points : null,
+        ];
+    }
+
+    protected function creditRegisterUser($user, $isCreate, $type)
+    {
+        $gamification = [
+            'success' => false,
+            'message' => '',
+            'type' => TrackingUtil::TYPE_ERROR_SAVE_GAMIFICATION,
+            'data' => [
+                'user_id' => $user->id ?? null,
+                'business_id' => 1,
+                'process_id' => null,
+                'points_id' => null,
+                'points' => 0,
+                'tracking_id' => null,
+                'reward' => null,
+            ],
+        ];
+
+        try {
+            if ($isCreate) {
+                // ==========================================
+                // 1. VALIDATE USER
+                // ==========================================
+
+                if (!$user || !$user->id) {
+                    throw new \RuntimeException(
+                        'No se encontró un usuario válido.'
+                    );
+                }
+
+                $userId = (int)$user->id;
+
+                $processId = match ($type) {
+                    UtilUser::PROVIDER_GOOGLE => 673,
+                    UtilUser::PROVIDER_FACEBOOK => 674,
+                    UtilUser::PROVIDER_OWNER_SERVER => 675,
+                    default => null,
+                };
+
+                if ($processId === null) {
+                    throw new \InvalidArgumentException(
+                        'Proveedor de registro no válido.'
+                    );
+                }
+
+                $gamification['data']['process_id'] = $processId;
+
+                // ==========================================
+                // 4. GET GAMIFICATION PROCESS
+                // ==========================================
+
+                $taskData = $this->getGamificationProcessById(
+                    $processId,
+                    $userId
+                );
+
+                if (
+                    !$taskData ||
+                    empty($taskData['process']) ||
+                    empty($taskData['points'])
+                ) {
+                    throw new \RuntimeException(
+                        'No se encontró el proceso de gamificación o sus puntos.'
+                    );
+                }
+
+                $rowDataProcess = $taskData['process'];
+                $rowDataPoints = $taskData['points'];
+
+                // La consulta previa retorna process como array.
+                // El DTO puede requerir acceso mediante ->propiedad.
+                $processManager = (array)$rowDataProcess;
+
+                // Datos de puntos como array
+                $pointsData = (array)$rowDataPoints;
+                $pointsId = $pointsData['id'] ?? null;
+                $pointsValue = (float)($pointsData['points'] ?? 0);
+                if ($pointsId === null || $pointsValue <= 0) {
+                    throw new \RuntimeException(
+                        'El proceso no tiene puntos válidos para acreditar.'
+                    );
+                }
+
+
+                $gamification['data']['process_id'] = (int)$processManager['id'];
+                $gamification['data']['points_id'] = (int)$pointsId;
+                $gamification['data']['points'] = $pointsValue;
+
+                // ==========================================
+                // 5. CHECK EXISTING REGISTRATION TRACKING
+                // ==========================================
+
+                $existingTracking = GamificationByProcessTracking::query()
+                    ->where('user_id', $userId)
+                    ->whereIn('gamification_by_process_id', [673, 674, 675])
+                    ->where('status', GamificationByProcessTracking::STATE_COMPLETED)
+                    ->first();
+
+                if ($existingTracking) {
+                    $gamification['success'] = true;
+                    $gamification['message'] =
+                        'La recompensa de registro ya fue completada.';
+                    $gamification['type'] = 200;
+                    $gamification['data']['tracking_id'] = $existingTracking->id;
+
+                    return $gamification;
+                }
+
+                // ==========================================
+                // 6. CREATE TRACKING
+                // ==========================================
+
+                $now = Carbon::now('America/Guayaquil')
+                    ->format('Y-m-d H:i:s');
+
+                $model = new GamificationByProcessTracking();
+
+                $model->fill([
+                    'user_id' => $userId,
+                    'gamification_by_process_id' => (int)$processManager['id'],
+                    'status' => $model::STATE_COMPLETED,
+                    'assigned_at' => $now,
+                    'completed_at' => $now,
+                ]);
+
+                if (!$model->save()) {
+                    throw new \RuntimeException(
+                        'No se pudo guardar el seguimiento de la tarea.'
+                    );
+                }
+
+                $gamification['data']['tracking_id'] = $model->id;
+
+                // ==========================================
+                // 7. CREDIT REWARD
+                // ==========================================
+
+                $useCase = app(RewardUserByTaskUseCase::class);
+
+                $dto = new TaskRewardInputDTO(
+                    userId: $userId,
+                    process: $processManager,
+                    amount: $pointsValue,
+                    typeMoney: 0,
+                    referenceCode: 'business-code',
+                    performedById: null,
+                    business_id: 1
+                );
+
+                $result = $useCase->execute($dto);
+
+                $rewardSuccess = (bool)($result['success'] ?? false);
+
+                if (!$rewardSuccess) {
+                    throw new \RuntimeException(
+                        $result['message']
+                        ?? 'No se pudo acreditar la recompensa de registro.'
+                    );
+                }
+
+                // ==========================================
+                // 8. SUCCESS RESPONSE
+                // ==========================================
+
+                $gamification['success'] = true;
+                $gamification['message'] =
+                    'Registro completado. Yapitas acreditadas correctamente.';
+                $gamification['type'] = 420;
+                $gamification['data']['reward'] = $result;
+
+                return $gamification;
+            }
+
+
+        } catch (Throwable $e) {
+
+
+            $gamification['success'] = false;
+            $gamification['message'] =
+                'No se pudo completar la acreditación de Yapitas.' . $e->getMessage();
+            $gamification['type'] =
+                TrackingUtil::TYPE_ERROR_SAVE_GAMIFICATION;
+
+            return $gamification;
+        }
+    }
+
+    protected function initSession($user, Request $request)
+    {
+
+        // Iniciar sesión con el usuario existente o recién creado
+        $this->guard()->login($user);
+
+        // Regenerar el ID de sesión por seguridad
+        $request->session()->regenerate();
+
+
+    }
+
     private function googleModalError(
         string $code,
         string $step,
         string $message,
-        int $status = 500,
-        array $details = []
-    ): JsonResponse {
+        int    $status = 500,
+        array  $details = []
+    ): JsonResponse
+    {
         return response()->json([
             'success' => false,
             'msg' => $message,
@@ -521,10 +578,12 @@ class SocialNetworkController extends Controller
             ],
         ], $status);
     }
+
     private function logGoogleModalException(
         \Throwable $exception,
-        string $step
-    ): void {
+        string     $step
+    ): void
+    {
         Log::error('Google modal authentication failed', [
             'step' => $step,
             'exception' => get_class($exception),
@@ -532,5 +591,5 @@ class SocialNetworkController extends Controller
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
         ]);
-}
+    }
 }
