@@ -345,7 +345,9 @@ class SocialNetworkController extends Controller
         }
 
         $data = (array)$result;
-
+        if (!empty($data['source'])) {
+            $data['source'] = asset('public/' . ltrim($data['source'], '/'));
+        }
         // Separar los campos de gamification_by_points
         $points = [
             'id' => $data['points_id'],
@@ -535,7 +537,6 @@ class SocialNetworkController extends Controller
                         'No se encontró el proceso de gamificación o sus puntos.'
                     );
                 }
-
                 $rowDataProcess = $taskData['process'];
                 $rowDataPoints = $taskData['points'];
                 $processManager = (array)$rowDataProcess;
