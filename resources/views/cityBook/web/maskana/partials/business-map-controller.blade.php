@@ -369,6 +369,9 @@
             console.log('Ubicaciones:', locations);
 
             $('#business-total').text(total);
+        var totalData=  total+" " + MaskanaTranslations['frontend.maskana.filter.business_found'];
+
+
         });
 
         mapController.on('map:moveend', ({
@@ -943,29 +946,15 @@
         const zoneColor = (
             $selected[0].style.getPropertyValue('--route-color') || '#445EF2'
         ).trim();
-
-        const $brand = $('.manager-map__brand');
-
-        if (!$brand.length) return;
-
-        // 1. ACTUALIZAR IMAGEN
-        $brand.find('.manager-map__brand-logo')
-            .attr({
+        $("#maskana-sheet-image").attr({
                 src: zoneSource,
-                alt: zoneTitle
+                alt: zoneTitle,
+
             })
-            .css('border-color', zoneColor);
-
-        // 2. ACTUALIZAR TÍTULO Y COLOR
-        $brand.find('.manager-map__brand-title')
-            .text(zoneTitle)
-            .css('color', zoneColor);
-
-        // 3. ACTUALIZAR BORDE DEL CONTENEDOR
-        $brand.css(
-            'border-color',
-            `color-mix(in srgb, ${zoneColor} 35%, transparent)`
-        );
+            .css({
+                'background': `color-mix(in srgb, ${zoneColor} 30%, transparent)`,
+            });
+        $("#maskana-sheet-title__value").text(zoneTitle)
 
         console.log('[Maskana] Brand actualizado:', {
             title: zoneTitle,
@@ -998,7 +987,7 @@
 
     function initFiltersRoutes() {
         $(document).on('click', '.routes-container__item', async function () {
-
+console.log("filters-routes")
             const $selected = $(this);
             const zoneId = parseInt($selected.data('zone-id'), 10);
 

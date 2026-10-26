@@ -46,7 +46,6 @@ class ChasquiManager extends ModelManager
 
         $modelCBP = new CustomerByProfile();
         $user = Auth::user();
-
         $profileConfig = $modelCBP->getProfileUser(['user'=>$user]);
 
         $result = [];

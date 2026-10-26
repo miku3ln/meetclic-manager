@@ -12,7 +12,25 @@
     @include('layouts.partials.headMeta')
     @include('layouts.cityBook.typeHtml.styles')
 
+    <style id="custom-project">
+        .header-user-name {
+            font-size: 8px;
+            background: #445ef2 !important;
 
+        }
+        @media (max-width: 767px) {
+            .header-user-menu {
+                left: 98px !important;
+                top: 47px!important;
+            }
+        }
+        .manager-language:hover .dropdown-menu-translator {
+            z-index: 58;
+        }
+        .dropdown-menu-translator {
+            left: 34px;
+        }
+    </style>
     <style id="main-colors">
         /* =========================================================
       PULLKAY (MeetClic) - Bootstrap 3.3.5 UI/UX
@@ -1544,24 +1562,47 @@ if (env('allowAllInOne')) {
     }
 
     function onChangeLanguage() {
-        var supportedLangs = ["ki", "es", "en"];
+        $(document).on('click', function (e) {
 
+            if (!$(e.target).closest('.manager-language').length) {
+
+                const $button = $('#languageDropdown');
+                const $ul = $('.manager-language__ul');
+
+                $ul.removeClass('show active open').hide();
+
+                $button.attr('aria-expanded', 'false');
+            }
+        });
+        $(document).on('click', '#languageDropdown', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const $button = $(this);
+            const $ul = $button.siblings('.dropdown-menu-translator');
+
+            // Verificar estado actual
+            const isOpen = $button.attr('aria-expanded') === 'true';
+
+            // Cambiar estado
+       $button.attr('aria-expanded', String(!isOpen));
+
+            // Abrir o cerrar UL
+           $ul.toggleClass('show', !isOpen);
+
+            console.log('Dropdown abierto:', !isOpen);
+        });
+        var supportedLangs = ["ki", "es", "en"];
         $(".manager-language__item").on("click", function (e) {
             e.preventDefault();
-
-
             var newLang = String($(this).attr("language") || "").trim().toLowerCase();
             if (!newLang || supportedLangs.indexOf(newLang) === -1) return;
-
             var url = new URL(window.location.href);
             var path = url.pathname; // solo path, sin query/hash
-
             // 1) buscar idioma existente en el path
             var currentLang = null;
-
             for (var i = 0; i < supportedLangs.length; i++) {
                 var lang = supportedLangs[i];
-
                 // match: "/es/" o "/es" al final
                 if (path.indexOf("/" + lang + "/") !== -1 || path.endsWith("/" + lang)) {
                     currentLang = lang;

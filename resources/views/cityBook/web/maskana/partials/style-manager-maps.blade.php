@@ -25,7 +25,8 @@
         align-items: center;
         justify-content: center;
 
-        background: #ffffff;
+        background: transparent;
+
 
         border: var(--marker-border) solid #ffffff;
         border-radius: 50%;
@@ -997,22 +998,6 @@
         touch-action: none;
     }
 
-    /* ==========================================
-       TOOLBAR FLOTANTE
-    ========================================== */
-
-    .manager-map__toolbar {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        z-index: 500;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 12px;
-        pointer-events: none;
-    }
 
 
     .manager-map__counter {
@@ -1031,244 +1016,7 @@
         pointer-events: auto;
     }
 
-    .manager-map__brand {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
 
-        width: 94px;
-        min-width: 94px;
-        height: 120px;
-        box-sizing: border-box;
-
-        padding: 5px 6px;
-
-        background: #ffffff;
-        border: 1px solid color-mix(
-            in srgb,
-    {{ $zoneManager['color_hex'] }} 35%,
-            transparent
-        );
-        border-radius: 15px;
-
-        box-shadow:
-            0 2px 5px rgba(0, 0, 0, 0.12),
-            0 0 0 2px rgba(255, 105, 180, 0.06);
-    }
-    .manager-map__brand-logo {
-        display: block;
-
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 2px solid {{$zoneManager['color_hex']}};
-        padding: 2px;
-        background: #ffffff;
-
-        box-sizing: border-box;
-    }
-
-    .manager-map__brand-title {
-        display: block;
-
-        max-width: 100%;
-        font-size: 11px;
-        font-weight: 700;
-        line-height: 14px;
-        color: {{$zoneManager['color_hex']}};
-        text-align: center;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .manager-map__brand i {
-        color: #287c5b;
-        font-size: 19px;
-    }
-
-    .manager-map__counter i {
-        color: #287c5b;
-    }
-
-    /* ==========================================
-       BOTONES FLOTANTES
-    ========================================== */
-
-    .manager-map__actions {
-        position: absolute;
-        right: 2%;
-        top: 10%;
-        z-index: 600;
-    }
-
-    .manager-filters__toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-
-        border: 0;
-        border-radius: 50px;
-
-        padding: 14px 22px;
-
-        color: #ffffff;
-
-        font-size: 14px;
-        font-weight: 600;
-
-        cursor: pointer;
-
-        box-shadow: 0 8px 25px rgba(0, 0, 0, .22);
-        transition: transform .2s, background .2s;
-    }
-
-    .manager-filters__toggle:hover {
-        background: #1c6045;
-        transform: translateY(-2px);
-    }
-
-    .manager-filters__toggle:focus-visible,
-    .manager-filters__close:focus-visible,
-    .manager-filters__apply:focus-visible,
-    .manager-filters__reset:focus-visible {
-        outline: 3px solid #86c7ad;
-        outline-offset: 3px;
-    }
-
-    /* ==========================================
-       FONDO OSCURO DEL PANEL
-    ========================================== */
-
-    .manager-filters__backdrop {
-        position: absolute;
-        inset: 0;
-        z-index: 1190;
-
-        background: rgba(12, 22, 19, .42);
-
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-
-        transition: opacity .25s, visibility .25s;
-    }
-
-    .manager-filters__backdrop--visible {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    /* ==========================================
-       PANEL DE FILTROS
-    ========================================== */
-
-    .manager-filters {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        bottom: 20px;
-
-        width: min(390px, calc(100% - 40px));
-
-        z-index: 1200;
-
-        display: flex;
-        flex-direction: column;
-
-        background: #ffffff;
-        border-radius: 20px;
-
-        box-shadow: 0 15px 50px rgba(0, 0, 0, .22);
-
-        overflow: hidden;
-
-        transform: translateX(calc(100% + 40px));
-        visibility: hidden;
-        pointer-events: none;
-
-        transition: transform .3s ease, visibility .3s;
-    }
-
-    .manager-filters--open {
-        padding: 1px 0;
-        transform: translateX(0);
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    /* ==========================================
-       HEADER
-    ========================================== */
-
-    .manager-filters__header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 12px;
-        padding: 22px;
-
-        border-bottom: 1px solid #e8ece9;
-    }
-
-    .manager-filters__heading {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .manager-filters__icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 42px;
-        height: 42px;
-
-        border-radius: 12px;
-
-        background: #e5f3ec;
-        color: #287c5b;
-
-        font-size: 19px;
-    }
-
-    .manager-filters__title {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 700;
-        color: #203b30;
-    }
-
-    .manager-filters__subtitle {
-        margin: 4px 0 0;
-        font-size: 12px;
-        color: #7c8981;
-    }
-
-    .manager-filters__close {
-        width: 36px;
-        height: 36px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border: 0;
-        border-radius: 50%;
-
-        background: #f1f3f2;
-        color: #33453a;
-
-        cursor: pointer;
-    }
 
     /* ==========================================
        BODY / CAMPOS
@@ -1448,15 +1196,6 @@
         z-index: 1100;
     }
 
-    /* ==========================================
-       MOBILE / TABLET
-    ========================================== */
-    img.manager-map__brand-logo {
-        width: 64px;
-        height: 75px;
-        object-fit: cover;
-        object-position: center;
-    }
     @media (max-width: 767px) {
         .header-user-menu {
             right: 0px !important;
@@ -1464,21 +1203,11 @@
             margin-left: 219px;
             width: 124px;
     }
-    .manager-map__toolbar {
-        width: 97%!important;
-        top: 2px!important;
-        left: 3px!important;
-        right: 0px!important;
-    }
+
     .leaflet-top {
-        top: 72% !important;
+        top: 64% !important;
     }
-    .manager-map__actions {
-        top: 116px !important;
-    }
-    .manager-map__toolbar {
-        top: 65px !important;
-    }
+
 
 
     .manager-map__counter {
@@ -1489,9 +1218,6 @@
         top: 8px;
     }
 
-    .manager-map__actions {
-        right: 1px;
-    }
 
     .manager-filters {
         top: auto;
@@ -1525,7 +1251,7 @@
     }
 
     .chat-widget-button {
-        bottom: 20px!important;
+        bottom: 138px!important;
         left: 10px !important;
     }
 }
@@ -2567,30 +2293,85 @@ footer.main-footer.dark-footer {
 </style>
 
 <style>
+    <style>
+        /* ================================================
+           MASKANA - ANIMACIÓN REBOTE + PULSO
+           ================================================ */
 
-    /* ================================================
-       MASKANA - ANIMACIÓN REBOTE + PULSO
-       ================================================ */
-
-    /* Contenedor principal */
+        /* ================================================
+           1. CONTENEDOR PRINCIPAL
+           ================================================ */
 
     .business-map-marker {
         position: relative;
+        width: 100%;
+        height: 100%;
         overflow: visible;
+        background: transparent;
     }
-
-    /* Contenido visual del marcador */
 
     .business-map-marker__bounce-content {
         position: relative;
         width: 100%;
         height: 100%;
         overflow: visible;
+        background: transparent;
     }
 
     /* ================================================
-       1. REBOTE ESTILO CALABAZA
+       2. SALTO DEL MARCADOR COMPLETO
        ================================================ */
+
+    /*
+     * El contenedor principal controla el salto.
+     * Todo su contenido se mueve junto:
+     * - Imagen
+     * - Halo
+     * - Ondas
+     * - Badge
+     */
+
+    .business-map-marker--pumpkin-bounce {
+        transform-origin: center bottom;
+
+        animation:
+            business-map-marker-jump
+            2.8s
+            ease-in-out
+            infinite;
+    }
+
+    @keyframes business-map-marker-jump {
+
+        0%,
+        10%,
+        55%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        25% {
+            transform: translateY(-12px);
+        }
+
+        38% {
+            transform: translateY(-17px);
+        }
+
+        67% {
+            transform: translateY(-5px);
+        }
+    }
+
+    /* ================================================
+       3. COMPRESIÓN Y ESTIRAMIENTO
+       ================================================ */
+
+    /*
+     * El contenido NO vuelve a saltar.
+     * Únicamente cambia ligeramente su escala.
+     */
 
     .business-map-marker--pumpkin-bounce
     .business-map-marker__bounce-content {
@@ -2598,54 +2379,51 @@ footer.main-footer.dark-footer {
         transform-origin: center bottom;
 
         animation:
-            business-map-marker-bounce
+            business-map-marker-squash
             2.8s
             ease-in-out
             infinite;
     }
 
-    /* Salto, estiramiento y aterrizaje */
-
-    @keyframes business-map-marker-bounce {
+    @keyframes business-map-marker-squash {
 
         0%,
         100% {
-            transform: translateY(0) scale(1, 1);
+            transform: scale(1, 1);
         }
 
         10% {
-            transform: translateY(0) scale(1.06, .94);
+            transform: scale(1.06, .94);
         }
 
         25% {
-            transform: translateY(-12px) scale(.97, 1.03);
+            transform: scale(.97, 1.03);
         }
 
         38% {
-            transform: translateY(-17px) scale(1, 1);
+            transform: scale(1, 1);
         }
 
         55% {
-            transform: translateY(0) scale(1.07, .93);
+            transform: scale(1.07, .93);
         }
 
         67% {
-            transform: translateY(-5px) scale(.99, 1.01);
+            transform: scale(.99, 1.01);
         }
 
         80% {
-            transform: translateY(0) scale(1, 1);
+            transform: scale(1, 1);
         }
     }
 
     /* ================================================
-       2. ONDAS DE PULSO
+       4. ONDAS DE PULSO
        ================================================ */
 
     .business-map-marker__pulse-wave {
 
         position: absolute;
-
         inset: 0;
 
         width: 100%;
@@ -2663,6 +2441,8 @@ footer.main-footer.dark-footer {
 
         opacity: 0;
 
+        box-sizing: border-box;
+
         animation:
             business-map-marker-pulse
             2.8s
@@ -2676,7 +2456,7 @@ footer.main-footer.dark-footer {
         animation-delay: 1.4s;
     }
 
-    /* Crecimiento radial */
+    /* Expansión radial */
 
     @keyframes business-map-marker-pulse {
 
@@ -2696,10 +2476,8 @@ footer.main-footer.dark-footer {
     }
 
     /* ================================================
-       3. ORDEN VISUAL
+       5. ORDEN VISUAL
        ================================================ */
-
-    /* Imagen por encima de las ondas */
 
     .business-map-marker--pumpkin-bounce
     .business-map-marker__image,
@@ -2711,19 +2489,23 @@ footer.main-footer.dark-footer {
         z-index: 1;
     }
 
-    /* Badge por encima de la imagen */
+    /* Badge por encima */
 
     .business-map-marker--pumpkin-bounce
     .business-map-marker__news {
-
         z-index: 3;
     }
 
     /* ================================================
-       4. INTERACCIONES
+       6. INTERACCIONES
        ================================================ */
 
-    /* Pausar al pasar el cursor */
+    /*
+     * Pausar todas las animaciones juntas.
+     */
+
+    .business-map-marker-container:hover
+    .business-map-marker--pumpkin-bounce,
 
     .business-map-marker-container:hover
     .business-map-marker__bounce-content,
@@ -2734,17 +2516,23 @@ footer.main-footer.dark-footer {
         animation-play-state: paused;
     }
 
-    /* No interferir con Leaflet */
+    /* ================================================
+       7. LEAFLET
+       ================================================ */
 
-    .business-map-marker__pulse-wave {
-        pointer-events: none;
+    .business-map-marker-container {
+        background: transparent !important;
+        border: none;
+        overflow: visible !important;
     }
 
     /* ================================================
-       5. ACCESIBILIDAD
+       8. ACCESIBILIDAD
        ================================================ */
 
     @media (prefers-reduced-motion: reduce) {
+
+        .business-map-marker--pumpkin-bounce,
 
         .business-map-marker--pumpkin-bounce
         .business-map-marker__bounce-content {
@@ -2757,7 +2545,7 @@ footer.main-footer.dark-footer {
             display: none;
         }
     }
-
+</style>
 </style>
 <style id="filters-content">
     /* ========================================
@@ -3970,6 +3758,299 @@ footer.main-footer.dark-footer {
         color: #e5a000;
         font-size: 17px;
         flex-shrink: 0;
+    }
+
+</style>
+<style id="filters-manager">
+
+    /* ==========================================
+       MASKANA - BOTTOM SHEET
+    ========================================== */
+
+    .maskana-sheet {
+        --sheet-primary: #435cf0;
+        --sheet-radius: 26px;
+        --sheet-header-height: 88px;
+        padding: 6px;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1050;
+
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        max-height: 85dvh;
+
+        background: #ffffff;
+
+        border-radius: var(--sheet-radius) var(--sheet-radius) 0 0;
+
+        box-shadow: 0 -6px 28px rgba(20, 30, 70, 0.14);
+
+        overflow: hidden;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .maskana-sheet__header {
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        min-height: var(--sheet-header-height);
+
+        padding: 16px 18px;
+
+        flex-shrink: 0;
+    }
+
+    /* Drag handle visual */
+
+    .maskana-sheet__header::before {
+        content: "";
+
+        position: absolute;
+        top: 7px;
+        left: 50%;
+
+        width: 42px;
+        height: 5px;
+
+        transform: translateX(-50%);
+
+        border-radius: 20px;
+        background: #d2d5dc;
+    }
+
+    /* Route image */
+
+    .maskana-sheet__image {
+        width: 60px;
+        height: 60px;
+
+        flex-shrink: 0;
+
+        object-fit: contain;
+
+        background: #f4f8ff;
+        border-radius: 16px;
+
+        padding: 5px;
+    }
+
+    /* Text area */
+
+    .maskana-sheet__information {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        flex: 1;
+        min-width: 0;
+        gap: 5px;
+    }
+
+    .maskana-sheet__title {
+        margin: 0;
+
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.25;
+
+        color: #16214c;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .maskana-sheet__count {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        width: fit-content;
+
+        padding: 5px 10px;
+
+        background: #eef5ff;
+        border-radius: 20px;
+
+        font-size: 12px;
+        font-weight: 600;
+        color: #263e78;
+    }
+
+    /* Expand / collapse button */
+
+    .maskana-sheet__toggle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 42px;
+        height: 42px;
+
+        flex-shrink: 0;
+
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+
+        color: #19244a;
+        cursor: pointer;
+
+        transition: background .2s ease;
+    }
+
+    .maskana-sheet__toggle:hover {
+        background: #f1f4ff;
+    }
+
+    .maskana-sheet__toggle i {
+        font-size: 19px;
+        transition: transform .25s ease;
+    }
+
+    /* ==========================================
+       EXPANDABLE CONTENT
+    ========================================== */
+
+    .maskana-sheet__content {
+        display: none;
+        flex-direction: column;
+
+        min-height: 0;
+        overflow: hidden;
+
+        border-top: 1px solid #edf0f6;
+    }
+
+    /* Expanded state */
+
+    .maskana-sheet--expanded .maskana-sheet__content {
+        display: flex;
+    }
+
+    .maskana-sheet--expanded .maskana-sheet__toggle i {
+        transform: rotate(180deg);
+    }
+
+    /* ==========================================
+       BODY
+    ========================================== */
+
+    .maskana-sheet__body {
+        flex: 1;
+        min-height: 0;
+
+        overflow-y: auto;
+        overscroll-behavior: contain;
+
+        padding: 20px 18px;
+
+        scrollbar-width: thin;
+    }
+
+    .maskana-sheet__section-title {
+        margin: 0 0 14px;
+
+        font-size: 16px;
+        font-weight: 700;
+        color: #17234c;
+    }
+
+    .maskana-sheet__placeholder {
+        padding: 28px 14px;
+
+        border: 1px dashed #cbd3ec;
+        border-radius: 14px;
+
+        background: #f8faff;
+
+        text-align: center;
+        font-size: 13px;
+        color: #7b859e;
+    }
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+
+    .maskana-sheet__footer {
+        display: flex;
+        gap: 12px;
+
+        flex-shrink: 0;
+
+        padding: 14px 18px calc(14px + env(safe-area-inset-bottom, 0px));
+
+        background: #fff;
+        border-top: 1px solid #edf0f6;
+    }
+
+    .maskana-sheet__button {
+        flex: 1;
+        min-height: 48px;
+
+        border-radius: 12px;
+
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .maskana-sheet__button--secondary {
+        border: 1px solid #b9c9ff;
+        background: #fff;
+        color: var(--sheet-primary);
+    }
+
+    .maskana-sheet__button--primary {
+        border: 1px solid var(--sheet-primary);
+        background: var(--sheet-primary);
+        color: #fff;
+    }
+
+    /* ==========================================
+       STATES
+    ========================================== */
+
+    .maskana-sheet--collapsed {
+        height: auto;
+    }
+
+    .maskana-sheet--expanded {
+        height: min(510px, 85dvh);
+    }
+
+    /* ==========================================
+       DESKTOP
+    ========================================== */
+
+    @media (min-width: 992px) {
+        .maskana-sheet {
+            left: auto;
+            right: 20px;
+            bottom: 20px;
+
+            width: 390px;
+            max-height: 80vh;
+
+            border-radius: 20px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .maskana-sheet__toggle i {
+            transition: none;
+        }
     }
 
 </style>

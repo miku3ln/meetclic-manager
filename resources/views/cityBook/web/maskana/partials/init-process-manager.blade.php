@@ -52,7 +52,21 @@
                 );
             });
     }
+    function initFilters(){
+        MaskanaBottomSheetUtil.init();
+
+        // Cuando abre
+        $(document).on('maskana:sheet:opened', function (event, detail) {
+            console.log('[Maskana Sheet] Abierto', detail);
+        });
+
+        // Cuando cierra
+        $(document).on('maskana:sheet:closed', function (event, detail) {
+            console.log('[Maskana Sheet] Cerrado', detail);
+        });
+    }
     $(document).ready(function () {
+        initFilters();
         initSocialLoginEvents();
         initSocialNetwork();
         $(document).on('click', '.yapita-register__content', function (event) {

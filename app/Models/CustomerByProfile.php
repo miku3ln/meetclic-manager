@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Utils\UtilUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -109,7 +110,7 @@ class CustomerByProfile extends ModelManager
             $userProfileMenu .= '             <img src="' . $urlCurrentImage . '"';
             $userProfileMenu .= '                    alt="' . $profileConfig['data']['user']->name . '" >';
             $userProfileMenu .= '          </span>';
-            $userProfileMenu .= __('frontend.greeting.hi') . ',' . $profileConfig['data']['user']->name;
+            $userProfileMenu .= $profileConfig['data']['user']->name;
 
             $userProfileMenu .= '      </div>';
             $pointsManagement = '';
@@ -467,6 +468,7 @@ class CustomerByProfile extends ModelManager
         $successProfile = false;
         $user = $params['user'];
         if ($user) {
+
             $success = true;
             $user_id = $user->id;
             $rolesCurrent = $user->roles->toArray();
@@ -687,22 +689,30 @@ class CustomerByProfile extends ModelManager
                     'queen' => 0,
                 ];
             }
-            $avatarManager = false;
-            if ($providerCurrent == 'server' || $providerCurrent == null) {
-                if (!$avatar) {
-                    $urlAvatar = $themePath . 'images/avatar/avatar-bg.png';
-                } else {
-                    $avatarManager = true;
-                    $urlAvatar = $resourcePathServer . $avatar;
-                }
-            } else {
-                if (!$avatar) {
-                    $urlAvatar = $themePath . 'images/avatar/avatar-bg.png';
-                } else {
-                    $urlAvatar = $resourcePathServer . $avatar;
-                    $avatarManager = true;
-                }
-            }
+            // Imagen predeterminada
+            $defaultAvatar = $themePath . 'images/avatar/avatar-bg.png';
+
+// Verificar si existe un avatar
+            $avatarManager = !empty($avatar);
+
+// Determinar la URL del avatar
+            $urlAvatar = match (true) {
+                // No tiene avatar
+                !$avatarManager => $defaultAvatar,
+
+                // Avatar almacenado en el servidor
+                $providerCurrent === 'server',
+                    $providerCurrent === null => $resourcePathServer . $avatar,
+
+                // Avatar de Google o Facebook
+                in_array($providerCurrent, [
+                    UtilUser::PROVIDER_GOOGLE,
+                    UtilUser::PROVIDER_FACEBOOK,
+                ], true) => $avatar,
+
+                // Proveedor desconocido
+                default => $defaultAvatar,
+            };
             $dataManager['user']['urlAvatar'] = $urlAvatar;
             $dataManager['user']['avatarManager'] = $avatarManager;
 

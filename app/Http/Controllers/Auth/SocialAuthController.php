@@ -26,11 +26,7 @@ class SocialAuthController extends Controller
         auth()->login($user);
 
         $redirectTo = "/homeSocial";
-    /*    if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
-        }
-        $role = new Role();
-        $redirectTo = $role->getUrlCurrentUser();*/
+
 
         return redirect()->to($redirectTo);
     }

@@ -22,10 +22,30 @@
                 }
             };
 
-            const news = newsTypes[business.demoNewsType];
-
+            let news = {
+                isIcon:false,
+                icon: '🎃',
+                title: 'Dulce o Truco',
+                color: '#f9731669'
+            };
+if(business.is_route){
+    news = {
+        isIcon:false,
+        icon: '🎃',
+        title: 'Dulce o Truco',
+        color: '#f9731669'
+    }
+}else{
+    news = {
+        isIcon:true,
+        icon: 'bi-gift-fill',
+        color: '#8b24dc',
+        title: 'Promoción disponible'
+    }
+}
             if (!news) return '';
 
+var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
             return `
         <span
             class="business-map-marker__news"
@@ -50,7 +70,7 @@
                 box-sizing:border-box;
             "
         >
-            <i class="bi ${news.icon}"></i>
+`+htmlIcon+`
         </span>
     `;
         }

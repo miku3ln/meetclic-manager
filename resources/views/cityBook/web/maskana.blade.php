@@ -1,4 +1,3 @@
-
 @extends('layouts.cityBook')
 
 @section('data-modal')
@@ -111,40 +110,39 @@
     @include('cityBook.web.maskana.partials.business-response-data')
     @include('cityBook.web.maskana.partials.maskana-map-location-controller')
     @include('cityBook.web.maskana.partials.business-map-controller')
+    @include('cityBook.web.maskana.partials.filters-manager')
+
     @include('cityBook.web.maskana.partials.init-process-manager')
-
-
 
 @endsection
 
 @section('content')
 
-
     <div id="app-management" class="manager-map">
         @if(!Auth::check())
-        <div class="yapita-register">
-            <div class="yapita-register__icon">
-                <i class="bi bi-gift-fill"></i>
+            <div class="yapita-register">
+                <div class="yapita-register__icon">
+                    <i class="bi bi-gift-fill"></i>
+                </div>
+
+                <div class="yapita-register__content">
+                    <h3 class="yapita-register__title">
+                        {{ __('frontend.yapita.register_halloween.banner.title') }}
+                    </h3>
+
+                    <p class="yapita-register__description">
+                        {{ __('frontend.yapita.register_halloween.banner.description') }}
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="yapita-register__action"
+                    aria-label="{{ __('frontend.yapita.register_halloween.banner.register_action') }}"
+                >
+                    <i class="bi bi-chevron-right"></i>
+                </button>
             </div>
-
-            <div class="yapita-register__content">
-                <h3 class="yapita-register__title">
-                    {{ __('frontend.yapita.register_halloween.banner.title') }}
-                </h3>
-
-                <p class="yapita-register__description">
-                    {{ __('frontend.yapita.register_halloween.banner.description') }}
-                </p>
-            </div>
-
-            <button
-                type="button"
-                class="yapita-register__action"
-                aria-label="{{ __('frontend.yapita.register_halloween.banner.register_action') }}"
-            >
-                <i class="bi bi-chevron-right"></i>
-            </button>
-        </div>
         @endif
         <input
             type="hidden"
@@ -184,51 +182,6 @@
                 aria-label="Mapa de ubicación de empresas"
             ></div>
 
-            <!-- ======================================
-                 BARRA SUPERIOR FLOTANTE
-            ====================================== -->
-
-            <div class="manager-map__toolbar">
-
-                <div class="manager-map__brand">
-                    <img src="{{$zoneManager['source']}}"  class="manager-map__brand-logo" alt="{{$zoneManager['title']}}"/>
-                    <span class="manager-map__brand-title" id="title-route" >{{$zoneManager['title']}}</span>
-                </div>
-
-                <div class="manager-map__counter">
-                    <i class="bi bi-shop"></i>
-
-                    <strong id="business-total">0</strong>
-
-                    <span>{{ __('frontend.maskana.filter.businesses') }}</span>
-                </div>
-
-            </div>
-
-            <!-- ======================================
-                 ACCIONES FLOTANTES
-            ====================================== -->
-
-            <div class="manager-map__actions">
-
-                <button
-                    type="button"
-                    id="manager-filters-toggle"
-                    class="manager-filters__toggle"
-                    aria-label="Mostrar filtros"
-                    aria-controls="manager-filters-panel"
-                    aria-expanded="false"
-                    style="background: {{''.$zoneManager['color_hex']}} !important; "
-                >
-                    <i class="bi bi-sliders2"></i>
-                    <span>{{ __('frontend.maskana.filter.toggle') }}</span>
-                </button>
-
-            </div>
-
-            <!-- ======================================
-                 PANEL FLOTANTE DE FILTROS
-            ====================================== -->
 
             <div
                 id="manager-filters-backdrop"
@@ -236,6 +189,198 @@
                 aria-hidden="true"
             ></div>
 
+            <section
+                id="maskana-bottom-sheet"
+                class="maskana-sheet maskana-sheet--collapsed"
+                role="region"
+                aria-labelledby="maskana-sheet-title"
+                data-state="collapsed"
+            >
+                <!-- HEADER -->
+                <header class="maskana-sheet__header">
+
+
+                    <img
+                        id="maskana-sheet-image"
+                        class="maskana-sheet__image"
+                        src="{{$zoneManager['source']}}"
+                        alt="{{$zoneManager['title']}}"
+                    >
+
+                    <div class="maskana-sheet__information">
+
+                        <h2
+                            id="maskana-sheet-title"
+                            class="maskana-sheet__title"
+                        >
+                            <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                            <span id="maskana-sheet-title__value">{{$zoneManager['title']}}</span>
+                        </h2>
+
+                        <div
+                            id="maskana-sheet-business-count"
+                            class="maskana-sheet__count"
+                        >
+                            <span id="manager-data">
+                                     <i class="bi bi-shop"></i>
+
+                    <strong id="business-total">0</strong>
+
+                    <span>{{ __('frontend.maskana.filter.businesses') }}</span>
+                            </span>
+                     </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="maskana-sheet-toggle"
+                        class="maskana-sheet__toggle"
+                        aria-expanded="false"
+                        aria-controls="maskana-sheet-content"
+                        aria-label="Mostrar filtros"
+                    >
+                        <i class="bi bi-chevron-up" aria-hidden="true"></i>
+                    </button>
+
+                </header>
+
+                <!-- BODY + FOOTER -->
+                <div
+                    id="maskana-sheet-content"
+                    class="maskana-sheet__content"
+                    aria-hidden="true"
+                    inert
+                >
+                    <div class="maskana-sheet__body">
+                        <div class="manager-filters__field">
+
+                            <label
+                                for="business-category-filter"
+                                class="manager-filters__label"
+                            >
+                                {{ __('frontend.yapita.register_halloween.banner.select_route') }}
+                            </label>
+                            <div class="routes-container">
+
+                                @foreach ($zonesManager as $zone)
+
+                                    @php
+                                        $isActive = (string) $typeId === (string) $zone['id'];
+                                        $zoneColor = $zone['color_hex'] ?? '#445EF2';
+                                    @endphp
+
+                                    <button
+                                        type="button"
+                                        class="routes-container__item {{ $isActive ? 'routes-container__item--active' : '' }}"
+                                        data-zone-id="{{ $zone['id'] }}"
+                                        data-zone-code="{{ $zone['code'] }}"
+                                        data-zone-title="{{ $zone['title'] }}"
+                                        data-zone-source="{{ $zone['source'] }}"
+                                        style="--route-color: {{ $zoneColor }};"
+                                        aria-pressed="{{ $isActive ? 'true' : 'false' }}"
+                                    >
+            <span class="routes-container__image-wrapper">
+                <img
+                    src="{{ $zone['source'] }}"
+                    alt="{{ $zone['title'] }}"
+                    class="routes-container__image"
+                    loading="lazy"
+                >
+            </span>
+
+                                        <span class="routes-container__title">
+                {{ $zone['title'] }}
+            </span>
+
+                                        @if ($isActive)
+                                            <span class="routes-container__check" aria-hidden="true">
+        <i class="bi bi-check-circle-fill"></i>
+    </span>
+                                        @endif
+
+                                    </button>
+
+                                @endforeach
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="manager-filters__field">
+
+                            <label
+                                for="business-category-filter"
+                                class="manager-filters__label"
+                            >
+                                {{ __('frontend.maskana.filter.category_subcategory') }}
+
+                            </label>
+
+                            <select
+                                id="business-category-filter"
+                                class="manager-filters__select"
+                                style="width: 100%;"
+                            >
+                                <option value="all">
+                                    {{ __('frontend.maskana.filter.category_subcategory') }}
+
+                                </option>
+                            </select>
+
+                        </div>
+                        <div class="manager-filters__field">
+
+                            <label
+                                for="business-search"
+                                class="manager-filters__label"
+                            >
+                                {{ __('frontend.maskana.filter.search_business') }}
+
+                            </label>
+
+                            <div class="manager-filters__input-wrap">
+
+                                <i class="bi bi-search"></i>
+
+                                <input
+                                    type="search"
+                                    id="business-search"
+                                    class="manager-filters__input"
+                                    placeholder="Nombre de la empresa..."
+                                    autocomplete="off"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <footer class="maskana-sheet__footer">
+                        <button
+                            type="button"
+                            id="business-reset-filters"
+                            class="manager-filters__reset"
+                        >
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                            {{ __('frontend.maskana.filter.clear') }}
+
+                        </button>
+
+                        <button
+                            type="button"
+                            id="manager-filters-apply"
+                            class="manager-filters__apply not-view"
+                        >
+                            <i class="bi bi-check2"></i>
+                            {{ __('frontend.maskana.filter.apply') }}
+                        </button>
+                    </footer>
+                </div>
+            </section>
             <section
                 id="manager-filters-panel"
                 class="manager-filters"
@@ -291,110 +436,6 @@
                         aria-atomic="true"
                     >
                     </div>
-                    <div class="manager-filters__field">
-
-                        <label
-                            for="business-category-filter"
-                            class="manager-filters__label"
-                        >
-                            {{ __('frontend.yapita.register_halloween.banner.select_route') }}
-                        </label>
-                    <div class="routes-container">
-
-                        @foreach ($zonesManager as $zone)
-
-                            @php
-                                $isActive = (string) $typeId === (string) $zone['id'];
-                                $zoneColor = $zone['color_hex'] ?? '#445EF2';
-                            @endphp
-
-                            <button
-                                type="button"
-                                class="routes-container__item {{ $isActive ? 'routes-container__item--active' : '' }}"
-                                data-zone-id="{{ $zone['id'] }}"
-                                data-zone-code="{{ $zone['code'] }}"
-                                data-zone-title="{{ $zone['title'] }}"
-                                data-zone-source="{{ $zone['source'] }}"
-                                style="--route-color: {{ $zoneColor }};"
-                                aria-pressed="{{ $isActive ? 'true' : 'false' }}"
-                            >
-            <span class="routes-container__image-wrapper">
-                <img
-                    src="{{ $zone['source'] }}"
-                    alt="{{ $zone['title'] }}"
-                    class="routes-container__image"
-                    loading="lazy"
-                >
-            </span>
-
-                                <span class="routes-container__title">
-                {{ $zone['title'] }}
-            </span>
-
-                                @if ($isActive)
-                                    <span class="routes-container__check" aria-hidden="true">
-        <i class="bi bi-check-circle-fill"></i>
-    </span>
-                                @endif
-
-                            </button>
-
-                        @endforeach
-
-                      </div>
-
-
-                    </div>
-
-
-                    <div class="manager-filters__field">
-
-                        <label
-                            for="business-category-filter"
-                            class="manager-filters__label"
-                        >
-                            {{ __('frontend.maskana.filter.category_subcategory') }}
-
-                        </label>
-
-                        <select
-                            id="business-category-filter"
-                            class="manager-filters__select"
-                            style="width: 100%;"
-                        >
-                            <option value="all">
-                                {{ __('frontend.maskana.filter.category_subcategory') }}
-
-                            </option>
-                        </select>
-
-                    </div>
-                    <div class="manager-filters__field">
-
-                        <label
-                            for="business-search"
-                            class="manager-filters__label"
-                        >
-                            {{ __('frontend.maskana.filter.search_business') }}
-
-                        </label>
-
-                        <div class="manager-filters__input-wrap">
-
-                            <i class="bi bi-search"></i>
-
-                            <input
-                                type="search"
-                                id="business-search"
-                                class="manager-filters__input"
-                                placeholder="Nombre de la empresa..."
-                                autocomplete="off"
-                            >
-
-                        </div>
-
-                    </div>
-
 
 
                 </div>
@@ -403,24 +444,6 @@
 
                 <div class="manager-filters__footer">
 
-                    <button
-                        type="button"
-                        id="business-reset-filters"
-                        class="manager-filters__reset"
-                    >
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                        {{ __('frontend.maskana.filter.clear') }}
-
-                    </button>
-
-                    <button
-                        type="button"
-                        id="manager-filters-apply"
-                        class="manager-filters__apply not-view"
-                    >
-                        <i class="bi bi-check2"></i>
-                        {{ __('frontend.maskana.filter.apply') }}
-                    </button>
 
                 </div>
 
