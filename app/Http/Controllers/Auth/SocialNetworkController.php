@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Infrastructure\Cms\Application\Gamification\Wallet\DTOs\TaskRewardInputDTO;
 use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\RewardUserByTaskUseCase;
+use App\Mail\Gamification\TaskRewardMail;
 use App\Models\Gamification\GamificationByProcessTracking;
 use App\Models\User;
 use App\Utils\TrackingUtil;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -26,6 +28,7 @@ use App\Utils\UtilUser;
 use Symfony\Component\Console\Input\Input;
 use Google\Client as GoogleClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Throwable;
 
 class SocialNetworkController extends Controller
@@ -262,6 +265,7 @@ class SocialNetworkController extends Controller
                     'user' => [
                         'id' => $userCurrent->id,
                         'name' => $userCurrent->name,
+                        "isCreate"=>$isCreate
                     ],
                     'gamification' => $gamification,
                     'provider' => 'google',
@@ -362,6 +366,111 @@ class SocialNetworkController extends Controller
         ];
     }
 
+    protected function sendReward($emailSend, $userName, $paramsTask)
+    {
+        $taskName = $paramsTask['taskName'];
+        $taskDescription = $paramsTask['taskDescription'];
+        $taskImage = $paramsTask['taskImage'];
+        $points = $paramsTask['points'];
+
+        try {
+            $mail = new TaskRewardMail(
+                userName: $userName,
+                taskName: $taskName,
+                taskDescription: $taskDescription,
+                taskImage: $taskImage,
+                points: $points,
+                logoUrl: asset('public/uploads/frontend/templateBySource/1750454099_logo-one'),
+                walletUrl: route('profileAccount', 'es')
+            );
+
+            // ==========================================
+            // 3. ENVIAR CORREO
+            // ==========================================
+
+            Mail::to($emailSend)->send($mail);
+
+            // ==========================================
+            // 4. RESPUESTA EXITOSA
+            // ==========================================
+
+            return [
+                "success" => true,
+                "message" => "Notificación de recompensa enviada correctamente.",
+                "data" => [
+                    "email" => $emailSend,
+                    "status" => "SENT"
+                ]
+            ];
+
+        } catch (TransportExceptionInterface $e) {
+
+            // ==========================================
+            // 5. ERROR SMTP
+            // ==========================================
+
+            $errorMessage = $e->getMessage();
+
+            $errorCode = "SMTP_ERROR";
+
+            $message = "No se pudo enviar la notificación de recompensa.";
+
+            // Cuenta SMTP bloqueada
+            if (
+                str_contains($errorMessage, '554') &&
+                str_contains($errorMessage, 'Outbound sending is disabled')
+            ) {
+
+                $errorCode = "SMTP_ACCOUNT_BLOCKED";
+
+                $message = "La cuenta de correo tiene deshabilitado el envío de mensajes.";
+
+            } // Error de autenticación
+            elseif (
+                str_contains($errorMessage, '535') ||
+                str_contains($errorMessage, 'Authentication failed')
+            ) {
+
+                $errorCode = "SMTP_AUTH_ERROR";
+
+                $message = "Error de autenticación del servidor de correo.";
+
+            } // Error de conexión
+            elseif (
+                str_contains($errorMessage, 'Connection could not be established')
+            ) {
+
+                $errorCode = "SMTP_CONNECTION_ERROR";
+
+                $message = "No se pudo establecer conexión con el servidor de correo.";
+
+            }
+
+            return [
+                "success" => false,
+                "message" => $message,
+                "error_code" => $errorCode,
+                "data" => [
+                    "email" => $emailSend,
+                    "status" => "FAILED"
+                ]
+            ];
+
+        } catch (Throwable $e) {
+
+
+            return [
+                "success" => false,
+                "message" => "Ocurrió un error al procesar la notificación de recompensa.",
+                "error_code" => "REWARD_EMAIL_ERROR",
+                "data" => [
+                    "email" => $emailSend,
+                    "status" => "FAILED"
+                ]
+            ];
+        }
+    }
+
     protected function creditRegisterUser($user, $isCreate, $type)
     {
         $gamification = [
@@ -429,12 +538,7 @@ class SocialNetworkController extends Controller
 
                 $rowDataProcess = $taskData['process'];
                 $rowDataPoints = $taskData['points'];
-
-                // La consulta previa retorna process como array.
-                // El DTO puede requerir acceso mediante ->propiedad.
                 $processManager = (array)$rowDataProcess;
-
-                // Datos de puntos como array
                 $pointsData = (array)$rowDataPoints;
                 $pointsId = $pointsData['id'] ?? null;
                 $pointsValue = (float)($pointsData['points'] ?? 0);
@@ -448,10 +552,6 @@ class SocialNetworkController extends Controller
                 $gamification['data']['process_id'] = (int)$processManager['id'];
                 $gamification['data']['points_id'] = (int)$pointsId;
                 $gamification['data']['points'] = $pointsValue;
-
-                // ==========================================
-                // 5. CHECK EXISTING REGISTRATION TRACKING
-                // ==========================================
 
                 $existingTracking = GamificationByProcessTracking::query()
                     ->where('user_id', $userId)
@@ -467,6 +567,18 @@ class SocialNetworkController extends Controller
                     $gamification['data']['tracking_id'] = $existingTracking->id;
 
                     return $gamification;
+                } else {
+                    $paramsTask = [
+                        'taskName' => $processManager["title"],
+                        'taskDescription' => $processManager["title"].",Por realizar el registro participas a un sorteo de los premios auspiciantes ,estaremos enviando un correo para poder emitir al ganador o en nuestras redes sociales",
+                        'taskImage' => asset('public/uploads/yapita/rewards/1/register.png'),
+                        'points' => $pointsValue,
+                    ];
+                    $emailSend = $user->email;
+                    $userName = $user->username;
+                    $resultSend = $this->sendReward($emailSend, $userName, $paramsTask);
+                    $gamification['mailSendReward'] = $resultSend;
+
                 }
 
                 // ==========================================
@@ -529,9 +641,9 @@ class SocialNetworkController extends Controller
                 $gamification['message'] =
                     'Registro completado. Yapitas acreditadas correctamente.';
                 $gamification['type'] = 420;
+                $gamification['data']['rewardInformation']= $taskData;
                 $gamification['data']['reward'] = $result;
 
-                return $gamification;
             }
 
 
@@ -544,8 +656,9 @@ class SocialNetworkController extends Controller
             $gamification['type'] =
                 TrackingUtil::TYPE_ERROR_SAVE_GAMIFICATION;
 
-            return $gamification;
         }
+
+        return  $gamification;
     }
 
     protected function initSession($user, Request $request)

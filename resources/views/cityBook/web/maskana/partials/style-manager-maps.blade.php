@@ -31,18 +31,16 @@
         border: var(--marker-border) solid #ffffff;
         border-radius: 50%;
 
-        box-shadow:
-            0 3px 8px rgba(0, 0, 0, 0.20),
-            0 1px 3px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.20),
+        0 1px 3px rgba(0, 0, 0, 0.12);
 
         box-sizing: border-box;
 
         cursor: pointer;
 
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease,
-            border-color 0.2s ease;
+        transition: transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
     }
 
     /* ELEMENT: IMAGE */
@@ -135,8 +133,7 @@
 
         border-color: #435cf0;
 
-        box-shadow:
-            0 5px 14px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
     }
 
     /* ACCESSIBILITY */
@@ -164,8 +161,6 @@
         }
 
     }
-
-
 
 
     /* ==========================================
@@ -206,9 +201,8 @@
         visibility: hidden;
         pointer-events: none;
 
-        transition:
-            transform 0.3s ease,
-            visibility 0.3s ease;
+        transition: transform 0.3s ease,
+        visibility 0.3s ease;
 
         display: flex;
         flex-direction: column;
@@ -350,16 +344,16 @@
         display: grid;
         place-items: center;
         padding: 0;
-        background: rgba(255,255,255,.96);
+        background: rgba(255, 255, 255, .96);
         color: #263246;
-        border: 1px solid rgba(15,23,42,.08);
+        border: 1px solid rgba(15, 23, 42, .08);
         border-radius: 50%;
         font-size: 25px;
         font-weight: 400;
         line-height: 1;
         z-index: 20;
         cursor: pointer;
-        box-shadow: 0 3px 14px rgba(15,23,42,.14);
+        box-shadow: 0 3px 14px rgba(15, 23, 42, .14);
     }
 
     .business-map-aside__close:hover {
@@ -383,7 +377,6 @@
     }
 
 
-
     .business-detail__body {
         padding: 0 16px 28px;
     }
@@ -403,7 +396,6 @@
         letter-spacing: -.025em;
         overflow-wrap: anywhere;
     }
-
 
 
     /* =========================================================
@@ -476,10 +468,9 @@
         text-align: center;
         text-decoration: none;
         cursor: pointer;
-        transition:
-            background .2s ease,
-            border-color .2s ease,
-            transform .2s ease;
+        transition: background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
     }
 
     .business-detail__button--primary {
@@ -718,19 +709,18 @@
         border: 1px solid var(--bm-border);
         border-radius: 14px;
         background: #fff;
-        box-shadow: 0 2px 8px rgba(15,23,42,.035);
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .035);
         font: inherit;
         text-align: left;
         cursor: pointer;
-        transition:
-            border-color .2s ease,
-            box-shadow .2s ease,
-            transform .2s ease;
+        transition: border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
     }
 
     .business-group__card:hover {
         border-color: #b9c5ff;
-        box-shadow: 0 5px 18px rgba(67,92,240,.10);
+        box-shadow: 0 5px 18px rgba(67, 92, 240, .10);
     }
 
     .business-group__card:active {
@@ -829,7 +819,6 @@
         .business-detail__hero {
             height: 155px;
         }
-
 
 
         .business-detail__community {
@@ -953,9 +942,6 @@
     }
 
 
-
-
-
 </style>
 <style>
 
@@ -999,7 +985,6 @@
     }
 
 
-
     .manager-map__counter {
         display: inline-flex;
         align-items: center;
@@ -1015,7 +1000,6 @@
         color: #24372f;
         pointer-events: auto;
     }
-
 
 
     /* ==========================================
@@ -1202,71 +1186,70 @@
             top: 46px !important;
             margin-left: 219px;
             width: 124px;
+        }
+
+        .leaflet-top {
+            top: 64% !important;
+        }
+
+
+        .manager-map__counter {
+            padding: 9px 12px;
+            font-size: 12px;
+            left: 69%;
+            position: absolute;
+            top: 8px;
+        }
+
+
+        .manager-filters {
+            top: auto;
+            left: 0;
+            right: 0;
+            bottom: -29px;
+
+            width: 100%;
+            height: min(80dvh, 680px);
+
+            border-radius: 22px 22px 0 0;
+
+            transform: translateY(105%);
+        }
+
+        .manager-filters--open {
+            transform: translateY(0);
+        }
+
+        .manager-filters__header {
+            padding: 18px;
+        }
+
+        .manager-filters__body {
+            padding: 18px;
+        }
+
+        .manager-filters__footer {
+            padding: 14px 18px calc(31px + env(safe-area-inset-bottom));
+        }
+
+        .chat-widget-button {
+            bottom: 138px !important;
+            left: 10px !important;
+        }
     }
 
-    .leaflet-top {
-        top: 64% !important;
+    .content {
+        padding-top: 16px !important;
     }
 
+    #wrapper {
 
-
-    .manager-map__counter {
-        padding: 9px 12px;
-        font-size: 12px;
-        left: 69%;
-        position: absolute;
-        top: 8px;
+        padding-top: -1px !important;
     }
 
-
-    .manager-filters {
-        top: auto;
-        left: 0;
-        right: 0;
-        bottom: -29px;
-
-        width: 100%;
-        height: min(80dvh, 680px);
-
-        border-radius: 22px 22px 0 0;
-
-        transform: translateY(105%);
+    footer.main-footer.dark-footer {
+        display: none;
     }
-
-    .manager-filters--open {
-        transform: translateY(0);
-    }
-
-    .manager-filters__header {
-        padding: 18px;
-    }
-
-    .manager-filters__body {
-        padding: 18px;
-    }
-
-    .manager-filters__footer {
-        padding: 14px 18px
-        calc(31px + env(safe-area-inset-bottom));
-    }
-
-    .chat-widget-button {
-        bottom: 138px!important;
-        left: 10px !important;
-    }
-}
-
-.content {
-    padding-top: 16px!important;
-}
-
-#wrapper {
-
-    padding-top: -1px !important;
-}
-footer.main-footer.dark-footer {
-    display: none;
-}
 </style>
 <style>
 
@@ -1497,9 +1480,6 @@ footer.main-footer.dark-footer {
         border-radius: 50%;
         box-shadow: 0 0 0 5px rgba(37, 99, 235, .18);
     }
-
-
-
 
 
     /* ==========================================
@@ -2289,19 +2269,17 @@ footer.main-footer.dark-footer {
     }
 
 
-
 </style>
 
 <style>
-    <style>
+    <
+    style >
         /* ================================================
            MASKANA - ANIMACIÓN REBOTE + PULSO
            ================================================ */
-
         /* ================================================
            1. CONTENEDOR PRINCIPAL
            ================================================ */
-
     .business-map-marker {
         position: relative;
         width: 100%;
@@ -2334,11 +2312,7 @@ footer.main-footer.dark-footer {
     .business-map-marker--pumpkin-bounce {
         transform-origin: center bottom;
 
-        animation:
-            business-map-marker-jump
-            2.8s
-            ease-in-out
-            infinite;
+        animation: business-map-marker-jump 2.8s ease-in-out infinite;
     }
 
     @keyframes business-map-marker-jump {
@@ -2378,11 +2352,7 @@ footer.main-footer.dark-footer {
 
         transform-origin: center bottom;
 
-        animation:
-            business-map-marker-squash
-            2.8s
-            ease-in-out
-            infinite;
+        animation: business-map-marker-squash 2.8s ease-in-out infinite;
     }
 
     @keyframes business-map-marker-squash {
@@ -2443,11 +2413,7 @@ footer.main-footer.dark-footer {
 
         box-sizing: border-box;
 
-        animation:
-            business-map-marker-pulse
-            2.8s
-            ease-out
-            infinite;
+        animation: business-map-marker-pulse 2.8s ease-out infinite;
     }
 
     /* Segunda onda */
@@ -2481,7 +2447,6 @@ footer.main-footer.dark-footer {
 
     .business-map-marker--pumpkin-bounce
     .business-map-marker__image,
-
     .business-map-marker--pumpkin-bounce
     .business-map-marker__fallback {
 
@@ -2506,10 +2471,8 @@ footer.main-footer.dark-footer {
 
     .business-map-marker-container:hover
     .business-map-marker--pumpkin-bounce,
-
     .business-map-marker-container:hover
     .business-map-marker__bounce-content,
-
     .business-map-marker-container:hover
     .business-map-marker__pulse-wave {
 
@@ -2533,7 +2496,6 @@ footer.main-footer.dark-footer {
     @media (prefers-reduced-motion: reduce) {
 
         .business-map-marker--pumpkin-bounce,
-
         .business-map-marker--pumpkin-bounce
         .business-map-marker__bounce-content {
 
@@ -2714,6 +2676,7 @@ footer.main-footer.dark-footer {
             line-height: 14px;
         }
     }
+
     /* ========================================
    CHECK DE RUTA SELECCIONADA
 ======================================== */
@@ -2841,9 +2804,8 @@ footer.main-footer.dark-footer {
         font-size: 20px;
         cursor: pointer;
 
-        transition:
-            background .2s ease,
-            transform .2s ease;
+        transition: background .2s ease,
+        transform .2s ease;
     }
 
     .yapita-register__action:hover {
@@ -2894,7 +2856,7 @@ footer.main-footer.dark-footer {
 </style>
 <style id="custom-template">
     .chat-widget-button {
-        background: #FACC39!important;
+        background: #FACC39 !important;
     }
 </style>
 
@@ -3521,6 +3483,7 @@ footer.main-footer.dark-footer {
     .row.row--manager-auth {
         padding-bottom: 15px;
     }
+
     div#yapita-google-login {
         display: flex;
         justify-content: center;
@@ -3529,6 +3492,7 @@ footer.main-footer.dark-footer {
         min-height: 44px;
         margin: 0 auto;
     }
+
     /* ==========================================
    SOCIAL LOGIN - LOADING
 ========================================== */
@@ -3588,6 +3552,7 @@ footer.main-footer.dark-footer {
             animation-duration: 2s;
         }
     }
+
     #yapitaRegisterModal .yapita-register-footer {
         display: block;
         width: 100%;
@@ -3686,11 +3651,10 @@ footer.main-footer.dark-footer {
             padding-bottom: 12px;
         }
     }
+
     .nav-button-wrap.color-bg.nav-button-wrap--menu-mobiles {
         background: #ffcd02;
     }
-
-
 
 
     .business-detail__hero {
@@ -4053,4 +4017,145 @@ footer.main-footer.dark-footer {
         }
     }
 
+</style>
+<style id="modal-manager-reward">
+    /* ==========================================
+   YAPITA - REWARD MODAL
+========================================== */
+
+    .yapita-reward-modal {
+        position: relative;
+        border: none;
+        border-radius: 24px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .18);
+    }
+
+    .yapita-reward-close {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 10;
+        background-color: #ffffff;
+        padding: 12px;
+        border-radius: 50%;
+        opacity: 1;
+    }
+
+    .yapita-reward-image-container {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(
+            135deg,
+            #eef2ff,
+            #ffffff
+        );
+        overflow: hidden;
+    }
+
+    .yapita-reward-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .yapita-reward-modal .modal-body {
+        padding: 25px;
+    }
+
+    .yapita-reward-badge {
+        display: inline-block;
+        padding: 9px 18px;
+        border-radius: 30px;
+        background: #eef2ff;
+        color: #2945f5;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .yapita-reward-user {
+        font-size: 21px;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+
+    .yapita-reward-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2945f5;
+        margin-bottom: 10px;
+    }
+
+    .yapita-reward-subtitle {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #6b7280;
+        margin-bottom: 22px;
+    }
+
+    .yapita-reward-points {
+        background: linear-gradient(
+            135deg,
+            #eef2ff,
+            #f8faff
+        );
+        padding: 22px;
+        border-radius: 18px;
+        margin-bottom: 24px;
+    }
+
+    .yapita-reward-points-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 800;
+        color: #2945f5;
+        letter-spacing: 1px;
+    }
+
+    .yapita-reward-points-value {
+        font-size: 52px;
+        font-weight: 900;
+        color: #2945f5;
+        line-height: 1.2;
+    }
+
+    .yapita-reward-points-text {
+        font-size: 17px;
+        font-weight: 800;
+        color: #2945f5;
+    }
+
+    .yapita-reward-button {
+        width: 100%;
+        background: #2945f5;
+        color: white;
+        padding: 15px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 800;
+        border: none;
+    }
+
+    .yapita-reward-button:hover {
+        background: #1935dc;
+        color: white;
+    }
+
+    @media (max-width: 576px) {
+
+        .yapita-reward-image-container {
+            height: 180px;
+        }
+
+        .yapita-reward-modal .modal-body {
+            padding: 20px;
+        }
+
+        .yapita-reward-points-value {
+            font-size: 42px;
+        }
+    }
 </style>

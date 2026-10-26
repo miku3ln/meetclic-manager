@@ -13,27 +13,101 @@
         }
     }
     function initSocialLoginEvents() {
-
+        YapitaRewardModalUtil.init();
         // ==========================================
         // AUTH SUCCESS
         // ==========================================
+// ==========================================
+// YAPITA - SOCIAL AUTH SUCCESS
+// ==========================================
+
         $(document)
             .off('social:auth:success.maskana')
             .on('social:auth:success.maskana', function (event, detail) {
 
-                const { provider, response } = detail;
+                const { provider, response } = detail || {};
 
-                if (response?.success === true) {
+                // ==========================================
+                // 1. VALIDAR AUTENTICACIÓN
+                // ==========================================
 
-                    console.log(
-                        '[Social Login] Autenticación correcta:',
-                        provider
-                    );
-
-                    // Recargar para actualizar la sesión,
-                    // menú, usuario y permisos de la página.
-                    window.location.reload();
+                if (response?.success !== true) {
+                    return;
                 }
+
+                console.log(
+                    '[Social Login] Autenticación correcta:',
+                    provider,
+                    response
+                );
+
+                // ==========================================
+                // 2. OBTENER INFORMACIÓN
+                // ==========================================
+
+                const user = response?.data?.user;
+
+                const gamification = response?.data?.gamification;
+
+                const isCreate = user?.isCreate === true;
+
+                const rewardSuccess =
+                    gamification?.success === true &&
+                    gamification?.data?.reward?.success === true;
+
+                // ==========================================
+                // 3. USUARIO EXISTENTE
+                // ==========================================
+
+                if (!isCreate || !rewardSuccess) {
+
+                    window.location.reload();
+                    return;
+                }
+
+                // ==========================================
+                // 4. CERRAR MODAL DE REGISTRO
+                // ==========================================
+
+                const registerModalElement = document.getElementById(
+                    'yapitaRegisterModal'
+                );
+
+                if (!registerModalElement) {
+
+                    YapitaRewardModalUtil.show(response);
+
+                    return;
+                }
+
+                const registerModal = bootstrap.Modal.getInstance(
+                    registerModalElement
+                );
+
+                // ==========================================
+                // 5. ESPERAR CIERRE DEL MODAL ANTERIOR
+                // ==========================================
+
+                if (
+                    registerModal &&
+                    registerModalElement.classList.contains('show')
+                ) {
+
+                    $(registerModalElement)
+                        .one('hidden.bs.modal', function () {
+
+                            YapitaRewardModalUtil.show(response);
+
+                        });
+
+                    registerModal.hide();
+
+                } else {
+
+                    YapitaRewardModalUtil.show(response);
+
+                }
+
             });
 
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 use App;
+use App\Mail\Gamification\TaskRewardMail;
 use App\Models\Customer;
 use App\Models\MaritimeOperationsManagement\MaritimeDepartures;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use App\Services\BusinessAppService;
 use App\Http\Controllers\Controller;
@@ -12,6 +14,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 
 use App\Utils\Meetclic\UtilApis;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Throwable;
 
 class CustomerAppController extends Controller
 {
@@ -22,6 +26,114 @@ class CustomerAppController extends Controller
         $this->serviceUser = $service;
     }
 
+
+    public function sendReward()
+    {
+        try {
+
+
+            $emailSend = "kalexmiguelalba@gmail.com";
+
+            $mail = new TaskRewardMail(
+                userName: "Alex Miguel Alba Ayala",
+                taskName: "Registro exitoso",
+                taskDescription: "Gracias por registrarte en Yapita. Has recibido tus primeros puntos de bienvenida.",
+                taskImage: asset('public/uploads/yapita/rewards/1/register.png'),
+                points: 50,
+                logoUrl: asset('public/uploads/frontend/templateBySource/1750454099_logo-one'),
+                walletUrl: route('profileAccount', 'es')
+            );
+
+            // ==========================================
+            // 3. ENVIAR CORREO
+            // ==========================================
+
+            Mail::to($emailSend)->send($mail);
+
+            // ==========================================
+            // 4. RESPUESTA EXITOSA
+            // ==========================================
+
+            return response()->json([
+                "success" => true,
+                "message" => "Notificación de recompensa enviada correctamente.",
+                "data" => [
+                    "email" => $emailSend,
+                    "status" => "SENT"
+                ]
+            ], 200);
+
+        } catch (TransportExceptionInterface $e) {
+
+            // ==========================================
+            // 5. ERROR SMTP
+            // ==========================================
+
+            $errorMessage = $e->getMessage();
+
+            $errorCode = "SMTP_ERROR";
+
+            $message = "No se pudo enviar la notificación de recompensa.";
+
+            // Cuenta SMTP bloqueada
+            if (
+                str_contains($errorMessage, '554') &&
+                str_contains($errorMessage, 'Outbound sending is disabled')
+            ) {
+
+                $errorCode = "SMTP_ACCOUNT_BLOCKED";
+
+                $message = "La cuenta de correo tiene deshabilitado el envío de mensajes.";
+
+            }
+
+            // Error de autenticación
+            elseif (
+                str_contains($errorMessage, '535') ||
+                str_contains($errorMessage, 'Authentication failed')
+            ) {
+
+                $errorCode = "SMTP_AUTH_ERROR";
+
+                $message = "Error de autenticación del servidor de correo.";
+
+            }
+
+            // Error de conexión
+            elseif (
+                str_contains($errorMessage, 'Connection could not be established')
+            ) {
+
+                $errorCode = "SMTP_CONNECTION_ERROR";
+
+                $message = "No se pudo establecer conexión con el servidor de correo.";
+
+            }
+
+            return response()->json([
+                "success" => false,
+                "message" => $message,
+                "error_code" => $errorCode,
+                "data" => [
+                    "email" => $emailSend,
+                    "status" => "FAILED"
+                ]
+            ], 503);
+
+        } catch (Throwable $e) {
+
+
+            return response()->json([
+                "success" => false,
+                "message" => "Ocurrió un error al procesar la notificación de recompensa.",
+                "error_code" => "REWARD_EMAIL_ERROR",
+                "data" => [
+                    "email" => $emailSend,
+                    "status" => "FAILED"
+                ]
+            ], 500);
+        }
+    }
 
     public function consultarCedula(Request $request)
     {

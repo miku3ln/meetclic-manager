@@ -23,6 +23,8 @@ Route::get("/", "Payment\PaymentController@hi");
 Route::post("/login", "Auth\ApiLoginController@loginRest");
 
 Route::middleware('publicApi')->group(function () {
+    Route::get('/send-reward', 'Api\CustomerAppController@sendReward')->name('sendReward');//GAMIFICATION ROUTE
+
     Route::post('/auth/with/meetclic/login', 'Auth\MeetclicController@login')->name('loginMeetclic');
     Route::post('/auth/with/meetclic/register', 'Auth\MeetclicController@register')->name('registerMeetclic');
     Route::post('/business/searchNearbyBusinesses', 'Api\BusinessAppController@searchNearbyBusinesses')->name('searchNearbyBusinesses');
@@ -82,11 +84,6 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::post("/executePaymentPayPalEvents", "Payment\PaymentController@executePaymentPayPalEvents")->middleware('auth.body');
 Route::post("/createPaymentPayPalEvents", "Payment\PaymentController@createPaymentPayPalEvents")->middleware('auth.body');
-
-
-Route::prefix('api')->group(function () {
-    // tus rutas...
-});
 
 
 Route::prefix('pointsales')->group(function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 
 use App\Http\Controllers\FrontendBaseController;
+use App\Mail\Gamification\TaskRewardMail;
 use App\Models\Events\MapZoneEvent;
 use App\Models\FrontendCityBookManager;
 use App;
@@ -16,6 +17,7 @@ use App\Utils\FrontendMenu;
 
 use App\Components\EmailUtil;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -35,6 +37,7 @@ class FrontendCityBookController extends FrontendBaseController
         $this->modelInitLanguage = new App\Models\LanguageConfigManager();
 
     }
+
 
     public function managerInvitationOtavalo($language = 'es', $document = null)
     {
