@@ -77,6 +77,10 @@
                 appId: null,
                 apiVersion: null,
                 endpoint: null
+            },
+            server: {
+                enabled: true, // Activar cuando configuremos Meta
+                endpoint: @json(url('/auth/server/modal'))
             }
         };
     </script>

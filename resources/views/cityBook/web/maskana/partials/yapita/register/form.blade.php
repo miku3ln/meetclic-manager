@@ -103,6 +103,7 @@
         type="submit"
         id="yapitaRegisterSubmit"
         class="yapita-register-form__submit"
+        data-social-loading-target="server"
         disabled
     >
         <span>

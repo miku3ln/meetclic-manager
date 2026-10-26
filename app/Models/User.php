@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     const STATUS_INACTIVE = 'INACTIVE';
     const PROVIDER_FACEBOOK = 'facebook';
     const PROVIDER_GOOGLE = 'google';
-    const PROVIDER_OWNER_SERVER = 'owner';
+    const PROVIDER_OWNER_SERVER = 'server';
 
     /**
      * The database table used by the model.
@@ -79,7 +79,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
         ];
     }
+    public function managerServer($input)
+    {
+        $user =null;
+        $isCreate = false;
+            $user = static::create($input);
+            $isCreate = true;
 
+        return [
+            "isCreate" => $isCreate,
+            "user" => $user,
+
+        ];
+    }
     public function managerGoogle($input)
     {
         $user = static::where('provider', self::PROVIDER_GOOGLE)

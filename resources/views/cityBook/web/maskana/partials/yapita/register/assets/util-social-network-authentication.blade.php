@@ -428,21 +428,33 @@
         // ==========================================
 
 
-        static async authenticate(provider, credentials) {
+        // ==========================================
+// BACKEND AUTHENTICATION
+// GOOGLE | FACEBOOK | SERVER
+// ==========================================
+
+        static async authenticate(provider, credentials = {}) {
 
             // ==========================================
             // 1. PREVENT DUPLICATE REQUESTS
             // ==========================================
 
-            if (this.isAuthenticating) return null;
+            if (this.isAuthenticating) {
+                return null;
+            }
 
             let config;
 
             try {
+
                 config = this.getProviderConfig(provider);
+
             } catch (error) {
+
                 this.finishFlow(provider);
+
                 this.emitError(provider, error.message);
+
                 return null;
             }
 
@@ -451,6 +463,7 @@
             // ==========================================
 
             if (!config.endpoint) {
+
                 this.finishFlow(provider);
 
                 this.emitError(
@@ -462,18 +475,44 @@
             }
 
             // ==========================================
-            // 3. AUTHENTICATION STATE
+            // 3. VALIDATE ACTIVE FLOW
+            // ==========================================
+
+            // No permitir iniciar otro proveedor
+            // mientras existe un flujo activo diferente.
+
+            if (
+                this.activeFlow &&
+                this.activeFlow.provider !== provider
+            ) {
+
+                this.emitError(
+                    provider,
+                    'Existe otro proceso de autenticación en curso.'
+                );
+
+                return null;
+            }
+
+            // ==========================================
+            // 4. AUTHENTICATION STATE
             // ==========================================
 
             this.isAuthenticating = true;
 
-            // Google already started its flow on button click.
-            // Only create one if it does not exist.
+            // Google puede iniciar su flujo antes de recibir
+            // las credenciales desde su SDK.
+            //
+            // Server y Facebook pueden iniciar directamente
+            // cuando el usuario envía sus credenciales.
+
             if (!this.activeFlow) {
+
                 this.startFlow(provider);
             }
 
-            // Keep the loading active during the AJAX request.
+            // Mantener el loading mientras Laravel responde.
+
             this.markProcessing(provider);
 
             this.emit('social:auth:loading', {
@@ -481,38 +520,53 @@
             });
 
             // ==========================================
-            // 4. AJAX REQUEST
+            // 5. AJAX REQUEST
             // ==========================================
 
             try {
+
+                const csrfToken =
+                    $('meta[name="csrf-token"]').attr('content') ||
+                    $('input[name="_token"]').first().val();
+
                 const response = await $.ajax({
+
                     url: config.endpoint,
+
                     method: 'POST',
+
                     dataType: 'json',
+
                     headers: {
-                        'X-CSRF-TOKEN': $(
-                            'meta[name="csrf-token"]'
-                        ).attr('content'),
+                        'X-CSRF-TOKEN': csrfToken || '',
                         'Accept': 'application/json'
                     },
+
                     data: credentials,
+
                     timeout: 30000
                 });
 
                 // ======================================
-                // 5. VALIDATE BACKEND RESPONSE
+                // 6. VALIDATE BACKEND RESPONSE
                 // ======================================
 
-                if (!response.success) {
-                    throw new Error(
-                        response.msg ||
-                        response.message ||
-                        'No se pudo iniciar sesión.'
+                if (!response || response.success !== true) {
+
+                    const backendError = new Error(
+                        response?.msg ||
+                        response?.message ||
+                        'No se pudo completar la autenticación.'
                     );
+
+                    // Conservar la respuesta para el catch.
+                    backendError.responseJSON = response || {};
+
+                    throw backendError;
                 }
 
                 // ======================================
-                // 6. AUTHENTICATION SUCCESS
+                // 7. AUTHENTICATION SUCCESS
                 // ======================================
 
                 this.emit('social:auth:success', {
@@ -525,25 +579,71 @@
             } catch (error) {
 
                 // ======================================
-                // 7. AUTHENTICATION ERROR
+                // 8. AUTHENTICATION ERROR
                 // ======================================
 
                 const response = error.responseJSON || {};
 
+                // Laravel puede retornar errores mediante:
+                //
+                // response.errors
+                // response.error.details
+                //
+                // Compatible con Google, Facebook y Server.
+
+                const validationErrors = {
+                    ...(response.errors || {}),
+                    ...(response.error?.details || {})
+                };
+
+                // Obtener el primer mensaje de validación,
+                // independientemente del campo o proveedor.
+
+                const firstValidationError = Object.values(
+                    validationErrors
+                ).flat(Infinity).find(value =>
+                    typeof value === 'string' && value.length > 0
+                );
+
                 const message =
-                    response.errors?.credential?.[0] ||
-                    response.errors?.access_token?.[0] ||
+                    firstValidationError ||
                     response.msg ||
                     response.message ||
                     error.message ||
                     'Error durante la autenticación.';
 
+                const errorCode =
+                    response.error?.code ||
+                    response.code ||
+                    'AUTH_ERROR';
+
+                const errorStep =
+                    response.error?.step ||
+                    null;
+
+                const status =
+                    error.status ||
+                    null;
+
+                // ======================================
+                // EMIT GENERIC ERROR
+                // ======================================
+
                 this.emit('social:auth:error', {
+
                     provider,
+
                     message,
-                    code: response.error?.code || 'AUTH_ERROR',
-                    step: response.error?.step || null,
-                    status: error.status || null
+
+                    code: errorCode,
+
+                    step: errorStep,
+
+                    status,
+
+                    details: validationErrors,
+
+                    response
                 });
 
                 return null;
@@ -551,12 +651,11 @@
             } finally {
 
                 // ======================================
-                // 8. RELEASE AUTHENTICATION STATE
+                // 9. RELEASE AUTHENTICATION STATE
                 // ======================================
 
                 this.isAuthenticating = false;
 
-                // Remove loading and unblock the selected button.
                 this.finishFlow(provider);
 
                 this.emit('social:auth:finished', {
@@ -581,15 +680,113 @@
             });
         }
 
+// ==========================================
+// EVENTS
+// ==========================================
+
         static bindEvents() {
+
+            // ======================================
+            // 1. FACEBOOK
+            // ======================================
+
             $(document)
-                .off('click.socialLogin', '[data-social-login="facebook"]')
+                .off(
+                    'click.socialLogin',
+                    '[data-social-login="facebook"]'
+                )
                 .on(
                     'click.socialLogin',
                     '[data-social-login="facebook"]',
                     event => {
+
                         event.preventDefault();
+
                         this.loginFacebook();
+                    }
+                );
+
+            // ======================================
+            // 2. SERVER - INPUT VALIDATION
+            // ======================================
+
+            $(document)
+                .off(
+                    'input.socialServer',
+                    '#yapitaRegisterEmail, #yapitaRegisterPassword'
+                )
+                .on(
+                    'input.socialServer',
+                    '#yapitaRegisterEmail, #yapitaRegisterPassword',
+                    () => {
+
+                        this.validateServerForm();
+
+                        $('#yapitaRegisterFeedback').text('');
+                    }
+                );
+
+            // ======================================
+            // 3. SERVER - FORM SUBMIT
+            // ======================================
+
+            $(document)
+                .off(
+                    'submit.socialServer',
+                    '#yapitaRegisterForm'
+                )
+                .on(
+                    'submit.socialServer',
+                    '#yapitaRegisterForm',
+                    async event => {
+
+                        event.preventDefault();
+
+                        await this.registerServer();
+                    }
+                );
+
+            // ======================================
+            // 4. SERVER - PASSWORD VISIBILITY
+            // ======================================
+
+            $(document)
+                .off(
+                    'click.socialServer',
+                    '.yapita-register-form__toggle-password'
+                )
+                .on(
+                    'click.socialServer',
+                    '.yapita-register-form__toggle-password',
+                    function () {
+console.log("adad")
+                        const $button = $(this);
+
+                        const $input = $('#yapitaRegisterPassword');
+
+                        const isVisible =
+                            $input.attr('type') === 'text';
+
+                        $input.attr(
+                            'type',
+                            isVisible ? 'password' : 'text'
+                        );
+
+                        $button.attr(
+                            'aria-pressed',
+                            String(!isVisible)
+                        );
+
+                        $button.attr(
+                            'aria-label',
+                            isVisible
+                                ? 'Mostrar contraseña'
+                                : 'Ocultar contraseña'
+                        );
+
+                        $button.find('i')
+                            .toggleClass('bi-eye', isVisible)
+                            .toggleClass('bi-eye-slash', !isVisible);
                     }
                 );
         }
@@ -602,6 +799,97 @@
             if (window.google?.accounts?.id) {
                 google.accounts.id.disableAutoSelect();
             }
+        }
+
+        // ==========================================
+// SERVER - FORM VALIDATION
+// ==========================================
+
+        static validateServerForm() {
+
+            const email = String(
+                $('#yapitaRegisterEmail').val() || ''
+            ).trim();
+
+            const password = String(
+                $('#yapitaRegisterPassword').val() || ''
+            );
+
+            const emailValid =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
+                email.length <= 255;
+
+            const passwordValid =
+                password.length >= 8 &&
+                password.length <= 128;
+
+            const valid = emailValid && passwordValid;
+
+            const isBusy =
+                this.isAuthenticating ||
+                this.activeFlow !== null;
+
+            $('#yapitaRegisterSubmit').prop(
+                'disabled',
+                !valid || isBusy
+            );
+
+            return {
+                valid,
+                email,
+                password,
+                emailValid,
+                passwordValid
+            };
+        }
+        // ==========================================
+// SERVER - REGISTER USER
+// ==========================================
+
+        static async registerServer() {
+
+            // ======================================
+            // 1. PREVENT DUPLICATE REQUESTS
+            // ======================================
+
+            if (this.isAuthenticating || this.activeFlow) {
+                return null;
+            }
+
+            // ======================================
+            // 2. VALIDATE FORM
+            // ======================================
+
+            const form = this.validateServerForm();
+
+            $('#yapitaRegisterEmailError').text('');
+            $('#yapitaRegisterPasswordError').text('');
+            $('#yapitaRegisterFeedback').text('');
+
+            if (!form.emailValid) {
+
+                $('#yapitaRegisterEmailError')
+                    .text('Ingresa un correo electrónico válido.');
+
+                return null;
+            }
+
+            if (!form.passwordValid) {
+
+                $('#yapitaRegisterPasswordError')
+                    .text('La contraseña debe tener entre 8 y 128 caracteres.');
+
+                return null;
+            }
+
+            // ======================================
+            // 3. SEND TO BACKEND
+            // ======================================
+
+            return await this.authenticate('server', {
+                email: form.email,
+                password: form.password
+            });
         }
     }
     window.SocialNetworkLoginUtil=SocialNetworkLoginUtil;

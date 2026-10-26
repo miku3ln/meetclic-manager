@@ -34,7 +34,257 @@ use Throwable;
 class SocialNetworkController extends Controller
 {
     use AuthenticatesUsers;
+    public function handleServerModal(Request $request): JsonResponse
+    {
+        $step = 'VALIDATION';
 
+        try {
+
+            // ==========================================
+            // 1. VALIDATE REQUEST
+            // ==========================================
+
+            $validator = Validator::make($request->all(), [
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                ],
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'max:128',
+                ],
+            ]);
+
+            if ($validator->fails()) {
+
+                return $this->googleModalError(
+                    'VALIDATION_FAILED',
+                    $step,
+                    'Los datos ingresados no son válidos.',
+                    422,
+                    $validator->errors()->toArray()
+                );
+            }
+
+            // ==========================================
+            // 2. NORMALIZE DATA
+            // ==========================================
+
+            $step = 'USER_NORMALIZATION';
+
+            $email = strtolower(trim($request->input('email')));
+            $password = $request->input('password');
+
+            // Nombre provisional
+            $name = explode('@', $email)[0];
+
+            // ==========================================
+            // 3. VERIFY EXISTING USER
+            // ==========================================
+
+            $step = 'USER_EXISTENCE_VALIDATION';
+
+            $existingUser = User::query()
+                ->where('email', $email)
+                ->exists();
+
+            if ($existingUser) {
+
+                throw new \DomainException(
+                    'EMAIL_ALREADY_REGISTERED'
+                );
+            }
+
+            // ==========================================
+            // 4. PREPARE USER
+            // ==========================================
+
+            $step = 'USER_PREPARATION';
+
+            $create = [
+                'name' => $name,
+                'username' => $email,
+                'status' => User::STATUS_ACTIVE,
+
+                'provider' => User::PROVIDER_OWNER_SERVER,
+                'provider_id' => null,
+                'user_id' => null,
+
+                'email' => $email,
+                'avatar' => null,
+
+                // Contraseña recibida en texto plano
+                // y almacenada mediante hash.
+                'password' => Hash::make($password),
+            ];
+
+            // ==========================================
+            // 5. REGISTER USER
+            // ==========================================
+
+            $step = 'USER_REGISTRATION';
+
+            $userManager = DB::transaction(function () use (
+                $create,
+                &$step
+            ) {
+
+                $step = 'USER_PROVIDER_MANAGER';
+
+                $managerSave = new UtilUser();
+
+                $result = $managerSave->managerUserProvider([
+                    'typeSave' => UtilUser::TYPE_SAVE_NORMAL,
+                    'data' => $create,
+                ]);
+
+                if (!($result['success'] ?? false)) {
+
+                    $typeError = $result['data']['errors']['typeError']
+                        ?? null;
+
+                    $errorCode = match ($typeError) {
+                        1 => 'USER_REGISTRATION_FAILED',
+                        2 => 'ROLE_ASSIGNMENT_FAILED',
+                        default => 'USER_PROVIDER_FAILED',
+                    };
+
+                    throw new \DomainException($errorCode);
+                }
+
+                $user = $result['data']['user'] ?? null;
+
+                $userManager = $result['data']['userManager'] ?? null;
+
+                if (!$user instanceof User) {
+
+                    throw new \DomainException(
+                        'USER_NOT_RETURNED'
+                    );
+                }
+
+                // ======================================
+                // ACCOUNT STATUS
+                // ======================================
+
+                $step = 'ACCOUNT_STATUS';
+
+                if ($user->status !== User::STATUS_ACTIVE) {
+
+                    throw new \DomainException(
+                        'ACCOUNT_INACTIVE'
+                    );
+                }
+
+                return $userManager;
+            });
+
+            // ==========================================
+            // 6. INITIALIZE SESSION
+            // ==========================================
+
+            $step = 'SESSION_INITIALIZATION';
+
+            $userCurrent = $userManager['user'];
+
+            $isCreate = $userManager['isCreate'];
+
+            $this->initSession($userCurrent, $request);
+
+            // ==========================================
+            // 7. GAMIFICATION
+            // ==========================================
+
+            $step = 'GAMIFICATION';
+
+            $gamification = $this->creditRegisterUser(
+                $userCurrent,
+                $isCreate,
+                UtilUser::PROVIDER_OWNER_SERVER
+            );
+
+            // ==========================================
+            // 8. SUCCESS RESPONSE
+            // ==========================================
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Usuario registrado correctamente.',
+                'data' => [
+                    'user' => [
+                        'id' => $userCurrent->id,
+                        'name' => $userCurrent->name,
+                        'isCreate' => $isCreate,
+                    ],
+                    'gamification' => $gamification,
+                    'provider' => User::PROVIDER_OWNER_SERVER,
+                ],
+            ], 200);
+
+        } catch (\DomainException $exception) {
+
+            // ==========================================
+            // DOMAIN ERRORS
+            // ==========================================
+
+            $messages = [
+                'EMAIL_ALREADY_REGISTERED' =>
+                    'Este correo electrónico ya se encuentra registrado.',
+
+                'USER_REGISTRATION_FAILED' =>
+                    'No se pudo registrar el usuario.',
+
+                'ROLE_ASSIGNMENT_FAILED' =>
+                    'No se pudo asignar el rol del usuario.',
+
+                'USER_PROVIDER_FAILED' =>
+                    'No se pudo gestionar la cuenta.',
+
+                'USER_NOT_RETURNED' =>
+                    'No se pudo recuperar la cuenta registrada.',
+
+                'ACCOUNT_INACTIVE' =>
+                    'Esta cuenta se encuentra inactiva.',
+            ];
+
+            $code = $exception->getMessage();
+
+            $status = match ($code) {
+                'EMAIL_ALREADY_REGISTERED' => 409,
+                'ACCOUNT_INACTIVE' => 403,
+                default => 422,
+            };
+
+            return $this->googleModalError(
+                $code,
+                $step,
+                $messages[$code] ?? 'No se pudo completar el registro.',
+                $status
+            );
+
+        } catch (\Throwable $exception) {
+
+            // ==========================================
+            // INTERNAL ERRORS
+            // ==========================================
+
+            $this->logGoogleModalException(
+                $exception,
+                $step
+            );
+
+            return $this->googleModalError(
+                'SERVER_REGISTRATION_INTERNAL_ERROR',
+                $step,
+                'No se pudo completar el registro.',
+                500
+            );
+        }
+    }
 
     public function handleGoogleModal(Request $request): JsonResponse
     {

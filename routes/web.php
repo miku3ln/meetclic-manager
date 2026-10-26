@@ -121,6 +121,10 @@ Route::group(['prefix' => '{language}', 'middleware' => ['course']], function ()
 
 Route::get('/email/verify/{id}/{hash}','Auth\RegisterController@verifyRegister')->name('verification.verify');
 
+Route::post(
+    '/auth/server/modal',
+    [SocialNetworkController::class, 'handleServerModal']
+)->name('auth.server.modal');
 
 Route::post(
     '/auth/google/modal',

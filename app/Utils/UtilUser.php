@@ -920,7 +920,11 @@ class UtilUser
             $result = $model->managerFacebook($data);
         } else if ($typeProvider == User::PROVIDER_GOOGLE) {
             $result = $model->managerGoogle($data);
+        }else if ($typeProvider == User::PROVIDER_OWNER_SERVER) {
+            $result = $model->managerServer($data);
         }
+
+
 
         return $result;
     }
@@ -957,6 +961,20 @@ class UtilUser
             if (!$user) {
                 $success = false;
                 $msg = 'Error al crear un usuario Google.';
+                $data['errors'] = [
+                    'typeError' => 1
+                ];
+            } else {
+                $success = true;
+            }
+
+        }else if ($typeSave == UtilUser::TYPE_SAVE_NORMAL) {
+            $user = $resultSaveUser["user"];
+            $data['userManager'] = $resultSaveUser;
+
+            if (!$user) {
+                $success = false;
+                $msg = 'Error al crear un usuario.';
                 $data['errors'] = [
                     'typeError' => 1
                 ];

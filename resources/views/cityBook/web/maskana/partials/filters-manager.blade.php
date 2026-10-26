@@ -120,9 +120,12 @@
 
         static toggle() {
             if (this.isExpanded) {
+                $("#manager-contact-whatsapp-main").removeClass("not-view");
                 this.close();
             } else {
                 this.open();
+                $("#manager-contact-whatsapp-main").addClass("not-view");
+
             }
         }
 
