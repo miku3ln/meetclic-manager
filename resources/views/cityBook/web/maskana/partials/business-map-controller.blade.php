@@ -353,11 +353,15 @@
         mapController.on('business:details:open', ({business}) => {
             console.log('Detalle abierto:', business);
             $(".yapita-register").addClass("not-view");
+            $("#maskana-bottom-sheet").addClass("not-view");
+
         });
 
         mapController.on('business:details:close', ({business}) => {
             console.log('Detalle cerrado:', business);
             $(".yapita-register").removeClass("not-view");
+            $("#maskana-bottom-sheet").removeClass("not-view");
+
 
         });
 
