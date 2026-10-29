@@ -123,7 +123,7 @@ class FrontendCityBookManager extends ModelManager
 
         $resourcePathServer = $publicAsset;
         $dataManagerPage['menuAccountManagementUser'] = $this->modelFMD->getMenuAccountManagementUser($resultPageData['profileConfig'], $page);
-
+//dd($dataManagerPage['menuAccountManagementUser']);
         $allowCounters = ($page == 'home' || $page == 'homePage' || $page == 'aboutUs' || $page == 'shopPage') ? true : false;
 
         if ($allowCounters) {

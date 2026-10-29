@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\PointSales;
 
+use App\Models\Customer;
 use App\Models\Events\BusinessMapZoneEvent;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\PointSalesBaseController;
@@ -840,7 +842,14 @@ class ProductController extends PointSalesBaseController
             ], 500);
         }
     }
+    public function businessCustomerByPointSales()
+    {
 
+        $attributesPost = \Illuminate\Support\Facades\Request::all();
+        $model = new Customer();
+        $result = $model->saveDataCustomerByPointSales(array("attributesPost" => $attributesPost));
+        return Response::json($result);
+    }
 
     public function generateTicket(Request $request)//POS-PRODUCTS-SALES -INIT-TWO CASH-TODO
     {

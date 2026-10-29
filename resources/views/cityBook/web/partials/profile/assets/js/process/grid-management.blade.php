@@ -246,7 +246,7 @@
                             var classInputOutputIconView = row.icon_class;
                             var typeEntity = [
 
-                                row.business_id ? '                 <a target="_blank" href="' + ($routesManager.businessDetails + "/" + row.business_name) + '" > by ' + row.business_name + '</a>' : '                 <a target="_blank" href="' + ($routesManager.authorSingle + "/" + row.user_id) + '" > by ' + row.user_name + '</a>'
+                                row.business_id ? '                 <a target="_blank" href="' + ($routesManager.businessDetails + "/" + row.id) + '" > by ' + row.business_name + '</a>' : '                 <a target="_blank" href="' + ($routesManager.authorSingle + "/" + row.user_id) + '" > by ' + row.user_name + '</a>'
                             ];
                             var descriptionInformation = [
                                 '<div class="dashboard-list">',

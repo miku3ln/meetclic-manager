@@ -430,25 +430,13 @@ var $methodsCustomer = {
             customer_by_information_id: this.$v.model.attributes.customer_by_information_id ? this.$v.model.attributes.customer_by_information_id.$model : -1,
 
         };
-        if (this.managerInformationAddress.allow) {
-            customerData['information_address_type_id'] = 1;
-            customerData['information_address_id'] = this.$v.model.attributes.information_address_id.$model ? this.$v.model.attributes.information_address_id.$model : -1;
-            customerData['street_one'] = this.$v.model.attributes.street_one.$model;
-            customerData['reference'] = this.$v.model.attributes.reference.$model;
-            customerData['street_two'] = this.$v.model.attributes.street_two.$model;
-            customerData['has_location'] = 1;
-            customerData['options_map'] = this.$v.model.attributes.options_map.$model;
-            customerData['information_address_location_current'] = this.$v.model.attributes.information_address_location_current.$model;
 
 
-        }
-        if (this.managerInformationPhone.allow) {
             customerData['information_phone_id'] = this.$v.model.attributes.information_phone_id.$model ? this.$v.model.attributes.information_phone_id.$model : -1;
             customerData['information_phone_value'] = this.$v.model.attributes.information_phone_value.$model;
             customerData['information_phone_operator_id'] = this.$v.model.attributes.information_phone_operator_id_data.$model;
             customerData['information_phone_type_id'] = this.$v.model.attributes.information_phone_type_id_data.$model;
 
-        }
 
         var result = {
             Customer: customerData

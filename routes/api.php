@@ -97,6 +97,7 @@ Route::prefix('pointsales')->group(function () {
         Route::post('/business/customer/admin', 'Crm\CustomerController@getAdminBusiness');
 
         Route::post('/generate-ticket', 'PointSales\ProductController@generateTicket');
+        Route::post('/business/customer/save', 'PointSales\ProductController@businessCustomerByPointSales')->name('businessCustomerByPointSales');
 
 
         Route::post('/transform-draft-invoice-register', 'PointSales\ProductController@transformDraftInvoiceRegister');

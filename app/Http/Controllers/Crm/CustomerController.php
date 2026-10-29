@@ -116,7 +116,7 @@ class CustomerController extends MyBaseController
 
         $attributesPost = Request::all();
         $model = new Customer();
-        $result = $model->saveData(array("attributesPost" => $attributesPost));
+        $result = $model->saveDataCustomerByPointSales(array("attributesPost" => $attributesPost));
         return Response::json($result);
     }
     public function saveDataData()

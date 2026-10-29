@@ -76,6 +76,12 @@ class BusinessAppService
                 ->values()
                 ->all();
             $excludeBusinessIds[] = 42;
+            $excludeBusinessIds[] = 126;//122
+            $excludeBusinessIds[] = 124;//120
+            $excludeBusinessIds[] = 122;//118
+            $excludeBusinessIds[] = 123;//119
+            $excludeBusinessIds[] = 5;
+
             $businessesPromotions = $this->repository->searchNearbyBusinessPromotion(
                 $latitude,
                 $longitude,

@@ -44,6 +44,7 @@ class FrontendCmsCityBook
             Route::get('/contactUsBee', 'Frontend\FrontendCityBookController@contactUsBee')->name('contactUsBee');
             Route::get('/aboutUsBee', 'Frontend\FrontendCityBookController@aboutUsBee')->name('aboutUsBee');//GAMIFICATION ROUTE
             Route::get('/maskana', 'Frontend\FrontendCityBookController@maskana')->name('maskana');//GAMIFICATION ROUTE
+            Route::get('/karay', 'Frontend\FrontendCityBookController@karay')->name('karay');
 
             Route::get('/ourServicesBee', 'Frontend\FrontendCityBookController@ourServicesBee')->name('ourServicesBee');
             Route::get('/shopBee', 'Frontend\FrontendCityBookController@shopBee')->name('shopBee');

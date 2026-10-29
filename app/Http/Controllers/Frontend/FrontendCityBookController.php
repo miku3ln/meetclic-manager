@@ -1265,4 +1265,26 @@ class FrontendCityBookController extends FrontendBaseController
 
         return view($renderView, $paramsSend);
     }
+    public function karay($language = 'es')
+    {
+        $nameProcess = 'karay';
+        $renderView = self::LAYOUT_MAIN . '.web.karay';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $modelType=new MapZoneEvent();
+        $zoneManager=   $modelType->findActiveById(0);
+        $zonesManager=   $modelType->findActiveAll();
+
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => $nameProcess,
+            'paramsRequest' => $paramsRequest
+
+        ]);
+
+
+        return view($renderView, $paramsSend);
+    }
 }

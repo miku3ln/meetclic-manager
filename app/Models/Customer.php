@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\InformationPhoneOperator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -882,7 +881,816 @@ class Customer extends Model
 
         return $result;
     }
+    public function saveDataCustomerByPointSales($params)
+    {
+        // ==========================================
+        // 1. VARIABLES GENERALES
+        // ==========================================
 
+        $data = [];
+
+        $step = 1;
+        $stepCode = 'VALIDATE_PARAMS';
+        $stepName = 'Validación de parámetros';
+        $operation = 'CHECK_CUSTOMER_PARAMS';
+
+        $transactionStarted = false;
+        $transactionBaseLevel = DB::transactionLevel();
+
+        try {
+
+            // ==========================================
+            // STEP 1 - VALIDAR PARÁMETROS
+            // ==========================================
+
+            $attributesPost = $params['attributesPost'] ?? [];
+
+            if (
+                !isset($attributesPost['Customer']) ||
+                !is_array($attributesPost['Customer'])
+            ) {
+                return [
+                    'success' => false,
+                    'msj' => 'No se recibieron los datos del cliente.',
+                    'errors' => [
+                        'El parámetro Customer es obligatorio.'
+                    ],
+                    'step' => $step,
+                    'step_code' => $stepCode,
+                    'step_name' => $stepName,
+                    'operation' => $operation,
+                    'data' => []
+                ];
+            }
+
+            $postData = $attributesPost['Customer'];
+
+            // ==========================================
+            // STEP 2 - INICIAR TRANSACCIÓN
+            // ==========================================
+
+            $step = 2;
+            $stepCode = 'BEGIN_TRANSACTION';
+            $stepName = 'Inicio de transacción';
+            $operation = 'DB_BEGIN_TRANSACTION';
+
+            DB::beginTransaction();
+
+            $transactionStarted = true;
+
+            // ==========================================
+            // STEP 3 - CREAR O ACTUALIZAR PERSONA
+            // ==========================================
+
+            $step = 3;
+            $stepCode = 'SAVE_PEOPLE';
+            $stepName = 'Registro de persona';
+
+            // ------------------------------------------
+            // 3.1 IDENTIFICAR CREACIÓN O ACTUALIZACIÓN
+            // ------------------------------------------
+
+            $operation = 'CHECK_PEOPLE_ID';
+
+            $peopleId = $postData['people_id'] ?? null;
+
+            $isUpdate = !in_array(
+                (string) $peopleId,
+                ['', 'null', '-1'],
+                true
+            );
+
+            // ------------------------------------------
+            // 3.2 OBTENER MODELO
+            // ------------------------------------------
+
+            $operation = 'FIND_PEOPLE';
+
+            $model = $isUpdate
+                ? People::findOrFail($peopleId)
+                : new People();
+
+            // ------------------------------------------
+            // 3.3 PREPARAR IDENTIFICACIÓN
+            // ------------------------------------------
+
+            $operation = 'PREPARE_PEOPLE_DOCUMENT';
+
+            $identificationDocument =
+                $postData['document_number']
+                ?? $postData['identification_document']
+                ?? null;
+
+            // ------------------------------------------
+            // 3.4 PREPARAR ATRIBUTOS
+            // ------------------------------------------
+
+            $operation = 'PREPARE_PEOPLE_ATTRIBUTES';
+
+            $attributesSet = [
+                'last_name' => $postData['last_name'] ?? '',
+                'name' => $postData['name'] ?? '',
+                'type_document' => $postData['type_document']
+                    ?? PeopleTypeIdentification::TYPE_IDENTIFICATION_OTHERS,
+                'document_number' => $identificationDocument,
+                'birthdate' => $postData['birthdate'] ?? null,
+                'age' => $postData['age'] ?? 0,
+                'gender' => $postData['gender'] ?? 0
+            ];
+
+            // ------------------------------------------
+            // 3.5 VALIDAR PERSONA
+            // ------------------------------------------
+
+            $operation = 'VALIDATE_PEOPLE';
+
+            $validateResult = People::validateModel($attributesSet);
+
+            if (!($validateResult['success'] ?? false)) {
+
+                DB::rollBack();
+                $transactionStarted = false;
+
+                return [
+                    'success' => false,
+                    'msj' => "Error en STEP {$step}: {$stepName}.",
+                    'errors' => $validateResult['errors'] ?? [],
+                    'step' => $step,
+                    'step_code' => $stepCode,
+                    'step_name' => $stepName,
+                    'operation' => $operation,
+                    'data' => []
+                ];
+            }
+
+            // ------------------------------------------
+            // 3.6 GUARDAR PERSONA
+            // ------------------------------------------
+
+            $operation = 'FILL_PEOPLE';
+
+            $model->fill($attributesSet);
+
+            $operation = 'INSERT_UPDATE_PEOPLE';
+
+            $model->save();
+
+            $peopleId = $model->id;
+
+            $data['People'] = array_merge(
+                $attributesSet,
+                ['id' => $peopleId]
+            );
+
+            // ==========================================
+            // STEP 4 - CREAR O ACTUALIZAR CLIENTE
+            // ==========================================
+
+            $step = 4;
+            $stepCode = 'SAVE_CUSTOMER';
+            $stepName = 'Registro de cliente';
+
+            // ------------------------------------------
+            // 4.1 IDENTIFICAR CLIENTE
+            // ------------------------------------------
+
+            $operation = 'CHECK_CUSTOMER_ID';
+
+            $customerId = $postData['customer_id'] ?? null;
+
+            // ------------------------------------------
+            // 4.2 OBTENER MODELO
+            // ------------------------------------------
+
+            $operation = 'FIND_CUSTOMER';
+
+            $modelC = $isUpdate
+                ? Customer::findOrFail($customerId)
+                : new Customer();
+
+            if (
+                $isUpdate &&
+                (int) $modelC->people_id !== (int) $peopleId
+            ) {
+                DB::rollBack();
+                $transactionStarted = false;
+
+                return [
+                    'success' => false,
+                    'msj' => "Error en STEP {$step}: {$stepName}.",
+                    'errors' => [
+                        'El cliente no corresponde a la persona indicada.'
+                    ],
+                    'step' => $step,
+                    'step_code' => $stepCode,
+                    'step_name' => $stepName,
+                    'operation' => $operation,
+                    'data' => []
+                ];
+            }
+
+            // ------------------------------------------
+            // 4.3 PREPARAR ATRIBUTOS
+            // ------------------------------------------
+
+            $operation = 'PREPARE_CUSTOMER_ATTRIBUTES';
+
+            $attributesSet = [
+                'identification_document' =>
+                    $postData['identification_document']
+                    ?? $identificationDocument,
+
+                'people_type_identification_id' =>
+                    $postData['people_type_identification_id'] ?? null,
+
+                'people_id' => $peopleId,
+
+                'business_name' =>
+                    $postData['business_name'] ?? '',
+
+                'business_reason' =>
+                    $postData['business_reason'] ?? '',
+
+                'ruc_type_id' =>
+                    $postData['ruc_type_id'] ?? null,
+
+                'customer_id' =>
+                    $isUpdate ? $customerId : null
+            ];
+
+            // ------------------------------------------
+            // 4.4 VALIDAR CLIENTE
+            // ------------------------------------------
+
+            $operation = 'VALIDATE_CUSTOMER';
+
+            $validateResult = Customer::validateModel($attributesSet);
+
+            if (!($validateResult['success'] ?? false)) {
+
+                DB::rollBack();
+                $transactionStarted = false;
+
+                return [
+                    'success' => false,
+                    'msj' => "Error en STEP {$step}: {$stepName}.",
+                    'errors' => $validateResult['errors'] ?? [],
+                    'step' => $step,
+                    'step_code' => $stepCode,
+                    'step_name' => $stepName,
+                    'operation' => $operation,
+                    'data' => []
+                ];
+            }
+
+            // ------------------------------------------
+            // 4.5 GUARDAR CLIENTE
+            // ------------------------------------------
+
+            $operation = 'FILL_CUSTOMER';
+
+            $modelC->fill($attributesSet);
+
+            $operation = 'INSERT_UPDATE_CUSTOMER';
+
+            $modelC->save();
+
+            $customerId = $modelC->id;
+
+            $data['Customer'] = array_merge(
+                $attributesSet,
+                ['id' => $customerId]
+            );
+
+            // ------------------------------------------
+            // 4.6 PREPARAR CUSTOMER MANAGER
+            // ------------------------------------------
+
+            $operation = 'PREPARE_CUSTOMER_MANAGER';
+
+            $data['CustomerManager'] = [
+                'id' => $customerId,
+                'text' => trim(
+                    ($postData['identification_document']
+                        ?? $identificationDocument
+                        ?? '')
+                    . ' '
+                    . ($postData['name'] ?? '')
+                    . ' '
+                    . ($postData['last_name'] ?? '')
+                )
+            ];
+
+            // ==========================================
+            // STEP 5 - INFORMACIÓN COMPLEMENTARIA
+            // ==========================================
+
+            $step = 5;
+            $stepCode = 'SAVE_CUSTOMER_INFORMATION';
+            $stepName = 'Información complementaria del cliente';
+
+            // ------------------------------------------
+            // 5.1 IDENTIFICAR REGISTRO
+            // ------------------------------------------
+
+            $operation = 'CHECK_CUSTOMER_INFORMATION_ID';
+
+            $customerInformationId =
+                $postData['customer_by_information_id'] ?? null;
+
+            $isInformationUpdate = !in_array(
+                (string) $customerInformationId,
+                ['', 'null', '-1'],
+                true
+            );
+
+            // ------------------------------------------
+            // 5.2 OBTENER MODELO
+            // ------------------------------------------
+
+            $operation = 'FIND_CUSTOMER_INFORMATION';
+
+            $modelCBI = $isInformationUpdate
+                ? CustomerByInformation::findOrFail($customerInformationId)
+                : new CustomerByInformation();
+
+            if (
+                $isInformationUpdate &&
+                (int) $modelCBI->customer_id !== (int) $customerId
+            ) {
+                DB::rollBack();
+                $transactionStarted = false;
+
+                return [
+                    'success' => false,
+                    'msj' => "Error en STEP {$step}: {$stepName}.",
+                    'errors' => [
+                        'La información complementaria no pertenece al cliente.'
+                    ],
+                    'step' => $step,
+                    'step_code' => $stepCode,
+                    'step_name' => $stepName,
+                    'operation' => $operation,
+                    'data' => []
+                ];
+            }
+
+            // ------------------------------------------
+            // 5.3 PREPARAR ATRIBUTOS
+            // ------------------------------------------
+
+            $operation = 'PREPARE_CUSTOMER_INFORMATION';
+
+            $attributesSet = [
+                'customer_id' => $customerId,
+
+                'people_nationality_id' =>
+                    $postData['people_nationality_id'] ?? null,
+
+                'people_profession_id' =>
+                    $postData['people_profession_id'] ?? null
+            ];
+
+            // ------------------------------------------
+            // 5.4 VALIDAR INFORMACIÓN
+            // ------------------------------------------
+
+            $operation = 'VALIDATE_CUSTOMER_INFORMATION';
+
+            $validateResult =
+                CustomerByInformation::validateModel($attributesSet);
+
+            if (!($validateResult['success'] ?? false)) {
+
+                DB::rollBack();
+                $transactionStarted = false;
+
+                return [
+                    'success' => false,
+                    'msj' => "Error en STEP {$step}: {$stepName}.",
+                    'errors' => $validateResult['errors'] ?? [],
+                    'step' => $step,
+                    'step_code' => $stepCode,
+                    'step_name' => $stepName,
+                    'operation' => $operation,
+                    'data' => []
+                ];
+            }
+
+            // ------------------------------------------
+            // 5.5 GUARDAR INFORMACIÓN
+            // ------------------------------------------
+
+            $operation = 'FILL_CUSTOMER_INFORMATION';
+
+            $modelCBI->fill($attributesSet);
+
+            $operation = 'INSERT_UPDATE_CUSTOMER_INFORMATION';
+
+            $modelCBI->save();
+
+            $data['CustomerByInformation'] = [
+                'id' => $modelCBI->id,
+                'customer_id' => $customerId
+            ];
+
+            // ==========================================
+            // STEP 6 - INFORMACIÓN DE DIRECCIÓN
+            // ==========================================
+
+            $entityType = Util::INFORMATION_CUSTOMER_TYPE;
+
+            if (isset($postData['information_address_id'])) {
+
+                $step = 6;
+                $stepCode = 'SAVE_ADDRESS';
+                $stepName = 'Registro de dirección';
+
+                // ------------------------------------------
+                // 6.1 PREPARAR UBICACIÓN
+                // ------------------------------------------
+
+                $operation = 'PREPARE_ADDRESS_LOCATION';
+
+                $locationCurrent =
+                    $postData['information_address_location_current'] ?? [];
+
+                if (is_string($locationCurrent)) {
+
+                    $locationCurrent = json_decode(
+                        $locationCurrent,
+                        true,
+                        512,
+                        JSON_THROW_ON_ERROR
+                    );
+                }
+
+                if (!is_array($locationCurrent)) {
+
+                    throw new \InvalidArgumentException(
+                        'La información de ubicación no es válida.'
+                    );
+                }
+
+                // ------------------------------------------
+                // 6.2 ASIGNAR DATOS GEOGRÁFICOS
+                // ------------------------------------------
+
+                $operation = 'PREPARE_ADDRESS_ATTRIBUTES';
+
+                $postData['country_code_id'] =
+                    $locationCurrent['country_code_id'] ?? null;
+
+                $postData['administrative_area_level_2'] =
+                    $locationCurrent['administrative_area_level_2'] ?? null;
+
+                $postData['administrative_area_level_1'] =
+                    $locationCurrent['administrative_area_level_1'] ?? null;
+
+                $postData['administrative_area_level_3'] =
+                    $locationCurrent['administrative_area_level_3'] ?? null;
+
+                $postData['state'] = 'ACTIVE';
+                $postData['entity_id'] = $customerId;
+                $postData['entity_type'] = $entityType;
+                $postData['main'] = 1;
+
+                // ------------------------------------------
+                // 6.3 IDENTIFICAR DIRECCIÓN
+                // ------------------------------------------
+
+                $operation = 'CHECK_ADDRESS_ID';
+
+                $addressId = $postData['information_address_id'];
+
+                $isAddressUpdate = !in_array(
+                    (string) $addressId,
+                    ['', 'null', '-1'],
+                    true
+                );
+
+                // ------------------------------------------
+                // 6.4 OBTENER MODELO
+                // ------------------------------------------
+
+                $operation = 'FIND_ADDRESS';
+
+                $modelIA = $isAddressUpdate
+                    ? InformationAddress::findOrFail($addressId)
+                    : new InformationAddress();
+
+                if (
+                    $isAddressUpdate &&
+                    (
+                        (int) $modelIA->entity_id !== (int) $customerId ||
+                        (string) $modelIA->entity_type !== (string) $entityType
+                    )
+                ) {
+                    DB::rollBack();
+                    $transactionStarted = false;
+
+                    return [
+                        'success' => false,
+                        'msj' => "Error en STEP {$step}: {$stepName}.",
+                        'errors' => [
+                            'La dirección no pertenece al cliente.'
+                        ],
+                        'step' => $step,
+                        'step_code' => $stepCode,
+                        'step_name' => $stepName,
+                        'operation' => $operation,
+                        'data' => []
+                    ];
+                }
+
+                // ------------------------------------------
+                // 6.5 PREPARAR ATRIBUTOS DEL MODELO
+                // ------------------------------------------
+
+                $operation = 'GET_ADDRESS_VALUES';
+
+                $paramsSendValidate = [
+                    'fillAble' => $modelIA->getFillable(),
+                    'haystack' => $postData,
+                    'attributesData' => $modelIA->getAttributesData()
+                ];
+
+                $attributesSet =
+                    $modelIA->getValuesModel($paramsSendValidate);
+
+                // ------------------------------------------
+                // 6.6 PREPARAR REGLAS
+                // ------------------------------------------
+
+                $operation = 'GET_ADDRESS_RULES';
+
+                $paramsValidate = [
+                    'inputs' => $attributesSet,
+                    'rules' => $modelIA::getRulesModel()
+                ];
+
+                // ------------------------------------------
+                // 6.7 VALIDAR DIRECCIÓN
+                // ------------------------------------------
+
+                $operation = 'VALIDATE_ADDRESS';
+
+                $validateResult =
+                    $modelIA->validateModel($paramsValidate);
+
+                if (!($validateResult['success'] ?? false)) {
+
+                    DB::rollBack();
+                    $transactionStarted = false;
+
+                    return [
+                        'success' => false,
+                        'msj' => "Error en STEP {$step}: {$stepName}.",
+                        'errors' => $validateResult['errors'] ?? [],
+                        'step' => $step,
+                        'step_code' => $stepCode,
+                        'step_name' => $stepName,
+                        'operation' => $operation,
+                        'data' => []
+                    ];
+                }
+
+                // ------------------------------------------
+                // 6.8 GUARDAR DIRECCIÓN
+                // ------------------------------------------
+
+                $operation = 'FILL_ADDRESS';
+
+                $modelIA->fill($attributesSet);
+
+                $operation = 'INSERT_UPDATE_ADDRESS';
+
+                $modelIA->save();
+
+                $data['InformationAddress'] = [
+                    'id' => $modelIA->id
+                ];
+            }
+
+            // ==========================================
+            // STEP 7 - INFORMACIÓN DE TELÉFONO
+            // ==========================================
+
+            $keyProcess = 'information_phone';
+
+            if (isset($postData[$keyProcess . '_id'])) {
+
+                $step = 7;
+                $stepCode = 'SAVE_PHONE';
+                $stepName = 'Registro de teléfono';
+
+                // ------------------------------------------
+                // 7.1 IDENTIFICAR TELÉFONO
+                // ------------------------------------------
+
+                $operation = 'CHECK_PHONE_ID';
+
+                $phoneId = $postData[$keyProcess . '_id'];
+
+                $isPhoneUpdate = !in_array(
+                    (string) $phoneId,
+                    ['', 'null', '-1'],
+                    true
+                );
+
+                // ------------------------------------------
+                // 7.2 PREPARAR ATRIBUTOS
+                // ------------------------------------------
+
+                $operation = 'PREPARE_PHONE_ATTRIBUTES';
+
+                $postData['value'] =
+                    $postData[$keyProcess . '_value'] ?? null;
+
+                $postData['information_phone_type_id'] =
+                    $postData[$keyProcess . '_type_id']['id'] ?? null;
+
+                $postData['information_phone_operator_id'] =
+                    $postData[$keyProcess . '_operator_id']['id']
+                    ?? InformationPhoneOperator::OPERATOR_NOT_SPECIFIC_ID;
+
+                $postData['entity_id'] = $customerId;
+                $postData['entity_type'] = $entityType;
+                $postData['main'] = 1;
+                $postData['state'] = InformationPhone::STATE_ACTIVE;
+
+                // ------------------------------------------
+                // 7.3 OBTENER MODELO
+                // ------------------------------------------
+
+                $operation = 'FIND_PHONE';
+
+                $modelPhone = $isPhoneUpdate
+                    ? InformationPhone::findOrFail($phoneId)
+                    : new InformationPhone();
+
+                if (
+                    $isPhoneUpdate &&
+                    (
+                        (int) $modelPhone->entity_id !== (int) $customerId ||
+                        (string) $modelPhone->entity_type !== (string) $entityType
+                    )
+                ) {
+                    DB::rollBack();
+                    $transactionStarted = false;
+
+                    return [
+                        'success' => false,
+                        'msj' => "Error en STEP {$step}: {$stepName}.",
+                        'errors' => [
+                            'El teléfono no pertenece al cliente.'
+                        ],
+                        'step' => $step,
+                        'step_code' => $stepCode,
+                        'step_name' => $stepName,
+                        'operation' => $operation,
+                        'data' => []
+                    ];
+                }
+
+                // ------------------------------------------
+                // 7.4 PREPARAR VALORES
+                // ------------------------------------------
+
+                $operation = 'GET_PHONE_VALUES';
+
+                $paramsSendValidate = [
+                    'fillAble' => $modelPhone->getFillable(),
+                    'haystack' => $postData,
+                    'attributesData' => $modelPhone->getAttributesData()
+                ];
+
+                $attributesSet =
+                    $modelPhone->getValuesModel($paramsSendValidate);
+
+                // ------------------------------------------
+                // 7.5 PREPARAR REGLAS
+                // ------------------------------------------
+
+                $operation = 'GET_PHONE_RULES';
+
+                $paramsValidate = [
+                    'inputs' => $attributesSet,
+                    'rules' => $modelPhone::getRulesModel()
+                ];
+
+                // ------------------------------------------
+                // 7.6 VALIDAR TELÉFONO
+                // ------------------------------------------
+
+                $operation = 'VALIDATE_PHONE';
+
+                $validateResult =
+                    $modelPhone->validateModel($paramsValidate);
+
+                if (!($validateResult['success'] ?? false)) {
+
+                    DB::rollBack();
+                    $transactionStarted = false;
+
+                    return [
+                        'success' => false,
+                        'msj' => "Error en STEP {$step}: {$stepName}.",
+                        'errors' => $validateResult['errors'] ?? [],
+                        'step' => $step,
+                        'step_code' => $stepCode,
+                        'step_name' => $stepName,
+                        'operation' => $operation,
+                        'data' => []
+                    ];
+                }
+
+                // ------------------------------------------
+                // 7.7 GUARDAR TELÉFONO
+                // ------------------------------------------
+
+                $operation = 'FILL_PHONE';
+
+                $modelPhone->fill($attributesSet);
+
+                $operation = 'INSERT_UPDATE_PHONE';
+
+                $modelPhone->save();
+
+                $data['InformationPhone'] = [
+                    'id' => $modelPhone->id
+                ];
+            }
+
+            // ==========================================
+            // STEP 8 - CONFIRMAR TRANSACCIÓN
+            // ==========================================
+
+            $step = 8;
+            $stepCode = 'COMMIT_TRANSACTION';
+            $stepName = 'Confirmación de transacción';
+            $operation = 'DB_COMMIT';
+
+            DB::commit();
+
+            $transactionStarted = false;
+
+            // ==========================================
+            // RESPUESTA EXITOSA
+            // ==========================================
+
+            return [
+                'success' => true,
+                'msj' => $isUpdate
+                    ? 'Cliente actualizado correctamente.'
+                    : 'Cliente registrado correctamente.',
+                'errors' => [],
+                'step' => $step,
+                'step_code' => $stepCode,
+                'step_name' => $stepName,
+                'operation' => $operation,
+                'data' => $data
+            ];
+
+        } catch (Throwable $e) {
+
+            // ==========================================
+            // ROLLBACK ANTE EXCEPCIONES
+            // ==========================================
+
+            if (
+                $transactionStarted &&
+                DB::transactionLevel() > $transactionBaseLevel
+            ) {
+                DB::rollBack();
+            }
+
+            // ==========================================
+            // RESPUESTA DEL ERROR
+            // ==========================================
+
+            return [
+                'success' => false,
+                'msj' => "Error en STEP {$step}: {$stepName}.",
+                'errors' => [
+                    config('app.debug')
+                        ? $e->getMessage()
+                        : 'No fue posible completar la operación.'
+                ],
+                'step' => $step,
+                'step_code' => $stepCode,
+                'step_name' => $stepName,
+                'operation' => $operation,
+                'debug' => config('app.debug') ? [
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ] : null,
+                'data' => []
+            ];
+        }
+    }
     public function saveData($params)
     {
         $success = false;
