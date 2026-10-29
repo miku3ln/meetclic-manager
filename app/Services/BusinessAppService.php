@@ -41,23 +41,54 @@ class BusinessAppService
         $searchQuery = '',
         $type = null
     ) {
-        // ==========================================
-        // 1. CONSTRUIR CLAVE POR TYPE
-        // ==========================================
 
-        // CAMBIO:
-        // Utilizar caché local de archivos en lugar
-        // de Redis remoto.
-        //
-        // ANTES:
-        // $cache = Cache::store('redis');
+        // ==========================================
+        // 1. CONFIGURACIÓN GENERAL
+        // ==========================================
 
         $cache = Cache::store('file');
 
-        $cacheKey = "maskana:businesses:type:{$type}";
-        if ($cache->has($cacheKey)) {
-            $businesses = $cache->get($cacheKey);
-        } else {
+        $type = filter_var(
+            $type,
+            FILTER_VALIDATE_INT,
+            FILTER_NULL_ON_FAILURE
+        );
+
+        $validTypes = [1, 2, 3, 4];
+
+        $useCache = in_array(
+            $type,
+            $validTypes,
+            true
+        );
+
+        // Caché independiente para cada ruta.
+        // Duración: 24 horas desde su creación.
+
+        $cacheKey = $useCache
+            ? "maskana:businesses:v5:type:{$type}"
+            : null;
+
+        $cacheTtl = 86400;
+
+        // ==========================================
+        // 2. CONSULTAR EMPRESAS Y PROMOCIONES
+        // ==========================================
+
+        $loadBusinesses = function () use (
+            $latitude,
+            $longitude,
+            $radiusKm,
+            $onlyWithRedeemableRewards,
+            $onlyWithGamesActive,
+            $onlyAlliedCompanies,
+            $type
+        ) {
+
+            // ==========================================
+            // 2.1 EMPRESAS DE LA RUTA
+            // ==========================================
+
             $businesses = $this->repository->searchNearbyBusinesses(
                 $latitude,
                 $longitude,
@@ -69,40 +100,77 @@ class BusinessAppService
                 '',
                 $type
             );
+
+            // ==========================================
+            // 2.2 EMPRESAS EXCLUIDAS
+            // ==========================================
+
             $excludeBusinessIds = collect($businesses)
                 ->pluck('id')
                 ->map(fn ($id) => (int) $id)
                 ->unique()
                 ->values()
                 ->all();
-            $excludeBusinessIds[] = 42;
-            $excludeBusinessIds[] = 126;//122
-            $excludeBusinessIds[] = 124;//120
-            $excludeBusinessIds[] = 122;//118
-            $excludeBusinessIds[] = 123;//119
-            $excludeBusinessIds[] = 5;
 
-            $businessesPromotions = $this->repository->searchNearbyBusinessPromotion(
-                $latitude,
-                $longitude,
-                $radiusKm,
-                null,
-                $excludeBusinessIds,
-                '',
+            // Mantener exclusiones originales.
 
+            $additionalExclusions = [
+                42,
+                126,
+                124,
+                122,
+                123,
+                5
+            ];
+
+            $excludeBusinessIds = array_values(
+                array_unique(
+                    array_merge(
+                        $excludeBusinessIds,
+                        $additionalExclusions
+                    )
+                )
             );
+
+            // ==========================================
+            // 2.3 EMPRESAS CON PROMOCIONES
+            // ==========================================
+
+            $businessesPromotions =
+                $this->repository->searchNearbyBusinessPromotion(
+                    $latitude,
+                    $longitude,
+                    $radiusKm,
+                    null,
+                    $excludeBusinessIds,
+                    ''
+                );
+
+            // ==========================================
+            // 2.4 COMBINAR EMPRESAS
+            // ==========================================
 
             $businessesMap = collect($businesses)
                 ->keyBy('id');
+
             foreach ($businessesPromotions as $promotionBusiness) {
+
                 $businessId = $promotionBusiness->id;
+
                 if ($businessesMap->has($businessId)) {
+
                     $business = $businessesMap->get($businessId);
 
-                    $business->promotions = $promotionBusiness->promotions ?? [];
-                    $businessesMap->put($businessId, $business);
+                    $business->promotions =
+                        $promotionBusiness->promotions ?? [];
+
+                    $businessesMap->put(
+                        $businessId,
+                        $business
+                    );
 
                 } else {
+
                     $promotionBusiness->promotions =
                         $promotionBusiness->promotions ?? [];
 
@@ -113,37 +181,120 @@ class BusinessAppService
                 }
             }
 
-            /*
-             * CASO 3:
-             * Las empresas que no tengan promociones
-             * deben tener promotions: []
-             */
-            $businesses = $businessesMap
+            // ==========================================
+            // 2.5 NORMALIZAR PROMOCIONES
+            // ==========================================
+
+            return $businessesMap
                 ->map(function ($business) {
 
-                    $business->promotions = $business->promotions ?? [];
+                    $business->promotions =
+                        $business->promotions ?? [];
 
                     return $business;
                 })
                 ->values()
                 ->all();
+        };
+
+        // ==========================================
+        // 3. OBTENER RESULTADOS CON CACHÉ
+        // ==========================================
+
+        if ($useCache) {
+
+            // ==========================================
+            // 3.1 BUSCAR EN CACHÉ
+            // ==========================================
+
+            $businesses = $cache->get($cacheKey);
+
+            if ($businesses === null) {
+
+                // ==========================================
+                // 3.2 EVITAR CONSULTAS SIMULTÁNEAS
+                // ==========================================
+
+                $businesses = $cache
+                    ->lock("{$cacheKey}:lock", 30)
+                    ->block(10, function () use (
+                        $cache,
+                        $cacheKey,
+                        $cacheTtl,
+                        $loadBusinesses
+                    ) {
+
+                        // Verificar nuevamente la caché
+                        // después de obtener el bloqueo.
+
+                        $cachedBusinesses = $cache->get(
+                            $cacheKey
+                        );
+
+                        if ($cachedBusinesses !== null) {
+                            return $cachedBusinesses;
+                        }
+
+                        // ==========================================
+                        // 3.3 CONSULTAR BASE DE DATOS
+                        // ==========================================
+
+                        $data = $loadBusinesses();
+
+                        // ==========================================
+                        // 3.4 GUARDAR DURANTE 24 HORAS
+                        // ==========================================
+
+                        $cache->put(
+                            $cacheKey,
+                            $data,
+                            $cacheTtl
+                        );
+
+                        return $data;
+                    });
+            }
+
+        } else {
+
+            // Para type diferente de 1, 2, 3 y 4,
+            // consultar directamente la base de datos.
+
+            $businesses = $loadBusinesses();
         }
+
+        // ==========================================
+        // 4. CONVERTIR RESULTADOS A COLLECTION
+        // ==========================================
+
         $results = collect($businesses);
+
+        // ==========================================
+        // 5. FILTRAR POR SUBCATEGORÍAS
+        // ==========================================
+
         if (!empty($subcategoryIds)) {
+
             $ids = is_array($subcategoryIds)
                 ? $subcategoryIds
                 : explode(',', (string) $subcategoryIds);
+
             $ids = collect($ids)
                 ->map(fn ($id) => trim((string) $id))
                 ->filter(fn ($id) => $id !== '')
                 ->values()
                 ->all();
+
             if (!empty($ids)) {
+
                 $results = $results->filter(
                     function ($business) use ($ids) {
+
                         $business = (array) $business;
+
                         $subcategoryId =
-                            $business['business_subcategories_id'] ?? null;
+                            $business['business_subcategories_id']
+                            ?? null;
 
                         return in_array(
                             (string) $subcategoryId,
@@ -154,6 +305,11 @@ class BusinessAppService
                 );
             }
         }
+
+        // ==========================================
+        // 6. FILTRAR POR TEXTO
+        // ==========================================
+
         $search = mb_strtolower(
             trim((string) $searchQuery)
         );
@@ -169,7 +325,7 @@ class BusinessAppService
                         'business_name',
                         'title',
                         'description',
-                        'subcategory_name',
+                        'subcategory_name'
                     ];
 
                     foreach ($fields as $field) {
@@ -189,10 +345,12 @@ class BusinessAppService
         }
 
         // ==========================================
-        // 5. DEVOLVER RESULTADOS FILTRADOS
+        // 7. DEVOLVER RESULTADOS
         // ==========================================
 
-        return $results->values()->all();
+        return $results
+            ->values()
+            ->all();
     }
 
     public function getCategoriesBusiness($params)
