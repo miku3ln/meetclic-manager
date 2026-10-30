@@ -4017,6 +4017,723 @@
         }
     }
 
+
+    /* ================================================
+       MASKANA SHEET - TABS
+    ================================================ */
+
+    .maskana-sheet__tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+
+        flex-shrink: 0;
+
+        padding: 12px 14px;
+
+        background: #fff;
+        border-bottom: 1px solid #edf0f6;
+    }
+
+    /* ================================================
+       TAB
+    ================================================ */
+
+    .maskana-sheet__tab {
+        position: relative;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        min-height: 44px;
+        padding: 10px 14px;
+
+        border: 1px solid transparent;
+        border-radius: 11px;
+
+        background: transparent;
+        color: #71809a;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            background .2s ease,
+            color .2s ease,
+            border-color .2s ease;
+    }
+
+    .maskana-sheet__tab i {
+        font-size: 16px;
+    }
+
+    .maskana-sheet__tab:hover {
+        background: #f4f6ff;
+        color: #435cf0;
+    }
+
+    /* ACTIVE TAB */
+
+    .maskana-sheet__tab--active {
+        background: #edf0ff;
+        border-color: #dce2ff;
+
+        color: #435cf0;
+        font-weight: 700;
+    }
+
+    .maskana-sheet__tab--active:hover {
+        background: #e7ebff;
+    }
+
+    /* ACCESSIBILITY */
+
+    .maskana-sheet__tab:focus-visible {
+        outline: 2px solid #435cf0;
+        outline-offset: 2px;
+    }
+
+    /* ================================================
+       TAB PANELS
+    ================================================ */
+
+    .maskana-sheet__panel {
+        display: none;
+        flex-direction: column;
+        gap: 18px;
+
+        width: 100%;
+        min-width: 0;
+    }
+
+    .maskana-sheet__panel--active:not([hidden]) {
+        display: flex;
+    }
+
+    .maskana-sheet__panel[hidden] {
+        display: none !important;
+    }
+
+    /* ================================================
+       PRIZES - EMPTY STATE
+    ================================================ */
+
+    .maskana-sheet__prizes-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+
+        min-height: 220px;
+        padding: 24px 18px;
+
+        text-align: center;
+    }
+
+    .maskana-sheet__prizes-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 68px;
+        height: 68px;
+
+        border-radius: 22px;
+
+        background: #fff3d5;
+        color: #d99312;
+
+        font-size: 31px;
+    }
+
+    .maskana-sheet__prizes-title {
+        margin: 0;
+
+        font-size: 16px;
+        line-height: 1.4;
+        font-weight: 700;
+
+        color: #17234c;
+    }
+
+    .maskana-sheet__prizes-description {
+        max-width: 290px;
+        margin: 0;
+
+        color: #7b859e;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    /* ================================================
+       FOOTER BY ACTIVE TAB
+    ================================================ */
+
+    .maskana-sheet[data-active-tab="prizes"]
+    .maskana-sheet__footer {
+        display: none;
+    }
+
+    /* ================================================
+       MOBILE
+    ================================================ */
+
+    @media (max-width: 575px) {
+
+        .maskana-sheet__tabs {
+            padding: 10px 12px;
+            gap: 5px;
+        }
+
+        .maskana-sheet__tab {
+            min-height: 42px;
+            padding: 9px 10px;
+            font-size: 12px;
+        }
+
+        .maskana-sheet__body {
+            padding: 14px 12px;
+        }
+
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .maskana-sheet__tab {
+            transition: none;
+        }
+
+    }
+
+
+</style>
+
+<style id="rewards">
+
+    /* ================================================
+       MASKANA - SPONSOR PRIZES
+    ================================================ */
+
+    .maskana-prizes {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        width: 100%;
+        min-width: 0;
+        padding: 0px 0px !important;
+    }
+
+    /* ================================================
+       HEADER
+    ================================================ */
+
+    .maskana-prizes__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .maskana-prizes__heading {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .maskana-prizes__title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+
+        margin: 0;
+
+        font-size: 15px;
+        line-height: 1.4;
+        font-weight: 700;
+        color: #17234c;
+    }
+
+    .maskana-prizes__title i {
+        color: #e6a320;
+    }
+
+    .maskana-prizes__subtitle {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #71809a;
+    }
+
+    .maskana-prizes__total {
+        flex-shrink: 0;
+
+        padding: 6px 9px;
+
+        background: #edf0ff;
+        border-radius: 20px;
+
+        color: #435cf0;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    /* ================================================
+       GRID - ALWAYS TWO COLUMNS
+    ================================================ */
+
+    .maskana-prizes__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        align-items: start;
+        gap: 12px;
+
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* ================================================
+       CARD
+    ================================================ */
+
+    .maskana-prizes__card {
+        display: flex;
+        flex-direction: column;
+
+        min-width: 0;
+        height: 100%;
+
+        overflow: hidden;
+
+        background: #fff;
+        border: 1px solid #e8ecf4;
+        border-radius: 13px;
+
+        box-shadow: 0 3px 12px rgba(24, 40, 80, .05);
+
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease;
+    }
+
+    .maskana-prizes__card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(24, 40, 80, .12);
+    }
+
+    /* ================================================
+       IMAGE
+    ================================================ */
+
+    .maskana-prizes__media {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+
+        background: #f1f4fa;
+        overflow: hidden;
+    }
+
+    .maskana-prizes__image {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+    }
+
+    .maskana-prizes__status {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+
+        padding: 4px 7px;
+
+        border-radius: 20px;
+
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .maskana-prizes__status--active {
+        color: #116846;
+        background: #d9f8e8;
+    }
+
+    .maskana-prizes__status--upcoming {
+        color: #8c6200;
+        background: #fff0bd;
+    }
+
+    .maskana-prizes__status--expired {
+        color: #b43838;
+        background: #ffe3e3;
+    }
+
+    /* ================================================
+       CONTENT
+    ================================================ */
+
+    .maskana-prizes__content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 9px;
+
+        min-width: 0;
+        padding: 10px;
+    }
+
+    .maskana-prizes__business {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        min-width: 0;
+    }
+
+    .maskana-prizes__business-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        width: 25px;
+        height: 25px;
+
+        border-radius: 50%;
+        background: #edf0ff;
+        color: #435cf0;
+
+        font-size: 12px;
+        overflow: hidden;
+    }
+
+    .maskana-prizes__business-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .maskana-prizes__business-name {
+        min-width: 0;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        font-size: 11px;
+        font-weight: 700;
+        color: #4b5c79;
+    }
+
+    .maskana-prizes__name {
+        display: -webkit-box;
+        margin: 0;
+
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+
+        font-size: 13px;
+        line-height: 1.35;
+        font-weight: 700;
+        color: #19254a;
+    }
+
+    .maskana-prizes__description {
+        display: -webkit-box;
+        margin: 0;
+
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+
+        color: #78849a;
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .maskana-prizes__expiration {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        margin-top: auto;
+        padding-top: 3px;
+
+        color: #64728c;
+        font-size: 10px;
+    }
+
+    .maskana-prizes__expiration i {
+        color: #435cf0;
+    }
+
+    .maskana-prizes__view {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+
+        width: 100%;
+        min-height: 35px;
+
+        border: 0;
+        border-radius: 8px;
+
+        background: #edf0ff;
+        color: #435cf0;
+
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .maskana-prizes__view:hover {
+        background: #435cf0;
+        color: #fff;
+    }
+
+    .maskana-prizes__card--expired .maskana-prizes__image {
+        filter: grayscale(.5);
+    }
+
+    /* ================================================
+       MOBILE - KEEP TWO COLUMNS
+    ================================================ */
+
+    @media (max-width: 575px) {
+
+        .maskana-prizes__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .maskana-prizes__content {
+            padding: 8px;
+            gap: 7px;
+        }
+
+        .maskana-prizes__name {
+            font-size: 12px;
+        }
+
+        .maskana-prizes__description {
+            font-size: 10px;
+        }
+
+        .maskana-prizes__title {
+            font-size: 14px;
+        }
+    }
+
+    /* ================================================
+       SHEET SCROLL
+    ================================================ */
+
+    .maskana-sheet--expanded .maskana-sheet__content {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .maskana-sheet__body {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ================================================
+       PRIZE DETAIL MODAL
+    ================================================ */
+
+    .maskana-prize-modal__content {
+        overflow: hidden;
+        border: 0;
+        border-radius: 20px;
+    }
+
+    .maskana-prize-modal__header {
+        align-items: flex-start;
+        background: #fff;
+        border-bottom: 1px solid #edf0f6;
+    }
+
+    .maskana-prize-modal__eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        margin-bottom: 6px;
+
+        font-size: 11px;
+        font-weight: 700;
+        color: #435cf0;
+    }
+
+    .maskana-prize-modal__title {
+        font-size: 18px;
+        font-weight: 800;
+        color: #17234c;
+    }
+
+    .maskana-prize-modal__body {
+        padding: 16px;
+    }
+
+    .maskana-prize-modal__image-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        max-height: 55dvh;
+
+        overflow: hidden;
+
+        background: #f4f6fb;
+        border-radius: 14px;
+    }
+
+    .maskana-prize-modal__image {
+        display: block;
+        max-width: 100%;
+        max-height: 55dvh;
+
+        width: auto;
+        height: auto;
+
+        object-fit: contain;
+    }
+
+    .maskana-prize-modal__information {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+
+        padding-top: 18px;
+    }
+
+    .maskana-prize-modal__business {
+        font-size: 14px;
+        font-weight: 700;
+        color: #435cf0;
+    }
+
+    .maskana-prize-modal__description {
+        margin: 0;
+
+        font-size: 13px;
+        line-height: 1.6;
+        color: #586781;
+
+        white-space: pre-line;
+    }
+
+    .maskana-prize-modal__dates {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .maskana-prize-modal__date {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        min-width: 0;
+        padding: 12px;
+
+        background: #f5f7ff;
+        border-radius: 11px;
+
+        color: #435cf0;
+    }
+
+    .maskana-prize-modal__date i {
+        font-size: 18px;
+    }
+
+    .maskana-prize-modal__date div {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .maskana-prize-modal__date small {
+        font-size: 10px;
+        color: #73809a;
+    }
+
+    .maskana-prize-modal__date strong {
+        font-size: 12px;
+        color: #17234c;
+    }
+
+    .maskana-prize-modal__status {
+        width: fit-content;
+
+        padding: 6px 11px;
+        border-radius: 20px;
+
+        background: #d9f8e8;
+        color: #116846;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .maskana-prize-modal__status--upcoming {
+        background: #fff0bd;
+        color: #8c6200;
+    }
+
+    .maskana-prize-modal__status--expired {
+        background: #ffe3e3;
+        color: #b43838;
+    }
+
+    .maskana-prize-modal__footer {
+        border-top: 1px solid #edf0f6;
+    }
+
+    .maskana-prize-modal__close {
+        padding: 10px 22px;
+
+        border: 1px solid #dce3ef;
+        border-radius: 10px;
+
+        background: #fff;
+        color: #293957;
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    @media (max-width: 575px) {
+
+        .maskana-prize-modal .modal-dialog {
+            margin: 10px;
+        }
+
+        .maskana-prize-modal__dates {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .maskana-prizes__card {
+            transition: none;
+        }
+    }
+
 </style>
 <style id="modal-manager-reward">
     /* ==========================================

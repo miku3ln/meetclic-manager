@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\FrontendBaseController;
 use App\Mail\Gamification\TaskRewardMail;
+use App\Models\Events\EventBusinessPrize;
 use App\Models\Events\MapZoneEvent;
 use App\Models\FrontendCityBookManager;
 use App;
@@ -1261,6 +1262,10 @@ class FrontendCityBookController extends FrontendBaseController
         ]);
         $paramsSend["zoneManager"]=$zoneManager;
         $paramsSend["zonesManager"]=$zonesManager;
+        $modelRewards= new EventBusinessPrize();
+        $rewards=   $modelRewards-> getPrizesByEventId(1);
+        $paramsSend["rewards"]=$rewards;
+
         $paramsSend["typeId"]=$type;
 
         return view($renderView, $paramsSend);

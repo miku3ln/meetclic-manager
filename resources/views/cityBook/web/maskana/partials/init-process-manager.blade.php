@@ -128,6 +128,8 @@
     }
     function initFilters(){
         MaskanaBottomSheetUtil.init();
+        MaskanaBottomSheetTabsUtil.init();
+        MaskanaPrizesUtil.init();
 
         // Cuando abre
         $(document).on('maskana:sheet:opened', function (event, detail) {
