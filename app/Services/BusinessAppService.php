@@ -120,7 +120,8 @@ class BusinessAppService
                 124,
                 122,
                 123,
-                5
+                5,
+                128
             ];
 
             $excludeBusinessIds = array_values(
@@ -145,7 +146,6 @@ class BusinessAppService
                     $excludeBusinessIds,
                     ''
                 );
-
             // ==========================================
             // 2.4 COMBINAR EMPRESAS
             // ==========================================
