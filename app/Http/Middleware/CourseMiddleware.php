@@ -29,6 +29,7 @@ class CourseMiddleware
     ];
     public $actionsAllows = [
         "maskana",
+        "participantes",
         'homePage',
         'profile',
         'aboutUs',

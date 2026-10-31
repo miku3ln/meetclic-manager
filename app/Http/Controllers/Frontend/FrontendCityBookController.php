@@ -1240,7 +1240,30 @@ class FrontendCityBookController extends FrontendBaseController
 
         return view($renderView, $paramsSend);
     }
+    public function participantes($language = 'es',$idEvent=0)
+    {
+        $nameProcess = 'participantes';
+        $renderView = self::LAYOUT_MAIN . '.web.participantes';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $modelType=new MapZoneEvent();
+        $zonesManager=   $modelType->findActiveAll();
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => $nameProcess,
+            'paramsRequest' => $paramsRequest
 
+        ]);
+        $paramsSend["zonesManager"]=$zonesManager;
+        $modelRewards= new EventBusinessPrize();
+        $users=   $modelRewards-> getUsersEvent(1);
+        $paramsSend["users"]=$users;
+        $rewards=   $modelRewards-> getPrizesByEventId(1);
+        $paramsSend["rewards"]=$rewards;
+        return view($renderView, $paramsSend);
+    }
     public function maskana($language = 'es')
     {
         $nameProcess = 'maskana';

@@ -87,6 +87,7 @@ class FrontendCityBookManager extends ModelManager
 //NOT MESSAGE
         if (!in_array($routeName, [
             "maskana",
+            "participantes",
             "dictionary-words-management",
             "ourAllies", "authorSingle", "contactUsBee", "traductor", "diccionario", "apuntes", "yachashun", "ricksichishun", "howItWorks", "homeBackLine", "bee", "aboutUsBee", "reviewsTo", "pointsSales", "boardingEmbarkation", "boardingEmbarkationManagement", "orders", "listingsQueen", "businessEmployer", "business", "managerProductBusiness", "homeIndexFrontend", "getAdminGamificationFrontend", "myProfile", "profileAccount", "password", "suggestionsMailBox"])) {
 

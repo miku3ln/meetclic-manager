@@ -24,6 +24,55 @@ class EventBusinessPrize extends ModelManager
 
     protected $field_main = 'name';
 
+    public static function getUsersEvent(int $eventId): array
+    {
+        if ($eventId <= 0) {
+            return [];
+        }
+
+        // ==========================================
+        // 1. CONSULTAR PREMIOS Y EMPRESAS
+        // ==========================================
+
+        $rows = DB::table('users as u')
+            ->whereDate('u.created_at', '>=', '2026-10-26')
+            ->select([
+                'u.id as code',
+                'u.name as name',
+                'u.email as email',
+                'u.provider as provider',
+                'u.avatar as avatar',
+
+            ])
+            ->get();
+        $params=[];
+        return $rows->map(function ($row) use ($params) {
+
+
+            // ======================================
+            // RETORNAR MISMA ESTRUCTURA DEL DEMO
+            // ======================================
+            $avatar = "";
+            if ($row->provider == 'google') {
+                $avatar = $row->avatar;
+            } else if ($row->provider == 'server') {
+
+                $avatar = "https://img.magnific.com/vector-gratis/ayuda-soporte-fondo-abstracto-signo-interrogacion_1017-61970.jpg?semt=ais_hybrid&w=740&q=80";
+
+            }
+            return [
+                'code' => (int)$row->code,
+                'name' => $row->name,
+                'avatar' => $avatar,
+                'email' => $row->email,
+
+            ];
+
+        })->all();
+
+
+    }
+
     /**
      * Obtiene los premios de un evento.
      *
