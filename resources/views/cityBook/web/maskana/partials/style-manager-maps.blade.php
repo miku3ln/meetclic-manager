@@ -3823,7 +3823,7 @@
 
     .maskana-sheet__title {
         margin: 0;
-
+        text-align: left;
         font-size: 16px;
         font-weight: 700;
         line-height: 1.25;
@@ -3835,22 +3835,193 @@
         text-overflow: ellipsis;
     }
 
+
+    /* ================================================
+       MASKANA SHEET - EMPRESAS Y PREMIOS
+    ================================================ */
+
     .maskana-sheet__count {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 0;
+        background: transparent;
+        border-radius: 0;
+    }
+
+    /* ================================================
+       CONTADOR DE EMPRESAS
+    ================================================ */
+
+    .maskana-sheet__business-total {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
 
-        width: fit-content;
+        min-height: 27px;
+        padding: 5px 9px;
 
-        padding: 5px 10px;
-
-        background: #eef5ff;
         border-radius: 20px;
 
-        font-size: 12px;
-        font-weight: 600;
+        background: #eef5ff;
         color: #263e78;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        white-space: nowrap;
     }
+
+    /* ================================================
+       INDICADOR DE PREMIOS
+    ================================================ */
+
+    .maskana-sheet__prizes-trigger {
+        position: relative;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+
+        min-height: 29px;
+        padding: 1px 9px;
+
+        border: 1px solid #f9dda0;
+        border-radius: 20px;
+
+        background: #fff5dc;
+        color: #7844d8;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        white-space: nowrap;
+        cursor: pointer;
+
+        transition:
+            background .2s ease,
+            transform .2s ease,
+            box-shadow .2s ease;
+    }
+
+    .maskana-sheet__prizes-trigger:hover {
+        background: #ffebbc;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(232, 166, 46, .18);
+    }
+
+    .maskana-sheet__prizes-trigger:focus-visible {
+        outline: 2px solid #435cf0;
+        outline-offset: 3px;
+    }
+
+    /* ICONO REGALO */
+
+    .maskana-sheet__prizes-icon {
+        display: inline-block;
+
+        color: #7645e9;
+        font-size: 15px;
+
+        transform-origin: center bottom;
+
+        animation: maskana-sheet-gift-bounce 2.8s ease-in-out infinite;
+    }
+
+    /* ETIQUETA */
+
+    .maskana-sheet__prizes-label {
+        line-height: 1;
+    }
+
+    /* PUNTO DE ATENCIÓN */
+
+    .maskana-sheet__prizes-indicator {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+
+        width: 8px;
+        height: 8px;
+
+        border: 2px solid #fff;
+        border-radius: 50%;
+
+        background: #f43f5e;
+
+        box-shadow: 0 0 0 2px rgba(244, 63, 94, .14);
+    }
+
+    /* ================================================
+       ANIMACIÓN SUAVE DEL REGALO
+    ================================================ */
+
+    @keyframes maskana-sheet-gift-bounce {
+
+        0%, 75%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        80% {
+            transform: translateY(-3px) rotate(-8deg);
+        }
+
+        85% {
+            transform: translateY(0) rotate(7deg);
+        }
+
+        90% {
+            transform: translateY(-2px) rotate(-4deg);
+        }
+
+        95% {
+            transform: translateY(0) rotate(0deg);
+        }
+    }
+
+    /* ================================================
+       PANTALLAS PEQUEÑAS
+    ================================================ */
+
+    @media (max-width: 380px) {
+
+        .maskana-sheet__count {
+            gap: 5px;
+        }
+
+        .maskana-sheet__business-total {
+            padding: 4px 7px;
+            font-size: 10px;
+        }
+
+        .maskana-sheet__prizes-trigger {
+            padding: 4px 8px;
+            font-size: 10px;
+        }
+
+        .maskana-sheet__prizes-icon {
+            font-size: 13px;
+        }
+    }
+
+    /* ================================================
+       ACCESIBILIDAD
+    ================================================ */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .maskana-sheet__prizes-icon {
+            animation: none;
+        }
+
+        .maskana-sheet__prizes-trigger {
+            transition: none;
+        }
+    }
+
 
     /* Expand / collapse button */
 
@@ -4140,15 +4311,15 @@
         align-items: center;
         justify-content: center;
 
-        width: 68px;
-        height: 68px;
+        width: 42px;
+        height: 26px;
 
         border-radius: 22px;
 
         background: #fff3d5;
         color: #d99312;
 
-        font-size: 31px;
+        font-size: 20px;
     }
 
     .maskana-sheet__prizes-title {

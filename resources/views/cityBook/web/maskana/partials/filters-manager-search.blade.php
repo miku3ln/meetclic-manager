@@ -31,18 +31,53 @@
                 <span id="maskana-sheet-title__value">{{$zoneManager['title']}}</span>
             </h2>
 
+
+            <!-- ==========================================
+                 MASKANA - EMPRESAS Y PREMIOS
+            ========================================== -->
+
             <div
                 id="maskana-sheet-business-count"
                 class="maskana-sheet__count"
             >
-                            <span id="manager-data">
-                                     <i class="bi bi-shop"></i>
+                <!-- EMPRESAS -->
+                <span
+                    id="manager-data"
+                    class="maskana-sheet__business-total"
+                >
+        <i class="bi bi-shop" aria-hidden="true"></i>
 
-                    <strong id="business-total">0</strong>
+        <strong id="business-total">0</strong>
 
-                    <span>{{ __('frontend.maskana.filter.businesses') }}</span>
-                            </span>
+        <span>
+            {{ __('frontend.maskana.filter.businesses') }}
+        </span>
+    </span>
+
+                <!-- INDICADOR DE PREMIOS -->
+                @if(count($maskanaPrizes) > 0)
+
+                    <button
+                        type="button"
+                        id="maskana-sheet-prizes-trigger"
+                        class="maskana-sheet__prizes-trigger"
+                        aria-label="Ver los premios de los auspiciantes"
+                    >
+                        <i
+                            class="bi bi-gift-fill maskana-sheet__prizes-icon"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span class="maskana-sheet__prizes-label">
+            {{count($maskanaPrizes)}} Premios
+            </span>
+
+                        <span class="maskana-sheet__prizes-indicator"></span>
+                    </button>
+
+                @endif
             </div>
+
 
         </div>
 
