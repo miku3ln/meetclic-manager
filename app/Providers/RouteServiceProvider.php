@@ -18,13 +18,13 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
 
-    public const HOME = '/homePage/es';
-    public const HOME_INIT_LOGIN_MEETCLIC = '/homePage';
-    public const HOME_INIT_LOGOUT_MEETCLIC = '/homePage';
+    public const HOME = '/';//INIT LOGIN
+    public const HOME_INIT_LOGIN_MEETCLIC = '/homePage89';
+    public const HOME_INIT_LOGOUT_MEETCLIC = '/homePage90';
     public const HOME_INIT_LOGOUT_EAT_PURA = '/homeEatPura';
     public const HOME_INIT_LOGIN_EAT_PURA = '/homeEatPura';
     public const HOME_INIT_NOT_LOGIN_EAT_PURA = '/homeEatPura';
-    public const HOME_INIT_NOT_LOGIN_MEETCLIC = '/homePage';
+    public const HOME_INIT_NOT_LOGIN_MEETCLIC = '/homePage126';
 
     public const TYPE_MEETCLIC_BUSINESS = 1;
     public const TYPE_EAT_PURA_BUSINESS = 2;

@@ -1,7 +1,407 @@
 @extends('layouts.cityBook')
 
 @section('data-modal')
+    {{-- ==========================================
+         YAPITA PRIZES - DATA
+         ========================================== --}}
 
+    @php
+        $eventPrizes = collect($rewards ?? [])
+            ->take(30)
+            ->map(function ($prize) {
+                return (array) $prize;
+            })
+            ->values();
+
+        $totalPrizes = $eventPrizes->count();
+
+        $activePrizes = $eventPrizes
+            ->where('status', 'ACTIVE')
+            ->count();
+    @endphp
+
+
+    {{-- ==========================================
+         YAPITA PRIZES MODAL
+         ========================================== --}}
+
+    <div
+        class="modal fade yapita-prizes"
+        id="yapitaPrizesModal"
+        tabindex="-1"
+        aria-labelledby="yapitaPrizesModalTitle"
+        aria-hidden="true"
+    >
+
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+
+            <div class="modal-content yapita-prizes__modal">
+
+                {{-- ==================================
+                     HEADER
+                     ================================== --}}
+
+                <div class="modal-header yapita-prizes__header">
+
+                    <div class="yapita-prizes__header-content">
+
+                    <span class="yapita-prizes__edition">
+                        <i class="bi bi-stars"></i>
+                        7.ª EDICIÓN · DULCE O TRUCO
+                    </span>
+
+                        <h2
+                            class="yapita-prizes__title"
+                            id="yapitaPrizesModalTitle"
+                        >
+                            🎁 Premios de Halloween
+                        </h2>
+
+                        <p class="yapita-prizes__subtitle">
+                            Descubre los regalos que nuestras empresas
+                            auspiciantes han preparado para esta celebración.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-close btn-close-white yapita-prizes__close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar"
+                    ></button>
+
+                </div>
+
+
+                {{-- ==================================
+                     BODY
+                     ================================== --}}
+
+                <div class="modal-body yapita-prizes__body">
+
+                    {{-- SUMMARY --}}
+
+                    <div class="yapita-prizes__summary">
+
+                        <div class="yapita-prizes__summary-item">
+
+                        <span class="yapita-prizes__summary-icon">
+                            <i class="bi bi-gift-fill"></i>
+                        </span>
+
+                            <div>
+
+                                <strong class="yapita-prizes__summary-number">
+                                    {{ $totalPrizes }}
+                                </strong>
+
+                                <span class="yapita-prizes__summary-label">
+                                Premios publicados
+                            </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="yapita-prizes__summary-divider"></div>
+
+                        <div class="yapita-prizes__summary-item">
+
+                        <span class="yapita-prizes__summary-icon yapita-prizes__summary-icon--success">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </span>
+
+                            <div>
+
+                                <strong class="yapita-prizes__summary-number">
+                                    {{ $activePrizes }}
+                                </strong>
+
+                                <span class="yapita-prizes__summary-label">
+                                Vigentes
+                            </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- ==================================
+                         PRIZES GRID
+                         ================================== --}}
+
+                    <div class="yapita-prizes__grid">
+
+                        @forelse($eventPrizes as $index => $prize)
+
+                            @php
+                                $prizeId = (int) ($prize['id'] ?? 0);
+
+                                $prizeName = trim(
+                                    (string) ($prize['name'] ?? '')
+                                );
+
+                                $prizeDescription = trim(
+                                    (string) ($prize['description'] ?? '')
+                                );
+
+                                $businessName = trim(
+                                    (string) ($prize['business_name'] ?? '')
+                                );
+
+                                $prizeImage = trim(
+                                    (string) ($prize['source'] ?? '')
+                                );
+
+                                $businessLogo = trim(
+                                    (string) ($prize['business_logo'] ?? '')
+                                );
+
+                                $status = strtoupper(
+                                    (string) ($prize['status'] ?? '')
+                                );
+
+                                $statusLabels = [
+                                    'ACTIVE' => 'Disponible',
+                                    'UPCOMING' => 'Próximamente',
+                                    'EXPIRED' => 'Finalizado',
+                                ];
+
+                                $statusLabel = $statusLabels[$status]
+                                    ?? 'Sin estado';
+
+                                $statusClass = in_array(
+                                    $status,
+                                    ['ACTIVE', 'UPCOMING', 'EXPIRED']
+                                ) ? strtolower($status) : 'unknown';
+
+                                $startAt = $prize['start_at'] ?? null;
+                                $endAt = $prize['end_at'] ?? null;
+
+                                $startDate = $startAt
+                                    ? \Carbon\Carbon::parse($startAt)->format('d/m/Y')
+                                    : null;
+
+                                $endDate = $endAt
+                                    ? \Carbon\Carbon::parse($endAt)->format('d/m/Y')
+                                    : null;
+
+                                $validImage = function ($url) {
+                                    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                                        return false;
+                                    }
+
+                                    $path = parse_url($url, PHP_URL_PATH) ?? '';
+
+                                    return !preg_match('~/uploads/?$~i', $path);
+                                };
+
+                                $hasPrizeImage = $validImage($prizeImage);
+                                $hasBusinessLogo = $validImage($businessLogo);
+                            @endphp
+
+
+                            <article
+                                class="yapita-prizes__card"
+                                data-prize-id="{{ $prizeId }}"
+                                data-prize-status="{{ $status }}"
+                            >
+
+                                {{-- IMAGE --}}
+
+                                <div class="yapita-prizes__card-media">
+
+                                    @if($hasPrizeImage)
+
+                                        <img
+                                            src="{{ $prizeImage }}"
+                                            alt="{{ $prizeName }}"
+                                            class="yapita-prizes__card-image"
+                                            loading="lazy"
+                                            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                                        >
+
+                                        <div
+                                            class="yapita-prizes__card-placeholder"
+                                            style="display:none;"
+                                        >
+                                            <i class="bi bi-gift-fill"></i>
+                                        </div>
+
+                                    @else
+
+                                        <div class="yapita-prizes__card-placeholder">
+                                            <i class="bi bi-gift-fill"></i>
+                                        </div>
+
+                                    @endif
+
+
+                                    <span class="yapita-prizes__card-number">
+                                    #{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                                </span>
+
+                                    <span
+                                        class="yapita-prizes__status yapita-prizes__status--{{ $statusClass }}"
+                                    >
+                                    @if($status === 'ACTIVE')
+                                            <i class="bi bi-check-circle-fill"></i>
+                                        @elseif($status === 'UPCOMING')
+                                            <i class="bi bi-clock-fill"></i>
+                                        @else
+                                            <i class="bi bi-calendar-x-fill"></i>
+                                        @endif
+
+                                        {{ $statusLabel }}
+                                </span>
+
+                                </div>
+
+
+                                {{-- CONTENT --}}
+
+                                <div class="yapita-prizes__card-content">
+
+                                    <h3 class="yapita-prizes__card-title">
+                                        {{ $prizeName !== '' ? $prizeName : 'Premio sorpresa' }}
+                                    </h3>
+
+                                    @if($prizeDescription !== '')
+
+                                        <p class="yapita-prizes__card-description">
+                                            {{ $prizeDescription }}
+                                        </p>
+
+                                    @endif
+
+
+                                    {{-- BUSINESS --}}
+
+                                    <div class="yapita-prizes__business">
+
+                                        <div class="yapita-prizes__business-avatar">
+
+                                            @if($hasBusinessLogo)
+
+                                                <img
+                                                    src="{{ $businessLogo }}"
+                                                    alt="{{ $businessName }}"
+                                                    loading="lazy"
+                                                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                                                >
+
+                                                <i
+                                                    class="bi bi-shop"
+                                                    style="display:none;"
+                                                ></i>
+
+                                            @else
+
+                                                <i class="bi bi-shop"></i>
+
+                                            @endif
+
+                                        </div>
+
+                                        <div class="yapita-prizes__business-info">
+
+                                        <span class="yapita-prizes__business-label">
+                                            Auspiciado por
+                                        </span>
+
+                                            <strong class="yapita-prizes__business-name">
+                                                {{ $businessName !== '' ? $businessName : 'Empresa auspiciante' }}
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {{-- VALIDITY --}}
+
+                                    @if($startDate || $endDate)
+
+                                        <div class="yapita-prizes__validity">
+
+                                            <i class="bi bi-calendar-event"></i>
+
+                                            <span>
+
+                                            @if($startDate && $endDate)
+                                                    Del {{ $startDate }} al {{ $endDate }}
+                                                @elseif($endDate)
+                                                    Hasta el {{ $endDate }}
+                                                @else
+                                                    Desde el {{ $startDate }}
+                                                @endif
+
+                                        </span>
+
+                                        </div>
+
+                                    @endif
+
+                                </div>
+
+                            </article>
+
+                        @empty
+
+                            <div class="yapita-prizes__empty">
+
+                            <span class="yapita-prizes__empty-icon">
+                                🎁
+                            </span>
+
+                                <h3 class="yapita-prizes__empty-title">
+                                    Próximamente habrá premios
+                                </h3>
+
+                                <p class="yapita-prizes__empty-description">
+                                    Estamos preparando sorpresas junto
+                                    a nuestras empresas auspiciantes.
+                                </p>
+
+                            </div>
+
+                        @endforelse
+
+                    </div>
+
+                </div>
+
+
+                {{-- ==================================
+                     FOOTER
+                     ================================== --}}
+
+                <div class="modal-footer yapita-prizes__modal-footer">
+
+                    <p class="yapita-prizes__footer-message">
+                        <i class="bi bi-heart-fill"></i>
+                        Gracias a las empresas que hacen posible
+                        esta celebración.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="yapita-prizes__close-button"
+                        data-bs-dismiss="modal"
+                    >
+                        Cerrar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 @endsection
 @section('additional-styles')
     <link href="{{ URL::asset($resourcePathServer.'libs/toast/jquery.toast.min.css') }}" rel="stylesheet"
@@ -22,6 +422,765 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     >
+    <style>
+        /* ==========================================================
+   YAPITA PRIZES
+   Halloween Otavalo
+   ========================================================== */
+
+        .yapita-prizes {
+            --prize-blue: #2448f5;
+            --prize-blue-dark: #1238c7;
+            --prize-yellow: #ffdc00;
+            --prize-orange: #ff922b;
+            --prize-purple: #7534b8;
+            --prize-text: #14245a;
+            --prize-muted: #647093;
+            --prize-background: #f5f8ff;
+        }
+
+        /* ==========================================
+           FOOTER TRIGGER
+           ========================================== */
+
+        .yapita-prizes__footer-action {
+            display: flex;
+            justify-content: center;
+
+            margin: 25px 0;
+        }
+
+        .yapita-prizes__trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+
+            max-width: 100%;
+
+            padding: 15px 25px;
+
+            border: none;
+            border-radius: 18px;
+
+            background: linear-gradient(
+                135deg,
+                #ffe600,
+                #ffc400
+            );
+
+            color: #14245a;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 0 rgba(0, 0, 0, .12),
+                0 15px 30px rgba(0, 0, 0, .15);
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .yapita-prizes__trigger:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 0 rgba(0, 0, 0, .1),
+                0 20px 35px rgba(0, 0, 0, .2);
+        }
+
+        .yapita-prizes__trigger-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            background: #2448f5;
+            color: #ffffff;
+
+            font-size: 25px;
+
+            flex-shrink: 0;
+        }
+
+        .yapita-prizes__trigger-content {
+            display: flex;
+            flex-direction: column;
+
+            gap: 4px;
+
+            text-align: left;
+        }
+
+        .yapita-prizes__trigger-title {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .yapita-prizes__trigger-description {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .yapita-prizes__trigger > .bi {
+            font-size: 23px;
+        }
+
+        /* ==========================================
+           MODAL
+           ========================================== */
+
+        .yapita-prizes .modal-dialog {
+            max-width: 1150px;
+        }
+
+        .yapita-prizes__modal {
+            overflow: hidden;
+
+            border: none;
+            border-radius: 24px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 25px 70px rgba(14, 32, 90, .25);
+        }
+
+        /* ==========================================
+           HEADER
+           ========================================== */
+
+        .yapita-prizes__header {
+            position: relative;
+
+            display: flex;
+            align-items: flex-start;
+
+            padding: 28px 35px;
+
+            border: none;
+
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(255, 220, 0, .2),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #2448f5,
+                    #1740c7
+                );
+
+            color: #ffffff;
+        }
+
+        .yapita-prizes__header-content {
+            max-width: 780px;
+        }
+
+        .yapita-prizes__edition {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 12px;
+
+            padding: 6px 13px;
+
+            border-radius: 30px;
+
+            background: #ffdc00;
+
+            color: #14245a;
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .yapita-prizes__title {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 900;
+        }
+
+        .yapita-prizes__subtitle {
+            margin: 0;
+
+            color: #e6edff;
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .yapita-prizes__close {
+            flex-shrink: 0;
+
+            margin-left: auto !important;
+            opacity: 1;
+        }
+
+        /* ==========================================
+           BODY
+           ========================================== */
+
+        .yapita-prizes__body {
+            padding: 25px;
+
+            background: var(--prize-background);
+        }
+
+        /* ==========================================
+           SUMMARY
+           ========================================== */
+
+        .yapita-prizes__summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+
+            margin-bottom: 25px;
+            padding: 18px;
+
+            border: 1px solid #dce5ff;
+            border-radius: 18px;
+
+            background: #ffffff;
+        }
+
+        .yapita-prizes__summary-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .yapita-prizes__summary-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 45px;
+            height: 45px;
+
+            border-radius: 13px;
+
+            background: #fff6c5;
+            color: #e99a00;
+
+            font-size: 22px;
+        }
+
+        .yapita-prizes__summary-icon--success {
+            background: #e1f8e9;
+            color: #16874c;
+        }
+
+        .yapita-prizes__summary-number {
+            display: block;
+
+            color: var(--prize-blue);
+
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .yapita-prizes__summary-label {
+            display: block;
+
+            margin-top: 5px;
+
+            color: var(--prize-muted);
+
+            font-size: 12px;
+        }
+
+        .yapita-prizes__summary-divider {
+            width: 1px;
+            height: 40px;
+
+            background: #dce5ff;
+        }
+
+        /* ==========================================
+           GRID
+           ========================================== */
+
+        .yapita-prizes__grid {
+            display: grid;
+
+            grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        /* ==========================================
+           CARD
+           ========================================== */
+
+        .yapita-prizes__card {
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+
+            overflow: hidden;
+
+            border: 1px solid #dce5ff;
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 5px 18px rgba(31, 65, 150, .07);
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .yapita-prizes__card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 28px rgba(31, 65, 150, .15);
+        }
+
+        /* ==========================================
+           CARD MEDIA
+           ========================================== */
+
+        .yapita-prizes__card-media {
+            position: relative;
+
+            height: 180px;
+
+            overflow: hidden;
+
+            background: #eaf0ff;
+        }
+
+        .yapita-prizes__card-image {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .yapita-prizes__card-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eaf0ff,
+                    #fff5cc
+                );
+
+            color: var(--prize-blue);
+
+            font-size: 60px;
+        }
+
+        .yapita-prizes__card-number {
+            position: absolute;
+
+            top: 12px;
+            left: 12px;
+
+            padding: 6px 11px;
+
+            border-radius: 9px;
+
+            background: #ffdc00;
+
+            color: #14245a;
+
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        /* ==========================================
+           STATUS
+           ========================================== */
+
+        .yapita-prizes__status {
+            position: absolute;
+
+            right: 10px;
+            bottom: 10px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            padding: 7px 10px;
+
+            border-radius: 30px;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .yapita-prizes__status--active {
+            background: #d9f9e5;
+            color: #126c3b;
+        }
+
+        .yapita-prizes__status--upcoming {
+            background: #fff3ca;
+            color: #9a6200;
+        }
+
+        .yapita-prizes__status--expired {
+            background: #f1f2f5;
+            color: #6d7482;
+        }
+
+        .yapita-prizes__status--unknown {
+            background: #edf1ff;
+            color: #425177;
+        }
+
+        /* ==========================================
+           CARD CONTENT
+           ========================================== */
+
+        .yapita-prizes__card-content {
+            display: flex;
+            flex-direction: column;
+
+            flex: 1;
+
+            padding: 20px;
+        }
+
+        .yapita-prizes__card-title {
+            margin: 0 0 10px;
+
+            color: var(--prize-text);
+
+            font-size: 17px;
+            font-weight: 900;
+
+            line-height: 1.4;
+        }
+
+        .yapita-prizes__card-description {
+            margin: 0 0 18px;
+
+            color: var(--prize-muted);
+
+            font-size: 13px;
+            line-height: 1.7;
+
+            overflow-wrap: anywhere;
+        }
+
+        /* ==========================================
+           BUSINESS
+           ========================================== */
+
+        .yapita-prizes__business {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            margin-top: auto;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            background: #f3f6ff;
+        }
+
+        .yapita-prizes__business-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 43px;
+            height: 43px;
+
+            flex-shrink: 0;
+
+            overflow: hidden;
+
+            border-radius: 11px;
+
+            background: #ffffff;
+
+            color: var(--prize-blue);
+
+            font-size: 20px;
+        }
+
+        .yapita-prizes__business-avatar img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+        .yapita-prizes__business-info {
+            min-width: 0;
+        }
+
+        .yapita-prizes__business-label {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: var(--prize-muted);
+
+            font-size: 10px;
+        }
+
+        .yapita-prizes__business-name {
+            display: block;
+
+            color: var(--prize-text);
+
+            font-size: 12px;
+            font-weight: 900;
+
+            overflow-wrap: anywhere;
+        }
+
+        /* ==========================================
+           VALIDITY
+           ========================================== */
+
+        .yapita-prizes__validity {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-top: 15px;
+
+            padding-top: 12px;
+
+            border-top: 1px solid #e7ecfa;
+
+            color: #617093;
+
+            font-size: 11px;
+        }
+
+        .yapita-prizes__validity i {
+            color: var(--prize-blue);
+        }
+
+        /* ==========================================
+           EMPTY
+           ========================================== */
+
+        .yapita-prizes__empty {
+            grid-column: 1 / -1;
+
+            padding: 60px 20px;
+
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            text-align: center;
+        }
+
+        .yapita-prizes__empty-icon {
+            display: block;
+
+            margin-bottom: 15px;
+
+            font-size: 65px;
+        }
+
+        .yapita-prizes__empty-title {
+            color: var(--prize-blue);
+
+            font-size: 23px;
+            font-weight: 900;
+        }
+
+        .yapita-prizes__empty-description {
+            color: var(--prize-muted);
+
+            font-size: 13px;
+        }
+
+        /* ==========================================
+           MODAL FOOTER
+           ========================================== */
+
+        .yapita-prizes__modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 18px 25px;
+
+            border-top: 1px solid #e7ecfa;
+
+            background: #ffffff;
+        }
+
+        .yapita-prizes__footer-message {
+            margin: 0;
+
+            color: var(--prize-muted);
+
+            font-size: 12px;
+        }
+
+        .yapita-prizes__footer-message i {
+            color: #ff922b;
+        }
+
+        .yapita-prizes__close-button {
+            padding: 10px 25px;
+
+            border: none;
+            border-radius: 11px;
+
+            background: var(--prize-blue);
+
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .yapita-prizes__close-button:hover {
+            background: var(--prize-blue-dark);
+        }
+
+        /* ==========================================
+           TABLET
+           ========================================== */
+
+        @media (max-width: 991px) {
+
+            .yapita-prizes__grid {
+                grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+            }
+
+            .yapita-prizes .modal-dialog {
+                margin: 15px;
+            }
+
+        }
+
+        /* ==========================================
+           MOBILE
+           ========================================== */
+
+        @media (max-width: 767px) {
+
+            .yapita-prizes__trigger {
+                width: 100%;
+
+                padding: 13px 15px;
+
+                gap: 10px;
+            }
+
+            .yapita-prizes__trigger-icon {
+                width: 42px;
+                height: 42px;
+
+                font-size: 22px;
+            }
+
+            .yapita-prizes__trigger-title {
+                font-size: 15px;
+            }
+
+            .yapita-prizes__trigger-description {
+                font-size: 10px;
+            }
+
+            .yapita-prizes .modal-dialog {
+                margin: 8px;
+
+                max-width: none;
+            }
+
+            .yapita-prizes__modal {
+                border-radius: 18px;
+            }
+
+            .yapita-prizes__header {
+                padding: 25px 18px;
+            }
+
+            .yapita-prizes__body {
+                padding: 15px;
+            }
+
+            .yapita-prizes__summary {
+                gap: 12px;
+
+                padding: 12px;
+            }
+
+            .yapita-prizes__summary-icon {
+                width: 36px;
+                height: 36px;
+
+                font-size: 18px;
+            }
+
+            .yapita-prizes__summary-number {
+                font-size: 22px;
+            }
+
+            .yapita-prizes__summary-label {
+                font-size: 10px;
+            }
+
+            .yapita-prizes__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .yapita-prizes__card-media {
+                height: 190px;
+            }
+
+            .yapita-prizes__modal-footer {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                text-align: center;
+            }
+
+            .yapita-prizes__close-button {
+                width: 100%;
+            }
+
+        }
+    </style>
     <style>
         /* ============================================
            YAPITA - HALLOWEEN PARTICIPANTS
@@ -2807,6 +3966,10 @@
              6. FOOTER
              ========================================== --}}
 
+        {{-- ==========================================
+     FOOTER - YAPITA HALLOWEEN
+     ========================================== --}}
+
         <footer class="yapita-participants__footer">
 
             <div class="yapita-participants__container">
@@ -2820,6 +3983,37 @@
                     la alegría de compartir y el espíritu
                     de descubrir nuestros negocios locales.
                 </p>
+
+                {{-- BOTÓN DE PREMIOS --}}
+
+                <div class="yapita-prizes__footer-action">
+
+                    <button
+                        type="button"
+                        class="yapita-prizes__trigger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#yapitaPrizesModal"
+                    >
+                <span class="yapita-prizes__trigger-icon">
+                    <i class="bi bi-gift-fill"></i>
+                </span>
+
+                        <span class="yapita-prizes__trigger-content">
+
+                    <strong class="yapita-prizes__trigger-title">
+                        Descubre los premios
+                    </strong>
+
+                    <small class="yapita-prizes__trigger-description">
+                        ¡Conoce los regalos de nuestros auspiciantes!
+                    </small>
+
+                </span>
+
+                        <i class="bi bi-arrow-right-circle-fill"></i>
+                    </button>
+
+                </div>
 
                 <p class="yapita-participants__footer-description">
                     Impulsado por

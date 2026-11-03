@@ -9,9 +9,7 @@
     <meta content="{{env('APP_NAME_FRONTEND_AUTHOR')}}" name="author"/>
     <style>
         .management--form button {
-
             background: #FACC39 !important;
-
             background-color: #FACC39;
             border-color: #FACC39;
 
@@ -29,7 +27,7 @@
 
     @include('layouts.frontend.styles')
 </head>
-
+@yield('data-modal')
 <body>
 
 <!-- end of scroll to top -->

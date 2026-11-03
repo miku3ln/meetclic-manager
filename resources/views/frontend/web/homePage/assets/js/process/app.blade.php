@@ -1,3 +1,261 @@
+<script>
+    /* Yapita Task Cards | Bootstrap 5.0.2 | jQuery | Vue v-html */
+    (function (window, $) {
+        'use strict';
+
+        const DEFAULTS = {
+            publicAsset: '',
+            selector: '#listing-items',
+            labels: {
+                digital: 'Digital', physical: 'Física', points: 'Yapitas',
+                details: 'Ver detalles', hideDetails: 'Ocultar detalles',
+                howTo: 'Cómo participar', explore: 'Realizar tarea', map: 'Cómo llegar',
+                steps: 'Pasos para participar', tips: 'Consejos', rules: 'Reglas',
+                validation: 'Validación', business: 'Empresa participante',
+                once: 'Una sola vez', unlimited: 'Sin límite', day: 'vez al día',
+                week: 'veces por semana', month: 'veces al mes', total: 'veces en total',
+                always: 'Siempre disponible', unavailable: 'Acción no disponible',
+                noLocation: 'Ubicación pendiente', missingAction: 'Consulta los pasos para participar',
+                more: 'Información de la tarea'
+            }
+        };
+        let config = { ...DEFAULTS, labels: { ...DEFAULTS.labels } };
+
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function parseDescription(value) {
+            if (value && typeof value === 'object') return value;
+            if (typeof value !== 'string') return {};
+            try {
+                const parsed = JSON.parse(value);
+                return parsed && typeof parsed === 'object' ? parsed : { summary: value };
+            } catch (_) {
+                return { summary: value };
+            }
+        }
+
+        function normalizedUrl(value) {
+            const url = String(value || '').trim();
+            if (!url || url === 'not-url') return '';
+            if (url.startsWith('/') && !url.startsWith('//')) return url;
+            try {
+                const parsed = new URL(url, window.location.href);
+                if (['http:', 'https:'].includes(parsed.protocol)) return parsed.href;
+            } catch (_) { /* invalid URL */ }
+            return '';
+        }
+
+        function assetUrl(path) {
+            const value = String(path || '').trim();
+            if (!value) return '';
+            if (/^https?:\/\//i.test(value)) return normalizedUrl(value);
+            if (value.startsWith('//')) return '';
+            const base = String(config.publicAsset || '').replace(/\/+$/, '');
+            return base ? base + '/' + value.replace(/^\/+/, '') : '/' + value.replace(/^\/+/, '');
+        }
+
+        function hasCoords(lat, lng) {
+            if (lat === '' || lat == null || lng === '' || lng == null) return false;
+            const a = Number(lat), b = Number(lng);
+            return Number.isFinite(a) && Number.isFinite(b) &&
+                a >= -90 && a <= 90 && b >= -180 && b <= 180 &&
+                !(a === 0 && b === 0);
+        }
+
+        function mapUrl(task) {
+            if (hasCoords(task.lat, task.lng)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination=' +
+                    encodeURIComponent(task.lat + ',' + task.lng) + '&travelmode=driving';
+            }
+            // Do not route to a guessed address; many test records have fictitious addresses.
+            return '';
+        }
+
+        function taskChannel(row) {
+            const channel = String(row.execution_channel || '').toUpperCase();
+            const tracking = String(row.tracking_type_code_view || '').toLowerCase();
+            const source = String(row.tracking_source_code_view || '').toLowerCase();
+            // QR validation requires a physical visit even if a legacy row says DIGITAL.
+            if (channel === 'PHYSICAL' || channel === 'FISICO' || tracking === 'qr_scan' || source === 'qr_ticket') return 'PHYSICAL';
+            return 'DIGITAL';
+        }
+
+        function frequency(row) {
+            const kind = String(row.frequency_limit_type || '').toUpperCase();
+            const n = Math.max(1, Number(row.frequency_limit_value) || 1);
+            const x = config.labels;
+            if (kind === 'ONCE') return x.once;
+            if (kind === 'UNLIMITED') return x.unlimited;
+            if (kind === 'DAILY') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' al día';
+            if (kind === 'WEEKLY') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' por semana';
+            if (kind === 'MONTHLY') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' al mes';
+            if (kind === 'TOTAL_LIMIT') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' en total';
+            return '';
+        }
+
+        function stripEmoji(value) {
+            return String(value || '').replace(/^[\s\p{Extended_Pictographic}\uFE0F\u200D]+/gu, '')
+                .replace(/^\(QR\)\s*/i, '').trim();
+        }
+
+        function plainStep(value) {
+            return stripEmoji(value).replace(/^[\s•-]+/, '').trim();
+        }
+
+        function normalize(row) {
+            const desc = parseDescription(row.description);
+            const steps = Array.isArray(desc.steps) ? desc.steps.map(plainStep).filter(Boolean) : [];
+            const helpers = Array.isArray(desc.helpers) ? desc.helpers.map(plainStep).filter(Boolean) : [];
+            const rules = Array.isArray(desc.rules) ? desc.rules.map(plainStep).filter(Boolean) : [];
+            const channel = taskChannel(row);
+            const id = String(row.id == null ? '' : row.id);
+            const businessId = String(row.business_id == null ? '' : row.business_id);
+            const summary = desc.summary || steps.slice(0, 2).join(' ');
+            return {
+                id, businessId, domId: 'yapita-task-' + id.replace(/[^\w-]/g, '') + '-' + businessId.replace(/[^\w-]/g, ''),
+                title: stripEmoji(row.title), businessName: row.business_name || 'Negocio aliado',
+                businessCategory: row.business_subcategories_name || '',
+                points: Number(row.points) || 0, channel, summary,
+                steps, helpers, rules, validation: desc.validation || '',
+                frequency: frequency(row), active: row.state === 'ACTIVE',
+                image: assetUrl(row.source), actionUrl: normalizedUrl(row.url_manager),
+                lat: row.business_lat, lng: row.business_lng,
+                mapUrl: '', validFrom: row.valid_from, validUntil: row.valid_until
+            };
+        }
+
+        function renderHeader(t) {
+            const physical = t.channel === 'PHYSICAL';
+            return `<header class="yapita-task__header">
+            <span class="yapita-task__channel yapita-task__channel--${physical ? 'physical' : 'digital'}">
+                <i class="bi bi-${physical ? 'geo-alt-fill' : 'phone'}" aria-hidden="true"></i>
+                ${escapeHtml(physical ? config.labels.physical : config.labels.digital)}
+            </span>
+            <span class="yapita-task__points" aria-label="${escapeHtml(t.points + ' ' + config.labels.points)}">
+                <i class="bi bi-coin" aria-hidden="true"></i>
+                <strong>+${escapeHtml(t.points)}</strong> <span>${escapeHtml(config.labels.points)}</span>
+            </span>
+        </header>`;
+        }
+
+        function renderContent(t) {
+            return `<div class="yapita-task__content">
+            ${t.image ? `<div class="yapita-task__media"><img loading="lazy" src="${escapeHtml(t.image)}" alt="" onerror="this.parentElement.style.display='none'"></div>` : ''}
+            <div class="yapita-task__information">
+                <h3 class="yapita-task__title">${escapeHtml(t.title)}</h3>
+                <div class="yapita-task__business"><i class="bi bi-shop" aria-hidden="true"></i>
+                    <span><strong>${escapeHtml(t.businessName)}</strong>${t.businessCategory ? `<small>${escapeHtml(t.businessCategory)}</small>` : ''}</span>
+                </div>
+                <p class="yapita-task__description">${escapeHtml(t.summary || config.labels.missingAction)}</p>
+            </div>
+        </div>`;
+        }
+
+        function list(items, modifier) {
+            if (!items || !items.length) return '';
+            return `<ol class="yapita-task__list yapita-task__list--${modifier}">` +
+                items.map(s => `<li>${escapeHtml(s)}</li>`).join('') + '</ol>';
+        }
+
+        function renderDetails(t) {
+            const blocks = [
+                t.steps.length ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.steps)}</h4>${list(t.steps, 'steps')}</section>` : '',
+                t.helpers.length ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.tips)}</h4>${list(t.helpers, 'tips')}</section>` : '',
+                t.validation ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.validation)}</h4><p>${escapeHtml(t.validation)}</p></section>` : '',
+                t.rules.length ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.rules)}</h4>${list(t.rules, 'rules')}</section>` : ''
+            ].filter(Boolean).join('');
+            return `<div class="yapita-task__details" id="${escapeHtml(t.domId)}-details" hidden>${blocks}</div>`;
+        }
+
+        function renderActions(t) {
+            if (t.channel === 'PHYSICAL') {
+                if (!t.mapUrl) return `<button type="button" class="yapita-task__button yapita-task__button--disabled" disabled>
+                <i class="bi bi-geo-alt" aria-hidden="true"></i> ${escapeHtml(config.labels.noLocation)}</button>`;
+                return `<a class="yapita-task__button yapita-task__button--primary" href="${escapeHtml(t.mapUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Cómo llegar a ${escapeHtml(t.businessName)} en Google Maps">
+                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i> ${escapeHtml(config.labels.map)}</a>`;
+            }
+            if (t.actionUrl) {
+                return `<a class="yapita-task__button yapita-task__button--primary" href="${escapeHtml(t.actionUrl)}" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> ${escapeHtml(config.labels.explore)}</a>`;
+            }
+            return `<button type="button" class="yapita-task__button yapita-task__button--secondary" data-yapita-details="${escapeHtml(t.domId)}" aria-controls="${escapeHtml(t.domId)}-details" aria-expanded="false">
+            <i class="bi bi-info-circle" aria-hidden="true"></i> ${escapeHtml(config.labels.howTo)}</button>`;
+        }
+
+        function renderFooter(t) {
+            const freq = t.frequency ? `<span class="yapita-task__frequency"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> ${escapeHtml(t.frequency)}</span>` : '<span></span>';
+            return `<footer class="yapita-task__footer">
+            <div class="yapita-task__meta">${freq}
+                <button type="button" class="yapita-task__details-toggle" data-yapita-details="${escapeHtml(t.domId)}" aria-controls="${escapeHtml(t.domId)}-details" aria-expanded="false">
+                    ${escapeHtml(config.labels.details)} <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="yapita-task__actions">${renderActions(t)}</div>
+        </footer>`;
+        }
+
+        function render(row) {
+            const t = normalize(row);
+            t.mapUrl = mapUrl(t);
+            return `<article class="yapita-task yapita-task--${t.channel.toLowerCase()}" id="${escapeHtml(t.domId)}" data-task-id="${escapeHtml(t.id)}" data-business-id="${escapeHtml(t.businessId)}" data-channel="${escapeHtml(t.channel)}">
+            ${renderHeader(t)}
+            ${renderContent(t)}
+            ${renderDetails(t)}
+            ${renderFooter(t)}
+        </article>`;
+        }
+
+        function init(options) {
+            options = options || {};
+            config = { ...DEFAULTS, ...options, labels: { ...DEFAULTS.labels, ...(options.labels || {}) } };
+            if (!$ || !$.fn) return;
+            const root = config.selector;
+            $(document).off('click.yapitaTaskCard', root + ' [data-yapita-details]');
+            $(document).on('click.yapitaTaskCard', root + ' [data-yapita-details]', function (event) {
+                event.preventDefault();
+                const domId = this.getAttribute('data-yapita-details');
+                const details = document.getElementById(domId + '-details');
+                if (!details) return;
+                const opened = details.hidden;
+                details.hidden = !opened;
+                const card = document.getElementById(domId);
+                if (card) card.querySelectorAll('[data-yapita-details]').forEach(btn => {
+                    btn.setAttribute('aria-expanded', String(opened));
+                    if (btn.classList.contains('yapita-task__details-toggle')) {
+                        btn.innerHTML = escapeHtml(opened ? config.labels.hideDetails : config.labels.details) +
+                            ' <i class="bi bi-chevron-' + (opened ? 'up' : 'down') + '" aria-hidden="true"></i>';
+                    }
+                });
+            });
+        }
+
+        window.YapitaTaskCard = {
+            init, normalize, render, renderHeader, renderContent, renderDetails, renderFooter, renderActions,
+            mapUrl, frequency, parseDescription, escapeHtml
+        };
+    })(window, window.jQuery);
+
+</script>
+<script>
+    window.YapitaTaskCard.init({
+        publicAsset: @json(asset('public')),
+        selector: '#listing-items',
+        labels: {
+            digital: @json(__('gamification.digital')),
+            physical: @json(__('gamification.physical')),
+            points: 'Yapitas',
+            map: 'Cómo llegar',
+            explore: 'Realizar tarea',
+            details: 'Ver detalles',
+            hideDetails: 'Ocultar detalles'
+        }
+    });
+</script>
 <script id="management-tasks">
 
     function pushIf(arr, cond, html) {
@@ -628,40 +886,25 @@
                         $scope.model.attributes.category = null;
                     });
                 },
-                _managerGrid2: function (response) {
-                    var rowsCurrent = response["rows"];
-                    const rows = rowsCurrent;
-                    this.configGridAdmin.data.push(...rows);
-                    this.configGridAdmin.isEmpty = this.configGridAdmin.data.length === 0;
-                    this.configDataMapManager.data.tasks.push(...rows);
-                    var isDesktop = isDesktopOnly();
-                    this.configDataMapManager.allow = isDesktop;
-                },
-                _managerGrid: function (response) {
 
+                _managerGrid: function (response) {
                     var rows = response["rows"] || [];
                     var total = parseInt(response["total"] || 0, 10);
-
                     // ✅ dedupe por task id (evita repetir si se dispara doble)
                     var existing = new Set(this.configGridAdmin.data.map(x => x.id));
                     var cleanRows = [];
-
                     for (var i = 0; i < rows.length; i++) {
                         if (!existing.has(rows[i].id)) {
                             cleanRows.push(rows[i]);
                         }
                     }
-
                     // ✅ acumula
                     this.configGridAdmin.data.push(...cleanRows);
 
                     // ✅ empty
                     this.configGridAdmin.isEmpty = (this.configGridAdmin.data.length === 0);
-
                     // ✅ mapa: envía data acumulada (sin repetidos de empresas si quieres)
-                    // si el mapa debe ser por empresa única:
                     this.configDataMapManager.data.tasks = uniqueBusinesses(this.configGridAdmin.data);
-
                     // desktop only
                     var isDesktop = isDesktopOnly();
                     this.configDataMapManager.allow = isDesktop;
@@ -681,12 +924,13 @@
                         data: this.configDataMapManager.data
                     });
                 },
+                getRowGameTaskHtml: function (rowTask) {
+                    return window.YapitaTaskCard.render(rowTask);
+                },
 
-                getRowGameTaskHtml: function (params) {
-
+                getRowGameTaskHtml2: function (params) {
                     // ✅ Textos (según idioma)
                     var t = getTaskText();
-
                     // ===== Base =====
                     var coverImageUrl = params.source ? ($publicAsset + "/" + params.source) : null;
                     var avatarImgUser = params.avatarImgUser ? ($publicAsset + "/" + params.avatarImgUser) : null;
@@ -708,8 +952,6 @@
 
                     // Empresa - categoría (fallback)
                     var businessCategory = params.business_category_name || params.category_name || t.fallback.category;
-                    var locationBtn = [];
-
                     var task = {
                         id: params.id,
                         business_id: params.business_id,
@@ -719,35 +961,26 @@
                         businessCategory: businessCategory,
                         business_lat: params.business_lat,
                         business_lng: params.business_lng,
-
                         user_id: params.user_id,
                         user_name: params.user_name,
                         avatarImgUser: avatarImgUser,
-
                         code: params.unique_code,
                         title: params.title,
                         subtitle: params.subtitle,
                         description: params.description,
-
                         points: Number(params.points || 0),
                         isActive: params.state === "ACTIVE",
-
                         executionMode: executionModeLabel,
                         executionModeText: executionModeText,
-
                         entityProcessId: params.product_id,
                         entityProcessName: params.product_name,
                         taskType: params.entity === "0" ? "business" : "product",
-
                         url_manager: params.url_manager,
                         is_url: params.is_url,
-
                         tracking_type_code_view: params.tracking_type_code_view,
                         tracking_source_code_view: params.tracking_source_code_view,
-
                         locationLabel: locationLabel,
                         business_subcategories_name: params.business_subcategories_name,
-
                     };
 
                     // ===== Parse description JSON =====
@@ -788,18 +1021,15 @@
                     var safeUrl = sanitizeUrl(task.url_manager);
                     var collapseId = "mcMore_" + safeDomId((task.id + "_" + task.business_id));
                     var act = actionLabel(t, task);
-
                     // Botón detalles a la derecha con chevron (▼/▲)
                     var idIcon = "id='" + "mc-icon_" + (task.id + "_" + task.business_id) + "'";
                     var detailsBtn = [
-
                         '<div class="icon-current">',
                         '      <i class="fa fa-chevron-down mc-ico-chevron" ', idIcon, '></i> ',
                         '</div>',
 
 
                     ].join("");
-
 
                     // ===== Media =====
                     var mediaHtml = task.coverUrl
@@ -932,9 +1162,6 @@
 
                         }
                     } else {
-                        console.log("btn not ok", task.tracking_source_code_view);
-
-
                         if (["meetclick"].includes(task.tracking_source_code_view)) {
                             if (safeUrl.includes('/business-details/')) {
                                 urlSetNavigation = safeUrl;
@@ -1085,13 +1312,9 @@
                             url: url,
                             data: dataSend,
                             successCallback: function (response) {
-
-                                // ✅ tu grid actualiza y acumula
                                 $this._managerGrid(response);
-
                                 $this.managerLoading.data.view = false;
                                 $this.managerLoading.page.view = false;
-
                                 resolve(response);
                             },
                             beforeSend: function () {
