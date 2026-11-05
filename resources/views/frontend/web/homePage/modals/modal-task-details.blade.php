@@ -33,27 +33,39 @@
             <div class="modal-body yapita-task-modal__body">
 
                 <!-- TASK SUMMARY -->
+
+                <!-- ==========================================
+                     YAPITA TASK MODAL - OVERVIEW
+                ========================================== -->
+
                 <section class="yapita-task-modal__overview">
 
+                    <!-- IMAGEN 16:9 -->
                     <div class="yapita-task-modal__media">
 
                         <img
                             id="yapita-task-modal-image"
                             class="yapita-task-modal__image"
+                            src=""
                             alt=""
+                            loading="lazy"
                         >
 
                     </div>
 
+                    <!-- INFORMACIÓN DE LA TAREA -->
                     <div class="yapita-task-modal__information">
 
+                        <!-- BADGES -->
                         <div class="yapita-task-modal__badges">
 
+                            <!-- CANAL DIGITAL / FÍSICO -->
                             <span
                                 id="yapita-task-modal-channel"
                                 class="yapita-task-modal__channel"
                             ></span>
 
+                            <!-- RECOMPENSA -->
                             <span
                                 id="yapita-task-modal-points"
                                 class="yapita-task-modal__points"
@@ -61,6 +73,7 @@
 
                         </div>
 
+                        <!-- TÍTULO -->
                         <h2
                             id="yapita-task-modal-title"
                             class="yapita-task-modal__title"
@@ -69,6 +82,7 @@
                     </div>
 
                 </section>
+
 
                 <!-- BUSINESS -->
                 <section class="yapita-task-modal__business">

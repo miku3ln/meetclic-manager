@@ -1264,12 +1264,14 @@
         }
 
         .listsearch__subheader {
-            top: 9.99% !important;
+            top: 97px !important;
             padding: 3% 14px !important;
         }
-
+        .data-page.manager-page__data-page {
+            margin-top: 25px;
+        }
         .filters-drawer {
-            top: 10% !important;
+            top: 97px !important;
         }
 
         .filters-drawer {

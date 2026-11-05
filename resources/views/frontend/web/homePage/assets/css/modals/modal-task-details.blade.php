@@ -75,42 +75,239 @@
        IMAGEN + BADGES + TITULO
     ============================================ */
 
+    /* ==========================================
+       YAPITA TASK MODAL - OVERVIEW
+       Imagen 16:9 + badges + título
+    ========================================== */
+
     .yapita-task-modal__overview {
         display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin: 2px 0 13px;
-        padding: 0 0;
+        flex-direction: column;
+        gap: 0;
+
+        width: 100%;
+        min-width: 0;
+
+        margin: 0 0 16px;
     }
 
+    /* ==========================================
+       IMAGEN PRINCIPAL 16:9
+    ========================================== */
+
+    /* ==========================================
+       YAPITA - IMAGEN DEL MODAL
+       Contenedor 16:9, imagen completa
+    ========================================== */
+
     .yapita-task-modal__media {
-        flex: 0 0 108px;
-        width: 108px;
-        height: 108px;
-        border-radius: 16px;
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+
+        flex: none;
         overflow: hidden;
-        background: #e9f1ff;
+
+        border-radius: 16px;
+
+        background: linear-gradient(
+            135deg,
+            #e9f2ff 0%,
+            #f2ecff 100%
+        );
     }
 
     .yapita-task-modal__image {
+        display: block;
+
         width: 100%;
         height: 100%;
-        object-fit: cover;
+
+        object-fit: contain;
+        object-position: center;
     }
 
-    .yapita-task-modal__information {
-        min-width: 0;
-        flex: 1;
-        padding-top: 6px;
+    .yapita-task-modal__image[hidden] {
+        display: none !important;
     }
+
+
+
+
+    /* Sin imagen */
+
+    .yapita-task-modal__media--empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background: linear-gradient(
+            135deg,
+            #e5eeff,
+            #f0e8ff
+        );
+    }
+
+    .yapita-task-modal__media--empty::before {
+        content: "★";
+
+        font-size: 48px;
+        color: #4058f4;
+    }
+
+    /* ==========================================
+       CONTENIDO
+    ========================================== */
+
+    .yapita-task-modal__information {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        min-width: 0;
+
+        padding: 14px 2px 0;
+    }
+
+    /* ==========================================
+       BADGES
+    ========================================== */
 
     .yapita-task-modal__badges {
         display: flex;
-        flex-wrap: nowrap;
         align-items: center;
         justify-content: space-between;
-        gap: 5px;
-        margin-bottom: 9px;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .yapita-task-modal__channel,
+    .yapita-task-modal__points {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 6px;
+
+        padding: 7px 12px;
+
+        border-radius: 30px;
+
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.2;
+
+        white-space: nowrap;
+    }
+
+    /* Físico */
+
+    .yapita-task-modal__channel--physical {
+        color: #6533c9;
+        background: #efe8ff;
+        border: 1px solid #d9caff;
+    }
+
+    /* Digital */
+
+    .yapita-task-modal__channel--digital {
+        color: #1359b8;
+        background: #e3f2ff;
+        border: 1px solid #c7e3ff;
+    }
+
+    /* Yapitas */
+
+    .yapita-task-modal__points {
+        color: #694600;
+
+        background: linear-gradient(
+            110deg,
+            #ffeda4,
+            #fff4c9
+        );
+
+        border: 1px solid #ffda67;
+    }
+
+    .yapita-task-modal__points i {
+        color: #d89a00;
+        font-size: 15px;
+    }
+
+    /* ==========================================
+       TÍTULO
+    ========================================== */
+
+    .yapita-task-modal__title {
+        margin: 0;
+
+        color: #111a45;
+
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.25;
+
+        text-align: left;
+
+        overflow-wrap: anywhere;
+    }
+
+    /* ==========================================
+       MOBILE
+    ========================================== */
+
+    @media (max-width: 575.98px) {
+
+        .yapita-task-modal__overview {
+            margin-bottom: 14px;
+            padding: 0 0;
+        }
+
+        .yapita-task-modal__media {
+            border-radius: 14px;
+        }
+
+        .yapita-task-modal__information {
+            padding-top: 12px;
+        }
+
+        .yapita-task-modal__badges {
+            margin-bottom: 10px;
+        }
+
+        .yapita-task-modal__title {
+            font-size: 19px;
+            line-height: 1.3;
+        }
+    }
+
+    /* ==========================================
+       VERY SMALL MOBILE
+    ========================================== */
+
+    @media (max-width: 340px) {
+
+        .yapita-task-modal__channel,
+        .yapita-task-modal__points {
+            font-size: 10px;
+            padding: 6px 9px;
+        }
+
+        .yapita-task-modal__title {
+            font-size: 17px;
+        }
     }
 
     .yapita-task-modal__channel,

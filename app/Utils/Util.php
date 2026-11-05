@@ -440,7 +440,7 @@ class Util
                 'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
             ],
             [
-                'id' => route('chasqui-routes') . "/" . $slugChaqui, // si es público cámbialo; si es login muévelo a CMS/LOGIN
+                'id' => route('chasqui-nian') . "/" . $slugChaqui, // si es público cámbialo; si es login muévelo a CMS/LOGIN
                 'text' => 'Rutas- Chasquiñanes',
                 'type' => 'chaqui-business',
                 'section_id' => $SECTIONS['BUSINESS_PUBLIC'],
