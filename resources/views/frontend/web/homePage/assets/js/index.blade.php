@@ -5,8 +5,8 @@ $urlRouteUser= route('authorSingle', app()->getLocale());
 
 
 ?>
-@include('partials.bootstrap-05',["allowJs"=>true])
 
+@include('partials.bootstrap-05',["allowJs"=>true])
 <script>
     (function (global, $) {
         'use strict';
@@ -586,7 +586,10 @@ $urlRouteUser= route('authorSingle', app()->getLocale());
     }
 
 </script>
+@include('frontend.web.'.$managementNameProcess.'.assets.js.modals.modal-task-details')
 @include('frontend.web.'.$managementNameProcess.'.assets.js.templateVue')
 @include('frontend.web.'.$managementNameProcess.'.assets.js.process.manager-map')
 @include('frontend.web.'.$managementNameProcess.'.assets.js.process.filters-categories')
 @include('frontend.web.'.$managementNameProcess.'.assets.js.process.app')
+
+

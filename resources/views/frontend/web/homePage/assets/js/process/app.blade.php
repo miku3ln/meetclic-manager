@@ -1,261 +1,6 @@
-<script>
-    /* Yapita Task Cards | Bootstrap 5.0.2 | jQuery | Vue v-html */
-    (function (window, $) {
-        'use strict';
+@include('frontend.web.'.$managementNameProcess.'.assets.js.process.task-card-rows')
 
-        const DEFAULTS = {
-            publicAsset: '',
-            selector: '#listing-items',
-            labels: {
-                digital: 'Digital', physical: 'Física', points: 'Yapitas',
-                details: 'Ver detalles', hideDetails: 'Ocultar detalles',
-                howTo: 'Cómo participar', explore: 'Realizar tarea', map: 'Cómo llegar',
-                steps: 'Pasos para participar', tips: 'Consejos', rules: 'Reglas',
-                validation: 'Validación', business: 'Empresa participante',
-                once: 'Una sola vez', unlimited: 'Sin límite', day: 'vez al día',
-                week: 'veces por semana', month: 'veces al mes', total: 'veces en total',
-                always: 'Siempre disponible', unavailable: 'Acción no disponible',
-                noLocation: 'Ubicación pendiente', missingAction: 'Consulta los pasos para participar',
-                more: 'Información de la tarea'
-            }
-        };
-        let config = { ...DEFAULTS, labels: { ...DEFAULTS.labels } };
 
-        function escapeHtml(value) {
-            return String(value == null ? '' : value)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        function parseDescription(value) {
-            if (value && typeof value === 'object') return value;
-            if (typeof value !== 'string') return {};
-            try {
-                const parsed = JSON.parse(value);
-                return parsed && typeof parsed === 'object' ? parsed : { summary: value };
-            } catch (_) {
-                return { summary: value };
-            }
-        }
-
-        function normalizedUrl(value) {
-            const url = String(value || '').trim();
-            if (!url || url === 'not-url') return '';
-            if (url.startsWith('/') && !url.startsWith('//')) return url;
-            try {
-                const parsed = new URL(url, window.location.href);
-                if (['http:', 'https:'].includes(parsed.protocol)) return parsed.href;
-            } catch (_) { /* invalid URL */ }
-            return '';
-        }
-
-        function assetUrl(path) {
-            const value = String(path || '').trim();
-            if (!value) return '';
-            if (/^https?:\/\//i.test(value)) return normalizedUrl(value);
-            if (value.startsWith('//')) return '';
-            const base = String(config.publicAsset || '').replace(/\/+$/, '');
-            return base ? base + '/' + value.replace(/^\/+/, '') : '/' + value.replace(/^\/+/, '');
-        }
-
-        function hasCoords(lat, lng) {
-            if (lat === '' || lat == null || lng === '' || lng == null) return false;
-            const a = Number(lat), b = Number(lng);
-            return Number.isFinite(a) && Number.isFinite(b) &&
-                a >= -90 && a <= 90 && b >= -180 && b <= 180 &&
-                !(a === 0 && b === 0);
-        }
-
-        function mapUrl(task) {
-            if (hasCoords(task.lat, task.lng)) {
-                return 'https://www.google.com/maps/dir/?api=1&destination=' +
-                    encodeURIComponent(task.lat + ',' + task.lng) + '&travelmode=driving';
-            }
-            // Do not route to a guessed address; many test records have fictitious addresses.
-            return '';
-        }
-
-        function taskChannel(row) {
-            const channel = String(row.execution_channel || '').toUpperCase();
-            const tracking = String(row.tracking_type_code_view || '').toLowerCase();
-            const source = String(row.tracking_source_code_view || '').toLowerCase();
-            // QR validation requires a physical visit even if a legacy row says DIGITAL.
-            if (channel === 'PHYSICAL' || channel === 'FISICO' || tracking === 'qr_scan' || source === 'qr_ticket') return 'PHYSICAL';
-            return 'DIGITAL';
-        }
-
-        function frequency(row) {
-            const kind = String(row.frequency_limit_type || '').toUpperCase();
-            const n = Math.max(1, Number(row.frequency_limit_value) || 1);
-            const x = config.labels;
-            if (kind === 'ONCE') return x.once;
-            if (kind === 'UNLIMITED') return x.unlimited;
-            if (kind === 'DAILY') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' al día';
-            if (kind === 'WEEKLY') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' por semana';
-            if (kind === 'MONTHLY') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' al mes';
-            if (kind === 'TOTAL_LIMIT') return n + ' ' + (n === 1 ? 'vez' : 'veces') + ' en total';
-            return '';
-        }
-
-        function stripEmoji(value) {
-            return String(value || '').replace(/^[\s\p{Extended_Pictographic}\uFE0F\u200D]+/gu, '')
-                .replace(/^\(QR\)\s*/i, '').trim();
-        }
-
-        function plainStep(value) {
-            return stripEmoji(value).replace(/^[\s•-]+/, '').trim();
-        }
-
-        function normalize(row) {
-            const desc = parseDescription(row.description);
-            const steps = Array.isArray(desc.steps) ? desc.steps.map(plainStep).filter(Boolean) : [];
-            const helpers = Array.isArray(desc.helpers) ? desc.helpers.map(plainStep).filter(Boolean) : [];
-            const rules = Array.isArray(desc.rules) ? desc.rules.map(plainStep).filter(Boolean) : [];
-            const channel = taskChannel(row);
-            const id = String(row.id == null ? '' : row.id);
-            const businessId = String(row.business_id == null ? '' : row.business_id);
-            const summary = desc.summary || steps.slice(0, 2).join(' ');
-            return {
-                id, businessId, domId: 'yapita-task-' + id.replace(/[^\w-]/g, '') + '-' + businessId.replace(/[^\w-]/g, ''),
-                title: stripEmoji(row.title), businessName: row.business_name || 'Negocio aliado',
-                businessCategory: row.business_subcategories_name || '',
-                points: Number(row.points) || 0, channel, summary,
-                steps, helpers, rules, validation: desc.validation || '',
-                frequency: frequency(row), active: row.state === 'ACTIVE',
-                image: assetUrl(row.source), actionUrl: normalizedUrl(row.url_manager),
-                lat: row.business_lat, lng: row.business_lng,
-                mapUrl: '', validFrom: row.valid_from, validUntil: row.valid_until
-            };
-        }
-
-        function renderHeader(t) {
-            const physical = t.channel === 'PHYSICAL';
-            return `<header class="yapita-task__header">
-            <span class="yapita-task__channel yapita-task__channel--${physical ? 'physical' : 'digital'}">
-                <i class="bi bi-${physical ? 'geo-alt-fill' : 'phone'}" aria-hidden="true"></i>
-                ${escapeHtml(physical ? config.labels.physical : config.labels.digital)}
-            </span>
-            <span class="yapita-task__points" aria-label="${escapeHtml(t.points + ' ' + config.labels.points)}">
-                <i class="bi bi-coin" aria-hidden="true"></i>
-                <strong>+${escapeHtml(t.points)}</strong> <span>${escapeHtml(config.labels.points)}</span>
-            </span>
-        </header>`;
-        }
-
-        function renderContent(t) {
-            return `<div class="yapita-task__content">
-            ${t.image ? `<div class="yapita-task__media"><img loading="lazy" src="${escapeHtml(t.image)}" alt="" onerror="this.parentElement.style.display='none'"></div>` : ''}
-            <div class="yapita-task__information">
-                <h3 class="yapita-task__title">${escapeHtml(t.title)}</h3>
-                <div class="yapita-task__business"><i class="bi bi-shop" aria-hidden="true"></i>
-                    <span><strong>${escapeHtml(t.businessName)}</strong>${t.businessCategory ? `<small>${escapeHtml(t.businessCategory)}</small>` : ''}</span>
-                </div>
-                <p class="yapita-task__description">${escapeHtml(t.summary || config.labels.missingAction)}</p>
-            </div>
-        </div>`;
-        }
-
-        function list(items, modifier) {
-            if (!items || !items.length) return '';
-            return `<ol class="yapita-task__list yapita-task__list--${modifier}">` +
-                items.map(s => `<li>${escapeHtml(s)}</li>`).join('') + '</ol>';
-        }
-
-        function renderDetails(t) {
-            const blocks = [
-                t.steps.length ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.steps)}</h4>${list(t.steps, 'steps')}</section>` : '',
-                t.helpers.length ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.tips)}</h4>${list(t.helpers, 'tips')}</section>` : '',
-                t.validation ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.validation)}</h4><p>${escapeHtml(t.validation)}</p></section>` : '',
-                t.rules.length ? `<section class="yapita-task__detail-section"><h4>${escapeHtml(config.labels.rules)}</h4>${list(t.rules, 'rules')}</section>` : ''
-            ].filter(Boolean).join('');
-            return `<div class="yapita-task__details" id="${escapeHtml(t.domId)}-details" hidden>${blocks}</div>`;
-        }
-
-        function renderActions(t) {
-            if (t.channel === 'PHYSICAL') {
-                if (!t.mapUrl) return `<button type="button" class="yapita-task__button yapita-task__button--disabled" disabled>
-                <i class="bi bi-geo-alt" aria-hidden="true"></i> ${escapeHtml(config.labels.noLocation)}</button>`;
-                return `<a class="yapita-task__button yapita-task__button--primary" href="${escapeHtml(t.mapUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Cómo llegar a ${escapeHtml(t.businessName)} en Google Maps">
-                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i> ${escapeHtml(config.labels.map)}</a>`;
-            }
-            if (t.actionUrl) {
-                return `<a class="yapita-task__button yapita-task__button--primary" href="${escapeHtml(t.actionUrl)}" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> ${escapeHtml(config.labels.explore)}</a>`;
-            }
-            return `<button type="button" class="yapita-task__button yapita-task__button--secondary" data-yapita-details="${escapeHtml(t.domId)}" aria-controls="${escapeHtml(t.domId)}-details" aria-expanded="false">
-            <i class="bi bi-info-circle" aria-hidden="true"></i> ${escapeHtml(config.labels.howTo)}</button>`;
-        }
-
-        function renderFooter(t) {
-            const freq = t.frequency ? `<span class="yapita-task__frequency"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> ${escapeHtml(t.frequency)}</span>` : '<span></span>';
-            return `<footer class="yapita-task__footer">
-            <div class="yapita-task__meta">${freq}
-                <button type="button" class="yapita-task__details-toggle" data-yapita-details="${escapeHtml(t.domId)}" aria-controls="${escapeHtml(t.domId)}-details" aria-expanded="false">
-                    ${escapeHtml(config.labels.details)} <i class="bi bi-chevron-down" aria-hidden="true"></i>
-                </button>
-            </div>
-            <div class="yapita-task__actions">${renderActions(t)}</div>
-        </footer>`;
-        }
-
-        function render(row) {
-            const t = normalize(row);
-            t.mapUrl = mapUrl(t);
-            return `<article class="yapita-task yapita-task--${t.channel.toLowerCase()}" id="${escapeHtml(t.domId)}" data-task-id="${escapeHtml(t.id)}" data-business-id="${escapeHtml(t.businessId)}" data-channel="${escapeHtml(t.channel)}">
-            ${renderHeader(t)}
-            ${renderContent(t)}
-            ${renderDetails(t)}
-            ${renderFooter(t)}
-        </article>`;
-        }
-
-        function init(options) {
-            options = options || {};
-            config = { ...DEFAULTS, ...options, labels: { ...DEFAULTS.labels, ...(options.labels || {}) } };
-            if (!$ || !$.fn) return;
-            const root = config.selector;
-            $(document).off('click.yapitaTaskCard', root + ' [data-yapita-details]');
-            $(document).on('click.yapitaTaskCard', root + ' [data-yapita-details]', function (event) {
-                event.preventDefault();
-                const domId = this.getAttribute('data-yapita-details');
-                const details = document.getElementById(domId + '-details');
-                if (!details) return;
-                const opened = details.hidden;
-                details.hidden = !opened;
-                const card = document.getElementById(domId);
-                if (card) card.querySelectorAll('[data-yapita-details]').forEach(btn => {
-                    btn.setAttribute('aria-expanded', String(opened));
-                    if (btn.classList.contains('yapita-task__details-toggle')) {
-                        btn.innerHTML = escapeHtml(opened ? config.labels.hideDetails : config.labels.details) +
-                            ' <i class="bi bi-chevron-' + (opened ? 'up' : 'down') + '" aria-hidden="true"></i>';
-                    }
-                });
-            });
-        }
-
-        window.YapitaTaskCard = {
-            init, normalize, render, renderHeader, renderContent, renderDetails, renderFooter, renderActions,
-            mapUrl, frequency, parseDescription, escapeHtml
-        };
-    })(window, window.jQuery);
-
-</script>
-<script>
-    window.YapitaTaskCard.init({
-        publicAsset: @json(asset('public')),
-        selector: '#listing-items',
-        labels: {
-            digital: @json(__('gamification.digital')),
-            physical: @json(__('gamification.physical')),
-            points: 'Yapitas',
-            map: 'Cómo llegar',
-            explore: 'Realizar tarea',
-            details: 'Ver detalles',
-            hideDetails: 'Ocultar detalles'
-        }
-    });
-</script>
 <script id="management-tasks">
 
     function pushIf(arr, cond, html) {
@@ -663,6 +408,8 @@
                 this.initInfiniteScroll(); // ✅
                 window.addEventListener('keydown', this.onEscClose);
 
+
+                this.initTaskManager();
             },
             el: '#app-management',
             created: async function () {
@@ -759,6 +506,110 @@
                 isFiltersOpen: false
             },
             methods: {
+
+                initTaskManager: function () {
+
+                    const vm = this;
+                    // ==========================================
+                    // CONFIGURACIÓN
+                    // ==========================================
+
+                    YapitaTaskModalUtil.config = {
+                        ...YapitaTaskModalUtil.config,
+                        selector: '#yapita-task-modal',
+                        warningDays: 3,
+                        businessUrl: function (businessId) {
+                            return $urlRouteBusiness + '/' + businessId;
+                        }
+                    };
+
+                    // ==========================================
+                    // ABRIR MODAL DESDE LA TARJETA
+                    // ==========================================
+
+                    $(document)
+                        .off('yapita:task:details.manager')
+                        .on('yapita:task:details.manager', function (event, data) {
+
+                            if (!data) return;
+
+                            const task = vm.configGridAdmin.data.find(
+                                item =>
+                                    String(item.id) === String(data.taskId) &&
+                                    String(item.business_id) === String(data.businessId)
+                            );
+
+                            if (!task) {
+                                console.warn('Tarea no encontrada:', data);
+                                return;
+                            }
+
+                            // La instancia se crea solamente la primera vez.
+                            YapitaTaskModalUtil.open(task);
+
+                        });
+
+                    // ==========================================
+                    // 2. CAPTURAR ACCIONES DEL MODAL
+                    // ==========================================
+
+                    $(document)
+                        .off('yapita:task:action.manager')
+                        .on('yapita:task:action.manager', function (event, data) {
+
+                            console.log('YAPITA - Acción:', data);
+                            if (!data) return;
+
+
+                            switch (data.action) {
+
+                                case 'map':
+                                    console.log(
+                                        'Cómo llegar a empresa:',
+                                        data.businessId
+                                    );
+                                    break;
+
+                                case 'execute':
+                                    console.log(
+                                        'Realizar tarea:',
+                                        data.taskId
+                                    );
+                                    break;
+
+                                case 'participate':
+                                    console.log(
+                                        'Cómo participar:',
+                                        data.taskId
+                                    );
+                                    break;
+
+                                case 'details':
+                                    console.log(
+                                        'Ver detalles:',
+                                        data.taskId
+                                    );
+                                    break;
+
+                                case 'status':
+                                    console.log(
+                                        'Consultar estado:',
+                                        data.taskId
+                                    );
+                                    break;
+
+                                case 'business':
+                                    console.log(
+                                        'Consultar empresa:',
+                                        data.businessId
+                                    );
+                                    break;
+                            }
+
+                        });
+
+                },
+
                 onEscClose(e) {
                     if (e.key === 'Escape') this.isFiltersOpen = false;
                 },
@@ -928,310 +779,6 @@
                     return window.YapitaTaskCard.render(rowTask);
                 },
 
-                getRowGameTaskHtml2: function (params) {
-                    // ✅ Textos (según idioma)
-                    var t = getTaskText();
-                    // ===== Base =====
-                    var coverImageUrl = params.source ? ($publicAsset + "/" + params.source) : null;
-                    var avatarImgUser = params.avatarImgUser ? ($publicAsset + "/" + params.avatarImgUser) : null;
-
-                    var executionModeRaw = (params.execution_channel || "").toString().toUpperCase();
-                    var isPhysical = executionModeRaw === "PHYSICAL" || executionModeRaw === "FISICO";
-                    var isDigital = executionModeRaw === "DIGITAL";
-
-                    var executionModeLabel = isPhysical ? "PHYSICAL" : (isDigital ? "DIGITAL" : "DIGITAL");
-                    var executionModeText = isPhysical ? t.execution.physical : t.execution.digital;
-
-                    // Ubicación (string)
-                    var locationLabel = t.location.find_here + ": "
-                        + (params["zones_name"] || "") + ", "
-                        + (params["business_street_one"] || "") + ", "
-                        + (params["business_street_two"] || "") + ", "
-                        + (params["cities_name"] || "") + ", "
-                        + (params["provinces_name"] || "");
-
-                    // Empresa - categoría (fallback)
-                    var businessCategory = params.business_category_name || params.category_name || t.fallback.category;
-                    var task = {
-                        id: params.id,
-                        business_id: params.business_id,
-                        coverUrl: coverImageUrl,
-                        businessUrl: $urlRouteBusiness + '/' + params.business_id,
-                        businessName: params.business_name,
-                        businessCategory: businessCategory,
-                        business_lat: params.business_lat,
-                        business_lng: params.business_lng,
-                        user_id: params.user_id,
-                        user_name: params.user_name,
-                        avatarImgUser: avatarImgUser,
-                        code: params.unique_code,
-                        title: params.title,
-                        subtitle: params.subtitle,
-                        description: params.description,
-                        points: Number(params.points || 0),
-                        isActive: params.state === "ACTIVE",
-                        executionMode: executionModeLabel,
-                        executionModeText: executionModeText,
-                        entityProcessId: params.product_id,
-                        entityProcessName: params.product_name,
-                        taskType: params.entity === "0" ? "business" : "product",
-                        url_manager: params.url_manager,
-                        is_url: params.is_url,
-                        tracking_type_code_view: params.tracking_type_code_view,
-                        tracking_source_code_view: params.tracking_source_code_view,
-                        locationLabel: locationLabel,
-                        business_subcategories_name: params.business_subcategories_name,
-                    };
-
-                    // ===== Parse description JSON =====
-                    var desc = safeJsonParse(task.description) || {};
-                    var stepsHtml = buildList(desc.steps);
-                    var helpersHtml = (desc.helpers && desc.helpers.length) ? ('<div class="mc-note">' + buildList(desc.helpers) + '</div>') : "";
-                    var validationHtml = desc.validation ? ('<div class="mc-validation">' + escapeHtml(desc.validation) + '</div>') : "";
-                    var rulesHtml = buildList(desc.rules);
-
-                    // ===== Badges =====
-                    var badgePoints = task.points > 0
-                        ? '<span class="mc-badge mc-badge--points"><i class="fa fa-trophy"></i> +' + escapeHtml(task.points) + ' ' + escapeHtml(t.badge.points_suffix) + '</span>'
-                        : '';
-
-                    var badgeChannel = (task.executionMode === "PHYSICAL")
-                        ? '<span class="mc-badge mc-badge--physical"><i class="fa fa-map-marker"></i> ' + escapeHtml(task.executionModeText) + '</span>'
-                        : '<span class="mc-badge mc-badge--digital"><i class="fa fa-globe"></i> ' + escapeHtml(task.executionModeText) + '</span>';
-
-                    // ===== Limitaciones =====
-                    var paramsLimitations = {
-                        frequency_limit_type: params.frequency_limit_type,
-                        frequency_limit_value: params.frequency_limit_value,
-                        valid_from: params.valid_from,
-                        valid_until: params.valid_until
-                    };
-
-                    var badgeLimit =
-                        '<span class="mc-badge mc-badge--limit"><i class="fa fa-repeat"></i> ' +
-                        escapeHtml(limitLabel(paramsLimitations, t)) +
-                        '</span>';
-
-                    var badgeValidity =
-                        '<span class="mc-badge"><i class="fa fa-calendar"></i> ' +
-                        escapeHtml(validityLabel(paramsLimitations, t)) +
-                        '</span>';
-
-                    // ===== Acción principal =====
-                    var safeUrl = sanitizeUrl(task.url_manager);
-                    var collapseId = "mcMore_" + safeDomId((task.id + "_" + task.business_id));
-                    var act = actionLabel(t, task);
-                    // Botón detalles a la derecha con chevron (▼/▲)
-                    var idIcon = "id='" + "mc-icon_" + (task.id + "_" + task.business_id) + "'";
-                    var detailsBtn = [
-                        '<div class="icon-current">',
-                        '      <i class="fa fa-chevron-down mc-ico-chevron" ', idIcon, '></i> ',
-                        '</div>',
-
-
-                    ].join("");
-
-                    // ===== Media =====
-                    var mediaHtml = task.coverUrl
-                        ? [
-                            '<img src="', escapeHtml(task.coverUrl), '" alt="', escapeHtml(task.title), '" ',
-                            'onerror="this.style.display=\'none\'; this.parentNode.innerHTML=\'<i class=\\\'fa fa-bolt\\\'></i>\';" />'
-                        ].join("")
-                        : '<i class="fa fa-bolt"></i>';
-
-                    // ===== Meta visible =====
-                    var categoryLine = '<span class="mc-task__cat">' + escapeHtml(task.business_subcategories_name) + '</span>';
-                    var businessLine = task.businessName
-                        ? '<h3 class="mc-task__biz"><i class="fa fa-building"></i> ' + escapeHtml(task.businessName) + "-" + categoryLine + '</h3>'
-                        : '';
-
-
-                    // ===== Visible: Qué hacer + Qué haces con Yapitas =====
-                    var bodyVisibleParts = [];
-
-                    bodyVisibleParts.push(
-                        '<div class="mc-section">',
-                        '    <h4 class="mc-section__title">🟢 ', escapeHtml(t.section.steps), (badgePoints ? badgePoints : ''), '</h4>',
-                        (stepsHtml || ('<div class="mc-note">' + escapeHtml(t.fallback.no_steps)  , '</div>')),
-                        '</div>'
-                    );
-                    // ===== Badges HTML =====
-                    var badgesHtml = [
-                        badgeChannel,
-                        badgeLimit,
-                        badgeValidity
-                    ].join("");
-                    bodyVisibleParts.push(
-                        '  <div class="mc-task__badges">', badgesHtml, '</div>',
-                    );
-                    var optionCollapse = 'data-target="#' + collapseId + '"';
-                    bodyVisibleParts.push(
-                        '<div class="mc-section mc-section--to-make-yapitas">',
-                        '   <h4 class="mc-section__title">🟢 ', escapeHtml(t.section.yapitas_use_title), '</h4>',
-                        '   <div class="mc-note mc-note--details"', optionCollapse, ' >', escapeHtml(t.section.yapitas_use_text), detailsBtn, '</div>',
-                        '</div>'
-                    );
-
-                    var bodyVisibleHtml = bodyVisibleParts.join("");
-
-                    // ===== Collapse: Tip + Validación + Reglas + Tech + Ubicación larga =====
-                    var showLocationInsideCollapse = (task.executionMode === "PHYSICAL" && task.locationLabel && String(task.locationLabel).length > 65);
-                    var locationAttrs = ' data-lat="' + escapeHtml(task.business_lat) + '" data-lng="' + escapeHtml(task.business_lng) + '" ';
-
-                    var collapseParts = [];
-                    collapseParts.push('<div id="', escapeHtml(collapseId), '" class="collapse">');
-                    collapseParts.push('<div class="mc-task__collapseBody">');
-
-                    pushIf(collapseParts, !!helpersHtml,
-                        '<div class="mc-section">' +
-                        '<h4 class="mc-section__title">💡 ' + escapeHtml(t.section.tips) + '</h4>' +
-                        helpersHtml +
-                        '</div>'
-                    );
-
-                    pushIf(collapseParts, !!validationHtml,
-                        '<div class="mc-section">' +
-                        '<h4 class="mc-section__title">⚙️ ' + escapeHtml(t.section.validation) + '</h4>' +
-                        validationHtml +
-                        '</div>'
-                    );
-
-                    pushIf(collapseParts, !!rulesHtml,
-                        '<div class="mc-section">' +
-                        '<h4 class="mc-section__title">✅ ' + escapeHtml(t.section.rules) + '</h4>' +
-                        rulesHtml +
-                        '</div>'
-                    );
-
-                    // Tech siempre dentro
-                    collapseParts.push(
-                        '<div class="mc-section">',
-                        '<h4 class="mc-section__title">🧾 ', escapeHtml(t.section.tech), '</h4>',
-                        '<ul class="mc-list">',
-                        '<li><b>', escapeHtml(t.label.unique), ':</b> ', escapeHtml(task.code), '</li>',
-                        '<li><b>', escapeHtml(t.label.channel), ':</b> ', escapeHtml(task.executionMode), '</li>',
-                        '<li><b>', escapeHtml(t.label.tracking), ':</b> ',
-                        escapeHtml((task.tracking_source_code_view || "") + " / " + (task.tracking_type_code_view || "")),
-                        '</li>',
-                        '</ul>',
-                        '</div>'
-                    );
-
-                    collapseParts.push('</div></div>'); // end collapse body + collapse wrapper
-                    var collapseHtml = collapseParts.join("");
-
-                    var urlSetNavigation = $urlRouteBusiness + "/" + task.business_id;
-                    var primaryBtn = "";
-
-                    console.log("safeUrl", safeUrl, urlSetNavigation)
-
-                    if (Number(task.is_url) === 1 && safeUrl) {
-                        console.log("btn ok", task.tracking_source_code_view, "isPhysical", isPhysical);
-                        if (isPhysical) {
-                            if (["qr_ticket"].includes(task.tracking_source_code_view)) {
-                                primaryBtn = [
-                                    '<a  ',
-                                    locationAttrs,
-                                    ' class="btn btn-sm mc-btn mc-btn--primary mc-btn--location" rel="noopener">',
-                                    '  <i class="bi bi-geo-fill"></i> ', t.location.find_here,
-                                    '</a>'
-                                ].join("");
-                            }
-
-                        } else {
-                            if (["qr_ticket"].includes(task.tracking_source_code_view)) {
-                                primaryBtn = [
-                                    '<a  ',
-                                    locationAttrs,
-                                    ' class="btn btn-sm mc-btn mc-btn--primary mc-btn--location" rel="noopener">',
-                                    '  <i class="bi bi-geo-fill"></i> ', t.location.find_here,
-                                    '</a>'
-                                ].join("");
-                            } else if (["meetclick", "whatsapp"].includes(task.tracking_source_code_view)) {
-                                if (safeUrl.includes('/business-details/')) {
-                                    urlSetNavigation = safeUrl;
-                                }
-                                primaryBtn = [
-                                    '<a class="btn btn-sm mc-btn mc-btn--primary" href="', escapeHtml(urlSetNavigation), '" target="_blank" rel="noopener">',
-                                    '  <i class="fa fa-external-link "></i> ', t.action.explore,
-                                    '</a>'
-                                ].join("");
-                            } else {
-
-                            }
-
-                        }
-                    } else {
-                        if (["meetclick"].includes(task.tracking_source_code_view)) {
-                            if (safeUrl.includes('/business-details/')) {
-                                urlSetNavigation = safeUrl;
-                            }
-                            primaryBtn = [
-                                '<a class="btn btn-sm mc-btn mc-btn--primary" href="', escapeHtml(urlSetNavigation), '" target="_blank" rel="noopener">',
-                                '  <i class="fa fa-external-link "></i> ', t.action.explore,
-                                '</a>'
-                            ].join("");
-                        }
-                    }
-                    // ===== Actions bottom =====
-                    var actionsHtml = [
-                        '<div class="mc-task__actionsInner">',
-                        '  <div class="mc-task__btns">',
-
-                        '  </div>',
-                        '   <div class="mc-task__rightActions">',
-                        primaryBtn,
-                        '   </div>',
-                        '</div>',
-                        '<div class="mc-task__state not-view">', escapeHtml(t.label.state), ': ', escapeHtml(params.state || "—"), '</div>'
-                    ].join("");
-                    // ===== FINAL LAYOUT =====
-                    var htmlParts = [];
-                    htmlParts.push(
-                        '<article class="mc-task" data-channel="', escapeHtml(task.executionMode), '" data-action="', escapeHtml(getActionType(task)), '">'
-                    );
-
-                    // Row 1
-                    htmlParts.push('<div class="mc-task__row-1">');
-
-                    // Left (imagen + badges)
-                    htmlParts.push(
-                        '<div class="mc-task__left">',
-                        '<div class="mc-task__media">', mediaHtml, '</div>',
-                        '</div>'
-                    );
-
-                    // Right (meta + visible body + collapse)
-                    htmlParts.push(
-                        '<div class="mc-task__right">',
-                        '<div class="mc-task__meta">',
-                        '<h3 class="mc-task__title">', escapeHtml(task.title), '</h3>',
-                        '<p class="mc-task__subtitle">', escapeHtml(task.subtitle), '</p>',
-                        businessLine,
-                        // Si es PHYSICAL pero NO es larga, la puedes mostrar aquí como línea corta (opcional)
-                        (!showLocationInsideCollapse && task.executionMode === "PHYSICAL" && task.locationLabel
-                                ? ('<div ' + locationAttrs + ' class="mc-task__locShort"><i class="fa fa-map-marker"></i> ' + escapeHtml(task.locationLabel) + '</div>')
-                                : ''
-                        ),
-                        '</div>',
-                        '<div class="mc-task__body">', bodyVisibleHtml, '</div>',
-                        collapseHtml,
-                        '</div>'
-                    );
-
-                    htmlParts.push('</div>'); // row-1
-
-                    // Row 2
-                    htmlParts.push(
-                        '<div class="mc-task__row-2">',
-                        '  <div class="mc-task__actions">', actionsHtml, '</div>',
-                        '</div>'
-                    );
-
-                    htmlParts.push('</article>');
-
-                    return htmlParts.join("");
-                },
 
                 _managerDataItemsMap: function (params) {
                     console.log("_managerDataItemsMap", params);

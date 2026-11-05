@@ -3,9 +3,16 @@
 
 $managementNameProcess = "homePage";
 ?>
+
 @extends('layouts.cityBook')
+@section('data-modal')
+    @include('frontend.web.homePage.modals.modal-task-details')
+
+@endsection
 @section('additional-styles')
     @include('frontend.web.'.$managementNameProcess.'.assets.css.index')
+
+
     <style>
         /* BEM component – self-contained and Bootstrap 5.0.2 friendly */
         .yapita-task-list {
@@ -166,15 +173,6 @@ $managementNameProcess = "homePage";
             font-size: 12px;
         }
 
-        .yapita-task__details-toggle {
-            background: transparent;
-            border: 0;
-            color: var(--yt-primary);
-            font-weight: 700;
-            font-size: 12px;
-            padding: 6px 0 6px 8px;
-            cursor: pointer;
-        }
 
         .yapita-task__actions {
             display: flex;
@@ -259,11 +257,6 @@ $managementNameProcess = "homePage";
             margin-top: 5px;
         }
 
-        .yapita-task__details-toggle:focus-visible, .yapita-task__button:focus-visible {
-            outline: 3px solid #f6c940;
-            outline-offset: 2px;
-        }
-
         .yapita-task-intro {
             border-radius: 18px;
             padding: 18px;
@@ -334,7 +327,7 @@ $managementNameProcess = "homePage";
             }
 
             .yapita-task__description {
-                -webkit-line-clamp: 2;
+                -webkit-line-clamp: 3;
             }
         }
 
@@ -354,7 +347,129 @@ $managementNameProcess = "homePage";
             }
         }
 
+        .yapita-task__validity {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            color: #405278;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .yapita-task__validity i,
+        .yapita-task__frequency i {
+            color: #4058f4;
+            font-size: 15px;
+        }
+
+        .yapita-task__meta {
+            flex-wrap: wrap;
+            gap: 6px 12px;
+        }
+
+        @media (max-width: 380px) {
+            .yapita-task__validity,
+            .yapita-task__frequency {
+                font-size: 10px;
+            }
+        }
+
+        /* ==========================================
+           YAPITA - BOTÓN LATERAL DE DETALLES
+        ========================================== */
+
+        .yapita-task__content {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .yapita-task__information {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* BOTÓN CIRCULAR */
+
+        .yapita-task__view-details {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            flex: 0 0 40px;
+            width: 40px;
+            height: 40px;
+
+            margin-left: auto;
+
+            border: 1px solid #d9e2ff;
+            border-radius: 50%;
+
+            background: #ffffff;
+            color: #4058f4;
+
+            box-shadow: 0 3px 10px rgba(42, 65, 150, .12);
+
+            cursor: pointer;
+
+            transition:
+                background .2s ease,
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .yapita-task__view-details i {
+            font-size: 19px;
+            line-height: 1;
+        }
+
+        .yapita-task__view-details:hover {
+            background: #edf2ff;
+            transform: translateX(2px);
+            box-shadow: 0 5px 14px rgba(42, 65, 150, .18);
+        }
+
+        .yapita-task__view-details:active {
+            transform: scale(.95);
+        }
+
+        .yapita-task__view-details:focus-visible {
+            outline: 3px solid #ffcc34;
+            outline-offset: 3px;
+        }
+
+        /* ==========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 575.98px) {
+
+            .yapita-task__content {
+                gap: 9px;
+            }
+
+            .yapita-task__view-details {
+                flex-basis: 34px;
+                width: 34px;
+                height: 34px;
+            }
+
+            .yapita-task__view-details i {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .yapita-task__view-details {
+                transition: none;
+            }
+        }
+
     </style>
+
     <style>
 
         h1.title {

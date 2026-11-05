@@ -1,7 +1,16 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
+@include('frontend.web.'.$managementNameProcess.'.assets.css.modals.modal-task-details')
 
 
 @include('partials.bootstrap-05',["allowCss"=>true])
+<style>
+
+    @media (max-width: 575.98px) {
+        .container{
+            width: 100% !important;
+        }
+    }
+</style>
 <style>
     div#listing-items {
         margin-top: 2%;
