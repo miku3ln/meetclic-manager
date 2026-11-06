@@ -9,6 +9,7 @@ use App\Models\Events\EventBusinessPrize;
 use App\Models\Events\MapZoneEvent;
 use App\Models\FrontendCityBookManager;
 use App;
+use App\Utils\YapitaJsonLdUtil;
 use Auth;
 use App\Models\TemplateInformation;
 use App\Utils\Util;

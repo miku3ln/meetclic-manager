@@ -8,6 +8,7 @@ use App\Models\Business;
 use App\Models\FrontendManager;
 use App;
 use App\Models\Products\Product;
+use App\Utils\YapitaJsonLdUtil;
 use Auth;
 use App\Models\TemplateInformation;
 use App\Utils\Util;
@@ -67,6 +68,44 @@ class FrontendController extends FrontendBaseController
 
         ]);
 
+
+        $data = [
+            'url' => 'https://meetclic.com',
+            'name' => 'MeetClic',
+            'alternate_name' => 'Yapita',
+            'page_title' => 'Yapita - Gana recompensas y descubre empresas',
+            'description' =>
+                'Descubre empresas aliadas, participa en actividades, ' .
+                'gana Yapitas y accede a recompensas. ' .
+                'Una plataforma creada por MeetClic para apoyar a las PYMES.',
+
+            'language' => $language,
+
+            'organization' => [
+                'name' => 'MeetClic',
+                'description' =>
+                    'Empresa tecnológica creadora de Yapita. ' .
+                    'Desarrolla herramientas digitales para apoyar ' .
+                    'la gestión, comercialización y fidelización de PYMES.',
+                // Agrega la URL real y pública del logotipo.
+                'logo' => 'https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png',
+                'same_as' => [],
+                'contact' => [
+                    'telephone' => '+593985339457',
+                    'email' => 'kalexmiguelalba@gmail.com',
+                ],
+            ],
+
+            // Solo tareas visibles con URL individual pública real.
+            'tasks' => [],
+        ];
+
+        $jsonLd = YapitaJsonLdUtil::build(
+            YapitaJsonLdUtil::HOME,
+            $data
+        );
+
+        $paramsSend['jsonLd'] = $jsonLd;
         return view($renderView, $paramsSend);
 
     }
@@ -75,7 +114,7 @@ class FrontendController extends FrontendBaseController
     {
         $business_id = $id;
         $model = new Business();
-        $processPage="shopPage";
+        $processPage = "shopPage";
         $dataBusiness = $model->getBusinessData(array("id" => $business_id));
         if (empty($dataBusiness["business"])) {
             abort(404); // 👈 Laravel maneja esto automáticamente
@@ -89,7 +128,7 @@ class FrontendController extends FrontendBaseController
             $paramsRequest['dataBusinessInformation']["business_id"] = $business_id;
 
             $modelPage = new \App\Models\FrontendCityBookManager();
-            $renderView = self::LAYOUT_MAIN . '.web.' . '.'.$processPage;
+            $renderView = self::LAYOUT_MAIN . '.web.' . '.' . $processPage;
             $paramsSend = $modelPage->getParamsPage([
                 'page' => $processPage,
                 'paramsRequest' => $paramsRequest

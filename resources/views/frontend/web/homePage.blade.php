@@ -415,10 +415,9 @@ $managementNameProcess = "homePage";
 
             cursor: pointer;
 
-            transition:
-                background .2s ease,
-                transform .2s ease,
-                box-shadow .2s ease;
+            transition: background .2s ease,
+            transform .2s ease,
+            box-shadow .2s ease;
         }
 
         .yapita-task__view-details i {
@@ -521,7 +520,12 @@ $managementNameProcess = "homePage";
 @section('additional-scripts')
     @include('frontend.web.'.$managementNameProcess.'.assets.js.index')
 
+    @if(!empty($jsonLd))
 
+        <script type="application/ld+json">
+            {!! \App\Utils\YapitaJsonLdUtil::encode($jsonLd) !!}
+        </script>
+    @endif
     <script>
         function managementButtons(allow) {
             if (!allow) {
@@ -532,6 +536,7 @@ $managementNameProcess = "homePage";
             }
 
         }
+
         function initModePosition() {
             var isDesktop = isDesktopOnly();
             console.log(isDesktop);
@@ -548,6 +553,7 @@ $managementNameProcess = "homePage";
                 $("#manager-list").addClass("left-list");
             }
         }
+
         $(function () {
             managementButtons(isDesktopOnly());
             $('.header-search').show();
@@ -625,7 +631,9 @@ $managementNameProcess = "homePage";
                              v-init-listing-items="{initMethod:_managerDataItemsMap}">
                         </div>
                     </div>
-                    <div v-if="(configGridAdmin.isEmpty && configGridAdmin.data.length==0) && (!paginationState.loading && !paginationState.hasMore)" class="listing-items__empty">
+                    <div
+                        v-if="(configGridAdmin.isEmpty && configGridAdmin.data.length==0) && (!paginationState.loading && !paginationState.hasMore)"
+                        class="listing-items__empty">
                         <div v-html="configGridAdmin.msj.empty"></div>
                     </div>
                     <div class="listings-loader"
