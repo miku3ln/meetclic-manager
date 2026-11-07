@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Infrastructure\Cms\Application\Gamification\Wallet\DTOs\TaskRewardInputDTO;
 use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\RewardUserByTaskUseCase;
 use App\Mail\Gamification\TaskRewardMail;
+use App\Mail\RewardByBusiness\PrizeWinnerMail;
+use App\Models\Events\EventBusinessPrize;
 use App\Models\Gamification\GamificationByProcessTracking;
 use App\Models\User;
 use App\Utils\TrackingUtil;
@@ -21,11 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
-use Laravel\Socialite\Facades\Socialite;
-use Exception;
 use App\Utils\UtilUser;
-use Symfony\Component\Console\Input\Input;
 use Google\Client as GoogleClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -34,6 +32,7 @@ use Throwable;
 class SocialNetworkController extends Controller
 {
     use AuthenticatesUsers;
+
     public function handleServerModal(Request $request): JsonResponse
     {
         $step = 'VALIDATION';
@@ -286,6 +285,184 @@ class SocialNetworkController extends Controller
         }
     }
 
+    public function handleSendRewardEmailUser(
+        Request $request
+    ): JsonResponse
+    {
+        $modelRewards= new EventBusinessPrize();
+        $users=   $modelRewards-> getUsersEvent(1);
+
+        $rewards=   $modelRewards-> getPrizesByEventId(1);
+
+        // ==========================================
+        // 1. VALIDAR DATOS RECIBIDOS
+        // ==========================================
+
+
+// ==========================================
+// 1. DATOS HARDCODEADOS PARA PRUEBAS
+// ==========================================
+       $reward= $rewards[0];
+       $addressBusiness=$reward["business_street_1"]." y ".$reward["business_street_2"];
+        $latitude = $reward["business_street_lat"];
+$longitude =$reward["business_street_lng"];
+
+$businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%2C{$longitude}";
+        $data = [
+            // GANADOR
+            'email' => 'empresasistemaxytab@gmail.com',
+            'userName' => 'Alex Miguel Alba Ayala',
+            // PREMIO
+            'prizeName' => $reward['name'],
+            'prizeDescription' => $reward['description'],
+            'prizeImage' =>  $reward['source'],
+            'prizeCode' => $reward['id'],
+            'redeemUntil' => '30 de noviembre de 2026',
+            // EMPRESA AUSPICIANTE
+            'businessName' =>$reward["business_name"],
+            'businessAddress' =>$addressBusiness,
+            'businessMapsUrl' => $businessMapsUrl,
+            'businessPhone' => $reward["business_phone"],
+
+            // YAPITA
+            'yapitaPhone' => '593985339457',
+            // EVENTO
+            'eventName' => 'Halloween Otavalo - 7.ª edición',
+        ];
+
+// ==========================================
+// 2. VALIDAR DATOS HARDCODEADOS
+// ==========================================
+
+        $validator = Validator::make(
+            $data,
+            [
+                'email' => 'required|email|max:255',
+                'userName' => 'required|string|max:255',
+                'prizeName' => 'required|string|max:255',
+                'prizeDescription' => 'required|string',
+                'prizeImage' => 'nullable|url|max:2048',
+                'prizeCode' => 'required',
+                'redeemUntil' => 'nullable|string|max:100',
+                'businessName' => 'required|string|max:255',
+                'businessAddress' => 'required|string|max:500',
+                'businessMapsUrl' => 'nullable|url|max:2048',
+                'businessPhone' => 'nullable|string|max:25',
+                'yapitaPhone' => 'nullable|string|max:25',
+                'eventName' => 'nullable|string|max:255',
+            ]
+        );
+
+// ==========================================
+// 3. VERIFICAR VALIDACIÓN
+// ==========================================
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Los datos de prueba no son válidos.',
+                'error_code' => 'VALIDATION_ERROR',
+                'data' => [
+                    'errors' => $validator->errors()->toArray(),
+                ],
+            ], 422);
+        }
+
+        $paramsTask = $data;
+        unset(
+            $paramsTask['email'],
+            $paramsTask['userName']
+        );
+        $emailSend = $data['email'];
+        $userName = $data['userName'];
+        $paramsTask = [
+            'prizeName' => $data['prizeName'],
+            'prizeDescription' => $data['prizeDescription'],
+
+            'prizeImage' => $data['prizeImage']
+                ?? null,
+
+            'prizeCode' => $data['prizeCode'],
+
+            'redeemUntil' => $data['redeemUntil']
+                ?? null,
+
+            'businessName' => $data['businessName'],
+
+            'businessAddress' => $data['businessAddress'],
+
+            'businessMapsUrl' => $data['businessMapsUrl']
+                ?? null,
+
+            'businessPhone' => $data['businessPhone']
+                ?? null,
+
+            'yapitaPhone' => $data['yapitaPhone']
+                ?? null,
+
+            'eventName' => $data['eventName']
+                ?? 'Sorteo Yapita',
+        ];
+
+        try {
+
+            $result = $this->sendRewardUsers(
+                $emailSend,
+                $userName,
+                $paramsTask
+            );
+            $result['users']=$users;
+            $result['rewards']=$rewards;
+
+            // ==========================================
+            // 6. DEFINIR CÓDIGO HTTP
+            // ==========================================
+
+            if ($result['success'] === true) {
+                return response()->json(
+                    $result,
+                    200
+                );
+            }
+            $errorCode = $result['error_code']
+                ?? 'REWARD_EMAIL_ERROR';
+
+            $httpStatus = match ($errorCode) {
+                'REWARD_VALIDATION_ERROR' => 422,
+                'SMTP_AUTH_ERROR',
+                'SMTP_ACCOUNT_BLOCKED' => 503,
+                'SMTP_CONNECTION_ERROR',
+                'SMTP_TEMPORARY_ERROR' => 503,
+                'SMTP_RECIPIENT_REJECTED' => 422,
+                'SMTP_ERROR',
+                'REWARD_EMAIL_ERROR' => 500,
+                default => 500,
+            };
+
+            // ==========================================
+            // 7. RESPUESTA DE ERROR
+            // ==========================================
+
+            return response()->json(
+                $result,
+                $httpStatus
+            );
+
+        } catch (Throwable $e) {
+
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un error inesperado al enviar la notificación del premio.',
+                'error_code' => 'INTERNAL_SERVER_ERROR',
+                'smtp_code' => null,
+                'data' => [
+                    'email' => $emailSend,
+                    'status' => 'FAILED',
+                ],
+            ], 500);
+        }
+    }
+
     public function handleGoogleModal(Request $request): JsonResponse
     {
         $step = 'VALIDATION';
@@ -515,7 +692,7 @@ class SocialNetworkController extends Controller
                     'user' => [
                         'id' => $userCurrent->id,
                         'name' => $userCurrent->name,
-                        "isCreate"=>$isCreate
+                        "isCreate" => $isCreate
                     ],
                     'gamification' => $gamification,
                     'provider' => 'google',
@@ -617,6 +794,385 @@ class SocialNetworkController extends Controller
             'points' => $points['id'] !== null ? $points : null,
         ];
     }
+
+
+    protected function sendRewardUsers(
+        $emailSend,
+        $userName,
+        $paramsTask
+    ): array {
+
+        // ==========================================
+        // 1. VALIDAR DATOS
+        // ==========================================
+
+        $validator = Validator::make(
+            [
+                'email' => $emailSend,
+                'user_name' => $userName,
+                'params' => $paramsTask,
+            ],
+            [
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                ],
+                'user_name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+                'params' => [
+                    'required',
+                    'array',
+                ],
+                'params.prizeName' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+                'params.prizeDescription' => [
+                    'required',
+                    'string',
+                ],
+                'params.prizeImage' => [
+                    'nullable',
+                    'url',
+                    'max:2048',
+                ],
+                'params.prizeCode' => [
+                    'required',
+                ],
+                'params.businessName' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+                'params.businessAddress' => [
+                    'required',
+                    'string',
+                    'max:500',
+                ],
+                'params.businessMapsUrl' => [
+                    'nullable',
+                    'url',
+                    'max:2048',
+                ],
+                'params.businessPhone' => [
+                    'nullable',
+                    'string',
+                    'max:25',
+                ],
+                'params.yapitaPhone' => [
+                    'nullable',
+                    'string',
+                    'max:25',
+                ],
+                'params.eventName' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+                'params.redeemUntil' => [
+                    'nullable',
+                    'string',
+                    'max:100',
+                ],
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return [
+                'success' => false,
+                'message' => 'Los datos para enviar el premio no son válidos.',
+                'error_code' => 'REWARD_VALIDATION_ERROR',
+                'smtp_code' => null,
+                'data' => [
+                    'email' => $emailSend,
+                    'status' => 'FAILED',
+                    'errors' => $validator->errors()->toArray(),
+                ],
+            ];
+        }
+
+        // ==========================================
+        // 2. VERIFICAR TRANSPORTE DE CORREO
+        // ==========================================
+
+        $mailer = config('mail.default');
+
+
+
+        // ==========================================
+        // 3. PREPARAR CORREO
+        // ==========================================
+
+        try {
+
+            $mail = new PrizeWinnerMail(
+                winnerName: $userName,
+                winnerEmail: $emailSend,
+
+                prizeName: $paramsTask['prizeName'],
+
+                prizeDescription:
+                $paramsTask['prizeDescription'],
+
+                prizeImage:
+                $paramsTask['prizeImage'] ?? null,
+
+                prizeCode:
+                $paramsTask['prizeCode'],
+
+                businessName:
+                $paramsTask['businessName'],
+
+                businessAddress:
+                $paramsTask['businessAddress'],
+
+                businessMapsUrl:
+                $paramsTask['businessMapsUrl'] ?? null,
+
+                businessPhone:
+                $paramsTask['businessPhone'] ?? null,
+
+                yapitaPhone:
+                $paramsTask['yapitaPhone'] ?? null,
+
+                logoUrl:"https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png",
+
+                eventName:
+                $paramsTask['eventName']
+                ?? 'Sorteo Yapita',
+
+                redeemUntil:
+                $paramsTask['redeemUntil'] ?? null
+            );
+
+
+            // ==========================================
+            // 5. ENVIAR CORREO
+            // ==========================================
+
+            Mail::to($emailSend)->send($mail);
+
+
+
+            return [
+                'success' => true,
+                'message' => 'El transporte de correo terminó sin errores. La entrega al destinatario todavía no está confirmada.',
+                'error_code' => null,
+                'smtp_code' => null,
+                'data' => [
+                    'email' => $emailSend,
+                    'winner' => $userName,
+                    'prize_code' => $paramsTask['prizeCode'],
+                    'mailer' => $mailer,
+                    'status' => 'TRANSPORT_ACCEPTED',
+                ],
+            ];
+
+        } catch (TransportExceptionInterface $e) {
+
+            // ==========================================
+            // 7. OBTENER ERROR SMTP
+            // ==========================================
+
+            $errorMessage = $e->getMessage();
+
+            $errorLower = strtolower($errorMessage);
+
+            $smtpCode = null;
+
+            // ==========================================
+            // 8. EXTRAER CÓDIGO SMTP
+            // ==========================================
+
+            // Solo códigos de error 4xx y 5xx.
+            // No utilizar el historial getDebug()
+            // para obtener el último código.
+
+            if (preg_match(
+                '/(?:code|response|replied with|returned)[^\r\n]{0,120}?\b([45]\d{2})\b/i',
+                $errorMessage,
+                $matches
+            )) {
+                $smtpCode = (int) $matches[1];
+            }
+
+            // ==========================================
+            // 9. CLASIFICAR ERROR SMTP
+            // ==========================================
+
+            $errorCode = 'SMTP_ERROR';
+
+            $message = 'No se pudo enviar el correo del premio.';
+
+            // CUENTA BLOQUEADA
+            if (
+                str_contains(
+                    $errorLower,
+                    'outbound sending is disabled'
+                )
+            ) {
+
+                $errorCode = 'SMTP_ACCOUNT_BLOCKED';
+
+                $message = 'La cuenta SMTP tiene deshabilitado el envío de correos.';
+
+            }
+
+            // AUTENTICACIÓN
+            elseif (
+                $smtpCode === 535 ||
+                str_contains(
+                    $errorLower,
+                    'authentication failed'
+                ) ||
+                str_contains(
+                    $errorLower,
+                    'username and password not accepted'
+                )
+            ) {
+
+                $errorCode = 'SMTP_AUTH_ERROR';
+
+                $message = 'El servidor SMTP rechazó las credenciales de autenticación.';
+
+            }
+
+            // DESTINATARIO RECHAZADO
+            elseif (
+                in_array(
+                    $smtpCode,
+                    [550, 551, 553],
+                    true
+                )
+            ) {
+
+                $errorCode = 'SMTP_RECIPIENT_REJECTED';
+
+                $message = 'El servidor SMTP rechazó el destinatario.';
+
+            }
+
+            // ERROR TEMPORAL
+            elseif (
+                in_array(
+                    $smtpCode,
+                    [421, 450, 451, 452],
+                    true
+                )
+            ) {
+
+                $errorCode = 'SMTP_TEMPORARY_ERROR';
+
+                $message = 'El servidor SMTP presenta un problema temporal.';
+
+            }
+
+            // CONEXIÓN
+            elseif (
+                str_contains(
+                    $errorLower,
+                    'connection could not be established'
+                ) ||
+                str_contains(
+                    $errorLower,
+                    'connection timed out'
+                ) ||
+                str_contains(
+                    $errorLower,
+                    'connection refused'
+                )
+            ) {
+
+                $errorCode = 'SMTP_CONNECTION_ERROR';
+
+                $message = 'No se pudo establecer conexión con el servidor SMTP.';
+
+            }
+
+            // SEGURIDAD SSL/TLS
+            elseif (
+                str_contains(
+                    $errorLower,
+                    'certificate'
+                ) ||
+                str_contains(
+                    $errorLower,
+                    'starttls'
+                ) ||
+                str_contains(
+                    $errorLower,
+                    'ssl operation failed'
+                )
+            ) {
+
+                $errorCode = 'SMTP_TLS_ERROR';
+
+                $message = 'Error de seguridad SSL/TLS durante la conexión SMTP.';
+
+            }
+
+            // ==========================================
+            // 11. RESPUESTA SMTP
+            // ==========================================
+
+            $response = [
+                'success' => false,
+                'message' => $message,
+                'error_code' => $errorCode,
+                'smtp_code' => $smtpCode,
+                'data' => [
+                    'email' => $emailSend,
+                    'status' => 'FAILED',
+                ],
+            ];
+
+            // Solo mostrar detalles en desarrollo.
+            if (config('app.debug')) {
+
+                $response['debug'] = [
+                    'exception' => get_class($e),
+                    'message' => $errorMessage,
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ];
+            }
+
+            return $response;
+
+        } catch (Throwable $e) {
+
+
+            $response = [
+                'success' => false,
+                'message' => 'Ocurrió un error al preparar o enviar el correo del premio.',
+                'error_code' => 'REWARD_EMAIL_ERROR',
+                'smtp_code' => null,
+                'data' => [
+                    'email' => $emailSend,
+                    'status' => 'FAILED',
+                ],
+            ];
+
+            if (config('app.debug')) {
+
+                $response['debug'] = [
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ];
+            }
+
+            return $response;
+        }
+    }
+
 
     protected function sendReward($emailSend, $userName, $paramsTask)
     {
@@ -821,7 +1377,7 @@ class SocialNetworkController extends Controller
                 } else {
                     $paramsTask = [
                         'taskName' => $processManager["title"],
-                        'taskDescription' => $processManager["title"].",Por realizar el registro participas a un sorteo de los premios auspiciantes ,estaremos enviando un correo para poder emitir al ganador o en nuestras redes sociales",
+                        'taskDescription' => $processManager["title"] . ",Por realizar el registro participas a un sorteo de los premios auspiciantes ,estaremos enviando un correo para poder emitir al ganador o en nuestras redes sociales",
                         'taskImage' => asset('public/uploads/yapita/rewards/1/register.png'),
                         'points' => $pointsValue,
                     ];
@@ -892,7 +1448,7 @@ class SocialNetworkController extends Controller
                 $gamification['message'] =
                     'Registro completado. Yapitas acreditadas correctamente.';
                 $gamification['type'] = 420;
-                $gamification['data']['rewardInformation']= $taskData;
+                $gamification['data']['rewardInformation'] = $taskData;
                 $gamification['data']['reward'] = $result;
 
             }
@@ -909,7 +1465,7 @@ class SocialNetworkController extends Controller
 
         }
 
-        return  $gamification;
+        return $gamification;
     }
 
     protected function initSession($user, Request $request)

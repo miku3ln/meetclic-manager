@@ -130,3 +130,9 @@ Route::post(
     '/auth/google/modal',
     [SocialNetworkController::class, 'handleGoogleModal']
 )->name('auth.google.modal');
+
+
+Route::get(
+    '/event/reward/type',
+    [SocialNetworkController::class, 'handleSendRewardEmailUser']
+)->name('event.reward.type');

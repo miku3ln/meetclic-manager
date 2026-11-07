@@ -121,7 +121,11 @@ class EventBusinessPrize extends ModelManager
 
                 'b.title as business_name',
                 'b.source as business_logo',
-
+                'b.phone_value as business_phone',
+                'b.street_1 as business_street_1',
+                'b.street_2 as business_street_2',
+                'b.street_lat as business_street_lat',
+                'b.street_lng as  business_street_lng',
                 'ep.name',
                 'ep.description',
                 'ep.source',
@@ -183,7 +187,11 @@ class EventBusinessPrize extends ModelManager
                 'business_logo' => self::getUploadUrl(
                     $row->business_logo
                 ),
-
+                'business_phone' =>$row->business_phone,
+                'business_street_1' =>$row->business_street_1,
+                'business_street_2' =>$row->business_street_2,
+                'business_street_lat' =>$row->business_street_lat,
+                'business_street_lng' =>$row->business_street_lng,
                 'name' => $row->name,
 
                 'description' => $row->description,
