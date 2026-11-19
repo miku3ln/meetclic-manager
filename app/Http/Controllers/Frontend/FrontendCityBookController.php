@@ -1259,10 +1259,13 @@ class FrontendCityBookController extends FrontendBaseController
         ]);
         $paramsSend["zonesManager"]=$zonesManager;
         $modelRewards= new EventBusinessPrize();
-        $users=   $modelRewards-> getUsersEvent(1);
+        $canManage=true;
+        $users=   $modelRewards-> getUsersEvent(1,$canManage);
         $paramsSend["users"]=$users;
         $rewards=   $modelRewards-> getPrizesByEventId(1);
         $paramsSend["rewards"]=$rewards;
+        $paramsSend["canManage"]=$canManage;
+
         return view($renderView, $paramsSend);
     }
     public function maskana($language = 'es')

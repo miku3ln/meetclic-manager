@@ -1,5 +1,9 @@
 @extends('layouts.cityBook')
 
+@php
+    $canManage = (bool) ($canManage ?? false);
+@endphp
+
 @section('data-modal')
     {{-- ==========================================
          YAPITA PRIZES - DATA
@@ -402,6 +406,24 @@
         </div>
 
     </div>
+
+    @if($canManage)
+        <div class="modal fade yapita-prize-management-modal" id="yapitaWinnerDetailsModal" tabindex="-1"
+             aria-labelledby="yapitaWinnerDetailsTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title" id="yapitaWinnerDetailsTitle">Detalle del
+                            premio</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <pre id="yapitaWinnerDetailsText" class="yapita-prize-management-modal__details"
+                             style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 @section('additional-styles')
     <link href="{{ URL::asset($resourcePathServer.'libs/toast/jquery.toast.min.css') }}" rel="stylesheet"
@@ -473,21 +495,18 @@
 
             cursor: pointer;
 
-            box-shadow:
-                0 8px 0 rgba(0, 0, 0, .12),
-                0 15px 30px rgba(0, 0, 0, .15);
+            box-shadow: 0 8px 0 rgba(0, 0, 0, .12),
+            0 15px 30px rgba(0, 0, 0, .15);
 
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease;
+            transition: transform .25s ease,
+            box-shadow .25s ease;
         }
 
         .yapita-prizes__trigger:hover {
             transform: translateY(-4px);
 
-            box-shadow:
-                0 10px 0 rgba(0, 0, 0, .1),
-                0 20px 35px rgba(0, 0, 0, .2);
+            box-shadow: 0 10px 0 rgba(0, 0, 0, .1),
+            0 20px 35px rgba(0, 0, 0, .2);
         }
 
         .yapita-prizes__trigger-icon {
@@ -547,8 +566,7 @@
 
             background: #ffffff;
 
-            box-shadow:
-                0 25px 70px rgba(14, 32, 90, .25);
+            box-shadow: 0 25px 70px rgba(14, 32, 90, .25);
         }
 
         /* ==========================================
@@ -565,17 +583,16 @@
 
             border: none;
 
-            background:
-                radial-gradient(
-                    circle at 90% 20%,
-                    rgba(255, 220, 0, .2),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    135deg,
-                    #2448f5,
-                    #1740c7
-                );
+            background: radial-gradient(
+                circle at 90% 20%,
+                rgba(255, 220, 0, .2),
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #2448f5,
+                #1740c7
+            );
 
             color: #ffffff;
         }
@@ -741,19 +758,16 @@
 
             background: #ffffff;
 
-            box-shadow:
-                0 5px 18px rgba(31, 65, 150, .07);
+            box-shadow: 0 5px 18px rgba(31, 65, 150, .07);
 
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease;
+            transition: transform .25s ease,
+            box-shadow .25s ease;
         }
 
         .yapita-prizes__card:hover {
             transform: translateY(-4px);
 
-            box-shadow:
-                0 12px 28px rgba(31, 65, 150, .15);
+            box-shadow: 0 12px 28px rgba(31, 65, 150, .15);
         }
 
         /* ==========================================
@@ -785,12 +799,11 @@
             width: 100%;
             height: 100%;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #eaf0ff,
-                    #fff5cc
-                );
+            background: linear-gradient(
+                135deg,
+                #eaf0ff,
+                #fff5cc
+            );
 
             color: var(--prize-blue);
 
@@ -1199,23 +1212,22 @@
             min-height: 100vh;
             padding: 45px 15px 80px;
 
-            background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(54, 118, 255, .24),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at 90% 25%,
-                    rgba(255, 133, 40, .13),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    145deg,
-                    #10142b,
-                    #191235 65%,
-                    #10142b
-                );
+            background: radial-gradient(
+                circle at 10% 10%,
+                rgba(54, 118, 255, .24),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 90% 25%,
+                rgba(255, 133, 40, .13),
+                transparent 30%
+            ),
+            linear-gradient(
+                145deg,
+                #10142b,
+                #191235 65%,
+                #10142b
+            );
 
             color: #ffffff;
             font-family: inherit;
@@ -1245,18 +1257,17 @@
             border-radius: 28px;
             border: 2px solid rgba(255, 218, 34, .25);
 
-            background:
-                radial-gradient(
-                    circle at 15% 50%,
-                    rgba(255, 133, 40, .15),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    135deg,
-                    #183fb2,
-                    #25205c 65%,
-                    #431d69
-                );
+            background: radial-gradient(
+                circle at 15% 50%,
+                rgba(255, 133, 40, .15),
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #183fb2,
+                #25205c 65%,
+                #431d69
+            );
 
             box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
         }
@@ -1464,19 +1475,17 @@
             border-radius: 22px;
             border: 1px solid rgba(255, 255, 255, .12);
 
-            background:
-                linear-gradient(
-                    155deg,
-                    #263567,
-                    #1b2344 75%
-                );
+            background: linear-gradient(
+                155deg,
+                #263567,
+                #1b2344 75%
+            );
 
             text-align: center;
 
-            transition:
-                transform .25s ease,
-                border-color .25s ease,
-                box-shadow .25s ease;
+            transition: transform .25s ease,
+            border-color .25s ease,
+            box-shadow .25s ease;
         }
 
         .manager-participantes .yp-card:hover {
@@ -1484,9 +1493,8 @@
 
             border-color: var(--yp-yellow);
 
-            box-shadow:
-                0 15px 35px rgba(0, 0, 0, .3),
-                0 0 20px rgba(255, 218, 34, .08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .3),
+            0 0 20px rgba(255, 218, 34, .08);
         }
 
         .manager-participantes .yp-card-number {
@@ -1519,13 +1527,12 @@
 
             border-radius: 50%;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--yp-yellow),
-                    var(--yp-orange),
-                    var(--yp-blue-light)
-                );
+            background: linear-gradient(
+                135deg,
+                var(--yp-yellow),
+                var(--yp-orange),
+                var(--yp-blue-light)
+            );
         }
 
         .manager-participantes .yp-avatar,
@@ -1702,14 +1709,274 @@
             }
         }
     </style>
+    <style>
+        .yapita-prize-management {
+            width: 100%;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #dce5ff;
+            text-align: left;
+            color: #14245a;
+            font-size: 12px
+        }
+
+        .yapita-prize-management--summary {
+            display: grid;
+            grid-template-columns:repeat(auto-fit, minmax(115px, 1fr));
+            gap: 10px;
+            margin: 0 0 20px;
+            padding: 0;
+            border: 0
+        }
+
+        .yapita-prize-management__metric {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #dce5ff;
+            border-radius: 12px
+        }
+
+        .yapita-prize-management__metric strong {
+            font-size: 24px;
+            color: #2448f5
+        }
+
+        .yapita-prize-management__heading {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #2448f5;
+            margin: 0 0 10px
+        }
+
+        .yapita-prize-management__heading span {
+            margin-left: auto
+        }
+
+        .yapita-prize-management__item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #f5f8ff;
+            border: 1px solid #dce5ff;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow-wrap: anywhere
+        }
+
+        .yapita-prize-management__item--empty {
+            border-style: dashed
+        }
+
+        .yapita-prize-management__item small {
+            color: #627093
+        }
+
+        .yapita-prize-management__status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+            flex-wrap: wrap
+        }
+
+        .yapita-prize-management__badge {
+            background: #e5e7eb;
+            color: #475569;
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-size: 10px
+        }
+
+        .yapita-prize-management__badge--active {
+            background: #eaf0ff;
+            color: #2448f5
+        }
+
+        .yapita-prize-management__badge--sent, .yapita-prize-management__badge--delivered {
+            background: #dcfce7;
+            color: #166534
+        }
+
+        .yapita-prize-management__badge--pending, .yapita-prize-management__badge--processing {
+            background: #fff3cd;
+            color: #854d0e
+        }
+
+        .yapita-prize-management__badge--failed, .yapita-prize-management__badge--not_delivered {
+            background: #fee2e2;
+            color: #991b1b
+        }
+
+        .yapita-prize-management__actions {
+            display: grid;
+            gap: 6px
+        }
+
+        .yapita-prize-management__button {
+            width: 100%;
+            border: 0;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #eaf0ff;
+            color: #2448f5;
+            cursor: pointer
+        }
+
+        .yapita-prize-management__button--assign-prize {
+            background: #2448f5;
+            color: white
+        }
+
+        .yapita-prize-management__button--send-notification {
+            background: #ffdc00;
+            color: #14245a
+        }
+
+        .yapita-prize-management__button--manage-delivery {
+            background: #16874c;
+            color: white
+        }
+
+        .yapita-prize-management__button--cancel-assignment {
+            background: #fee2e2;
+            color: #991b1b
+        }
+    </style>
+
+    <style>
+        /* ==========================================
+   YAPITA - PRIZE MANAGEMENT VISIBILITY
+   ========================================== */
+
+        #app-management .yapita-participants__card {
+            height: auto;
+            max-height: none;
+            overflow: visible;
+        }
+
+        #app-management .yapita-prize-management {
+            position: relative;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+
+            float: none;
+            clear: both;
+
+            width: 100%;
+            min-width: 0;
+
+            height: auto;
+            max-height: none;
+
+            overflow: visible;
+
+            flex: 0 0 auto;
+
+            margin-top: 16px;
+            padding: 12px;
+
+            box-sizing: border-box;
+
+            background: #f5f8ff;
+            border: 1px solid #dce5ff;
+            border-radius: 12px;
+
+            color: #14245a;
+            text-align: left;
+        }
+
+        /* RESUMEN ADMINISTRATIVO */
+
+        #app-management .yapita-prize-management--summary {
+            display: grid !important;
+
+            grid-template-columns:
+        repeat(auto-fit, minmax(140px, 1fr));
+
+            gap: 12px;
+            margin: 0 0 20px;
+        }
+
+        /* ITEMS */
+
+        #app-management .yapita-prize-management__item {
+            display: flex;
+            flex-direction: column;
+
+            width: 100%;
+            height: auto;
+
+            gap: 8px;
+            padding: 12px;
+
+            overflow-wrap: anywhere;
+
+            background: #ffffff;
+        }
+
+        /* ESTADOS */
+
+        #app-management .yapita-prize-management__status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* ACCIONES */
+
+        #app-management .yapita-prize-management__actions {
+            display: flex;
+            flex-direction: column;
+
+            width: 100%;
+            gap: 6px;
+        }
+
+        #app-management .yapita-prize-management__button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            min-height: 35px;
+
+            gap: 6px;
+
+            white-space: normal;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 767px) {
+
+            #app-management .yapita-prize-management--summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            #app-management .yapita-prize-management {
+                padding: 8px;
+            }
+        }
+    </style>
 @endsection
 @section('additional-scripts')
 
-
     <script>
-        var $users = <?php echo json_encode($users) ?>;
-        var $rewards = <?php echo json_encode($rewards) ?>;
-
+        var $users = {{ \Illuminate\Support\Js::from($canManage ? $users : collect($users ?? [])->map(function ($user) { return \Illuminate\Support\Arr::only((array) $user, ['code', 'name', 'avatar', 'provider']); })->values()->all()) }};
+        var $rewards = {{ \Illuminate\Support\Js::from($rewards) }};
 
 
     </script>
@@ -2355,11 +2622,9 @@
 
             --yp-radius: 20px;
 
-            --yp-shadow:
-                0 8px 25px rgba(31, 65, 150, .09);
+            --yp-shadow: 0 8px 25px rgba(31, 65, 150, .09);
 
-            --yp-shadow-hover:
-                0 15px 35px rgba(31, 65, 150, .16);
+            --yp-shadow-hover: 0 15px 35px rgba(31, 65, 150, .16);
 
             min-height: 100vh;
 
@@ -2405,23 +2670,22 @@
 
             text-align: center;
 
-            background:
-                radial-gradient(
-                    circle at 15% 30%,
-                    rgba(255, 220, 0, .25),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 85% 20%,
-                    rgba(255, 255, 255, .25),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    120deg,
-                    #dceaff 0%,
-                    #b9d5ff 45%,
-                    #e4edff 100%
-                );
+            background: radial-gradient(
+                circle at 15% 30%,
+                rgba(255, 220, 0, .25),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 85% 20%,
+                rgba(255, 255, 255, .25),
+                transparent 30%
+            ),
+            linear-gradient(
+                120deg,
+                #dceaff 0%,
+                #b9d5ff 45%,
+                #e4edff 100%
+            );
 
             border-bottom: 7px solid var(--yp-yellow);
         }
@@ -2485,8 +2749,7 @@
             font-size: 13px;
             font-weight: 800;
 
-            box-shadow:
-                0 5px 15px rgba(117, 52, 184, .2);
+            box-shadow: 0 5px 15px rgba(117, 52, 184, .2);
         }
 
         .yapita-participants__title {
@@ -2499,8 +2762,7 @@
 
             line-height: 1.1;
 
-            text-shadow:
-                2px 3px 0 rgba(255, 255, 255, .9);
+            text-shadow: 2px 3px 0 rgba(255, 255, 255, .9);
         }
 
         .yapita-participants__title-highlight {
@@ -2737,8 +2999,7 @@
         .yapita-participants__search-input:focus {
             background: #ffffff;
 
-            box-shadow:
-                0 0 0 2px var(--yp-primary);
+            box-shadow: 0 0 0 2px var(--yp-primary);
         }
 
         .yapita-participants__search-button,
@@ -2765,12 +3026,11 @@
         }
 
         .yapita-participants__search-button {
-            background:
-                linear-gradient(
-                    135deg,
-                    #ffe600,
-                    #ffc400
-                );
+            background: linear-gradient(
+                135deg,
+                #ffe600,
+                #ffc400
+            );
 
             color: #17245d;
         }
@@ -2857,10 +3117,9 @@
 
             box-shadow: var(--yp-shadow);
 
-            transition:
-                transform .25s ease,
-                border-color .25s ease,
-                box-shadow .25s ease;
+            transition: transform .25s ease,
+            border-color .25s ease,
+            box-shadow .25s ease;
         }
 
         .yapita-participants__card:hover {
@@ -2882,12 +3141,11 @@
 
             height: 8px;
 
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--yp-yellow),
-                    var(--yp-orange)
-                );
+            background: linear-gradient(
+                90deg,
+                var(--yp-yellow),
+                var(--yp-orange)
+            );
         }
 
         .yapita-participants__card-number {
@@ -2924,12 +3182,11 @@
 
             border-radius: 50%;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--yp-yellow),
-                    var(--yp-orange)
-                );
+            background: linear-gradient(
+                135deg,
+                var(--yp-yellow),
+                var(--yp-orange)
+            );
         }
 
         .yapita-participants__avatar {
@@ -2955,12 +3212,11 @@
 
             border-radius: 50%;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #2448f5,
-                    #7139c8
-                );
+            background: linear-gradient(
+                135deg,
+                #2448f5,
+                #7139c8
+            );
 
             color: #ffffff;
 
@@ -3183,12 +3439,11 @@
 
             text-align: center;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #2448f5,
-                    #1742c9
-                );
+            background: linear-gradient(
+                135deg,
+                #2448f5,
+                #1742c9
+            );
 
             color: #ffffff;
         }
@@ -3468,6 +3723,88 @@
 
         }
     </style>
+    @if($canManage)
+        <script>
+            class YapitaPrizeManagementUtil {
+                static init() {
+                    $(document).off('click.yapitaPrizeManagement', '.yapita-prize-management__button')
+                        .on('click.yapitaPrizeManagement', '.yapita-prize-management__button', function () {
+                            const button = $(this);
+                            const panel = button.closest('.yapita-prize-management');
+                            const user = $users.find(u => Number(u.code) === Number(panel.data('user-id')));
+                            if (!user?.prize_management) return;
+                            const management = user.prize_management;
+                            const action = button.data('action');
+                            const winner = management.prizes.find(p => Number(p.id) === Number(button.data('winner-id'))) || null;
+                            const permissions = {
+                                'send-notification': 'can_send_notification',
+                                'manage-delivery': 'can_manage_delivery',
+                                'view-details': 'can_view_details',
+                                'cancel-assignment': 'can_cancel'
+                            };
+                            if (action === 'assign-prize' ? !management.actions.can_assign_prize : !winner?.actions?.[permissions[action]]) return;
+                            const events = {
+                                'assign-prize': 'assign',
+                                'send-notification': 'notification',
+                                'manage-delivery': 'delivery',
+                                'view-details': 'details',
+                                'cancel-assignment': 'cancel'
+                            };
+                            const data = {user, winner, eventId: management.event_id};
+                            if (action === 'view-details') {
+                                const p = winner;
+                                document.getElementById('yapitaWinnerDetailsText').textContent = [p.prize.name, p.business.name, 'Código: ' + p.prize_code, 'Correo: ' + p.notification.status, 'Entrega: ' + p.delivery.status, 'Observación: ' + (p.delivery.observation || '—')].join('\n');
+                                bootstrap.Modal.getOrCreateInstance(document.getElementById('yapitaWinnerDetailsModal')).show();
+                            } else {
+                                const event = $.Event('yapita:prizes:' + events[action]);
+                                $(document).trigger(event, [data]);
+                                if (!event.isDefaultPrevented()){
+                                    if("send-notification"===action){
+                                        const url = $("#action-send-mail").val();
+
+                                        const params = {
+                                            eventId: data.eventId,
+                                            eventBusinessPrizeId: data.winner.event_business_prize_id,
+                                            userId: data.user.code
+                                        };
+
+                                        $.ajax({
+                                            url: url,
+                                            type: "GET",
+                                            dataType: "json",
+                                            data: params,
+
+                                            beforeSend: function () {
+                                                button.prop("disabled", true);
+                                            },
+
+                                            success: function (response) {
+                                                console.log(response);
+                                            },
+
+                                            error: function (xhr) {
+                                                console.error(xhr.responseJSON || xhr.responseText);
+                                            },
+
+                                            complete: function () {
+                                                button.prop("disabled", false);
+                                            }
+                                        });
+
+                                        return;
+                                    }
+                                    alert('Acción preparada. Falta conectar el formulario y endpoint correspondiente.'+action);
+                                }
+                            }
+                        });
+                }
+            }
+
+            $(function () {
+                YapitaPrizeManagementUtil.init();
+            });
+        </script>
+    @endif
 @endsection
 
 @section('content')
@@ -3488,7 +3825,7 @@
 
 
     <div id="app-management" class="yapita-participants">
-
+        <input type="text" id="action-send-mail" value="{{route('event.reward.typeEvent')}}">
         {{-- ==========================================
              1. HERO - HALLOWEEN OTAVALO
              ========================================== --}}
@@ -3708,6 +4045,25 @@
                      PARTICIPANTS GRID
                      ================================== --}}
 
+
+                @if($canManage)
+                    <section class="yapita-prize-management yapita-prize-management--summary"
+                             aria-label="Resumen de premios">
+                        @foreach([
+                            'Participantes' => $totalParticipants,
+                            'Ganadores' => $participants->where('prize_management.has_prize', true)->count(),
+                            'Asignados' => $participants->sum('prize_management.summary.total_assigned'),
+                            'Correos enviados' => $participants->sum('prize_management.summary.total_notified'),
+                            'Entregados' => $participants->sum('prize_management.summary.total_delivered'),
+                            'Errores de correo' => $participants->sum('prize_management.summary.total_notification_failed'),
+                        ] as $label => $value)
+                            <div class="yapita-prize-management__metric">
+                                <strong>{{ $value }}</strong><span>{{ $label }}</span>
+                            </div>
+                        @endforeach
+                    </section>
+                @endif
+
                 <div class="yapita-participants__grid">
 
                     @forelse($participants as $index => $user)
@@ -3721,7 +4077,7 @@
 
                             $name = trim($user['name'] ?? '');
 
-                            $email = trim($user['email'] ?? '');
+                            $email = $canManage ? trim($user['email'] ?? '') : '';
 
                             $avatar = trim($user['avatar'] ?? '');
 
@@ -3899,6 +4255,67 @@
                                 Registrado en Halloween
 
                             </span>
+
+                            @if($canManage)
+                                @php
+                                    $management = $user['prize_management'] ?? [];
+                                    $assignedPrizes = $management['prizes'] ?? [];
+                                    $labels = [
+                                        'ACTIVE' => 'Asignado', 'CANCELLED' => 'Cancelado',
+                                        'NOT_ASSIGNED' => 'Sin premio', 'NOT_APPLICABLE' => 'No aplica',
+                                        'PENDING' => 'Pendiente', 'PROCESSING' => 'Enviando',
+                                        'SENT' => 'Enviado', 'FAILED' => 'Error de envío',
+                                        'DELIVERED' => 'Entregado', 'NOT_DELIVERED' => 'No entregado',
+                                        'EXPIRED' => 'Vencido',
+                                    ];
+                                @endphp
+                                <div class="yapita-prize-management" data-user-id="{{ $code }}"
+                                     data-event-id="{{ $management['event_id'] ?? 0 }}">
+                                    <h4 class="yapita-prize-management__heading"><i class="bi bi-gift-fill"></i> Gestión
+                                        de premios <span>{{ $management['summary']['total_assigned'] ?? 0 }}</span></h4>
+                                    @forelse($assignedPrizes as $assigned)
+                                        <div class="yapita-prize-management__item">
+                                            <strong>{{ data_get($assigned, 'prize.name') }}</strong>
+                                            <small>{{ data_get($assigned, 'business.name') }}</small>
+                                            <small>{{ $assigned['prize_code'] ?? '' }}</small>
+                                            @foreach(['Asignación' => $assigned['state'] ?? 'NOT_ASSIGNED', 'Correo' => data_get($assigned, 'notification.status', 'NOT_APPLICABLE'), 'Entrega' => data_get($assigned, 'delivery.status', 'NOT_APPLICABLE')] as $label => $status)
+                                                <div class="yapita-prize-management__status">
+                                                    <span>{{ $label }}</span><strong
+                                                        class="yapita-prize-management__badge yapita-prize-management__badge--{{ strtolower($status) }}">{{ $labels[$status] ?? $status }}</strong>
+                                                </div>
+                                            @endforeach
+                                            <div class="yapita-prize-management__actions">
+                                                @foreach(['send-notification' => ['can_send_notification','Enviar / reintentar correo','envelope'], 'manage-delivery' => ['can_manage_delivery','Gestionar entrega','box-seam'], 'view-details' => ['can_view_details','Ver detalles','eye'], 'cancel-assignment' => ['can_cancel','Cancelar','x-circle']] as $action => $config)
+                                                    @if(data_get($assigned, 'actions.'.$config[0], false))
+                                                        <button type="button"
+                                                                class="yapita-prize-management__button yapita-prize-management__button--{{ $action }}"
+                                                                data-action="{{ $action }}"
+                                                                data-winner-id="{{ $assigned['id'] }}"><i
+                                                                class="bi bi-{{ $config[2] }}"></i> {{ $config[1] }}
+                                                        </button>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="yapita-prize-management__item yapita-prize-management__item--empty">
+                                            @foreach(['Asignación' => 'Sin premio', 'Correo' => 'No aplica', 'Entrega' => 'No aplica'] as $label => $status)
+                                                <div class="yapita-prize-management__status">
+                                                    <span>{{ $label }}</span><strong
+                                                        class="yapita-prize-management__badge">{{ $status }}</strong>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endforelse
+                                    @if(data_get($management, 'actions.can_assign_prize', false))
+                                        <button type="button"
+                                                class="yapita-prize-management__button yapita-prize-management__button--assign-prize"
+                                                data-action="assign-prize"><i
+                                                class="bi bi-plus-circle"></i> {{ ($management['has_prize'] ?? false) ? 'Asignar otro premio' : 'Asignar premio' }}
+                                        </button>
+                                    @endif
+                                </div>
+                            @endif
 
                         </article>
 

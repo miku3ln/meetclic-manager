@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialNetworkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,11 @@ Route::post("/login", "Auth\ApiLoginController@loginRest");
 
 Route::middleware('publicApi')->group(function () {
     Route::get('/send-reward', 'Api\CustomerAppController@sendReward')->name('sendReward');//GAMIFICATION ROUTE
+    Route::get('/send-reward', 'Api\CustomerAppController@sendReward')->name('sendReward');//GAMIFICATION ROUTE
+    Route::get(
+        '/event/reward/typeEvent',
+        [SocialNetworkController::class, 'handleSendRewardEmailUser']
+    )->name('event.reward.typeEvent');
 
     Route::post('/auth/with/meetclic/login', 'Auth\MeetclicController@login')->name('loginMeetclic');
     Route::post('/auth/with/meetclic/register', 'Auth\MeetclicController@register')->name('registerMeetclic');

@@ -10,6 +10,7 @@ use App\Infrastructure\Cms\Application\Gamification\Wallet\UseCases\RewardUserBy
 use App\Mail\Gamification\TaskRewardMail;
 use App\Mail\RewardByBusiness\PrizeWinnerMail;
 use App\Models\Events\EventBusinessPrize;
+use App\Models\Events\EventBusinessPrizeWinner;
 use App\Models\Gamification\GamificationByProcessTracking;
 use App\Models\User;
 use App\Utils\TrackingUtil;
@@ -289,10 +290,14 @@ class SocialNetworkController extends Controller
         Request $request
     ): JsonResponse
     {
-        $modelRewards= new EventBusinessPrize();
-        $users=   $modelRewards-> getUsersEvent(1);
+        $dataGet = $request->query();
+        $modelRewards = new EventBusinessPrize();
+        $userId = $dataGet["userId"];
+        $user = $modelRewards->getUser($userId);
+        $eventBusinessPrizeId = $dataGet["eventBusinessPrizeId"];
+        $eventId = $dataGet["eventId"];
 
-        $rewards=   $modelRewards-> getPrizesByEventId(1);
+        $reward = $modelRewards->getPrizeByEventId($eventId, $eventBusinessPrizeId);
 
         // ==========================================
         // 1. VALIDAR DATOS RECIBIDOS
@@ -302,25 +307,25 @@ class SocialNetworkController extends Controller
 // ==========================================
 // 1. DATOS HARDCODEADOS PARA PRUEBAS
 // ==========================================
-       $reward= $rewards[0];
-       $addressBusiness=$reward["business_street_1"]." y ".$reward["business_street_2"];
-        $latitude = $reward["business_street_lat"];
-$longitude =$reward["business_street_lng"];
 
-$businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%2C{$longitude}";
+        $addressBusiness = $reward["business_street_1"] . " y " . $reward["business_street_2"];
+        $latitude = $reward["business_street_lat"];
+        $longitude = $reward["business_street_lng"];
+
+        $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%2C{$longitude}";
         $data = [
             // GANADOR
-            'email' => 'empresasistemaxytab@gmail.com',
-            'userName' => 'Alex Miguel Alba Ayala',
+            'email' => $user['email'] ?? 'empresasistemaxytab@gmail.com',
+            'userName' => $user['name'] ?? 'Alex Miguel Alba Ayala',
             // PREMIO
             'prizeName' => $reward['name'],
             'prizeDescription' => $reward['description'],
-            'prizeImage' =>  $reward['source'],
+            'prizeImage' => $reward['source'],
             'prizeCode' => $reward['id'],
             'redeemUntil' => '30 de noviembre de 2026',
             // EMPRESA AUSPICIANTE
-            'businessName' =>$reward["business_name"],
-            'businessAddress' =>$addressBusiness,
+            'businessName' => $reward["business_name"],
+            'businessAddress' => $addressBusiness,
             'businessMapsUrl' => $businessMapsUrl,
             'businessPhone' => $reward["business_phone"],
 
@@ -329,7 +334,6 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
             // EVENTO
             'eventName' => 'Halloween Otavalo - 7.ª edición',
         ];
-
 // ==========================================
 // 2. VALIDAR DATOS HARDCODEADOS
 // ==========================================
@@ -410,12 +414,55 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
                 $userName,
                 $paramsTask
             );
-            $result['users']=$users;
-            $result['rewards']=$rewards;
+            $result['users'] = $user;
+            $result['rewards'] = $reward;
 
             // ==========================================
             // 6. DEFINIR CÓDIGO HTTP
             // ==========================================
+
+            $isSent = ($result['success'] ?? false) === true;
+            $notificationStatus = $isSent
+
+                ? EventBusinessPrizeWinner::NOTIFICATION_SENT
+
+                : EventBusinessPrizeWinner::NOTIFICATION_FAILED;
+
+            // ==========================================
+            // 12. ACTUALIZAR INFORMACION DE NOTIFICACION
+            // ==========================================
+            $paramsNotification = [
+
+                'event_id' => $eventId,
+
+                'event_business_prize_id' =>
+                    $eventBusinessPrizeId,
+
+                'user_id' => $userId,
+
+                'notification_email' => $emailSend,
+            ];
+            $sendParamsNotification=array_merge($paramsNotification, [
+
+                'notification_status' =>
+                    $notificationStatus,
+
+                'notification_error' => $isSent
+
+                    ? null
+
+                    : (
+                        $result['message']
+                        ?? 'Error al enviar el correo.'
+                    ),
+
+            ]);
+            $resultNotification =
+                EventBusinessPrizeWinner::updateNotificationStatus(
+                    $sendParamsNotification
+                );
+            $result["resultNotification"]= $resultNotification;
+            $result["resultNotification"]['$sendParamsNotification']= $sendParamsNotification;
 
             if ($result['success'] === true) {
                 return response()->json(
@@ -452,7 +499,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
             return response()->json([
                 'success' => false,
-                'message' => 'Ocurrió un error inesperado al enviar la notificación del premio.',
+                'message' => 'Ocurrió un error inesperado al enviar la notificación del premio:' . $e->getMessage(),
                 'error_code' => 'INTERNAL_SERVER_ERROR',
                 'smtp_code' => null,
                 'data' => [
@@ -800,7 +847,8 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
         $emailSend,
         $userName,
         $paramsTask
-    ): array {
+    ): array
+    {
 
         // ==========================================
         // 1. VALIDAR DATOS
@@ -904,7 +952,6 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
         $mailer = config('mail.default');
 
 
-
         // ==========================================
         // 3. PREPARAR CORREO
         // ==========================================
@@ -917,38 +964,28 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
                 prizeName: $paramsTask['prizeName'],
 
-                prizeDescription:
-                $paramsTask['prizeDescription'],
+                prizeDescription: $paramsTask['prizeDescription'],
 
-                prizeImage:
-                $paramsTask['prizeImage'] ?? null,
+                prizeImage: $paramsTask['prizeImage'] ?? null,
 
-                prizeCode:
-                $paramsTask['prizeCode'],
+                prizeCode: $paramsTask['prizeCode'],
 
-                businessName:
-                $paramsTask['businessName'],
+                businessName: $paramsTask['businessName'],
 
-                businessAddress:
-                $paramsTask['businessAddress'],
+                businessAddress: $paramsTask['businessAddress'],
 
-                businessMapsUrl:
-                $paramsTask['businessMapsUrl'] ?? null,
+                businessMapsUrl: $paramsTask['businessMapsUrl'] ?? null,
 
-                businessPhone:
-                $paramsTask['businessPhone'] ?? null,
+                businessPhone: $paramsTask['businessPhone'] ?? null,
 
-                yapitaPhone:
-                $paramsTask['yapitaPhone'] ?? null,
+                yapitaPhone: $paramsTask['yapitaPhone'] ?? null,
 
-                logoUrl:"https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png",
+                logoUrl: "https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png",
 
-                eventName:
-                $paramsTask['eventName']
+                eventName: $paramsTask['eventName']
                 ?? 'Sorteo Yapita',
 
-                redeemUntil:
-                $paramsTask['redeemUntil'] ?? null
+                redeemUntil: $paramsTask['redeemUntil'] ?? null
             );
 
 
@@ -957,7 +994,6 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
             // ==========================================
 
             Mail::to($emailSend)->send($mail);
-
 
 
             return [
@@ -999,7 +1035,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
                 $errorMessage,
                 $matches
             )) {
-                $smtpCode = (int) $matches[1];
+                $smtpCode = (int)$matches[1];
             }
 
             // ==========================================
@@ -1022,9 +1058,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
                 $message = 'La cuenta SMTP tiene deshabilitado el envío de correos.';
 
-            }
-
-            // AUTENTICACIÓN
+            } // AUTENTICACIÓN
             elseif (
                 $smtpCode === 535 ||
                 str_contains(
@@ -1041,9 +1075,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
                 $message = 'El servidor SMTP rechazó las credenciales de autenticación.';
 
-            }
-
-            // DESTINATARIO RECHAZADO
+            } // DESTINATARIO RECHAZADO
             elseif (
                 in_array(
                     $smtpCode,
@@ -1056,9 +1088,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
                 $message = 'El servidor SMTP rechazó el destinatario.';
 
-            }
-
-            // ERROR TEMPORAL
+            } // ERROR TEMPORAL
             elseif (
                 in_array(
                     $smtpCode,
@@ -1071,9 +1101,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
                 $message = 'El servidor SMTP presenta un problema temporal.';
 
-            }
-
-            // CONEXIÓN
+            } // CONEXIÓN
             elseif (
                 str_contains(
                     $errorLower,
@@ -1093,9 +1121,7 @@ $businessMapsUrl = "https://www.google.com/maps/search/?api=1&query={$latitude}%
 
                 $message = 'No se pudo establecer conexión con el servidor SMTP.';
 
-            }
-
-            // SEGURIDAD SSL/TLS
+            } // SEGURIDAD SSL/TLS
             elseif (
                 str_contains(
                     $errorLower,
