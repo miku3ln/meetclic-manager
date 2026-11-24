@@ -281,6 +281,19 @@
             left: 49%;
         }
     </style>
+    <style>
+        @media (max-width: 767.98px) {
+            .main-menu .menusb ul {
+
+                width: 275px !important;
+            }
+        }
+
+        a {
+
+            text-decoration: none ;
+        }
+    </style>
     @include('cityBook.web.partials.bootgrid.assets.css.source')
     @include('partials.toast-meetclic',["allowCss"=>true])
     @if(env('allowCustomerCss'))
@@ -362,7 +375,79 @@
         @media (min-width: 768px) and (max-width: 1199.98px) {
 
         }
+
+
+        /* =========================================
+   YAPITA HEADER DISCOVERY
+========================================= */
+
+        .yapita-header-discovery {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+        }
+
+        .yapita-header-discovery__text {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        /* MOBILE */
+        @media (max-width: 767.98px) {
+
+            .yapita-header-discovery {
+                position: absolute;
+                max-width: 373px;
+                padding: 29px 72px;
+            }
+
+            .yapita-header-discovery__text {
+                font-size: 13px;
+                line-height: 1.4;
+            }
+        }
+
+
+
+
+        /* =========================================================
+   MOBILE: 0px - 767.98px
+   ========================================================= */
+
+        @media (max-width: 767.98px) {
+
+
+        }
+
+
+        /* =========================================================
+           TABLET: 768px - 1199.98px
+           ========================================================= */
+
+        @media (min-width: 768px) and (max-width: 1199.98px) {
+
+        }
+
+
+        /* =========================================================
+           DESKTOP: 1200px - EN ADELANTE
+           ========================================================= */
+
+        @media (min-width: 1200px) {
+            .yapita-header-discovery {
+                left: 4%;
+                position: absolute;
+                width: 550px;
+                padding: 29px 72px;
+            }
+        }
     </style>
+
+
 </head>
 <body>
 <!--loader-->
@@ -406,6 +491,7 @@ if (env('allowAllInOne')) {
     </div>
     <!-- header-->
     <header class="main-header dark-header fs-header sticky">
+        @yield('data-header')
         <div class="header-inner">
             <div class="logo-holder " id="manager-logo-content">
                 <a href="
@@ -479,6 +565,8 @@ if (env('allowAllInOne')) {
                     $activeDictionary = 'not-active';
                     $dictionaryKichwaToCastilian = '';
                     $chaskishimi = '';
+                    $eventsManager= '';
+                    $eventsManagerParent= '';
                     $halloweenOne = '';
                     $halloweenTwo = '';
                     $halloweenThree = '';
@@ -524,14 +612,19 @@ if (env('allowAllInOne')) {
                         if ($dataManagerPage['type'] == 1) {
                             //  $classWrapper = 'no-padding';
                         }
-                    } if ($nameRoute == 'ourAllies') {
+                    } if ($nameRoute == 'shopBusiness') {
                         $activeOurAllies = 'act-link';
 
                     }elseif ($nameRoute == 'shop-business') {
 
                         $activeOurAllies = 'act-link';
 
-                    } elseif ($nameRoute == 'maskana' && $type==1) {
+                    } elseif ($nameRoute == 'events-manager') {
+
+                        $eventsManager = 'act-link';
+                        $eventsManagerParent = 'act-link';
+
+                    }elseif ($nameRoute == 'maskana' && $type==1) {
                         $activeHalloween = 'act-link';
 
                         $halloweenOne = 'act-link';
@@ -652,8 +745,6 @@ if (env('allowAllInOne')) {
 
 
                     }
-
-
                     $paramsMenu = [
                         'typeMenu' => 1,
                         'activeHome' => $activeHome,
@@ -666,8 +757,6 @@ if (env('allowAllInOne')) {
                         'activePages' => $activePages,
                         'activeBackLine' => $activeBackLine,
                         'activeOurAllies' => $activeOurAllies,
-
-
                     ];
                     ?>
 

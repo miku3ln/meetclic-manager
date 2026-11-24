@@ -2,77 +2,426 @@
 
 
     class BusinessMapHtmlUtil {
-        static getBusinessNewsBadge(business) {
+        static getBusinessNewsState(business = {}) {
 
-            const newsTypes = {
-                discount: {
-                    icon: 'bi-percent',
-                    color: '#e11d48',
-                    title: 'Descuento disponible'
-                },
-                promotion: {
-                    icon: 'bi-gift-fill',
-                    color: '#8b24dc',
-                    title: 'Promoción disponible'
-                },
-                event: {
-                    icon: 'bi-stars',
-                    color: '#f59e0b',
-                    title: 'Evento disponible'
+            business = business || {};
+
+            const hasActiveItems = items => {
+
+                return Array.isArray(items) &&
+                    items.some(item =>
+                        item &&
+                        String(item.status || '')
+                            .toUpperCase() === 'ACTIVE'
+                    );
+            };
+
+            const isRoute = [
+                true,
+                1,
+                '1',
+                'true'
+            ].includes(business.is_route);
+
+            const hasPromotions = hasActiveItems(
+                business.promotions
+            );
+
+            const hasEvents = hasActiveItems(
+                business.events
+            );
+
+            const hasAdvertisements = hasActiveItems(
+                business.advertisements
+            );
+
+            return {
+                isRoute,
+                hasPromotions,
+                hasEvents,
+                hasAdvertisements,
+
+                hasNews:
+                    hasPromotions ||
+                    hasEvents ||
+                    hasAdvertisements
+            };
+        }
+        static shouldAnimateMarker(
+            business,
+            count = 1,
+            options = {}
+        ) {
+
+            if (!options.enabled) {
+                return false;
+            }
+
+            const isGrouped = count > 1;
+
+            if (isGrouped && !options.allowGrouped) {
+                return false;
+            }
+
+            const state = this.getBusinessNewsState(
+                business
+            );
+
+            const conditions = {
+
+                'always': true,
+
+                'none': false,
+
+                'promotions': state.hasPromotions,
+
+                'events': state.hasEvents,
+
+                'advertisements': state.hasAdvertisements,
+
+                'route': state.isRoute,
+
+                'news': state.hasNews,
+
+                'route-or-promotions':
+                    state.isRoute ||
+                    state.hasPromotions,
+
+                'route-and-promotions':
+                    state.isRoute &&
+                    state.hasPromotions
+            };
+
+            const condition =
+                options.condition ?? 'none';
+
+            // Permitir una condición personalizada.
+
+            if (typeof condition === 'function') {
+
+                return Boolean(
+                    condition(business, state, count)
+                );
+            }
+
+            // Permitir varias condiciones (OR).
+
+            if (Array.isArray(condition)) {
+
+                return condition.some(key =>
+                    conditions[key] === true
+                );
+            }
+
+            return conditions[condition] === true;
+        }
+        static getBusinessNewsBadge(
+            business,
+            options = {},
+            count = 1
+        ) {
+
+            if (!options.enabled) {
+                return '';
+            }
+
+            if (
+                count > 1 &&
+                options.allowGrouped === false
+            ) {
+                return '';
+            }
+
+            const state = this.getBusinessNewsState(
+                business
+            );
+
+            const conditions = {
+
+                route: state.isRoute,
+
+                promotion: state.hasPromotions,
+
+                event: state.hasEvents,
+
+                advertisement: state.hasAdvertisements
+            };
+
+            const priority = Array.isArray(options.priority)
+                ? options.priority
+                : [
+                    'promotion',
+                    'event',
+                    'advertisement',
+                    'route'
+                ];
+
+            let news = null;
+
+            for (const type of priority) {
+
+                if (
+                    conditions[type] === true &&
+                    options[type]?.enabled
+                ) {
+
+                    news = options[type];
+
+                    break;
                 }
-            };
+            }
 
-            let news = {
-                isIcon:false,
-                icon: '🎃',
-                title: 'Dulce o Truco',
-                color: '#f9731669'
-            };
-if(business.is_route){
-    news = {
-        isIcon:false,
-        icon: '🎃',
-        title: 'Dulce o Truco',
-        color: '#f9731669'
-    }
-}else{
-    news = {
-        isIcon:true,
-        icon: 'bi-gift-fill',
-        color: '#8b24dc',
-        title: 'Promoción disponible'
-    }
-}
-            if (!news) return '';
+            if (!news) {
+                return '';
+            }
 
-var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
+            const config = $.extend(
+                true,
+                {},
+                options,
+                news
+            );
+
+            const htmlIcon = config.isIcon
+                ? `
+            <i
+                class="bi ${escapeHtml(config.icon)}"
+                aria-hidden="true"
+            ></i>
+        `
+                : escapeHtml(config.icon);
+
+            const styles = [
+
+                `--business-badge-color:${config.color}`,
+
+                `--business-badge-text-color:${config.textColor}`,
+
+                `--business-badge-size:${config.size}px`,
+
+                `--business-badge-font-size:${config.fontSize}px`,
+
+                `--business-badge-border-color:${config.borderColor}`,
+
+                `--business-badge-border-width:${config.borderWidth}px`,
+
+                `--business-badge-top:${config.top}px`,
+
+                `--business-badge-right:${config.right}px`
+
+            ].join(';');
+
             return `
         <span
             class="business-map-marker__news"
-            title="${news.title}"
-            style="
-                position:absolute;
-                top:-9px;
-                right:-9px;
-                width:28px;
-                height:28px;
-                border-radius:50%;
-                background:${news.color};
-                border:3px solid #fff;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                color:#fff;
-                font-size:13px;
-                box-shadow:0 3px 10px rgba(0,0,0,.3);
-                z-index:10;
-                pointer-events:none;
-                box-sizing:border-box;
-            "
+            title="${escapeHtml(config.title)}"
+            aria-label="${escapeHtml(config.title)}"
+            style="${escapeHtml(styles)}"
         >
-`+htmlIcon+`
+            ${htmlIcon}
         </span>
     `;
+        }
+        static getMarkerPulseHtml(options = {}) {
+
+            if (!options.enabled) {
+                return '';
+            }
+
+            const waves = Math.max(
+                0,
+                Math.min(
+                    10,
+                    Math.floor(Number(options.waves) || 0)
+                )
+            );
+
+            const delay = Math.max(
+                0,
+                Number(options.delay) || 0
+            );
+
+            return Array.from(
+                { length: waves },
+                (_, index) => {
+
+                    const waveDelay = index * delay;
+
+                    return `
+                <span
+                    class="business-map-marker__pulse-wave"
+
+                    style="
+                        --business-pulse-wave-delay:${waveDelay}ms
+                    "
+
+                    aria-hidden="true"
+                ></span>
+            `;
+                }
+            ).join('');
+        }
+        static getMarkerCounterHtml(
+            count = 1,
+            options = {}
+        ) {
+
+            if (
+                count <= 1 ||
+                !options.enabled
+            ) {
+                return '';
+            }
+
+            const styles = [
+
+                `--business-counter-background:${options.background}`,
+
+                `--business-counter-color:${options.color}`,
+
+                `--business-counter-border-color:${options.borderColor}`,
+
+                `--business-counter-border-width:${options.borderWidth}px`,
+
+                `--business-counter-size:${options.size}px`,
+
+                `--business-counter-font-size:${options.fontSize}px`,
+
+                `--business-counter-bottom:${options.bottom}px`,
+
+                `--business-counter-right:${options.right}px`
+
+            ].join(';');
+
+            return `
+        <span
+            class="business-map-marker__count"
+            style="${escapeHtml(styles)}"
+        >
+            ${escapeHtml(count)}
+        </span>
+    `;
+        }
+        static getMarkerImageHtml(
+            business,
+            options = {}
+        ) {
+
+            const url =
+                safeUrl(business.source) ||
+                safeUrl(options.fallbackImage);
+
+            const fallbackIcon = escapeHtml(
+                options.fallbackIcon ?? '🏪'
+            );
+
+            const fallback = `
+        <span
+            class="business-map-marker__fallback"
+            ${url ? 'hidden' : ''}
+            aria-hidden="true"
+        >
+            ${fallbackIcon}
+        </span>
+    `;
+
+            if (!url) {
+                return fallback;
+            }
+
+            return `
+        <img
+            class="business-map-marker__image"
+
+            src="${escapeHtml(url)}"
+
+            alt=""
+
+            loading="lazy"
+
+            draggable="false"
+
+            onerror="
+                this.hidden = true;
+                this.nextElementSibling.hidden = false;
+            "
+        >
+
+        ${fallback}
+    `;
+        }
+        static getMarkerStyles(config) {
+
+            const appearance = config.appearance;
+
+            const bounce = config.bounce;
+
+            const pulse = config.pulse;
+
+            const styles = {
+
+                // APARIENCIA
+
+                '--business-marker-background':
+                appearance.background,
+
+                '--business-marker-color':
+                appearance.color,
+
+                '--business-marker-border-color':
+                appearance.borderColor,
+
+                '--business-marker-border-width':
+                    `${appearance.borderWidth}px`,
+
+                '--business-marker-border-radius':
+                appearance.borderRadius,
+
+                '--business-marker-shadow':
+                appearance.shadow,
+
+                '--business-marker-fallback-font-size':
+                    `${appearance.fallbackFontSize}px`,
+
+                '--business-marker-object-fit':
+                appearance.objectFit,
+
+                // REBOTE
+
+                '--business-bounce-duration':
+                    `${bounce.duration}ms`,
+
+                '--business-bounce-height':
+                    `${bounce.height}px`,
+
+                '--business-bounce-timing':
+                bounce.timingFunction,
+
+                // PULSO
+
+                '--business-pulse-color':
+                pulse.color,
+
+                '--business-pulse-duration':
+                    `${pulse.duration}ms`,
+
+                '--business-pulse-scale':
+                pulse.scale,
+
+                '--business-pulse-border-width':
+                    `${pulse.borderWidth}px`,
+
+                '--business-pulse-opacity':
+                pulse.opacity,
+
+                '--business-pulse-timing':
+                pulse.timingFunction
+
+            };
+
+            return Object.entries(styles)
+                .map(([key, value]) => `${key}:${value}`)
+                .join(';');
         }
         static renderSchedules(schedules = []) {
             const weekdays = [
@@ -192,7 +541,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
             if (!Array.isArray(businesses) || !businesses.length) {
                 return `
             <div class="business-group__empty">
-                No hay `+MaskanaTranslations['frontend.maskana.filter.businesses']+ `disponibles.
+                No hay ` + MaskanaTranslations['frontend.maskana.filter.businesses'] + `disponibles.
             </div>
         `;
             }
@@ -316,14 +665,14 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
             <header class="business-group__header">
 
                 <h2 class="business-group__title">
-                    `+MaskanaTranslations['frontend.maskana.filter.businesses']+` en esta ubicación
+                    ` + MaskanaTranslations['frontend.maskana.filter.businesses'] + ` en esta ubicación
                 </h2>
 
                 <p class="business-group__subtitle">
                     ${businesses.length}
                     ${businesses.length === 1
-                ? MaskanaTranslations['frontend.maskana.filter.businesses']+' encontrada'
-                : MaskanaTranslations['frontend.maskana.filter.businesses']+' encontradas'
+                ? MaskanaTranslations['frontend.maskana.filter.businesses'] + ' encontrada'
+                : MaskanaTranslations['frontend.maskana.filter.businesses'] + ' encontradas'
             }
                 </p>
 
@@ -609,7 +958,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
 
 
         static renderDetailHero(data) {
-            const { image, name } = data;
+            const {image, name} = data;
 
             return `
         <div class="business-detail__hero">
@@ -640,7 +989,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * IDENTIDAD Y CALIFICACIÓN
          */
         static renderDetailHeader(data) {
-            const { category, name, ratingText } = data;
+            const {category, name, ratingText} = data;
 
             return `
         <header class="business-detail__header">
@@ -687,7 +1036,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * CONTACTOS
          */
         static renderDetailContacts(data) {
-            const { whatsappNumber, phone, validEmail, email, website } = data;
+            const {whatsappNumber, phone, validEmail, email, website} = data;
             const businessName = data.title || data.business_name || data.name || '';
             const whatsappLink = MaskanaContactUtil.getWhatsAppLink(
                 whatsappNumber || phone,
@@ -735,7 +1084,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * DIRECCIÓN Y MAPA
          */
         static renderDetailLocation(data) {
-            const { address, hasCoordinates } = data;
+            const {address, hasCoordinates} = data;
 
             return `
         <section class="business-detail__location">
@@ -785,7 +1134,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * PESTAÑAS
          */
         static renderDetailTabs(data) {
-            const { promotions, advertisements } = data;
+            const {promotions, advertisements} = data;
 
             return `
         <nav
@@ -869,7 +1218,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * REDES SOCIALES
          */
         static renderDetailSocialNetworks(data) {
-            const { socials } = data;
+            const {socials} = data;
 
             if (!socials.length) return '';
 
@@ -904,7 +1253,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * COMUNIDAD
          */
         static renderDetailCommunity(data) {
-            const { yapitas, visits, trophies } = data;
+            const {yapitas, visits, trophies} = data;
 
             return `
         <section class="business-detail__community-card">
@@ -946,7 +1295,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * PANEL PROMOCIONES
          */
         static renderDetailPromotions(data) {
-            const { promotions } = data;
+            const {promotions} = data;
 
             if (!promotions.length) return '';
 
@@ -975,7 +1324,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
          * PANEL PUBLICIDAD
          */
         static renderDetailAdvertisements(data) {
-            const { advertisements } = data;
+            const {advertisements} = data;
 
             if (!advertisements.length) return '';
 
@@ -1024,7 +1373,6 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
         </div>
     `;
         }
-
 
 
         static initDetailInteractions() {
@@ -1110,7 +1458,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
             });
         }
 
-        static openPromotionViewer({ image, name, description }) {
+        static openPromotionViewer({image, name, description}) {
             this.closePromotionViewer();
 
             const viewer = document.createElement('div');
@@ -1172,120 +1520,128 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                 .forEach(viewer => viewer.remove());
         }
 
-
-        static getIconBusinessHtml(business, count = 1) {
-
-            // ============================================
-            // 1. INFORMACIÓN DEL MARCADOR
-            // ============================================
-
-            const url = safeUrl(business.source);
-            const isGrouped = count > 1;
+        static getIconBusinessHtml(
+            business,
+            count = 1,
+            options = {}
+        ) {
 
             // ============================================
-            // 2. PROMOCIONES REALES DEL BACKEND
+            // 1. CONFIGURACIÓN CENTRAL
             // ============================================
 
-            const promotions = Array.isArray(business.promotions)
-                ? business.promotions
-                : [];
-
-            const hasPromotions = promotions.some(promotion =>
-                promotion &&
-                String(promotion.status || '').toUpperCase() === 'ACTIVE'
+            const config = $.extend(
+                true,
+                {},
+                YapitaMapConfig.businessMarker,
+                options
             );
 
-            // Independiente de is_route.
-            // No animar marcadores agrupados.
-            const shouldAnimate = hasPromotions && !isGrouped;
-
             // ============================================
-            // 3. IMAGEN O FALLBACK
+            // 2. ESTADOS
             // ============================================
 
-            const photo = url
-                ? `
-            <img
-                class="business-map-marker__image"
-                src="${escapeHtml(url)}"
-                alt=""
-                loading="lazy"
-                draggable="false"
-                onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
-            >
+            const isGrouped = count > 1;
 
-            <span
-                class="business-map-marker__fallback"
-                hidden
-                aria-hidden="true"
-            >
-                🏪
-            </span>
-        `
-                : `
-            <span
-                class="business-map-marker__fallback"
-                aria-hidden="true"
-            >
-                🏪
-            </span>
-        `;
+            const shouldBounce = this.shouldAnimateMarker(
+                business,
+                count,
+                config.bounce
+            );
+
+            const shouldPulse = this.shouldAnimateMarker(
+                business,
+                count,
+                config.pulse
+            );
 
             // ============================================
-            // 4. CLASES BEM DEL MARCADOR
+            // 3. CLASES BEM
             // ============================================
 
             const markerClasses = [
+
                 'business-map-marker',
 
                 isGrouped
                     ? 'business-map-marker--grouped'
                     : '',
 
-                shouldAnimate
-                    ? 'business-map-marker--pumpkin-bounce'
+                shouldBounce
+                    ? 'business-map-marker--bounce'
+                    : '',
+
+                shouldPulse
+                    ? 'business-map-marker--pulse'
                     : ''
 
             ].filter(Boolean).join(' ');
 
             // ============================================
-            // 5. GENERAR HTML
+            // 4. ESTILOS DINÁMICOS
+            // ============================================
+
+            const styles = this.getMarkerStyles(
+                config
+            );
+
+            // ============================================
+            // 5. IMAGEN
+            // ============================================
+
+            const imageHtml = this.getMarkerImageHtml(
+                business,
+                config
+            );
+
+            // ============================================
+            // 6. ONDAS
+            // ============================================
+
+            const pulseHtml = shouldPulse
+                ? this.getMarkerPulseHtml(
+                    config.pulse
+                )
+                : '';
+
+            // ============================================
+            // 7. DISTINTIVO
+            // ============================================
+
+            const badgeHtml = this.getBusinessNewsBadge(
+                business,
+                config.badge,
+                count
+            );
+
+            // ============================================
+            // 8. CONTADOR
+            // ============================================
+
+            const counterHtml = this.getMarkerCounterHtml(
+                count,
+                config.counter
+            );
+
+            // ============================================
+            // 9. GENERAR MARCADOR
             // ============================================
 
             return `
-        <div class="${markerClasses}">
+        <div
+            class="${markerClasses}"
+            style="${escapeHtml(styles)}"
+        >
 
-            <!-- CONTENIDO QUE REBOTA -->
             <div class="business-map-marker__bounce-content">
 
-                <!-- ONDAS DE PULSO -->
-                ${shouldAnimate ? `
-                    <span
-                        class="business-map-marker__pulse-wave"
-                        aria-hidden="true"
-                    ></span>
+                ${pulseHtml}
 
-                    <span
-                        class="
-                            business-map-marker__pulse-wave
-                            business-map-marker__pulse-wave--delayed
-                        "
-                        aria-hidden="true"
-                    ></span>
-                ` : ''}
+                ${imageHtml}
 
-                <!-- IMAGEN -->
-                ${photo}
+                ${badgeHtml}
 
-                <!-- INDICADOR DE PROMOCIONES -->
-                ${this.getBusinessNewsBadge(business)}
-
-                <!-- CONTADOR DE EMPRESAS -->
-                ${isGrouped ? `
-                    <span class="business-map-marker__count">
-                        ${count}
-                    </span>
-                ` : ''}
+                ${counterHtml}
 
             </div>
 
@@ -1294,56 +1650,11 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
         }
 
 
-        static getIconBusinessHtml2(business, count = 1) {
 
-            const url = safeUrl(business.source);
-            const isGrouped = count > 1;
 
-            const photo = url
-                ? `
-        <img
-            class="business-map-marker__image"
-            src="${escapeHtml(url)}"
-            alt=""
-            loading="lazy"
-            draggable="false"
-            onerror="this.hidden=true;this.nextElementSibling.hidden=false;"
-        >
-        <span
-            class="business-map-marker__fallback"
-            hidden
-            aria-hidden="true"
-        >
-            🏪
-        </span>
-      `
-                : `
-        <span
-            class="business-map-marker__fallback"
-            aria-hidden="true"
-        >
-            🏪
-        </span>
-      `;
-
-            return `
-    <div
-        class="business-map-marker ${isGrouped ? 'business-map-marker--grouped' : ''}"
-    >
-        ${photo}
-
-        ${this.getBusinessNewsBadge(business)}
-
-        ${isGrouped ? `
-            <span class="business-map-marker__count">
-                ${count}
-            </span>
-        ` : ''}
-    </div>
-`;
-        }
 
     }
+
     window.BusinessMapHtmlUtil = BusinessMapHtmlUtil;
     const escapeHtml = (value) =>
         String(value ?? '').replace(/[&<>"']/g, c => ({
@@ -1374,23 +1685,52 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
      * No utiliza popups de Leaflet.
      */
 
-    function getIconBusiness(business, count = 1) {
+    function getIconBusiness(
+        business,
+        count = 1,
+        options = {}
+    ) {
 
-        const size = 56;
+        const config = $.extend(
+            true,
+            {},
+            YapitaMapConfig.businessMarker,
+            options
+        );
+
+        const baseSize = config.size ?? 56;
+
+        const size = options.renderSize ?? baseSize;
+
+        const scale = size / baseSize;
 
         const html = BusinessMapHtmlUtil.getIconBusinessHtml(
             business,
-            count
+            count,
+            config
         );
 
         return L.divIcon({
-            html: html,
+
+            html: `
+            <div
+                class="business-map-marker-container__scale"
+                style="
+                    --business-marker-base-size:${baseSize}px;
+                    --business-marker-scale:${scale};
+                "
+            >
+                ${html}
+            </div>
+        `,
+
             className: 'business-map-marker-container',
+
             iconSize: [size, size],
+
             iconAnchor: [size / 2, size]
         });
     }
-
 
 
     (function (global) {
@@ -1410,20 +1750,123 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
 
         class BusinessMapController {
 
+            getMarkerSize(zoom = null) {//TODO
+
+                const baseSize = this.config.markerSize;
+
+                const options = this.config.markerZoom;
+
+                if (!options?.enabled) {
+                    return baseSize;
+                }
+
+                const currentZoom = zoom
+                    ?? this.map?.getZoom()
+                    ?? this.config.zoom;
+
+                const size = baseSize +
+                    (currentZoom - options.baseZoom) * options.step;
+
+                return Math.round(
+                    Math.max(
+                        options.minSize,
+                        Math.min(options.maxSize, size)
+                    )
+                );
+            }
+
+            getMarkerScale(zoom = null) {//TODO
+
+                return this.getMarkerSize(zoom) /
+                    this.config.markerSize;
+            }
+
+            updateMarkerSizes(zoom = null) {//TODO
+
+                if (!this.map) return;
+
+                const currentZoom = zoom ?? this.map.getZoom();
+
+                const size = this.getMarkerSize(currentZoom);
+
+                const scale = this.getMarkerScale(currentZoom);
+
+                const container = this.map.getContainer();
+
+                container.style.setProperty(
+                    '--business-marker-size',
+                    `${size}px`
+                );
+
+                container.style.setProperty(
+                    '--business-marker-scale',
+                    scale
+                );
+
+                container.dataset.markerZoom = currentZoom;
+
+                // Evitar actualizar varias veces un marcador agrupado.
+                const markers = new Set(this.markers.values());
+
+                markers.forEach(marker => {
+
+                    const element = marker.getElement();
+
+                    if (!element) return;
+
+                    // Actualizar dimensiones reales del marcador.
+                    element.style.width = `${size}px`;
+                    element.style.height = `${size}px`;
+
+                    // Mantener el anclaje geográfico inferior.
+                    element.style.marginLeft = `${-size / 2}px`;
+                    element.style.marginTop = `${-size}px`;
+
+                    // Mantener sincronizada la configuración de Leaflet.
+                    marker.options.icon.options.iconSize = [
+                        size,
+                        size
+                    ];
+
+                    marker.options.icon.options.iconAnchor = [
+                        size / 2,
+                        size
+                    ];
+
+                });
+
+                return this;
+            }
+
             constructor(config = {}) {
 
-                this.config = {
+                // ============================================
+                // 1. CONFIGURACIÓN PREDETERMINADA
+                // ============================================
+
+                const defaultConfig = {
+
                     containerId: 'business-map',
+
                     singleBusinessZoom: 16,
+
                     fitMaxZoom: 16,
+
                     fitPadding: [70, 70],
+
                     detailAsideId: 'businessDetailAside',
+
                     groupAsideId: 'businessGroupAside',
+
                     // Centro de Otavalo, Imbabura
                     position: [0.2343, -78.2625],
+
                     zoom: 15,
+
                     focusZoom: 17,
+
                     maxZoom: 19,
+
                     tileUrl:
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 
@@ -1431,127 +1874,278 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                         '&copy; OpenStreetMap contributors',
 
                     fitOnRender: true,
+
                     openDetailsOnClick: true,
+
                     fallbackImage: '',
+
+                    // ========================================
+                    // CONFIGURACIÓN ANTERIOR
+                    // Se conserva por compatibilidad.
+                    // ========================================
+
                     markerSize: 56,
+
+                    markerZoom: {
+                        enabled: true,
+                        baseZoom: 17,
+                        minSize: 18,
+                        maxSize: 68,
+                        step: 7
+                    }
+                };
+
+                // ============================================
+                // 2. CONFIGURACIÓN CENTRAL DEL MARCADOR
+                // ============================================
+
+                const centralMarkerConfig =
+                    typeof YapitaMapConfig !== 'undefined'
+                        ? (YapitaMapConfig.businessMarker ?? {})
+                        : {};
+
+                // ============================================
+                // 3. CONFIGURACIÓN GENERAL
+                // ============================================
+
+                this.config = {
+
+                    ...defaultConfig,
 
                     ...config
                 };
 
+                // ============================================
+                // 4. UNIFICAR CONFIGURACIÓN DEL MARCADOR
+                // ============================================
+
+                this.config.businessMarker = $.extend(
+
+                    true,
+
+                    {},
+
+                    {
+                        size: defaultConfig.markerSize,
+
+                        zoom: defaultConfig.markerZoom,
+
+                        fallbackImage: defaultConfig.fallbackImage,
+
+                        fallbackIcon: '🏪'
+                    },
+
+                    centralMarkerConfig,
+
+                    config.businessMarker || {}
+                );
+
+                // ============================================
+                // 5. RESOLVER TAMAÑO DEL MARCADOR
+                // ============================================
+                // Prioridad:
+                //
+                // 1. Nueva configuración enviada.
+                // 2. Configuración anterior enviada.
+                // 3. Configuración central.
+                // 4. Configuración predeterminada.
+                // ============================================
+
+                this.config.businessMarker.size =
+
+                    config.businessMarker?.size ??
+
+                    config.markerSize ??
+
+                    centralMarkerConfig.size ??
+
+                    defaultConfig.markerSize;
+
+                // ============================================
+                // 6. RESOLVER CONFIGURACIÓN DEL ZOOM
+                // ============================================
+
+                this.config.businessMarker.zoom = $.extend(
+
+                    true,
+
+                    {},
+
+                    defaultConfig.markerZoom,
+
+                    centralMarkerConfig.zoom || {},
+
+                    config.markerZoom || {},
+
+                    config.businessMarker?.zoom || {}
+                );
+
+                // ============================================
+                // 7. RESOLVER IMAGEN PREDETERMINADA
+                // ============================================
+
+                this.config.businessMarker.fallbackImage =
+
+                    config.businessMarker?.fallbackImage ??
+
+                    config.fallbackImage ??
+
+                    centralMarkerConfig.fallbackImage ??
+
+                    defaultConfig.fallbackImage;
+
+                // ============================================
+                // 8. SINCRONIZAR COMPATIBILIDAD
+                // ============================================
+                // Los métodos anteriores pueden continuar
+                // utilizando markerSize, markerZoom y
+                // fallbackImage.
+                // ============================================
+
+                this.config.markerSize =
+                    this.config.businessMarker.size;
+
+                this.config.markerZoom =
+                    this.config.businessMarker.zoom;
+
+                this.config.fallbackImage =
+                    this.config.businessMarker.fallbackImage;
+
+                // ============================================
+                // 9. INSTANCIAS DEL MAPA
+                // ============================================
+
                 this.map = null;
+
                 this.markerLayer = null;
 
+                // ============================================
+                // 10. COLECCIONES
+                // ============================================
+
                 this.businesses = new Map();
+
                 this.markers = new Map();
+
                 this.groups = new Map();
 
+                // ============================================
+                // 11. PANELES ASIDE
+                // ============================================
+
                 this.detailAside = null;
+
                 this.groupAside = null;
+
+                // ============================================
+                // 12. EMPRESA SELECCIONADA
+                // ============================================
 
                 this.selectedBusiness = null;
 
+                // ============================================
+                // 13. ADMINISTRACIÓN DE EVENTOS
+                // ============================================
+
                 this.listeners = new Map();
 
+                // ============================================
+                // 14. EVENTO CLICK DEL ASIDE
+                // ============================================
+
                 this._asideClickHandler = event => {
+
                     this._onAsideClick(event);
                 };
 
+                // ============================================
+                // 15. EVENTO MOVIMIENTO DEL MAPA
+                // ============================================
+
                 this._mapMoveHandler = () => {
+
                     if (!this.map) return;
 
                     this.emit('map:moveend', {
+
                         center: this.map.getCenter(),
+
                         zoom: this.map.getZoom(),
+
                         bounds: this.map.getBounds()
                     });
                 };
 
+                // ============================================
+                // 16. EVENTO ZOOM DEL MAPA
+                // ============================================
+
                 this._mapZoomHandler = () => {
+
                     if (!this.map) return;
 
+                    const zoom = this.map.getZoom();
+
+                    // Actualizar dimensiones de los marcadores.
+
+                    this.updateMarkerSizes(zoom);
+
+                    // Notificar a los demás componentes.
+
                     this.emit('map:zoomend', {
-                        zoom: this.map.getZoom()
+
+                        zoom: zoom,
+
+                        markerSize: this.getMarkerSize(zoom),
+
+                        markerScale: this.getMarkerScale(zoom)
                     });
                 };
             }
-
             assignDemoNews(input = []) {
-                const businesses = Array.isArray(input) ? input : [];
+
+                const businesses = Array.isArray(input)
+                    ? input
+                    : [];
 
                 businesses.forEach(business => {
 
-                    // ============================================
-                    // 1. TIPO DE EMPRESA
-                    // ============================================
+                    if (!business || typeof business !== 'object') {
+                        return;
+                    }
 
-                    business.is_route = (
-                        business.is_route === true ||
-                        business.is_route === 1 ||
-                        business.is_route === '1'
-                    );
-
-                    // ============================================
-                    // 2. INFORMACIÓN REAL DEL BACKEND
-                    // ============================================
-
-                    const promotions = Array.isArray(business.promotions)
-                        ? business.promotions
-                        : [];
-
-                    const events = Array.isArray(business.events)
-                        ? business.events
-                        : [];
-
-                    const advertisements = Array.isArray(business.advertisements)
-                        ? business.advertisements
-                        : [];
-
-                    // ============================================
-                    // 3. VALIDAR ESTADO ACTIVO
-                    // ============================================
-
-                    const hasActiveItems = (items) => {
-                        return items.some(item =>
-                            item &&
-                            String(item.status || '').toUpperCase() === 'ACTIVE'
+                    const state =
+                        BusinessMapHtmlUtil.getBusinessNewsState(
+                            business
                         );
-                    };
 
-                    // ============================================
-                    // 4. DETERMINAR TIPOS DE NOVEDADES
-                    // ============================================
+                    business.is_route = state.isRoute;
 
                     business.newsTypes = [];
 
-                    if (hasActiveItems(promotions)) {
+                    if (state.hasPromotions) {
                         business.newsTypes.push('promotion');
                     }
 
-                    if (hasActiveItems(events)) {
+                    if (state.hasEvents) {
                         business.newsTypes.push('event');
                     }
 
-                    if (hasActiveItems(advertisements)) {
+                    if (state.hasAdvertisements) {
                         business.newsTypes.push('advertisement');
                     }
 
-                    // ============================================
-                    // 5. INDICAR SI TIENE NOVEDADES
-                    // ============================================
+                    business.hasNews = state.hasNews;
 
-                    business.hasNews = business.newsTypes.length > 0;
+                    // Compatibilidad con componentes anteriores.
+                    business.demoNewsType =
+                        business.newsTypes[0] ?? null;
 
-                    // ============================================
-                    // 6. COMPATIBILIDAD TEMPORAL
-                    // ============================================
-
-                    // Se conserva la propiedad si otro componente
-                    // todavía la utiliza para pintar un icono.
-                    business.demoNewsType = business.newsTypes[0] ?? null;
                 });
 
                 return businesses;
             }
+
 
             // ============================================
             // EVENT MANAGEMENT
@@ -1560,7 +2154,8 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
             on(event, callback) {
 
                 if (typeof callback !== 'function') {
-                    return () => {};
+                    return () => {
+                    };
                 }
 
                 if (!this.listeners.has(event)) {
@@ -1711,6 +2306,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                     'zoomend',
                     this._mapZoomHandler
                 );
+                this.updateMarkerSizes();
 
                 this.setBusinesses(data);
 
@@ -1731,7 +2327,23 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
             // ============================================
 
 
-            setBusinesses(input = []) {
+            setBusinesses(input = [], options = {}) {
+
+                // ============================================
+                // 1. CONFIGURACIÓN DEL PROCESO
+                // ============================================
+
+                const fitOnRender =
+                    options.fitOnRender ??
+                    this.config.fitOnRender;
+
+                const closeAsides =
+                    options.closeAsides ?? true;
+
+                // ============================================
+                // 2. NORMALIZAR INFORMACIÓN
+                // ============================================
+
                 const list = Array.isArray(input)
                     ? input
                     : (
@@ -1739,8 +2351,16 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                             ? input.data
                             : []
                     );
+
                 this.assignDemoNews(list);
-                this.closeAsides();
+
+                if (closeAsides) {
+                    this.closeAsides();
+                }
+
+                // ============================================
+                // 3. LIMPIAR INFORMACIÓN ANTERIOR
+                // ============================================
 
                 this.businesses.clear();
                 this.groups.clear();
@@ -1749,7 +2369,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                 this.markerLayer?.clearLayers();
 
                 // ============================================
-                // PROCESAR EMPRESAS
+                // 4. PROCESAR EMPRESAS
                 // ============================================
 
                 for (const business of list) {
@@ -1780,11 +2400,13 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                         continue;
                     }
 
-                    // Agrupar empresas con la misma ubicación
+                    // Agrupar empresas con la misma ubicación.
+
                     const key =
                         `${lat.toFixed(6)},${lng.toFixed(6)}`;
 
                     if (!this.groups.has(key)) {
+
                         this.groups.set(key, {
                             lat,
                             lng,
@@ -1797,7 +2419,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                 }
 
                 // ============================================
-                // CREAR MARCADORES
+                // 5. CREAR MARCADORES
                 // ============================================
 
                 const bounds = [];
@@ -1817,17 +2439,22 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                             ),
 
                             title: count > 1
-                                ? `${count} `+MaskanaTranslations['frontend.maskana.filter.businesses']
+                                ? `${count} ` +
+                                MaskanaTranslations[
+                                    'frontend.maskana.filter.businesses'
+                                    ]
                                 : (
                                     business.business_name ||
                                     business.title ||
-                                    MaskanaTranslations['frontend.maskana.filter.businesses']
+                                    MaskanaTranslations[
+                                        'frontend.maskana.filter.businesses'
+                                        ]
                                 )
                         }
                     );
 
                     // ========================================
-                    // EVENTO CLICK DEL MARCADOR
+                    // 6. EVENTO CLICK DEL MARCADOR
                     // ========================================
 
                     marker.on('click', () => {
@@ -1847,6 +2474,7 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                                 {
                                     openDetails:
                                     this.config.openDetailsOnClick,
+
                                     fly: false
                                 }
                             );
@@ -1859,10 +2487,12 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                         }
                     });
 
-                    // Agregar marcador al mapa
+                    // Agregar marcador al mapa.
+
                     marker.addTo(this.markerLayer);
 
-                    // Registrar marcador por empresa
+                    // Registrar marcador por empresa.
+
                     group.businesses.forEach(item => {
 
                         this.markers.set(
@@ -1871,7 +2501,8 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                         );
                     });
 
-                    // Registrar coordenadas para el encuadre
+                    // Registrar coordenadas para el encuadre.
+
                     bounds.push([
                         group.lat,
                         group.lng
@@ -1879,13 +2510,13 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                 }
 
                 // ============================================
-                // CENTRAR MAPA AUTOMÁTICAMENTE
+                // 7. CENTRAR MAPA AUTOMÁTICAMENTE
                 // ============================================
 
                 if (
                     this.map &&
                     bounds.length > 0 &&
-                    this.config.fitOnRender
+                    fitOnRender
                 ) {
 
                     const singleBusinessZoom =
@@ -1962,7 +2593,13 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
                 }
 
                 // ============================================
-                // EVENTO DE RENDERIZACIÓN
+                // 8. SINCRONIZAR TAMAÑO DE MARCADORES
+                // ============================================
+
+                this.updateMarkerSizes();
+
+                // ============================================
+                // 9. EVENTO DE RENDERIZACIÓN
                 // ============================================
 
                 this.emit('businesses:rendered', {
@@ -1980,32 +2617,38 @@ var htmlIcon=news.isIcon?` <i class="bi ${news.icon}"></i>`:news.icon;
 
             _icon(business, count = 1) {
 
-                const size = this.config.markerSize;
+                const size = this.getMarkerSize();
+                const baseSize = this.config.markerSize;
 
-                const html =
-                    BusinessMapHtmlUtil.getIconBusinessHtml(
-                        business,
-                        count,
-                        {
-                            fallbackImage:
+                const html = BusinessMapHtmlUtil.getIconBusinessHtml(
+                    business,
+                    count,
+                    {
+                        ...this.config.businessMarker,
+
+                        fallbackImage:
+                            this.config.businessMarker.fallbackImage ||
                             this.config.fallbackImage
-                        }
-                    );
+                    }
+                );
 
                 return L.divIcon({
-                    html,
-                    className:
-                        'business-map-marker-container',
 
-                    iconSize: [
-                        size,
-                        size
-                    ],
+                    html: `
+            <div
+                class="business-map-marker-container__scale"
+                style="--business-marker-base-size:${baseSize}px"
+            >
+                ${html}
+            </div>
+        `,
 
-                    iconAnchor: [
-                        size / 2,
-                        size
-                    ]
+                    className: 'business-map-marker-container',
+
+                    iconSize: [size, size],
+
+                    iconAnchor: [size / 2, size]
+
                 });
             }
 

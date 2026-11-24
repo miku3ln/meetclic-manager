@@ -22,7 +22,9 @@
 
     "frontend.menu.home": "Earn Yapitas",
     "frontend.menu.allies": "Our Allies",
-
+    "frontend.menu.shop-page": "Shops & Services",
+    "frontend.menu.experiencesEvents": "Experiences & Events",
+    "frontend.menu.learnKichwa": "Learn Kichwa",
     "frontend.menu.project.one.home": "Pachamama",
     "frontend.menu.project.one.kichwa": "Kichwa",
     "frontend.menu.project.one.elements": "Elements",
@@ -85,7 +87,7 @@
 
     "frontend.menu.dictionaryKichwaToCastellano": "Kichwa - Spanish",
     "frontend.menu.project": "Culture",
-    "frontend.menu.project.one": "Riksichishun",
+    "frontend.menu.project.one": "earn Kichwa",
     "frontend.menu.project.two": "Halloween",
 
     "frontend.menu.dictionaryCastilianToKichwa": "Spanish - Kichwa",
@@ -1293,6 +1295,6 @@
     "frontend.how-it-works.faq.items.join.answer": "Share products and services, connect with customers, and explore the technology tools available on Yapita.",
     "frontend.how-it-works.cta.title": "Your next adventure is about to begin!",
     "frontend.how-it-works.cta.description": "Discover businesses, find offers, and join missions. Every step can bring new experiences and rewards. Ready to become a Chaski?",
-    "frontend.how-it-works.cta.button": "Discover the Chaski journey"
-
+    "frontend.how-it-works.cta.button": "Discover the Chaski journey",
+    "frontend.menu.business.discovery": "Discover businesses and services near you."
 }

@@ -24,6 +24,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     >
     @include('cityBook.web.maskana.partials.style-manager-maps')
+    @include('partials.custom.map-business.assets.css.marker-manager')
 
 @endsection
 @section('additional-scripts')
@@ -106,14 +107,665 @@
     <script src="{{ URL::asset($resourcePathServer.'libs/toast/jquery.toast.min.js') }}"
             type='text/javascript'></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script>
+        let businessCategoriesData = [];
+
+        function initBusinessCategoriesSelect2() {
+
+            const $category = $('#business-category-filter');
+            const url = $('#route-business-categories-action').val();
+
+            // ==========================================
+            // VALIDACIONES INICIALES
+            // ==========================================
+
+            if (!$category.length) {
+                console.error('No se encontró el selector de categorías.');
+                return;
+            }
+
+            if (!url) {
+                console.error('No se encontró la URL de categorías.');
+                return;
+            }
+
+            if (!$.fn.select2) {
+                console.error('Select2 no está cargado.');
+                return;
+            }
+
+            // ==========================================
+            // EVITAR INICIALIZACIÓN DUPLICADA
+            // ==========================================
+
+            if ($category.hasClass('select2-hidden-accessible')) {
+                $category.select2('destroy');
+            }
+
+            // ==========================================
+            // FORMATO VISUAL CON BOOTSTRAP ICONS
+            // ==========================================
+
+            function formatBusinessOption(item) {
+
+                const $element = $('<span>');
+
+                const icon = item.element?.dataset?.icon || '';
+
+                const isGroup = Array.isArray(item.children);
+
+                if (
+                    typeof icon === 'string' &&
+                    /^bi(?: bi-[a-z0-9-]+)+$/.test(icon)
+                ) {
+                    $('<i>')
+                        .addClass(icon)
+                        .css({
+                            marginRight: '8px',
+                            color: '#435cf0'
+                        })
+                        .appendTo($element);
+                }
+
+                $('<span>')
+                    .text(item.text || '')
+                    .css({
+                        fontWeight: isGroup ? '600' : '400'
+                    })
+                    .appendTo($element);
+
+                return $element;
+            }
+
+            // ==========================================
+            // INICIALIZAR SELECT2
+            // ==========================================
+
+            $category.select2({
+                width: '100%',
+                placeholder: 'Todas las categorías',
+                templateResult: formatBusinessOption,
+                templateSelection: formatBusinessOption,
+                language: {
+                    noResults: () => 'No se encontraron resultados',
+                    searching: () => 'Buscando...'
+                }
+            });
+
+            // ==========================================
+            // EVENTO CAMBIO DE SELECCIÓN
+            // ==========================================
+
+            $category
+                .off('change.businessCategories')
+                .on('change.businessCategories', function () {
+
+                    const value = $(this).val() || 'all';
+
+                    // ==================================
+                    // ACTUALIZAR FILTRO EXISTENTE
+                    // ==================================
+
+                    businessFilters.subcategoryIds = value === 'all'
+                        ? []
+                        : [Number(value)];
+
+                    console.log(
+                        'Subcategorías seleccionadas:',
+                        businessFilters.subcategoryIds
+                    );
+
+                    console.log(
+                        'Parámetros para consultar el mapa:',
+                        buildBusinessRequestParams()
+                    );
+                    setBusinessSubcategories(businessFilters.subcategoryIds);
+
+                });
+
+            // ==========================================
+            // CONSULTA AJAX POST DE CATEGORÍAS
+            // ==========================================
+
+            $.ajax({
+
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+
+                data: {
+                    search: '',
+                    category_id: 'all'
+                },
+
+                beforeSend: function () {
+
+                    $category.prop('disabled', true);
+
+                },
+
+                success: function (response) {
+
+                    // La API devuelve directamente un array.
+                    // También se admite { data: [...] }.
+
+                    const categories = Array.isArray(response)
+                        ? response
+                        : response?.data;
+
+                    if (!Array.isArray(categories)) {
+
+                        console.error(
+                            'Respuesta de categorías no válida:',
+                            response
+                        );
+
+                        return;
+                    }
+
+                    businessCategoriesData = categories;
+
+                    // ==================================
+                    // LIMPIAR SELECT
+                    // ==================================
+
+                    $category.empty();
+
+                    $category.append(
+                        new Option(
+                            'Todas las categorías',
+                            'all',
+                            false,
+                            true
+                        )
+                    );
+
+                    // ==================================
+                    // CATEGORÍAS COMO OPTGROUP
+                    // SUBCATEGORÍAS COMO OPTION
+                    // ==================================
+
+                    businessCategoriesData.forEach(category => {
+
+                        const group = document.createElement('optgroup');
+
+                        group.label = category.text || '';
+                        group.dataset.icon = category.icon || '';
+                        group.dataset.categoryId = category.id;
+
+                        (category.subcategories || []).forEach(subcategory => {
+
+                            const option = new Option(
+                                subcategory.text,
+                                subcategory.id,
+                                false,
+                                false
+                            );
+
+                            option.dataset.icon = subcategory.icon || '';
+                            option.dataset.categoryId = category.id;
+
+                            group.appendChild(option);
+
+                        });
+
+                        // No mostrar categorías sin subcategorías.
+                        if (group.children.length > 0) {
+                            $category.append(group);
+                        }
+
+                    });
+
+                    // ==================================
+                    // RESTAURAR SELECCIÓN
+                    // ==================================
+
+                    const currentIds = businessFilters.subcategoryIds || [];
+
+                    const selectedValue = currentIds.length === 1
+                        ? String(currentIds[0])
+                        : 'all';
+
+                    const exists = $category
+                        .find('option')
+                        .toArray()
+                        .some(option => option.value === selectedValue);
+
+                    $category
+                        .val(exists ? selectedValue : 'all')
+                        .trigger('change.select2');
+
+                    // Si la selección anterior ya no existe,
+                    // limpiamos el filtro.
+                    if (!exists) {
+                        businessFilters.subcategoryIds = [];
+                    }
+
+                    console.log(
+                        'Categorías y subcategorías cargadas:',
+                        businessCategoriesData
+                    );
+
+                },
+
+                error: function (xhr) {
+
+                    console.error(
+                        'Error al cargar categorías:',
+                        xhr.status,
+                        xhr.responseJSON || xhr.responseText
+                    );
+
+                },
+
+                complete: function () {
+
+                    $category.prop('disabled', false);
+
+                }
+
+            });
+        }
+        const YapitaMapConfig = {
+
+            // ==========================================
+            // CONFIGURACIÓN DEL MAPA
+            // ==========================================
+
+            map: {
+
+                zoom: 13,
+                maxZoom: 19,
+                focusZoom: 17,
+                singleBusinessZoom: 16,
+                fitMaxZoom: 16,
+                fitPadding: [70, 70],
+                fitOnRender: true
+
+            },
+
+            // ==========================================
+            // MARCADORES DE EMPRESAS
+            // ==========================================
+
+            businessMarker: {
+
+                size: 56,
+
+                fallbackIcon: '🏪',
+
+                fallbackImage: '',
+
+                // ======================================
+                // APARIENCIA GENERAL - NUEVO
+                // ======================================
+
+                appearance: {
+
+                    background: '#ffffff',
+
+                    color: '#4354eb',
+
+                    borderColor: '#ffffff',
+
+                    borderWidth: 3,
+
+                    borderRadius: '50%',
+
+                    shadow: '0 3px 10px rgba(0, 0, 0, 0.25)',
+
+                    fallbackFontSize: 26,
+
+                    objectFit: 'cover'
+
+                },
+
+                // ======================================
+                // TAMAÑO DINÁMICO SEGÚN ZOOM
+                // ======================================
+
+                zoom: {
+
+                    enabled: true,
+
+                    baseZoom: 17,
+
+                    minSize: 18,
+
+                    maxSize: 68,
+
+                    step: 7
+
+                },
+
+                // ======================================
+                // REBOTE
+                // ======================================
+
+                bounce: {
+
+                    enabled: true,
+
+                    condition: ['promotions', 'events'],
+
+                    duration: 1200,
+
+                    height: 10,
+
+                    timingFunction: 'ease-in-out', // NUEVO
+
+                    allowGrouped: false
+
+                },
+
+                // ======================================
+                // ONDAS DE PULSO
+                // ======================================
+
+                pulse: {
+
+                    enabled: true,
+
+                    condition: 'promotions',
+
+                    color: '#8b24dc',
+
+                    duration: 1800,
+
+                    scale: 1.6,
+
+                    delay: 900,
+
+                    waves: 2, // NUEVO
+
+                    borderWidth: 2, // NUEVO
+
+                    opacity: 0.65, // NUEVO
+
+                    timingFunction: 'ease-out', // NUEVO
+
+                    allowGrouped: false
+
+                },
+
+                // ======================================
+                // DISTINTIVOS
+                // ======================================
+
+                badge: {
+
+                    enabled: true,
+
+                    allowGrouped: false,
+
+                    // Prioridad cuando una empresa tiene
+                    // varias novedades simultáneamente.
+
+                    priority: [
+                        'route',
+                        'promotion',
+                        'event',
+                        'advertisement'
+                    ],
+
+                    // ----------------------------------
+                    // APARIENCIA GENERAL DEL DISTINTIVO
+                    // ----------------------------------
+
+                    color: '#4354eb',
+
+                    textColor: '#ffffff',
+
+                    size: 28,
+
+                    fontSize: 13,
+
+                    borderColor: '#ffffff',
+
+                    borderWidth: 3,
+
+                    top: -9,
+
+                    right: -9,
+
+                    // ----------------------------------
+                    // RUTA MASKANA
+                    // ----------------------------------
+
+                    route: {
+
+                        enabled: true,
+
+                        isIcon: false,
+
+                        icon: '🎃',
+
+                        title: 'Dulce o Truco',
+
+                        color: '#f97316'
+
+                    },
+
+                    // ----------------------------------
+                    // PROMOCIONES
+                    // ----------------------------------
+
+                    promotion: {
+
+                        enabled: true,
+
+                        isIcon: true,
+
+                        icon: 'bi-gift-fill',
+
+                        title: 'Promoción disponible',
+
+                        color: '#8b24dc'
+
+                    },
+
+                    // ----------------------------------
+                    // EVENTOS - NUEVO
+                    // ----------------------------------
+
+                    event: {
+
+                        enabled: true,
+
+                        isIcon: true,
+
+                        icon: 'bi-calendar-event-fill',
+
+                        title: 'Evento disponible',
+
+                        color: '#168b56'
+
+                    },
+
+                    // ----------------------------------
+                    // PUBLICIDAD - NUEVO
+                    // ----------------------------------
+
+                    advertisement: {
+
+                        enabled: true,
+
+                        isIcon: true,
+
+                        icon: 'bi-megaphone-fill',
+
+                        title: 'Publicidad disponible',
+
+                        color: '#4354eb'
+
+                    }
+
+                },
+
+                // ======================================
+                // CONTADOR DE EMPRESAS AGRUPADAS - NUEVO
+                // ======================================
+
+                counter: {
+
+                    enabled: true,
+
+                    background: '#4354eb',
+
+                    color: '#ffffff',
+
+                    borderColor: '#ffffff',
+
+                    borderWidth: 2,
+
+                    size: 24,
+
+                    fontSize: 12,
+
+                    bottom: -5,
+
+                    right: -5
+
+                }
+
+            },
+
+            // ==========================================
+            // MARCADOR DE UBICACIÓN DEL USUARIO
+            // ==========================================
+
+            userLocation: {
+
+                zoom: 17,
+
+                buttonId: 'maskana-location-button',
+
+                marker: {
+
+                    size: 64,
+
+                    isIcon: false,
+
+                    icon: '🎃',
+
+                    iconSize: 32,
+
+                    color: '#f97316',
+
+                    zIndexOffset: 1000,
+
+                    // ----------------------------------
+                    // ETIQUETA DE UBICACIÓN
+                    // ----------------------------------
+
+                    label: {
+
+                        enabled: true,
+
+                        text: 'Estás aquí',
+
+                        background: '#ffffff',
+
+                        color: '#172033'
+
+                    },
+
+                    // ----------------------------------
+                    // REBOTE DEL USUARIO
+                    // ----------------------------------
+
+                    bounce: {
+
+                        enabled: true,
+
+                        duration: 1200,
+
+                        height: 8
+
+                    },
+
+                    // ----------------------------------
+                    // PULSO DEL USUARIO
+                    // ----------------------------------
+
+                    pulse: {
+
+                        enabled: true,
+
+                        color: '#f97316',
+
+                        duration: 1800,
+
+                        scale: 1.8
+
+                    },
+
+                    // ----------------------------------
+                    // POPUP DEL USUARIO
+                    // ----------------------------------
+
+                    popup: {
+
+                        enabled: true,
+
+                        title: '🎃 ¡Estás aquí!',
+
+                        description:
+                            'Sigue explorando Maskana y descubre los dulces cercanos.'
+
+                    }
+
+                },
+
+                // ======================================
+                // PRECISIÓN DE UBICACIÓN GPS
+                // ======================================
+
+                accuracy: {
+
+                    enabled: true,
+
+                    color: '#f97316',
+
+                    weight: 1,
+
+                    opacity: 0.65,
+
+                    fillColor: '#f97316',
+
+                    fillOpacity: 0.08
+
+                },
+
+                // ======================================
+                // TEXTOS DE PERMISOS
+                // ======================================
+
+                texts: {
+
+                    denied: 'Ubicación bloqueada',
+
+                    granted: 'Ver mi ubicación',
+
+                    pending: 'Permitir ubicación',
+
+                    unavailable: 'Ubicación no disponible'
+
+                }
+
+            }
+
+        };
+    </script>
     @include('cityBook.web.maskana.partials.util-whatsapp')
 
-    @include('cityBook.web.maskana.partials.map-manager')
+    @include('partials.custom.map-business.map-manager')
     @include('cityBook.web.maskana.partials.yapita.register.assets.yapita-register-modal')
 
     @include('cityBook.web.maskana.partials.business-response-data')
-    @include('cityBook.web.maskana.partials.maskana-map-location-controller')
-    @include('cityBook.web.maskana.partials.business-map-controller')
+    @include('partials.custom.map-business.maskana-map-location-controller')
+    @include('partials.custom.map-business.business-map-controller')
     @include('cityBook.web.maskana.partials.assets.bottom-sheet-tabs-util')
     @include('cityBook.web.maskana.partials.assets.prizes-util')
 

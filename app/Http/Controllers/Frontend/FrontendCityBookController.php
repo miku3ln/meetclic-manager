@@ -9,6 +9,7 @@ use App\Models\Events\EventBusinessPrize;
 use App\Models\Events\MapZoneEvent;
 use App\Models\FrontendCityBookManager;
 use App;
+use App\Services\BusinessAppService;
 use App\Utils\YapitaJsonLdUtil;
 use Auth;
 use App\Models\TemplateInformation;
@@ -33,14 +34,29 @@ class FrontendCityBookController extends FrontendBaseController
     public $modelInit = null;
     public $modelInitLanguage = null;
 
-    public function __construct()
+    public function __construct(BusinessAppService $service)
     {
         $this->modelInit = new FrontendCityBookManager();
         $this->modelInitLanguage = new App\Models\LanguageConfigManager();
-
+        $this->serviceUser = $service;
     }
 
+    public function eventsManager($language = 'es')
+    {
+        $project = "eventsManager";
+        $renderView = self::LAYOUT_MAIN . '.web.' . $project . '.indexPage';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => 'eventsManager',
+            'paramsRequest' => $paramsRequest
+        ]);
 
+        return view($renderView, $paramsSend);
+    }
     public function managerInvitationOtavalo($language = 'es', $document = null)
     {
         $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
@@ -661,6 +677,8 @@ class FrontendCityBookController extends FrontendBaseController
 
         return view($renderView, $paramsSend);
     }
+
+
     public function ourAllies($language = 'es')
     {
         $dataPost = Request::all();
@@ -1266,6 +1284,35 @@ class FrontendCityBookController extends FrontendBaseController
         $paramsSend["rewards"]=$rewards;
         $paramsSend["canManage"]=$canManage;
 
+        return view($renderView, $paramsSend);
+    }
+    public function shopBusiness($language = 'es')
+    {
+        $nameProcess = 'shopBusiness';
+        $renderView = self::LAYOUT_MAIN . '.web.shop-business';
+        $languageManager = $this->modelInitLanguage->managerLanguagePage($language);
+        $language = $languageManager['language'];
+        $paramsRequest = [];
+        $paramsRequest['language'] = $language;
+        $modelPage = $this->modelInit;
+        $paramsSend = $modelPage->getParamsPage([
+            'page' => $nameProcess,
+            'paramsRequest' => $paramsRequest
+
+        ]);
+
+
+        $params = [
+            'filters' => [
+                'search_value' => [
+                    'term' => ''
+                ],
+                'category_id' =>  'all'
+            ]
+        ];
+
+        $data = $this->serviceUser->getCategoriesBusiness($params);
+        $paramsSend["categories"]=$data;
         return view($renderView, $paramsSend);
     }
     public function maskana($language = 'es')

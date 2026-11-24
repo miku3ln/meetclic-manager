@@ -1,5 +1,10 @@
 <script>
-
+    const managerOptions = {
+        viewBusiness: [
+            "#yapita-business-filter",
+            "#maskana-bottom-sheet",".yapita-register"
+        ]
+    };
     class BusinessMarkerEditor {
 
         constructor() {
@@ -208,7 +213,16 @@
             // Ajuste automático
             fitOnRender: true,
             openDetailsOnClick: true,
-            fallbackImage: ''
+            fallbackImage: '',
+            markerSize: 56,
+
+            markerZoom: {
+                enabled: true,
+                baseZoom: 17,
+                minSize: 18,
+                maxSize: 68,
+                step: 7
+            }
         });
         registerBusinessMapEvents();
         registerBusinessFilterEvents();
@@ -352,15 +366,15 @@
 
         mapController.on('business:details:open', ({business}) => {
             console.log('Detalle abierto:', business);
-            $(".yapita-register").addClass("not-view");
-            $("#maskana-bottom-sheet").addClass("not-view");
+            $(managerOptions.viewBusiness.join(","))
+                .toggleClass("not-view", true);
 
         });
 
         mapController.on('business:details:close', ({business}) => {
             console.log('Detalle cerrado:', business);
-            $(".yapita-register").removeClass("not-view");
-            $("#maskana-bottom-sheet").removeClass("not-view");
+            $(managerOptions.viewBusiness.join(","))
+                .toggleClass("not-view", false);
 
 
         });
@@ -1058,270 +1072,14 @@ console.log("filters-routes")
         });
     }
 
-    let businessCategoriesData = [];
 
-    function initBusinessCategoriesSelect2() {
 
-        const $category = $('#business-category-filter');
-        const url = $('#route-business-categories-action').val();
 
-        // ==========================================
-        // VALIDACIONES INICIALES
-        // ==========================================
-
-        if (!$category.length) {
-            console.error('No se encontró el selector de categorías.');
-            return;
-        }
-
-        if (!url) {
-            console.error('No se encontró la URL de categorías.');
-            return;
-        }
-
-        if (!$.fn.select2) {
-            console.error('Select2 no está cargado.');
-            return;
-        }
-
-        // ==========================================
-        // EVITAR INICIALIZACIÓN DUPLICADA
-        // ==========================================
-
-        if ($category.hasClass('select2-hidden-accessible')) {
-            $category.select2('destroy');
-        }
-
-        // ==========================================
-        // FORMATO VISUAL CON BOOTSTRAP ICONS
-        // ==========================================
-
-        function formatBusinessOption(item) {
-
-            const $element = $('<span>');
-
-            const icon = item.element?.dataset?.icon || '';
-
-            const isGroup = Array.isArray(item.children);
-
-            if (
-                typeof icon === 'string' &&
-                /^bi(?: bi-[a-z0-9-]+)+$/.test(icon)
-            ) {
-                $('<i>')
-                    .addClass(icon)
-                    .css({
-                        marginRight: '8px',
-                        color: '#435cf0'
-                    })
-                    .appendTo($element);
-            }
-
-            $('<span>')
-                .text(item.text || '')
-                .css({
-                    fontWeight: isGroup ? '600' : '400'
-                })
-                .appendTo($element);
-
-            return $element;
-        }
-
-        // ==========================================
-        // INICIALIZAR SELECT2
-        // ==========================================
-
-        $category.select2({
-            width: '100%',
-            placeholder: 'Todas las categorías',
-            templateResult: formatBusinessOption,
-            templateSelection: formatBusinessOption,
-            language: {
-                noResults: () => 'No se encontraron resultados',
-                searching: () => 'Buscando...'
-            }
-        });
-
-        // ==========================================
-        // EVENTO CAMBIO DE SELECCIÓN
-        // ==========================================
-
-        $category
-            .off('change.businessCategories')
-            .on('change.businessCategories', function () {
-
-                const value = $(this).val() || 'all';
-
-                // ==================================
-                // ACTUALIZAR FILTRO EXISTENTE
-                // ==================================
-
-                businessFilters.subcategoryIds = value === 'all'
-                    ? []
-                    : [Number(value)];
-
-                console.log(
-                    'Subcategorías seleccionadas:',
-                    businessFilters.subcategoryIds
-                );
-
-                console.log(
-                    'Parámetros para consultar el mapa:',
-                    buildBusinessRequestParams()
-                );
-                setBusinessSubcategories(businessFilters.subcategoryIds);
-
-            });
-
-        // ==========================================
-        // CONSULTA AJAX POST DE CATEGORÍAS
-        // ==========================================
-
-        $.ajax({
-
-            url: url,
-            type: 'POST',
-            dataType: 'json',
-
-            data: {
-                search: '',
-                category_id: 'all'
-            },
-
-            beforeSend: function () {
-
-                $category.prop('disabled', true);
-
-            },
-
-            success: function (response) {
-
-                // La API devuelve directamente un array.
-                // También se admite { data: [...] }.
-
-                const categories = Array.isArray(response)
-                    ? response
-                    : response?.data;
-
-                if (!Array.isArray(categories)) {
-
-                    console.error(
-                        'Respuesta de categorías no válida:',
-                        response
-                    );
-
-                    return;
-                }
-
-                businessCategoriesData = categories;
-
-                // ==================================
-                // LIMPIAR SELECT
-                // ==================================
-
-                $category.empty();
-
-                $category.append(
-                    new Option(
-                        'Todas las categorías',
-                        'all',
-                        false,
-                        true
-                    )
-                );
-
-                // ==================================
-                // CATEGORÍAS COMO OPTGROUP
-                // SUBCATEGORÍAS COMO OPTION
-                // ==================================
-
-                businessCategoriesData.forEach(category => {
-
-                    const group = document.createElement('optgroup');
-
-                    group.label = category.text || '';
-                    group.dataset.icon = category.icon || '';
-                    group.dataset.categoryId = category.id;
-
-                    (category.subcategories || []).forEach(subcategory => {
-
-                        const option = new Option(
-                            subcategory.text,
-                            subcategory.id,
-                            false,
-                            false
-                        );
-
-                        option.dataset.icon = subcategory.icon || '';
-                        option.dataset.categoryId = category.id;
-
-                        group.appendChild(option);
-
-                    });
-
-                    // No mostrar categorías sin subcategorías.
-                    if (group.children.length > 0) {
-                        $category.append(group);
-                    }
-
-                });
-
-                // ==================================
-                // RESTAURAR SELECCIÓN
-                // ==================================
-
-                const currentIds = businessFilters.subcategoryIds || [];
-
-                const selectedValue = currentIds.length === 1
-                    ? String(currentIds[0])
-                    : 'all';
-
-                const exists = $category
-                    .find('option')
-                    .toArray()
-                    .some(option => option.value === selectedValue);
-
-                $category
-                    .val(exists ? selectedValue : 'all')
-                    .trigger('change.select2');
-
-                // Si la selección anterior ya no existe,
-                // limpiamos el filtro.
-                if (!exists) {
-                    businessFilters.subcategoryIds = [];
-                }
-
-                console.log(
-                    'Categorías y subcategorías cargadas:',
-                    businessCategoriesData
-                );
-
-            },
-
-            error: function (xhr) {
-
-                console.error(
-                    'Error al cargar categorías:',
-                    xhr.status,
-                    xhr.responseJSON || xhr.responseText
-                );
-
-            },
-
-            complete: function () {
-
-                $category.prop('disabled', false);
-
-            }
-
-        });
-    }
 
 
     function initManagerFilters({onApply} = {}) {
 
         const $panel = $('#manager-filters-panel');
-        const $backdrop = $('#manager-filters-backdrop');
         const $toggle = $('#manager-filters-toggle');
         const $close = $('#manager-filters-close');
         const $apply = $('#manager-filters-apply');
@@ -1330,10 +1088,6 @@ console.log("filters-routes")
         const $search = $('#business-search');
         const $category = $('#business-category-filter');
 
-        if (!$panel.length) {
-            console.error('No se encontró manager-filters.');
-            return;
-        }
 
         let previousFocus = null;
 
@@ -1347,9 +1101,6 @@ console.log("filters-routes")
 
             $panel.addClass('manager-filters--open');
 
-            $backdrop.addClass(
-                'manager-filters__backdrop--visible'
-            );
 
             $panel
                 .attr('aria-hidden', 'false')
@@ -1368,9 +1119,6 @@ console.log("filters-routes")
 
             $panel.removeClass('manager-filters--open');
 
-            $backdrop.removeClass(
-                'manager-filters__backdrop--visible'
-            );
 
             $panel
                 .attr('aria-hidden', 'true')
@@ -1445,9 +1193,6 @@ console.log("filters-routes")
             .off('click.managerFilters')
             .on('click.managerFilters', closeFilters);
 
-        $backdrop
-            .off('click.managerFilters')
-            .on('click.managerFilters', closeFilters);
 
         $apply
             .off('click.managerFilters')

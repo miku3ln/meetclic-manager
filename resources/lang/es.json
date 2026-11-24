@@ -24,10 +24,14 @@
 
     "frontend.menu.home": "Gana Yapitas",
     "frontend.menu.allies": "Nuestros Aliados",
+    "frontend.menu.shop-page": "Tiendas y servicios",
+    "frontend.menu.experiencesEvents": "Experiencias y eventos",
     "frontend.menu.project.one.home": "Pachamama",
     "frontend.menu.project.one.kichwa": "Kichwa",
+
     "frontend.menu.project.one.elements": "Elementos",
     "frontend.menu.project.one.arawi": "Arawi",
+    "frontend.menu.learnKichwa": "Aprende Kichwa",
     "frontend.menu.project.one.learn": "Aprender",
     "frontend.menu.project.one.notes": "Apuntes",
     "frontend.menu.project.one.dictionary": "Diccionario",
@@ -65,7 +69,7 @@
     "frontend.menu.project.one.arawi.section.title": "EL CHASKI SHIMI MENSAJERO DE LA LENGUAA",
     "frontend.menu.project.one.arawi.section.subTitle": "",
 
-    "frontend.menu.about-us": "Conócenos",
+    "frontend.menu.about-us": "Quiénes somos",
     "frontend.menu.contact-us": "Contáctanos",
     "frontend.menu.services": "Servicios",
     "frontend.menu.shop": "Tienda",
@@ -86,7 +90,7 @@
 
     "frontend.menu.dictionaryKichwaToCastellano": "Kichwa - Castellano",
     "frontend.menu.project": "Cultura",
-    "frontend.menu.project.one": "Riksichishun",
+    "frontend.menu.project.one": "Aprende Kichwa",
     "frontend.menu.project.two": "Halloween",
 
     "frontend.menu.dictionaryCastilianToKichwa": "Castellano-Kichwa",
@@ -1282,6 +1286,6 @@
     "frontend.how-it-works.faq.items.join.answer": "Puede presentar sus productos y servicios, crear oportunidades para conectar con clientes y conocer las herramientas tecnológicas disponibles en Yapita.",
     "frontend.how-it-works.cta.title": "¡Tu próxima aventura está por comenzar!",
     "frontend.how-it-works.cta.description": "Descubre negocios, encuentra promociones y participa en misiones. Cada paso puede acercarte a nuevas experiencias y recompensas. ¿Listo para ser un Chaski?",
-    "frontend.how-it-works.cta.button": "Descubre el camino del Chaski"
-
+    "frontend.how-it-works.cta.button": "Descubre el camino del Chaski",
+    "frontend.menu.business.discovery": "Descubre negocios y servicios cerca de ti."
 }

@@ -85,6 +85,7 @@ class FrontendCmsCityBook
             Route::post('/searchBusinessBee', 'Frontend\FrontendCityBookController@searchBusinessBee')->name('searchBusinessBee');
             Route::get('/howItWorks', 'Frontend\FrontendCityBookController@howItWorks')->name('howItWorks');//GAMIFICATION ROUTE
             Route::get('/ourAllies', 'Frontend\FrontendCityBookController@ourAllies')->name('ourAllies');//GAMIFICATION ROUTE
+            Route::get('/shop-business', 'Frontend\FrontendCityBookController@shopBusiness')->name('shopBusiness');//GAMIFICATION ROUTE
 
             Route::get('/prices', 'Frontend\FrontendCityBookController@prices')->name('prices');
 
@@ -114,6 +115,7 @@ class FrontendCmsCityBook
             Route::get('/diccionario', 'Frontend\ChaskishimiController@diccionario')->name('diccionario');//GAMIFICATION ROUTE
             Route::get('/traductor', 'Frontend\ChaskishimiController@traductor')->name('traductor');//GAMIFICATION ROUTE
             Route::get('/homeBackLine', 'Frontend\BackLineController@index')->name('homeBackLine');//GAMIFICATION ROUTE
+            Route::get('/events-manager', 'Frontend\FrontendCityBookController@eventsManager')->name('events-manager');//GAMIFICATION ROUTE
 
 
             Route::get('/shop/business/{id?}', 'Frontend\FrontendController@shopPage')->name('shop-business');//GAMIFICATION ROUTE

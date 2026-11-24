@@ -148,6 +148,8 @@ class BusinessRepository
                     'bs.id',
                     'bs.id as key',
                     'bs.name as text',
+                    'bs.name as name',
+
                     'bs.icon_class as icon',
                     'bs.src',
                     'bs.description',
@@ -282,6 +284,8 @@ class BusinessRepository
                         'id' => $category->category_id,
                         'key' => $category->category_id,
                         'text' => $category->category_text,
+
+                        'name' => $category->category_text,
                         'icon' => $category->category_icon,
                         'src' => $category->category_src,
                         'description' => $category->category_description,
@@ -299,6 +303,7 @@ class BusinessRepository
                                     'id' => $item->id,
                                     'key' => $item->key,
                                     'text' => $item->text,
+                                    'name' => $item->text,
                                     'icon' => $item->icon,
                                     'src' => $item->src,
                                     'description' => $item->description,

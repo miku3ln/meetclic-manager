@@ -23,6 +23,9 @@
 
     "frontend.menu.home": "Yapitakunata chaskiy",
     "frontend.menu.allies": "Ñukanchik Mashikuna",
+    "frontend.menu.shop-page": "Katuwasikuna",
+    "frontend.menu.experiencesEvents": "Kawsaykuna shinallatak Raymikuna",
+    "frontend.menu.learnKichwa": "Kichwata Yachakuy",
     "frontend.menu.project.one.home": "Pachamama",
     "frontend.menu.project.one.kichwa": "Kichwa",
     "frontend.menu.project.one.elements": "Sullu",
@@ -85,7 +88,7 @@
 
     "frontend.menu.dictionaryKichwaToCastellano": "Kichwa - Castellano",
     "frontend.menu.project": "Kawsay",
-    "frontend.menu.project.one": "Riksichishun",
+    "frontend.menu.project.one": "Kichwata Yachakuy",
     "frontend.menu.project.two": "Halloween",
 
     "frontend.menu.dictionaryCastilianToKichwa": "Castellano - Kichwa",
@@ -1256,6 +1259,6 @@
     "frontend.how-it-works.faq.items.join.answer": "Kanpak negocio rurashkakunata, yanapaykunata rikuchinman, rantikkunawan tinkinakunkapak ñankunata rurankiman, Yapita-pi tiyak tecnología herramientakunata riksinkiman.",
     "frontend.how-it-works.cta.title": "Kanpak mushuk purinayki kallarinalla kan!",
     "frontend.how-it-works.cta.description": "Negocioskunata riksiy, ofertaskunata tariy, ruraykunapi yanapay. Sapa tatkika mushuk kawsaykunaman, premioskunaman apashunman. Chaski tukunkapak allichishkachu kanki?",
-    "frontend.how-it-works.cta.button": "Chaskipak ñanta riksiy"
-
+    "frontend.how-it-works.cta.button": "Chaskipak ñanta riksiy",
+    "frontend.menu.business.discovery": "Kanpa kuchupi katuna wasikunata, yanapak ruraykunatapash riksiy."
 }
