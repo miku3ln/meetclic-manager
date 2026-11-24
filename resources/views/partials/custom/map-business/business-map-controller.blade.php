@@ -1,10 +1,85 @@
 <script>
+    class YapitaMapEvents {
+
+        static emit(eventName, detail = {}) {
+
+            document.dispatchEvent(
+                new CustomEvent(eventName, {
+                    detail
+                })
+            );
+
+        }
+
+        static on(eventName, callback) {
+
+            document.addEventListener(
+                eventName,
+                callback
+            );
+
+            // Retorna una función para eliminar el listener.
+            return () => {
+                this.off(eventName, callback);
+            };
+
+        }
+
+        static off(eventName, callback) {
+
+            document.removeEventListener(
+                eventName,
+                callback
+            );
+
+        }
+
+        static once(eventName, callback) {
+
+            document.addEventListener(
+                eventName,
+                callback,
+                {once: true}
+            );
+
+        }
+
+    }
+
+    window.YapitaMapEvents = YapitaMapEvents;
     const managerOptions = {
         viewBusiness: [
             "#yapita-business-filter",
-            "#maskana-bottom-sheet",".yapita-register"
+            "#maskana-bottom-sheet", ".yapita-register"
         ]
     };
+    const YapitaMapEventTypes = Object.freeze({
+
+        // MAPA
+
+        MAP_READY: 'yapita:map:ready',
+        MAP_CLICK: 'yapita:map:click',
+        MAP_MOVED: 'yapita:map:moved',
+        MAP_ZOOM: 'yapita:map:zoom',
+
+        // UBICACIÓN GPS
+
+        LOCATION_READY: 'yapita:location:ready',
+        LOCATION_UPDATED: 'yapita:location:updated',
+        LOCATION_PERMISSION: 'yapita:location:permission',
+        LOCATION_REMOVED: 'yapita:location:removed',
+        LOCATION_ERROR: 'yapita:location:error',
+
+        // EMPRESAS
+
+        BUSINESS_SELECTED: 'yapita:business:selected',
+        BUSINESSES_RENDERED: 'yapita:businesses:rendered',
+
+        BUSINESS_DETAILS_OPEN: 'yapita:business:details:open',
+        BUSINESS_DETAILS_CLOSE: 'yapita:business:details:close'
+
+    });
+
     class BusinessMarkerEditor {
 
         constructor() {
@@ -236,6 +311,17 @@
     function registerBusinessMapEvents() {
         let mapLocationController = null;
         mapController.on('map:init', async ({map, count}) => {
+
+            YapitaMapEvents.emit(
+                YapitaMapEventTypes.MAP_READY,
+                {
+                    map,
+                    count,
+                    controller: mapController,
+                    center: map.getCenter(),
+                    zoom: map.getZoom()
+                }
+            );
             console.log('Mapa inicializado:', count);
 
             mapLocationController?.destroy();
@@ -244,6 +330,13 @@
                 new MaskanaMapLocationController(map);
 
             await mapLocationController.init();
+            YapitaMapEvents.emit(
+                YapitaMapEventTypes.LOCATION_READY,
+                {
+                    controller: mapLocationController,
+                    permission: mapLocationController.permission
+                }
+            );
             // CLICK SOBRE EL MAPA
             map.on('click', (event) => {
                 const {lat, lng} = event.latlng;
@@ -252,6 +345,15 @@
                     longitude: lng,
                     zoom: map.getZoom()
                 });
+
+                YapitaMapEvents.emit(
+                    YapitaMapEventTypes.MAP_CLICK,
+                    {
+                        latitude: lat,
+                        longitude: lng,
+                        zoom: map.getZoom()
+                    }
+                );
             });
         });
         mapController.on('marker:click', ({
@@ -387,9 +489,20 @@
             console.log('Ubicaciones:', locations);
 
             $('#business-total').text(total);
-        var totalData=  total+" " + MaskanaTranslations['frontend.maskana.filter.business_found'];
+            var totalData = total + " " + MaskanaTranslations['frontend.maskana.filter.business_found'];
 
+            // ==========================================
+            // EMITIR EVENTO GLOBAL
+            // ==========================================
 
+            YapitaMapEvents.emit(
+                YapitaMapEventTypes.BUSINESSES_RENDERED,
+                {
+                    total,
+                    locations,
+                    totalData
+                }
+            );
         });
 
         mapController.on('map:moveend', ({
@@ -965,10 +1078,10 @@
             $selected[0].style.getPropertyValue('--route-color') || '#445EF2'
         ).trim();
         $("#maskana-sheet-image").attr({
-                src: zoneSource,
-                alt: zoneTitle,
+            src: zoneSource,
+            alt: zoneTitle,
 
-            })
+        })
             .css({
                 'background': `color-mix(in srgb, ${zoneColor} 30%, transparent)`,
             });
@@ -984,7 +1097,7 @@
     /**
      * Abre el modal de registro de Yapita.
      */
-    async  function openYapitaRegisterModal() {
+    async function openYapitaRegisterModal() {
         await initGoogleLoginButton();
         const modalElement = document.getElementById(
             'yapitaRegisterModal'
@@ -1005,7 +1118,7 @@
 
     function initFiltersRoutes() {
         $(document).on('click', '.routes-container__item', async function () {
-console.log("filters-routes")
+            console.log("filters-routes")
             const $selected = $(this);
             const zoneId = parseInt($selected.data('zone-id'), 10);
 
@@ -1071,10 +1184,6 @@ console.log("filters-routes")
 
         });
     }
-
-
-
-
 
 
     function initManagerFilters({onApply} = {}) {

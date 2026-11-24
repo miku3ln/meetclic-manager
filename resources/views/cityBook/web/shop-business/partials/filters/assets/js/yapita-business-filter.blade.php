@@ -2351,6 +2351,26 @@
         yapitaBusinessFilter = new YapitaBusinessFilter(
             YapitaBusinessFilterConfigVersion
         );
+
+
+        YapitaMapEvents.on(
+            YapitaMapEventTypes.BUSINESSES_RENDERED,
+            ({ detail }) => {
+
+                const {
+                    total,
+                    locations,
+                    totalData
+                } = detail;
+
+                console.log('Total empresas:', total);
+                console.log('Total ubicaciones:', locations);
+                console.log('Texto traducido:', totalData);
+
+                yapitaBusinessFilter.setResults(total);
+
+            }
+        );
     });
 
 </script>
