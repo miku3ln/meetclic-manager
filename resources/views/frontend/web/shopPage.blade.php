@@ -2564,7 +2564,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
 
             width: 100%;
             margin-bottom: 12px;
-
+            border-bottom: 0 solid #eee!important;
         }
 
         #wrapper {
@@ -2927,7 +2927,9 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
 
         }
 
-
+        input.search-field.form-control {
+            height: 54px !important;
+        }
         /* =====================================================
            SMALL MOBILE
            320px - 359px
@@ -3461,9 +3463,9 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
         ===================================================== */
 
         .shop-business-aside__details {
-
+            padding-top: 0px;
+            padding-bottom: 0px;
             display: flex;
-
             flex-direction: column;
 
             gap: 7px;
@@ -4331,8 +4333,397 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
             }
 
         }
-    </style>
+        /* =====================================================
+   SHOP BUSINESS ASIDE - SCHEDULE ACCORDION
+===================================================== */
 
+        .shop-business-aside__schedule {
+            width: 100%;
+            min-width: 0;
+            border: 1px solid #dce1f2;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* ACCORDION TRIGGER */
+
+        .shop-business-aside__schedule
+        .shop-business-aside__schedule-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            margin: 0;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            color: inherit;
+        }
+
+        /* ARROW */
+
+        .shop-business-aside__schedule-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: auto;
+            padding-left: 8px;
+            color: #6558ff;
+            font-size: 13px;
+        }
+
+        .shop-business-aside__schedule-arrow i {
+            transition: transform 0.2s ease;
+        }
+
+        .shop-business-aside__schedule--expanded
+        .shop-business-aside__schedule-arrow i {
+            transform: rotate(180deg);
+        }
+
+        /* ACCORDION CONTENT */
+
+        .shop-business-aside__schedule-content {
+            padding: 0 10px 10px;
+        }
+
+        /* HEADER */
+
+        .shop-business-aside__schedule-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 10px 4px;
+            border-top: 1px solid #e5e7f1;
+        }
+
+        .shop-business-aside__schedule-heading {
+            font-size: 11px;
+            color: #7c859e;
+            font-weight: 500;
+        }
+
+        /* BUSINESS STATUS */
+
+        .shop-business-aside__schedule-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .shop-business-aside__schedule-status i {
+            font-size: 7px;
+        }
+
+        .shop-business-aside__schedule-status--open {
+            color: #168b56;
+        }
+
+        .shop-business-aside__schedule-status--closed {
+            color: #dc3545;
+        }
+
+        .shop-business-aside__schedule-status--unknown {
+            color: #7c859e;
+        }
+
+        /* SCHEDULE LIST */
+
+        .shop-business-aside__schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        /* SCHEDULE DAY */
+
+        .shop-business-aside__schedule-day {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 7px 8px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .shop-business-aside__schedule-day-name {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            color: #171749;
+            font-weight: 500;
+        }
+
+        .shop-business-aside__schedule-day-name small {
+            font-size: 10px;
+        }
+
+        .shop-business-aside__schedule-day-time {
+            color: #7c859e;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* CURRENT DAY */
+
+        .shop-business-aside__schedule-day--today {
+            background: #eef1ff;
+        }
+
+        .shop-business-aside__schedule-day--today
+        .shop-business-aside__schedule-day-name,
+
+        .shop-business-aside__schedule-day--today
+        .shop-business-aside__schedule-day-time {
+            color: #3558df;
+            font-weight: 600;
+        }
+
+        /* CLOSED DAY */
+
+        .shop-business-aside__schedule-day--closed
+        .shop-business-aside__schedule-day-time {
+            color: #dc3545;
+        }
+
+        /* EMPTY STATE */
+
+        .shop-business-aside__schedule-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 15px 8px;
+            text-align: center;
+            color: #7c859e;
+            font-size: 11px;
+        }
+
+        .shop-business-aside__schedule-empty i {
+            font-size: 20px;
+        }
+
+        /* TRANSITION - VUE 2 / VUE 3 */
+
+        .shop-schedule-enter-active,
+        .shop-schedule-leave-active {
+            transition: opacity 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .shop-schedule-enter,
+        .shop-schedule-enter-from,
+        .shop-schedule-leave-to {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+    </style>
+    <style id="fix-manager">
+        /* =====================================================
+   SHOP FILTERS - STICKY MANAGEMENT
+===================================================== */
+
+        .shop-filters-anchor {
+            position: relative;
+            width: 100%;
+            min-width: 0;
+        }
+
+        /* =====================================================
+           FILTERS CONTAINER
+        ===================================================== */
+
+        .shop-filters {
+            width: 100%;
+            min-width: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+            padding: 8px 0 12px;
+
+            background: #ffffff;
+            box-sizing: border-box;
+        }
+
+        /* =====================================================
+           STICKY ENABLED
+        ===================================================== */
+
+        .shop-filters--sticky {
+            position: relative;
+        }
+
+        /* =====================================================
+           STUCK STATE
+        ===================================================== */
+
+        .shop-filters--sticky.shop-filters--stuck {
+
+            position: fixed !important;
+
+            top: var(--shop-filters-top, 0px);
+            left: var(--shop-filters-left, 0px);
+
+            width: var(--shop-filters-width, 100%);
+
+            z-index: 1020;
+
+            background: #ffffff;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+
+            border-bottom: 1px solid #e5e7eb;
+
+            padding: 8px 10px 12px;
+        }
+
+        /* =====================================================
+           BOOTGRID HEADER
+        ===================================================== */
+
+        .shop-filters #grid-registers-grid-header {
+
+            position: relative !important;
+
+            width: 100% !important;
+
+            top: auto !important;
+            left: auto !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            z-index: auto !important;
+        }
+
+        .shop-filters .mc-grid__header {
+
+            margin: 0 !important;
+            padding: 6px 0 !important;
+        }
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .shop-filters .mc-grid__center {
+
+            flex: 1;
+
+            width: auto !important;
+            min-width: 0;
+        }
+
+        .shop-filters .mc-grid__search-wrapper {
+
+            width: 100%;
+            margin: 0;
+        }
+
+        /* =====================================================
+           CATEGORIES AND SUBCATEGORIES
+        ===================================================== */
+
+        .shop-filters .filters-sections {
+
+            position: relative;
+
+            width: 100%;
+
+            min-width: 0;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .shop-filters .categories,
+        .shop-filters .sub-categories {
+
+            width: 100%;
+            min-width: 0;
+
+            margin: 0;
+            padding: 0;
+        }
+
+        .shop-filters .owl-carousel {
+            width: 100%;
+        }
+
+        /* =====================================================
+           PRODUCTS CONTAINER
+        ===================================================== */
+
+        #app-management .content-manager-grid
+        .custom-scroll-admin-grid.table-responsive--fixed {
+
+            margin-top: 0 !important;
+
+            height: auto !important;
+            max-height: none !important;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 767.98px) {
+
+            .shop-filters {
+                gap: 6px;
+                padding: 6px 0 10px;
+            }
+
+            .shop-filters--sticky.shop-filters--stuck {
+                padding: 8px 10px 10px;
+            }
+
+            .shop-filters .mc-grid__header {
+                padding: 4px 0 !important;
+            }
+
+        }
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (min-width: 768px) and (max-width: 1199.98px) {
+
+            .shop-filters {
+                padding: 10px 0;
+            }
+
+        }
+
+        /* =====================================================
+           DESKTOP
+        ===================================================== */
+
+        @media (min-width: 1200px) {
+
+            .shop-filters {
+                padding: 12px 0;
+            }
+
+        }
+    </style>
 @endsection
 @section('script')
 
@@ -4340,6 +4731,571 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
 @section('additional-scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="{{ asset($resourcePathServer.'libs/bootgrid1.3.1/bootgrid1.3.1.min.js')}}"></script>
+    <script>
+        class ShopFiltersStickyManager {
+
+            constructor(options = {}) {
+
+                this.config = $.extend({
+
+                    containerSelector: '.content-manager-grid',
+
+                    gridHeaderSelector: '#grid-registers-grid-header',
+
+                    filtersSelector: '.filters-sections',
+
+                    productsSelector: '#grid-registers-grid',
+
+                    headerSelector: '.main-header',
+
+                    anchorClass: 'shop-filters-anchor',
+
+                    baseClass: 'shop-filters',
+
+                    stickyClass: 'shop-filters--sticky',
+
+                    stuckClass: 'shop-filters--stuck',
+
+                    scrollContainer: window,
+
+                    autoTop: true,
+
+                    top: 0,
+
+                    offset: 0,
+
+                    enabled: true,
+
+                    zIndex: 1020
+
+                }, options);
+
+                this.$container = $();
+                this.$gridHeader = $();
+                this.$filters = $();
+
+                this.$anchor = $();
+                this.$wrapper = $();
+
+                this.$header = $();
+
+                this.isInitialized = false;
+                this.isStuck = false;
+
+                this.frameId = null;
+                this.resizeObserver = null;
+
+                this.originalPositions = [];
+
+                this.eventNamespace = '.shopFiltersSticky';
+
+                this.boundUpdate = this.requestUpdate.bind(this);
+
+            }
+
+            /* =====================================================
+               INIT
+            ===================================================== */
+
+            init() {
+
+                if (this.isInitialized) {
+                    this.refresh();
+                    return this;
+                }
+
+                this.$container = $(this.config.containerSelector).first();
+
+                this.$gridHeader = this.$container
+                    .find(this.config.gridHeaderSelector)
+                    .first();
+
+                this.$filters = this.$container
+                    .find(this.config.filtersSelector)
+                    .first();
+
+                this.$header = $(this.config.headerSelector).first();
+
+                if (
+                    !this.$container.length ||
+                    !this.$gridHeader.length ||
+                    !this.$filters.length
+                ) {
+
+                    console.warn(
+                        '[ShopFiltersStickyManager] No se encontraron los elementos.'
+                    );
+
+                    return this;
+                }
+
+                this.buildStructure();
+
+                this.isInitialized = true;
+
+                this.bindEvents();
+
+                this.initResizeObserver();
+
+                this.refresh();
+
+                return this;
+
+            }
+
+            /* =====================================================
+               BUILD STRUCTURE
+            ===================================================== */
+
+            buildStructure() {
+
+                // Guardar posiciones originales para destroy().
+                this.originalPositions = [];
+
+                [
+                    this.$gridHeader,
+                    this.$filters
+
+                ].forEach($element => {
+
+                    const placeholder = document.createComment(
+                        'shop-filters-original-position'
+                    );
+
+                    $element[0].parentNode.insertBefore(
+                        placeholder,
+                        $element[0]
+                    );
+
+                    this.originalPositions.push({
+                        element: $element,
+                        placeholder: placeholder
+                    });
+
+                });
+
+                this.$anchor = $('<div>', {
+
+                    class: this.config.anchorClass
+
+                });
+
+                this.$wrapper = $('<div>', {
+
+                    class: this.config.baseClass
+
+                });
+
+                this.$anchor.insertBefore(this.$gridHeader);
+
+                this.$anchor.append(this.$wrapper);
+
+                // Mover elementos originales sin eliminar sus eventos.
+                this.$wrapper.append(this.$gridHeader.detach());
+
+                this.$wrapper.append(this.$filters.detach());
+
+                if (this.config.enabled) {
+
+                    this.$wrapper.addClass(
+                        this.config.stickyClass
+                    );
+
+                }
+
+            }
+
+            /* =====================================================
+               GET HEADER TOP
+            ===================================================== */
+
+            getTop() {
+
+                if (!this.config.autoTop) {
+
+                    return this.config.top + this.config.offset;
+
+                }
+
+                if (!this.$header.length) {
+
+                    return this.config.top + this.config.offset;
+
+                }
+
+                const rect = this.$header[0]
+                    .getBoundingClientRect();
+
+                return Math.max(0, rect.bottom) +
+                    this.config.offset;
+
+            }
+
+            /* =====================================================
+               BIND EVENTS
+            ===================================================== */
+
+            bindEvents() {
+
+                $(this.config.scrollContainer).on(
+
+                    'scroll' + this.eventNamespace,
+
+                    this.boundUpdate
+
+                );
+
+                $(window).on(
+
+                    'resize' + this.eventNamespace +
+                    ' orientationchange' + this.eventNamespace,
+
+                    this.boundUpdate
+
+                );
+
+            }
+
+            /* =====================================================
+               RESIZE OBSERVER
+            ===================================================== */
+
+            initResizeObserver() {
+
+                if (typeof ResizeObserver === 'undefined') {
+                    return;
+                }
+
+                this.resizeObserver = new ResizeObserver(() => {
+
+                    this.requestUpdate();
+
+                });
+
+                this.resizeObserver.observe(
+                    this.$wrapper[0]
+                );
+
+                this.resizeObserver.observe(
+                    this.$anchor[0]
+                );
+
+                if (this.$header.length) {
+
+                    this.resizeObserver.observe(
+                        this.$header[0]
+                    );
+
+                }
+
+            }
+
+            /* =====================================================
+               REQUEST UPDATE
+            ===================================================== */
+
+            requestUpdate() {
+
+                if (!this.isInitialized) {
+                    return;
+                }
+
+                if (this.frameId !== null) {
+                    return;
+                }
+
+                this.frameId = requestAnimationFrame(() => {
+
+                    this.frameId = null;
+
+                    this.update();
+
+                });
+
+            }
+
+            /* =====================================================
+               UPDATE
+            ===================================================== */
+
+            update() {
+
+                if (!this.isInitialized) {
+                    return;
+                }
+
+                if (!this.config.enabled) {
+
+                    this.unstick();
+
+                    return;
+
+                }
+
+                const anchorRect = this.$anchor[0]
+                    .getBoundingClientRect();
+
+                const top = this.getTop();
+
+                const shouldStick = anchorRect.top <= top;
+
+                if (shouldStick) {
+
+                    this.stick(top, anchorRect);
+
+                } else {
+
+                    this.unstick();
+
+                }
+
+            }
+
+            /* =====================================================
+               STICK
+            ===================================================== */
+
+            stick(top, anchorRect) {
+
+                const wasStuck = this.isStuck;
+
+                this.$wrapper[0].style.setProperty(
+
+                    '--shop-filters-top',
+
+                    `${top}px`
+
+                );
+
+                this.$wrapper[0].style.setProperty(
+
+                    '--shop-filters-left',
+
+                    `${anchorRect.left}px`
+
+                );
+
+                this.$wrapper[0].style.setProperty(
+
+                    '--shop-filters-width',
+
+                    `${anchorRect.width}px`
+
+                );
+
+                this.$wrapper.css(
+
+                    'z-index',
+
+                    this.config.zIndex
+
+                );
+
+                // Reservar espacio antes de aplicar position: fixed.
+                if (!wasStuck) {
+
+                    this.$anchor.height(
+                        this.$wrapper.outerHeight()
+                    );
+
+                }
+
+                this.$wrapper.addClass(
+                    this.config.stuckClass
+                );
+
+                // Actualizar altura si aparecen subcategorías.
+                const height = this.$wrapper.outerHeight();
+
+                if (Math.abs(this.$anchor.height() - height) > 0.5) {
+
+                    this.$anchor.height(height);
+
+                }
+
+                this.isStuck = true;
+
+                if (!wasStuck) {
+
+                    this.emit('shop:filters:stuck', {
+
+                        isStuck: true,
+
+                        top: top,
+
+                        height: height
+
+                    });
+
+                }
+
+            }
+
+            /* =====================================================
+               UNSTICK
+            ===================================================== */
+
+            unstick() {
+
+                if (!this.$wrapper.length) {
+                    return;
+                }
+
+                const wasStuck = this.isStuck;
+
+                this.$wrapper.removeClass(
+                    this.config.stuckClass
+                );
+
+                this.$wrapper.css('z-index', '');
+
+                this.$anchor.css('height', '');
+
+                this.isStuck = false;
+
+                if (wasStuck) {
+
+                    this.emit('shop:filters:unstuck', {
+
+                        isStuck: false
+
+                    });
+
+                }
+
+            }
+
+            /* =====================================================
+               REFRESH
+            ===================================================== */
+
+            refresh() {
+
+                this.requestUpdate();
+
+                return this;
+
+            }
+
+            /* =====================================================
+               ENABLE
+            ===================================================== */
+
+            enable() {
+
+                this.config.enabled = true;
+
+                this.$wrapper.addClass(
+                    this.config.stickyClass
+                );
+
+                this.refresh();
+
+                return this;
+
+            }
+
+            /* =====================================================
+               DISABLE
+            ===================================================== */
+
+            disable() {
+
+                this.config.enabled = false;
+
+                this.unstick();
+
+                this.$wrapper.removeClass(
+                    this.config.stickyClass
+                );
+
+                return this;
+
+            }
+
+            /* =====================================================
+               EMIT EVENTS
+            ===================================================== */
+
+            emit(eventName, data = {}) {
+
+                this.$container.trigger(
+
+                    eventName,
+
+                    [data]
+
+                );
+
+            }
+
+            /* =====================================================
+               DESTROY
+            ===================================================== */
+
+            destroy() {
+
+                if (!this.isInitialized) {
+                    return;
+                }
+
+                $(this.config.scrollContainer).off(
+                    this.eventNamespace
+                );
+
+                $(window).off(
+                    this.eventNamespace
+                );
+
+                if (this.resizeObserver) {
+
+                    this.resizeObserver.disconnect();
+
+                    this.resizeObserver = null;
+
+                }
+
+                if (this.frameId !== null) {
+
+                    cancelAnimationFrame(this.frameId);
+
+                    this.frameId = null;
+
+                }
+
+                this.unstick();
+
+                // Restaurar los elementos a su posición original.
+                this.originalPositions.forEach(item => {
+
+                    if (item.placeholder.parentNode) {
+
+                        item.element.detach();
+
+                        item.placeholder.parentNode.insertBefore(
+
+                            item.element[0],
+
+                            item.placeholder
+
+                        );
+
+                        item.placeholder.remove();
+
+                    }
+
+                });
+
+                this.$anchor.remove();
+
+                this.originalPositions = [];
+
+                this.isInitialized = false;
+
+            }
+
+        }
+    </script>
     <script>
         var $urlRouteBusiness = '{{$urlRouteBusiness}}';
 

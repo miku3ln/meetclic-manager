@@ -99,6 +99,7 @@ class ProductController extends PointSalesBaseController
                 'business_id' => $params["business_id"],
             ]
         ];
+        $filters["filters"]["type"] = "SHOP";
         $data = $this->service->getProducts($filters);
         $this->user = $request->get('auth_user');
         return response()->json($data);

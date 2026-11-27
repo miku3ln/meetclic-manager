@@ -183,9 +183,10 @@ class ProductSalesRepository extends BaseRepository
                 $params
             );
     }
+
     public function generateMovementProduct($params)
     {
-       return $this->serviceStock->generateMovementProduct($params);
+        return $this->serviceStock->generateMovementProduct($params);
     }
 
     public function getProductRecipeYield($params)
@@ -696,6 +697,10 @@ class ProductSalesRepository extends BaseRepository
             */
 
             ->where('pscfg.visible', 1);
+        if ($type === 'SHOP') {//SHOP WEB
+            $query->where('pscfg.allow_shop', 1);
+               // ->where('pscfg.allow_pos', 1);
+        }
         /*
         |--------------------------------------------------------------------------
         | SELECT

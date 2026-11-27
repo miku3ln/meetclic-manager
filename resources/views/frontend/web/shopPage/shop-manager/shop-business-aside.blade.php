@@ -113,30 +113,149 @@
 
             <!-- SCHEDULE -->
 
+            <!-- HORARIOS -->
             <div
-                class="shop-business-aside__item"
+                class="shop-business-aside__schedule"
                 v-if="shopManager.businessAside.config.showSchedule"
+                :class="{
+        'shop-business-aside__schedule--expanded':
+            shopManager.businessAside.state.scheduleExpanded
+    }"
             >
 
-                <div class="shop-business-aside__item-icon">
+                <!-- ACCORDION HEADER -->
+                <button
+                    type="button"
+                    class="shop-business-aside__item
+               shop-business-aside__schedule-trigger"
+                    @click="toggleBusinessAsideSchedule"
+                    :aria-expanded="
+            shopManager.businessAside.state.scheduleExpanded
+        "
+                >
 
-                    <i class="bi bi-clock"></i>
+                    <div class="shop-business-aside__item-icon">
 
-                </div>
+                        <i class="bi bi-clock"></i>
 
-                <div class="shop-business-aside__item-content">
+                    </div>
+
+                    <div class="shop-business-aside__item-content">
+
+            <span
+                class="shop-business-aside__item-title"
+                v-text="shopManager.businessAside.translations.schedule"
+            ></span>
+
+                        <span
+                            class="shop-business-aside__item-description"
+                            v-text="
+                    shopManager.businessAside.data.schedule.text ||
+                    shopManager.businessAside.data.schedule.label
+                "
+                        ></span>
+
+                    </div>
+
+                    <!-- CHEVRON -->
+                    <div class="shop-business-aside__schedule-arrow">
+
+                        <i class="bi bi-chevron-down"></i>
+
+                    </div>
+
+                </button>
+
+                <!-- ACCORDION CONTENT -->
+                <transition name="shop-schedule">
+
+                    <div
+                        class="shop-business-aside__schedule-content"
+                        v-if="shopManager.businessAside.state.scheduleExpanded"
+                    >
+
+                        <!-- ESTADO ACTUAL -->
+                        <div class="shop-business-aside__schedule-header">
+
+                <span class="shop-business-aside__schedule-heading">
+                    Horario de atención
+                </span>
+
+                            <span
+                                class="shop-business-aside__schedule-status"
+                                :class="
+                        'shop-business-aside__schedule-status--' +
+                        shopManager.businessAside.data.schedule.status.toLowerCase()
+                    "
+                            >
+
+                    <i class="bi bi-circle-fill"></i>
 
                     <span
-                        class="shop-business-aside__item-title"
-                        v-text="shopManager.businessAside.translations.schedule"
+                        v-text="shopManager.businessAside.data.schedule.label"
                     ></span>
 
-                    <span
-                        class="shop-business-aside__item-description"
-                        v-text="shopManager.businessAside.data.schedule.text"
-                    ></span>
+                </span>
 
-                </div>
+                        </div>
+
+                        <!-- LISTADO DE HORARIOS -->
+                        <div
+                            class="shop-business-aside__schedule-list"
+                            v-if="shopManager.businessAside.data.schedule.data.length"
+                        >
+
+                            <div
+                                class="shop-business-aside__schedule-day"
+                                v-for="day in shopManager.businessAside.data.schedule.data"
+                                :key="day.id"
+                                :class="{
+                        'shop-business-aside__schedule-day--today':
+                            day.is_today,
+
+                        'shop-business-aside__schedule-day--closed':
+                            !day.intervals.length
+                    }"
+                            >
+
+                                <!-- DÍA -->
+                                <div class="shop-business-aside__schedule-day-name">
+
+                                    <span v-text="day.day"></span>
+
+                                    <small v-if="day.is_today">
+                                        (Hoy)
+                                    </small>
+
+                                </div>
+
+                                <!-- HORARIO -->
+                                <span
+                                    class="shop-business-aside__schedule-day-time"
+                                    v-text="day.text"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- SIN HORARIOS -->
+                        <div
+                            class="shop-business-aside__schedule-empty"
+                            v-else
+                        >
+
+                            <i class="bi bi-calendar-x"></i>
+
+                            <span>
+                    El negocio aún no ha configurado sus horarios.
+                </span>
+
+                        </div>
+
+                    </div>
+
+                </transition>
 
             </div>
 

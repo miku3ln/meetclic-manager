@@ -738,6 +738,8 @@
                 },
             },
             mounted: async function () {
+
+
                 var once = {
                     lat: defaultLatLng[0],
                     lng: defaultLatLng[1]
@@ -754,19 +756,18 @@
                 appThis = this;
                 window.addEventListener('keydown', this.onEscClose);
                 var dataBusiness = $dataManagerPage.dataBusinessInformation.businessData;
+
+                var configurationSchedule = this.mapperDataScheduleBusiness($dataManagerPage.dataBusinessInformation.dataSchedules);
+                console.log("hola--------",configurationSchedule);
                 this.businessInformation.information.title = dataBusiness["title"];
                 var businessId = dataBusiness["id"];
                 this.businessInformation.information.id = businessId;
                 this.businessInformation.information.url = $urlRouteBusiness + "/" + businessId;
-
                 this.businessInformation.information.source = $publicAsset + dataBusiness["source"];
-
                 this.businessInformation.subcategory.title = dataBusiness["business_subcategories"];
                 this.businessInformation.subcategory.id = dataBusiness["business_subcategories_id"];
-
                 this.businessInformation.category.title = dataBusiness["business_categories"];
                 this.businessInformation.category.id = dataBusiness["business_categories_id"];
-
                 var linksManagement = [
                     {
                         id: -1,
@@ -806,10 +807,7 @@
                     }
                 ];
                 this.businessInformation.linksManagement = linksManagement;
-
-
                 this.$nextTick(() => {
-
                     this.mountShopBusinessAside();
 
                     this.initShopBusinessAsideEvents();
@@ -830,7 +828,6 @@
 
             beforeDestroy() {
                 window.removeEventListener('keydown', this.onEscClose);
-
                 this.destroyShopBusinessAsideEvents();
             },
             data: {
@@ -910,8 +907,13 @@
 
                 },
                 shopManager: {
-                    businessAside: {
 
+                    businessAside: {
+                        state: {
+                            scheduleExpanded: false
+                        },
+
+                        showSchedule: true,
                         visible: false,
 
                         data: null,
@@ -967,12 +969,10 @@
                     header: {
 
                         schedule: {
-
                             status: 'UNKNOWN',
-
                             label: 'Sin horario',
-
-                            text: ''
+                            text: '',
+                            data: []
 
                         },
 
@@ -1051,6 +1051,246 @@
                 _resetManagerGrid: _resetManagerGrid,
                 _managerMenuGrid: _managerMenuGrid,
                 _gridManager: _gridManager,
+                toggleBusinessAsideSchedule: function () {
+console.log("toggleBusinessAsideSchedule");
+                    const state = this.shopManager.businessAside.state;
+
+                    state.scheduleExpanded = !state.scheduleExpanded;
+
+                },
+
+                resetBusinessAsideSchedule: function () {
+
+                    this.shopManager.businessAside.state.scheduleExpanded = false;
+
+                },
+                mapperDataScheduleBusiness: function (data) {
+
+                    const schedule = {
+                        status: 'UNKNOWN',
+                        label: 'Sin horario',
+                        text: '',
+                        data: []
+                    };
+
+                    // ==========================================
+                    // 1. VALIDAR INFORMACIÓN
+                    // ==========================================
+
+                    if (!Array.isArray(data) || !data.length) {
+                        this.shopManager.header.schedule = schedule;
+                        return schedule;
+                    }
+
+                    // ==========================================
+                    // 2. OBTENER DÍA Y HORA ACTUAL
+                    // Zona horaria de Ecuador continental
+                    // ==========================================
+
+                    const now = new Date();
+
+                    const parts = new Intl.DateTimeFormat('en-US', {
+                        timeZone: 'America/Guayaquil',
+                        weekday: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hourCycle: 'h23'
+                    }).formatToParts(now);
+
+                    const getPart = (type) => {
+                        return parts.find(item => item.type === type)?.value;
+                    };
+
+                    const days = [
+                        'Mon', 'Tue', 'Wed', 'Thu',
+                        'Fri', 'Sat', 'Sun'
+                    ];
+
+                    const currentDay = days.indexOf(getPart('weekday'));
+
+                    const currentTime = [
+                        getPart('hour'),
+                        getPart('minute'),
+                        getPart('second')
+                    ].join(':');
+
+                    // ==========================================
+                    // 3. FUNCIONES AUXILIARES
+                    // ==========================================
+
+                    const timeToSeconds = (time) => {
+                        const [hours, minutes, seconds = 0] =
+                            time.split(':').map(Number);
+
+                        return hours * 3600 + minutes * 60 + seconds;
+                    };
+
+                    const formatTime = (time) => {
+                        return time ? time.substring(0, 5) : '';
+                    };
+
+                    const isValidTime = (time) => {
+                        return typeof time === 'string' &&
+                            /^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(time);
+                    };
+
+                    const currentSeconds = timeToSeconds(currentTime);
+
+                    // ==========================================
+                    // 4. MAPEAR HORARIOS POR DÍA
+                    // ==========================================
+
+                    schedule.data = data.map(day => {
+
+                        const isActive =
+                            day.status === 'ACTIVE' &&
+                            day.modelDay === true &&
+                            day.configTypeSchedule?.type === true;
+
+                        const rawIntervals = day.configTypeSchedule?.data;
+
+                        const intervals = (
+                            isActive && Array.isArray(rawIntervals)
+                                ? rawIntervals
+                                : []
+                        )
+                            .map(item => ({
+                                start_time: item.start_time?.modelBreakdown,
+                                end_time: item.end_time?.modelBreakdown
+                            }))
+                            .filter(item =>
+                                isValidTime(item.start_time) &&
+                                isValidTime(item.end_time) &&
+                                item.start_time !== item.end_time
+                            )
+                            .sort((a, b) =>
+                                a.start_time.localeCompare(b.start_time)
+                            );
+
+                        const startTime = intervals.length
+                            ? intervals[0].start_time
+                            : null;
+
+                        // Considerar horarios que terminan al día siguiente.
+                        const getEndSeconds = (interval) => {
+
+                            const start = timeToSeconds(interval.start_time);
+                            const end = timeToSeconds(interval.end_time);
+
+                            return end < start ? end + 86400 : end;
+                        };
+
+                        const lastInterval = intervals.reduce(
+                            (last, interval) => {
+                                return !last ||
+                                getEndSeconds(interval) > getEndSeconds(last)
+                                    ? interval
+                                    : last;
+                            },
+                            null
+                        );
+
+                        const endTime = lastInterval?.end_time || null;
+
+                        return {
+                            id: day.id,
+                            day: day.text,
+                            weight_day: Number(day.weight_day),
+
+                            is_active: isActive,
+                            is_today: Number(day.weight_day) === currentDay,
+
+                            start_time: startTime,
+                            end_time: endTime,
+
+                            text: intervals.length
+                                ? `${formatTime(startTime)} - ${formatTime(endTime)}`
+                                : 'Cerrado',
+
+                            intervals: intervals
+                        };
+
+                    }).sort((a, b) => a.weight_day - b.weight_day);
+
+                    // ==========================================
+                    // 5. OBTENER HORARIO DE HOY Y AYER
+                    // ==========================================
+
+                    const today = schedule.data.find(
+                        day => day.weight_day === currentDay
+                    );
+
+                    const yesterday = schedule.data.find(
+                        day => day.weight_day === (currentDay + 6) % 7
+                    );
+
+                    // ==========================================
+                    // 6. VERIFICAR SI ESTÁ ABIERTO
+                    // ==========================================
+
+                    const isOpenToday = today?.intervals.some(interval => {
+
+                        const start = timeToSeconds(interval.start_time);
+                        const end = timeToSeconds(interval.end_time);
+
+                        // Horario normal.
+                        if (end > start) {
+                            return currentSeconds >= start &&
+                                currentSeconds < end;
+                        }
+
+                        // Horario que continúa después de medianoche.
+                        return currentSeconds >= start;
+
+                    }) || false;
+
+                    const isOpenFromYesterday = yesterday?.intervals.some(interval => {
+
+                        const start = timeToSeconds(interval.start_time);
+                        const end = timeToSeconds(interval.end_time);
+
+                        return end < start && currentSeconds < end;
+
+                    }) || false;
+
+                    const isOpen = isOpenToday || isOpenFromYesterday;
+
+                    // ==========================================
+                    // 7. CONFIGURAR ESTADO FINAL
+                    // ==========================================
+
+                    schedule.status = isOpen ? 'OPEN' : 'CLOSED';
+                    schedule.label = isOpen ? 'Abierto' : 'Cerrado';
+
+                    if (today?.intervals.length) {
+
+                        schedule.text = `Hoy: ${today.text}`;
+
+                    } else if (isOpenFromYesterday) {
+
+                        const interval = yesterday.intervals.find(item => {
+                            return timeToSeconds(item.end_time) <
+                                timeToSeconds(item.start_time) &&
+                                currentSeconds < timeToSeconds(item.end_time);
+                        });
+
+                        schedule.text = `Hasta las ${formatTime(interval.end_time)}`;
+
+                    } else {
+
+                        schedule.text = 'Hoy no atiende';
+
+                    }
+
+                    // ==========================================
+                    // 8. ACTUALIZAR SHOP MANAGER
+                    // ==========================================
+
+                    this.shopManager.header.schedule = schedule;
+
+                    return schedule;
+                },
                 mountShopBusinessAside: function () {
 
                     const element = document.getElementById(
@@ -1360,13 +1600,11 @@
                     );
 
                     this.emitShopEvent(
-
                         eventName,
 
                         payload,
 
                         target
-
                     );
 
                 },
@@ -1483,13 +1721,11 @@
                     };
 
                     this.emitShopEvent(
-
                         'header:business:click',
 
                         payload,
 
                         event.currentTarget
-
                     );
 
                 },
@@ -1698,7 +1934,7 @@
 
                             text: schedule.text || translations.noSchedule,
 
-                            items: []
+                            data: schedule.data
 
                         },
 
@@ -2044,9 +2280,20 @@
 
                 },
                 initGridManager: function (vmCurrent) {
+                    var shopFiltersStickyManager = new ShopFiltersStickyManager({
+                        containerSelector: '.content-manager-grid',
+                        gridHeaderSelector: '#grid-registers-grid-header',
+                        filtersSelector: '.filters-sections',
+                        productsSelector: '#grid-registers-grid',
+                        headerSelector: '.main-header',
+                        autoTop: true,
+                        offset: 0,
+                        zIndex: 1020,
+                        enabled: true
+
+                    });
 
                     const vm = this;
-
                     const gridName = this.gridConfig.selectorCurrent;
                     const urlCurrent = this.gridConfig.url;
 
@@ -2081,6 +2328,8 @@
                             console.log("sadd");
                             // REGISTER PRODUCT EVENTS
                             vm.bindProductCardEvents(gridInit);
+
+                            shopFiltersStickyManager.init();
 
                         }
                     );
