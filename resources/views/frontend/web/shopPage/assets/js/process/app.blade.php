@@ -1,5 +1,4 @@
 <script id="owl-manager">
-
     function generateCategoriesCarousel(params = {}) {
 
         const categories = params.categories || [];
@@ -284,15 +283,12 @@
     */
 
     function initOwlCarousel($carousel, options = {}) {
-
         const config = {
-
             loop: false,
             nav: true,
             dots: false,
             margin: 10,
             autoWidth: true,
-
             responsive: {
                 0: {
                     items: 2
@@ -309,7 +305,6 @@
         };
 
         $carousel.owlCarousel(config);
-
         /*
         |--------------------------------------------------------------------------
         | MOUSE WHEEL
@@ -474,126 +469,7 @@
         });
     }
 
-    function pushIf(arr, cond, html) {
-        if (cond) arr.push(html);
-    }
 
-    function getActionType(task) {
-        var url = String(task.url_manager || "");
-        var code = String(task.code || "").toUpperCase();
-        if (url.indexOf("whatsapp") >= 0 || code.indexOf("WHATSAPP") >= 0) return "WHATSAPP";
-        if (url.indexOf("qr_") >= 0 || code.indexOf("QR") >= 0) return "QR";
-        if (code.indexOf("FORM") >= 0 || url.indexOf("register") >= 0) return "FORM";
-        if (Number(task.is_url) === 1) return "CLICK";
-        return "IN_APP";
-    }
-
-    // ✅ usa t.action
-    function actionLabel(t, task) {
-        var type = getActionType(task);
-        if (type === "WHATSAPP") return {icon: "fa-whatsapp", text: t.action.open_whatsapp};
-        if (type === "QR") return {icon: "fa-qrcode", text: t.action.scan_qr};
-        if (type === "FORM") return {icon: "fa-pencil-square-o", text: t.action.open_form};
-        if (type === "CLICK") return {icon: "fa-external-link", text: t.action.open};
-        return {icon: "fa-check", text: t.action.complete};
-    }
-
-    function escapeHtml(s) {
-        return String(s || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    function safeJsonParse(str) {
-        try {
-            if (!str) return null;
-            if (typeof str === "object") return str;
-            return JSON.parse(str);
-        } catch (e) {
-            return null;
-        }
-    }
-
-
-    function sanitizeUrl(url) {
-        url = String(url || "").trim();
-        if (!url) return "";
-        if (url.indexOf("/") === 0) return url;
-        if (/^https?:\/\//i.test(url)) return url;
-        return "";
-    }
-
-    function safeDomId(s) {
-        return String(s || "")
-            .replace(/[^a-zA-Z0-9_-]/g, "_")
-            .slice(0, 80);
-    }
-
-    function buildList(items) {
-        if (!items || !items.length) return "";
-        var li = items.map(function (x) {
-            return "<li>" + escapeHtml(x) + "</li>";
-        }).join("");
-        return '<ul class="mc-list">' + li + '</ul>';
-    }
-
-    function limitLabel(p, t) {
-        var type = String(p.frequency_limit_type || "").toUpperCase();
-        var vRaw = p.frequency_limit_value;
-
-        // Normaliza: si viene null/undefined => 1
-        var v = Number(vRaw);
-        if (isNaN(v) || v <= 0) v = 1;
-
-        // Helper: reemplaza :value o {value}
-        function applyValue(template, value) {
-            template = String(template || "");
-            return template
-                .replace(/:value/g, String(value))
-                .replace(/\{value\}/g, String(value));
-        }
-
-        // Si no está definido el tipo
-        if (!type) {
-            return (t.limit && t.limit.not_defined) ? t.limit.not_defined : "Not defined";
-        }
-
-        // Tipos directos
-        if (type === "UNLIMITED") return (t.limit && t.limit.unlimited) ? t.limit.unlimited : "Unlimited";
-        if (type === "ONCE") return (t.limit && t.limit.only_once) ? t.limit.only_once : "Only once";
-
-        // Plantillas con placeholder (ya NO concatenamos)
-        if (type === "DAILY") {
-            return applyValue((t.limit && t.limit.per_day) ? t.limit.per_day : ":value use per day", v);
-        }
-        if (type === "WEEKLY") {
-            return applyValue((t.limit && t.limit.per_week) ? t.limit.per_week : ":value use per week", v);
-        }
-        if (type === "MONTHLY") {
-            return applyValue((t.limit && t.limit.per_month) ? t.limit.per_month : ":value use per month", v);
-        }
-        if (type === "TOTAL_LIMIT") {
-            return applyValue((t.limit && t.limit.total_limit) ? t.limit.total_limit : ":value use in total", v);
-        }
-
-        // Fallback final
-        return (t.limit && t.limit.not_defined) ? t.limit.not_defined : "Not defined";
-    }
-
-    function validityLabel(p, t) {
-        var vf = p.valid_from;
-        var vu = p.valid_until;
-
-        if (!vf && !vu) return (t.validity && t.validity.always) ? t.validity.always : "Always available";
-        if (vf && !vu) return ((t.validity && t.validity.from) ? t.validity.from : "Available from") + " " + vf;
-        if (!vf && vu) return ((t.validity && t.validity.until) ? t.validity.until : "Available until") + " " + vu;
-
-        return ((t.validity && t.validity.between) ? t.validity.between : "Available between") + " " + vf + " - " + vu;
-
-    }
 </script>
 
 <script id="app-script">
@@ -883,7 +759,7 @@
                 this.businessInformation.information.id = businessId;
                 this.businessInformation.information.url = $urlRouteBusiness + "/" + businessId;
 
-                this.businessInformation.information.source = $publicAsset+dataBusiness["source"];
+                this.businessInformation.information.source = $publicAsset + dataBusiness["source"];
 
                 this.businessInformation.subcategory.title = dataBusiness["business_subcategories"];
                 this.businessInformation.subcategory.id = dataBusiness["business_subcategories_id"];
@@ -932,6 +808,13 @@
                 this.businessInformation.linksManagement = linksManagement;
 
 
+                this.$nextTick(() => {
+
+                    this.mountShopBusinessAside();
+
+                    this.initShopBusinessAsideEvents();
+
+                });
             },
             el: '#app-management',
             created: async function () {
@@ -947,6 +830,8 @@
 
             beforeDestroy() {
                 window.removeEventListener('keydown', this.onEscClose);
+
+                this.destroyShopBusinessAsideEvents();
             },
             data: {
                 //MENU
@@ -1023,6 +908,142 @@
                         {id: -1, title: '', icon: '', link: ''}
                     ],
 
+                },
+                shopManager: {
+                    businessAside: {
+
+                        visible: false,
+
+                        data: null,
+
+                        config: {
+                            showShare: true,
+                            showSchedule: true,
+                            showLocation: true,
+                            showContact: true,
+                            showReviews: true,
+                            showPromotions: true,
+                            showBenefits: true,
+
+                            // Permite mostrar datos de prueba.
+                            useMockData: true
+
+                        },
+
+                        translations: {
+                            share: 'Compartir',
+
+                            shareDescription: 'Comparte esta tienda por WhatsApp',
+
+                            shareTitle: 'Descubre {business} en Yapita',
+
+                            shareMessage: 'Explora sus productos, promociones y beneficios.',
+                            close: 'Cerrar',
+
+                            schedule: 'Horarios',
+                            location: 'Ubicación',
+                            contact: 'Contacto',
+                            reviews: 'Reseñas',
+                            promotions: 'Promociones',
+                            benefits: 'Beneficios Yapita',
+
+                            noSchedule: 'Horario no disponible',
+                            noLocation: 'Ubicación no disponible',
+                            noContact: 'Contacto no disponible',
+                            noReviews: 'Todavía no tiene reseñas',
+                            noPromotions: 'No hay promociones disponibles',
+
+                            copy: 'Copiar',
+                            copied: 'Copiado',
+
+                            viewLocation: 'Ver ubicación',
+                            viewReviews: 'Ver reseñas',
+
+                            mock: 'Demostración'
+
+                        }
+
+                    },
+                    header: {
+
+                        schedule: {
+
+                            status: 'UNKNOWN',
+
+                            label: 'Sin horario',
+
+                            text: ''
+
+                        },
+
+                        translations: {
+
+                            open: 'Abierto',
+
+                            closed: 'Cerrado',
+
+                            unknown: 'Sin horario',
+
+                            more: 'Información del negocio'
+
+                        }
+
+                    },
+                    catalog: {
+
+                        card: {
+
+                            showCategory: true,
+
+                            showDescription: true,
+
+                            showFavorite: false,
+
+                            showAdd: true,
+
+                            showPoints: false,
+
+                            showDiscount: true,
+
+                            showOldPrice: true,
+
+                            showTaxLabel: false,
+
+                            showStock: false,
+
+                            showCode: false,
+
+                            imageMode: 'cover',
+
+                            fallbackImage: '/images/default-product.png'
+
+                        },
+
+                        translations: {
+
+                            noName: 'Sin nombre',
+
+                            add: 'Agregar',
+
+                            favorite: 'Agregar a favoritos',
+
+                            viewProduct: 'Ver producto',
+
+                            withTax: 'Con IVA',
+
+                            withoutTax: 'Sin IVA',
+
+                            unknownTax: 'IVA no definido',
+
+                            stock: 'Stock',
+
+                            points: 'Yapitas',
+
+                            unavailablePrice: 'Consultar precio'
+
+                        }
+                    }
+
                 }
             },
             methods: {
@@ -1030,6 +1051,34 @@
                 _resetManagerGrid: _resetManagerGrid,
                 _managerMenuGrid: _managerMenuGrid,
                 _gridManager: _gridManager,
+                mountShopBusinessAside: function () {
+
+                    const element = document.getElementById(
+                        'shop-business-aside'
+                    );
+
+                    if (!element) {
+
+                        console.warn(
+                            'ShopBusinessAside: element not found'
+                        );
+
+                        return;
+
+                    }
+
+                    if (element.parentElement !== document.body) {
+
+                        document.body.appendChild(element);
+
+                    }
+
+                    console.log(
+                        'ShopBusinessAside mounted:',
+                        element
+                    );
+
+                },
                 onProcessBusiness: function (params) {
 
                     window.open(params.link, '_blank');
@@ -1095,6 +1144,690 @@
                     let gridInit = $(gridName);
                     gridInit.bootgrid("reload");
                 },
+                closeShopBusinessAside: function () {
+
+                    const element = document.getElementById(
+                        'shop-business-aside'
+                    );
+
+                    if (!element) {
+                        return;
+                    }
+
+                    const instance =
+                        bootstrap.Offcanvas.getInstance(element);
+
+                    if (instance) {
+
+                        instance.hide();
+
+                    }
+
+                },
+                destroyShopBusinessAsideEvents: function () {
+
+                    $(document).off('.shopBusinessAside');
+
+                    const element = document.getElementById(
+                        'shop-business-aside'
+                    );
+
+                    if (!element) {
+                        return;
+                    }
+
+                    $(element).off('.shopBusinessAside');
+
+                    const instance =
+                        bootstrap.Offcanvas.getInstance(element);
+
+                    if (instance) {
+
+                        instance.dispose();
+
+                    }
+
+                },
+                setShopScrollLock: function (locked = true) {
+
+                    const className = 'shop-manager--scroll-locked';
+
+                    document.documentElement.classList.toggle(
+                        className,
+                        locked
+                    );
+
+                    document.body.classList.toggle(
+                        className,
+                        locked
+                    );
+
+                },
+                initShopBusinessAsideEvents: function () {
+
+                    const vm = this;
+
+                    const namespace = '.shopBusinessAside';
+
+                    const eventName = 'shop:header:business:click';
+
+                    // ==========================================
+                    // HEADER EVENT
+                    // ==========================================
+
+                    $(document)
+                        .off(eventName + namespace)
+                        .on(eventName + namespace, function (event) {
+
+                            const payload = event.originalEvent?.detail || {};
+
+                            vm.openShopBusinessAside(payload.aside);
+
+                        });
+
+                    // ==========================================
+                    // ASIDE ELEMENT
+                    // ==========================================
+
+                    const element = document.getElementById(
+                        'shop-business-aside'
+                    );
+
+                    if (!element) {
+                        return;
+                    }
+
+                    const $aside = $(element);
+
+                    $aside.off(namespace);
+
+                    // ==========================================
+                    // BEFORE OPEN
+                    // ==========================================
+
+                    $aside.on(
+                        'show.bs.offcanvas' + namespace,
+                        function () {
+
+                            vm.setShopScrollLock(true);
+
+                        }
+                    );
+
+                    // ==========================================
+                    // AFTER OPEN
+                    // ==========================================
+
+                    $aside.on(
+                        'shown.bs.offcanvas' + namespace,
+                        function () {
+
+                            vm.shopManager.businessAside.visible = true;
+
+                            vm.emitShopEvent(
+                                'aside:opened',
+                                {
+                                    component: 'businessAside',
+                                    business: vm.shopManager.businessAside.data.business,
+                                    data: vm.shopManager.businessAside.data
+                                },
+                                element
+                            );
+
+                        }
+                    );
+
+                    // ==========================================
+                    // AFTER CLOSE
+                    // ==========================================
+
+                    $aside.on(
+                        'hidden.bs.offcanvas' + namespace,
+                        function () {
+
+                            vm.setShopScrollLock(false);
+
+                            vm.shopManager.businessAside.visible = false;
+
+                            vm.emitShopEvent(
+                                'aside:closed',
+                                {
+                                    component: 'businessAside',
+                                    data: vm.shopManager.businessAside.data
+                                },
+                                element
+                            );
+
+                        }
+                    );
+
+                },
+                onShopBusinessAsideAction: function (
+                    action,
+                    item = null
+                ) {
+
+                    const data = this.shopManager.businessAside.data;
+
+                    if (!data) {
+                        return;
+                    }
+
+                    const events = {
+
+                        location: 'aside:location:click',
+
+                        'copy-phone': 'aside:contact:copy',
+
+                        whatsapp: 'aside:contact:whatsapp',
+                        'share-whatsapp': 'aside:share:whatsapp',
+
+                        reviews: 'aside:reviews:click',
+
+                        promotion: 'aside:promotion:click',
+
+                        benefit: 'aside:benefit:click'
+
+                    };
+
+                    const eventName = events[action];
+
+                    if (!eventName) {
+                        return;
+                    }
+
+                    const payload = {
+
+                        component: 'businessAside',
+
+                        action: action,
+
+                        businessId: data.business.id,
+
+                        business: data.business,
+
+                        item: item,
+
+                        data: data,
+                        share: action === 'share-whatsapp'
+                            ? this.getShopShareData()
+                            : null
+
+                    };
+
+                    const target = document.getElementById(
+                        'shop-business-aside'
+                    );
+
+                    this.emitShopEvent(
+
+                        eventName,
+
+                        payload,
+
+                        target
+
+                    );
+
+                },
+                getShopShareData: function () {
+
+                    const business = this.businessInformation.information;
+
+                    const translations =
+                        this.shopManager.businessAside.translations;
+
+                    const title = translations.shareTitle.replace(
+                        '{business}',
+                        business.title
+                    );
+
+                    return {
+
+                        businessId: business.id,
+
+                        title: title,
+
+                        description: translations.shareMessage,
+
+                        url: window.location.href
+
+                    };
+
+                },
+                getShopAsideStarClass: function (star, rating) {
+
+                    if (rating >= star) {
+
+                        return 'bi bi-star-fill';
+
+                    }
+
+                    if (rating >= star - 0.5) {
+
+                        return 'bi bi-star-half';
+
+                    }
+
+                    return 'bi bi-star';
+
+                },
+                openShopBusinessAside: function (data = null) {
+
+                    const vm = this;
+
+                    this.shopManager.businessAside.data =
+                        data || this.getShopBusinessAsideData();
+
+                    this.$nextTick(() => {
+
+                        vm.mountShopBusinessAside();
+
+                        const element = document.getElementById(
+                            'shop-business-aside'
+                        );
+
+                        if (!element) {
+                            return;
+                        }
+
+                        const instance =
+                            bootstrap.Offcanvas.getOrCreateInstance(
+                                element,
+                                {
+                                    backdrop: true,
+                                    keyboard: true,
+                                    scroll: false
+                                }
+                            );
+
+                        instance.show();
+
+                        const backdrops = document.querySelectorAll(
+                            '.offcanvas-backdrop'
+                        );
+
+                        const backdrop = backdrops[backdrops.length - 1];
+
+                        if (backdrop) {
+
+                            backdrop.classList.add(
+                                'shop-business-aside-backdrop'
+                            );
+
+                        }
+
+                    });
+
+                },
+                onShopHeaderClick: function (event) {
+
+                    const asideData = this.getShopBusinessAsideData();
+
+                    const payload = {
+
+                        component: 'header',
+
+                        action: 'open-business',
+
+                        business: this.businessInformation,
+
+                        businessId: asideData.business.id,
+
+                        schedule: {
+                            ...this.shopManager.header.schedule
+                        },
+
+                        aside: asideData
+
+                    };
+
+                    this.emitShopEvent(
+
+                        'header:business:click',
+
+                        payload,
+
+                        event.currentTarget
+
+                    );
+
+                },
+                getShopBusinessAsideData: function () {
+
+                    const businessInformation = this.businessInformation;
+
+                    const businessData =
+                        $dataManagerPage.dataBusinessInformation.businessData || {};
+
+                    const schedule = this.shopManager.header.schedule;
+
+                    const config = this.shopManager.businessAside.config;
+
+                    const translations =
+                        this.shopManager.businessAside.translations;
+
+                    // ==========================================
+                    // LOCATION
+                    // ==========================================
+
+                    const address = [
+
+                        [
+                            businessData.street_1,
+                            businessData.street_2
+
+                        ].filter(Boolean).join(' y '),
+
+                        businessData.city,
+
+                        businessData.province?.trim()
+
+                    ].filter(Boolean).join(', ');
+
+                    const latitude = Number(businessData.street_lat);
+
+                    const longitude = Number(businessData.street_lng);
+
+                    const hasLocation =
+
+                        businessData.street_lat != null &&
+
+                        businessData.street_lng != null &&
+
+                        businessData.street_lat !== '' &&
+
+                        businessData.street_lng !== '' &&
+
+                        Number.isFinite(latitude) &&
+
+                        Number.isFinite(longitude) &&
+
+                        Math.abs(latitude) <= 90 &&
+
+                        Math.abs(longitude) <= 180;
+
+                    const mapsUrl = hasLocation
+
+                        ? `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+
+                        : null;
+
+                    // ==========================================
+                    // PHONE
+                    // ==========================================
+
+                    const phoneCode = String(
+                        businessData.phone_code || ''
+                    ).replace(/\D/g, '');
+
+                    const phoneValue = String(
+                        businessData.phone_value || ''
+                    ).replace(/\D/g, '');
+
+                    let internationalPhone = '';
+
+                    if (phoneValue) {
+
+                        internationalPhone = phoneCode
+
+                            ? '+' + (
+                            phoneValue.startsWith(phoneCode)
+                                ? phoneValue
+                                : phoneCode + phoneValue.replace(/^0+/, '')
+                        )
+
+                            : phoneValue;
+
+                    }
+
+                    // ==========================================
+                    // REVIEWS
+                    // ==========================================
+
+                    const rating = Number(
+                        businessInformation.starManagement?.count || 0
+                    );
+
+                    const totalReviews = Number(
+                        businessInformation.starManagement?.numberPerson || 0
+                    );
+
+                    // ==========================================
+                    // BUSINESS LINKS
+                    // ==========================================
+
+                    const links = businessInformation.linksManagement || [];
+
+                    // ==========================================
+                    // PROMOTIONS
+                    // TODO: CONNECT REAL SERVICE
+                    // ==========================================
+
+                    let promotions = [];
+
+                    if (config.useMockData) {
+
+                        promotions = [
+
+                            {
+                                id: 'mock-1',
+
+                                name: 'Combo Trece',
+
+                                description:
+                                    'Hamburguesa + Papas + Bebida',
+
+                                image: businessInformation.information.source,
+
+                                price: 5.00,
+
+                                currency: 'USD',
+
+                                isMock: true
+
+                            }
+
+                        ];
+
+                    }
+
+                    // ==========================================
+                    // BENEFITS
+                    // ==========================================
+
+                    const benefits = [
+
+                        {
+                            id: 1,
+                            icon: 'bi bi-controller',
+                            title: 'Completa retos y gana Yapitas',
+                            action: 'games',
+                            url: links[0]?.link || null
+                        },
+
+                        {
+                            id: 2,
+                            icon: 'bi bi-ticket-perforated',
+                            title: 'Canjea por descuentos',
+                            action: 'rewards',
+                            url: links[1]?.link || null
+                        },
+
+                        {
+                            id: 3,
+                            icon: 'bi bi-gift',
+                            title: 'Participa en premios',
+                            action: 'rewards',
+                            url: links[1]?.link || null
+                        }
+
+                    ];
+
+                    // ==========================================
+                    // FINAL DATA
+                    // ==========================================
+
+                    return {
+
+                        business: {
+
+                            id: businessInformation.information.id,
+
+                            name: businessInformation.information.title,
+
+                            logo: businessInformation.information.source,
+
+                            category: businessInformation.category.title,
+
+                            subcategory: businessInformation.subcategory.title,
+
+                            description: businessData.description || '',
+
+                            url: businessInformation.information.url,
+
+                            raw: businessData
+
+                        },
+
+                        schedule: {
+
+                            status: schedule.status,
+
+                            label: schedule.label,
+
+                            text: schedule.text || translations.noSchedule,
+
+                            items: []
+
+                        },
+
+                        location: {
+
+                            address: address || translations.noLocation,
+
+                            latitude: hasLocation ? latitude : null,
+
+                            longitude: hasLocation ? longitude : null,
+
+                            city: businessData.city || '',
+
+                            province: businessData.province || '',
+
+                            country: businessData.countries || '',
+
+                            mapsUrl: mapsUrl
+
+                        },
+
+                        contact: {
+
+                            phone: internationalPhone,
+
+                            email: businessData.email || '',
+
+                            whatsapp: phoneCode && internationalPhone
+
+                                ? `https://wa.me/${internationalPhone.replace(/\D/g, '')}`
+
+                                : null
+
+                        },
+
+                        reviews: {
+
+                            rating: rating,
+
+                            total: totalReviews,
+
+                            max: 5,
+
+                            url: links[2]?.link || null
+
+                        },
+
+                        promotions: promotions,
+
+                        benefits: benefits,
+
+                        links: links,
+
+                        raw: {
+
+                            businessInformation: businessInformation,
+
+                            businessData: businessData
+
+                        }
+
+                    };
+
+                },
+
+                emitShopEvent(eventName, payload = {}, target = null) {
+
+                    const element = target || this.$el;
+
+                    const customEvent = new CustomEvent(
+                        `shop:${eventName}`,
+
+                        {
+
+                            detail: payload,
+
+                            bubbles: true
+
+                        }
+                    );
+
+                    element.dispatchEvent(customEvent);
+                    // DEBUG EVENT
+                    console.group(`🟢 ShopManager: shop:${eventName}`);
+
+                    console.log('Event:', customEvent.type);
+                    console.log('Payload:', payload);
+                    console.log('Target:', element);
+                    console.log('CustomEvent:', customEvent);
+
+                    console.groupEnd();
+                },
+                setShopHeaderSchedule(data = {}) {
+
+                    const translations =
+                        this.shopManager.header.translations;
+
+                    const statusValue = String(
+                        data.status || 'UNKNOWN'
+                    ).toUpperCase();
+
+                    const status = [
+                        'OPEN',
+                        'CLOSED'
+                    ].includes(statusValue)
+                        ? statusValue
+                        : 'UNKNOWN';
+
+                    const labels = {
+
+                        OPEN: translations.open,
+
+                        CLOSED: translations.closed,
+
+                        UNKNOWN: translations.unknown
+
+                    };
+
+                    this.shopManager.header.schedule = {
+
+                        status: status,
+
+                        label: labels[status],
+
+                        text: data.text || ''
+
+                    };
+
+                },
                 getFiltersGrid: function (request) {
                     var gridName = this.gridConfig.selectorCurrent;
                     var business_id = -1;
@@ -1118,11 +1851,208 @@
                     return result;
 
                 },
-                initGridManager: function (vmCurrent) {
-                    var gridName = this.gridConfig.selectorCurrent;
-                    var urlCurrent = this.gridConfig.url;
+                getProductCardConfig: function () {
 
-                    var cssConfig = {
+                    return this.shopManager.catalog.card;
+
+                },
+
+                getProductImage: function (source, fallback) {
+
+                    if (!source) {
+                        return fallback;
+                    }
+
+                    try {
+
+                        const url = new URL(
+                            source,
+                            document.baseURI
+                        );
+
+                        if (['http:', 'https:'].includes(url.protocol)) {
+
+                            return url.href;
+
+                        }
+
+                    } catch (error) {
+
+                        return fallback;
+
+                    }
+
+                    return fallback;
+
+                },
+                escapeProductHtml: function (value) {
+
+                    const characters = {
+
+                        '&': '&amp;',
+
+                        '<': '&lt;',
+
+                        '>': '&gt;',
+
+                        '"': '&quot;',
+
+                        "'": '&#039;'
+
+                    };
+
+                    return String(value ?? '').replace(
+                        /[&<>"']/g,
+
+                        character => characters[character]
+                    );
+
+                },
+                getProductPriceInformation: function (price = {}) {
+
+                    const rawCurrent = price?.pv;
+
+                    const rawOld = price?.pv_old;
+
+                    const current = Number(rawCurrent);
+
+                    const old = Number(rawOld);
+
+                    const hasPrice =
+
+                        rawCurrent != null &&
+
+                        rawCurrent !== '' &&
+
+                        Number.isFinite(current) &&
+
+                        current >= 0;
+
+                    const hasDiscount =
+
+                        hasPrice &&
+
+                        rawOld != null &&
+
+                        Number.isFinite(old) &&
+
+                        old > 0 &&
+
+                        old > current;
+
+                    const discount = hasDiscount
+
+                        ? Math.round(
+                            ((old - current) / old) * 100
+                        )
+
+                        : 0;
+
+                    return {
+
+                        hasPrice,
+
+                        current: hasPrice
+                            ? current
+                            : null,
+
+                        currentText: hasPrice
+                            ? `$${current.toFixed(2)}`
+                            : this.shopManager.catalog.translations.unavailablePrice,
+
+                        old: hasDiscount
+                            ? old
+                            : null,
+
+                        oldText: hasDiscount
+                            ? `$${old.toFixed(2)}`
+                            : '',
+
+                        hasDiscount,
+
+                        discount
+
+                    };
+
+                },
+                getProductTaxInformation: function (tax = null) {
+
+                    const translations =
+                        this.shopManager.catalog.translations;
+
+                    const value = String(
+                        tax?.has_tax ?? ''
+                    ).trim().toUpperCase();
+
+                    const rawPercentage = tax?.value_percentage;
+
+                    const percentage = Number(rawPercentage);
+
+                    const validPercentage =
+                        rawPercentage != null &&
+                        rawPercentage !== '' &&
+                        Number.isFinite(percentage) &&
+                        percentage >= 0;
+
+                    const config = {
+
+                        SI: {
+
+                            hasTax: true,
+
+                            modifier: 'with-tax',
+
+                            label: translations.withTax
+
+                        },
+
+                        NO: {
+
+                            hasTax: false,
+
+                            modifier: 'without-tax',
+
+                            label: translations.withoutTax
+
+                        }
+
+                    };
+
+                    const current = config[value] || {
+
+                        hasTax: null,
+
+                        modifier: 'unknown-tax',
+
+                        label: translations.unknownTax
+
+                    };
+
+                    return {
+
+                        ...current,
+
+                        percentage: validPercentage
+                            ? percentage
+                            : null,
+
+                        detail: current.hasTax === true && validPercentage
+                            ? `IVA ${percentage}%`
+                            : current.label
+
+                    };
+
+                },
+                initGridManager: function (vmCurrent) {
+
+                    const vm = this;
+
+                    const gridName = this.gridConfig.selectorCurrent;
+                    const urlCurrent = this.gridConfig.url;
+
+                    const gridInit = $(gridName);
+
+                    const cssConfig = {
                         header: "bootgrid-header",
                         table: "xywer-tbl-admin",
                         iconRefresh: "fa fa-refresh",
@@ -1131,235 +2061,542 @@
                         dropDownMenu: "dropdown",
                         dropDownMenuItems: "dropdown-menu dropdown-menu-end",
                         dropDownItem: "dropdown-item",
-                        dropDownItemButton: "dropdown-item",
-
+                        dropDownItemButton: "dropdown-item"
                     };
-                    $this = this;
-                    let gridInit = $(gridName);
-                    var labelsConfig = $labelsGridConfigDefault;
-                    $labelsGridConfigDefault['search']='Buscar';
+
+                    const labelsConfig = {
+                        ...$labelsGridConfigDefault,
+                        search: 'Buscar'
+                    };
+
+                    gridInit.on(
+                        "loaded.rs.jquery.bootgrid",
+                        function () {
+
+                            vmCurrent._resetManagerGrid();
+
+                            vmCurrent._gridManager(gridInit);
+
+                            customActionBar(gridInit);
+                            console.log("sadd");
+                            // REGISTER PRODUCT EVENTS
+                            vm.bindProductCardEvents(gridInit);
+
+                        }
+                    );
 
                     gridInit.bootgrid({
+
                         ajaxSettings: {
                             method: "POST"
                         },
+
                         ajax: true,
+
                         requestHandler: function (request) {
-                            request = $this.getFiltersGrid(request);
-                            return request;
+                            return vm.getFiltersGrid(request);
                         },
 
                         url: urlCurrent,
+
                         labels: labelsConfig,
+
                         css: cssConfig,
-                        templates: getCustomTemplatesBS5(), // 👈 AQUI ESTÁ LA CLAVE
+
+                        templates: getCustomTemplatesBS5(),
+
                         formatters: {
 
-                            'description': function (column, row) {
+                            description: function (column, row) {
 
-                                const image =
-                                    row.source ||
-                                    "/images/default-product.png";
+                                return vm.renderProductCard(row);
 
-                                const name =
-                                    row.name || "Sin nombre";
-
-                                const category =
-                                    row.category || "";
-
-                                const code =
-                                    row.code || "";
-
-                                const stock =
-                                    row.stock
-                                        ? `${row.stock.quantity} ${row.stock.unit}`
-                                        : "0";
-
-                                const subcategory =
-                                    row.subcategory || "";
-
-                                const hasTax =
-                                    row.tax?.has_tax === "SI";
-
-                                const taxPercentage =
-                                    row.tax?.value_percentage || 0;
-
-                                const priceCurrent =
-                                    Number(row.price?.pv || 0);
-
-                                const priceCurrentText =
-                                    priceCurrent.toFixed(2);
-
-                                const priceOld =
-                                    row.price?.pv_old
-                                        ? Number(row.price.pv_old)
-                                        : null;
-
-                                let discountHTML = ``;
-
-                                if (priceOld) {
-
-                                    const discount =
-                                        Math.round(
-                                            ((priceOld - priceCurrent) / priceOld) * 100
-                                        );
-
-                                    discountHTML = `
-                <span class="
-                    product-card__discount
-                ">
-                    -${discount}%
-                </span>
-            `;
-                                }
-
-                                const taxHTML = hasTax
-                                    ? `
-                <span class="
-                    product-card__tax
-                    product-card__tax--yes
-                ">
-                    IVA ${taxPercentage}%
-                </span>
-            `
-                                    : `
-                <span class="
-                    product-card__tax
-                    product-card__tax--no
-                ">
-                    SIN IVA
-                </span>
-            `;
-
-                                return `
-
-            <article class="product-card">
-
-                <!-- IMAGE -->
-
-                <div class="product-card__media">
-
-                    <img
-                        src="${image}"
-                        alt="${name}"
-                        class="product-card__image"
-                    >
-
-                    <!-- TOP -->
-
-                    <div class="product-card__top">
-                        <span class=" product-card__subcategory">
-                            ${subcategory}
-                        </span>
-
-                        <button class="
-                            product-card__favorite
-                        ">
-                            <i class="fa fa-heart"></i>
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <!-- CONTENT -->
-
-                <div class="product-card__content">
-
-                    <!-- NAME -->
-
-                    <h3 class="
-                        product-card__name
-                    ">
-                        ${name}
-                    </h3>
-
-                    <!-- DESCRIPTION -->
-
-                    <div class="
-                        product-card__description
-                    ">
-                        ${category}
-                        ·
-                        ${code}
-                        ·
-                        Stock: ${stock}
-                    </div>
-
-                    <!-- PRICES -->
-
-                    <div class="
-                        product-card__prices
-                    ">
-
-                        <span class="
-                            product-card__price
-                        ">
-                            $${priceCurrentText}
-                        </span>
-
-                        ${
-                                    priceOld
-                                        ? `
-                                    <span class="
-                                        product-card__price-old
-                                    ">
-                                        $${priceOld.toFixed(2)}
-                                    </span>
-                                `
-                                        : ``
-                                }
-
-                        ${discountHTML}
-
-                    </div>
-
-                    <!-- TAX -->
-
-                    <div class="
-                        product-card__taxes
-                    ">
-                        ${taxHTML}
-                    </div>
-
-                    <!-- YAPITAS -->
-
-                    <div class="product-card__points">
-<i class="fa fa-trophy"></i>
-                        +5 Yapitas
-                    </div>
-
-                    <!-- ACTIONS -->
-
-                    <div class="
-                        product-card__actions
-                    ">
-
-                        <button class="
-                            product-card__add
-                        ">
-                            <i class="ri-add-line"></i>
-                            Agregar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-        `;
                             }
 
                         }
-                    }).on("loaded.rs.jquery.bootgrid", function () {
-                        vmCurrent._resetManagerGrid();
-                        vmCurrent._gridManager(gridInit);
-                        customActionBar(gridInit);
+
                     });
 
                     this.initFiltersGrid();
+
                 },
+                renderProductCard: function (row) {//
+
+                    // ==========================================
+                    // CONFIG
+                    // ==========================================
+
+                    const config = this.getProductCardConfig();
+
+                    const translations =
+                        this.shopManager.catalog.translations;
+
+                    const escape = value =>
+                        this.escapeProductHtml(value);
+
+                    // ==========================================
+                    // PRODUCT INFORMATION
+                    // ==========================================
+
+                    const id = row.id ?? '';
+
+                    const name =
+                        row.name || translations.noName;
+
+                    const image = this.getProductImage(
+                        row.source,
+
+                        config.fallbackImage
+                    );
+
+                    const category = row.category || '';
+
+                    const subcategory = row.subcategory || '';
+
+                    const code = row.code || '';
+
+                    const description = row.description || '';
+
+                    const stock = row.stock
+
+                        ? `${row.stock.quantity ?? 0} ${row.stock.unit ?? ''}`
+
+                        : '';
+
+                    // ==========================================
+                    // PRICE AND TAX
+                    // ==========================================
+
+                    const tax = this.getProductTaxInformation(
+                        row.tax
+                    );
+
+                    const price = this.getProductPriceInformation(
+                        row.price
+                    );
+
+                    // ==========================================
+                    // DESCRIPTION
+                    // ==========================================
+
+                    const descriptionParts = [];
+
+                    if (description) {
+
+                        descriptionParts.push(description);
+
+                    } else if (category) {
+
+                        descriptionParts.push(category);
+
+                    }
+
+                    if (config.showCode && code) {
+
+                        descriptionParts.push(code);
+
+                    }
+
+                    if (config.showStock && stock) {
+
+                        descriptionParts.push(
+                            `${translations.stock}: ${stock}`
+                        );
+
+                    }
+
+                    const descriptionText =
+                        descriptionParts.join(' · ');
+
+                    // ==========================================
+                    // BEM MODIFIERS
+                    // ==========================================
+
+                    const modifiers = [
+
+                        'shop-product-card'
+
+                    ];
+
+                    if (config.imageMode === 'contain') {
+
+                        modifiers.push(
+                            'shop-product-card--contain'
+                        );
+
+                    }
+
+                    if (price.hasDiscount && config.showDiscount) {
+
+                        modifiers.push(
+                            'shop-product-card--promotion'
+                        );
+
+                    }
+
+                    if (config.showAdd) {
+
+                        modifiers.push(
+                            'shop-product-card--with-actions'
+                        );
+
+                    }
+
+                    // ==========================================
+                    // CATEGORY
+                    // ==========================================
+
+                    const categoryHTML =
+
+                        config.showCategory && subcategory
+
+                            ? `
+                <span class="shop-product-card__subcategory">
+                    ${escape(subcategory)}
+                </span>
+            `
+
+                            : '';
+
+                    // ==========================================
+                    // FAVORITE
+                    // ==========================================
+
+                    const favoriteHTML = config.showFavorite
+
+                        ? `
+            <button
+                type="button"
+                class="shop-product-card__favorite"
+                data-action="favorite"
+                aria-label="${escape(translations.favorite)}"
+                title="${escape(translations.favorite)}"
+            >
+                <i class="fa fa-heart" aria-hidden="true"></i>
+            </button>
+        `
+
+                        : '';
+
+                    // ==========================================
+                    // DISCOUNT
+                    // ==========================================
+
+                    const discountHTML =
+
+                        config.showDiscount && price.hasDiscount
+
+                            ? `
+                <span class="shop-product-card__discount">
+                    -${price.discount}%
+                </span>
+            `
+
+                            : '';
+
+                    // ==========================================
+                    // OLD PRICE
+                    // ==========================================
+
+                    const oldPriceHTML =
+
+                        config.showOldPrice && price.hasDiscount
+
+                            ? `
+                <span class="shop-product-card__price-old">
+                    ${escape(price.oldText)}
+                </span>
+            `
+
+                            : '';
+
+                    // ==========================================
+                    // TAX LABEL - OPTIONAL
+                    // ==========================================
+
+                    const taxHTML = config.showTaxLabel
+
+                        ? `
+            <span class="
+                shop-product-card__tax
+                shop-product-card__tax--${tax.modifier}
+            ">
+                ${escape(tax.detail)}
+            </span>
+        `
+
+                        : '';
+
+                    // ==========================================
+                    // DESCRIPTION - OPTIONAL
+                    // ==========================================
+
+                    const descriptionHTML =
+
+                        config.showDescription && descriptionText
+
+                            ? `
+                <div class="shop-product-card__description">
+                    ${escape(descriptionText)}
+                </div>
+            `
+
+                            : '';
+
+                    // ==========================================
+                    // YAPITAS - OPTIONAL
+                    // ==========================================
+
+                    const points = Number(row.points);
+
+                    const pointsHTML =
+
+                        config.showPoints &&
+                        Number.isFinite(points) &&
+                        points > 0
+
+                            ? `
+                <div class="shop-product-card__points">
+
+                    <i
+                        class="fa fa-trophy"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        +${points}
+                        ${escape(translations.points)}
+                    </span>
+
+                </div>
+            `
+
+                            : '';
+
+                    // ==========================================
+                    // ADD ACTION
+                    // ==========================================
+
+                    const actionsHTML = config.showAdd
+
+                        ? `
+            <div class="shop-product-card__actions">
+
+                <button
+                    type="button"
+                    class="shop-product-card__add"
+                    data-action="add"
+                    aria-label="${escape(`${translations.add} ${name}`)}"
+                    title="${escape(translations.add)}"
+                >
+
+                    <i
+                        class="bi bi-plus-circle"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
+
+            </div>
+        `
+
+                        : '';
+
+                    // ==========================================
+                    // FINAL TEMPLATE
+                    // ==========================================
+
+                    return `
+
+        <article
+            class="${modifiers.join(' ')}"
+            data-product-id="${escape(id)}"
+        >
+
+            <!-- MEDIA -->
+
+            <div class="shop-product-card__media">
+
+                <button
+                    type="button"
+                    class="shop-product-card__media-action"
+                    data-action="view"
+                    aria-label="${escape(`${translations.viewProduct}: ${name}`)}"
+                >
+
+                    <img
+                        src="${escape(image)}"
+                        alt="${escape(name)}"
+                        class="shop-product-card__image"
+                        loading="lazy"
+                        decoding="async"
+                    >
+
+                </button>
+
+                <!-- TOP -->
+
+                <div class="shop-product-card__top">
+
+                    ${categoryHTML}
+
+                    ${favoriteHTML}
+
+                </div>
+
+                ${discountHTML}
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="shop-product-card__content">
+
+                <!-- NAME -->
+
+                <h3 class="shop-product-card__name">
+
+                    <button
+                        type="button"
+                        class="shop-product-card__name-action"
+                        data-action="view"
+                    >
+                        ${escape(name)}
+                    </button>
+
+                </h3>
+
+                ${descriptionHTML}
+
+                ${pointsHTML}
+
+                <!-- FOOTER -->
+
+                <div class="shop-product-card__footer">
+
+                    <div class="shop-product-card__prices">
+
+                        ${oldPriceHTML}
+
+                        <span
+                            class="
+                                shop-product-card__price
+                                shop-product-card__price--${tax.modifier}
+                            "
+                            title="${escape(tax.detail)}"
+                        >
+
+                            ${escape(price.currentText)}
+
+                            <span class="visually-hidden">
+                                ${escape(tax.detail)}
+                            </span>
+
+                        </span>
+
+                        ${taxHTML}
+
+                    </div>
+
+                    ${actionsHTML}
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+                },
+                bindProductCardEvents: function (gridInit) {
+
+                    const vm = this;
+
+                    const selector = '.shop-product-card [data-action]';
+
+                    const $buttons = gridInit.find(selector);
+
+                    const events = {
+                        view: 'catalog:product:click',
+                        add: 'catalog:product:add',
+                        favorite: 'catalog:product:favorite'
+                    };
+
+                    console.log('ShopManager: Buttons found', $buttons.length);
+
+                    $buttons
+                        .off('click.shopProductCard')
+                        .on('click.shopProductCard', function (event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            console.log('ShopManager: CLICK DETECTED');
+
+                            const $button = $(this);
+
+                            const $card = $button.closest(
+                                '.shop-product-card'
+                            );
+
+                            const action = $button.attr('data-action');
+
+                            const productId =
+                                $card.attr('data-product-id') ||
+                                $card.closest('tr').attr('data-row-id');
+
+                            const eventName = events[action];
+
+                            if (!eventName || !productId) {
+                                return;
+                            }
+
+                            const rows = gridInit.bootgrid(
+                                'getCurrentRows'
+                            ) || [];
+
+                            const product = Array.isArray(rows)
+                                ? rows.find(
+                                    row => String(row.id) === String(productId)
+                                )
+                                : null;
+
+                            if (!product) {
+
+                                console.warn(
+                                    'ShopManager: Product not found',
+                                    productId
+                                );
+
+                                return;
+
+                            }
+
+                            const payload = {
+
+                                component: 'catalog',
+
+                                action,
+
+                                productId: product.id,
+
+                                product,
+
+                                business: vm.businessInformation
+
+                            };
+
+                            vm.emitShopEvent(
+                                eventName,
+                                payload,
+                                $card[0]
+                            );
+
+                        });
+
+                },
+
                 onEscClose(e) {
                     if (e.key === 'Escape') this.isFiltersOpen = false;
                 },

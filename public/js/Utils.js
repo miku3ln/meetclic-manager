@@ -410,23 +410,28 @@ function _gridManager(elementSelect) {
             if (newEventRow) {
                 selectorRow = selectorGrid + " tr[data-row-id='" + dataRowId + "']";
                 $(selectorRow).addClass("selected");
-                vmCurrent.managerMenuConfig = {
-                    view: true,
-                    menuCurrent: vmCurrent.getMenuConfig({
+                if (typeof vmCurrent.getMenuConfig === "function") {
+                    vmCurrent.managerMenuConfig = {
+                        view: true,
+                        menuCurrent: vmCurrent.getMenuConfig({
+                            rowData: rowData[0],
+                            rowId: dataRowId,
+                            newEventRow: newEventRow
+                        }),
+                        rowId: dataRowId
+                    };
+                }
+
+            } else {
+                if (typeof vmCurrent.getMenuConfig === "function") {
+                    vmCurrent.managerMenuConfig = vmCurrent.managerMenuConfig;
+                    var menuCurrent = vmCurrent.getMenuConfig({
                         rowData: rowData[0],
                         rowId: dataRowId,
                         newEventRow: newEventRow
-                    }),
-                    rowId: dataRowId
-                };
-            } else {
+                    });
+                }
 
-                vmCurrent.managerMenuConfig = vmCurrent.managerMenuConfig;
-                var menuCurrent = vmCurrent.getMenuConfig({
-                    rowData: rowData[0],
-                    rowId: dataRowId,
-                    newEventRow: newEventRow
-                });
 
             }
 

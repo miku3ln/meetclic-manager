@@ -300,9 +300,6 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
 
         }
 
-        .content-manager-grid {
-            margin-top: 3%;
-        }
 
         .xywer-tbl-admin {
             width: 100%;
@@ -842,9 +839,6 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
                 height: 220px;
             }
 
-            .content-manager-grid {
-                margin-top: 12%;
-            }
 
             .bootgrid-footer .search, .bootgrid-header .search {
                 max-width: 100% !important;
@@ -865,7 +859,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
             .xywer-tbl-admin tbody {
 
                 grid-template-columns:
-            repeat(1, minmax(0, 1fr));
+            repeat(2, minmax(0, 1fr));
             }
 
             .product-card__media {
@@ -1671,6 +1665,2674 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
             margin-bottom: 23px;
         }
     </style>
+    <style id="row-grids-product">
+        /* =====================================================
+   SHOP PRODUCT CARD
+   YAPITA - MOBILE FIRST
+===================================================== */
+
+        .shop-product-card {
+
+            --spc-primary: var(--mc-azulClic, #4955e8);
+            --spc-yellow: var(--mc-amarilloVital, #ffcc00);
+
+            --spc-text: #111827;
+            --spc-muted: #64748b;
+
+            --spc-border: #e5e7eb;
+            --spc-background: #ffffff;
+
+            --spc-radius: 13px;
+            --spc-media-radius: 9px;
+
+            --spc-padding: 8px;
+            --spc-content-gap: 5px;
+
+            --spc-image-ratio: 2 / 1;
+
+            --spc-action-size: 36px;
+
+            --spc-tax-bg: #dcfce7;
+            --spc-tax-text: #166534;
+
+            --spc-promotion-bg: #7e22ce;
+
+            box-sizing: border-box;
+
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+
+            width: 100%;
+            min-width: 0;
+            height: 100%;
+
+            padding: 5px;
+
+            background: var(--spc-background);
+
+            border: 1px solid var(--spc-border);
+            border-radius: var(--spc-radius);
+
+            box-shadow: 0 2px 8px rgba(17, 24, 39, .06);
+
+            overflow: hidden;
+
+            font-family: inherit;
+
+            text-align: left;
+
+            transition:
+                box-shadow .2s ease,
+                border-color .2s ease;
+
+        }
+
+        .shop-product-card *,
+        .shop-product-card *::before,
+        .shop-product-card *::after {
+
+            box-sizing: border-box;
+
+        }
+
+
+        /* =====================================================
+           MEDIA
+        ===================================================== */
+
+        .shop-product-card__media {
+
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: var(--spc-image-ratio);
+
+            flex-shrink: 0;
+
+            background: #f1f5f9;
+
+            border-radius: var(--spc-media-radius);
+
+            overflow: hidden;
+
+        }
+
+        .shop-product-card__media-action {
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            padding: 0;
+            margin: 0;
+
+            border: 0;
+
+            background: transparent;
+
+            cursor: pointer;
+
+        }
+
+        .shop-product-card__image {
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            max-width: none;
+
+            padding: 0;
+            margin: 0;
+
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+
+        /* =====================================================
+           IMAGE MODIFIER
+        ===================================================== */
+
+        .shop-product-card--contain
+        .shop-product-card__image {
+
+            object-fit: contain;
+
+            padding: 4px;
+
+        }
+
+
+        /* =====================================================
+           TOP
+        ===================================================== */
+
+        .shop-product-card__top {
+
+            position: absolute;
+
+            top: 5px;
+            left: 5px;
+            right: 5px;
+
+            display: flex;
+
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 4px;
+
+            pointer-events: none;
+
+            z-index: 2;
+
+        }
+
+
+        /* =====================================================
+           SUBCATEGORY
+        ===================================================== */
+
+        .shop-product-card__subcategory {
+
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            min-width: 0;
+            max-width: 100%;
+
+            padding: 4px 8px;
+
+            background: rgba(255, 255, 255, .96);
+
+            border-radius: 8px;
+
+            color: var(--spc-primary);
+
+            font-size: 9px;
+            font-weight: 700;
+
+            line-height: 1.25;
+
+            letter-spacing: .1px;
+
+            text-align: left;
+            text-transform: uppercase;
+
+            overflow: hidden;
+            overflow-wrap: anywhere;
+
+        }
+
+
+        /* =====================================================
+           FAVORITE
+        ===================================================== */
+
+        .shop-product-card__favorite {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 32px;
+            height: 32px;
+
+            padding: 0;
+            margin-left: auto;
+
+            flex-shrink: 0;
+
+            border: 0;
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .96);
+
+            color: var(--spc-primary);
+
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+
+            cursor: pointer;
+
+            pointer-events: auto;
+
+        }
+
+        .shop-product-card__favorite i {
+
+            font-size: 14px;
+
+        }
+
+        .shop-product-card__favorite--active {
+
+            color: #e11d48;
+
+            background: #fff1f2;
+
+        }
+
+
+        /* =====================================================
+           PROMOTION
+        ===================================================== */
+
+        .shop-product-card__discount {
+
+            position: absolute;
+
+            bottom: 5px;
+            right: 5px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 4px 7px;
+
+            border-radius: 7px;
+
+            background: var(--spc-promotion-bg);
+
+            color: #ffffff;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            line-height: 1.2;
+
+            pointer-events: none;
+
+            z-index: 2;
+
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .shop-product-card__content {
+
+            display: flex;
+            flex-direction: column;
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: var(--spc-padding);
+
+            gap: var(--spc-content-gap);
+
+            text-align: left;
+
+        }
+
+
+        /* =====================================================
+           NAME
+        ===================================================== */
+
+        .shop-product-card__name {
+
+            margin: 0;
+            padding: 0;
+
+            font-family: inherit;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            line-height: 1.3;
+
+            color: var(--spc-text);
+
+            text-align: left;
+
+        }
+
+        .shop-product-card__name-action {
+
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            width: 100%;
+
+            padding: 0;
+            margin: 0;
+
+            border: 0;
+
+            background: transparent;
+
+            color: inherit;
+
+            font: inherit;
+
+            text-align: left;
+
+            overflow: hidden;
+            overflow-wrap: anywhere;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           DESCRIPTION
+        ===================================================== */
+
+        .shop-product-card__description {
+
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            color: var(--spc-muted);
+
+            font-size: 11px;
+            font-weight: 400;
+
+            line-height: 1.4;
+
+            text-align: left;
+
+            overflow: hidden;
+            overflow-wrap: anywhere;
+
+        }
+
+
+        /* =====================================================
+           POINTS
+        ===================================================== */
+
+        .shop-product-card__points {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+            width: fit-content;
+
+            padding: 3px 6px;
+
+            background: #fff8db;
+            color: #854d0e;
+
+            border-radius: 6px;
+
+            font-size: 10px;
+            font-weight: 600;
+
+        }
+
+        .shop-product-card__points i {
+
+            color: #b8860b;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .shop-product-card__footer {
+
+            display: flex;
+
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 5px;
+
+            margin-top: auto;
+
+            padding-top: 4px;
+
+        }
+
+
+        /* =====================================================
+           PRICES
+        ===================================================== */
+
+        .shop-product-card__prices {
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 3px;
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+        .shop-product-card__price {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: fit-content;
+
+            max-width: 100%;
+
+            padding: 5px 10px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: 800;
+
+            line-height: 1.3;
+
+            font-variant-numeric: tabular-nums;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        /* WITHOUT TAX */
+
+        .shop-product-card__price--without-tax {
+
+            background: var(--spc-yellow);
+
+            color: #713f12;
+
+        }
+
+
+        /* WITH TAX */
+
+        .shop-product-card__price--with-tax {
+
+            background: var(--spc-tax-bg);
+
+            color: var(--spc-tax-text);
+
+        }
+
+
+        /* UNKNOWN TAX */
+
+        .shop-product-card__price--unknown-tax {
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+        }
+
+
+        /* OLD PRICE */
+
+        .shop-product-card__price-old {
+
+            color: var(--spc-muted);
+
+            font-size: 11px;
+            font-weight: 500;
+
+            line-height: 1.2;
+
+            text-decoration: line-through;
+
+        }
+
+
+        /* =====================================================
+           TAX LABEL - OPTIONAL
+        ===================================================== */
+
+        .shop-product-card__tax {
+
+            color: var(--spc-muted);
+
+            font-size: 9px;
+
+            line-height: 1.2;
+
+        }
+
+        .shop-product-card__tax--with-tax {
+
+            color: var(--spc-tax-text);
+
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .shop-product-card__actions {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* =====================================================
+           ADD BUTTON
+        ===================================================== */
+
+        .shop-product-card__add {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: var(--spc-action-size);
+            height: var(--spc-action-size);
+
+            padding: 0;
+            margin: 0;
+
+            border: 1px solid #c7c9ff;
+
+            border-radius: 9px;
+
+            background: #ffffff;
+
+            color: var(--spc-primary);
+
+            cursor: pointer;
+
+            touch-action: manipulation;
+
+            transition:
+                background-color .2s ease,
+                color .2s ease,
+                border-color .2s ease;
+
+        }
+
+        .shop-product-card__add i {
+
+            display: block;
+
+            font-size: 23px;
+
+            font-weight: 600;
+
+            line-height: 1;
+
+        }
+
+        .shop-product-card__add:active {
+
+            background: #eef0ff;
+
+        }
+
+        .shop-product-card__add:disabled {
+
+            opacity: .45;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* =====================================================
+           ACCESSIBILITY
+        ===================================================== */
+
+        .shop-product-card button:focus-visible {
+
+            outline: 2px solid var(--spc-primary);
+
+            outline-offset: -2px;
+
+        }
+
+
+        /* =====================================================
+           HOVER
+        ===================================================== */
+
+        @media (hover: hover) {
+
+            .shop-product-card:hover {
+
+                border-color: #c7c9ff;
+
+                box-shadow:
+                    0 4px 12px rgba(17, 24, 39, .10);
+
+            }
+
+            .shop-product-card__add:hover:not(:disabled) {
+
+                background: var(--spc-primary);
+
+                border-color: var(--spc-primary);
+
+                color: #ffffff;
+
+            }
+
+            .shop-product-card__name-action:hover {
+
+                color: var(--spc-primary);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 359.98px) {
+
+            .shop-product-card {
+
+                --spc-padding: 6px;
+                --spc-action-size: 32px;
+
+                padding: 4px;
+
+            }
+
+            .shop-product-card__name {
+
+                font-size: 13px;
+
+            }
+
+            .shop-product-card__description {
+
+                font-size: 10px;
+
+            }
+
+            .shop-product-card__price {
+
+                font-size: 14px;
+
+                padding: 5px 7px;
+
+            }
+
+            .shop-product-card__subcategory {
+
+                font-size: 8px;
+
+                padding: 4px 6px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LARGE MOBILE - BS5 SM
+        ===================================================== */
+
+        @media (min-width: 576px) {
+
+            .shop-product-card {
+
+                --spc-padding: 10px;
+                --spc-action-size: 40px;
+
+                --spc-radius: 14px;
+                --spc-media-radius: 10px;
+
+                padding: 6px;
+
+            }
+
+            .shop-product-card__name {
+
+                font-size: 16px;
+
+            }
+
+            .shop-product-card__description {
+
+                font-size: 12px;
+
+            }
+
+            .shop-product-card__price {
+
+                font-size: 17px;
+
+            }
+
+            .shop-product-card__subcategory {
+
+                font-size: 10px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET - BS5 MD
+        ===================================================== */
+
+        @media (min-width: 768px) {
+
+            .shop-product-card {
+
+                --spc-image-ratio: 16 / 9;
+
+                --spc-padding: 12px;
+                --spc-action-size: 44px;
+
+                --spc-radius: 15px;
+                --spc-media-radius: 11px;
+
+            }
+
+            .shop-product-card__name {
+
+                font-size: 17px;
+
+            }
+
+            .shop-product-card__description {
+
+                font-size: 13px;
+
+            }
+
+            .shop-product-card__price {
+
+                font-size: 18px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DESKTOP - BS5 XL
+        ===================================================== */
+
+        @media (min-width: 1200px) {
+
+            .shop-product-card {
+
+                --spc-padding: 14px;
+
+                --spc-image-ratio: 16 / 9;
+
+            }
+
+            .shop-product-card__name {
+
+                font-size: 18px;
+
+            }
+
+            .shop-product-card__price {
+
+                font-size: 20px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .shop-product-card,
+
+            .shop-product-card__add {
+
+                transition: none;
+
+            }
+
+        }
+    </style>
+    <style id="header-manager">
+
+        /* =====================================================
+   SHOP HEADER
+   MOBILE FIRST
+===================================================== */
+
+        .shop-header {
+
+            --sh-primary: #4955e8;
+
+            --sh-background: #f8f9fc;
+            --sh-surface: #ffffff;
+
+            --sh-text: #182033;
+            --sh-muted: #70798c;
+            --sh-border: #e3e6ef;
+
+            --sh-warning: #ffb800;
+
+            --sh-success: #16a34a;
+            --sh-success-background: #dcfce7;
+
+            --sh-danger: #dc2626;
+            --sh-danger-background: #fee2e2;
+
+            --sh-neutral: #64748b;
+            --sh-neutral-background: #edf0f5;
+
+            --sh-logo-size: 54px;
+            --sh-radius: 16px;
+
+            width: 100%;
+            margin-bottom: 12px;
+
+        }
+
+        #wrapper {
+            top: 24px;
+        }
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .shop-header__card {
+
+            display: grid;
+
+            grid-template-columns:
+        var(--sh-logo-size)
+        minmax(0, 1fr)
+        1px
+        minmax(0, auto)
+        14px;
+
+            align-items: center;
+
+            gap: 9px;
+
+            width: 100%;
+            padding: 10px;
+
+            border: 1px solid var(--sh-border);
+            border-radius: var(--sh-radius);
+
+            background: var(--sh-background);
+
+            box-shadow:
+                0 3px 10px rgba(24, 32, 51, 0.05);
+
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+
+        }
+
+        .shop-header__card:focus-visible {
+
+            outline: 2px solid var(--sh-primary);
+            outline-offset: 3px;
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .shop-header__logo-wrapper {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: var(--sh-logo-size);
+            height: var(--sh-logo-size);
+
+            background: var(--sh-surface);
+
+            border-radius: 50%;
+            overflow: hidden;
+
+            flex-shrink: 0;
+
+        }
+
+        .shop-header__logo {
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            border-radius: inherit;
+
+        }
+
+
+        /* =====================================================
+           BUSINESS INFORMATION
+        ===================================================== */
+
+        .shop-header__information {
+
+            display: flex;
+
+            flex-direction: column;
+            justify-content: center;
+
+            gap: 3px;
+
+            min-width: 0;
+
+        }
+
+        .shop-header__name {
+
+            display: block;
+
+            color: var(--sh-text);
+
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.2;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+        .shop-header__category {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color: var(--sh-muted);
+
+            font-size: 11px;
+            line-height: 1.3;
+
+            min-width: 0;
+
+        }
+
+        .shop-header__category i {
+
+            flex-shrink: 0;
+
+            font-size: 12px;
+
+        }
+
+        .shop-header__category-name {
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+        }
+
+
+        /* =====================================================
+           RATING
+        ===================================================== */
+
+        .shop-header__rating {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 2px;
+
+            min-width: 0;
+
+            color: var(--sh-warning);
+
+            font-size: 12px;
+            line-height: 1.2;
+
+        }
+
+        .shop-header__rating i {
+
+            color: var(--sh-warning);
+
+            font-size: inherit;
+
+        }
+
+
+        /* =====================================================
+           SEPARATOR
+        ===================================================== */
+
+        .shop-header__separator {
+
+            display: block;
+
+            width: 1px;
+            height: 42px;
+
+            background: #d5d9e4;
+
+        }
+
+
+        /* =====================================================
+           SCHEDULE
+        ===================================================== */
+
+        .shop-header__schedule {
+
+            display: flex;
+
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+
+            gap: 5px;
+
+            min-width: 0;
+            max-width: 115px;
+
+        }
+
+        .shop-header__status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            max-width: 100%;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+
+        }
+
+        .shop-header__status-dot {
+
+            display: inline-block;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+
+            flex-shrink: 0;
+
+        }
+
+        .shop-header__status-label {
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+        }
+
+
+        /* STATUS MODIFIERS */
+
+        .shop-header__status--open {
+
+            color: var(--sh-success);
+
+            background: var(--sh-success-background);
+
+        }
+
+        .shop-header__status--closed {
+
+            color: var(--sh-danger);
+
+            background: var(--sh-danger-background);
+
+        }
+
+        .shop-header__status--unknown {
+
+            color: var(--sh-neutral);
+
+            background: var(--sh-neutral-background);
+
+        }
+
+
+        /* SCHEDULE TEXT */
+
+        .shop-header__schedule-text {
+
+            color: var(--sh-muted);
+
+            font-size: 10px;
+            line-height: 1.4;
+
+            font-variant-numeric: tabular-nums;
+
+        }
+
+        .shop-header__schedule-text:empty {
+
+            display: none;
+
+        }
+
+        .shop-header__more {
+
+            display: none;
+
+            color: var(--sh-primary);
+
+            font-size: 12px;
+            font-weight: 500;
+
+        }
+
+
+        /* =====================================================
+           ACTION
+        ===================================================== */
+
+        .shop-header__action {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: var(--sh-muted);
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           HOVER - DESKTOP
+        ===================================================== */
+
+        @media (hover: hover) {
+
+            .shop-header__card:hover {
+
+                background: var(--sh-surface);
+
+                border-color: #c6ccef;
+
+                box-shadow:
+                    0 4px 14px rgba(24, 32, 51, 0.09);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+           320px - 359px
+        ===================================================== */
+
+        @media (max-width: 359.98px) {
+
+            .shop-header {
+
+                --sh-logo-size: 44px;
+                --sh-radius: 12px;
+
+            }
+
+            .shop-header__card {
+
+                gap: 6px;
+
+                padding: 8px;
+
+            }
+
+            .shop-header__name {
+
+                font-size: 15px;
+
+            }
+
+            .shop-header__category {
+
+                font-size: 10px;
+
+            }
+
+            .shop-header__rating {
+
+                font-size: 10px;
+
+            }
+
+            .shop-header__schedule {
+
+                max-width: 90px;
+
+            }
+
+            .shop-header__schedule-text {
+
+                font-size: 9px;
+
+            }
+
+            .shop-header__status {
+
+                font-size: 10px;
+
+                padding: 4px 6px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LARGE MOBILE
+           390px+
+        ===================================================== */
+
+        @media (min-width: 390px) {
+
+            .shop-header {
+
+                --sh-logo-size: 64px;
+
+            }
+
+            .shop-header__card {
+
+                gap: 12px;
+
+                padding: 12px;
+
+            }
+
+            .shop-header__name {
+
+                font-size: 20px;
+
+            }
+
+            .shop-header__category {
+
+                font-size: 12px;
+
+            }
+
+            .shop-header__rating {
+
+                font-size: 14px;
+
+            }
+
+            .shop-header__schedule {
+
+                max-width: 145px;
+
+            }
+
+            .shop-header__schedule-text {
+
+                font-size: 11px;
+
+            }
+
+            .shop-header__status {
+
+                font-size: 12px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET - BOOTSTRAP MD
+           768px+
+        ===================================================== */
+
+        @media (min-width: 768px) {
+
+            .shop-header {
+
+                --sh-logo-size: 76px;
+                --sh-radius: 18px;
+
+                margin-bottom: 16px;
+
+            }
+
+            .shop-header__card {
+
+                grid-template-columns:
+            var(--sh-logo-size)
+            minmax(0, 1fr)
+            1px
+            minmax(160px, auto)
+            24px;
+
+                gap: 20px;
+
+                padding: 14px 18px;
+
+            }
+
+            .shop-header__name {
+
+                font-size: 24px;
+
+            }
+
+            .shop-header__category {
+
+                font-size: 14px;
+
+            }
+
+            .shop-header__category i {
+
+                font-size: 15px;
+
+            }
+
+            .shop-header__rating {
+
+                font-size: 16px;
+
+            }
+
+            .shop-header__separator {
+
+                height: 58px;
+
+            }
+
+            .shop-header__schedule {
+
+                max-width: none;
+
+            }
+
+            .shop-header__status {
+
+                padding: 6px 12px;
+
+                font-size: 13px;
+
+            }
+
+            .shop-header__schedule-text {
+
+                font-size: 13px;
+
+            }
+
+            .shop-header__more {
+
+                display: block;
+
+            }
+
+            .shop-header__action {
+
+                font-size: 20px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DESKTOP - BOOTSTRAP LG
+           992px+
+        ===================================================== */
+
+        @media (min-width: 992px) {
+
+            .shop-header {
+
+                --sh-logo-size: 80px;
+
+            }
+
+            .shop-header__card {
+
+                grid-template-columns:
+            var(--sh-logo-size)
+            minmax(0, 1fr)
+            1px
+            minmax(190px, auto)
+            24px;
+
+                gap: 24px;
+
+                padding: 16px 22px;
+
+            }
+
+            .shop-header__name {
+
+                font-size: 26px;
+
+            }
+
+        }
+    </style>
+    <style id="aside">
+        /* =====================================================
+   SHOP BUSINESS ASIDE
+   YAPITA - MOBILE FIRST
+===================================================== */
+
+        .shop-business-aside {
+
+            --sba-primary: var(--mc-azulClic, #354cff);
+            --sba-yellow: var(--mc-amarilloVital, #ffcc00);
+
+            --sba-text: #151644;
+            --sba-muted: #59647c;
+
+            --sba-background: #ffffff;
+            --sba-border: #e0e3ef;
+
+            --sba-radius: 15px;
+            --sba-padding: 14px;
+
+            --sba-logo-size: 78px;
+
+            --bs-offcanvas-width: 100%;
+            --bs-offcanvas-bg: var(--sba-background);
+
+            --bs-offcanvas-border-width: 0;
+
+            color: var(--sba-text);
+
+            border-radius: 20px 0 0 20px;
+
+            box-shadow:
+                -6px 0 30px rgba(15, 23, 42, .12);
+
+            overflow: hidden;
+
+            text-align: left;
+
+        }
+
+        .shop-business-aside[v-cloak] {
+
+            display: none;
+
+        }
+
+        .shop-business-aside * {
+
+            box-sizing: border-box;
+
+        }
+
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .shop-business-aside__toolbar {
+
+            display: flex;
+
+            justify-content: flex-end;
+            align-items: center;
+
+            padding: 8px var(--sba-padding) 0;
+
+            flex-shrink: 0;
+
+        }
+
+        .shop-business-aside__close {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 36px;
+            height: 36px;
+
+            padding: 0;
+
+            border: 0;
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: var(--sba-text);
+
+            font-size: 19px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        .shop-business-aside__body {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
+            min-height: 0;
+
+            padding: 0 var(--sba-padding) 24px;
+
+            overflow-y: auto;
+
+            overscroll-behavior: contain;
+
+        }
+
+        .shop-business-aside__body > section {
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* =====================================================
+           PROFILE
+        ===================================================== */
+
+        .shop-business-aside__profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 0 3px 2px;
+
+        }
+
+        .shop-business-aside__logo-wrapper {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: var(--sba-logo-size);
+            height: var(--sba-logo-size);
+
+            flex-shrink: 0;
+
+            border: 3px solid #ffffff;
+
+            border-radius: 50%;
+
+            background: #f1f5f9;
+
+            box-shadow:
+                0 2px 7px rgba(15, 23, 42, .18);
+
+            overflow: hidden;
+
+        }
+
+        .shop-business-aside__logo {
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            border-radius: inherit;
+
+        }
+
+        .shop-business-aside__information {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+        .shop-business-aside__name {
+
+            margin: 0;
+            padding: 0;
+
+            color: var(--sba-text);
+
+            font-family: inherit;
+
+            font-size: 23px;
+            font-weight: 800;
+
+            line-height: 1.2;
+
+            text-align: left;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        .shop-business-aside__category {
+
+            color: var(--sba-muted);
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+        }
+
+
+        /* =====================================================
+           RATING
+        ===================================================== */
+
+        .shop-business-aside__rating {
+
+            display: flex;
+
+            align-items: center;
+            flex-wrap: wrap;
+
+            gap: 4px;
+
+            line-height: 1.2;
+
+        }
+
+        .shop-business-aside__stars {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 2px;
+
+            color: #ffb800;
+
+            font-size: 13px;
+
+        }
+
+        .shop-business-aside__rating-value {
+
+            color: var(--sba-text);
+
+            font-size: 13px;
+            font-weight: 800;
+
+        }
+
+        .shop-business-aside__rating-count {
+
+            color: var(--sba-muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .shop-business-aside__details {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+        }
+
+
+        /* =====================================================
+           INFORMATION ITEM
+        ===================================================== */
+
+        .shop-business-aside__item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding: 7px;
+
+            border: 1px solid var(--sba-border);
+
+            border-radius: 13px;
+
+            background: #ffffff;
+
+            color: var(--sba-text);
+
+            font-family: inherit;
+
+            text-align: left;
+
+            transition:
+                background-color .2s ease,
+                border-color .2s ease;
+
+        }
+
+        button.shop-business-aside__item {
+
+            cursor: pointer;
+
+        }
+
+        .shop-business-aside__item:disabled {
+
+            cursor: default;
+
+        }
+
+        .shop-business-aside__item:disabled
+        .shop-business-aside__item-action {
+
+            display: none;
+
+        }
+
+        .shop-business-aside__item-icon {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            border: 1px solid var(--sba-border);
+
+            border-radius: 10px;
+
+            background: #f7f9ff;
+
+            color: var(--sba-primary);
+
+            font-size: 20px;
+
+        }
+
+        .shop-business-aside__item-icon--rating {
+
+            border: 0;
+
+            background: transparent;
+
+            color: #ffb800;
+
+        }
+
+        .shop-business-aside__item-content {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 3px;
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+        .shop-business-aside__item-title {
+
+            color: var(--sba-text);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            line-height: 1.2;
+
+        }
+
+        .shop-business-aside__item-description {
+
+            color: var(--sba-muted);
+
+            font-size: 11px;
+
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        .shop-business-aside__item-count {
+
+            color: var(--sba-muted);
+
+            font-size: 11px;
+            font-weight: 400;
+
+        }
+
+        .shop-business-aside__item-action {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 25px;
+
+            flex-shrink: 0;
+
+            color: var(--sba-primary);
+
+            font-size: 16px;
+
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .shop-business-aside__section {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            padding: 12px;
+
+            border-radius: 17px;
+
+        }
+
+        .shop-business-aside__section-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+        .shop-business-aside__section-header > i {
+
+            font-size: 23px;
+
+            line-height: 1;
+
+        }
+
+        .shop-business-aside__section-title {
+
+            flex: 1;
+
+            margin: 0;
+            padding: 0;
+
+            font-family: inherit;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            text-align: left;
+
+        }
+
+        .shop-business-aside__section-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 25px;
+            height: 25px;
+
+            border-radius: 50%;
+
+            background: #a100e7;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           PROMOTIONS
+        ===================================================== */
+
+        .shop-business-aside__section--promotions {
+
+            background: linear-gradient(
+                135deg,
+                #f9ecfa,
+                #eee6fc
+            );
+
+            color: #5816a8;
+
+        }
+
+        .shop-business-aside__section--promotions
+        .shop-business-aside__section-header > i {
+
+            color: #ed168c;
+
+        }
+
+        .shop-business-aside__promotions {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+        }
+
+        .shop-business-aside__promotion {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            width: 100%;
+
+            padding: 5px;
+
+            border: 0;
+            border-radius: 12px;
+
+            background: rgba(255, 255, 255, .92);
+
+            color: var(--sba-text);
+
+            text-align: left;
+
+            cursor: pointer;
+
+        }
+
+        .shop-business-aside__promotion-image {
+
+            display: block;
+
+            width: 82px;
+            height: 72px;
+
+            flex-shrink: 0;
+
+            object-fit: cover;
+
+            border-radius: 9px;
+
+        }
+
+        .shop-business-aside__promotion-content {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            flex: 1;
+
+            gap: 4px;
+
+            min-width: 0;
+
+        }
+
+        .shop-business-aside__promotion-name {
+
+            color: var(--sba-text);
+
+            font-size: 13px;
+            font-weight: 800;
+
+            line-height: 1.2;
+
+        }
+
+        .shop-business-aside__promotion-description {
+
+            color: var(--sba-muted);
+
+            font-size: 10px;
+
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        .shop-business-aside__promotion-price {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 4px 12px;
+
+            border-radius: 7px;
+
+            background: var(--sba-yellow);
+
+            color: #1f2937;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            line-height: 1.2;
+
+        }
+
+        .shop-business-aside__promotion-action {
+
+            color: var(--sba-primary);
+
+            font-size: 15px;
+
+            flex-shrink: 0;
+
+        }
+
+        .shop-business-aside__mock {
+
+            color: var(--sba-muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           YAPITA BENEFITS
+        ===================================================== */
+
+        .shop-business-aside__section--benefits {
+
+            background: linear-gradient(
+                135deg,
+                #edf2ff,
+                #e0e9fc
+            );
+
+            color: #14279b;
+
+        }
+
+        .shop-business-aside__section--benefits
+        .shop-business-aside__section-header > i {
+
+            color: #ffb800;
+
+        }
+
+        .shop-business-aside__benefits {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 3px;
+
+        }
+
+        .shop-business-aside__benefit {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            min-height: 30px;
+
+            width: 100%;
+
+            padding: 4px;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: transparent;
+
+            color: var(--sba-text);
+
+            text-align: left;
+
+            cursor: pointer;
+
+        }
+
+        .shop-business-aside__benefit-icon {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 19px;
+            height: 19px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #c6d4ff;
+
+            color: var(--sba-primary);
+
+            font-size: 12px;
+
+        }
+
+        .shop-business-aside__benefit-title {
+
+            flex: 1;
+
+            min-width: 0;
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+        }
+
+        .shop-business-aside__benefit-action {
+
+            color: var(--sba-primary);
+
+            font-size: 14px;
+
+        }
+
+        .shop-business-aside__empty {
+
+            padding: 10px;
+
+            color: var(--sba-muted);
+
+            font-size: 12px;
+
+            text-align: center;
+
+        }
+
+
+        /* =====================================================
+           ACCESSIBILITY
+        ===================================================== */
+
+        .shop-business-aside button:focus-visible {
+
+            outline: 2px solid var(--sba-primary);
+
+            outline-offset: -2px;
+
+        }
+
+
+        /* =====================================================
+           HOVER
+        ===================================================== */
+
+        @media (hover: hover) {
+
+            .shop-business-aside__close:hover {
+
+                background: #f1f5f9;
+
+            }
+
+            button.shop-business-aside__item:hover:not(:disabled) {
+
+                background: #f7f9ff;
+
+                border-color: #bcc9ff;
+
+            }
+
+            .shop-business-aside__benefit:hover {
+
+                background: rgba(255, 255, 255, .45);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (min-width: 390px) {
+
+            .shop-business-aside {
+
+                --sba-padding: 18px;
+
+                --sba-logo-size: 86px;
+
+            }
+
+            .shop-business-aside__name {
+
+                font-size: 25px;
+
+            }
+
+            .shop-business-aside__item-title {
+
+                font-size: 13px;
+
+            }
+
+            .shop-business-aside__item-description {
+
+                font-size: 12px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LARGE MOBILE - BS5 SM
+        ===================================================== */
+
+        @media (min-width: 576px) {
+
+            .shop-business-aside {
+
+                --bs-offcanvas-width: 400px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET - BS5 MD
+        ===================================================== */
+
+        @media (min-width: 768px) {
+
+            .shop-business-aside {
+
+                --bs-offcanvas-width: 420px;
+
+                --sba-padding: 20px;
+
+                --sba-logo-size: 90px;
+
+            }
+
+            .shop-business-aside__body {
+
+                gap: 17px;
+
+            }
+
+            .shop-business-aside__section {
+
+                padding: 15px;
+
+            }
+
+            .shop-business-aside__item {
+
+                min-height: 54px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DESKTOP - BS5 XL
+        ===================================================== */
+
+        @media (min-width: 1200px) {
+
+            .shop-business-aside {
+
+                --bs-offcanvas-width: 440px;
+
+            }
+
+        }
+        /* =====================================================
+       SHOP BUSINESS ASIDE - SCROLL MANAGEMENT
+    ===================================================== */
+
+
+        /* =====================================================
+           1. LOCK BACKGROUND SCROLL
+        ===================================================== */
+
+        html.shop-manager--scroll-locked,
+        body.shop-manager--scroll-locked {
+
+            overflow: hidden !important;
+            overscroll-behavior: none;
+
+        }
+
+
+        /* =====================================================
+           2. BLOCK BACKGROUND CONTAINERS
+        ===================================================== */
+
+        body.shop-manager--scroll-locked .content,
+        body.shop-manager--scroll-locked .content-render-process,
+        body.shop-manager--scroll-locked .manager-page__data-page,
+        body.shop-manager--scroll-locked .content-manager-grid {
+
+            overflow: hidden !important;
+            overscroll-behavior: none;
+
+        }
+
+
+        /* =====================================================
+           3. ASIDE - MAIN CONTAINER
+        ===================================================== */
+
+        #shop-business-aside {
+
+            position: fixed !important;
+
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            left: auto !important;
+
+            display: flex !important;
+            flex-direction: column !important;
+
+            height: 100vh !important;
+            height: 100dvh !important;
+
+            max-height: 100vh;
+            max-height: 100dvh;
+
+            max-width: 100vw;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            overflow: hidden !important;
+
+            box-sizing: border-box;
+
+            overscroll-behavior: contain;
+
+        }
+
+
+        /* =====================================================
+           4. TOOLBAR - FIXED WITHOUT SCROLL
+        ===================================================== */
+
+        #shop-business-aside .shop-business-aside__toolbar {
+
+            position: relative;
+
+            flex: 0 0 auto;
+
+            width: 100%;
+
+            background: var(--sba-background, #ffffff);
+
+        }
+
+
+        /* =====================================================
+           5. BODY - INTERNAL VERTICAL SCROLL
+        ===================================================== */
+
+        #shop-business-aside .shop-business-aside__body {
+
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+
+            flex: 1 1 0%;
+
+            width: 100%;
+            height: 0;
+
+            min-width: 0;
+            min-height: 0;
+
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+
+            overscroll-behavior-y: contain;
+
+            touch-action: pan-y;
+
+            -webkit-overflow-scrolling: touch;
+
+            pointer-events: auto;
+
+        }
+
+
+        /* =====================================================
+           6. PREVENT CONTENT SHRINKING
+        ===================================================== */
+
+        #shop-business-aside .shop-business-aside__body > * {
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* =====================================================
+           7. BACKDROP
+        ===================================================== */
+
+        body.shop-manager--scroll-locked .offcanvas-backdrop {
+
+            overscroll-behavior: none;
+
+            touch-action: none;
+
+        }
+
+
+        /* =====================================================
+           8. SCROLLBAR DESIGN
+        ===================================================== */
+
+        #shop-business-aside .shop-business-aside__body {
+
+            scrollbar-width: thin;
+
+            scrollbar-color: #cbd5e1 transparent;
+
+        }
+
+        #shop-business-aside
+        .shop-business-aside__body::-webkit-scrollbar {
+
+            width: 5px;
+
+        }
+
+        #shop-business-aside
+        .shop-business-aside__body::-webkit-scrollbar-track {
+
+            background: transparent;
+
+        }
+
+        #shop-business-aside
+        .shop-business-aside__body::-webkit-scrollbar-thumb {
+
+            background: #cbd5e1;
+
+            border-radius: 10px;
+
+        }
+
+        #shop-business-aside
+        .shop-business-aside__body::-webkit-scrollbar-thumb:hover {
+
+            background: var(--sba-primary, #354cff);
+
+        }
+        /* =====================================================
+   SHOP BUSINESS ASIDE - SHARE WHATSAPP
+===================================================== */
+
+        .shop-business-aside__item--share {
+
+            background: #f0fdf4;
+
+            border-color: #bbdfc5;
+
+        }
+
+        .shop-business-aside__item-icon--whatsapp {
+
+            background: #dcfce7;
+
+            border-color: #bbdfc5;
+
+            color: #16a34a;
+
+        }
+
+        .shop-business-aside__item-action--whatsapp {
+
+            color: #16a34a;
+
+        }
+
+        @media (hover: hover) {
+
+            button.shop-business-aside__item--share:hover {
+
+                background: #dcfce7;
+
+                border-color: #25d366;
+
+            }
+
+        }
+    </style>
+
 @endsection
 @section('script')
 
@@ -1729,66 +4391,188 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
     </script>
     <script>
         $(function () {
+            $(document)
 
+                .off('shop:aside:share:whatsapp.shopShare')
+
+                .on(
+                    'shop:aside:share:whatsapp.shopShare',
+                    function (event) {
+
+                        const payload = event.originalEvent.detail;
+
+                        const share = payload.share;
+
+                        if (!share) {
+                            return;
+                        }
+
+                        const message = [
+
+                            `*${share.title}*`,
+
+                            share.description,
+
+                            share.url
+
+                        ].filter(Boolean).join('\n\n');
+
+                        const whatsappUrl =
+                            `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+                        window.open(
+                            whatsappUrl,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+
+                    }
+                );
+            $(document).on(
+
+                'shop:aside:location:click',
+
+                function (event) {
+
+                    const payload = event.originalEvent.detail;
+
+                    const url = payload.data.location.mapsUrl;
+
+                    if (url) {
+
+                        window.open(
+                            url,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+
+                    }
+
+                }
+
+            );
+            $(document).on(
+
+                'shop:aside:contact:copy',
+
+                async function (event) {
+
+                    const payload = event.originalEvent.detail;
+
+                    const phone = payload.data.contact.phone;
+
+                    if (!phone) {
+                        return;
+                    }
+
+                    try {
+
+                        await navigator.clipboard.writeText(phone);
+
+                        console.log('Teléfono copiado:', phone);
+
+                    } catch (error) {
+
+                        console.error(
+                            'No se pudo copiar el teléfono',
+                            error
+                        );
+
+                    }
+
+                }
+
+            );
+            $(document).on(
+
+                'shop:aside:reviews:click',
+
+                function (event) {
+
+                    const payload = event.originalEvent.detail;
+
+                    const url = payload.data.reviews.url;
+
+                    if (url) {
+
+                        window.open(
+                            url,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+
+                    }
+
+                }
+
+            );
+            $(document).on(
+
+                'shop:aside:benefit:click',
+
+                function (event) {
+
+                    const payload = event.originalEvent.detail;
+
+                    const benefit = payload.item;
+
+                    console.log('Benefit:', benefit);
+
+                    if (benefit.url) {
+
+                        window.open(
+                            benefit.url,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+
+                    }
+
+                }
+
+            );
+            $(document).on(
+
+                'shop:aside:benefit:click',
+
+                function (event) {
+
+                    const payload = event.originalEvent.detail;
+
+                    const benefit = payload.item;
+
+                    console.log('Benefit:', benefit);
+
+                    if (benefit.url) {
+
+                        window.open(
+                            benefit.url,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+
+                    }
+
+                }
+
+            );
         })
     </script>
 @endsection
 
 @section('content')
     @include('frontend.web.'.$managementNameProcess.'.actions')
-
     <div id="app-management" class="page-home-init" dataManagerPageType="{{$dataManagerPage['type']}}">
-        <aside class="filters-drawer filters-drawer--right"
-               :class="{ 'filters-drawer--open': isFiltersOpen }"
-               aria-label="Panel de filtros">
-            <div class="filters-drawer__header">
-                <h4 class="filters-drawer__title">{{ __('filters.titleEarnYapitas') }}</h4>
-                <button type="button" class="filters-drawer__close" @click="isFiltersOpen = false">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-            </div>
+        @include('frontend.web.shopPage.shop-manager.shop-business-aside')
 
-            <div class="filters-drawer__body">
-                <filters-categories-component
-                    v-if="configDataFiltersCategories.allow"
-                    ref="refFiltersCategories"
-                    :params="configDataFiltersCategories"
-                    v-on:_actions-emit="_updateParentByChildren($event)"
-                >
-
-                </filters-categories-component>
-
-            </div>
-        </aside>
-        <section class="listsearch">
-            <header class="listsearch__subheader" role="region" aria-label="Filtros y título">
-                <h3 class="listsearch__title">
-                    <span class="listsearch__title-text">{{ __('play_learn_and_earn_yapitas') }}</span>
-                </h3>
-
-                <div class="listsearch__subheader-actions" v-if="configDataFiltersCategories.allow">
-                    <div class="listing-view-layout not-view ">
-                        <ul>
-                            <li id="view-grid"><a class="grid" href="#"><i class="fa fa-th-large"></i></a></li>
-                            <li id="view-list"><a class="list " href="#"><i class="fa fa-list-ul"></i></a></li>
-                            <li id="view-2"><a href="#" class="expand-listing-view active"><i class="fa fa-expand"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <button type="button" class="listsearch__filter-btn"
-                            @click="isFiltersOpen = true"
-                    >
-                        <i class="fa fa-sliders listsearch__filter-icon" aria-hidden="true"></i>
-                        <span class="listsearch__filter-text">Filtros</span>
-                    </button>
-                </div>
-            </header>
-
-        </section>
         <div class="data-page  manager-page__data-page">
 
+
+            @include('frontend.web.shopPage.shop-manager.header')
+
+
             <div class="content-manager-grid">
-                <div class="row" id="business-information">
+                <div class="row not-view" id="business-information">
                     <div class="col-md-12">
                         <div class="business-card">
 
