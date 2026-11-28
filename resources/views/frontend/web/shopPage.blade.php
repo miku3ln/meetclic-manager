@@ -4724,6 +4724,12 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
 
         }
     </style>
+    @include('frontend.web.shopPage.assets.css.shop-manager.grid')
+    @include('frontend.web.shopPage.assets.css.shop-manager.shop-cart-footer-style')
+    @include('frontend.web.shopPage.assets.css.shop-manager.order.shop-order-aside-style')
+
+
+
 @endsection
 @section('script')
 
@@ -5520,7 +5526,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
     @include('frontend.web.'.$managementNameProcess.'.actions')
     <div id="app-management" class="page-home-init" dataManagerPageType="{{$dataManagerPage['type']}}">
         @include('frontend.web.shopPage.shop-manager.shop-business-aside')
-
+        @include('frontend.web.shopPage.shop-manager.shop-order-aside')
         <div class="data-page  manager-page__data-page">
 
 
@@ -5528,164 +5534,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
 
 
             <div class="content-manager-grid">
-                <div class="row not-view" id="business-information">
-                    <div class="col-md-12">
-                        <div class="business-card">
 
-                            <div class="row g-4 align-items-stretch">
-
-                                <!-- ROW 1 - COL 1 -->
-                                <div class="col-xl-4">
-
-                                    <div class="business-profile h-100">
-
-                                        <div class="d-flex gap-4 align-items-start">
-
-                                            <img
-
-                                                v-bind:src="businessInformation.information.source"
-                                                alt=""
-                                                class="business-logo">
-
-                                            <div class="flex-grow-1">
-                                                <div class="business-title">
-
-                                                    <a v-bind:href="businessInformation.information.url"> <?php echo "{{businessInformation.information.title}}" ?></a>
-                                                </div>
-
-                                                <div class="business-category mb-3">
-                                                    <?php echo "{{businessInformation.subcategory.title}}" ?>
-                                                </div>
-                                                <div v-html="generateStars(businessInformation.starManagement)"></div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <!-- ROW 1 - COL 2 -->
-                                <div class="col-xl-6">
-
-                                    <div class="stats-wrapper h-100">
-
-                                        <div class="row g-3 h-100">
-                                            @foreach($currentCounter['items'] as $item)
-                                                <div class="col-md-4">
-
-                                                    <div class="stat-card">
-
-                                                        <div class="stat-icon bg-primary-soft">
-                                                            <i class="{{$item['icon']}}"></i>
-                                                        </div>
-
-                                                        <div class="stat-number">
-                                                            {{$item['number']}}
-                                                        </div>
-
-                                                        <div class="stat-title">
-                                                            {{$item['label']}}
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-                                            @endforeach
-
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <!-- ROW 1 - COL 3 -->
-                                <div class="col-xl-2 not-view">
-
-                                    <div class="yapitas-card h-100">
-
-                                        <div class="yapitas-icon">
-                                            <i class="bi bi-coin"></i>
-                                        </div>
-
-                                        <div class="yapitas-value">
-                                            1,250
-                                        </div>
-
-                                        <div class="yapitas-label">
-                                            Yapitas disponibles
-                                        </div>
-
-                                        <a href="#"
-                                           class="btn-yapitas">
-                                            Ver Yapitas
-                                        </a>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <!-- ROW 2 -->
-                            <div class="row g-3 mt-4" id="manager-process-business-gamification">
-
-                                <div class="col-md-3" v-for="(row, key) in businessInformation.linksManagement"
-                                     v-on:click="onProcessBusiness(row)">
-                                    <div class="manager-process-business-gamification__icon-go"><i
-                                            class="bi bi-chevron-down "></i>
-                                    </div>
-                                    <div class="manager-process-business-gamification__card" v-bind:link="row.link">
-
-                                        <div class="manager-process-business-gamification__icon">
-                                            <i v-bind:class="row.icon"></i>
-                                        </div>
-
-                                        <div class="manager-process-business-gamification__content">
-                                            <div class="manager-process-business-gamification__title">
-                                                <?php echo "{{row.title}}" ?>
-                                            </div>
-
-                                            <div class="manager-process-business-gamification__description">
-                                                <?php echo "{{row.description}}" ?>
-
-                                                <ul class="manager-process-business-gamification__checklist list-unstyled mb-0">
-
-                                                    <li class="manager-process-business-gamification__check-item d-flex align-items-center mb-2"
-                                                        v-for="(option, keyOption) in row.options">
-                                                        <div class="manager-process-business-gamification__check-icon">
-                                                            <i class="bi bi-check"></i>
-                                                        </div>
-
-                                                        <span class="manager-process-business-gamification__check-text">
-         <?php echo "{{option}}" ?>
-        </span>
-                                                    </li>
-
-
-                                                </ul>
-                                            </div>
-                                            <div class="manager-process-business-gamification__actions">
-                                                <button class="manager-process-business-gamification__button">
-                                                    Agregar
-                                                </button>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="custom-scroll-admin-grid table-responsive table-responsive--fixed">
@@ -5722,7 +5571,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
             </div>
 
         </div>
-
+        @include('frontend.web.shopPage.shop-manager.shop-cart-footer')
     </div>
 
 @endsection
