@@ -294,6 +294,758 @@
             text-decoration: none ;
         }
     </style>
+
+    <style id="shop-grid-state-style">
+
+        /* ==========================================
+           ROW AND CELL
+        ========================================== */
+
+        .shop-grid-state-row {
+
+            display: block !important;
+
+            position: relative;
+
+            grid-column: 1 / -1;
+
+            flex: 0 0 100%;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
+            height: auto !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            border: 0 !important;
+
+            background: transparent !important;
+
+            box-shadow: none !important;
+
+            float: none !important;
+
+        }
+
+        .shop-grid-state-cell {
+
+            display: block !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
+            height: auto !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            border: 0 !important;
+
+            background: transparent !important;
+
+            text-align: center !important;
+
+            white-space: normal !important;
+
+            float: none !important;
+
+        }
+
+
+        /* ==========================================
+           BASE COMPONENT
+        ========================================== */
+
+        .shop-grid-state {
+
+            --sgs-primary: var(--mc-azulClic, #4455e9);
+            --sgs-yellow: var(--mc-amarilloVital, #ffcc00);
+
+            --sgs-text: #151644;
+            --sgs-muted: #64748b;
+            --sgs-surface: #ffffff;
+            --sgs-background: #eef2ff;
+
+            --sgs-visual-size: 105px;
+            --sgs-logo-size: 70px;
+            --sgs-min-height: 300px;
+
+            position: relative;
+
+            display: flex !important;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 16px;
+
+            width: 100% !important;
+
+            min-height: var(--sgs-min-height);
+
+            padding: 28px 16px;
+
+            margin: 0 auto;
+
+            box-sizing: border-box;
+
+            text-align: center !important;
+
+            font-family: inherit;
+
+            float: none !important;
+
+        }
+
+
+        /* ==========================================
+           VISUAL CONTAINER
+        ========================================== */
+
+        .shop-grid-state__visual {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: var(--sgs-visual-size);
+            height: var(--sgs-visual-size);
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* ==========================================
+           EMPTY STATE ILLUSTRATION
+        ========================================== */
+
+        .shop-grid-state__illustration {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            height: 100%;
+
+            border-radius: 50%;
+
+            background: var(--sgs-background);
+
+            color: var(--sgs-primary);
+
+        }
+
+        .shop-grid-state__illustration > .bi-bag {
+
+            font-size: 52px;
+
+            line-height: 1;
+
+            color: var(--sgs-primary);
+
+        }
+
+
+        /* ==========================================
+           VISUAL BADGE
+        ========================================== */
+
+        .shop-grid-state__visual-badge {
+
+            position: absolute;
+
+            right: -3px;
+            bottom: -3px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 42px;
+            height: 42px;
+
+            box-sizing: border-box;
+
+            border: 4px solid #ffffff;
+
+            border-radius: 50%;
+
+            background: var(--sgs-yellow);
+
+            color: var(--sgs-primary);
+
+        }
+
+        .shop-grid-state__visual-badge > .bi-search {
+
+            font-size: 19px;
+
+            line-height: 1;
+
+        }
+
+
+        /* ==========================================
+           DECORATIVE ELEMENTS
+        ========================================== */
+
+        .shop-grid-state__spark {
+
+            position: absolute;
+
+            display: block;
+
+            border-radius: 50%;
+
+            background: var(--sgs-yellow);
+
+        }
+
+        .shop-grid-state__spark--one {
+
+            top: 5px;
+            right: 8px;
+
+            width: 10px;
+            height: 10px;
+
+        }
+
+        .shop-grid-state__spark--two {
+
+            left: -3px;
+            bottom: 20px;
+
+            width: 7px;
+            height: 7px;
+
+            opacity: .75;
+
+        }
+
+
+        /* ==========================================
+           CONTENT
+        ========================================== */
+
+        .shop-grid-state__content {
+
+            display: flex !important;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            width: 100%;
+            max-width: 340px;
+
+            margin: 0 auto !important;
+
+            padding: 0 !important;
+
+            text-align: center !important;
+
+            float: none !important;
+
+        }
+
+
+        /* ==========================================
+           TITLE
+        ========================================== */
+
+        .shop-grid-state__title {
+
+            display: block !important;
+
+            width: 100% !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            color: var(--sgs-text) !important;
+
+            font-family: inherit;
+
+            font-size: 19px !important;
+            font-weight: 800 !important;
+
+            line-height: 1.35 !important;
+
+            text-align: center !important;
+
+            text-transform: none !important;
+
+            float: none !important;
+
+        }
+
+
+        /* ==========================================
+           DESCRIPTION
+        ========================================== */
+
+        .shop-grid-state__description {
+
+            display: block !important;
+
+            width: 100% !important;
+
+            max-width: 290px;
+
+            margin: 0 auto !important;
+            padding: 0 !important;
+
+            color: var(--sgs-muted) !important;
+
+            font-family: inherit;
+
+            font-size: 13px !important;
+            font-weight: 400;
+
+            line-height: 1.6 !important;
+
+            text-align: center !important;
+
+            white-space: normal !important;
+
+            float: none !important;
+
+        }
+
+
+        /* ==========================================
+           ACTIONS
+        ========================================== */
+
+        .shop-grid-state__actions {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .shop-grid-state__button {
+
+            display: inline-flex !important;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 44px;
+
+            max-width: 100%;
+
+            padding: 12px 20px !important;
+
+            margin: 0 !important;
+
+            border: 0 !important;
+
+            border-radius: 11px;
+
+            background: var(--sgs-primary) !important;
+
+            color: #ffffff !important;
+
+            font-family: inherit;
+
+            font-size: 13px !important;
+            font-weight: 700;
+
+            line-height: 1.3;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            float: none !important;
+
+            touch-action: manipulation;
+
+            box-shadow: 0 4px 12px rgba(68, 85, 233, .15);
+
+            transition:
+                transform .2s ease,
+                filter .2s ease;
+
+        }
+
+        .shop-grid-state__button > .bi-arrow-clockwise {
+
+            font-size: 17px;
+
+            color: inherit;
+
+            pointer-events: none;
+
+        }
+
+        .shop-grid-state__button:active {
+
+            transform: scale(.97);
+
+        }
+
+        .shop-grid-state__button:focus-visible {
+
+            outline: 2px solid var(--sgs-primary);
+
+            outline-offset: 3px;
+
+        }
+
+
+        /* ==========================================
+           LOADING SPINNER
+        ========================================== */
+
+        .shop-grid-state__spinner {
+
+            position: absolute;
+
+            inset: 0;
+
+            box-sizing: border-box;
+
+            border: 4px solid #e8eaff;
+
+            border-top-color: var(--sgs-primary);
+            border-bottom-color: var(--sgs-yellow);
+
+            border-radius: 50%;
+
+            animation:
+                shop-grid-state-spin
+                1.3s
+                linear
+                infinite;
+
+        }
+
+
+        /* ==========================================
+           LOADING LOGO
+        ========================================== */
+
+        .shop-grid-state__logo {
+
+            position: relative;
+
+            display: block;
+
+            width: var(--sgs-logo-size);
+            height: var(--sgs-logo-size);
+
+            object-fit: contain;
+
+            animation:
+                shop-grid-state-pulse
+                2s
+                ease-in-out
+                infinite;
+
+        }
+
+
+        /* ==========================================
+           LOADING DOTS
+        ========================================== */
+
+        .shop-grid-state__dots {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 12px;
+
+        }
+
+        .shop-grid-state__dot {
+
+            display: block;
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--sgs-primary);
+
+            animation:
+                shop-grid-state-bounce
+                1.2s
+                ease-in-out
+                infinite;
+
+        }
+
+        .shop-grid-state__dot:nth-child(2) {
+
+            background: var(--sgs-yellow);
+
+            animation-delay: .15s;
+
+        }
+
+        .shop-grid-state__dot:nth-child(3) {
+
+            animation-delay: .30s;
+
+        }
+
+
+        /* ==========================================
+           STATE MODIFIERS
+        ========================================== */
+
+        .shop-grid-state--loading {
+
+            gap: 14px;
+
+        }
+
+        .shop-grid-state--empty {
+
+            gap: 18px;
+
+        }
+
+        .shop-grid-state-row--loading {
+
+            cursor: progress;
+
+        }
+
+        .shop-grid-state-row--empty {
+
+            cursor: default;
+
+        }
+
+
+        /* ==========================================
+           ANIMATIONS
+        ========================================== */
+
+        @keyframes shop-grid-state-spin {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        @keyframes shop-grid-state-pulse {
+
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+        }
+
+        @keyframes shop-grid-state-bounce {
+
+            0%, 60%, 100% {
+
+                transform: translateY(0);
+
+                opacity: .5;
+
+            }
+
+            30% {
+
+                transform: translateY(-5px);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           HOVER
+        ========================================== */
+
+        @media (hover: hover) {
+
+            .shop-grid-state__button:hover {
+
+                filter: brightness(.92);
+
+            }
+
+        }
+
+
+        /* ==========================================
+           SMALL MOBILE
+        ========================================== */
+
+        @media (max-width: 359.98px) {
+
+            .shop-grid-state {
+
+                --sgs-visual-size: 85px;
+                --sgs-logo-size: 58px;
+                --sgs-min-height: 260px;
+
+                padding: 20px 12px;
+
+            }
+
+            .shop-grid-state__title {
+
+                font-size: 17px !important;
+
+            }
+
+            .shop-grid-state__description {
+
+                font-size: 12px !important;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           MOBILE
+        ========================================== */
+
+        @media (min-width: 360px) and (max-width: 767.98px) {
+
+            .shop-grid-state {
+
+                --sgs-visual-size: 105px;
+                --sgs-logo-size: 70px;
+                --sgs-min-height: 300px;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           TABLET
+        ========================================== */
+
+        @media (min-width: 768px) and (max-width: 1199.98px) {
+
+            .shop-grid-state {
+
+                --sgs-visual-size: 120px;
+                --sgs-logo-size: 80px;
+                --sgs-min-height: 340px;
+
+            }
+
+            .shop-grid-state__title {
+
+                font-size: 21px !important;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           DESKTOP
+        ========================================== */
+
+        @media (min-width: 1200px) {
+
+            .shop-grid-state {
+
+                --sgs-visual-size: 135px;
+                --sgs-logo-size: 90px;
+                --sgs-min-height: 380px;
+
+            }
+
+            .shop-grid-state__title {
+
+                font-size: 23px !important;
+
+            }
+
+            .shop-grid-state__description {
+
+                font-size: 14px !important;
+
+            }
+
+            .shop-grid-state__illustration > .bi-bag {
+
+                font-size: 65px;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           REDUCED MOTION
+        ========================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .shop-grid-state__spinner,
+            .shop-grid-state__logo,
+            .shop-grid-state__dot {
+
+                animation: none !important;
+
+            }
+
+            .shop-grid-state__button {
+
+                transition: none;
+
+            }
+
+        }
+
+    </style>
     @include('cityBook.web.partials.bootgrid.assets.css.source')
     @include('partials.toast-meetclic',["allowCss"=>true])
     @if(env('allowCustomerCss'))

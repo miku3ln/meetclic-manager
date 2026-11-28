@@ -1199,19 +1199,25 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
         */
 
         @media (max-width: 768px) {
-
+            .shop-filters #grid-registers-grid-header {
+                height: 76px;
+            }
             .mc-category-card {
                 padding: 10px 12px;
+                min-height: 36px;
             }
 
             .mc-category-card__title {
-                font-size: 13px;
+                font-size: 10px;
             }
 
             .mc-subcategory-card {
                 padding: 8px 10px;
+                min-height: 36px;
             }
-
+            .mc-subcategory-card__title {
+                font-size: 10px;
+            }
         }
 
         .listsearch__subheader {
@@ -1220,7 +1226,113 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
     </style>
 
     <style id="business-information">
+        /* =====================================================
+           BUSINESS ASIDE - WHATSAPP CONTACT
+        ===================================================== */
 
+        .shop-business-aside__item--whatsapp {
+
+            background: #f0fdf4;
+
+            border: 1px solid #bbdfc5;
+
+            transition:
+                background .2s ease,
+                border-color .2s ease;
+
+        }
+
+
+        /* WHATSAPP ICON */
+
+        .shop-business-aside__item-icon--whatsapp {
+
+            background: #dcfce7;
+
+            color: #16a34a;
+
+            font-size: 23px;
+
+        }
+
+
+        /* TITLE */
+
+        .shop-business-aside__item--whatsapp
+        .shop-business-aside__item-title {
+
+            color: #166534;
+
+            font-weight: 700;
+
+        }
+
+
+        /* HELPER TEXT */
+
+        .shop-business-aside__item-helper {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: #15803d;
+
+            font-size: 10px;
+
+            font-weight: 500;
+
+            line-height: 1.4;
+
+            text-align: left;
+
+        }
+
+
+        /* ACTION ICON */
+
+        .shop-business-aside__item-action--whatsapp {
+
+            color: #16a34a;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* DISABLED STATE */
+
+        .shop-business-aside__item--whatsapp:disabled {
+
+            opacity: .5;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* HOVER */
+
+        @media (hover: hover) {
+
+            .shop-business-aside__item--whatsapp:hover:not(:disabled) {
+
+                background: #dcfce7;
+
+                border-color: #25d366;
+
+            }
+
+        }
+
+
+        /* ACTIVE STATE */
+
+        .shop-business-aside__item--whatsapp:active:not(:disabled) {
+
+            background: #d1fae5;
+
+        }
         body {
             background: #f5f5f5;
             padding: 30px;
@@ -4691,7 +4803,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
             }
 
             .shop-filters--sticky.shop-filters--stuck {
-                padding: 8px 10px 10px;
+                padding: 0 0 0;
             }
 
             .shop-filters .mc-grid__header {
@@ -4727,7 +4839,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
     @include('frontend.web.shopPage.assets.css.shop-manager.grid')
     @include('frontend.web.shopPage.assets.css.shop-manager.shop-cart-footer-style')
     @include('frontend.web.shopPage.assets.css.shop-manager.order.shop-order-aside-style')
-
+    @include('frontend.web.shopPage.assets.css.shop-product-aside')
 
 
 @endsection
@@ -5355,6 +5467,33 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
         $(function () {
             $(document)
 
+                .off('shop:aside:contact:whatsapp.shopBusinessContact')
+
+                .on(
+
+                    'shop:aside:contact:whatsapp.shopBusinessContact',
+
+                    function (event) {
+
+                        const payload = event.originalEvent?.detail;
+
+                        const whatsapp = payload?.whatsapp;
+
+                        if (!whatsapp?.url) {
+                            return;
+                        }
+
+                        window.open(
+                            whatsapp.url,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+
+                    }
+
+                );
+            $(document)
+
                 .off('shop:aside:share:whatsapp.shopShare')
 
                 .on(
@@ -5527,6 +5666,7 @@ $urlRouteRateBusiness = route('rate-register-business', $params);
     <div id="app-management" class="page-home-init" dataManagerPageType="{{$dataManagerPage['type']}}">
         @include('frontend.web.shopPage.shop-manager.shop-business-aside')
         @include('frontend.web.shopPage.shop-manager.shop-order-aside')
+        @include('frontend.web.shopPage.shop-manager.shop-product-aside')
         <div class="data-page  manager-page__data-page">
 
 

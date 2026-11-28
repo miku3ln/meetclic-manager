@@ -303,41 +303,60 @@
 
             <button
                 type="button"
-                class="shop-business-aside__item"
+                class="
+        shop-business-aside__item
+        shop-business-aside__item--whatsapp
+    "
                 v-if="shopManager.businessAside.config.showContact"
-                v-on:click="onShopBusinessAsideAction('copy-phone')"
-                v-bind:disabled="!shopManager.businessAside.data.contact.phone"
+                v-on:click="onShopBusinessAsideAction('whatsapp')"
+                v-bind:disabled="!orderWhatsAppNumber"
             >
 
-                <span class="shop-business-aside__item-icon">
+    <span class="
+        shop-business-aside__item-icon
+        shop-business-aside__item-icon--whatsapp
+    ">
 
-                    <i class="bi bi-telephone"></i>
+        <i class="bi bi-whatsapp"></i>
 
-                </span>
+    </span>
 
                 <span class="shop-business-aside__item-content">
 
-                    <span
-                        class="shop-business-aside__item-title"
-                        v-text="shopManager.businessAside.translations.contact"
-                    ></span>
+        <span
+            class="shop-business-aside__item-title"
+            v-text="shopManager.businessAside.translations.whatsapp"
+        ></span>
 
-                    <span
-                        class="shop-business-aside__item-description"
-                        v-text="shopManager.businessAside.data.contact.phone ||
-                        shopManager.businessAside.translations.noContact"
-                    ></span>
+        <span
+            class="shop-business-aside__item-description"
+            v-text="
+                orderWhatsAppNumber
+                    ? '+' + orderWhatsAppNumber
+                    : shopManager.businessAside.translations.noContact
+            "
+        ></span>
 
-                </span>
+        <span
+            class="shop-business-aside__item-helper"
+            v-if="orderWhatsAppNumber"
+            v-text="
+                shopManager.businessAside.translations.whatsappDescription
+            "
+        ></span>
 
-                <span class="shop-business-aside__item-action">
+    </span>
 
-                    <i class="bi bi-copy"></i>
+                <span class="
+        shop-business-aside__item-action
+        shop-business-aside__item-action--whatsapp
+    ">
 
-                </span>
+        <i class="bi bi-chevron-right"></i>
+
+    </span>
 
             </button>
-
             <!-- SHARE WHATSAPP -->
 
             <button

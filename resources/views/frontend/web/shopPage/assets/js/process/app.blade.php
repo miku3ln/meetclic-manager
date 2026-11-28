@@ -1,6 +1,7 @@
 @include('frontend.web.shopPage.assets.js.process.utils-filters-categories')
 @include('frontend.web.shopPage.assets.js.process.utils-grid-manager')
 @include('frontend.web.shopPage.assets.js.process.utils-shop-cart')
+@include('frontend.web.shopPage.assets.js.process.utils-shop-product')
 
 
 <script id="app-script">
@@ -30,8 +31,8 @@
             },
             computed: {
 
-                ...ShopCartComputed
-
+                ...ShopCartComputed,
+                ...ShopProductComputed
             },
             mounted: async function () {
                 var once = {
@@ -101,22 +102,7 @@
                     }
                 ];
                 this.businessInformation.linksManagement = linksManagement;
-                this.$nextTick(() => {
-                    this.mountShopBusinessAside();
-                    this.initShopBusinessAsideEvents();
-
-
-                    // ORDER ASIDE
-
-                    this.mountShopOrderAside();
-
-                    this.initShopOrderAsideEvents();
-
-
-                    // CART EVENTS
-
-                    this.initShopCartEvents();
-                });
+                this.managerAside();
             },
             el: '#app-management',
             created: async function () {
@@ -211,7 +197,130 @@
 
                 },
                 shopManager: {
+                    productAside: {
 
+                        visible: false,
+
+                        data: null,
+
+                        state: {
+
+                            activeImageIndex: 0,
+
+                            promotionsExpanded: false,
+
+                            feedback: {
+
+                                visible: false,
+
+                                type: 'success',
+
+                                message: ''
+
+                            },
+
+                            error: ''
+
+                        },
+
+                        favorites: [],
+
+                        config: {
+
+                            enabled: true,
+
+                            showGallery: true,
+                            showCategory: true,
+                            showSubcategory: true,
+                            showDescription: true,
+                            showCode: false,
+                            showStock: false,
+
+                            showPrice: true,
+                            showOldPrice: true,
+                            showDiscount: true,
+                            showTax: true,
+
+                            showPoints: true,
+                            showPromotions: true,
+
+                            showFavorite: true,
+                            showShare: true,
+                            showBusiness: true,
+
+                            showQuantity: true,
+                            showAdd: true,
+
+                            useMockData: false
+
+                        },
+
+                        translations: {
+                            cartQuantity: 'Cantidad en tu pedido',
+
+                            cartSubtotal: 'Subtotal del producto',
+
+                            cartEmpty: 'Agrega unidades con el botón +',
+
+                            cartAdded: 'Producto agregado a tu pedido',
+
+                            cartUpdated: 'Cantidad actualizada',
+
+                            cartRemoved: 'Producto eliminado del pedido',
+
+                            cartUnits: 'unidades agregadas',
+                            title: 'Detalle del producto',
+                            close: 'Cerrar',
+
+                            description: 'Descripción',
+                            noDescription: 'No hay una descripción disponible.',
+
+                            code: 'Código',
+                            stock: 'Disponibilidad',
+
+                            price: 'Precio',
+                            oldPrice: 'Precio anterior',
+                            unavailablePrice: 'Consultar precio',
+
+                            savings: 'Ahorras',
+                            perUnit: 'por unidad',
+
+                            points: 'Yapitas',
+                            earnPoints: 'Gana',
+                            pointsDescription:
+                                'Por cada unidad comprada y validada.',
+
+                            estimatedPoints: 'Yapitas estimadas',
+
+                            promotions: 'Promociones disponibles',
+                            promotionsDescription:
+                                'Descubre las ofertas de este producto',
+
+                            favorite: 'Agregar a favoritos',
+                            removeFavorite: 'Quitar de favoritos',
+
+                            share: 'Compartir producto',
+
+                            soldBy: 'Vendido por',
+
+                            quantity: 'Cantidad',
+                            increase: 'Aumentar cantidad',
+                            decrease: 'Disminuir cantidad',
+
+                            add: 'Agregar al pedido',
+                            added: 'Producto agregado',
+
+                            inCart: 'Unidades en tu pedido',
+
+                            previousImage: 'Imagen anterior',
+                            nextImage: 'Imagen siguiente',
+
+                            quantityLimit: 'Has alcanzado el límite de unidades.',
+                            unavailable: 'Este producto no está disponible para agregar.'
+
+                        }
+
+                    },
                     businessAside: {
                         state: {
                             scheduleExpanded: false
@@ -235,6 +344,8 @@
                         },
 
                         translations: {
+                            whatsapp: 'Contactar por WhatsApp',
+                            whatsappDescription: 'Conversa directamente con el negocio',
                             share: 'Compartir',
                             shareDescription: 'Comparte esta tienda por WhatsApp',
                             shareTitle: 'Descubre {business} en Yapita',
@@ -461,6 +572,29 @@
             },
             methods: {
                 ...ShopCartMethods,
+                ...ShopProductMethods,
+                managerAside: function () {
+                    this.$nextTick(() => {
+                        this.mountShopBusinessAside();
+                        this.initShopBusinessAsideEvents();
+
+
+                        // ORDER ASIDE
+
+                        this.mountShopOrderAside();
+
+                        this.initShopOrderAsideEvents();
+
+
+                        // CART EVENTS
+
+                        this.initShopCartEvents();
+
+                        this.mountShopProductAside();
+
+                        this.initShopProductAsideEvents();
+                    });
+                },
                 _destroyTooltip: _destroyTooltip,
                 _resetManagerGrid: _resetManagerGrid,
                 _managerMenuGrid: _managerMenuGrid,
@@ -956,10 +1090,7 @@
                     );
 
                 },
-                onShopBusinessAsideAction: function (
-                    action,
-                    item = null
-                ) {
+                onShopBusinessAsideAction(action, item = null) {
 
                     const data = this.shopManager.businessAside.data;
 
@@ -971,9 +1102,8 @@
 
                         location: 'aside:location:click',
 
-                        'copy-phone': 'aside:contact:copy',
-
                         whatsapp: 'aside:contact:whatsapp',
+
                         'share-whatsapp': 'aside:share:whatsapp',
 
                         reviews: 'aside:reviews:click',
@@ -994,17 +1124,22 @@
 
                         component: 'businessAside',
 
-                        action: action,
+                        action,
 
                         businessId: data.business.id,
 
                         business: data.business,
 
-                        item: item,
+                        item,
 
-                        data: data,
+                        data,
+
                         share: action === 'share-whatsapp'
                             ? this.getShopShareData()
+                            : null,
+
+                        whatsapp: action === 'whatsapp'
+                            ? this.getShopBusinessWhatsAppData()
                             : null
 
                     };
@@ -1015,11 +1150,42 @@
 
                     this.emitShopEvent(
                         eventName,
-
                         payload,
-
                         target
                     );
+
+                },
+                getShopBusinessWhatsAppData() {
+
+                    const data = this.shopManager.businessAside.data;
+
+                    const phone = this.orderWhatsAppNumber;
+
+                    if (!data || !phone) {
+                        return null;
+                    }
+
+                    const businessName = data.business.name;
+
+                    const message = [
+                        `¡Hola, ${businessName}! 👋`,
+                        '',
+                        'Encontré su negocio en Yapita y me gustaría obtener más información sobre sus productos y servicios.'
+                    ].join('\n');
+
+                    const url =
+                        `https://wa.me/${phone}` +
+                        `?text=${encodeURIComponent(message)}`;
+
+                    return {
+
+                        phone,
+
+                        message,
+
+                        url
+
+                    };
 
                 },
                 getShopShareData: function () {
@@ -2047,7 +2213,7 @@
                         this.shopManager.cart.config.enabled &&
                         price.hasPrice
 
-                        ? `
+                            ? `
             <div class="shop-product-card__actions">
 
                 <button
@@ -2068,7 +2234,7 @@
             </div>
         `
 
-                        : '';
+                            : '';
 
                     // ==========================================
                     // FINAL TEMPLATE

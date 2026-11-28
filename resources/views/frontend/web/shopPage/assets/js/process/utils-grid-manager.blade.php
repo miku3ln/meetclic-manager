@@ -88,6 +88,159 @@
 </div>
 `;
 
+                    templates.loading = // ==========================================
+// LOADING STATE
+// ==========================================
+
+            templates.loading = `
+
+    <tr class="shop-grid-state-row shop-grid-state-row--loading">
+
+        <td
+            colspan="@{{ctx.columns}}"
+            class="loading shop-grid-state-cell"
+        >
+
+            <div
+                class="shop-grid-state shop-grid-state--loading"
+                role="status"
+                aria-live="polite"
+                aria-busy="true"
+            >
+
+                <div class="shop-grid-state__visual">
+
+                    <div class="shop-grid-state__spinner"></div>
+
+                    <img
+                        class="shop-grid-state__logo"
+                        src="https://meetclic.com/public/uploads/frontend/templateBySource/1750454099_logo-one.png"
+                        alt="Yapita"
+                    >
+
+                </div>
+
+                <div class="shop-grid-state__content">
+
+                    <h3 class="shop-grid-state__title">
+
+                        @{{lbl.loading}}
+
+                    </h3>
+
+                    <p class="shop-grid-state__description">
+
+                        Estamos preparando todo para ti.
+
+                    </p>
+
+                </div>
+
+                <div
+                    class="shop-grid-state__dots"
+                    aria-hidden="true"
+                >
+
+                    <span class="shop-grid-state__dot"></span>
+
+                    <span class="shop-grid-state__dot"></span>
+
+                    <span class="shop-grid-state__dot"></span>
+
+                </div>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+`;
+        templates.noResults = // ==========================================
+// EMPTY STATE
+// ==========================================
+
+            templates.noResults = `
+
+    <tr class="shop-grid-state-row shop-grid-state-row--empty">
+
+        <td
+            colspan="@{{ctx.columns}}"
+            class="no-results shop-grid-state-cell"
+        >
+
+            <div
+                class="shop-grid-state shop-grid-state--empty"
+                role="status"
+                aria-live="polite"
+            >
+
+                <div class="shop-grid-state__visual">
+
+                    <div class="shop-grid-state__illustration">
+
+                        <i class="bi bi-bag"></i>
+
+                        <span class="shop-grid-state__visual-badge">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <span class="
+                            shop-grid-state__spark
+                            shop-grid-state__spark--one
+                        "></span>
+
+                        <span class="
+                            shop-grid-state__spark
+                            shop-grid-state__spark--two
+                        "></span>
+
+                    </div>
+
+                </div>
+
+                <div class="shop-grid-state__content">
+
+                    <h3 class="shop-grid-state__title">
+
+                        @{{lbl.noResults}}
+
+                    </h3>
+
+                    <p class="shop-grid-state__description">
+
+                        Prueba con otra búsqueda o cambia
+                        los filtros seleccionados.
+
+                    </p>
+
+                </div>
+
+                <div class="shop-grid-state__actions not-view">
+
+                    <button
+                        type="button"
+                        class="shop-grid-state__button"
+                        data-action="reset-filters"
+                    >
+
+                        <i class="bi bi-arrow-clockwise"></i>
+
+                        <span>Ver todos los productos</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+`;
         return templates;
     }
 
